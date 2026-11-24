@@ -1,0 +1,14 @@
+{
+  "torch": "2.15.0+cpu",
+  "device": "CPU",
+  "params": 777412,
+  "logits_shape": [
+    2,
+    2
+  ],
+  "loss": 0.6672518253326416,
+  "finite": true,
+  "grad_params": 103,
+  "elapsed_s": 0.21040749549865723,
+  "boundary": "Random-input model forward/backward only; not a trained result, original training entrypoint not validated; unused training-library imports omitted."
+}

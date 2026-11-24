@@ -1,0 +1,1302 @@
+[
+  {
+    "name": "VP001-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP001-EEG/cnt_dsr.mat",
+    "size": 61036418,
+    "compressed": 61052968
+  },
+  {
+    "name": "VP001-EEG/cnt_nback.mat",
+    "size": 89861267,
+    "compressed": 89883262
+  },
+  {
+    "name": "VP001-EEG/cnt_wg.mat",
+    "size": 84602428,
+    "compressed": 84623415
+  },
+  {
+    "name": "VP001-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP001-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP001-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP001-EEG/mrk_dsr.mat",
+    "size": 1889,
+    "compressed": 1894
+  },
+  {
+    "name": "VP001-EEG/mrk_nback.mat",
+    "size": 2709,
+    "compressed": 2714
+  },
+  {
+    "name": "VP001-EEG/mrk_wg.mat",
+    "size": 600,
+    "compressed": 575
+  },
+  {
+    "name": "VP002-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP002-EEG/cnt_dsr.mat",
+    "size": 61468299,
+    "compressed": 61484907
+  },
+  {
+    "name": "VP002-EEG/cnt_nback.mat",
+    "size": 90432007,
+    "compressed": 90454181
+  },
+  {
+    "name": "VP002-EEG/cnt_wg.mat",
+    "size": 85049888,
+    "compressed": 85071020
+  },
+  {
+    "name": "VP002-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP002-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP002-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP002-EEG/mrk_dsr.mat",
+    "size": 1898,
+    "compressed": 1903
+  },
+  {
+    "name": "VP002-EEG/mrk_nback.mat",
+    "size": 2710,
+    "compressed": 2715
+  },
+  {
+    "name": "VP002-EEG/mrk_wg.mat",
+    "size": 599,
+    "compressed": 573
+  },
+  {
+    "name": "VP003-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP003-EEG/cnt_dsr.mat",
+    "size": 59845720,
+    "compressed": 59862032
+  },
+  {
+    "name": "VP003-EEG/cnt_nback.mat",
+    "size": 88769793,
+    "compressed": 88791582
+  },
+  {
+    "name": "VP003-EEG/cnt_wg.mat",
+    "size": 84587939,
+    "compressed": 84608906
+  },
+  {
+    "name": "VP003-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP003-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP003-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP003-EEG/mrk_dsr.mat",
+    "size": 1874,
+    "compressed": 1879
+  },
+  {
+    "name": "VP003-EEG/mrk_nback.mat",
+    "size": 2696,
+    "compressed": 2701
+  },
+  {
+    "name": "VP003-EEG/mrk_wg.mat",
+    "size": 602,
+    "compressed": 575
+  },
+  {
+    "name": "VP004-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP004-EEG/cnt_dsr.mat",
+    "size": 60300343,
+    "compressed": 60316738
+  },
+  {
+    "name": "VP004-EEG/cnt_nback.mat",
+    "size": 88288986,
+    "compressed": 88310766
+  },
+  {
+    "name": "VP004-EEG/cnt_wg.mat",
+    "size": 84525517,
+    "compressed": 84546530
+  },
+  {
+    "name": "VP004-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP004-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP004-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP004-EEG/mrk_dsr.mat",
+    "size": 1875,
+    "compressed": 1880
+  },
+  {
+    "name": "VP004-EEG/mrk_nback.mat",
+    "size": 2685,
+    "compressed": 2690
+  },
+  {
+    "name": "VP004-EEG/mrk_wg.mat",
+    "size": 604,
+    "compressed": 579
+  },
+  {
+    "name": "VP005-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP005-EEG/cnt_dsr.mat",
+    "size": 60088975,
+    "compressed": 60105362
+  },
+  {
+    "name": "VP005-EEG/cnt_nback.mat",
+    "size": 89069768,
+    "compressed": 89091683
+  },
+  {
+    "name": "VP005-EEG/cnt_wg.mat",
+    "size": 85338591,
+    "compressed": 85359764
+  },
+  {
+    "name": "VP005-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP005-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP005-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP005-EEG/mrk_dsr.mat",
+    "size": 1874,
+    "compressed": 1879
+  },
+  {
+    "name": "VP005-EEG/mrk_nback.mat",
+    "size": 2677,
+    "compressed": 2682
+  },
+  {
+    "name": "VP005-EEG/mrk_wg.mat",
+    "size": 603,
+    "compressed": 578
+  },
+  {
+    "name": "VP006-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP006-EEG/cnt_dsr.mat",
+    "size": 60309755,
+    "compressed": 60326150
+  },
+  {
+    "name": "VP006-EEG/cnt_nback.mat",
+    "size": 88681398,
+    "compressed": 88703187
+  },
+  {
+    "name": "VP006-EEG/cnt_wg.mat",
+    "size": 84933058,
+    "compressed": 84954123
+  },
+  {
+    "name": "VP006-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP006-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP006-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP006-EEG/mrk_dsr.mat",
+    "size": 1855,
+    "compressed": 1860
+  },
+  {
+    "name": "VP006-EEG/mrk_nback.mat",
+    "size": 2698,
+    "compressed": 2703
+  },
+  {
+    "name": "VP006-EEG/mrk_wg.mat",
+    "size": 600,
+    "compressed": 575
+  },
+  {
+    "name": "VP007-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP007-EEG/cnt_dsr.mat",
+    "size": 60374475,
+    "compressed": 60390898
+  },
+  {
+    "name": "VP007-EEG/cnt_nback.mat",
+    "size": 88814390,
+    "compressed": 88836242
+  },
+  {
+    "name": "VP007-EEG/cnt_wg.mat",
+    "size": 85016419,
+    "compressed": 85037506
+  },
+  {
+    "name": "VP007-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP007-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP007-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP007-EEG/mrk_dsr.mat",
+    "size": 1869,
+    "compressed": 1874
+  },
+  {
+    "name": "VP007-EEG/mrk_nback.mat",
+    "size": 2696,
+    "compressed": 2701
+  },
+  {
+    "name": "VP007-EEG/mrk_wg.mat",
+    "size": 602,
+    "compressed": 576
+  },
+  {
+    "name": "VP008-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP008-EEG/cnt_dsr.mat",
+    "size": 60345244,
+    "compressed": 60361645
+  },
+  {
+    "name": "VP008-EEG/cnt_nback.mat",
+    "size": 88709507,
+    "compressed": 88731315
+  },
+  {
+    "name": "VP008-EEG/cnt_wg.mat",
+    "size": 85201235,
+    "compressed": 85222378
+  },
+  {
+    "name": "VP008-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP008-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP008-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP008-EEG/mrk_dsr.mat",
+    "size": 1863,
+    "compressed": 1868
+  },
+  {
+    "name": "VP008-EEG/mrk_nback.mat",
+    "size": 2685,
+    "compressed": 2690
+  },
+  {
+    "name": "VP008-EEG/mrk_wg.mat",
+    "size": 595,
+    "compressed": 569
+  },
+  {
+    "name": "VP009-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP009-EEG/cnt_dsr.mat",
+    "size": 60313137,
+    "compressed": 60329554
+  },
+  {
+    "name": "VP009-EEG/cnt_nback.mat",
+    "size": 88874237,
+    "compressed": 88896076
+  },
+  {
+    "name": "VP009-EEG/cnt_wg.mat",
+    "size": 84942911,
+    "compressed": 84963947
+  },
+  {
+    "name": "VP009-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP009-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP009-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP009-EEG/mrk_dsr.mat",
+    "size": 1869,
+    "compressed": 1874
+  },
+  {
+    "name": "VP009-EEG/mrk_nback.mat",
+    "size": 2703,
+    "compressed": 2708
+  },
+  {
+    "name": "VP009-EEG/mrk_wg.mat",
+    "size": 602,
+    "compressed": 575
+  },
+  {
+    "name": "VP010-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP010-EEG/cnt_dsr.mat",
+    "size": 60272811,
+    "compressed": 60289201
+  },
+  {
+    "name": "VP010-EEG/cnt_nback.mat",
+    "size": 88623813,
+    "compressed": 88645588
+  },
+  {
+    "name": "VP010-EEG/cnt_wg.mat",
+    "size": 84940460,
+    "compressed": 84961514
+  },
+  {
+    "name": "VP010-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP010-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP010-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP010-EEG/mrk_dsr.mat",
+    "size": 1849,
+    "compressed": 1854
+  },
+  {
+    "name": "VP010-EEG/mrk_nback.mat",
+    "size": 2705,
+    "compressed": 2710
+  },
+  {
+    "name": "VP010-EEG/mrk_wg.mat",
+    "size": 604,
+    "compressed": 580
+  },
+  {
+    "name": "VP011-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP011-EEG/cnt_dsr.mat",
+    "size": 60383343,
+    "compressed": 60399688
+  },
+  {
+    "name": "VP011-EEG/cnt_nback.mat",
+    "size": 89284009,
+    "compressed": 89305888
+  },
+  {
+    "name": "VP011-EEG/cnt_wg.mat",
+    "size": 85120157,
+    "compressed": 85141278
+  },
+  {
+    "name": "VP011-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP011-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP011-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP011-EEG/mrk_dsr.mat",
+    "size": 1864,
+    "compressed": 1869
+  },
+  {
+    "name": "VP011-EEG/mrk_nback.mat",
+    "size": 2690,
+    "compressed": 2695
+  },
+  {
+    "name": "VP011-EEG/mrk_wg.mat",
+    "size": 596,
+    "compressed": 571
+  },
+  {
+    "name": "VP012-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP012-EEG/cnt_dsr.mat",
+    "size": 60293373,
+    "compressed": 60309750
+  },
+  {
+    "name": "VP012-EEG/cnt_nback.mat",
+    "size": 88855154,
+    "compressed": 88876952
+  },
+  {
+    "name": "VP012-EEG/cnt_wg.mat",
+    "size": 84789127,
+    "compressed": 84810168
+  },
+  {
+    "name": "VP012-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP012-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP012-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP012-EEG/mrk_dsr.mat",
+    "size": 1856,
+    "compressed": 1861
+  },
+  {
+    "name": "VP012-EEG/mrk_nback.mat",
+    "size": 2707,
+    "compressed": 2712
+  },
+  {
+    "name": "VP012-EEG/mrk_wg.mat",
+    "size": 597,
+    "compressed": 571
+  },
+  {
+    "name": "VP013-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP013-EEG/cnt_dsr.mat",
+    "size": 60493125,
+    "compressed": 60509501
+  },
+  {
+    "name": "VP013-EEG/cnt_nback.mat",
+    "size": 88972572,
+    "compressed": 88994428
+  },
+  {
+    "name": "VP013-EEG/cnt_wg.mat",
+    "size": 85025743,
+    "compressed": 85046812
+  },
+  {
+    "name": "VP013-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP013-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP013-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP013-EEG/mrk_dsr.mat",
+    "size": 1875,
+    "compressed": 1880
+  },
+  {
+    "name": "VP013-EEG/mrk_nback.mat",
+    "size": 2699,
+    "compressed": 2704
+  },
+  {
+    "name": "VP013-EEG/mrk_wg.mat",
+    "size": 596,
+    "compressed": 571
+  },
+  {
+    "name": "VP014-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP014-EEG/cnt_dsr.mat",
+    "size": 60078540,
+    "compressed": 60094872
+  },
+  {
+    "name": "VP014-EEG/cnt_nback.mat",
+    "size": 88572050,
+    "compressed": 88593797
+  },
+  {
+    "name": "VP014-EEG/cnt_wg.mat",
+    "size": 85469750,
+    "compressed": 85490946
+  },
+  {
+    "name": "VP014-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP014-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP014-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP014-EEG/mrk_dsr.mat",
+    "size": 1880,
+    "compressed": 1885
+  },
+  {
+    "name": "VP014-EEG/mrk_nback.mat",
+    "size": 2707,
+    "compressed": 2712
+  },
+  {
+    "name": "VP014-EEG/mrk_wg.mat",
+    "size": 602,
+    "compressed": 575
+  },
+  {
+    "name": "VP015-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP015-EEG/cnt_dsr.mat",
+    "size": 60139699,
+    "compressed": 60156082
+  },
+  {
+    "name": "VP015-EEG/cnt_nback.mat",
+    "size": 88771126,
+    "compressed": 88792994
+  },
+  {
+    "name": "VP015-EEG/cnt_wg.mat",
+    "size": 85125372,
+    "compressed": 85146494
+  },
+  {
+    "name": "VP015-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP015-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP015-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP015-EEG/mrk_dsr.mat",
+    "size": 1897,
+    "compressed": 1902
+  },
+  {
+    "name": "VP015-EEG/mrk_nback.mat",
+    "size": 2703,
+    "compressed": 2708
+  },
+  {
+    "name": "VP015-EEG/mrk_wg.mat",
+    "size": 603,
+    "compressed": 579
+  },
+  {
+    "name": "VP016-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP016-EEG/cnt_dsr.mat",
+    "size": 60089276,
+    "compressed": 60105605
+  },
+  {
+    "name": "VP016-EEG/cnt_nback.mat",
+    "size": 88504365,
+    "compressed": 88526158
+  },
+  {
+    "name": "VP016-EEG/cnt_wg.mat",
+    "size": 85149336,
+    "compressed": 85170449
+  },
+  {
+    "name": "VP016-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP016-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP016-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP016-EEG/mrk_dsr.mat",
+    "size": 1895,
+    "compressed": 1900
+  },
+  {
+    "name": "VP016-EEG/mrk_nback.mat",
+    "size": 2696,
+    "compressed": 2701
+  },
+  {
+    "name": "VP016-EEG/mrk_wg.mat",
+    "size": 599,
+    "compressed": 574
+  },
+  {
+    "name": "VP017-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP017-EEG/cnt_dsr.mat",
+    "size": 60059350,
+    "compressed": 60075658
+  },
+  {
+    "name": "VP017-EEG/cnt_nback.mat",
+    "size": 88500124,
+    "compressed": 88521937
+  },
+  {
+    "name": "VP017-EEG/cnt_wg.mat",
+    "size": 85194468,
+    "compressed": 85215644
+  },
+  {
+    "name": "VP017-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP017-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP017-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP017-EEG/mrk_dsr.mat",
+    "size": 1870,
+    "compressed": 1875
+  },
+  {
+    "name": "VP017-EEG/mrk_nback.mat",
+    "size": 2705,
+    "compressed": 2708
+  },
+  {
+    "name": "VP017-EEG/mrk_wg.mat",
+    "size": 591,
+    "compressed": 566
+  },
+  {
+    "name": "VP018-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP018-EEG/cnt_dsr.mat",
+    "size": 60355685,
+    "compressed": 60372047
+  },
+  {
+    "name": "VP018-EEG/cnt_nback.mat",
+    "size": 88964833,
+    "compressed": 88986689
+  },
+  {
+    "name": "VP018-EEG/cnt_wg.mat",
+    "size": 85358797,
+    "compressed": 85379947
+  },
+  {
+    "name": "VP018-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP018-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP018-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP018-EEG/mrk_dsr.mat",
+    "size": 1865,
+    "compressed": 1870
+  },
+  {
+    "name": "VP018-EEG/mrk_nback.mat",
+    "size": 2698,
+    "compressed": 2703
+  },
+  {
+    "name": "VP018-EEG/mrk_wg.mat",
+    "size": 592,
+    "compressed": 567
+  },
+  {
+    "name": "VP019-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP019-EEG/cnt_dsr.mat",
+    "size": 60331066,
+    "compressed": 60347483
+  },
+  {
+    "name": "VP019-EEG/cnt_nback.mat",
+    "size": 88855151,
+    "compressed": 88876990
+  },
+  {
+    "name": "VP019-EEG/cnt_wg.mat",
+    "size": 84756277,
+    "compressed": 84777354
+  },
+  {
+    "name": "VP019-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP019-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP019-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP019-EEG/mrk_dsr.mat",
+    "size": 1880,
+    "compressed": 1885
+  },
+  {
+    "name": "VP019-EEG/mrk_nback.mat",
+    "size": 2717,
+    "compressed": 2722
+  },
+  {
+    "name": "VP019-EEG/mrk_wg.mat",
+    "size": 598,
+    "compressed": 573
+  },
+  {
+    "name": "VP020-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP020-EEG/cnt_dsr.mat",
+    "size": 60433502,
+    "compressed": 60449904
+  },
+  {
+    "name": "VP020-EEG/cnt_nback.mat",
+    "size": 88983420,
+    "compressed": 89005224
+  },
+  {
+    "name": "VP020-EEG/cnt_wg.mat",
+    "size": 85475111,
+    "compressed": 85496264
+  },
+  {
+    "name": "VP020-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP020-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP020-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP020-EEG/mrk_dsr.mat",
+    "size": 1867,
+    "compressed": 1872
+  },
+  {
+    "name": "VP020-EEG/mrk_nback.mat",
+    "size": 2693,
+    "compressed": 2698
+  },
+  {
+    "name": "VP020-EEG/mrk_wg.mat",
+    "size": 599,
+    "compressed": 574
+  },
+  {
+    "name": "VP021-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP021-EEG/cnt_dsr.mat",
+    "size": 60296257,
+    "compressed": 60312676
+  },
+  {
+    "name": "VP021-EEG/cnt_nback.mat",
+    "size": 88844945,
+    "compressed": 88866763
+  },
+  {
+    "name": "VP021-EEG/cnt_wg.mat",
+    "size": 84846095,
+    "compressed": 84867111
+  },
+  {
+    "name": "VP021-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP021-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP021-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP021-EEG/mrk_dsr.mat",
+    "size": 1876,
+    "compressed": 1881
+  },
+  {
+    "name": "VP021-EEG/mrk_nback.mat",
+    "size": 2711,
+    "compressed": 2716
+  },
+  {
+    "name": "VP021-EEG/mrk_wg.mat",
+    "size": 600,
+    "compressed": 572
+  },
+  {
+    "name": "VP022-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP022-EEG/cnt_dsr.mat",
+    "size": 60319651,
+    "compressed": 60336066
+  },
+  {
+    "name": "VP022-EEG/cnt_nback.mat",
+    "size": 88857717,
+    "compressed": 88879594
+  },
+  {
+    "name": "VP022-EEG/cnt_wg.mat",
+    "size": 84974615,
+    "compressed": 84995715
+  },
+  {
+    "name": "VP022-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP022-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP022-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP022-EEG/mrk_dsr.mat",
+    "size": 1888,
+    "compressed": 1893
+  },
+  {
+    "name": "VP022-EEG/mrk_nback.mat",
+    "size": 2704,
+    "compressed": 2709
+  },
+  {
+    "name": "VP022-EEG/mrk_wg.mat",
+    "size": 601,
+    "compressed": 575
+  },
+  {
+    "name": "VP023-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP023-EEG/cnt_dsr.mat",
+    "size": 60142568,
+    "compressed": 60158865
+  },
+  {
+    "name": "VP023-EEG/cnt_nback.mat",
+    "size": 88506422,
+    "compressed": 88528153
+  },
+  {
+    "name": "VP023-EEG/cnt_wg.mat",
+    "size": 85066560,
+    "compressed": 85087720
+  },
+  {
+    "name": "VP023-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP023-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP023-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP023-EEG/mrk_dsr.mat",
+    "size": 1881,
+    "compressed": 1886
+  },
+  {
+    "name": "VP023-EEG/mrk_nback.mat",
+    "size": 2708,
+    "compressed": 2713
+  },
+  {
+    "name": "VP023-EEG/mrk_wg.mat",
+    "size": 592,
+    "compressed": 567
+  },
+  {
+    "name": "VP024-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP024-EEG/cnt_dsr.mat",
+    "size": 60303812,
+    "compressed": 60320165
+  },
+  {
+    "name": "VP024-EEG/cnt_nback.mat",
+    "size": 88543404,
+    "compressed": 88565160
+  },
+  {
+    "name": "VP024-EEG/cnt_wg.mat",
+    "size": 85362580,
+    "compressed": 85383876
+  },
+  {
+    "name": "VP024-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP024-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP024-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP024-EEG/mrk_dsr.mat",
+    "size": 1886,
+    "compressed": 1891
+  },
+  {
+    "name": "VP024-EEG/mrk_nback.mat",
+    "size": 2718,
+    "compressed": 2723
+  },
+  {
+    "name": "VP024-EEG/mrk_wg.mat",
+    "size": 606,
+    "compressed": 581
+  },
+  {
+    "name": "VP025-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP025-EEG/cnt_dsr.mat",
+    "size": 60236709,
+    "compressed": 60253111
+  },
+  {
+    "name": "VP025-EEG/cnt_nback.mat",
+    "size": 88402003,
+    "compressed": 88423734
+  },
+  {
+    "name": "VP025-EEG/cnt_wg.mat",
+    "size": 85250569,
+    "compressed": 85271678
+  },
+  {
+    "name": "VP025-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP025-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1278
+  },
+  {
+    "name": "VP025-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP025-EEG/mrk_dsr.mat",
+    "size": 1892,
+    "compressed": 1897
+  },
+  {
+    "name": "VP025-EEG/mrk_nback.mat",
+    "size": 2707,
+    "compressed": 2712
+  },
+  {
+    "name": "VP025-EEG/mrk_wg.mat",
+    "size": 598,
+    "compressed": 573
+  },
+  {
+    "name": "VP026-EEG/",
+    "size": 0,
+    "compressed": 0
+  },
+  {
+    "name": "VP026-EEG/cnt_dsr.mat",
+    "size": 60139384,
+    "compressed": 60155746
+  },
+  {
+    "name": "VP026-EEG/cnt_nback.mat",
+    "size": 88340624,
+    "compressed": 88362302
+  },
+  {
+    "name": "VP026-EEG/cnt_wg.mat",
+    "size": 84984009,
+    "compressed": 85005154
+  },
+  {
+    "name": "VP026-EEG/mnt_dsr.mat",
+    "size": 1274,
+    "compressed": 1279
+  },
+  {
+    "name": "VP026-EEG/mnt_nback.mat",
+    "size": 1275,
+    "compressed": 1280
+  },
+  {
+    "name": "VP026-EEG/mnt_wg.mat",
+    "size": 1272,
+    "compressed": 1277
+  },
+  {
+    "name": "VP026-EEG/mrk_dsr.mat",
+    "size": 1884,
+    "compressed": 1889
+  },
+  {
+    "name": "VP026-EEG/mrk_nback.mat",
+    "size": 2708,
+    "compressed": 2713
+  },
+  {
+    "name": "VP026-EEG/mrk_wg.mat",
+    "size": 600,
+    "compressed": 575
+  }
+]

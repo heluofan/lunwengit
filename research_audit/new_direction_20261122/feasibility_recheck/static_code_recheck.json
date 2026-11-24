@@ -1,0 +1,45 @@
+{
+  "preprocessing_operations": [
+    {
+      "line": 82,
+      "call": "raw_eeg.filter(0.5, 50.0, method='iir', iir_params=dict(order=6, ftype='butter'), verbose=False)"
+    },
+    {
+      "line": 87,
+      "call": "raw_eeg.copy().filter(l_freq=1.0, h_freq=None, verbose=False)"
+    },
+    {
+      "line": 89,
+      "call": "ica.fit(filt_ica_raw)"
+    },
+    {
+      "line": 92,
+      "call": "ica.plot_sources(raw_eeg, title=f'ICA Sources for {subject_no}')"
+    },
+    {
+      "line": 95,
+      "call": "input(f'Enter components to exclude for {subject_no} (e.g., \"0 1 5\"): ')"
+    },
+    {
+      "line": 108,
+      "call": "hbo_raw.filter(0.01, 0.1, method='iir', iir_params=dict(order=6, ftype='butter'), verbose=False)"
+    },
+    {
+      "line": 109,
+      "call": "hbr_raw.filter(0.01, 0.1, method='iir', iir_params=dict(order=6, ftype='butter'), verbose=False)"
+    }
+  ],
+  "train_device_assignment_present": false,
+  "training_entrypoint_has_test_selection": true,
+  "epoch_pre_onset_s": 5,
+  "first_window_start_from_epoch_s": 3,
+  "first_eeg_window_event_relative_s": [
+    -2,
+    1
+  ],
+  "first_fnirs_candidate_union_event_relative_s": [
+    -2,
+    11
+  ],
+  "coordinate_boundary": "Derived only if supplied training input uses the preprocessing.py epoch origin. The released train/preprocessing NPZ interfaces differ, so actual published training coordinates are not established by these files alone."
+}

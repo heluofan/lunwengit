@@ -1,0 +1,24 @@
+{
+  "EEG": [
+    360,
+    500,
+    30,
+    1
+  ],
+  "fNIRS": [
+    360,
+    25,
+    72,
+    1
+  ],
+  "labels": [
+    360,
+    2
+  ],
+  "finite": true,
+  "classes": [
+    180,
+    180
+  ],
+  "boundary": "Original EF-Net preprocessing with only input-file resolution redirected to downloaded subject001; 360 overlapping windows represent 60 trials from one person, not 360 independent people."
+}

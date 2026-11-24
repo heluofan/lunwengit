@@ -1,0 +1,17 @@
+[
+  {
+    "paired_subject_difference_sd_assumption": 0.05,
+    "approx_95ci_half_width_pp": 2.019996191923296,
+    "approx_effect_pp_for_80percent_power": 2.7475870532859585
+  },
+  {
+    "paired_subject_difference_sd_assumption": 0.1,
+    "approx_95ci_half_width_pp": 4.039992383846592,
+    "approx_effect_pp_for_80percent_power": 5.495174106571917
+  },
+  {
+    "paired_subject_difference_sd_assumption": 0.15,
+    "approx_95ci_half_width_pp": 6.059988575769887,
+    "approx_effect_pp_for_80percent_power": 8.242761159857876
+  }
+]
