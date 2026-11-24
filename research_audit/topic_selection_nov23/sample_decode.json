@@ -1,0 +1,36 @@
+{
+  "opened": true,
+  "frames_reported": 60,
+  "fps": 25.0,
+  "width": 720,
+  "height": 576,
+  "decoded": [
+    {
+      "index": 0,
+      "ok": true,
+      "shape": [
+        576,
+        720,
+        3
+      ]
+    },
+    {
+      "index": 10,
+      "ok": true,
+      "shape": [
+        576,
+        720,
+        3
+      ]
+    },
+    {
+      "index": 30,
+      "ok": true,
+      "shape": [
+        576,
+        720,
+        3
+      ]
+    }
+  ]
+}
