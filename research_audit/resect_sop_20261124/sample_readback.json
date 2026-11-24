@@ -1,0 +1,82 @@
+{
+  "Case24": {
+    "initial_mean_tre_mm": 1.1010963292629423,
+    "paired_points": 16,
+    "flair": {
+      "size": [
+        192,
+        256,
+        256
+      ],
+      "spacing_mm": [
+        1.0,
+        0.9999999403953552,
+        1.0
+      ],
+      "finite": true,
+      "intensity_range": [
+        -1.692681689746678e-05,
+        465.98699951171875
+      ],
+      "landmarks_inside_volume": 16
+    },
+    "us": {
+      "size": [
+        338,
+        384,
+        385
+      ],
+      "spacing_mm": [
+        0.13809697329998016,
+        0.13809700310230255,
+        0.13809700310230255
+      ],
+      "finite": true,
+      "intensity_range": [
+        0.0,
+        195.01568603515625
+      ],
+      "landmarks_inside_volume": 16
+    }
+  },
+  "Case12": {
+    "initial_mean_tre_mm": 19.67932668035236,
+    "paired_points": 16,
+    "flair": {
+      "size": [
+        192,
+        256,
+        256
+      ],
+      "spacing_mm": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "finite": true,
+      "intensity_range": [
+        -1.0148456567549147e-05,
+        305.9941101074219
+      ],
+      "landmarks_inside_volume": 16
+    },
+    "us": {
+      "size": [
+        350,
+        354,
+        404
+      ],
+      "spacing_mm": [
+        0.1816750019788742,
+        0.1816750466823578,
+        0.1816750019788742
+      ],
+      "finite": true,
+      "intensity_range": [
+        0.0,
+        191.53334045410156
+      ],
+      "landmarks_inside_volume": 16
+    }
+  }
+}
