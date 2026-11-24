@@ -1,0 +1,157 @@
+{
+  "10772_1000788": {
+    "adc.mha": {
+      "size": [
+        70,
+        102,
+        21
+      ],
+      "spacing": [
+        2.5098040103912,
+        2.5098040103912,
+        2.9999999875981365
+      ],
+      "same_grid": false,
+      "finite": true,
+      "values": [
+        0.0,
+        3525.0
+      ],
+      "resampled_nonzero": 1862401
+    },
+    "expert_mask.nii.gz": {
+      "size": [
+        320,
+        320,
+        19
+      ],
+      "spacing": [
+        0.5625,
+        0.5625,
+        2.999999523162842
+      ],
+      "same_grid": false,
+      "finite": true,
+      "values": [
+        0,
+        1
+      ],
+      "resampled_nonzero": 87
+    },
+    "hbv.mha": {
+      "size": [
+        70,
+        102,
+        21
+      ],
+      "spacing": [
+        2.5098040103912,
+        2.5098040103912,
+        2.9999999875981365
+      ],
+      "same_grid": false,
+      "finite": true,
+      "values": [
+        0.0,
+        194.0
+      ],
+      "resampled_nonzero": 1837949
+    },
+    "t2w.mha": {
+      "size": [
+        320,
+        320,
+        19
+      ],
+      "spacing": [
+        0.5625,
+        0.5625,
+        2.999999918123804
+      ],
+      "same_grid": true,
+      "finite": true,
+      "values": [
+        0.0,
+        1081.0
+      ],
+      "resampled_nonzero": 1926503
+    }
+  },
+  "11151_1001174": {
+    "adc.mha": {
+      "size": [
+        70,
+        102,
+        21
+      ],
+      "spacing": [
+        2.5098040103912,
+        2.5098040103912,
+        3.6000000537197665
+      ],
+      "same_grid": false,
+      "finite": true,
+      "values": [
+        0.0,
+        3506.0
+      ],
+      "resampled_nonzero": 1844751
+    },
+    "expert_mask.nii.gz": {
+      "size": [
+        320,
+        320,
+        19
+      ],
+      "spacing": [
+        0.5625,
+        0.5625,
+        3.600001335144043
+      ],
+      "same_grid": false,
+      "finite": true,
+      "values": [
+        0
+      ],
+      "resampled_nonzero": 0
+    },
+    "hbv.mha": {
+      "size": [
+        70,
+        102,
+        21
+      ],
+      "spacing": [
+        2.5098040103912,
+        2.5098040103912,
+        3.6000000537197665
+      ],
+      "same_grid": false,
+      "finite": true,
+      "values": [
+        0.0,
+        57.0
+      ],
+      "resampled_nonzero": 1795108
+    },
+    "t2w.mha": {
+      "size": [
+        320,
+        320,
+        19
+      ],
+      "spacing": [
+        0.5625,
+        0.5625,
+        3.600000018684022
+      ],
+      "same_grid": true,
+      "finite": true,
+      "values": [
+        0.0,
+        987.0
+      ],
+      "resampled_nonzero": 1924746
+    }
+  }
+}
