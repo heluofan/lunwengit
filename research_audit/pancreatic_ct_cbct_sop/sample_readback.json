@@ -1,0 +1,184 @@
+{
+  "patient_count": 40,
+  "licensed_as": [
+    "CC BY 4.0"
+  ],
+  "sample": [
+    {
+      "patient": "Pancreas-CT-CB_001",
+      "image_series_uid": "1.3.6.1.4.1.14519.5.2.1.302382790855582445722435410442490497846",
+      "structure_series_uid": "1.3.6.1.4.1.14519.5.2.1.18138783555294854291858006605381019315",
+      "image": {
+        "description": "PANCREAS DI, iDose (3)",
+        "size": [
+          512,
+          512,
+          134
+        ],
+        "spacing_mm": [
+          1.07421875,
+          1.07421875,
+          3.0
+        ],
+        "origin": [
+          -275.0,
+          -178.1,
+          85.91
+        ],
+        "direction": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "frame_uid": "1.3.6.1.4.1.14519.5.2.1.173296675191194638231799268052891145675"
+      },
+      "contours": {
+        "Bowel_sm_planCT": {
+          "closed_polygons": 98,
+          "referenced_slices_found": 36,
+          "referenced_slices_missing": 0
+        },
+        "LUNG_L": {
+          "closed_polygons": 66,
+          "referenced_slices_found": 49,
+          "referenced_slices_missing": 0
+        },
+        "LUNG_R": {
+          "closed_polygons": 58,
+          "referenced_slices_found": 48,
+          "referenced_slices_missing": 0
+        },
+        "ROI": {
+          "closed_polygons": 32,
+          "referenced_slices_found": 32,
+          "referenced_slices_missing": 0
+        },
+        "Stomach_duo_planCT": {
+          "closed_polygons": 42,
+          "referenced_slices_found": 34,
+          "referenced_slices_missing": 0
+        }
+      }
+    },
+    {
+      "patient": "Pancreas-CT-CB_001",
+      "image_series_uid": "1.3.6.1.4.1.14519.5.2.1.102707224473370231899962923249595911866",
+      "structure_series_uid": "1.3.6.1.4.1.14519.5.2.1.281766392102097972832596863673530927748",
+      "image": {
+        "description": "Aligned CB07",
+        "size": [
+          512,
+          512,
+          134
+        ],
+        "spacing_mm": [
+          1.07421875,
+          1.07421875,
+          2.9999999999999973
+        ],
+        "origin": [
+          -275.0,
+          -178.10000610351,
+          85.9100036621093
+        ],
+        "direction": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "frame_uid": "1.3.6.1.4.1.14519.5.2.1.173296675191194638231799268052891145675"
+      },
+      "contours": {
+        "Bowel_sm_CBCT": {
+          "closed_polygons": 46,
+          "referenced_slices_found": 30,
+          "referenced_slices_missing": 0
+        },
+        "LUNG_L": {
+          "closed_polygons": 49,
+          "referenced_slices_found": 34,
+          "referenced_slices_missing": 0
+        },
+        "LUNG_R": {
+          "closed_polygons": 65,
+          "referenced_slices_found": 44,
+          "referenced_slices_missing": 0
+        },
+        "Stomach_duo_CBCT": {
+          "closed_polygons": 44,
+          "referenced_slices_found": 33,
+          "referenced_slices_missing": 0
+        }
+      }
+    },
+    {
+      "patient": "Pancreas-CT-CB_001",
+      "image_series_uid": "1.3.6.1.4.1.14519.5.2.1.309068640667281565465902342765215339781",
+      "structure_series_uid": "1.3.6.1.4.1.14519.5.2.1.298217041989287527322718266582029491750",
+      "image": {
+        "description": "Aligned resampled CB02",
+        "size": [
+          512,
+          512,
+          134
+        ],
+        "spacing_mm": [
+          1.07421875,
+          1.07421875,
+          2.9999999999999973
+        ],
+        "origin": [
+          -275.0,
+          -178.10000610351,
+          85.9100036621093
+        ],
+        "direction": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "frame_uid": "1.3.6.1.4.1.14519.5.2.1.173296675191194638231799268052891145675"
+      },
+      "contours": {
+        "Bowel_sm_CBCT": {
+          "closed_polygons": 33,
+          "referenced_slices_found": 28,
+          "referenced_slices_missing": 0
+        },
+        "LUNG_L": {
+          "closed_polygons": 58,
+          "referenced_slices_found": 45,
+          "referenced_slices_missing": 0
+        },
+        "LUNG_R": {
+          "closed_polygons": 58,
+          "referenced_slices_found": 48,
+          "referenced_slices_missing": 0
+        },
+        "Stomach_duo_CBCT": {
+          "closed_polygons": 27,
+          "referenced_slices_found": 23,
+          "referenced_slices_missing": 0
+        }
+      }
+    }
+  ]
+}
