@@ -1,0 +1,3 @@
+http_url | s3_url | filename | format | size (bytes) | modified_date | fixity (md5)
+-----------------------------------------------------------------------------------
+https://data.archive.sigma2.no/dataset/e344a0f2-9c34-4437-b3dc-4ed9be67a144/download/EASY-RESECT.zip | s3://archive-ro/e344a0f2-9c34-4437-b3dc-4ed9be67a144/EASY-RESECT.zip | EASY-RESECT.zip | Zip File | 4203887616 | 2020-03-11 | 07dc7cfaaf2b076ffd5b9dc5575da6df

@@ -1,0 +1,15 @@
+==== owner
+drwxr-x--- 35 heluofan heluofan 4096 Nov 24 10:33 /data/heluofan
+drwxrwxr-x  7 heluofan heluofan 4096 Nov 24 09:50 /data/heluofan/picai
+drwxrwxr-x 10 heluofan heluofan 4096 Nov 24 10:33 /data/heluofan/seg_work
+
+==== data
+drwxr-sr-x  3 root     data      4096 Nov 16 18:09 /data/chr
+drwxr-x--- 35 heluofan heluofan  4096 Nov 24 10:33 /data/heluofan
+drwx------  2 root     root     16384 Nov 11 09:44 /data/lost+found
+lrwxrwxrwx  1 root     root        14 Nov 10 12:39 /data/test-user4 -> /data/heluofan
+drwxr-sr-x  2 ubuntu   ubuntu    4096 Nov 19 17:27 /data/ubuntu
+
+==== size
+604G	/data/heluofan
+/dev/nvme0n1    7.0T  604G  6.0T   9% /data

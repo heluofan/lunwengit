@@ -1,0 +1,1807 @@
+=== PDF_PAGE 1 ===
+第 48 卷 第 4 期
+2025 年 4 月
+计 算 机 学 报
+CHINESE JOURNAL OF COMPUTERS
+Vol. 48   No. 4
+Apr. 2025
+面向多模态预训练的子图匹配式对比学习
+方法研究
+陈公冠
+1），2）
+ 刘 慧
+1），2）
+ 李恒泰
+1），2）
+ 郭 强
+1），2）
+ 张彩明
+2），3）
+1）（山东财经大学计算机与人工智能学院  济南 250014）
+2）（山东省数字经济轻量智算与可视化重点实验室  济南 250014）
+3）（山东大学软件学院  济南 250101）
+摘 要 通过图像文本对的联合学习，多模态预训练大模型在各种视觉任务中展现出巨大的潜力 ，比如在高质量数
+据集匮乏的医学领域 。然而，现有的模态匹配式预训练方法通常使用全局匹配的方式 ，易受到低质量信息的干扰 。
+尽管少量研究开始关注局部匹配，但这些方法仅仅通过简单的池化操作来缩小匹配范围 ，忽略了跨模态重要对象之
+间的内在关系以及跨样本对之间同语义表征的获取 。鉴于此，本文在多模态大模型的预训练过程中，提出了一种基
+于图神经网络的消息传递机制，对多模态数据特征进行节点化和子图化，从而将跨模态的匹配方式由全局匹配转变
+为子图匹配，减少低质量信息的干扰。同时，利用交叉注意力在单一模态内进行子图级别的差异化处理，使其在跨模
+态学习中建立更细致的关联和语义理解 。此外，提出高维空间的样本对聚类方法，以减少多模态大模型对相同语义
+的无关联错误表达 。在涵盖图像分类 、病灶区域目标检测和语义分割任务的七个医学图像数据集上进行了大量实
+验，验证了本文所提出模型的可行性和优越性能 。同时在表情识别任务中进行实验，验证了本文模型的泛化性能 。
+关键词 多模态预训练大模型 ；局部匹配；子图匹配；无关联错误；聚类
+中图法分类号 TP391   DOI 号 10. 11897/SP. J. 1016. 2025. 00893
+Research on Subgraph Matching-Based Contrastive Learning for 
+Multi-Modal Pretraining
+CHEN Gong -Guan
+1）,2）
+ LIU Hui
+1）,2）
+ LI Heng -Tai
+1）,2）
+ GUO Qiang
+1）,2）
+ ZHANG Cai -Ming
+2）,3）
+1)（School of Computer and Artificial Intelligence , Shandong University of Finance and Economics , Jinan  250014）
+2)（Shandong Province Key Laboratory of Lightweight Intelligent Computing and Visualization in Digital Economy , 
+Jinan  250014）
+3)（School of Software , Shandong University , Jinan  250101）
+Abstract  Multi -modal pretrained large -scale models have gained significant attention due to 
+their ability to jointly learn from image -text pairs , unlocking substantial potential for a wide 
+range of visual tasks .  In particular , these models have shown great promise in the medical field , 
+where acquiring comprehensive datasets is often challenging due to privacy concerns , data 
+variability , and the time -intensive nature of medical image annotation .  By leveraging the rich 
+information embedded in multi -modal data , these models can help bridge the gap in training data 
+and provide more robust solutions to complex medical image analysis tasks , such as diagnosis , 
+收稿日期：2024-06-28；在线发布日期 ：2025-02-11。 本课题得到国家自然科学基金（62072274， U22A2033） 、中央引导地方科技发展项
+目（YDZX2022009） 、山东省泰山学者特聘专家计划（tstp20221137） 、济南市人才发展专项资金（202333037）资助。陈公冠，博士研究生，
+主要研究领域为图像处理 、机器学习 。E-mail： cgg970411@163. com。刘 慧（通信作者） ，博士，教授，博士生导师，中国计算机学会
+（CCF）会员，主要研究方向为医学图像处理 、数据挖掘与机器学习 。E-mail： liuh_lh@sdufe . edu. cn。 李恒泰，硕士研究生，主要研究方
+向为图像处理和机器学习 。郭 强，博士，教授，博士生导师，中国计算机学会（CCF）会员，主要研究方向为计算机视觉 、数据挖掘等 。
+张彩明，博士，教授，博士生导师，中国计算机学会（CCF）会员，主要研究方向为数据挖掘 、计算机图形学、信息可视化和医学图像处理 。
+
+=== PDF_PAGE 2 ===
+计 算 机 学 报 2025 年
+prognosis , and treatment planning .  Despite the progress in this area , existing pretraining 
+methods based on modality matching often rely on a global matching approach , where features 
+from the different modalities (e. g. , images and text ) are matched based on their global 
+similarities .  However , this approach has limitations .  One of the main drawbacks is that global 
+matching is prone to interference from low -quality information , which can significantly degrade 
+the model 's performance .  In medical datasets , where data quality can be highly variable , the 
+impact of such interference is particularly pronounced .  Furthermore , while some recent studies 
+have shifted towards local matching strategies to address these challenges , they have largely 
+employed simple pooling operations to narrow down the scope of matching .  Unfortunately , 
+these methods tend to overlook the intricate relationships between important cross -modal 
+objects and fail to fully capture the semantic representations that exist across different sample 
+pairs .  In this paper , we propose a novel approach to address these limitations by introducing a 
+message -passing mechanism based on graph neural networks (GNNs ) into the pretraining 
+process of multi -modal large -scale models .  The primary aim of this mechanism is to transform 
+the traditional global matching approach into a more refined subgraph matching strategy , which 
+is less susceptible to interference from low -quality data .  This enables the model to better align 
+and represent the semantic relationships between image and text pairs , resulting in a more 
+accurate and reliable cross -modal understanding .  An important aspect of our approach is the 
+incorporation of cross -modal attention mechanisms .  This mechanism performs subgraph -level 
+differentiation within each individual modality , allowing the model to capture detailed and 
+modality -specific associations .  This enhances the model 's ability to learn complex cross -modal 
+dependencies and achieve superior performance in multi -modal learning tasks .  Additionally , we 
+introduce a high -dimensional sample pair clustering method as part of our pretraining 
+framework .  This method aims to reduce unrelated errors in expressing the same semantics 
+across different sample pairs , further improving the robustness and accuracy of the model .  By 
+clustering similar sample pairs together , the model can more effectively align and refine its 
+understanding of cross -modal relationships , resulting in more coherent and semantically 
+accurate representations .  To evaluate the effectiveness of our proposed method , we conducted 
+extensive experiments on seven medical image datasets covering a variety of tasks , including 
+image classification , object detection , and semantic segmentation .  The results demonstrated 
+that our model outperforms existing methods in terms of accuracy and robustness , highlighting 
+its ability to better handle low -quality information and improve the reliability of multi -modal 
+learning .  Furthermore , we also tested our model on a facial expression recognition task , which 
+is a non -medical application , to verify its generalization ability .  The experimental results 
+confirmed that our model can effectively transfer across different domains and maintain high 
+performance even in tasks outside the medical field .
+Keywords multi -modal pretrained large -scale models ; local matching ; subgraph matching ; 
+unrelated errors ; clustering
+1 引 言
+近年来，自注意力机制的提出解决了卷积难以
+实现并行化的问题，极大地推动了大规模预训练模
+型的发展 。BERT、GPT 等大语言模型的提出在自
+然语言处理任务中展现出卓越性能 。随着研究的进
+一步深入，大语言模型逐步向多模态大模型转变 。
+最近的研究表明，构建领域内的预训练多模态大模
+型能够综合不同类型的数据，提供更全面、准确的特
+894
+
+=== PDF_PAGE 3 ===
+4 期 陈公冠等：面向多模态预训练的子图匹配式对比学习方法研究
+征表示
+［1-2］
+，并在各种单一模态的下游任务中展现出
+巨大的潜力，因此受到广泛关注 。
+多模态大模型的预训练过程会受到多个因素
+的影响，其中包括模态间的对齐和数据集规模等 。
+多模态数据通常涉及不同模态之间的相关性 ，例如
+图像中的对象与对应的文本描述之间的关联 。准
+确的模态对齐有助于模型学习到更准确 、一致的特
+征表示 。然而，模态之间的对齐并非总是直观简单
+的，特别是在数据集中存在噪声以及模态之间具有
+复杂关系的情况下 。因此，如何设计更好的对齐策
+略仍然是一个具有挑战性的任务 。其次，多模态数
+据集的获取和标注相对复杂且成本高昂 。例如，在
+医学领域中，由于医学数据的获取困难性和隐私保
+护的要求，该领域的多模态数据集规模相对有限 。
+因此，如何在有限的数据集上使用更有效的预训练
+方法来提高多模态模型的能力 ，成为一个亟需解决
+的难题 。针对上述问题，在预训练过程中提高多模
+态模型的性能和适用性成为越来越多研究者的努
+力方向
+［3］
+。
+在多模态预训练大模型的研究中 ，CLIP
+［4］
+利用
+对比学习的方式将两种模态的模型整合为可以处
+理多模态数据的模型 ，成为最受欢迎的框架结构 。
+随后的各种工作也大多基于  CLIP 的风格 。但在
+医 学 领 域，在 更 早 的 时 间 就 推 出 了 与 之 类 似 的
+ConVIRT
+［5］
+模 型。 随 后 诸 如 MGCA
+［6］
+、MRM
+［7］
+和 
+MLIP
+［8］
+等 相 关 模 型 的 出 现 推 动 了 这 一 研 究 的 发
+展。这些工作均采用  ConVIRT 或 CLIP 的风格，
+在对比学习中使用全局匹配的方式实现多模态间
+的信息对齐 。然而，当重要信息只占图像或文本的
+一小部分时（例如医学图像 ） ，全局匹配的方式会受
+到过多低质量信息 （无用的图像背景 、文本中的连
+接 词 等）的 干 扰，导 致 模 型 难 以 捕 获 细 微 的 医 学
+信息。
+为了实现细粒度的对齐 ，最近的研究开始使用
+局部匹配的方式，即只针对不同模态的重点区域进
+行匹配。MedCLIP
+［9］
+将图像文本对解耦后进行对比
+学 习，同 时 引 入 外 部 医 学 知 识 从 而 减 少 假 阴 性。
+GLoRIA
+［10］
+通过对比配对报告中的图像子区域和单
+词来学习全局和局部表示 。但这些方法只是简单地
+将重点区域池化连接在一起 ，忽略了这些区域内重
+点对象之间的内在关联 。简单来讲，对重点区域进
+行模态间的匹配时，这些方法只是将全局匹配的范
+围进行了缩小，而没有考虑重要对象之间的相互对
+应，这在一定程度上会影响模型理解不同模态中重
+点语义以及重点对象之间的差异 ，从而形成错误的
+认识。
+图神经网络（Graph Neural Network，GNN） 由
+于其依靠节点之间的关系进行消息传递的机制 ，可
+以充分利用多模态数据之间的关联性 ，从而实现不
+同模态的信息传递和整合 ，得到更全面和一致的多
+模态表示，受到一些研究者的青睐 。HetMed
+［11］
+利用
+多层网络结构，将患者的多种非图像特征结合起来，
+以 系 统 化 的 方 式 捕 捉 患 者 之 间 的 复 杂 关 系 。
+MMC
+［12］ 
+将表示学习和多模态聚类看作是一个整体
+而不是两个独立的问题 ，通过利用伪标签设计了对
+比损失，探索了跨模态的一致性 。但现有的研究还
+停留在使用图神经网络进行特定下游任务的模块设
+计，尚缺少有效的途径让图神经网络结合多模态模
+型在预训练中更好地进行模态间的匹配 。
+为了解决上述问题 ，本文构建了图 1 所示的多
+模态大模型 。首先，为了降低全局匹配带来的低质
+量信息污染，在预训练阶段，将单模态特征节点化 ，
+并通过相似度计算得到各个节点之间的连接关系 。
+同时基于图卷积网络设计节点和边权重的更新条
+件，实现重要对象和重要关系的建模，并以此为基础
+为每个关键特征点构造以自身为中心的子图 ，从而
+实现跨模态的局部匹配 。其次，为了解决大模型在
+预训练过程中难以捕获重要对象内部关联的问题 ，
+本文引入交叉注意力机制对单一模态内部的各个重
+要对象进行差异化处理 ，从而促使模型在局部匹配
+过程中能够正确表达关键特征的语义信息 。最后，
+为了避免模型对不同样本对之间相同语义的表达产
+生分歧
+［13］
+，进而出现假阴性的情况 。本文基于图卷
+积网络设计了内部与外部学习核函数 ，分别实现同
+一样本对的高维度融合以及不同样本对之间的高维
+空间聚类分析，使得模型更加贴近人类对于现实世
+界的理解方式。
+具体而言，本文的主要贡献如下 ：
+（1）提出了子图匹配策略，将全局匹配替换为重
+要对象之间的匹配，降低低质量信息的干扰，为多维
+度信息的学习提供更细粒度的监督 。
+（2）提出了重要对象之间的内部关联策略 ，实
+现了图像文本间重要对象的软匹配以及同一模态内
+部重要对象的差异化处理 。
+（3）提出了多模态样本对聚类策略，实现了不同
+样本对之间对于相同语义的统一表达 ，增强了模型
+对于真实世界的理解能力 。
+895
+
+=== PDF_PAGE 4 ===
+计 算 机 学 报 2025 年
+2 相关工作
+2. 1　多模态预训练大模型
+随着深度学习的快速发展 ，多模态预训练大模
+型在计算机视觉领域成为热门研究方向 。这些模型
+能够同时处理多个模态 ，例如文本 、图像和语音等，
+通过学习不同模态之间的关联性 ，不仅实现了多模
+态任务的联合推理
+［14-16］
+，同时增强了模型在单一模
+态任务的表征学习能力 。CLIP 使用大规模的图像
+文本对进行预训练，并通过最大化匹配图像和文本
+的相似性来训练模型 。MGCA 通过利用医学图像
+和放射学报告之间自然展现的语义对应关系 ，在三
+个不同层次上进行泛化的医学视觉表示学习 。陈波
+等
+［17］
+和陈晓飞等
+［18］
+将所有包含相似语义的图像和文
+本报告视为正匹配 。SENSE
+［19］
+通过 K-means 对患
+者数据进行聚类，获取 K 个聚类中心，将样本与其对
+应的聚类中心视为正对，与其他聚类中心视为负对 。
+X-REM
+［20］
+利用预训练的多模态编码器提取图像和
+文本的嵌入特征，并通过匹配任务中的正类 logit 值
+作为跨模态对齐的相似性评分 。MedM2G
+［21］
+通 过 
+InfoNCE 对比损失，以文本特征为引导 ，将其与其
+他多种模态对齐到同一空间，为降低资源消耗，采取
+了两两对齐的策略 。但上述方法使用全局匹配的方
+式完成对比学习，当重要的语义信息只占图像或文
+本的一小部分时，全局匹配的性能就会受到限制 。
+近 期 局 部 匹 配 的 相 关 研 究 相 继 出 现。 Med-
+ST
+［22］
+设计了一种模态加权局部对齐方法 ，针对文本
+标记与图像空间区域之间的关系 ，通过 softmax 对
+文本标记中的每一项与图像块进行余弦相似度评
+分，从而实现局部匹配 。MAVL
+［23］
+使用大型语言模
+型和先验知识，将文本分解为一组共享的视觉特征，
+并在双头  Transformer 框架下根据这些共享特征直
+接在图像中进行检索 。GLoRIA 将重要的图像子区
+域与每个成像报告词自动对齐 ，然后将所有的局部
+匹配求和以表示整个细粒度对齐 。Muller 等
+［24］
+提
+图 1　模型的整体架构（基于对不同模态数据的（a）编码和特征提取，利用（b）和（c）分别实现不同模态的子图化匹配以及同一
+样本对内部的对齐，并利用（d）完成全局特征 CLS 的高维空间聚类，最终（b）中的匹配损失、 （c）中的对齐损失以及
+（d）中的聚类损失共同参与对比学习 。 ）
+896
+
+=== PDF_PAGE 5 ===
+4 期 陈公冠等：面向多模态预训练的子图匹配式对比学习方法研究
+出将 ResNet
+［25］
+最后一层卷积层中每个像素的表示
+作为图像子区域的局部图像表示 。陈志宏等
+［26］
+通
+过交叉注意模块直观地识别出单词对应的最相关图
+像区域 。虽然上述研究推进了局部匹配的进展 ，但
+他们均未考虑到重要对象在重点区域中的位置并忽
+略了重要对象之间的内部关联 。本文利用图卷积网
+络和交叉注意力机制分别实现重点对象之间的跨模
+态匹配以及重点对象之间的语义差异化处理 。
+2. 2　图神经网络和大模型的融合
+图神经网络和大模型的融合已成为近年来机器
+学习和图数据分析领域的重要研究方向 ，旨在将自
+然语言 、图像等多种模态信息重构为图结构数据进
+行处理，以提高模型的表达能力和泛化性能 。相关
+研究主要分为两个方向： （1） 将图卷积网络与大模型
+进行联合训练，即将图卷积网络嵌入到大模型之中，
+成为大模型的一部分 。CPT-HG
+［27］
+提出了两个预训
+练任务。关系级预训练任务对构成异构图异构基础
+的关系语义进行编码 ，而子图级预训练任务对高阶
+语义上下文进行编码 。SGL-PT
+［28］
+结合了强大的通
+用预训练任务，利用了生成和对比方法的优势。PT-
+HGNN
+［29］
+同时考虑节点级和模式级的预训练任务 。
+节点级预训练任务利用节点关系促使  GNN 捕获异
+构语义属性，而模式级预训练任务利用网络模式促
+使 GNN 捕获异构结构属性 。但这些方法往往受到  
+GNN 难以深层次建模的影响，导致模型的泛化能力
+较弱。 （2） 将大模型的嵌入作为  GNN 的输入，借助
+于 GNN 的特性，帮助大模型实现更精确的特征传播
+和聚合。SimTeG
+［30］
+在 TAG（文本属性图）的文本数
+据集上执行 LLM 的参数高效微调 。GraphSAGE
+［31］
+提出了一种使用归纳学习为大型图中的节点生成嵌
+入的方法 。Graph-BERT
+［32］
+使用基于亲密度和基于
+跳 数 的 相 对 位 置 嵌 入 来 编 码 子 图 中 的 节 点 位 置。
+Graphormer
+［33］
+引入了一种空间编码方法来表示结构
+节点关系 。然而，以上方法往往只针对特定的任务
+有效。本文借助于 GNN 强大的信息传递机制，将关
+键关系和关键对象融入到边和节点中。
+3 方 法
+本节详细介绍了如何将  GCN 与多模态模型相
+结合，以在重要子图的建模 、匹配和聚类中发挥作
+用，从而得到更加稳健和高泛化性的预训练模型 。
+同时在该节介绍了本文模型的整体架构 。如图 1 所
+示，模型包括四个重要组成部分 ：多模态表征提取 、
+局部匹配 、跨模态细粒度对齐以及多模态样本对聚
+类。接下来，将对这四部分进行详细说明 。
+3. 1　多模态表征提取
+多 模 态 表 征 提 取 是 模 型 中 的 首 要 步 骤，遵 循
+CLIP 的设计原则，不同模态分别具有对应的特征
+提取器，从而获取模态间相互独立的特征向量 。在
+这个过程中，每个模态经过其特征提取器后，可以得
+到两种不同层次的特征表示 。首先，输出结果的第
+一列是 CLS 令牌，为包含了输入图像或文本整体信
+息的全局特征矩阵 。其次，输出结果的其他列为局
+部特征矩阵，包含了输入图像或文本的细节信息 。
+图 1 中的（a）展示了这个过程 。
+具体来讲，针对图像和文本两种模态的预训练
+过 程，模 型 的 输 入 为 S 个 多 模 态 样 本 对 Inp =
+{( xv，1，xt，1 )，( xv，2，xt，2 )，…，( xv，S，xt，S ) }，其 中 xv，i 表
+示第 i 个图像输入，xt，i 表示其对应的文本输入 。随
+后利用图像编码器 fv（例如 Vit
+［34］
+）和文本编码器 ft
+（例如 Bert
+［35］
+）对输入进行特征提取从而获得特征
+F ={( v1，t1 )，( v2，t2 )，…，( vS，tS ) }，其 中 vs = fv ( xv，s )，
+ts = ft ( xt，s )。
+图像编码器 fv 采用 Vit 及其变体作为特征提取
+器，其输出的全局特征  CLS 令牌记为 I* ∈ R
+D
+，局部
+特征记为 Pi ={ }P1i，P2i，…，PMi ∈ RM × D，其中 M 表示
+patch 块的数量 。此时 vs =[ I s∗，Psi ]。文本编码器 ft
+采用 Bert 及其变体模型作为特征提取器 ，同理将其
+输 出 拆 分 为 全 局 特 征 T∗∈ R
+D
+和 局 部 特 征 Pt =
+{ }P1i，P2i，…，PNi ∈ RN × D，其 中 N 为 输 入 文 本 对 应 的
+patch 块数量。此时 ts =[ T s∗，Psi ]。
+尽管单一模态的编码器（例如 Vit 和 Bert）在各
+自模态中具有强大的特征提取能力 ，但独立运行的
+方式无法充分利用不同模态之间的相关性和互补
+性。本文的目的就是实现不同模态间的联邦学习 ，
+从而提升模型对单一模态任务的处理能力 。
+3. 2　局部匹配
+3. 2. 1　重要对象建模
+对于医学多模态数据的对齐 ，现有方法通常使
+用全局匹配的方式进行预训练 ，但其容易受到低质
+量信息的干扰 。为了解决这个问题，本文采用图神
+经网络来建模重要对象和重要关系 。首先将单一模
+态的特征图转换为完全图并利用图神经网络的信息
+传递和聚合特性，增强重要对象的表示 。其次通过
+更新边权重和去除低质量边和节点 ，得到多个包含
+重要对象的子图 。最后在不同模态之间构建跨模态
+897
+
+=== PDF_PAGE 6 ===
+计 算 机 学 报 2025 年
+图，并 利 用 图 神 经 网 络 来 捕 捉 复 杂 的 跨 模 态 关 联
+和依赖关系 。具体来讲，如图 2 所示，将图像编码
+器 fv 的输出 Pi ={ }P1i，P2i，…，PMi ∈ RM × D 构建为完全
+图 G =< Pi，A >，其中 A Є RM × M 表示该完全图的邻
+接矩阵，计算过程为 Amn = pmi ( pni )T。利用图卷积网
+络 进 行 浅 层 次 的 重 要 节 点 增 强 得 到 P'i =
+GCN ( Pi，A)，其中 GCN 表示图卷积操作 。
+随后进行边权重 A 的更新，为此本文制定了三
+个条件作为边权重更新的规则 ：
+（1）该 边 连 接 的 两 个 节 点 抗 干 扰 能 力 强，
+RKD
+［36］
+ 证明了节点的信息熵对于噪声的敏感程度
+决定了该节点包含信息的重要程度 ，为此本文通过
+加入随机噪声检测节点的重要性 ：
+ρn ( pmi )= |Ε( G ( pmi '，A) )- Ε( G ( pmi ，A) )| （1）
+其中，pmi '为 pmi 加入随机噪声后的节点表示 ，E 表示
+信息熵的计算，G ( pmi ，A)= A( pmi )T 表示当前节点在
+全图中发挥的作用，ρn 表示该节点重要性计算结果，
+数值越小该节点的抗干扰能力越强 。
+（2）该边本身的抗干扰能力强 ，通过观察随机
+噪声对该边连接的两个节点之间交叉熵的影响程度
+来决定该边的重要程度 ：
+ρa ( pmi ，pni )= |H ( pmi ，pni )- H ( pmi ，pni ')|
+                          +|H ( pmi ，pni )- H ( pmi '，pni )|，
+H ( pmi ，pni )= CE ( G ( pmi ，A)，G ( pni，A) )
+（2）
+其中，CE 表示交叉熵计算，ρa 表示该边重要性计算
+结果，数值越小该边的抗干扰能力越强 。
+（3）该边连接的两个节点距离近，通过计算两个
+节点间的欧式距离来判断两个节点之间的距离 ，具
+体计算过程如下 ：
+d ( pmi ，pni )= Σ( pmic - pnic )2 ( c = 1，2，…，D )（3）
+其中 pmic 表示第 m 个节点向量的第 c 个数，d 表示两
+个节点间的距离，D 表示每个节点的长度，结果越小
+表明两个节点距离越近 。
+条件 1 用来区分高低质量节点 ，条件 2 用来区
+分高低质量关系 ，条件 3 用来区分该边连接的两个
+节点是否从属同一个重要对象 。邻接矩阵 A 的更新
+过 程 如 下：A'=( A +(1 -( ρn + ρa + d )/3) A)/2，利
+用更新后的邻接矩阵 A'与 P'i 进行图卷积操作实现
+对重要对象的深层次建模 P''i = GCN ( Pi '，A')。P''i 内
+的每个节点在重点关注与自身关联紧密的节点外 ，
+也在一定程度上保留了与其他节点的微弱联系 ，增
+加了编码器在局部特征提取时的视野 。文本采用同
+样的处理方式得到 P''t。
+3. 2. 2　重要关系建模及子图匹配
+对于 A'设置一定的阈值去除低质量边和低质量
+节点。阈值的设置采用百分比的形式 ，消融实验中
+对该参数进行了六种不同情况的对比 。此时剩余节
+点均能形成一个以自身为中心的子图 ，该子图的中
+心节点为某一重要对象的其中一个节点 ，其余节点
+为该重要对象的剩余节点 。此时可以将单一模态的
+特征图转换为多个包含重要对象的子图 ，完成重要
+关系的建模。同时本文构建跨模态图实现跨模态的
+信息交互。
+具体来讲，构造跨模态图的条件包含两条 ： （1）
+节点为子图经过图卷积后的中心节点 。 （2） 边的连
+接只发生在不同模态之间 ，即每条边连接的两个节
+点须来自不同的模态 。此时会发生两种情况 ： （1） 
+边两端的节点指向同一重要对象 ，表达意义相同 。
+（2）边两端的节点指向不同的重要对象 ，表达意义
+不同。要完成模态间重要对象的匹配 ，需要保留第
+一种情况，去除第二种情况 。同时同一对象的不同
+模态表达可以看作由同一对象产生的不同分布 ，这
+满足 KL 散度的计算条件 。因此，本文基于 KL 散度
+设计匹配公式将第二种情况去除 ：
+T ∗ik = Trans(Tik )，
+KL( Ii → Ti )= ln ∑
+e ∈ IM ( Ii )
+∐max
+k ∈ IM (Ti )
+exp ( IieT ∗ik
+d
+)
+                             - 1M ∑e ∈ IM ( Ii ) ∐maxk ∈ IM (Ti ) IieT ∗ikd
+（4）
+其中，e ∈ IM ( Ii ) 表示 e 为跨模态图中属于图像的节
+点下标，Ii 和 Ti 分别表示跨模态图中的图像和文本
+对 应 的 节 点，T ∗ik = TransP (Tik ) 表 示 T ∗ik 为 Tik 的 转
+置，M 表示由图像产生的节点数量 ，d 为节点向量的
+长度。同理，文本向图像的匹配记为 KL( Ii ← Ti )。
+多模态大模型的预训练需要大量数据的支撑 ， 
+尽管医学领域的数据集相较于一般图像文本数据  
+集要少几个数量级 ，但仍难以达到有监督的要求 ， 
+对比学习是预训练大模型最常用的方式 。本文设计
+了 对 比 损 失 函 数 实 现 局 部 匹 配 的 训 练，计 算 过 程
+如下：
+图 2　图像特征构图过程
+898
+
+=== PDF_PAGE 7 ===
+4 期 陈公冠等：面向多模态预训练的子图匹配式对比学习方法研究
+l I2Ti =-log exp ( KL( Ii → Ti )/τ1 )
+∑k = 1
+B
+exp ( KL( Ii → Tk )/τ1 )
+，
+l T2Ii =-log exp ( KL( Ii ← Ti )/τ1 )
+∑k = 1
+B
+exp ( KL( Ii ← Tk )/τ1 )
+（5）
+其中，l I2Ti 和 l T2Ii 分别表示图像向文本的匹配损失和
+文本向图像的匹配损失 ，τ1 表示温度系数 ，B 表示
+batch_size 的大小 。因此对于局部匹配总的损失函
+数为
+L1 = 12S ∑i = 1S ( l I2Ti + l T2Ii ) （6）
+其中，S 表示整体样本的数量 。
+3. 3　跨模态细粒度对齐
+在子图匹配过程中，针对单一模态构建子图时，
+模型仍主要依赖于该模态自身的信息 ，导致在匹配
+过程中容易缺失跨模态的交互信息 ，进而无法有效
+地辅助校正各自模态 。同时，子图匹配通常聚焦于
+较大区域的整体相似性或结构对齐 ，这在识别全局
+模式或大尺度关系方面表现突出 。然而，子图内部
+包含着丰富的细节信息 ，这些细节在对齐过程中至
+关重要 。因此，增加 patch 级别的交互能够帮助模
+型进一步解析子图内部的微小差异 ，使得模型不仅
+能够处理较大的子图区域 ，还能在更精细的局部区
+域内进行特征匹配，从而更准确地捕捉不同子图之
+间的细节关联 。
+为 此，本 文 考 虑 采 用 一 种 能 够 捕 获 特 征 图 中
+精 细 化 信 息 的 方 法，同 时 实 现 跨 模 态 的 交 互。交
+叉 注 意 力 机 制 能 够 通 过 计 算 模 态 间 所 有 patch 块
+的相似度权重 ，使得模型在进行特征匹配时 ，可以
+灵 活 地 调 整 不 同 模 态 之 间 细 粒 度 特 征 的 连 接 程
+度。这 种 机 制 不 仅 提 高 了 模 型 的 鲁 棒 性，增 强 了
+对 细 节 的 捕 捉 能 力，也 提 升 了 整 体 对 齐 的 精 度。
+因此，本文引入交叉注意力机制 ，并设计了相应的
+对比学习损失函数 。
+具体来讲，细粒度对齐策略分别以图像和文本
+为中心进行交叉注意力机制的计算 。当以图像为中
+心时，对于第 m 个图像的第 n 个重要 patch 块，通过线
+性变换得到查询向量，将文本内的所有重要 patch 块
+通过线性变换分别得到键向量和值向量 ，交叉注意
+力机制完成第 m 个图像的第 n 个重要 patch 块与文本
+的所有重要 patch 块的嵌入，具体计算过程如下：
+( Wk T lm )∗ = TransP ( Wk T lm )，
+Att ( I nm，T )= ∑
+l = 0
+L
+( )
+( Wq I nm )( Wk T lm )∗ ( Wv T lm )
+d
+（7）
+其中，( WkT lm )∗ 为 WkT lm 的转置，Wq、Wk 和 Wv 表示可
+学习的参数矩阵，d 表示 patch 块向量的长度，L 表示
+文本 patch 块的数量，Att 表示交叉注意力的计算结
+果。对文本采用同样的处理过程 。
+在 对 比 学 习 中，设 计 对 齐 损 失 函 数 将 不 同 模
+态间具有表达意义相同的 patch 块靠近，将表达意
+义 不 同 的 patch 块 远 离。 损 失 函 数 的 计 算 过 程
+如下 ：
+Att∗I = TransP ( Att( I ms ，T ) )，
+Att∗T = TransP ( Att ( T ms ，I ) )，
+L2 =- 1SM ∑s = 0S ∑m = 0M exp ( I ms Att∗I )∑
+n = 0
+N
+exp ( I ns Att∗I )
+      - 1SN ∑s = 0S ∑n = 0N exp ( T ns Att∗T )∑
+m = 0
+M
+exp ( T ms Att∗T )
+（8）
+其中，S 表示样本对的数量 ，M 表示图像 patch 块的
+数量，N 表示文本 patch 块的数量。
+3. 4　多模态样本对聚类
+前面的章节对局部特征进行了细化分析 ，但对
+全局特征 I* 和 T* 并未添加约束 。全局特征包含了
+样本对整体信息的表达 ，且不同样本对之间会存在
+相似的语义 。例如在医学多模态数据中 ，来自不同
+患者的图像和报告可能具有类似之处 。将同一样本
+对中的图像和文本归为一类 ，其他样本对划分为另
+一类，会造成假阴性的产生 。为此，本文为每个样本
+对检索出与之最为相似的 K 个样本对，使得该样本
+对与这 K 个样本对靠近，与其他样本对远离 。这一
+操作避免了具有类似语义信息的样本对在嵌入空间
+中被推开。
+为 了 实 现 上 述 目 的，本 文 基 于 图 卷 积 网 络 的
+思想设计了两个核函数 ： （1） 内部学习核函数 ：内
+部学习核函数用于单一样本对内不同模态之间的
+操 作，旨 在 将 不 同 模 态 的 全 局 特 征 进 行 融 合。通
+过 这 种 方 式，不 同 模 态 的 信 息 可 以 相 互 影 响 和 补
+充，从而提高对样本对的整体理解能力 。 （2） 外部
+学 习 核 函 数：该 核 函 数 作 用 于 样 本 对 之 间。目 的
+是 计 算 两 个 样 本 对 在 高 维 空 间 的 距 离，并 利 用 该
+距离进行聚类 。在高维空间中的距离可以更准确
+地 衡 量 样 本 之 间 的 相 似 性，实 现 更 好 的 数 据 分 离
+效果 。
+具体来讲，如图 3 所示，在内部学习中，对于第
+m 个样本对的全局特征 Im∗ 和 T m∗，考虑到两者在融合
+的结果中占据的权重不同 ，本文设计了如下非对称
+899
+
+=== PDF_PAGE 8 ===
+计 算 机 学 报 2025 年
+核函数进行融合 ：
+( T m∗ )∗ = TransP ( T m∗ )，
+( I m∗ )∗ = TransP ( I m∗ )，
+F ( I m∗ ，T m∗ )= TransP (( T m∗ )∗WIm∗ ( I m∗ )∗ )，
+Cm∗ = exp (- ||F ( I m∗ ，T m∗ )- Im∗ ||2
+2σ2 ) I m∗
+            +exp (- ||F ( I m∗ ，T m∗ )- T m∗ ||2
+2β2 ) T m∗
+（9）
+其中，W 为可学习的参数矩阵 ，σ 和 β 分别表示图像
+和文本的全局特征向量的标准差 。
+在外部学习中，对于融合后的两个样本对 Cm∗ 和
+Cn∗，本文基于图神经网络的思想设计了如下动态权
+重核函数将样本对映射到更高的维度空间来进行
+分类：
+( Cm∗ )∗ = TransP ( Cm∗ )，
+Dmn = exp (-
+ Cm∗ - Cn∗ 2
+2α2 )( Cm∗ W ( Cn∗ )∗ ) （10）
+其中，α 是 TransP ( Cm∗ ) Cn∗ 的标准差，W 是可学习的
+参 数 矩 阵 ，Dmn 表 示 两 个 样 本 对 间 的 距 离 ，
+Cm∗ W ( Cn∗ )∗ 表示基于图卷积网络的动态权重计算 。
+将 样 本 对Cm∗ 与 剩 余 全 部 样 本 对 进 行 上 述 的
+距 离 计 算，选 取 其 中 的 前K 个 样 本 对 作 为Cm∗ 的
+相 似 样 本 对。 将 Cm∗ 与 相 似 样 本 对 拉 近，与 其 他
+样 本 对 远 离。 在 对 比 学 习 中，对 应 的 损 失 函 数
+如下 ：
+L3 =- 1S ∑s = 0S ∑k ∈ { K } exp ( Cs∗ TransP( Ck∗ )/τ2 )∑
+j ∈ { S - K }
+exp ( Cs∗ TransP( Cj∗ )/τ2 )   （11）
+其中，S 表示样本对的数量，{ K } 表示与 Cs∗ 距离最近
+的样本对，{ S - K } 表示与 Cs∗ 距离不相近的其余样
+本对。最终，通过联合优化三个损失函数来训练整
+体 模 型，鼓 励 模 型 学 习 更 加 泛 化 的 多 模 态 信 息 表
+示。总的损失函数可表示为
+L = L1 + L2 + L3 （12）
+4 实 验
+4. 1　预训练设置
+本 文 使 用  MIMIC -CXR 2. 0. 0
+［37］
+ 数 据 集 的  
+JPG 版本对本文模型进行预训练 。该数据集是一
+个 大 型 公 开 可 用 的 JPG 格 式 胸 部 X 光 照 片 数 据
+集，具 有 自 由 文 本 放 射 学 报 告。 该 数 据 集 包 含 
+377 110 张 JPG 格 式 图 像 以 及 与 这 些 图 像 相
+关 的 227 827 份 自 由 文 本 放 射 学 报 告 的 结 构 化
+标 签 。 在 模 型 组 成 方 面 ，文 本 编 码 器 选 用  
+BioClinicalBERT
+［38］
+，图 像 编 码 器 选 用  Vit
+［39］
+ 的 
+Base 版本。由于采用的结构为  CLIP 形式，对文本
+编码器和图像编码器的选择并不固定 ，可以随意搭
+配各种语言模型和视觉模型作为编码器部分 。在
+预训练过程中 ，本文使用  块 A100 40 G 显卡进行
+训练，batch size 设置为 128，总轮数设置为 50，优化
+器 为 AdamW，学 习 率 为2e-5，权 值 衰 减 为0. 05。
+在超参数设置方面，本文对温度系数进行了多种取
+值的比较，实验结果如图 4 所示，通过实验对比最
+终确定为 τ1 = 0. 1，τ2 = 0. 2。
+4. 2　下游任务设置
+本文在以下三个下游任务上进行了实验对比 ：
+（1）医学图像分类 ：冻结预训练模型参数并在
+图像编码器上添加一层全连接层完成图像分类任
+务。包含了三个常用的实验的数据集 ：CheXpert
+［40］
+数据集是一个包含 65 240 位病人，224 316 个胸片图
+片 的 大 型 数 据 集，数 据 集 中 的 信 息 是 由 标 签 器 
+Labeler 从放射学报告中提取 14 个观测值中得到 ，
+观测值分为正样本 、负样本，还有不确定样本 。其中
+验证集由 200 个胸部 X 线影像构成，并且标签由 3 位
+图 3　内部学习过程
+图 4　在 RSNA 数据集上对 τ1 和 τ2 的不同取值对比
+900
+
+=== PDF_PAGE 9 ===
+4 期 陈公冠等：面向多模态预训练的子图匹配式对比学习方法研究
+专家进行标注。测试集由 500 个胸部 X 线影像构成，
+并且标签由 5 位专家进行标注 。RSNA
+［41］
+数据集包
+含大约 29 700 张正面胸片。标签分为正常或气胸阳
+性两个类别。在实验中以 70%、15% 和 15% 的比例
+将数据集分为训练集、验证集和测试集。COVIDx
+［42］
+包含三万多张 CXR 图像数据，这些数据采样自不同
+国家共 16 600 个患者，其中含有 16 490 张 COVID -
+19 图像，所有数据被分为三个类别 （COVID-19、非 
+COVID-19 和正常） 。在每个分类数据集上分别使
+用 1%、10% 和 100% 的训练数据来评估我们的模
+型。其中 CheXpert 和 RSNA 采用 ROC 曲线下面积
+（AUC）作为评估指标，Covidx 采用准确率（ACC）作
+为评估指标。
+（2）病灶区域目标检测 ：对于目标检测任务，将 
+YOLO
+［43］
+的骨干部分替换为预训练好的本文模型 ，
+同时冻结该部分参数，借助于 YOLO 模型完成目标
+检测任务 。进行实验的数据集包含两个 ：RSNA 肺
+炎数据集包含 29 700 个样本，目标是对肺炎区域进
+行 检 测，在 实 验 过 程 中 将 数 据 集 随 机 分 为 训 练 集
+（16 010 个 样 本） 、验 证 集（5337 个 样 本）和 测 试 集
+（5337 个样本） 。Object CXR
+［44］
+包含 9000 张 X 光成
+像，目标为异常区域检测 ，如肺内体外异物的识别 。
+训练集包含 6400 个样本，验证集包含 1600 个样本，
+测 试 集 包 含1000 个 样 本。 同 样 通 过1%、10% 和 
+100% 的训练数据对模型进行评估 。
+（3）医学影像语义分割 ：对于语义分割任务，将 
+U-Net
+［45］
+模型的主干部分替换为预训练好的本文模
+型，同时冻结该部分参数 ，借助于  U-Net 模型完成
+语义分割任务 。数据集包含两个 ：SIIM
+［46］
+数据集包
+含 12 047 张胸片，训练接 、验证集和测试集分别占
+比 70%、15% 和 15%。RSNA 与目标检测任务的处
+理方式相同，将目标检测的真实标签转换为掩码，用
+于语义分割。同样通过 1%、10% 和 100% 的训练数
+据对模型进行评估 。
+4. 3　实验结果
+在 医 学 图 像 分 类 任 务 中 ，将 本 文 模 型 与  
+ConVIRT、 MedCLIP、 MGCA-ResNet、 MGCA-
+ViT、RECLF 和 MLIP 进行了对比 。这 些 方 法 均
+采 用 了  CLIP 形 式 的 对 比 学 习 方 法 。 其 中
+ConVIRT 作 为 CLIP 的 前 身 研 究，与 CLIP 的 处
+理方式基本相同 。RECLF
+［47］
+通过关系增强的对比
+学 习 框 架 对 局 部 匹 配 之 间 的 关 系 进 行 建 模 。
+MLIP 利用领域特定的医学知识作为引导信号 ，通
+过图像文本对比学习将语言信息整合到视觉领域
+中。为 了 进 行 公 平 对 比，上 述 方 法 的 预 训 练 数 据
+集 均 设 置 为 与 本 文 相 同。 实 验 结 果 如 表1 所 示。
+从 实 验 结 果 可 以 看 出，本 文 模 型 在 所 有 数 据 集 上
+均取得了最好的结果 。这表明本文模型能够利用
+图 神 经 网 络 和 动 态 权 重 核 函 数 的 设 计，从 医 学 图
+像中提取出更丰富和区分度更高的特征表示 。相
+比 其 他 方 法，本 文 模 型 在 医 学 图 像 分 类 任 务 中 具
+有更强的性能 。
+在 病 灶 区 域 目 标 检 测 任 务 中，将 本 文 模 型
+与 ConVIRT 、GLoRIA 、MGCA 、GLoRIA -M、
+MedKLIP  和 MLIP 进行了对比。其中 MedKLIP
+［48］
+ 
+基于 Transformer 的融合模型，在图像块级别上实
+现实体描述与视觉信号的空间对齐 。实验结果如
+表 2 所示。根据实验结果，本文模型在病灶区域目
+标检测任务中表现出了卓越的性能 ，显示出了明显
+的优势 。特别当训练数据占比为 1% 时，本文模型
+相较于其他模型有一个较大幅度的提升 。可以看
+出，本文模型利用重要对象匹配的方式代替全局匹
+配，能够更好地捕捉医学图像中的异常目标特征 ，并
+提供更准确的检测结果 。
+在 医 学 影 像 语 义 分 割 任 务 中，将 本 文 模 型
+与 ConVIRT 、GLoRIA 、MGCA 、GLoRIA -M、
+表 1　医学图像分类任务对比
+方法方法
+ConVIRT[5]
+MedCLIP[9]
+MGCA-ResNet[6]
+MGCA-ViT[6]
+RECLF[47]
+MLIP[8]
+本文
+CheXpert
+1%
+85. 9
+87. 1
+87. 6
+88. 8
+88. 0
+89. 0
+89. 8
+10%
+86. 8
+87. 4
+88. 0
+89. 1
+89. 3
+89. 4
+90. 1
+100%
+87. 3
+88. 1
+88. 2
+89. 7
+89. 6
+90. 0
+90. 9
+RSNA
+1%
+77. 4
+88. 3
+88. 6
+89. 1
+89. 3
+89. 3
+91. 6
+10%
+80. 1
+89. 3
+89. 1
+89. 9
+89. 6
+90. 0
+92. 5
+100%
+81. 3
+90. 1
+89. 9
+90. 8
+90. 9
+90. 8
+93. 7
+COVIDx
+1%
+72. 5
+-
+72. 0
+74. 8
+-
+75. 3
+75. 6
+10%
+82. 5
+-
+83. 5
+84. 8
+-
+86. 3
+87. 2
+100%
+92. 0
+-
+90. 5
+92. 3
+-
+92. 5
+92. 9
+901
+
+=== PDF_PAGE 10 ===
+计 算 机 学 报 2025 年
+MedKLIP 和 MLIP 进行了对比 。实验结果如表 3
+所示。综合来看，本文模型在六种比较情况下共取
+得了五个第一。医学图像中的边缘信息对于准确的
+语义分割至关重要，结果表明本文模型能够准确地
+捕捉医学图像中的复杂结构和病变区域 。这使得分
+割结果更加准确，能够更好地揭示病变的边界和形
+态特征，同时具备较强的泛化能力 。
+此外，本文还对图像编码器进行了实验，将 Vit-
+base 替换为参数更少的  Deit-base。通过本文提出
+的 训 练 策 略 对 视 觉 模 型 进 行 训 练 ，并 将 其 与
+MedCLIP 和 MGCA 两种方法进行比较 。实验结
+果如表 4 所示。实验结果表明，通过本文提出的训
+练策略得到的视觉模型在分类任务中取得了更加优
+异的效果 。即使使用参数量更小的  Deit-base 作为
+图像编码器，本文的训练方法仍能够充分捕捉图像
+中 的 重 要 信 息，从 而 提 升 了 模 型 的 性 能 。 与 
+MedCLIP 和 MGCA 方法相比，本文的训练方法能
+够 更 好 地 利 用 输 入 图 像 的 特 征，实 现 更 准 确 地 分
+类。这一结果进一步验证了本文提出的训练方法的
+有效性。
+4. 4　泛化性实验
+进一步地，为了验证所提出的子图匹配式方法
+的泛化性能，我们对两种基于  CLIP 的表情识别方
+法 EmoCLIP
+［49］
+ 和 DFER-CLIP
+［50］
+ 的对齐机制进行
+了替换实验 。具体而言，将其原有对齐方式更改为
+子图匹配式方法 ，并与原始模型进行了实验对比 。
+实验使用了动态面部表情任务中常用的两个数据集
+DFEW
+［51］
+ 和 FERV 39k
+［52］
+。其中 DFEW 数据集包
+含从全球 1500 多部电影中收集的 11 697 个视频片
+段。在专家的指导下，十名注释员将这些视频分为
+七种基本面部表情（快乐、悲伤、中性、愤怒、惊讶、厌
+恶和恐惧） 。FERV39k 数据集包含 38 935 个视频片
+段，是目前最大的真实场景下的  DFER 数据集，这
+些视频片段来自四个场景 ，包括犯罪 、日常生活 、演
+讲和战争等 22 个细分场景，并由 30 位注释者标注
+了 基 本 面 部 表 情。使 用 的 指 标 为 UAR 和 WAR 。
+其中 UAR 是未加权平均召回率 ，主要用于多分类
+问题。它表示各类别的平均召回率 ，在计算时不考
+虑各类别的样本数量 。WAR 是加权准确率 ，是一
+种考虑每个类别样本数量的准确率计算方式 。实验
+结果如表 5 所示。
+从实验结果中可以看出 ，替换为子图匹配式方
+法后，模型在表情识别任务中的性能获得了一定提
+升。具体而言，对于 EmoCLIP，替换后的模型在所
+有评估指标上均较原方法有所提升 ；而对于 DFER-
+CLIP，替换后在  DFEW 数据集的  WAR 指标上有
+一定程度的下降，但其余指标均有提升 。子图匹配
+式方法在这些实验中的表现优异 ，主要归功于其局
+部对齐机制，有助于模型更细致地捕捉面部表情的
+细节特征，同时提升了对跨模态噪声的鲁棒性 。通
+过模态间更精确的区域级对齐 ，子图匹配式方法在
+表 2　医学目标检测任务对比
+方法方法
+ConVIRT[5]
+GLoRIA[10]
+MGCA[6]
+GLoRIA-M[10]
+MedKLIP[48]
+MLIP[8]
+本文
+RSNA
+1%
+8. 20
+9. 80
+12. 9
+11. 6
+8. 90
+17. 2
+18. 3
+10%
+15. 6
+14. 8
+16. 8
+16. 1
+16. 3
+19. 1
+19. 4
+100%
+17. 9
+18. 8
+24. 9
+24. 8
+24. 5
+25. 8
+25. 9
+Object CXR
+1%
+-
+-
+-
+-
+-
+4. 6
+5. 1
+10%
+8. 60
+10. 6
+12. 1
+8. 90
+7. 10
+17. 4
+17. 4
+100%
+15. 9
+15. 6
+19. 2
+16. 6
+11. 6
+20. 2
+20. 8
+表 3　医学语义分割任务对比
+方法方法
+ConVIRT[5]
+GLoRIA[10]
+MGCA[6]
+GLoRIA-M[10]
+MedKLIP[48]
+MLIP[8]
+本文
+SIIM
+1%
+25. 0
+35. 8
+49. 7
+37. 4
+50. 2
+51. 6
+52. 3
+10%
+43. 2
+46. 9
+59. 3
+57. 1
+60. 8
+60. 8
+61. 6
+100%
+59. 9
+63. 4
+64. 2
+64. 0
+63. 9
+68. 1
+66. 9
+RSNA
+1%
+55. 0
+59. 3
+63. 0
+60. 3
+66. 2
+67. 7
+68. 5
+10%
+67. 4
+67. 5
+68. 3
+68. 7
+69. 4
+68. 8
+69. 1
+100%
+67. 5
+67. 8
+69. 8
+68. 3
+71. 9
+73. 5
+73. 8
+表 4　不同视觉编码器对比
+方法方法
+MedCLIP-Vit
+MGCA-Vit
+本文-Vit
+MedCLIP-Deit
+MGCA-Deit
+本文-Deit
+CheXpert
+10%
+87. 2
+89. 1
+90. 1
+84. 3
+83. 7
+88. 6
+100%
+87. 6
+89. 7
+90. 9
+85. 2
+86. 6
+90. 4
+RSNA
+10%
+88. 7
+89. 9
+92. 5
+84. 6
+87. 2
+90. 6
+100%
+89. 2
+90. 8
+93. 7
+86. 3
+88. 7
+91. 7
+表 5　子图匹配泛化性实验
+方法方法
+EmoCLIP
+EmoCLIP+ 子图匹配
+DFER-CLIP
+DFER+子图匹配
+DFEW
+UAR
+58. 04
+58. 65
+59. 61
+59. 72
+WAR
+62. 12
+62. 37
+71. 25
+70. 58
+FERV39k
+UAR
+31. 41
+31. 86
+41. 27
+41. 83
+WAR
+36. 18
+37. 04
+51. 65
+51. 66
+902
+
+=== PDF_PAGE 11 ===
+4 期 陈公冠等：面向多模态预训练的子图匹配式对比学习方法研究
+跨模态信息传递过程中能够捕捉到更多精细特征 。
+这一实验结果表明，子图匹配式方法不仅在医学领
+域的多模态数据融合任务中具有显著优势 ，还在表
+情识别等视觉任务中展现了良好的泛化能力 。
+4. 5　消融实验
+为了分析本文模型中的各个模块在预训练时发
+挥的作用，这一章节对局部匹配 、跨模态细粒度信息
+对齐以及多模态样本对聚类分别进行了消融实验 。
+（1）局部匹配
+为了验证局部匹配的作用 ，本文分别对该模块
+进行了定量和定性分析 。在定量分析中，本文针对
+局部匹配模块进行了三种设置 ：不使用匹配、使用全
+局匹配和使用局部匹配 。针对这三种情况进行了实
+验，并将结果列在表 6 中。实验结果显示，如果丢弃
+局部匹配模块，分类准确率会显著下降 。无论是使
+用全局匹配还是局部匹配 ，其目的都是为了提高模
+型对图像和文本之间关联性的理解能力 。这一能力
+的丢失会造成多模态信息的交互困难 ，导致准确率
+的下降 。对比全局匹配和局部匹配的实验结果 ，可
+以观察到局部匹配在分类准确率上表现更好 。这表
+明局部匹配能够更好地捕捉图像和文本之间的细粒
+度语义关系，从而提高模型在细节信息和局部关联
+性方面的性能。
+本文还对  MGCA 和 Med-ST 两种与本文方法
+结构相似的模型进行了分析 。同时为了验证本文提
+出的子图匹配式局部对齐方案的有效性 ，将 MGCA
+和 Med-ST 中原有的对齐方案替换为子图匹配式
+局部对齐，并与原始方法进行了对比 。实验结果如
+表 7 所示。结果表明，当对齐方案进行替换后，模型
+性能均得到了一定程度的提升 。这一改动进一步验
+证了子图匹配式局部对齐方法在特征对齐上的有
+效性。
+在定性方面，本文绘制了三种情况下的注意力
+图，实验结果如图 5 所示。可以看出在没有匹配的
+情况下，图像编码器因为在其他领域的数据集上进
+行过预训练，使得其仍能够大致辨别重点区域（例如
+有小部分红色区域和绿色区域集中在肺部 ） ，但对重
+点对象的敏感度较低 ，甚至有错误的情况 。使用全
+局匹配会促使模型对重点区域的进一步关注 ，但受
+到低质量信息的干扰 ，使得模型对重点对象的关注
+产生一定的偏差 。局部匹配能够更加关注模态内的
+重要对象，降低背景等低质量信息的干扰 。
+当针对 3. 2. 1 节中对重要关系建模时使用的三
+种边权重更新规则进行消融实验时，本文采用了不同
+的组合方式来评估它们对语义分割任务的影响 。下
+面是实验的详细描述 ：首先构建一个基准模型，即没
+有应用任何边权重更新规则的模型 。然后独立地应
+用三种边权重更新规则来对重要关系进行建模 。最
+后将这三种规则进行两两组合，得到三个组合模型 。
+表 8 展示了不同模型在语义分割任务中权重更新规
+则的消融实验结果。实验结果表明，每种边权重更新
+规则都对语义分割任务产生了积极的影响 。相比于
+基准模型，应用任何一种规则都能够提升性能。这表
+明每种规则都能够有效地捕捉重要关系，并引导模型
+更好地理解多模态数据之间的依赖关系。此外，将两
+种规则进行组合时，性能进一步提升。这表明这些规
+则在协同作用方面具有互补性，从而提供更全面的建
+模能力。通过消融实验的结果，我们进一步验证了这
+些边权重更新规则在建模重要关系方面的有性 。它
+们能够帮助模型更好地理解多模态数据中的关联和
+依赖关系，从而提升模型的性能。
+同时，为了验证信息对齐的精度对下游任务的
+影响，本文设计了两个预训练模型 ：一个模型直接使
+用交叉熵进行局部信息对齐 ，另一个模型则采用我
+表 6　局部匹配消融实验
+方法方法
+无匹配
+全局匹配
+子图匹配
+CheXpert
+1%
+86. 4
+88. 7
+89. 8
+10%
+87. 1
+89. 3
+90. 1
+100%
+87. 8
+89. 6
+90. 9
+RSNA
+1%
+88. 2
+89. 9
+91. 6
+10%
+89. 5
+90. 8
+92. 5
+100%
+90. 7
+92. 4
+93. 7
+表 7　子图匹配消融实验
+方法方法
+MGCA
+MGCA+子图匹配
+Med-ST
+Med-ST+子图匹配
+本文方法
+RSNA
+1%
+89. 1
+89. 8
+90. 8
+91. 2
+91. 6
+10%
+89. 9
+90. 4
+91. 4
+91. 9
+92. 5
+COVIDx
+1%
+74. 8
+74. 9
+71. 2
+72. 2
+75. 6
+10%
+84. 8
+85. 7
+87. 7
+87. 7
+87. 2
+图 5　不同匹配方式的注意力图
+903
+
+=== PDF_PAGE 12 ===
+计 算 机 学 报 2025 年
+们提出的子图匹配式局部信息对齐 。此实验旨在验
+证两方面内容 ：第一，本文提出的模型在下游任务中
+指标提升是否源于更精准的局部信息对齐 ；第二，信
+息对齐的偏差对下游任务性能的影响是否显著 。为
+此，本文对比了两个模型的图像编码器和文本编码
+器的输出特征，并对图像和文本之间的注意力矩阵
+进行了可视化 。同时，为了使结果更加直观易于理
+解，图中也对文本编码结果中每个单词占用的位置
+进行了展示。实验结果如图 6 所示。
+结果显示，采用子图匹配式局部信息对齐的模
+型，注意力矩阵中的文本关键词与图像关键区域的
+对齐更加准确 。例如右图中画出的四个红框 ，均属
+于句子中的重要信息与图像相匹配的关键区域 。相
+较于左图，增加子图匹配后，模型对这四个区域的关
+注程度表现出明显的提升 。相反，仅依赖交叉熵损
+失进行局部信息对齐的模型 ，表现出较低的对齐精
+度。同时，在下游任务中，我们使用  COVIDx 进行
+了定量分析 。仅依赖交叉熵损失在  COVIDx 数据
+集上的准确率为 89. 5%，而使用子图匹配式局部信
+息对齐，其准确率为 92. 9%，这一结果进一步验证
+了子图匹配式局部信息对齐的有效性 。
+在子图构建过程中，本文采用了百分比形式的
+阈值来对子图进行稀疏化 ，以去除低质量边和低质
+量关系。该章节的实验探究了不同阈值的选取对模
+型性能的影响 。实验结果如表 9 所示。实验结果显
+示，当不进行稀疏化时，模型的性能最差 。这是因为
+子图中存在大量的低质量边和低质量关系 ，干扰了
+模型的学习过程 。本文共尝试了六种不同的阈值选
+取情况。结果表明，丢弃 30% 的边所得到的模型性
+能最好 。这意味着保留 70% 的边能够在一定程度
+上去除低质量的信息，并保留了更重要的边和关系，
+从而提升了模型的性能 。通过实验分析，本文验证
+了使用百分比形式的阈值进行子图稀疏化的有效
+性。选择适当的阈值可以帮助去除低质量的信息 ，
+从而使模型能够更加准确地学习和理解图像中的关
+键信息。
+（2）跨模态细粒度信息对齐
+为了验证交叉注意力机制能够实现重要对象之
+间更加细粒度化的对齐 ，本文同样在定量和定性方
+面进行了分析 。在定量方面，本文对比了丢弃该模
+块与保留该模块两种情况下的结果 。实验结果如表
+10 所示。可以看出，引入交叉注意力机制能够提升
+图 6　不同匹配方式的注意力矩阵
+表 9　阈值敏感性分析
+阈值阈值
+0%
+10%
+30%
+50%
+70%
+90%
+CheXpert
+1%
+88. 2
+88. 4
+89. 8
+89. 1
+89. 3
+88. 8
+10%
+88. 5
+89. 5
+90. 1
+89. 2
+89. 7
+89. 1
+100%
+89. 1
+90. 2
+90. 9
+90. 3
+89. 8
+89. 5
+RSNA
+1%
+89. 1
+90. 6
+91. 6
+90. 7
+90. 8
+89. 6
+10%
+90. 3
+92. 1
+92. 5
+91. 7
+91. 5
+90. 7
+100%
+90. 9
+92. 9
+93. 7
+92. 3
+92. 5
+91. 6
+表 8　权重更新规则的消融实验
+方法方法
+无规则
+规则 1
+规则 2
+规则 3
+规则 1+2
+规则 1+3
+规则 2+3
+SIIM
+1%
+49. 3
+50. 7
+51. 1
+50. 4
+51. 7
+51. 5
+51. 2
+10%
+58. 9
+60. 1
+60. 1
+59. 8
+61. 1
+60. 9
+60. 7
+100%
+64. 2
+64. 9
+64. 8
+65. 0
+65. 8
+65. 7
+65. 2
+RSNA
+1%
+64. 8
+66. 5
+66. 8
+66. 9
+67. 8
+67. 9
+67. 4
+10%
+66. 3
+67. 5
+67. 6
+67. 5
+68. 6
+68. 8
+68. 1
+100%
+70. 2
+71. 3
+71. 8
+71. 4
+73. 1
+72. 8
+72. 2
+904
+
+=== PDF_PAGE 13 ===
+4 期 陈公冠等：面向多模态预训练的子图匹配式对比学习方法研究
+下游任务的性能 。同时为了更加直观地观察到交叉
+注意力机制能够有效 区分同一模态内的各个重要对
+象，从而能够帮助模型更 好地进行模态间的匹配 。
+在定性方面，本文跟踪了两种情况下模型在预训练
+过程中的跨模态匹配准确 率，实验结果如图 7 所示。
+可以看出，丢弃对齐时，模型的训练过程相对不够稳
+定，在前期出现明显跳跃的区间，后期的匹配准确率
+提升也较为缓慢 。增加对齐操作，模型的训练过程
+更加稳定，由横坐标可以看出，此时的模型仅仅使用
+80 k 步的训练过程就达到了较为先进的性能 。保留
+对齐能够在各个重要对象之间产生独立的差异化信
+息，促使模型增强对重要对象的识别和表达能力 。
+同 时，为 了 更 方 便 地 展 示 交 叉 注 意 力 机 制 在
+patch 级别进行匹配的作用，本文在消融实验中增加
+了交叉注意力机制对下游任务的影响分析 。具体而
+言，本文构建了两种模型进行对比 ：第一种模型基于
+交叉熵损失进行细粒度对齐 ，第二种模型则采用交
+叉注意力机制进行更加精细的特征对齐 。实验数据
+选 用 了COVIDx 数 据 集，本 文 在 测 试 集 中 选 取 了
+600 例样本，每个类别各包含 200 张图像，确保了类
+别分布的均衡性，从而使不同模型之间的比较更加
+公平。实验结果如图 8 所示通过 ROC 曲线进行展
+示。从实验结果可以观察到 ，引入交叉注意力机制
+后，虽然“无肺炎”类别的线下面积基本保持不变，但
+剩余两个类别的线下面积均有一定程度的提升 。这
+一结果表明，交叉注意力机制通过在特征对齐过程
+中对模态间的 patch 块相似性进行权重调整 ，使得
+模型不仅能够关注子图的全局特征 ，还能精准捕捉
+到细粒度层面的局部特征 ，进一步提升了跨模态的
+对齐精度。
+（3）多模态样本对聚类
+针对该模块的消融实验包含两部分，一是通过丢
+弃与保留该模块验证该模块的有效性，实验结果如表
+11 所示。实验结果显示，保留该模块能够显著提升下
+游任务的效果。这表明多模态样本对聚类模块在模
+型中起到了有效的作用。
+表 10　跨模态细粒度信息对齐消融实验
+方法
+丢弃对齐
+保留对齐
+CheXpert
+1%
+89. 1
+89. 8
+10%
+89. 3
+90. 1
+100%
+89. 8
+90. 9
+RSNA
+1%
+90. 9
+91. 6
+10%
+92. 0
+92. 5
+100%
+93. 2
+93. 7
+图 7　不同对齐方式的匹配准确率
+图 8　不同对齐方式的  ROC 曲线 .
+905
+
+=== PDF_PAGE 14 ===
+计 算 机 学 报 2025 年
+此外，为了更加直观地观察多模态样本对聚类
+任务中视觉编码器的影响，本文利用 t-SNE 算法对
+丢弃聚类与保留聚类两种情况下的视觉编码器输出
+进行了可视化 。RSNA 数据集作为下游分类任务的
+可视化分析对象。实验结果如图 9 所示。在图中，横
+纵坐标分别表示不同图像经过预训练编码器提取特
+征后，将特征经过 t-SNE 算法降维到二维空间中的
+对应坐标值。红色和灰色分别代表不同类别的图像
+输出结果。观察左侧部分，可以明显看出，在未应用
+聚类的情况下，视觉编码器的输出结果呈现出一定
+的混乱性，不同类别的样本在降维空间中缺乏明显
+的区分。具体表现为红色部分和灰色部分之间存在
+显著的交叉。然而，在引入聚类后，右侧图中红色部
+分和灰色部分之间的区别变得明显 。聚类方法有效
+地将不同类别的样本聚集到特征空间中的相应区
+域，增强了类别之间的可分性 。具体而言，灰色部分
+在右图中显示出更为集中的特征分布 ，显著减少了
+与红色部分的交叠 。这一变化不仅提升了样本的可
+分性，也为下游任务的性能改善奠定了基础 。这一
+实验结果表明，增加聚类具有正向的影响，能够提升
+视觉编码器的聚类效果。
+二是对可调节参数 K，即聚类过程中选择相似样
+本的数量进行了敏感性分析 。在选择相似样本数量  
+K 时，batch_size 的大小直接决定了模型在每次训练中
+能够同时处理的样本数量。较大的batch_size 使得模
+型在每次训练更新时能够考虑更多样本，从而在选择
+相似样本时具备更丰富的参考依据。为了确保代码的
+移植性并验证 K 在不同环境下的最佳取值，本文分别
+在单块显卡上对 batch_size 等于 32 和 24 两种情况下
+进行了分类任务的实验。实验结果如图 10 所示。可
+以看出，两种情况具有相同的走势。同时实验结果显
+示，当 K 取 batch_size 的1/6 时，模型的下游任务表现
+都达到了最优。使用过多数量会导致所有样本同一
+化，难以对各个样本对进行准确的区分。使用过少的
+数量导致聚类效果不够显著，难以学习到重要对象本
+身的语义表达 。这表明 K 和 batch_size 之间存在一
+定比例的优化关系。同时可以观察到，即使在较小的 
+batch_size 下，模型的性能损失也非常有限。
+5 结 论
+在多模态大模型的预训练过程中 ，常常采用全
+局匹配的方式进行对比学习 。然而，这种全局匹配
+方法容易受到低质量信息的干扰 ，特别是当关键信
+息只集中在图像或文本的一小部分时 。为了解决这
+个问题，本文首先提出了基于图卷积网络的局部匹
+表 11　多模态样本对聚类消融实验
+方法
+丢弃聚类
+保留聚类
+CheXpert
+1%
+88. 5
+89. 8
+10%
+89. 2
+90. 1
+100%
+90. 2
+90. 9
+RSNA
+1%
+89. 7
+91. 6
+10%
+91. 4
+92. 5
+100%
+92. 3
+93. 7
+图 9　视觉编码器输出特征的可视化
+图 10　参数 K 的敏感性分析
+906
+
+=== PDF_PAGE 15 ===
+4 期 陈公冠等：面向多模态预训练的子图匹配式对比学习方法研究
+配方法使得模型更加精确地关注重要对象 。其次提
+出了样本对聚类方法以提供更符合人类思维的分类
+策略。同时引入交叉注意力机制实现更加细粒度信
+息的对齐 。促进了医学领域视觉任务的进一步发
+展。但本文并未将该模型应用于跨模态或者多模态
+任务，因此，未来的研究会在此基础上设计更加符合
+图卷积网络的多模态融合方法 ，并将其应用到各种
+跨模态和多模态任务中去 ，探索该大模型更多的应
+用场景。同时，在接下来的工作中，基于图神经网络
+设计更好的匹配和聚类方式 ，将为众多下游任务提
+供更加可靠的多模态预训练模型 。
+参 考 文 献
+［1］ Jeffrey D , Joseph R , Bernardino R , et al . Clinically applicable 
+deep learning for diagnosis and referral in retinal disease . Nature 
+Medicine , 2018, 24(9):1342 -1350
+［2］ Qiang Wei , Du Yu , Li Xinjin , et al . Auxiliary diagnosis for 
+Parkinson's disease using multimodel feature analysis . Journal of 
+Software , 2024, 35(5): 1-16 (in Chineae )
+(强薇，杜宇，李信金 等 . 多模态特征分析的帕金森病辅助诊断方
+法 . 软件学报，2024， 35(5):1-16)
+［3］ Liu Hui , Li Shanshan , Gao Shanshan , et al . Research on dual -
+adversarial MR image fusion network using pre -trained model 
+for feature extraction . Journal of Software , 2023, 34(5): 2134 -
+2151 (in Chineae )
+(刘慧，李珊珊，高珊珊 等 . 预训练模型特征提取的双对抗磁共振
+图像融合网络研究 . 软件学报， 2023， 34(5):2134 -2151)
+［4］ Radford A , Kim J W , Hallacy C , et al . Learning transferable 
+visual models from natural language supervision//Proceedings 
+of the International Conference on Machine Learning . Vienna , 
+Austria , 2021: 8748 -8763
+［5］ Zhang Yuhao , Hang Jiang , Miura Y , et al . Contrastive learning 
+of medical visual representations from paired images and text//
+Proceedings of the Machine Learning for Healthcare . North 
+Carolina , USA, 2022 : 2-25
+［6］ Wang Fuying , Zhou Yuyin , Wang Shujun , et al . 
+Multigranularity cross -modal alignment for generalized medical 
+visual representation learning//Proceedings of the Advances in 
+Neural Information Processing Systems 35. New Orleans , 
+USA, 2022 : 33536 -33549
+［7］ Zhou Hongyu , Lian Chenyu , Wang Liansheng , et al . 
+Advancing radiograph representation learning with masked 
+record modeling//Proceedings of the International Conference 
+on Learning Representations . Kigali , Rwanda , 2023: 1-16
+［8］ Li, Zhe , Laurence T , Ren Bocheng , et al . MLIP : Enhancing 
+medical visual representation with divergence encoder and 
+knowledge -guided contrastive learning . arXiv preprint arXiv : 
+2402.02045 , 2024
+［9］ Wang Zifeng , Wu Zhenbang , Agarwal D , et al . Medclip : 
+Contrastive learning from unpaired medical images and text//
+Proceedings of the 2022  Conference on Empirical Methods in 
+Natural Language Processing . Abu Dhabi , United Arab 
+Emirates , 2022 : 3876 -3887
+［10］ Huang Shih -Cheng , Shen liyue , Lungren M P , et al . Gloria : A 
+multimodal global -local representation learning framework for 
+label -efficient medical image recognition//Proceedings of 
+the International Conference on Computer Vision . Montreal , 
+Canada , 2021: 3942 -3951
+［11］ Kim S , Lee N , Lee J , et al . Heterogeneous graph learning for 
+multi -modal medical data analysis//Proceedings of the AAAI 
+Conference on Artificial Intelligence . Washington , USA , 2023: 
+5141 -5150
+［12］ Wei Xia , Wang Tianxiu , Gao Quanxue , et al . Graph 
+embedding contrastive multi -modal representation learning for 
+clustering . IEEE Transactions on Image Processing , 2023, 32: 
+1170 -1183
+［13］ Yu Xiao , Liu Hui , Lin Yuxiu , et al . Consensus guided auto -
+weighted multi -view clustering . Journal of Computer Research 
+and Development , 2022 , 59(7): 1496 -1508 (in Chinese )
+(于晓， 刘慧， 林毓秀 等 . 一致性引导的自适应加权多视图聚类 . 
+计算机研究与发展， 2022， 59(7): 1496 -1508)
+［14］ Yin Zhenfei , Wang Jiong , Gao Jianjian , et al . Lamm : 
+Language -assisted multi -modal instruction -tuning dataset , 
+framework , and benchmark//Proceedings of the Advances in 
+Neural Information Processing Systems 36. OrleansNew , 
+USA, 2023: 26650 -26685
+［15］ Tu Rongcheng , Mao Xianling , Kong Weijie , et al . CLIP 
+based multi -event representation generation for video -text 
+Retrieval . Journal of Computer Research and Development , 
+2023 , 60(9): 2169 -2179  (in Chinese )
+(涂荣成， 毛先领， 孔伟杰 等 . 基于 CLIP 生成多事件表示的视频
+文本检索方法 . 计算机研究与发展， 2023， 60(9): 2169 -2179)
+［16］ Shao Rui , Wu Tianxing , Liu Ziwei . Detecting and grounding 
+multi -modal media manipulation//Proceedings of the IEEE 
+Conference on Computer Vision and Pattern Recognition . 
+Vancouver , Canada , 2023: 6904 -6913
+［17］ Liu Bo , Lu Donghuan , Dong Wei , et al . Improving medical 
+vision -language contrastive pretraining with semanticsaware 
+triage . IEEE Transactions on Medical Imaging . 2023, 42(12): 
+3579 -3589
+［18］ Chen Xiaofei , He Yuting , Cheng Xue , et al. Knowledge boosting : 
+Rethinking medical contrastive vision -language pre -training//
+Proceedings of the International Conference on Medical Image 
+Computing and Computer -Assisted Intervention . Vancouver , 
+Canada, 2023: 405-415
+［19］ Liu Bo , Xin Luze , Wang Yan . Towards medical vision -
+language contrastive pre -training via study oriented semantic 
+exploration//Proceedings of the ACM Multimedia . Melbourne , 
+Australia , 2024
+［20］ Jeong J , Tian K , Li A , et al . Multimodal image -text matching 
+improves retrieval -based chest x -ray report generation//
+Proceedings of Machine Learning Research . 2024: 978-990
+［21］ Zhan Chenlu , Lin Yu , Wang Gaoang , et al . MedM 2G: 
+Unifying medical multi -modal generation via cross guided 
+907
+
+=== PDF_PAGE 16 ===
+计 算 机 学 报 2025 年
+diffusion with visual invariant//Proceedings of the IEEE/CVF 
+Conference on Computer Vision and Pattern Recognition . 
+Seattle , USA, 2024: 11502 -11512
+［22］ Yang Jinxia , Su Bing , Zhao Wayne Xin , et al . Unlocking the 
+power of spatial and temporal information in medical multimodal 
+pre-training. arXiv preprint arXiv : 2405.19654, 2024
+［23］ Phan V M H , Xie Yutong , Qi Yuankai , et al . Decomposing 
+disease descriptions for enhanced pathology detection : A multi -
+aspect vision -language pre -training framework//Proceedings of 
+the IEEE/CVF Conference on Computer Vision and Pattern 
+Recognition . Seattle , USA, 2024: 11492 -11501
+［24］ Muller P , Kaissis G , Zou C , et al . Joint learning of localized 
+representations from medical images and reports//Proceedings 
+of the European Conference on Computer Vision . Tel Aviv , 
+Israel , 2022 : 685-701
+［25］ He Kaiming , Zhang Xiangyu , Ren Shaoqing , et al . Deep 
+residual learning for image recognition//Proceedings of the 
+IEEE Conference on Computer Vision and Pattern Recognition . 
+Las Vegas , USA, 2016: 770-778
+［26］ Chen Zhihong , Du Yuhao , Hu Jinpeng , et al . Multi -modal 
+masked autoencoders for medical vision -and-language pre -
+training//Proceedings of the International Conference on Medical 
+Image Computing and Computer -Assisted Intervention . 
+Singapore, 2022: 679-689
+［27］ Jiang Xunqiang , Lu Yuanfu , Fang Yuan , et al . Contrastive pre -
+training of GNNs on heterogeneous graphs//Proceedings of the 
+30th ACM International Conference on Information & 
+Knowledge Management . Queensland Gold Coast , Australia , 
+2021: 803-812
+［28］ Zhu Yun , Guo Jianhao , Tang Siliang . SGL -PT: A strong graph 
+learner with graph prompt tuning . arXiv preprint arXiv : 
+2302.12449 , 2023
+［29］ Jiang Xunqiang , Jia Tianrui , Fang Yuan , et al . Pre -training on 
+large -scale heterogeneous graph//Proceedings of the 27th ACM 
+SIGKDD Conference on Knowledge Discovery & Data Mining . 
+Singapore , 2021: 756-766
+［30］ Duan Keyu , Liu Qian , Tat -SengChua , et al . Simteg : A 
+frustratingly simple approach improves textual graph learning . 
+arXiv preprint arXiv : 2308.02565 , 2023
+［31］ Hamilton W , Ying Zhitao , Leskovec J . Inductive representation 
+learning on large graphs//Proceedings of the Advances in 
+Neural Information Processing Systems 30. California , USA , 
+2017: 1-11
+［32］ Zhang Jiawei , Zhang Haopeng , Xia Congying , et al . Graph -
+bert: Only attention is needed for learning graph representations . 
+arXiv preprint arXiv : 2001.05140 , 2020
+［33］ Ying Chengxuan , Cai Tianle , Luo Shengjie , et al . Do 
+transformers really perform badly for graph representation ?//
+Proceedings of the Advances in Neural Information Processing 
+Systems 34. Online , 2021: 28877 -28888
+［34］ Dosovitskiy A , Beyer L , Kolesnikov A , et al . An image is 
+worth 16x16 words : Transformers for image recognition at 
+scale//Proceedings of the Eleventh International Conference on 
+Learning Representations . Vienna , Austria , 2021: 1-22
+［35］ Devlin J , Chang Mingwei , Lee K , et al . Bert : Pretraining of 
+deep bidirectional transformers for language understanding//
+Proceedings of the North American Chapter of the Association 
+for Computational Linguistics : Human Language Technologies . 
+Florence , Italy , 2019: 4171 -4186
+［36］ Wu Lirong , Lin Haitao , Huang Yuefei , et al . Quantifying the 
+knowledge in gnns for reliable distillation into mlps//
+Proceedings of the International Conference on Machine 
+Learning . Hawaii , USA, 2023: 37571 -37581
+［37］ Johnson A E , Pollard T J , Berkowitz S J , et al . Mimiccxr , a 
+de-identified publicly available database of chest radiographs 
+with free -text reports . Scientific Data , 2019, 6(1):1-8
+［38］ Alsentzer E , Murphy J R , Boag W , et al . Publicly available 
+clinical BERT embeddings . arXiv preprint arXiv : 1904.03323 , 
+2019
+［39］ Touvron H , Cord M , Douze M , et al . Training data -efficient 
+image transformers & distillation through attention . arXiv 
+preprint arXiv : 2012.12877 , 2020
+［40］ Irvin J , Rajpurkar P , Ko M , et al . Chexpert : A large 
+chest radiograph dataset with uncertainty labels and expert 
+comparison//Proceedings of the AAAI Conference on Artificial 
+Intelligence . Hawaii , USA, 2019: 590-597
+［41］ Shih G , Wu C C , Halabi S S , et al . Augmenting the national 
+institutes of health chest radiograph dataset with expert 
+annotations of possible pneumonia . Radiology : Artificial 
+Intelligence , 2019, 1(1):e180041
+［42］ Wang Linda , Lin Zhongqiu , Wong A . Covid -net: A tailored 
+deep convolutional neural network design for detection of covid -
+19 cases from chest x -ray images . Scientific Reports , 2020, 
+10(1): 1-12
+［43］ Redmon J , Farhadi A . Yolov 3: An incremental improvement . 
+arXiv preprint arXiv : 1804.02767 , 2018
+［44］ Healthcare J . Object -cxr-automatic detection of foreign objects 
+on chest x -rays//Proceedings of the Medical Image with Deep 
+Learning . Montreal , Canada , 2020
+［45］ Ronneberger O , Fischer P , Brox T . U -net: Convolutional 
+networks for biomedical image segmentation//Proceedings of 
+the International Conference on Medical Image Computing and 
+Computer -assisted Intervention . Munich , Germany , 2015: 
+234-241
+［46］ Zawacki A , Carol W , Shih G , et al . Siim -acr pneumothorax 
+segmentation , 2019
+［47］ Li Mingjian , Meng mingyuan , Fulham M , et al . Enhancing 
+medical vision -language contrastive learning via inter -matching 
+relation modelling . arXiv preprint arXiv : 2401.10501 , 2024
+［48］ Wang Zifeng , Wu Zhenbang , Agarwal D , et al . MedCLIP : 
+Contrastive learning from unpaired medical images and text//
+Proceedings of the 2022 Conference on Empirical Methods in 
+Natural Language Processing . Dublin, Ireland , 2022: 3876-3887
+［49］ Foteinopoulou N M , Ioannis P . Emoclip : A visionlanguage 
+method for zero -shot video facial expression recognition//
+Proceedings of the IEEE 18th International Conference on 
+Automatic Face and Gesture Recognition . Istanbul , Turkey , 
+2024:1-10
+908
+
+=== PDF_PAGE 17 ===
+4 期 陈公冠等：面向多模态预训练的子图匹配式对比学习方法研究
+［50］ Zhao Z , Patras I . Prompting visual -language models for 
+dynamic facial expression recognition//Proceedings of the 
+British Machine Vision Conference . Aberdeen , UK, 2023:1-16
+［51］ Jiang Xingxun , Zong Yuan , Zheng Wenming , et al . Dfew : A 
+large -scale database for recognizing dynamic facial 
+expressions in the wild//Proceedings of the 28th ACM 
+International Conference on Multimedia . New York , USA , 
+2020 :2881 -2889
+［52］ Wang Yan, Sun Yixuan , et al. Ferv39k: A large -scale multi -scene 
+dataset for facial expression recognition in videos//Proceedings of 
+the IEEE/CVF Conference on Computer Vision and Pattern 
+Recognition. New Orleans, USA, 2022:20922-20931
+CHEN Gong-Guan, Ph. D.  candidate.  
+His main research interests include image 
+processing and machine learning.
+LIU Hui , Ph. D. , professor , Ph. D.  supervisor .  Her main 
+research interests include medical image processing , data mining 
+and machine learning .
+LI Heng-Tai , Master candidate .  His main research 
+interests include image processing and machine learning .
+GUO Qiang , Ph. D. , professor , Ph . D.  supervisor .  His 
+main research interests include computer vision , data mining , and 
+other related fields .
+ZHANG Cai-Ming , Ph. D. , professor , Ph . D.  
+supervisor .  His main research interests include data mining , 
+computer graphics , information visualization and medical 
+image processing .
+Background
+Multimodal pretraining models are an approach that 
+leverages information from different modalities to enhance the 
+performance of models in single -modality tasks .  Over the past 
+two years , researchers have shown increasing interest in this 
+approach.  Current methods mostly adopt the network structure of 
+CLIP （Contrastive Language -Image Pretraining ）, but their 
+performance is unsatisfactory when applied to the medical 
+domain.  This is primarily because medical datasets are more 
+challenging to obtain compared to datasets in other domains , 
+leading to a scarcity of medical data for CLIP training .  One 
+method to reduce the reliance on data is to replace CLIP global 
+matching with local matching to achieve more precise learning .  
+However, existing principles of local matching are limited to 
+simple concatenation , and there is a shortage of relevant research 
+in this area.
+In this paper , we propose a method that utilizes the powerful 
+message-passing mechanism of graph neural networks to disperse 
+important information from different modalities into multiple 
+subgraphs, achieving subgraph representation for each modality .  
+We achieve more accurate local matching through subgraph 
+matching, thereby reducing the dependence on data quantity .  
+Additionally, we employ a cross -attention mechanism to 
+accomplish intra -modality matching at the patch level , addressing 
+the issue of sample homogeneity caused by relying solely on local 
+matching.  Furthermore , we leverage the ideas of graph neural 
+networks and design a high -dimensional space clustering method 
+to ensure proximity between similar sample pairs and distance 
+between dissimilar sample pairs .
+This work was supported by the National Natural Science 
+Foundation of China （62072274, U22A2033）, the Central 
+Guidance on Local Science and Technology Development Project
+（YDZX2022009）, the Special Funds of Taishan Scholars Project 
+of Shandong Province（tstp20221137） ， and the Special Funds for 
+Talent Development in Jinan（202333037）.
+909

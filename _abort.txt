@@ -1,0 +1,24 @@
+=== 立即停止 ===
+killed 717717 (_clean.sh)
+killed 717805 (rm)
+=== 剩余进程 ===
+procs=0
+=== 清理日志 ===
+=== start Tue Nov 24 10:32:58 AM CST 2026 ===
+manifest tree done
+manifest small-files done
+manifest tar: 4.0K  files: 0
+used_before_kb=1914573436
+>>> deleting seg_work (1.5T) at 10:33:00
+=== 目录现状 ===
+seg_work       219G
+picai          155G
+eegfnirs       22G
+der_data       14G
+brats_work     6.6G
+thyroid_tta    1.2G
+=== manifest ===
+-rw-rw-r-- 1 heluofan heluofan 1.7K Nov 24 10:33 /data/heluofan/_deleted_manifest_20261124.tar.gz
+=== disk ===
+/dev/nvme0n1    7.0T  604G  6.0T   9% /data
+ABORT_DONE

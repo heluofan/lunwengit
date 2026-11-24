@@ -1,0 +1,695 @@
+=== PDF_PAGE 1 ===
+第 38 卷 第 3 期 计算机辅助设计与图形学学报  Vo l . 3 8 No.3 
+2026 年 3 月 Journal of Computer-Aided Design & Computer Graphics Mar. 2026 
+                    
+收稿日期： 2024-05-10 ；修回日期： 2024-09-18 。基金项目 ：辽宁省教育厅项目（ LJKMZ20221110 ）。曹伟业 （1999— ），男，
+硕士研究生，主要研究方向为医学图像处理； 祝开艳 （1980— ），女，博士，副教授，硕士生导师，论文通信作者，主要研究方向为
+医学信息智能检测与处理、水下图像信息处理与智能检测； 刘越（2000— ），男，硕士研究生，主要研究方向为图像图形智能处理；
+宋维波 （1981— ），男，博士，讲师，硕士生导师，主要研究方向为医学信息智能检测与处理、智能机器人控制； 刘通（1999— ），
+男，硕士研究生，主要研究方向为水下图像增强、医学图像处理。  
+ 
+结合边缘特征提取的多模态脑部肿瘤图像分割网络 
+曹伟业1)，祝开艳 1)*，刘越1)，宋维波 1)，刘通2) 
+1) (大连海洋大学信息工程学院   大连  116023) 
+2) (大连海洋大学机械与动力工程学院   大连  116023) 
+(zhukaiyan@dlou.edu.cn) 
+摘  要：多模态医学图像具有综合信息、提高诊断准确性、检测疗效和预后评估等优势，可以为医生提供更加全面、
+准确的信息。为了利用多模态医学图像之间的综合信息，提出结合边缘特征提取的多模态脑部肿瘤图像分割网络。
+首先对预激活残差块进行改进，提出双残差预激活模块替换 U-Net 中的编码与解码层，并在解码层增加网络宽度，
+加强了网络的特征提取能力；然后设计一种边缘特征提取模块对不同模态和不同层次的边缘特征进行提取，通过与
+分割结果进行融合强化网络对边缘病灶的表达能力。在 BraTS2018 和 BraTS2022 数据集上的实验结果表明，
+BraTS2018 上，所提网络在全肿瘤区、肿瘤核心区和增强肿瘤区的 Dice 相似系数分别达到 89.80% 、90.40% 和 82.60% ，
+BraTS2022 数据集上分别达到 91.73% 、93.06% 和 87.00% ； 对于边界不太清晰的病灶区域， 该网络具有较高的精度和
+相对较低的冗余度，总体表现优于现有的大部分网络。  
+关键词： 多模态医学图像；边缘特征提取；脑部肿瘤； U-Net；预激活残差块  
+中图法分类号： TP391      DOI ：10.3724/SP.J.1089.2024-00246 
+Multimodal Brain Tumor Image Segmentation Network Incorporating Edge  
+Feature Extraction 
+Cao Weiye1), Zhu Kaiyan1)*, Liu Yue1), Song Weibo1), and Liu Tong2) 
+1) (School of Information Engineering, Dalian Ocean University, Dalian  116023) 
+2) (School of Mechanical and Power Engineering, Dalian Ocean University, Dalian  116023) 
+Abstract: Multimodal medical images have advantages su ch as comprehensive information, improving di-
+agnostic accuracy, detecting therapeutic effects, and pr ognostic evaluation, which can provide doctors with 
+more comprehensive and accurate information. This paper proposes a multimodal brain tumor image segmen-
+tation network that combines edge feature extraction to utilize the comprehensive information between multi-
+modal medical images. The main design idea of the network is as follows: firstly, the pre activation residual 
+block has been improved, and a dual residual pre activati on module has been proposed to replace the encoding 
+and decoding layers in U-Net; additionally, the network width has been increased in the decoding layer, en-
+hancing the network’s feature extraction ability; then, an edge feature extraction module was designed to ex-
+tract edge features from different modalities and levels , and integrate them with the segmentation results, en-
+hancing the network’s ability to express edge lesions; finally, using the BraTS2018 and BraTS2022 datasets to 
+validate network performance, the similarity coefficien ts Dice in the entire tumor area, tumor core area, and 
+
+=== PDF_PAGE 2 ===
+498 计算机辅助设计与图形学学报  第 38 卷 
+ 
+     
+      
+enhanced tumor area reached 89.80%, 90.40%, 82.60% , and 91.73%, 93.06%, and 87.00%, respectively. The 
+proposed network has high accuracy and relatively low redundancy for lesion areas with unclear boundaries. 
+Overall performance of the proposed network is better than most existing networks. 
+ 
+Key words: multimodal medical images; edge feature extraction; brain tumor; U-Net; pre-activation residual block 
+胶质瘤作为中枢神经系统的一种严重疾病， 占
+脑部肿瘤的 81%，其存在对人类健康构成了巨大的
+威胁， 如果医生能及早诊断出这种疾病， 就能及时
+治疗，从而增加生存的可能性 [1-3] 。目前，计算机
+断层扫描（ computed tomography ，CT）和磁共振
+成像（magnetic resonance imaging ，MRI）等脑成
+像技术在脑异常诊断中发挥着重要的作用 [4-5] 。与
+CT 相比，MRI 有更好的图像对比度，可以在扫描
+过程中实时地识别大脑结构的各个部分，因此对
+MRI 图像进行准确地解读与分析至关重要。然而，
+由于胶质瘤医学图像数据稀少， 脑部结构复杂， 肿
+瘤形态各异， 且常与正常组织交织在一起， 使得搜
+集和精确地标注脑部肿瘤成为一项艰巨的任务。 如
+何使用较少的数据集实现更高精度的分割， 成为脑
+部肿瘤分割技术研究中亟待解决的问题。  
+通常，脑部肿瘤及其子区域的精确描绘由经验
+丰富的医生手动完成， 但是这种方式成本高， 耗时
+长，还容易出现人为错误影响预后和治疗 [6]。传统
+的图像分割方法， 如阈值分割， 基于区域的分割等
+在处理 MRI 图像时，容易受到噪声干扰，难以获
+得满意的分割效果。 随着深度学习的发展， 人们提
+出了许多使用各种深度学习网络的医学图像分割
+方法。2015 年，Long 等[7]提出首个用于语义分割
+的全卷积网络（fully convolutional networks ，FCN）；
+之后，Ronneberger 等[8]提出基于 FCN 思想的医学
+图像语义分割网络 U-Net，它采用 U 型对称结构，
+并在上采样与下采样中加入跳跃连接， 将浅层特征
+和深度特征进行融合，使得可以在小规模数据集的
+情况下获得很好的分割效果； Dosovitskiy 等[9]提出
+用于视觉的 Transformer ， 将图像分割成多个小块，
+并将这些小块作为 Transformer 模型的输入，实现
+了 Transformer 在图像识别任务中的应用。还有很
+多基于上述方法的改进。周涛等 [10] 提出一种跨模
+态的多编码混合注意力 U 型网络 MEAU-Net ，通
+过设计多编码器来充分利用多模态医学图像间的
+互补信息，解决单模态医学图像病灶提取不足的问
+题；Liu 等[11]将空洞卷积与 U-Net 网络进行结合，
+利用空洞卷积细化结构在提取局部特征和全局特
+征上的优势对 U-Net 进行改进；孙军梅等 [12] 提出
+一种具有边缘增强的医学图像分割网络 AS-Unet ，
+针对传统分割网络边缘分割不清晰、 缺失值大等问
+题， 引入边缘注意模块， 结合多尺度特征图具有的
+不同特征强化特征学习，并提出新的组合损失函数
+来减少网络参数，实现了对病灶区域的精确分割；
+Chen 等[13] 将 Transformer 与 U-Net 结合，利用
+Transformer 捕获输入序列中任意 2 个位置之间的依
+赖关系，有效地捕捉图像中的全局信息的优点与
+U-Net 结合，实现了很好的分割效果； Cao 等[14]将
+Swin-Transformer [15] 块与 U-Net 结构结合，在编码
+器部分采用 Swin Transformer 提取图像特征， 而解
+码器部分则采用类似于 U-Net 的结构，通过上采样
+和跳跃连接等技术逐渐恢复特征到原始图像大小，
+实现精确的语义分割；为了高效地利用多模态医学
+图像信息，周涛等 [16] 提出一种跨模态、跨尺度与
+跨维度的 Transformer 分割模型，通过跨模态、跨
+维度注意力模块以及 Transformer ，使网络学习更
+多的特征来获取跨尺度信息，实现对复杂病灶区域
+的分割。 由上述方法可以看出， 编码器、 解码器结
+构在许多医学图像分割任务中都在使用，文献
+[17-18] 也证实该结构可以在小规模数据集上实现
+良好的分割性能和泛化性能。 但是， 编码器、 解码
+器结构在下采样的过程中仍然会丢失一定的病灶
+区域特征以及边缘特征，可能会严重影响到分割的
+精度，在医学领域可能会影响患者的治疗以及预后
+评估。 
+He 等[19]提出的残差思想可以在大多数网络中
+大幅缓解梯度消失的问题。为了解决上述脑肿瘤分
+割方法中存在的边缘效果差的问题，本文提出结合
+边缘特征提取的多模态脑部肿瘤图像分割网络。首
+先提出预激活边缘特征提取模块（pre-activated edge 
+feature extraction module ，PEEM）， 将其添加到网络
+之中，使得网络可以学习到更加丰富的边缘特征，
+提升图像边缘的分割精度；受到预激活残差块 [20]和
+U-Net 编码器解码器结构的启发，本文对 U-Net 进
+行改进；针对网络的特征提取能力以及训练过程中
+特征消失的问题，为编码层和解码层引入双残差预
+
+=== PDF_PAGE 3 ===
+第 3 期 曹伟业，等：结合边缘特征提取的多模态脑部肿瘤图像分割网络  499  
+ 
+     
+      
+激活残差块（ pre-activated double residual block ，
+PDRB），显著提升网络对病灶边缘的分割效果。  
+1  本文网络  
+本文网络的结构如图 1 所示，分为主干网络和
+边缘特征融合。使用 4 种模态拼接而成的四通道图
+像作为输入，主干部分在 U-Net 的基础上将编码层
+与解码层替换为 PDRB， 利用双残差连接进一步减
+少特征提取过程中的特征丢失。在图像输入部  
+分，对 4 个通道利用 PEEM 单独进行边缘特征提
+取和拼接，对编码器的每层利用双线性插值将图像
+恢复到原始图像大小；之后采用 1×1 卷积操作处理
+成与输出结果相对应的三通道特征图，再利用
+PEEM 分别对 3 个通道进行边缘特征的提取， 将所
+有提取的边缘信息进行通道维度拼接；再次通过
+1×1 卷积操作， 处理成与输出结果相对应的三通道
+边缘特征图；最后使用 Sigmoid 输出一个权重矩
+阵， 并与最终分割结果进行相乘， 增强分割结果边
+缘特征信息，加强脑部肿瘤病灶区域的分割结果。  
+ 
+ 
+图 1  本文网络结构  
+ 
+不同模态的医学图像都可以表达病灶信息， 但
+表达病灶区域的强弱各不相同，本文使用 4 种模态
+的图像同时作为输入，实现不同模态特征信息的互
+补。从网络特征提取的角度来说， U-Net 的编码器
+与解码器特征提取过程中可能会丢失一些重要特
+征信息，因此通过双残差连接的思想缓解特征丢
+失； 对于编码器阶段不同尺度的语义信息， 通过对
+边缘特征提取、 融合， 实现对不同尺度边缘特征的
+充分利用。  
+1.1  PDRB 
+在标准的残差块中， 首先进行卷积操作， 然后
+依次经过批归一化（ batch normalization ，BN）和
+激活函数（如 ReLU），最后通过残差连接实现恒
+等映射。 而在如图2 所示的预激活残差块中， 这个
+顺序被调整为：首先进行 BN，然后依次经过激活
+函数和卷积操作，最后同样是通过残差连接实现
+恒等映射。 该设计具有如下优势：BN 层可以使每
+层的输入数据分布更加稳定，缓解梯度消失和梯
+度爆炸的问题，使模型更容易收敛；并且可以直
+接对输入数据进行归一化，减少模型对输入数据
+的依赖， 提高模型的泛化能力； 将ReLU 置于 BN
+之后，可以进一步增加模型的非线性，提高模型
+的表达能力； 由于BN 层的存在，ReLU 激活函数
+更有可能接收到分布稳定的输入，降低了因输入
+分布变化导致的过拟合风险。为了减少特征提取
+过程中的特征丢失，本文对预激活残差块进行改
+进，在预激活残差块中第 1 个卷积之后添加一条
+残差连接，提出 PDRB，其结构如图 3 所示。将
+U-Net 中的编码层与解码层替换为 PDRB，减缓特
+征提取过程中的特征丢失。  
+ 
+ 
+图 2  预激活残差块结构  
+
+=== PDF_PAGE 4 ===
+500 计算机辅助设计与图形学学报  第 38 卷 
+ 
+     
+      
+ 
+图 3  PDRB 结构 
+ 
+1.2  PEEM 
+Sobel 算子广泛应用于图像处理中，主要用于
+边缘检测。 Sobel 算子通过灰度加权的方法对图像
+的各像素点求微分或二阶微分，检测出变化明显的
+点，这点即为图像的边缘。  
+本文结合 Sobel 算子提出 PEEM，其结构如图
+4 所示，其中，红色框左侧为不同模态输入数据，
+右侧为经过边缘检测之后所显示的病灶区域。首
+先对输入图像进行 BN 和 ReLU 操作，使得输入  
+数据分布更加稳定；然后用 Sobel 算子提取图像
+的边缘信息，通过 Sigmoid 激活函数得到边缘权
+重更高的权重矩阵；再与原始输入图像进行逐元
+素相乘，增强输入图像边缘信息；最后通过衔接
+1×1 卷积、 BN 和 ReLU 操作对特征图进行优化，
+输出具有边缘特征的特征图。该过程可以从输入
+图像和多层级特征图中提取到丰富的边缘信息，
+将其与网络结合之后可进一步加强网络的边缘特
+征提取能力。  
+ 
+ 
+图 4  PEEM 结构 
+ 
+1.3  损失函数  
+损失函数用于衡量预测值与真实值之间的偏
+离程度， 为网络优化提供方向。 医学图像分割领域
+常用的损失函数有交叉熵损失函数 CEL ，Dice 损失
+函数 DiceL 等，本文网络使用 CEL 和 DiceL 这 2 个损
+失函数。  
+1.3.1  Dice 损失函数 DiceL  
+Dice 损失函数 [21] 用于衡量图像分割任务中图
+像前景体素与背景体素数量之间严重不平衡的情
+况，是医学图像分割领域最常用的损失函数， DiceL
+的计算公式为 
+ Dice
+2L XX YY=1- +∩  （1） 
+其中， X 和Y 分别表示标签和预测结果。  
+1.3.2  交叉熵损失函数 CEL  
+交叉熵损失函数是一种常用的损失函数， 特别
+适用于分类任务，无论是二分类还是多类别分类问
+题， 该函数基于信息论的概念， 能够衡量模型的预
+测结果和真实标签之间的差异。 CEL 的公式为  
+ () ()CE ˆˆlg lgLy y y y=- · +1- · 1-■ ■■ ■  （2） 
+其中， y 和 ˆy 分别表示标签和预测结果。  
+1.3.3  混合损失函数  
+本文网络将使用 DiceL 和 CEL 混合而成的损失
+函数 mixL ， 该函数结合DiceL 和 CEL 的优点， 能够有
+效地处理前景和背景像素数量不平衡的情况； 并且
+能够很好地衡量模型的预测结果和真实标签之间
+的差异。 mixL 的公式为  
+ ()mix Dice CE 1LL L γγ=· +-  （3） 
+其中，γ 表示权重参数。  
+2  数据集与评价指标  
+2.1  数据集与预处理  
+本文采用脑肿瘤分割挑战赛（ brain tumor 
+
+=== PDF_PAGE 5 ===
+第 3 期 曹伟业，等：结合边缘特征提取的多模态脑部肿瘤图像分割网络  501  
+ 
+     
+      
+segmentation challenge ）数据集 BraTS2018 和
+BraTS2022 。这 2 个数据集中只公开了训练集，数
+量分别为 285 和 1 251，其中， BraTS2018 数据集
+包括 210 例高级别胶质瘤（ high grade glioma ，
+HGG）和 75 例低级别胶质瘤（ low grade glioma ，
+LGG）。每个样本有如图 5 所示 4 种模态： Flair、
+T1 和 T2 加权成像，以及 T1ce；每个模态体积为
+240×240×155 。数据集标签共有 4 个：背景（标签
+0）、坏死和非增强肿瘤核心区（标签 1）、瘤周水
+肿区（标签 2）和增强肿瘤区（标签 4）。 
+ 
+ 
+     a .  G T      b .  F l a i r      c .  T 1       d .  T 1 c e      e .  T 2  
+图 5  每个样本的 4 种模态数据示例  
+ 
+在训练之前，由于原始数据集为 3D 形式，本
+文网络为 2D，因此对每个模态的图像进行切片处
+理为 2D 数据并归一化：将 BraTS2018 数据集从
+240×240 像素裁剪为 160×160 像素；由于
+BraTS2022 数据集裁剪之后会丢失信息， 因此采用
+原始切片大小 240×240 像素，并根据标注好的病灶
+区域去除图像中没有病灶的切片； 然后将 4 个模态
+对应的切片进行拼接。预处理完成后， BraTS2018
+和 BraTS2022 数据集分别有 18 924 例和 81 304 例，
+将这些数据按照 7.0∶1.5∶1.5 的比例划分为训练
+集、验证集和测试集。  
+2.2  评价指标  
+为了全面评估本文网络，将相似系数 Dice、阳
+性预测值（positive predictive value，PPV）和 HD95
+（Hausdorff_95）作为评价指标；同时，通过对比
+分割结果与真实标注数据分析模型性能。  
+2.2.1  Dice 系数 
+Dice 系数也被称为 Dice 相似度系数，用于计
+算 2 个样本的相似度， 其值越大， 表示2 个样本越
+相似。在图像分割等任务中， Dice 系数常用于度
+量预测分割与真实分割之间的重叠程度，公式为  
+ 2TPDice 2TP FP FN= ++  （4） 
+其中，真阳性（ true positive ，TP）表示模型预测
+为阳性，且实际标签也为阳性的样本数；假阳性
+（false positive ，FP）表示模型预测为阳性，但实
+际标签为阴性的样本数；假阴性（ false negative ，
+FN）表示模型预测为阴性，但实际标签为阳性的
+样本数。  
+2.2.2  PPV 
+PPV 是实际预测正确的部分占总预测部分的
+比例， 其值越大， 表示实际预测正确的部分所占比
+例越大。其计算公式为  
+ TPPPV TP FP= +  （5） 
+2.2.3  HD95 
+HD95 是一种计算 2 个集合之间距离的方法，
+它与传统的豪斯多夫距离（Hausdorff distance ，HD）
+相似，但有所区别。 HD 用于衡量 2 个集合之间的
+相似度，其值越小，表示 2 个集合越相似。 HD95
+是基于 X 和 Y 中边界点之间距离的第 95 百分位数
+的计算，其考虑了 X 和 Y 这 2 个集合中所有点对
+的距离，并找出这些距离的第 95 百分位数作为
+HD95 的值。其目的是消除非常小的异常值子集对
+整体距离计算的影响。其计算公式为  
+ () ()HD , max ,XY = xyy xdd  （6） 
+( )
+(){ () }
+,max
+max max min , , max min ,
+xy yx
+yxxy
+dd
+dx y dx y
+YXXY ∈∈∈∈
+=
+ 
+（7）
+ 
+其中， X 和 Y 表示 2 个点集， x 和 y 分别表示点
+集 X 和 Y 中的点； xyd 表示点集 X 中的每个点到点
+集 Y 中的最近点的距离的最大值， yxd 表示点集 Y
+中的每个点到点集 X 中最近点的距离的最大值。  
+3  实验结果与分析  
+3.1  参数设置  
+本文实验在 AMD Ryzen7 5800X 处理器，
+NVIDIA GeForce RTX 3080Ti GPU ，12 GB 显存，
+CUDA 版本为 12.1 的计算平台上进行训练，在
+PyTorch 框架下实现， Python 版本为 3.8.16。实验
+中，采用 Adam 优化器，设置学习率为 0.000 1 ，
+批处理大小为 18，迭代轮数为 100。 
+3.2  损失权重对比实验  
+由于本文采用的损失函数为混合损失函数， 因
+此不同大小的权重参数对分割结果会产生很大影
+
+=== PDF_PAGE 6 ===
+502 计算机辅助设计与图形学学报  第 38 卷 
+ 
+     
+      
+响。 为了找出最佳权重γ ，在 BraTS2018 数据集上
+使用基线模型 U-Net 进行实验，确保后续实验均使
+用最佳权重参数进行，结果如表 1 所示。其中，
+WT 表示全肿瘤区 （whole tumor ，WT）， 由浮肿区、
+增强肿瘤区和坏疽构成， TC 表示肿瘤核心区
+（tumor core ，TC），由增强肿瘤区和坏疽构成；
+ET 表示增强肿瘤区 （enhancing tumor ，ET）。可 以
+看出， 当=0.2γ 时表现最佳， 除了PPV 在 WT、TC
+以及 HD95 在 TC 表现不佳，其余指标均处于最优。
+因此，后续实验中权重参数选取 =0.2γ 进行。 
+3.3  对比实验  
+为了评估本文网络的性能，在 2 个数据集上与
+其他先进的方法进行比较，包括 FCN32s[7]、U-Net[8]、
+Unet++ [22] 、Attention UNet [23] 、Dense UNet [24] 、
+ResUnet[25] 和 Swin Unet [14] ，结果如表 2 和表 3 所
+示。为了确保实验的公平性，各种方法采用相同的
+训练数据、测试数据、基超参数和损失函数。  
+从表 2 和表 3 可以看出，本文网络在 3 个分割
+指标上均优于 7 种对比方法，并且在边缘区域的分
+割精度表现更好。 原因有2 个方面： 一是在编码器 
+ 
+表 1  在 BraTS2018 数据集上使用基线模型 U-Net 不同γ 时的结果对比  
+Dice/% ↑ PPV/% ↑ HD95/mm ↓ γ  
+WT TC ET WT TC ET WT TC ET 
+0.1 87.25  86.80  78.48  89.72 91.33 83.00 2.53 1.67 2.75 
+0.2 87.55  87.61  78.77  89.79 91.19 85.95 2.52 1.69 2.74 
+0.3 87.29 87.48 77.99 89.69 91.50 85.30 2.53 1.68 2.76 
+0.4 87.05 86.40 78.05 88.86 91.97 84.11 2.55 1.68 2.76 
+0.5 87.06 87.38 78.57 90.33 91.83 85.68 2.54 1.68 2.75 
+0.6 86.97 86.91 77.56 89.46 91.55 84.45 2.54 1.69 2.77 
+0.7 86.99 86.62 77.57 89.05 91.48 84.80 2,55 1.68 2.75 
+0.8 86.13 87.34 77.59 88.68 90.73 82.83 2.55 1.70 2.77 
+0.9 87.11 86.92 77.78 89.68 91.22 83.45 2.54 1.69 2.76 
+注：粗体表示最优值。  
+ 
+表 2  在 BraTS2018 数据集上病灶区域分割结果对比  
+Dice/% ↑ PPV/% ↑ HD95/mm ↓ 方法 
+WT TC ET WT TC ET WT TC ET 
+FCN32s [7] 82.12 83.20 68.35 82.31 85.89 71.62 2.96 1.84 3.05 
+U-Net[8] 87.55 87.61 78.77 89.79 91.19 85.95 2.52 1.69 2.74 
+Unet++ [22]  88.88 89.30 80.87 90.76 91.14 85.30 2.43 1.59 2.60 
+Attention UNet [23]  87.85 88.57 79.50 91.07 92.13 84.46 2.51 1.62 2.68 
+Dense UNet [24]  87.88 88.26 79.74 90.57 91.99 83.99 2.49 1.62 2.65 
+ResUnet [25]  88.95 89.45 81.21 91.23 91.25 86.35 2.41 1.58 2.59 
+Swin Unet [14]  88.20 88.45 81.23 89.45 91.36 85.66 2.46 1.59 2.64 
+本文 89.80 90.40 82.60 92.21 91.72 87.14 2.35 1.54 2.50 
+注：粗体表示最优值。  
+ 
+表 3  在 BraTS2022 数据集上病灶区域分割结果对比  
+Dice/% ↑ PPV/% ↑ HD95/mm ↓ 
+方法 
+WT TC ET WT TC ET WT TC ET 
+FCN32s [7] 84.52 86.35 72.43 85.66 88.39 74.34 2.63 1.70 2.64 
+U-Net[8] 90.25 90.63 84.69 92.27 93.35 88.18 2.35 1.37 2.47 
+Unet++ [22]  90.80 91.67 84.79 92.89 93.65 88.85 2.30 1.35 2.44 
+Attention UNet [23]  90.25 91.39 84.05 92.09 94.35 87.30 2.34 1.36 2.49 
+Dense UNet [24]  90.03 90.67 83.69 91.78 92.56 86.97 2.36 1.39 2.51 
+ResUnet [25]  90.95 91.54 85.17 92.37 92.89 88.11 2.29 1.35 2.43 
+Swin Unet [14]  91.16 91.98 85.67 93.45 93.66 88.84 2.26 1.31 2.36 
+本文 91.73 93.06 87.00 94.06 95.35 90.44 2.20 1.26 2.30 
+注：粗体表示最优值。  
+
+=== PDF_PAGE 7 ===
+第 3 期 曹伟业，等：结合边缘特征提取的多模态脑部肿瘤图像分割网络  503  
+ 
+     
+      
+和解码器过程中使用改进过后的 PDRB， 进一步避
+免了训练过程中的特征丢失，在解码过程中通道数
+增加使得网络学习到的特征更加丰富； 二是将原始
+数据以及编码过程中特征图边缘特征进行提取融
+合， 最后融入分割结果之中， 使得边缘分割结果更
+加精确，在 2 个数据集上的分割结果分别如图 6
+和图 7 所示。 图中绿色区域表示浮肿区； 黄色表示
+增强肿瘤区；红色表示坏疽。  
+从图 6 可以看出， 第1 行中， 本文网络得到了
+与真实标签最接近的结果，其余方法都丢失了病灶
+区域左下角的信息； 第3 行中，Dense UNet [24]在整
+体结构以及对黄色病灶区域的分割结果中表现更
+佳，本文网络次之；第 4 行中，对于大面积 TC 下
+面的小区域，除了 Swin Unet [14]与本文网络之外，
+其余方法都未分割出来，且本文网络分割结果与真
+实标签更接近。  
+从图 7 可以看出， 第1 行中， 红色与黄色区域
+对应 TC，各种方法分割结果都与标签较为接近，
+但是在绿色区域边缘平滑度以及分割形状方面， 本
+文网络都更为接近； 第2 行中， 本文网络与标签较
+为一致， 而对比方法有的形状差距过大， 虽然所有
+方法绿色区域的分割结果都出现了漏分割， 但本文
+网络表现相对较好；第 3 行中，在绿色病灶区域，
+本文网络分割结果与标签更为接近， 而其他方法都
+出现了漏分割或者过分割。  
+3.4  五折交叉验证  
+为了进一步验证本文网络的稳定性， 在规模较
+大的 BraTS2022 数据集进行五折交叉验证，验证
+本文网络的可靠性以及实验结果的稳定性。 将数据
+集分为用于五折交叉验证的数据集和测试集，其
+中， 测试集与对比实验中相同， 将用于五折交叉验
+证的数据集随机划分为 5 个大小相等的子集进行
+实验，五折交叉验证结果如表 4 所示。 
+从表 4 可以看出， 在五折交叉验证实验中， 本
+文网络在测试集与对比实验所用测试集完全相同
+的情况下，本文网络五次结果均表现出优秀且稳定
+的性能。  
+3.5  消融实验  
+为了评估本文网络及其中的模块是否真实有
+效， 在2 个数据集上进行消融实验， 对比方法分别
+是 baseline 、单独添加 PEEM、单独更换编码层与
+解码层为 PDRB，以及将 PEEM 与 PDRB 进行结合，  
+ 
+a. 原图 b. 标签 c. U-Net[8] d. Unet++[22] e. Attention 
+UNet[23] f. Dense UN-et[24] g. ResUnet[25] h. Swin Unet[14] i. 本文 
+ 
+图 6  在 BraTS2018 数据集上不同网络病灶区域分割可视化结果对比  
+
+=== PDF_PAGE 8 ===
+504 计算机辅助设计与图形学学报  第 38 卷 
+ 
+     
+      
+a. 原图 b. 标签 c. U-Net[8] d. Unet++[22] e. Attention 
+UNet[23] f. Dense UN-et[24] g. ResUnet[25] h. Swin Unet[14] i. 本文 
+图 7  在 BraTS2022 数据集上不同网络病灶区域分割可视化结果对比  
+ 
+表 4  交叉验证结果对比  
+Dice/% ↑ PPV/% ↑ HD95/mm ↓ 
+评价指标  
+WT TC ET WT TC ET WT TC ET 
+1 92.14 92.89 86.88 95.24 94.88 89.98 2.18 1.27 2.30 
+2 91.57 93.24 86.42 94.15 95.33 89.79 2.20 1.26 2.32 
+3 92.35 92.78 87.23 95.47 95.14 90.89 2.18 1.25 2.29 
+4 92.28 93.48 87.47 94.89 94.96 90.94 2.17 1.26 2.28 
+5 93.08 93.65 87.58 96.15 96.24 91.26 2.15 1.24 2.28 
+平均 92.28 93.21 87.12 95.18 95.31 90.57 2.18 1.26 2.29 
+ 
+对比结果分别如表 5 和表 6 所示。 
+从表 5 可以看出，baseline 单独添加 PEEM 边
+缘检测模块之后， WT、TC 和 ET 的 Dice 系数分
+别提高 0.78%、0.96%和 0.12%；单独将编码与解
+码层替换为 PDRB 之后，WT、TC 和 ET 的 Dice
+系数分别提高 1.79%、2.37%和 3.96%；将 PEEM
+和 PDRB 与 U-Net 结合之后， WT、TC 和 ET 的
+Dice 系数分别提高 2.57%、3.18%和 4.86%。表 6 
+ 
+表 5  在 BraTS2018 数据集上的消融实验结果对比  
+方法 Dice/% ↑ PPV/% ↑ HD95/mm ↓ 
+编号 模块 WT TC ET WT TC ET WT TC ET 
+1 baseline 87.55 87.61 78.77 89.79 91.19 85.95 2.52 1.69 2.74
+2 baseline+PEEM 88.23 88.45 78.87 89.56 91.65 86.12 2.48 1.62 2.72
+3 baseline+PDRB 89.12 89.69 81.89 91.34 91.89 86.76 2.38 1.59 2.53
+4 baseline+PEEM+PDRB 89.80 90.40 82.60 92.21 91.72 87.14 2.35 1.54 2.50
+注：粗体表示最优值。  
+
+=== PDF_PAGE 9 ===
+第 3 期 曹伟业，等：结合边缘特征提取的多模态脑部肿瘤图像分割网络  505  
+ 
+     
+      
+表 6  在 BraTS2022 数据集上的消融实验结果对比  
+方法 Dice/% ↑ PPV/% ↑ HD95/mm ↓ 
+编号 模块 WT TC ET WT TC ET WT TC ET 
+1 baseline 90.25 90.63 84.69 92.27 93.35 88.18 2.35 1.37 2.47
+2 baseline+PEEM 90.98 91.26 84.89 93.17 93.98 88.80 2.33 1.32 2.44
+3 baseline+PDRB 91.45 92.89 86.66 94.15 94.76 89.53 2.24 1.29 2.32
+4 baseline+PEEM+PDRB 91.73 93.06 87.00 94.06 95.35 90.44 2.20 1.26 2.30
+注：粗体表示最优值。  
+ 
+可以看出， baseline 单独添加 PEEM 之后，WT、
+TC 和 ET 的 Dice 系数分别提高 0.81%、0.70%和
+0.24%；单独将编码与解码层替换为 PDRB 之后，
+WT、TC 和 ET 的 Dice 系数分别提高 1.33%、2.49%
+和 2.33%；将 PEEM 和 PDRB 与 U-Net 结合之后，
+WT、TC 和 ET 的 Dice 系数分别提高 1.64%、2.68%
+和 2.73%。 
+不同模块病灶区域分割消融实验结果如图 8
+所示。可以看出，第 1 行中，baseline 的分割结果
+中丢失了很多病灶区域；添加 PEEM 之后，对丢
+失的边缘区域和 baseline 丢失的左侧绿色区域进行
+补充，但是右侧区域出现了过分割；添加 PDRB
+之后，与 baseline 相比，左侧绿色区域更加准确；
+最终结合 PEEM 和 PDRB，外围的绿色区域虽然有
+一定程度的丢失，但是整体表现更加接近真实标
+签。第 2 行中，左上方绿色区域和黄色区域中，
+baseline 的整体分割结果与标签相差很大， 而且出
+现了误分割；添加 PEEM 之后，左上方并没有出
+现误分割，并且绿色区域与标签更加接近；添加
+PDRB 之后，虽然也出现了误分割，但是绿色区
+域表现更好；最终，结合 PEEM 和 PDRB，左上
+方不仅没有出现误分割，而且绿色区域与原标签
+几乎一致。  
+PEEM 效果热力图如图 9 所示。可以看出：
+（1）第1 行中， 在WT 的分割热力图的红色框中，
+添加 PEEM 之后边缘效果更加准确；在 TC、ET
+的绿色框和紫色框中，添加 PEEM 之后边缘分割
+结果更加精细。（2）第 2 行中，添加 PEEM 之后，
+红色框内的边缘结果更加准确；未添加 PEEM 时，
+绿色框内的 TC 和 ET 的边缘比较模糊，添加 PEEM
+之后，边缘相对清晰。（3）在同一分割图的对比中
+添加 PEEM 之后， 病灶外围边缘 （蓝色） 与非病灶
+区域边缘 （红色） 对比更加明显， 表明模型对于边
+界敏感度更高。  
+ 
+ 
+a. 原图         b .  标签        c .  方法 1        d .  方法 2        e .  方法 3        f .  方法 4 
+ 
+图 8  不同模块病灶区域分割消融实验结果对比  
+
+=== PDF_PAGE 10 ===
+506 计算机辅助设计与图形学学报  第 38 卷 
+ 
+     
+      
+ 
+图 9  PEEM 效果热力图  
+ 
+4  结  语 
+针对不同模态 MRI 脑部肿瘤图像之间的差
+异，本文提出一种结合边缘特征提取的多模态脑部
+肿瘤图像分割网络。通过结合 PEEM 和 PDRB 实
+现边缘特征提取，减少特征提取过程中的特征丢
+失。 其中，PEEM 负责提取原始图像各种模态图像
+和编码层特征图的边缘特征，之后将边缘特征进行
+融合；PDRB 替换了普通编码和解码层； 最后将融
+合的边缘特征经过 Sigmoid 与主网络输出结果相
+乘， 实现病灶区域的精确分割。 实验结果表明， 在
+BraTS2018 数据集上，Dice 系数分别达到 89.80%，
+90.40%和 82.60%；在 BraTS2022 数据集上， Dice
+系数分别达到 91.73%、93.06%和 87.00%。证明了
+本文网络能够充分利用不同模态图像展现的病灶
+信息和边缘特征， 有效地提升分割精度， 帮助医生
+为病人进行治疗和预后评估。  
+参考文献（ References）： 
+[1] Ranjbarzadeh R, Caputo A, Tirkolaee E B, et al. Brain tumor 
+segmentation of MRI images: a comprehensive review on the 
+application of artificial intelligen ce tools[J]. Computers in Bi-
+ology and Medicine, 2023, 152: Article No.106405 
+[2] Ahamed M F, Hossain M M, Nahiduzzaman M, et al. A review 
+on brain tumor segmentation based on deep learning methods 
+with federated learning techniques[J]. Computerized Medical 
+Imaging and Graphics, 2023, 110: Article No.102313 
+[3] Balwant M K. A review on conv olutional neural networks for 
+brain tumor segmentation: methods , datasets, libraries, and fu-
+ture directions[J]. IRBM, 2022, 43(6): 521-537 
+[4] Soomro T A, Zheng L H, Afifi A J, et al. Image segmentation 
+for MR brain tumor detection using machine learning: a re-
+view[J]. IEEE Reviews in Biomedical Engineering, 2023, 16: 
+70-90 
+[5] Sun Kangkang, Chen Wei, Li Qixuan, et al. Research progress 
+of multimodal MRI brain tumor image segmentation meth-
+ods[J]. Chinese Journal of Magnetic Resonance Imaging, 2023, 
+14(11): 164-169+176(in Chinese) 
+
+=== PDF_PAGE 11 ===
+第 3 期 曹伟业，等：结合边缘特征提取的多模态脑部肿瘤图像分割网络  507  
+ 
+     
+      
+(孙康康, 陈伟, 李奇轩, 等. 多模态 MRI 脑肿瘤图像分割方
+法研究进展[J]. 磁共振成像, 2023, 14(11): 164-169+176) 
+[6] Menze B H, Jakab A, Bauer S, et al. The multimodal brain tu-
+mor image segmentation benchmark (BRATS)[J]. IEEE Trans-
+actions on Medical Imaging, 2015, 34(10): 1993-2024 
+[7] Long J, Shelhamer E, Darrell T. Fully convolutional networks 
+for semantic segmentation[OL]. [2024-05-10]. https://arxiv.org/ 
+abs/1411.4038  
+[8] Ronneberger O, Fischer P, Brox T. U-Net: convolutional net-
+works for biomedical image segmentation[C] //Proceedings of 
+the 18th International Conference on Medical Image Comput-
+ing and Computer-assisted Interv ention. Heidelberg: Springer, 
+2015: 234-241 
+[9] Dosovitskiy A, Beyer L, Kolesnikov A, et al . An image is 
+worth 16x16 words: transformers for image recognition at 
+scale[OL]. [2024-05-10]. https://arxiv.org/abs/2010.11929 
+[10] Zhou Tao, Dong Yali, Liu Shan, et al . Cross-modality 
+multi-encoder hybrid attention U-Net for lung tumors images 
+segmentation[J]. Acta Photonica Sinica, 2022, 51(4): Article 
+No.0410006(in Chinese) 
+(周涛, 董雅丽, 刘珊, 等. 用于肺部肿瘤图像分割的跨模态
+多编码混合注意力 U-Net[J]. 光子学报, 2022, 51(4): Article 
+No.0410006) 
+[11] Liu D, Zhang H, Zhao M M, et al . Brain tumor segmention 
+based on dilated convolution refi ne networks[C] //Proceedings 
+of the 16th International Conference on Software Engineering 
+Research, Management and App lications. Los Alamitos: IEEE 
+Computer Society Press, 2018: 113-120 
+[12] Sun Junmei, Ge Qingqing, Li Xiumei, et al. A medical image 
+segmentation network with bounda ry enhancement[J]. Journal 
+of Electronics & Information Technology, 2022, 44(5): 1643- 
+1652(in Chinese) 
+(孙军梅, 葛青青, 李秀梅, 等. 一种具有边缘增强特点的医
+学图像分割网络[J]. 电子与信息学报, 2022, 44(5): 1643-1652) 
+[13] Chen J N, Lu Y Y , Yu Q H, et al . TransUNet: transformers 
+make strong encoders for medical image segmentation[OL]. 
+[2024-05-10]. https://arxiv.org/abs/2102.04306 
+[14] Cao H, Wang Y Y , Chen J, et al . Swin-Unet: Unet-like pure 
+transformer for medical image segmentation[C] //Proceedings 
+of the European Conference on Computer Vision. Heidelberg: 
+Springer, 2022: 205-218 
+[15] Liu Z, Lin Y T, Cao Y , et al. Swin Transformer: hierarchical vi-
+sion transformer using shifted windows[C] //Proceedings of the 
+IEEE/CVF International Conference on Computer Vision. Los 
+Alamitos: IEEE Computer Society Press, 2021: 9992-10002 
+[16] Zhou Tao, Dang Pei, Lu Huiling, et al. A Transformer segmen-
+tation model for PET/CT images with cross-modal, cross-scale 
+and cross-dimensional[J]. Journal of Electronics & Information 
+Technology, 2023, 45(10): 3529-3537(in Chinese) 
+(周涛, 党培, 陆惠玲, 等. 跨模态跨尺度跨维度的 PET/CT
+图像的 Transformer 分割模型 [J]. 电子与信息学报 , 2023, 
+45(10): 3529-3537) 
+[17] Bappy J H, Simons C, Nataraj L, et al. Hybrid LSTM and en-
+coder-decoder architecture for de tection of image forgeries[J]. 
+IEEE Transactions on Image Processing, 2019, 28(7): 3286- 
+3300 
+[18] Nayak T, Ng H T. Effective modeling of encoder-decoder ar-
+chitecture for joint entity and relation extraction[C] 
+//Proceedings of the 34th AAAI Conference on Artificial Intel-
+ligence. Palo Alto: AAAI Press, 2020: 8528-8535 
+[19] He K M, Zhang X Y , Ren S Q, et al. Deep residual learning for 
+image recognition[C] //Proceedings of the IEEE Conference on 
+Computer Vision and Pattern Recognition. Los Alamitos: IEEE 
+Computer Society Press, 2016: 770-778 
+[20] He K M, Zhang X Y , Ren S Q, et al. Identity mappings in deep 
+residual networks[C] //Proceedings of the 14th European Con-
+ference on Computer Vision. Heidelberg: Springer, 2016: 630- 
+645 
+[21] Milletari F, Navab N, Ahmadi  S A. V-Net: fully convolutional 
+neural networks for volumetric medical image segmentation[C] 
+//Proceedings of the 4th International Conference on 3D Vision. 
+Los Alamitos: IEEE Computer Society Press, 2016: 565-571 
+[22] Zhou Z W, Siddiquee M M R, Tajbakhsh N, et al. Unet++: re-
+designing skip connections to exploit multiscale features in 
+image segmentation[J]. IEEE Transactions on Medical Imag-
+ing, 2020, 39(6): 1856-1867 
+[23] Schlemper J, Oktay O, Schaap M, et al . Attention gated net-
+works: learning to leverage salient regions in medical im-
+ages[J]. Medical Image Analysis, 2019, 53: 197-207 
+[24] Li X M, Chen H, Qi X J, et al. H-DenseUNet: hybrid densely 
+connected UNet for liver and tumor segmentation from CT vo-
+lumes[J]. IEEE Transactions on Medical Imaging, 2018, 
+37(12): 2663-2674 
+[25] Liu J, Kang Y Q, Qiang J, et al . Low-dose CT imaging via 
+cascaded ResUnet with spectrum loss[J]. Methods, 2022, 202: 
+78-87 
+ 

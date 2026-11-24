@@ -1,0 +1,1210 @@
+=== PDF_PAGE 1 ===
+ 
+文章编号：1007-791X（2026）04-0348-12
+多模态信息融合的CT金属伪影校正网络
+傅昭然
+1
+，赵英帅
+2,3
+，姜　轲
+2,3
+，石保顺
+2,3， *
+（1.  秦皇岛市第一医院 口腔内科，河北 秦皇岛 066004；
+2.  
+燕山大学 信息科学与工程学院，河北 秦皇岛 066004；
+3.  燕山大学 河北省信息传输与信号处理重点实验室，河北 秦皇岛 066004）
+摘
+　要：计算机断层扫描(Computed Tomography，CT)技术是医学辅助诊断的重要工具 ，然而当扫描部位存在金
+属时，重 建 的CT图像包含金属伪影 ，严重影响临床诊断和治疗。近些年 ，基于深度学习的金属伪影校正方法旨
+在有效去除金属伪影， 但现有方法忽略了不同模态信息之间的互补特性 ，伪影校正效果有待提升。针对该问题 ，
+本文构建了一种多模态信息融合网络， 并将该架构用于模型驱动的金属伪影校正框架。首先利用金属伪影的可
+加性对金属伪影和 CT图像分别施加正则化约束 ，构建并求解了金属伪影校正的优化模型。其次 ，将所提出的算
+法的每个迭代子步骤展开成网络， 构建了模型驱动网络 ，该网络的模型架构具有较好的可解释性。最后 ，构建融
+合图像局部、 全局信息与文本先验信息的深度神经网络 ，并作为模型驱动金属伪影校正网络 的CT图像邻近网
+络。利用对比语言图像预训练模型来整合文本的先验知识以辅助金属伪影校正。实验表明， 本文提出的融合多
+种模态信息方法在金属伪影校正任务中优于现有基于深度学习的方法。
+关键词：计算机断层扫描；金属伪影校正；文本提示；模型驱动网络
+中图分类号： TP391.41　　文献标识码： A　　DOI：10.3969/j.issn.1007-791X.2026.04.008
+  
+0    引言
+计算机断层扫描 (Computed Tomography，CT)
+能无创地显示人体解剖结构， 已广泛应用于临床
+辅助诊断和评估。然而， 当患者体内存在金属植
+入物时 [1]，重建 的CT图像中会出现金属伪影 ，严
+重干扰了临床诊断。因此， 金属伪影校 正 (Metal
+Artifact Reduction，MAR)已成 为 CT领域的关键
+任务。用于 MAR的最常用的传统方法是基于正
+弦图 (投影数据)修补 ，其在执行重建过程之前移
+除并修补正弦图中的金属影响区域。Kalender等
+人[2] 提出使用线性插 值(Linear Interpolation，LI)填
+补正弦图。Meter等人 [3] 提出了归一化金属伪影
+校正 (Normalized Metal Artifact Reduction，NMAR)
+方法， 该方法利用先验图像的前向投影替换正弦
+图中的金属影响区域。尽管 LI和 NMAR都是简
+单有效的 MAR方法 ，但由于正弦图边缘的潜在
+不连续性， 重建图像仍可能包含伪影。随着深度
+学习(Deep Learning，DL)的发展 [4-5]，基于DL的方
+法已被广泛用于 MAR。根据域知识的不同 ， 现
+有的基于 DL的 MAR方法可以分为以下三类： 基
+于投影域的 MAR方法 、 基于图像域 的 MAR方
+法和基于双域的 MAR方法。基于投影域 的MAR
+方法通常构建卷积神经网络(Convolutional Neural
+Networks，CNN)来校正受金属影响的正弦图 ，但
+由于正弦图不一致经常导致严重的二次伪影。
+其中，Park等人 [6] 提出使 用 CNN来修复由射束
+硬化引起的损坏的正弦图。Zhang等人 [7] 通 过
+CNN生成先验图像 ，然后使用先验图像的前向投
+影对金属影响的正弦图进行修复。图像域方法 [8-9]
+直接校正图像域中的金属伪影， 而不涉及正弦
+ 
+ 
+收稿日期：2025-05-24　　　责任编辑：王建青
+基金项目： 国家自然科学基金资助项 目(62371414)；河北省自然科学基金资助项 目(F2025203070)；燕山大学校内科研培育项目 -特
+色专项培育项目(理工)(UY202206)；秦皇岛市科学技术研究与发展计划项目(202301A058)
+通信作者：石保顺，博士，副教授，主要研究方向为医工交叉、可解释人工智能等，E-mail：shibaoshun@ysu.edu.cn。
+ 
+第 50 卷 第 4 期 燕山大学学报 Vol. 50 No. 4
+2026 年 7 月 Journal of Yanshan University July   2026
+
+=== PDF_PAGE 2 ===
+图。Liao等人 [10] 介绍了首个用 于MAR的无监督
+学习方法， 称为伪影解纠缠网络 ，该方法实现了
+受金属影响的 CT图像与干 净 CT图像之间的转
+换， 能够有效校正金属伪影。 Lee等人 [11] 提出了
+一种简单有效的 MAR无监督学习方法 ，该方法
+基于最优传输理论导出了所谓的 β-CycleGAN结
+构， 能够在保留原始图像细节纹理的同时 ，有效
+地去除金属伪影。Wang等人 [12] 提出了一个自适
+应卷积字典网络， 它是一种基于模型驱动的深度
+展开方法。该方法可以更准确地识别伪影， 实现
+更好的 CT MAR。然而 ，由于金属伪影具有较强
+的结构性， 单独使用图像域的方法效果不太理
+想。为了进一步提高校正精度， 基于双域的 MAR
+方法[13-15] 联合利用图像域和投影域信息 ，取得了
+显著的效果。Lin等人 [16] 提出了一种端到端可训
+练的双域网络， 以同时恢复正弦图一致性并增 强
+CT图像。 Zhou等人 [17] 提出了一种双域数据一致
+递归网络， 能够在不同的稀疏视图采集设置下产
+生卓越的伪影减少结果。Wang等人提出了一种
+可解释的双域网络 [18] 及其改进版本 [19]，在 MAR
+方面均取得了较好的效果。在实际应用中， 如果
+没有 CT设备制造商的许可 ，很难获得精确的前
+向投影和滤波反投影的设备参数。然而， 前向投
+影和滤波反投影算子被广泛应用于正弦域和双
+域方法。从这个角度来看， 与投影域和双域方法
+相比， 图像域方法更灵活 ，因为它们仅关注含金
+属伪影的图像域数据而不是投影数据。
+当前， 基于 DL[20] 的 MAR方法在处 理 CT图
+像中的金属伪影时存在一些局限性。具体来说，
+这 些 方 法 未 能 充 分 利 用 非 伪 影 区 域 的 信 息和
+CT图像的文本先验信息 ，以帮助伪影区域恢复。
+此外， 现有的图像 域 MAR方法忽视了图像间的
+全局上下文相关性， 而这些全局上下文的细节信
+息对于恢复图像的真实结构至关重要。同时， 这
+些方法也没有充分利用多模态信息之间的互补
+特性，伪影校正的效果有待提升。
+为了解决这些问题， 本文构建了一种多模态
+信息融合网络 [21]， 整体架构由局部信息提取模
+块(Local  Information  Extraction  Module，LIEM) 、
+伪影区域感知注意力模块 (Artifact Region-aware
+Attention Module，ARAM)、通道注意力融合模 块
+(Channel Attention Fusion Module，CAFM)和多模态
+信息融合模块(Multimodal Information Fusion，MIF)
+组成。LIEM采用卷积残差块结构来提取局部信
+息。ARAM利用来自非伪影区域的信息来帮助
+伪影区域恢复， 使用 MIF模块 将 CLIP模型集成
+到本文的框架中， 以整合文本先验 ，利用文本提
+示作为新的知识先验， 例如关于小型 、中型和大
+型金属的信息， 来指 导MAR过程。随后 ，CAFM
+采用通道注意块自适应地融合局部信息、 全局信
+息和文本先验信息。
+总体来说， 本文提出了一种融合图像局部 、全
+局与文本先验信息的多模态信息融合的 CT MAR
+网 络， 所 提 出 的 网 络 能 够 有 效 校正 CT金 属 伪
+影。本文主要贡献总结如下:构建了一个多模态
+信息融合网络， 该网络由局部信息提取模块 、伪
+影区域感知注意力模块、 多模态信息融合模块和
+通道注意力融合模块组成， 同时采 用 CLIP模型
+整合文本先验知识， 借助文本信息辅助金属伪影
+的校正。通过实现多模态信息的交互， 本文方法
+显著提升了伪影校正的精准度。基于该多模态
+信息融合网络， 本文将每个含有金属伪影 的 CT
+图像中的伪影编码为加权卷积字典模型， 并研究
+了将求解上述优化模型的每一个迭代步骤展开 [22]
+为相应的网络模块来构造 MAR网络。实验结果
+表明， 本文提出的融合多种互补信息的方法 在
+MAR任务中优于现有的基于深度学习的方法。 
+1    方法
+ 
+1.1    金属伪影的可加性
+金属伪影本质上具有可加特性 [23]。在多 色
+X射线系统中，投影数据S c 可以表示为
+Sc = − ln ∫ (E)e−P(Xc(E))dE; (1)
+其 中： Xc(E)为 能 级 E处 的 正 常 衰 减 系 数 图 像；
+P(·)和 η(E)表示前向投 影(Forward Projection，FP)
+算子和 E处的分数能量。与金属相比 ，正常人体
+组织的衰减系数几乎不随 E而变化 ，因此 有 Xc =
+Xc(E)和 Sc =  P(Xc)。在没有金属的情况下 ，滤波
+反 投影 (Filtered Back-Projection， FBP)算 子 生 成
+干 净的 CT图 像 Ic 作 为 Xc 的 估 计， 因 此 有 Ic =
+FBP(Sc) = FBP(P(Xc))。
+金属伪影的出现主要是由于射束硬化。含
+有金属的衰减系数图像 Xa(E)可以被分成相对恒
+第 4 期 傅昭然   等　多模态信息融合的 CT 金属伪影校正网络 349
+
+=== PDF_PAGE 3 ===
+定的没有金属的图像 Xac 和一个仅含金属且 随
+E 快速变化的图 像 Xm(E)。被金属影响的正弦 图
+Sa 可以表示为
+Sa = − ln ∫ (E)e−P(Xa(E))dE =
+P (Xac) − ln ∫ (E)e−P(Xm(E))d; E (2)
+其中： Xa(E) =  Xac+Xm(E)。Xm(E)通常是局部约束
+的，并且受金属影响的CT图像I a 可表示为
+Ia =FBP (P (Xac)) − FBP(ln ∫ (E)e−P(Xm(E))dE) =
+Iac + F (Xm(E)) ; (3)
+其中：FBP(P(Xac))是通 过FBP算子获得的含有金
+属伪影的图像 Iac； 第二项引入了条纹和带状伪
+影， 是 关于 Xm(E)的 函 数 。 由 于 金 属 伪 影 仅由
+Xm(E)引起 ，如图1 所示，可以将伪影的生成过程
+看成通过将伪影项添加到任意一个干净的 CT图
+像 上 以 生 成 含 有 金 属 伪 影的CT图 像 ， 即 Ica =
+Ic+F(Xm(E))，其中 ，含金属伪 影CT图里面的白色
+掩模部分即金属植入物。
+ 
+ 
+含金属伪影弦图 干净弦图 金属迹
+＝
+＝
+＋
+＋
+含金属伪影 CT 图 干净 CT 图 金属伪影
+FBP
+图1   CT金属伪影的可加性
+Fig. 1    The additivity of CT metal artifact
+  
+1.2    优化模型
+含有金属伪影 CT图 像 Y由两个区域组成 ，
+即 金 属 部 分 和 非 金 属 部 分 。 由 于 金 属 组 织的
+CT值通常高于正常组织 ，因此本文忽略了金属
+区域的信息， 并关注于重 建 Y的非金属区域。于
+是分解模型可以表示为
+I ⊙ Y = I ⊙ X + I ⊙ A; (4)
+其中： I表示二进制非金属掩模 ；X∈RH×W 表示待
+重建的干净 CT图像 ；A表示待提取的金属伪影 ；
+⊙表示逐元素乘法。金属伪影具有结构特性， 即
+呈现非局部的重复条纹结构。此外， 由于正常组
+织与金属伪影之间的相互影响， 不同 CT图像中
+金属伪影的形态并不完全相同， 一般具有一些特
+定的特征， 金属伪影的像素强度在不同的含金属
+伪影的 CT图像之间变化。因此 ，利用加权卷积
+字典模型[24] 编码的金属伪影A可以表示为
+A =
+N∑
+n=1
+D
+KN ⊗ Mn = DK ⊗ K; (5)
+⊗
+其中： 表示 DK和 M之间的张量形式的卷积运
+算； D∈Rp×p×d 表示字典 ；KN∈Rd 表示对字典中原
+子的加权系数； Mn∈RH×W 表示金属伪影通过加权
+字典的表示系数或稀疏码字； p 表示卷积滤波器
+的大小； d 表示字 典 D中的滤波器的总数 ；N表示
+编码伪影A的滤波器的数量。
+通过将式(5)代入到式(4)，可以推导出
+I ⊙ Y = I ⊙ X + I ⊙ ( D
+K ⊗ M)。 (6)
+本文的目标是通过含有金属伪影的图像 Y
+估计加权系数 K、 稀疏表示系 数 M和干净图 像
+X。其中 ，非金属掩 模 I是预先已知的 ，且可以从
+训练数据中自动地学习字典 D。在最大后验框
+架下，可以构建以下优化问题：
+■|||||■|||||■ minK;M;X ∥I ⊙ (Y − X − D
+K ⊗ M)∥2F+
+ f1(K) +  f2(M) +  f3(X)
+s. t. ∥Kn∥2 = 1; n = 1; 2; · · ·; N
+; (7)
+其中： f1(·)、f2(·)和 f3(·)是正则化函数 ，分别对优化
+变量 K、M和 X施加约束 ；α、β和 γ是正则化参数。 
+1.3    求解算法
+式(7)定义的优化问题是一个多变量优化问
+题，本文采用交替优化方法结合近端梯度技术 [25]
+交替更新K、M和X。
+求解K。在第 (t+1)次迭代时：
+■|||||■|||||■K(t+1) = ar
+gmin
+K
+∥I ⊙ (Y − X(t)−
+DK ⊗ M(t))∥2F +  f1(K)
+s. t. ∥Kn∥2 = 1; n = 1; 2; · · ·; N
+; (8)
+将式(8)中的代价函数进行展开 ，可以改写为
+K(t+1) = ar
+gmin
+K∈Ω
+g1(K(t)) + 121 ‖‖‖K − K(t)‖‖‖2F +
+< K − K(t); ∇g1(K(t)) > + f1(K); (9)
+g1
+(K(t)) =
+‖‖‖I ⊙(Y − X(t) −( D
+K(t)) ⊗ M(t))‖‖‖2F
+其中： Ω = {K|‖K n‖2 = 1,  n = 1, 2,  …, N}；
+；η1 是步长。本文得
+到关于 K(t) 的梯度计算方法 ，用于求解优化问题
+350 燕山大学学报 2026
+
+=== PDF_PAGE 4 ===
+中的迭代更新，具体为
+■||||■||||■ @g1(K(t))@Kn = (U f3(D ⊗d M(t)n ))v
+ec(I ⊙(DK (t) ⊗ M(t) + X(t) − Y)) ; (10)
+⊗d
+U f3(·)
+其中： 是深度卷积计算 ； 表示展开操作 ；
+vec(·)表示向量化。基于上述推导 ，式(9)可以改
+写为
+K(t+1) = ar
+gmin
+K∈Ω
+1
+2 ∥K −(K(t)−
+1∇g1
+(K(t))) ∥2F + 1 f1(K); (1
+1)
+式(11)可以表示为
+K(t+1) = prox1
+(
+K(t+0:5)
+)
+; (12)
+∇g1
+(K(t)) =[ @g1(K(t))@ (K1) ;
+@g1
+(K(t))
+@ (K2) ; ·
+· · ; @g1
+(K(t))
+@ (KN)
+]
+prox1 (·)
+其中：K(t+0.5) = K(t)−η1▽g1(K(t))；
+； 是一个与 f1(·)相
+关的邻近算子。
+求解M。在第(t+1)次迭代时：
+M(t+1) = ar
+gmin
+M
+1
+2 ∥M −(M(t)−
+2∇g2
+(M(t))) ∥2F + 2 f2(M); (13)
+g2
+(M(t)) = ∥I ⊙(Y − X(t) − D
+K(t+1)⊗
+M(t)) ∥2F
+其中： η2 是步长 ；
+。类似地，式(13)可以表示为
+M(t+1) = prox2
+(
+M(t+0:5)
+)
+; (14)
+prox2 (·)
+其中： 是关 于 M的与正则化函 数 f2(·)相
+关的邻近算子； M(t+0.5) = M(t)-η2▽g2(M(t))。▽g2(M(t))
+可以表示为
+∇g2
+(M(t)) = D
+K(t+1) ⊗T(I ⊙(DK (t+1)⊗
+M(t) + X(t) − Y)) ; (15)
+⊗T
+其中， 是转置卷积运算。
+求解X。给定 K(t+1) 和 M(t+1)，X(t+1) 可以表示为
+X(t+1) = ar
+gmin
+X
+1
+2 ∥X −(X(t)−
+3∇g3
+(X(t))) ∥2F + 
+3f3(X); (16)
+g3
+(X(t)) = ‖‖‖I ⊙(Y − X(t) − D
+K(t+1) ⊗ M(t+1))‖‖‖2F
+其中， 。
+式(16)可以表示为
+X(t+1) = prox
+3
+(
+X(t+0:5)
+)
+; (17)
+其中，X(t+0.5) 可以表示为
+X(t+0:5) = (1 − 3I) ⊙ X(t)+
+3I ⊙(Y − D
+K(t+1) ⊗ M(t+1)) ; (18)
+prox
+3 (·)
+是一个与f 3(·)相关的邻近算子。
+式(12)、式(14)和 式(17)构成了用于求解问
+prox1 (·)
+prox2 (·)
+prox
+3 (·)
+题(4)的整个迭代过程。所提出的算法包含的是
+简单的算子 [26]，这使得基于该算法的深度网络框
+架的相应构建更容易。注意， 、
+和 是隐式算子 ，这些算子可以通过深度
+网络[27] 强大的学习能力从训练数据中自动学习。 
+2    网络设计与分析
+ 
+2.1    网络架构与迭代展开
+图2(a)显示了具 有 T个阶段的整个网络结
+构，对于每个阶段，本文的网络由三个子网络组成。
+即： K-net、 M-net和 X-net对 应 于 解 决 三 个 子 问
+题， 即分别求 解 K、M和 X。图 2(b)展示出了每
+个阶段的详细网络连接。通过展开操作， 每个网
+络模块对应于所提出的优化算法的特定迭代步
+骤。因此， 整个网络框架具有明确的模型可解释
+性。下面详细介绍网络的具体信息与迭代展开。
+proxNet(t+1)K (·)
+prox1(·)。
+K(t+1) = proxNet(t+1)K (K(t+0:5))
+proxNet(t+1)K (·)
+K-net： 在 第 (t+1)阶 段 ， 计 算 K(t+0.5)， 并 将 其
+馈 送 到 以 执 行 操 作 然
+后， K(t+1) 更新为 ， 其中 ，
+是残差结构。
+M(t+1) = proxNet(t+1)M (M(t+0:5))
+proxNet(t+1)M (·)
+prox2 (·)
+M-net： 给 定 K(t+1)、 M(t) 和 X(t)， 可 以 计 算 出
+，其中， 是
+的深度展开形式。
+X(t+1) = proxNet(t+1)X (X(t+0:5))
+proxNet(t+1)X (·)
+X-net：类似地，给定 K(t+1)、M(t+1) 和 X(t)，伪影校
+正的 CT图像可以通过
+更新， 其中， 的网络是多模态信息融
+合网络。如 (c)和 (d)所示 ，多模态信息融合网络
+由LIEM、ARAM、MIF和CAFM等模块组成。 
+2.2    多模态信息融合
+本文采用两种模态， 即 CT图像模态和文本
+模态，进行CT图像 的MAR。由于CT图像中金属
+伪影的强度变化， 对于伪影较重的区域 ，需要利
+用非伪影区域和伪影区域之间的全局上下文相
+关性提升伪影校正精度， 而对于非伪影区域 ，局
+部信息比全局信息更有效。然而， 在伪影严重的
+区域， 现有的基于深度学习的方法无法有效地利
+用非伪影区域信息来辅助伪影区域的恢复。为解
+决这一问题， 同时充分挖 掘CT图像模态的信息 ，
+本文设计了 LIEM模块用以提取非伪影区域内的
+局部信息， 设计了ARAM模块用以提取全局上下
+第 4 期 傅昭然   等　多模态信息融合的 CT 金属伪影校正网络 351
+
+=== PDF_PAGE 5 ===
+文相关信息， 并利用非伪影区域的信息辅助伪影
+区域的内容恢复。此外， 为进一步提升模型对不
+同尺寸金属的泛化性， 本文利用预训练 的 CLIP
+模型结合不同尺寸金属的文本信息进一步辅助
+MAR，设计了CT图像模态和文本模态的融合模块 ，
+实现多模态信息交互以提高伪影校正的精度。
+ 
+ 
+K-net
+M-net
+X-netY
+阶段 1 阶段 2 阶段 t＋1 阶段 T
+K-net
+M-net
+X-net
+K-net
+M-net
+X-net
+K-net
+M-net
+X-net
+K(1)
+M(1)
+X(1)
+K(2)
+M(2)
+X(2)
+K(t+1)
+M(t+1)
+X(t+1)
+K(T)
+M(T)
+X(T) XT
+(a) T 个阶段的整体网络
+K(t+1),M(t+1),X(t+1) K(t+1), M(t+1), X(t+1) X(t+1)
+K-net M-net X-net
+K(t), M(t), X(t)
+Linear
+Linear
+Norm
+Conv
+Conv
+ReLU
+ReLU
+BN
+BN
+多模态
+信息
+融合网络
+(b) 每个阶段的详细网络
+伪影区域感知注意力模块
+局部信息提取模块 通道注意力融合模块
+线性层 卷积
+LN
+Linear
+ReLU
+ReLU
+激活函数
+GELU
+激活函数
+多层
+感知器
+批归一化 归一化 全局池化 层归一化
+级联
+转置
+逐元素求和
+逐元素相乘
+Sigmoid函数
+Reshape函数
+ReLU
+ReLU
+ReLU
+ReLU
+Conv
+Conv
+Conv
+Conv
+Conv
+Global
+Conv
+Conv
+Conv
+X1
+Conv
+BN
+GELU
+MLP
+Norm
+Global
+LN
+Q
+K
+V
+0 0 1
+(d) 伪影区域感知注意力模块,局部信息提取模块和通道注意力融合模块
+文本先验信息
+局部
+信息
+全局信息
+X(t+0.5)
+V
+K
+Q
+XL
+XG
+多模态信息
+融合模块
+通道注意力
+融合模块
+文本先
+验信息
+局部信息
+提取模块
+伪影区域
+感知模块
+小型
+金属
+中型
+金属
+大型
+金属
+多模态信息融合网络
+多模态信息融合模块
+X(t+1)
+LN
+LN
+LN
+3×3Dconv
+3×3Dconv
+3×3Dconv
+1×1
+1×1 1×1
+1×1
+R
+R
+R
+T R
+Conv
+LN
+MLP
+GELU
+Linear
+prijection
+output
+softmax
+(c) 多模态信息融合网络与模块
+CLIP文本编码器
+图2   多模态信息融合的CT金属伪影校正网络架构
+Fig. 2    Multimodal information fusion-based network architecture for CT MAR
+ 
+具体来说， 首先给定输 入 X(t+0.5)，通过层归一
+化(Layer Normalization，LN)对其进行归一化 ，然
+ˆX
+后将其分割成一系列不重叠的图像块 ，以降低
+计算成本。接下来， 对每个窗口中的展平特征执
+352 燕山大学学报 2026
+
+=== PDF_PAGE 6 ===
+行LIEM和 ARAM，以分别捕获局部和全局上下
+文信息， 然后使 用 MIF将 CLIP模型集成到本文
+的框架中， 以整合文本先验。最后 ，CAFM采用
+通道注意力自适应地融合局部、 全局和文本先验
+信息。
+理论上，多模态信息融合的过程可以表述为
+ X = CAFM[CAM((LIEM( ˆX);
+ARAM( ˆX; Meor)); P)] + ˆX; (19)
+ Xout = GELU(MLP(LN(  X))) +  X; (20)
+其中：LN(·)表示层归一化 ；GELU(·)表 示 GELU
+激活函数； MLP(·)表示多层感知器 ；Meor 表示逐
+块相关特征图； P表示从预先训练 的CLIP模型得
+到的文本先验信息。在此基础上， 使用ARAM重
+新加权的注意力特征图， 强调了伪影和非伪影区
+域之间的相似性。ARAM的过程可以表示为
+ARAM
+( ˆX; Meor) =
+softmax
+( Q
+KT
+√
+d
+(Meor + 1 − )
+)
+V; (21)
+其中： Q、 K和 V表示输入特征 图 X(t+0.5) 的查询 、
+键和值； σ用于调整伪影和非伪影对的权重 ；d 是
+缩放参数。在非伪影区域， 利用 LIEM提取局部
+信息比全局信息更有效。ARAM利用来自非伪
+影区域的上下文信息来帮助重建伪影区域， 强调
+了伪影和非伪影区域之间的上下文相关性。
+本文利用 MIF模块整合了文本先验 ，利用文
+本提示作为新的知识先验， 如图 2(c)所示。 MIF
+的核心思想是将先验知识与深度学习功能融合，
+本文针对 CT图像重新训练 了 CLIP模型 ， 使 得
+CLIP模 型 能 够 识 别 输 入 的 含 有 金 属 植 入 物的
+CT图像 ，并输出如大型金属 、中型金属 、小型金
+属等文本形式的分类信息， 从而更有效地指 导
+MAR。具体过程可以表示为
+■||||■||||■Q = LN (Con
+v (XL c XG))
+K = LN(P)
+V = LN(P)
+; (22)
+其中： XL 表示 X(t+0.5) 经过层归一化 和 LIEM模块
+后提取的局部信息； XG 表示 X(t+0.5) 经过层归一化
+和ARAM模块后提取的全局信息 ；©表示级联操
+作。随后， 它们首先通过一 个1×1卷积嵌入以获
+得特征， 然后使用深度卷积来编码通道内的空间
+上下文。最后， 利用重塑操作重塑得到的特征。
+这个过程可以定义为以下函数：
+■|||||■|||||■ ˆQ = R(DCon
+vQ
+(ConvQ(Q)))
+ˆK = R (DConvK (ConvK(K))) ;
+ˆV = R (DConvV (ConvV(V)))
+(23)
+其 中： ConvQ,K,V 代 表 1×1卷 积 ；DConvQ,K,V 代 表
+3×3深度卷积 ；R(·)代表重塑操作。接下来 ，应用
+softmax函数对特征进行处理，具体为
+F = softmax
+( ˆQ ˆKT) ; (24)
+ˆKT
+ˆK
+ˆV
+其中： 代表 的转置 ；F是经 过softmax操作后
+得
+到的特征图。将 F和 相乘 ，然后被重塑成大
+小为 1 的特征。本文应用一 个1×1的卷积来增强
+特征提取。最后将特征相加， 得到结果。总体而
+言，MIF的处理信息过程可以表示为
+MIF(Q; K; V) = Con
+v(R(F ˆV))+
+Conv(XL c XG) 。 (25)
+最后，CAFM应用通道注意模块 [28-29] 整合了
+局部、 全局信息和文本先验提示信息 ，实现多模
+态信息交互， 从而提高伪影校正的准确性。文本
+提示为金属植入物的尺寸， 分为大型金属 、中型
+金属、 小型金属。通过多个阶段优化 ，可以得到
+最终的CT图 像 XT。 
+2.3    损失函数
+在每个阶段对提取的伪影 A(t) 和CT图 像 X(t)
+进行监督的情况下，训练的损失函数为
+L =
+T∑
+t=0
+t I ⊙
+‖‖‖X − X(t)‖‖‖2F + !1
+■|||||■ T∑
+t=0
+t I ⊙
+‖‖‖X − X(t)‖‖‖1
+■|||||■ +
+!2
+■|||||■ T∑
+t=0
+t I ⊙
+‖‖‖Y − X − A(t)‖‖‖1
+■|||||■ ; (26)
+其中： X是干净 的 CT图像 ；I是二进制非金属掩
+模，确保只在非金属区域计算损失； Y是含有金属
+伪影的CT图像；⊙是逐元素乘法。
+在所有实验中， 利用 MSE损失函数 和 L1损
+失
+函数衡量模型输出的 CT图 像 X(t) 与干 净 CT
+图像 X之间的差异 ， 以确保模型能够学习到去
+除伪影的正确方式。还利用 L1损失函数衡量金
+属
+伪影 A(t) 与含有金属伪影 的 CT图 像 Y减去干
+净CT图 像 X之间的差异 ，这有助于模型学习如
+何准确地估计和去除金属伪影。整个损失函数
+是三个部分的加权和， 损失函数的权 重 μT 为 1，
+μt(t = 0, 1, …, T−1)为 0.1 ，超参 数 ω1 和 ω2 根据经
+验设为 5×10−4。整个损失函数的设计目的是通过
+结合不同的范数来优化模型的性能， 使其能够在
+第 4 期 傅昭然   等　多模态信息融合的 CT 金属伪影校正网络 353
+
+=== PDF_PAGE 7 ===
+保留非金属区域细节的同时， 有效地去除金属伪
+影。为了验证模型中参数选取的合理性， 本文设
+计了多种对比试验， 固定所有超参数调节某一个
+参数， 选取最终重建性能最高的参数作为实验用
+的最优参数。实验 a系列代表只修改损失函数权
+重 μT，其他参数不变 ，μT 分别设置 为 0.1，1 和 10；
+实验 b系列代表只修改损失函数权 重 μt，其 他参
+数不变， μt 分别设置 为 0.01，0.1和 1；实验 c 系列
+代表只修改超参数 ω1 和 ω2， 其他参数不变 ， ω1
+和 ω2 分别设置为1×10−4，5×10−4 和1×10−3。如表1
+所示， 本文选取的最优参数在各项指标上都取得
+了最优结果，也验证了模型参数选取的合理性。
+ 
+ 
+表 1    模型损失函数权重和超参数调参实验
+Tab. 1    Model loss function weight and hyperparameter
+tuning experiment
+ 
+实验 μT μt ω1和ω2 PSNR/dB SSIM
+实验a1 1 0.1 5×10−4 41.95 0.983 4
+实验a2 0.1 0.1 5×10−4 40.85 0.982 2
+实验a3 10 0.1 5×10−4 39.25 0.972 6
+实验b1 1 0.1 5×10−4 41.95 0.983 4
+实验b2 1 0.01 5×10−4 41.76 0.983 0
+实验b3 1 1 5×10−4 41.55 0.982 6
+实验c1 1 0.1 5×10−4 41.95 0.983 4
+实验c2 1 0.1 1×10−3 40.23 0.976 9
+实验c3 1 0.1 1×10−4 40.12 0.975 6
+  
+3    实验部分
+ 
+3.1    数据集和实验设置
+本文遵循 CNNMAR[7] 实验数据集的处理方
+法， 从公开 的DeepLesion[30] 数据集中随机选择 了
+2 200张 干 净 的 CT图 像 ， 并 收集 100 个 金 属 掩
+模，以合成成对的干净/含金属伪影CT图像对。
+为了验证该方法的泛化能力， 与现有主流 的
+MAR方法在其 他 CT数据集和临床数据上进行
+定性比较。从 AAPM数据集 [31] 中随机选 取 200
+张CT图像用于测试 ，同时使用 了SpineWeb[32] 上
+的真实临床椎骨数据集， 该数据集包含大量带有
+金属植入物的 CT图像 ，本文选 取 200 张含金属
+伪影CT图像用于测试。
+预训练的对比语言图像模型 [33] 具有强大的
+视觉和文本理解能力。本文针对 CT图像重新训
+练了 CLIP模型。首先计算每张金属掩模的 非 0
+像素点数量， 将非 0 像素点数量大 于 300 的金属
+掩模规定为大型金属掩模， 数量大 于100 而小 于
+300 的金属掩模规定为中型金属掩模 ，数量小 于
+100 的金属掩模规定为小型金属掩模。合 成1 800
+对配对的图像-文本对用于模型训练 ，200 个配对
+的图像-文本对用于验证 ，200 个配对的图像-文本
+对用于测试。训练后的模型能够识别输入的含
+有金属植入物的 CT图像 ，并输出大型金属 、中
+型金属、 小型金属等文本形式的先验信息 ，从而
+更有效地指导 MAR过程。对 于CLIP的训练 ，总
+的 训 练 轮 数为50， 批 量 大 小为 8， 使 用 NVIDIA
+RTX 3080Ti GPU，初始学习率为2×10 −5。
+本实验利用基于 PyTorch的 Adam优化器对
+网络进行优化。该框架在 NVIDIA 3080Ti GPU
+上进行了训练，批量大小为32，初始学习率为2×10−4，
+总轮数为 100。输入图像块的大小 为64×64像素 ，
+并在水平和垂直方向上随机翻转。本文使用了
+代表性的 MAR方法 ，包括传统 的 LI[2]、NMAR[3]，
+基 于 学 习的 ADN[10]、CNNMAR[7]、DuDoNet[16]、
+InDuDoNet+[19]、ACDNet[12]。评价指标选用了平
+均峰值信噪比 (Peak Signal-to-Noise Ratio，PSNR)、
+结 构 相 似性 (Structure Similarity Index Measure，
+SSIM)以及均方根误 差 (Root Mean Square Error，
+RMSE)。其中，PSNR和 SSIM数值越大 ，代表实验
+效果越好， RMSE数值越小 ，代表实验效果越好。 
+3.2    结果分析
+定量分析： 表2 列出了本文算法与对比算法
+在不同金属尺寸下的 PSNR、SSIM、RMSE评分。
+可以观察到， 本文的方法表现出了卓越的性能 ，得
+到了最高的PSNR和SSIM值，以及最低的RMSE
+值， 这表明与其他基准方法相比 ，视觉质量和结
+构准确性都有了显著提高。相比之下， 包括 LI[2]
+和NMAR[3] 在内的传统方法在所有指标上都产
+生了相对较低的分数， 反映了它们在处理复杂金
+属伪影方面的有限能力。ADN [10] 作为一种无监
+督方法， 虽然其表现优于传统方法 ，但与更先进
+的技术相比， 其结果仍然有待提升。此外 ，基于
+CNN的方法 ，如 DuDoNet[16] 和 CNNMAR[7]，在伪
+354 燕山大学学报 2026
+
+=== PDF_PAGE 8 ===
+影 减 少 方 面 比 传 统 和 无 监 督 方 法 都 有 显 著 提
+升。CNNMAR[7] 表现出色 ，超越 了DuDoNet[16] 并
+在伪影抑制方面取得了显著成果。然而， 数据驱
+动模型受限于其固定的特征提取策略， 阻碍了在
+不同伪影强度间的泛化能力。另外， 一些深度展
+开方法， 如 在 InDuDoNet+[19] 和 ACDNet[12] 中， 通
+过结合传统的优化框架与深度学习模型来进一
+步提升性能， 提供了适应复杂伪影模式的灵活性。
+ 
+ 
+表 2    不同方法测试集重建结果PSNR、SSIM和RMSE比较
+Tab. 2    Comparison of PSNR, SSIM, and RMSE for reconstruction results on the test set using different methods
+ 
+方法
+大型金属 中型金属 小型金属 平均值
+PSNR/dB SSIM RMSE/HU PSNR/dB SSIM RMSE/HU PSNR/dB SSIM RMSE/HU PSNR/dB SSIM RMSE/HU
+LI[2] 24.02 0.763 3 130.55 25.66 0.773 5 108.25 26.24 0.776 5 101.21 25.81 0.772 9 125.26
+NMAR[3] 29.11 0.852 3 87.20 31.05 0.874 4 75.51 32.42 0.878 6 69.58 31.02 0.873 4 107.89
+CNNMAR[7] 37.25 0.942 8 38.28 38.82 0.961 0 30.87 40.52 0.976 2 25.12 38.28 0.955 4 33.62
+DuDoNet[16] 34.38 0.935 5 62.25 35.25 0.948 4 48.26 37.38 0.972 6 29.98 34.95 0.936 9 60.25
+ADN[10] 30.65 0.901 6 75.69 33.58 0.930 8 64.92 34.33 0.942 1 56.05 33.46 0.928 8 61.45
+ACDNet[12] 39.25 0.963 2 26.88 41.80 0.980 6 22.56 43.01 0.985 6 18.20 41.74 0.982 7 24.23
+InDuDoNet+[19] 37.21 0.942 1 35.98 39.51 0.970 8 28.06 41.05 0.983 6 22.16 38.61 0.975 6 30.15
+MIFNet 39.65 0.977 5 24.96 41.88 0.982 5 21.96 43.36 0.988 2 17.02 41.95 0.983 4 20.98
+ 
+与DuDoNet[16] 和CNNMAR[7] 两种算法相比 ，
+MIFNet在 平 均 PSNR方 面 分 别 提 升 了 7 dB和
+3.67 dB，在平 均SSIM方面分别提升 了0.046 5和
+0.028 0。与深度展开方 法InDuDoNet+[19] 和ACD-
+Net[12] 相比 ，MIFNet在平 均 PSNR方面分别提升
+了3.34 dB和 0.21 dB， 在平 均 SSIM方面分别提
+升了 0.007 8和 0.000 7。与其他基准方法相比 ，本
+文方法的视觉质量和结构准确性都有显著改善。
+定性分析： 为了进一步评估本文算法的有效
+性， 图3展示出不同方法 在DeepLesion数据集下
+的CT重建图像及放大区 域 (矩形框)，并且给出
+重建图像与真实图像之间的误差图。可以观察
+到， 传统方法均表现出严重的模糊或二次伪影。
+DuDoNet[16] 和 CNNMAR[7] 在校正条纹伪影方面
+表现出良好的性能， 但它们仍然会损失一些精细
+的图像纹理。InDuDoNet+ [19] 和 ACDNet[12] 显示
+出更高的重建精度， 但在细节恢复方面仍有改
+进的余地。MIFNet实现了具有更多组织细节的
+重建 CT图像 ，并在视觉质量方面保留了丰富的
+结构信息。从放大的细节来看， 与其他算法相
+比，MIFNet表现出更高的重建精度。此外 ，重建
+误差的幅度图像表明本文的方法更接近原始图
+像， 像素误差幅度明显低于其他算法 ，突出了其
+消除结构伪影的有效性。
+ 
+ 
+Input
+23.25/0.759 6
+LI
+24.52/0.772 1
+CNNMAR
+39.42/0.978 6
+DuDoNet
+38.50/0.968 5
+ADN
+34.08/0.903 2
+ACDNet
+41.39/0.983 2
+InDuDoNet+
+40.25/0.981 8
+MIFNet
+42.21/0.987 9
+Ground truth
+Inf/1.0
+0.3
+0.2
+0.1
+0
+图3   不同方法的CT重建图像以及误差图(数据集是DeepLesion)
+Fig. 3    CT images reconstructed by different methods and error maps (the dataset is from DeepLesion)
+ 
+为了验证本文提出的方法在临床场景中的
+可行性和泛化能力， 将基准方法与本文方法 在
+AAPM数 据 集 和 临 床 数 据 上 的 结 果 作 定 性 比
+较。图 4 展示了 在AAPM数据集下 的CT重建图
+第 4 期 傅昭然   等　多模态信息融合的 CT 金属伪影校正网络 355
+
+=== PDF_PAGE 9 ===
+像及放大区域， 并且给出重建图像与真实图像之
+间的误差图。所有基于 DL的 MAR方法都是 在
+DeepLesion数据上训练 ，直 接在AAPM数据集上
+进行测试， 也进一步验证了模型的泛化能力。如
+图4 所示，传统方法的效果依旧不理想。 ADN[10]、
+DuDoNet[16] 和CNNMAR[7] 去除了部分伪影 ，但仍
+有 较 多 结 构 性 伪 影 存 在，泛 化 能 力 有 待 提 高 。
+InDuDoNet+[19]、ACDNet[12] 和 MIFNet取 得 了 较
+好的伪影去除效果， MIFNet显示出更高的重建精
+度。此外， 重建误差的幅度图像显示 ，MIFNet的
+结果更接近原始图像， 像素误差幅度显著低于其
+他算法， 凸显了其在消除结构伪影方面的优势。
+同时 MIFNet具有良好的泛化能力 ，能够在不同
+数据集和场景中保持稳定的性能。
+ 
+ 
+Input
+20.16/0.719 2
+LI
+23.45/0.743 5
+CNNMAR
+33.12/0.917 9
+DuDoNet
+32.82/0.906 8
+ADN
+30.09/0.892 5
+ACDNet
+35.86/0.930 5
+InDuDoNet+
+34.19/0.922 8
+MIFNet
+36.29/0.942 3
+Ground truth
+Inf/1.0
+0.3
+0.2
+0.1
+0
+图4   不同方法的CT重建图像以及误差图(数据集是AAPM)
+Fig. 4    
+CT images reconstructed by different methods and error maps (the dataset is from AAPM)
+ 
+图5 展示了 从 SpineWeb数据集中选取的受
+金属影响的临床 CT图像的视觉比较结果。所
+有基于 DL的 MAR方法都是在合成数据上训练 ，
+并在临床数据上进行测试。如图 5 所示 ， 由 LI
+和NMAR方法生成的图像存在次级伪影 ， 而 由
+ADN、DuDoNet、CNNMAR和 InDuDoNet+重 建
+的CT图像仍然有明显的残留伪影。此外 ，ACDNet
+实现了显著的伪影减少， 但组织区域显得过于平
+滑，结构细节不完整。值得注意的是 ，MIFNet有效
+地去除了大量伪影， 同时保留了组织和骨骼的详细
+信息， 并实现了适合医学诊断的高质 量CT重建。
+ 
+ 
+Input LI CNNMAR DuDoNet
+ADN ACDNet InDuDoNet＋ MIFNet
+图5   不同方法的CT重建图像(临床数据)
+Fig. 5    CT images reconstructed by different methods
+(clinical data)
+  
+3.3    消融实验
+为了评估本文模型不同组件的有效性， 本文
+设计了具有以下模块的不同消融模型。网络 1：
+仅去掉 CLIP模块 ；网络2：仅去 掉LIEM模块 ；网
+络3：仅去掉ARAM模块 ：网络4：完整网络。不同
+消融模型的定性结果如表 3 所示。观察到网 络4
+实现了比网络 2 和网 络 3 更高 的 SSIM和 PSNR
+值，这表明融合全局和局部信息可以促进图像恢
+复， 同时证明 了 LIEM用于提取图像中的局部特
+征的作用。在 CT MAR的上下文中 ，它可以帮助
+识别和处理图像中的细节部分， 增强对局部结构
+和纹理的捕捉能力。这对于精确地识别和校正
+伪影至关重要， 因为金属伪影通常涉及图像的局
+部区域， 而这些区域的细节信息对于恢复图像的
+真实结构非常重要。
+ 
+ 
+表 3    本文方法不同模块消融实验
+Tab. 3    The ablation study of different modules
+in this method
+ 
+网络 CLIP LIEM ARAM PSNR/dB SSIM
+网络1 × √ √ 41.80 0.982 5
+网络2 √ × √ 40.27 0.981 9
+网络3 √ √ × 40.86 0.982 2
+网络4 √ √ √ 41.95 0.983 4
+ 
+ARAM则专注于识别和处理图像中的伪影
+区域， 使得模型能够更加集中地处理这些区域。
+356 燕山大学学报 2026
+
+=== PDF_PAGE 10 ===
+同时网络 4 实现了比网 络1 更好的性能 ，这也证
+明利用文本提示作为新的知识先验的有效性。
+本文在网络中利用 CLIP来增强文本指导 ，同时
+融合了 CT图像的局部和全局信息 ，实现多模态
+信息交互，从而提高了伪影校正的准确性。 
+4    结论
+本文首先研究了对金属伪影和 CT图像分别
+施加正则化的优化模型， 并求解了该优化模型。
+其次， 将迭代算法展开成了网络 ，构建了模型驱
+动网络。本文构建的多模态信息融合网络， 由局
+部信息提取模块、 伪影区域感知注意力模块 、多
+模 态 信 息 融 合 模 块 和 通 道 注 意 力 融 合 模 块 组
+成。这些模块的组合使用可以提高 CT图 像MAR
+的准确性， 通过局部特征的精确提取和对伪影区
+域的特别关注， 可以更好地恢复图像质量 ，同时
+采用 CLIP模型整合文本先验知识 ，借助文本信
+息辅助金属伪影的校正。实验表明， 本文提出的
+融合多种互补信息方法在 MAR任务中优于现有
+基于深度学习的方法， 所提出的网络能够有效校
+正CT金属伪影。
+然
+而， 当前的模型在计算资源和存储空间方
+面需求较高， 这限制了其在资源受限的环境中的
+应用。为了提高模型的轻量化程度， 未来可以探
+索参数共享、 知识蒸馏等技术 ，以减少模型的参
+数量和计算复杂度。同时， 模型泛化能力有待提
+升，现有模型在面对与训练数据分布差异较大的
+数据时， 其泛化能力会受到影响 ，难以适应多样
+化的实际应用场景。未来使用更多样化和更大
+规模的数据进行训练， 可以帮助模型学习到更广
+泛的特征和规律， 从而提高其在不同数据分布下
+的泛化能力， 还需要充分利用不同模态数据之间
+的互补信息， 继续提高模型在复杂场景下的泛化
+能力。
+参考文献 
+ 
+NJITI M M, OSMAN N D, MANSOR M S, et al. Potential of
+metal  artifact  reduction  (MAR)  and  deep  learning-based
+reconstruction (DLR) algorithms integration in CT metal artifact
+correction: a review[J].  Radiation Physics and Chemistry, 2024,
+218: 111541.
+[1]
+ KALENDER W A, HEBEL R, EDERSDERG J. Reduction of CT
+artifacts
+ caused by metallic implants[J].  Radiology, 1987, 164(2):
+576-577.
+[2]
+ METER E, RAYPACH R, LELL L, B, et al. Normalized metal
+artifact reduction in computed tomography[J].  Medical Physics,
+2010, 37(10): 5482-5493.
+[
+3]
+ 石保顺, 吴一凡, 练秋生. 基于内-外部互补先验的亚像素分辨率
+衍射成像算法研究[J]. 燕山大学学报, 2023, 47(4): 347-358.
+SHI B S, WU Y F, LIAN Q S. Research on sub-pixel resolution
+diffraction  imaging  algorithm  based  on  internal-external
+complementary  priors[J]. Journal  of  Yanshan  University,  2023,
+47(4): 347-358.
+[4]
+ 申冲, 刘川, 张满囤, 等. 基于弱监督学习的细节三维人脸重建
+[J]. 燕山大学学报, 2023, 47(2): 144-151.
+SHEN
+ C,  LIU  C,  ZHANG  M  D,  et  al.  Detailed  3D  face
+reconstruction based on weakly supervised learning[J]. Journal of
+Yanshan University, 2023, 47(2): 144-151.
+[
+5]
+ PARK H S, LEE S, KIM H P, et al. CT sinogram-consistency
+learning for metal-induced beam hardening correction[J]. Medical
+Physics, 2018, 45(12): 5376-5384.
+[6]
+ ZHANG Y B, YU H Y. Convolutional neural network based metal
+artifact  reduction  in  X-ray  computed  tomography[J].  IEEE
+Transactions on Medical Imaging, 2018, 37(6): 1370-1381.
+[7]
+ 张少磊.模型与数据双驱动的CT金属伪影校正算法研 究[D].秦
+皇岛: 燕山大学, 2024: 16-28.
+ZHANG S L.Research of model and data dual-driven CT metal
+artifact reduction algorithm[D].Qinhuangdao: Yanshan University,
+2024: 16-28.
+[8]
+ WANG H, LI Y X, HE J N, et al. DICDNet: deep interpretable
+convolutional dictionary network for metal artifact reduction in CT
+images[J]. IEEE Transactions on Medical Imaging, 2022, 41(4):
+869-880.
+[9]
+ LIAO  H  F,  LIN  W,  ZHOU  S  K,  et  al.  ADN:  Artifact
+disentanglement  network  for  unsupervised  metal  artifact
+reduction[J].  IEEE  Transactions  on  Medical  Imaging,  2020,
+39(3): 634-643.
+[10]
+ LEE J, GU J, YE J C. Unsupervised CT metal artifact learning
+using  attention-guided  β-cyclegan[J].  IEEE  Transactions  on
+Medical Imaging, 2021, 40(12): 3932-3944.
+[11]
+ WANG H, LI Y X, MENG D Y, et al.Adaptive convolutional
+dictionary  network  for  CT  metal  artifact  reduction[C]//
+Proceedings  of  the  31st  International  Joint  Conference  on
+Artificial Intelligence.Vienna, Austria, 2022: 1401-1407.
+[12]
+ WANG T, XIA W J, HUANG Y Q, et al. DAN-Net: dual-domain
+adaptive-scaling  non-local  network  for  CT  metal  artifact
+reduction[J].  Physics  in  Medicine  &  Biology,  2021,  66(15):
+155-159.
+[13]
+ LYU Y U, LIN W A, LIAO H F, et al.Encoding metal mask[14]
+第 4 期 傅昭然   等　多模态信息融合的 CT 金属伪影校正网络 357
+
+=== PDF_PAGE 11 ===
+projection  for  metal  artifact  reduction  in  computed
+tomography[C]//  Proceedings  of  the  23rd  International
+Conference on Medical Image Computing and Computer Assisted
+Intervention.Lima, Peru, 2020: 147-157.
+ YU L Q, ZHANG Z C, LI M X, et al. Deep sinogram completion
+with image prior for metal artifact reduction in CT images[J].
+IEEE Transactions on Medical Imaging, 2021, 40(1): 228-238.
+[15]
+ LIN W A, LIAO H F, PENG C, et al.DuDoNet: dual-domain
+network for CT metal artifact reduction[C]// Proceedings of the
+Conference on Computer Vision and Pattern Recognition.Long
+Beach, USA, 2019: 10504-10513.
+[16]
+ ZHOU B, CHEN X C, ZHOU S K, et al. DuDoDR-Net: dual-
+domain
+ data consistent recurrent network for simultaneous sparse
+view and metal artifact reduction in computed tomography[J].
+Medical Image Analysis, 2022, 75: 102289.
+[17]
+ WANG H, LI Y, ZHANG H, et al.Indudonet: an interpretable
+dual  domain  network  for  CT  metal  artifact  reduction[C]//
+Proceedings  of  the  24th  International  Conference  on  Medical
+Image  Computing  and  Computer  Assisted  Intervention.
+Strasbourg, France, 2021: 107-118.
+[18]
+ WANG H, LI Y X, ZHANG H M, et al. Indudonet+: a deep
+unfolding dual domain network for metal artifact reduction in CT
+images[J]. Medical Image Analysis, 2023, 85: 102729.
+[19]
+ 师晓宇.基于深度学习 的CT金属伪影去除算法研 究[D].太原:
+中北大学, 2024.
+SHI  X  Y.Research  on  deep  learning-based  CT  metal  artifact
+reduction algorithm[D].Taiyuan: Zhongbei University, 2024.
+[20]
+ SHI  B  S,  ZHANG  S  L,  FU  Z  R.  Artifact  region-aware
+transformer: global context helps CT metal artifact reduction[J].
+IEEE Signal Processing Letters, 2024, 31: 1249-1253.
+[
+21]
+ 李凌雁, 徐文媛, 刘政, 等. 基于可显式证明梯度网络的压缩感
+知 磁 共 振 成 像 算 法 研究[J].  燕 山 大 学 学 报, 2024, 48(3):
+244-254.
+LI L Y, XU W Y, LIU Z, et al. Compressive sensing magnetic
+resonance  imaging  algorithms  based  on  explicitly  provable
+gradient networks[J]. Journal of Yanshan University, 2024, 48(3):
+244-254.
+[22]
+ LYU Y Y, FU J J, PENG C, et al.U-DuDoNet: unpaired dual-
+domain network for CT metal artifact reduction[C]// Proceedings
+of  the  24th  International  Conference  on  Medical  Image
+[23]
+Computing  and  Computer  Assisted  Intervention.Strasbourg,
+France, 2021: 296-306.
+ WANG H, QI X, ZHAO Q, et al. RCDNet: an interpretable rain
+convolutional  dictionary  network  for  single  image  draining[J].
+IEEE Transactions on Neural Networks and Learning Systems,
+2024, 35(6): 8668-8682.
+[24]
+ AMIR  B,  MARC  T.  A  fast  iterative  shrinkage-thresholding
+algorithm  for  linear  inverse  problems[J]. SIAM  Journal  on
+Imaging Sciences, 2009, 2(1): 183-202.
+[25]
+ DAVID L. De-noising by soft-thresholding[J]. IEEE Transactions
+on Information Theory, 1995, 41(3): 613-627.
+[
+26]
+ 汪涛, 夏文军, 赵云松, 等. CT金属伪影去除研究进 展[J]. 中国
+体视学与图像分析, 2020, 25(3): 207-223.
+WANG
+ T,  XIA  W  J,  ZHAO  Y  S,  et  al.  CT  metal  artifact
+reduction research progress[J]. Stereology and Image Analysis in
+China, 2020, 25(3): 207-223.
+[
+27]
+ GUO L Q, HUANG S Y, LIU D, et al.Shadow former: global
+context helps shadow removal[C]// Proceedings of the 37th AAAI
+Conference  on  Artificial  Intelligence.Washington,  D.C.,  USA,
+2023, 710-718.
+[28]
+ XU X G, WANG R X, FU C W.SNR-aware low-light image
+enhancement[J].Proceedings  of  IEEE/CVF  Conference  on
+Computer Vision and Pattern Recognition.New Orleans, USA,
+2022: 17693-17703.
+[29]
+ YAN K, WANG X S, LU L, et al. DeepLesion: automated mining
+of large-scale lesion annotations and universal lesion detection
+with deep learning[J].  Journal of Medical Imaging, 2018, 5(3):
+036501.
+[30]
+ McCOLLOUGH C. TU-FG-207A-04: overview of the low dose
+CT grand challenge[J]. Medical Physics, 2016, 43(6): 3759-3760.
+[
+31]
+ GLOCKER  B,  ZIKIC  D,  KONUKOGLU  E,  et  al.Vertebrae
+localization in pathological spine CT via dense classification from
+sparse  annotations[C]//  Proceedings  of  the  16th  International
+Conference on Medical Image Computing and Computer Assisted
+Intervention.Nagoya, Japan, 2013: 262-270.
+[32]
+ RADFORD  A,  KIM  J  W,  HALLACY  C,  et  al.Learning
+transferable visual models from natural language supervision[C]//
+Proceedings  of  the  38th  International  Conference  on  Machine
+Learning, 2021: 8748-8763.
+[33]
+Multimodal information fusionnetwork for CT metal artifact reduction
+FU Zhaoran
+1
+, ZHAO Yingshuai
+2,3
+, JIANG Ke
+2,3
+, SHI Baoshun
+2,3
+(1.  Department of Oral Medicine, First Hospital of Qinhuangdao, Qinhuangdao, Hebei 066004, China;
+2.  School of Information Science and Engineering, Yanshan University, Qinhuangdao, Hebei 066004, China;
+3.  Hebei Key Laboratory of Information Transmission and Signal Processing,Qinhuangdao, Hebei 066004, China)
+358 燕山大学学报 2026
+
+=== PDF_PAGE 12 ===
+Abstract：Computed Tomography (CT) is a pivotal diagnostic tool in medical imaging. The presence of metallic objects within the
+scan field, however, leads to the formation of metal artifacts in reconstructed CT images, which can significantly impair the
+accuracy of diagnosis and treatment. In recent years, deep learning-based approaches to Metal Artifact Reduction (MAR) have been
+developed to mitigate these artifacts. Yet, current methods often fail to capitalize on the complementary information available from
+different modalities, resulting in the suboptimal reduction of artifacts. To overcome this limitation, a Multi-modal Information
+Fusion Network (MIFNet) is constructed and applied to a model-driven MAR framework in this study. Regularization constraints
+are imposed on metal artifacts and CT images, leveraging the additive nature of metal artifacts, to formulate and solve an
+optimization model for MAR. Each iterative sub-step of the proposed algorithm is expanded into a network, creating a model-
+driven network with enhanced interpretability. Additionally, a deep neural network is developed that integrates local and global
+image information along with textual prior information, serving as the CT image proximal network within the model-driven MAR
+framework. The Contrastive Language-Image Pretraining (CLIP) model is utilized to incorporate textual prior knowledge, thereby
+aiding in MAR. Experimental results indicate that the multi-modal information fusion method presented here surpasses existing
+deep learning-based MAR methods in terms of MAR performance.
+Keywords：computed tomography;  metal artifact reduction;  textual prompt;  model-driven network
+ 
+（上接第347页）  
+Sports action quality assessment network based on tube self-attention and
+spatiotemporal parallel perception
+XING Suxia, GUO Zheng, FANG Junze, YU Chongchong, FAN Fuqiang
+(School of Computer and Artificial Intelligence, Beijing Technology and Business University, Beijing 100048, China)
+Abstract：The quality assessment of sports actions requires providing quality ratings for the completeness, fluency, and difficulty
+of actions based on the recognition of action types, which is extremely challenging. A network structure based on tube self-attention
+and spatiotemporal parallel perception was designed to accurately extract key information from action sequences and efficiently
+assess action quality. Firstly, action information was extracted and background interference was eliminated using a single target
+tracking and tube self-attention module. Secondly, based on the Uniformer model, a spatial multi-head self-attention mechanism
+was introduced in the local feature extraction module, and the local and global attention spatiotemporal serial perception network
+was changed to a spatiotemporal parallel perception network to improve computational efficiency. Finally, the local and global
+features were fused through a multi-stage fusion module to enhance action representation, and the multi-layer perceptron module
+was extended to output action recognition and action quality assessment results. Action recognition experiments were conducted on
+the UCF101 and HMDB51 dataset, respectively. The action recognition Top-1 and Top-5 accuracy of the UCF101 dataset reached
+85.2% and 96.7%, respectively, and the computational cost of FLOPs significantly decreased, the action recognition accuracy Top-
+1 of the HMDB51 dataset reached 77.8%. Action quality assessment experiments were conducted on the AQA-7 and MTL-AQA
+dataset, respectively, the average Spearman’s rank correlation coefficient for the assessment of the AQA-7 dataset reached 0.808 7,
+the Spearman’s rank correlation coefficient for the assessment of the MTL-AQA dataset reached 0.948 1. The experimental results
+show that the model not only has a high action recognition rate, but also can accurately and efficiently complete the task of action
+quality assessment.
+Keywords： action  quality  assessment;   video  action  recognition;   Uniformer;   tube  self-attention;   spatiotemporal  parallel
+perception
+第 4 期 傅昭然   等　多模态信息融合的 CT 金属伪影校正网络 359

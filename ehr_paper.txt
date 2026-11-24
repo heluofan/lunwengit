@@ -1,0 +1,1892 @@
+ Towards accurate and reliable ICU outcome prediction: a multimodal learning framework based on belief function theory using structured EHRs and free-text notes 
+  // Restore the saved color scheme preference, or
+  // enact the browser preference if "automatic", 
+  // without expecting DOM load to have completed.
+  //
+  // Also restore any saved readingmode and ToC display preferences.
+  function initializeReadingPreferences() {
+    let saved_theme = localStorage.getItem("ar5iv_theme") || "automatic";
+    if (saved_theme === "automatic") {
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        saved_theme = "dark";
+      }
+    }
+    if (saved_theme == "dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+    const tocDisplay = localStorage.getItem('arxiv_html_paper_toc_display');
+    if (tocDisplay) {
+      document.documentElement.setAttribute("data-toc-display", tocDisplay);
+    }
+    const readingMode = localStorage.getItem('arxiv_html_paper_reading_mode');
+    if (readingMode) {
+      document.documentElement.setAttribute("data-reading-mode", readingMode);
+    }
+  }
+  // Run as soon as JS starts, to minimize repainting
+  initializeReadingPreferences();
+  /* Reading mode hides the chrome and the empty .arxiv-html-header marker: the pinned JS reads
+     the marker's display to know which way to toggle. The marker draws no box. */
+  .arxiv-html-header { display: contents; }
+  html[data-reading-mode="enabled"] :is(.arxiv-html-site-chrome, .arxiv-html-header, .ds-site-footer) { display: none; }
+  /* The paper controls' icons are blocks, so they sit centred (the pinned JS shows the theme
+     icon by making its span a block). */
+  .arxiv-html-site-chrome .ds-site-header-tools svg { display: block; width: 18px; height: 18px; flex-shrink: 0; fill: currentColor; }
+  /* ar5iv dims every image in dark mode and puts it on a white wash, for paper figures;
+     arXiv's own render as they are (the logo on the bar, the funder logos on their white
+     chips). Important: ar5iv's dark rules are unlayered, as specific as
+     :root:not([data-theme]) img:not(.ltx_no_dark_filter). */
+  :is(.ds-site-header, .ds-site-footer) img { filter: none !important; }
+  .ds-site-header img { background-color: transparent !important; }
+  /* Wide (the theme's 1280px): the theme lays the body out as a grid whose full-width top rows
+     were the band's and its sticky reader bar's. The band takes the first and scrolls away; the
+     header, the paper's bar (no site navigation, the paper's controls), takes the second and
+     stays in view, the one sticky bar, with the anchor clearance that requires (DESIGN-POLICIES).
+     The controls show their names. */
+  @media (min-width: 1280px) {
+    html { scroll-padding-top: 80px; }
+    .arxiv-html-site-chrome { display: contents; }
+    .arxiv-html-site-chrome > #ds-announcement { grid-area: announce; }
+    .arxiv-html-site-chrome > .ds-site-header { grid-area: header; position: sticky; top: 0; z-index: 3; }
+    .arxiv-html-site-chrome .tool-icon { display: none; }
+  }
+  /* Narrow: the header scrolls away, and the controls show icons (names kept for screen
+     readers; Why HTML? goes). The theme's contents panel is fixed below where its old sticky
+     bar was, and hidden only once the reader has closed it, so until then it is an invisible box
+     over the header and the paper: it shows only while open, under the chrome, in its place in
+     the page. The paper's footer (build logs, reporting instructions) keeps the text's side
+     inset; the theme gives it none, so it met the screen edges. */
+  @media (max-width: 1279px) {
+    .arxiv-html-site-chrome .tool-wide { display: none; }
+    .arxiv-html-site-chrome .tool-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    html:not([data-toc-display="block"]) .ltx_page_navbar { display: none; }
+    .ltx_page_navbar { position: absolute; top: auto; }
+    .arxiv-html-footer { padding-inline: 1rem; }
+  }
+ Skip to main content 
+       Report GitHub Issue 
+       × 
+       Title: 
+       Content selection saved. Describe the issue below: 
+       Description: 
+       Submit without GitHub 
+       Submit in GitHub 
+      Why HTML? 
+          Report Issue 
+           Back to Abstract 
+          Download PDF 
+           Contents 
+          Reading mode 
+                         Colour theme 
+   Abstract   
+    1  Introduction   
+    2  Preliminaries  
+    2.1  Belief function theory   
+    2.2  Evidential neural network   
+    3  METHODS  
+    3.1  Model architecture  
+    3.1.1  Evidence mapping (EM)  
+   Structured data evidence mapping   
+   Free-text notes evidence mapping   
+    3.1.2  Evidence fusion (EF)   
+    3.2  Augmented model optimization algorithm   
+    4  Experiments  
+    4.1  Study Cohort   
+    4.2  Input features  
+   Structured EHR data   
+   Free-text EHR notes   
+    4.3  Prediction Tasks  
+   Mortality   
+   Prolonged length of stay   
+    4.4  Baselines  
+   Structured data baseline   
+   Free-text notes baseline   
+   Multimodal modal baseline   
+    4.5  Implementation details   
+    4.6  Model evaluation   
+    5  RESULTS  
+    5.1  Data description   
+    5.2  Model performance  
+    5.2.1  Predictive accuracy   
+    5.2.2  Reliability   
+    5.3  Evaluation on different fusion settings   
+    6  DISCUSSION  
+    6.1  Benefits of free-text notes   
+    6.2  Effectiveness on multimodal evidence fusion  
+   Accurate and reliable ICU decision support   
+   Efficient resource allocation   
+    6.3  Analysis on different fusion settings   
+    6.4  Influence of encoders selection   
+    7  CONCLUSION   
+   References   
+    A  Evaluation on different fusion settings using BERT and BioBERT as text encoders   
+    License: arXiv.org perpetual non-exclusive license
+arXiv:2501.04389v2 [cs.IT] 25 Feb 2025 
+ Towards accurate and reliable ICU outcome prediction: a multimodal learning framework based on belief function theory using structured EHRs and free-text notes 
+ Yucheng Ruan
+  Email:   yuchengruan@u.nus.edu 
+  Affiliation:  Saw Swee Hock School of Public Health, National University of Singapore, Singapore
+  Affiliation:  Institute of Data Science, National University of Singapore, Singapore
+ Daniel J. Tan
+  Email:   djtan@u.nus.edu 
+  Affiliation:  Institute of Data Science, National University of Singapore, Singapore
+ See-Kiong Ng
+  Email:   seekiong@nus.edu.sg 
+  Affiliation:  Institute of Data Science, National University of Singapore, Singapore
+ Ling Huang
+  Email:   iweisskohl@gmail.com 
+  Affiliation:  Saw Swee Hock School of Public Health, National University of Singapore, Singapore
+ Mengling Feng
+  Email:   ephfm@nus.edu.sg 
+  Affiliation:  Saw Swee Hock School of Public Health, National University of Singapore, Singapore
+  Affiliation:  Institute of Data Science, National University of Singapore, Singapore
+  Abstract 
+ Accurate Intensive Care Unit (ICU) outcome prediction is critical for improving patient treatment quality and ICU resource allocation. Existing research mainly focuses on structured data, e.g. demographics and vital signs, and lacks effective frameworks to integrate clinical notes from heterogeneous electronic health records (EHRs).
+This study aims to explore a multimodal framework based on belief function theory that can effectively fuse heterogeneous structured EHRs and free-text notes for accurate and reliable ICU outcome prediction. The fusion strategy accounts for prediction uncertainty within each modality and conflicts between multimodal data.
+The experiments on MIMIC-III dataset show that our framework provides more accurate and reliable predictions than existing approaches.
+Specifically, it outperformed the best baseline by 1.05%/1.02% in BACC, 9.74%/6.04% in F1 score, 1.28%/0.9% in AUROC, and 6.21%/2.68% in AUPRC for predicting mortality and PLOS, respectively. Additionally, it improved the reliability of the predictions with a 26.8%/15.1% reduction in the Brier score and a 25.0%/13.3% reduction in negative log-likelihood.
+By effectively reducing false positives, the model can aid in better allocation of medical resources in the ICU. Furthermore, the proposed method is very versatile and can be extended to analyzing multimodal EHRs for other clinical tasks. The code implementation is available on  https://github.com/yuchengruan/evid_multimodal_ehr . 
+  keywords Multimodal Learning, Belief Function Theory, Evidence Fusion, ICU outcome prediction, Electronic Health Records
+  1  Introduction 
+ The Intensive Care Unit (ICU) is a specialized hospital ward that offers comprehensive and continuous care to critically ill patients. As the population of critically ill patients grows, the demand for ICUs has risen significantly, placing strain on already limited and costly intensive care resources   Terwiesch et al. (2011)  , especially during public health crises like the COVID-19 pandemic, when hospitals face an overwhelming surge of patients   Arabi et al. (2021)  . 
+ Due to the limited availability of intensive care resources, researchers have emphasized the necessity of predicting ICU outcomes such as mortality rates and prolonged lengths of stay (PLOS). Accurate predictions can help in the efficient allocation of medical resources for patients in need and reduce unnecessary expenses without compromising patient care. Furthermore, they are crucial for healthcare providers in making informed decisions about patient care strategies and providing early interventions to patients at high risk of adverse outcomes   Halpern and Pastores (2010) ;  Wang et al. (2024)  . 
+ Over the past two decades, the adoption of electronic ICU technology has enabled the collection of extensive data on ICU patients, creating new opportunities for developing advanced methods to predict ICU outcomes.
+Most previous research has concentrated on modeling ICU outcome predictions using structured EHR data   Iwase et al. (2022) ;  Ashrafi et al. (2024) ;  Gao et al. (2024)  , which often captures only a portion of clinical information. It may miss out on the rich contextual information that unstructured EHR data (such as nursing notes, patient narratives, and imaging reports) can provide. Natural language processing (NLP) techniques have been well explored to extract valuable insights from unstructured free-text EHR data   Sheikhalishahi et al. (2019) ;  Koleck et al. (2021) ;  Oliwa et al. (2021) ;  Zhou et al. (2023)  .
+Therefore, effective multimodal learning algorithms are essential to integrate heterogeneous EHRs for better ICU outcome prediction. 
+ Recently, deep learning-based multimodal models have been proven to combine structured EHR data and free-text data at the deep feature level for clinical outcome predictions   Zhang et al. (2020) ;  Shin et al. (2021) ;  Lin et al. (2024)  .
+These models often simply concatenate structured data with encoded features from free texts to generate patient representations for decision-making. While those approaches have improved prediction accuracy, the clinical impacts between the two heterogeneous modalities   Guo et al. (2019)   are now well explored.
+Another limitation of existing research is the lack of reliability evaluation for deep learning models.
+Unreliable predictions can lead to incorrect diagnoses or treatment plans, potentially harming patients   Kelly et al. (2019) ;  Kumar et al. (2023) ;  Wubineh et al. (2024)  . Therefore, evaluating the prediction reliability is crucial beyond just predictive accuracy, especially in critical care settings. However, concerns about the reliability of existing models in noisy and unstable clinical environments still remain. 
+ Belief function theory (BFT), also known as Dempster-Shafer theory (DST), is a powerful framework for modeling, reasoning with, and integrating imperfect (noisy, uncertain, conflicting) data   Shafer (1976) ;  Dempster (1967) ;  Denoeux (2000)  . The effectiveness of BFT in low-quality and multimodal medical image analysis has been widely reviewed in   Huang et al. (2023) ;  Huang et al. (2024a)  . However, the study of BFT in EHR data is limited. Ling et al.  Huang et al. (2024b)   first studied the survival prediction uncertainty using structured EHRs under the framework of BFT and possibility theory. The heterogeneity of clinical data and other medical modalities, e.g., imaging and genetic, are also studied in   Huang et al. (2024c)   by combining multimodal data using the generated Dempster’s combination rule   Denœux (2023)  . 
+ In this work   1    1 
+             1 
+          This work is an extended version of the short paper presented at the 8th International Conference on Belief Functions (BELIEF 2024)   Ruan et al. (2024)  .   , we further study the effectiveness of BFT in multimodal EHR analysis using structured EHRs and free-text notes with a focus on ICU outcomes prediction.
+We propose a multimodal learning model under the BFT framework with accurate and reliable ICU outcomes prediction using multimodal EHR data. Instead of developing more effective feature extraction or interaction strategies for multimodal data communication, our framework focuses on effective evidence fusion study and integrates information based on the evidence derived from different modalities. Specifically, we use state-of-the-art deep neural networks for single-modality feature extraction: ResNet/Transformer-based models for structured EHR data and pre-trained language models for free-text EHR data. The extracted features are independently mapped into evidence with an evidence mapping module and then combined in the evidence space in an evidence fusion module.
+Experimental results on the MIMIC-III database for mortality and prolonged length of stay (PLOS) predictions demonstrate the effectiveness of our proposed model in both predictive accuracy and reliability. 
+  2  Preliminaries 
+  2.1  Belief function theory 
+ Belief function theory (BFT) was first introduced by Dempster and Shafer   Dempster (1967) ;  Shafer (1976)  . The expressive capabilities of belief functions enable a more accurate representation of evidence than relying solely on probabilities. Let     Ω  =   {    ω  1   ,   ω  2   ,  ⋯  ,   ω  M    }    \Omega=\{\omega_{1},\omega_{2},\cdots,\omega_{M}\}    be a finite set of hypotheses about some question, called the  frame of discernment . Evidence about a variable taking values in    Ω  \Omega    can be represented by a  mass function :     2  Ω   2^{\Omega}    to [0,1] such that      m  ⁡   (  ∅  )    =  0   m(\emptyset)=0    and 
+        ∑   A  ⊆  Ω     m  ⁡   (  A  )     =  1   .   \sum_{A\subseteq\Omega}m(A)=1.    
+  (1)    
+ For any hypothesis     A  ⊆  Ω   A\subseteq\Omega   , the quantity     m  ⁡   (  A  )    m(A)    is interpreted as a share of a unit mass of belief allocated to the hypothesis that the truth is in    A  A   , and which cannot be allocated to any strict subset of    A  A    based on the available evidence. Set    A  A    is called a  focal set  of    m  m    if      m  ⁡   (  A  )    >  0   m(A)>0   . A mass function is said to be Bayesian if its focal sets are singletons, and logical if it has only one focal set. Two mass functions     m  1   m_{1}    and     m  2   m_{2}    representing independent items of evidence can be combined conjunctively by  Dempster’s combination rule    Shafer (1976)      ⊕  \oplus    as 
+        (    m  1   ⊕   m  2    )   ​   (  A  )    =     ∑    B  ∩  C   =  A      m  1   ​   (  B  )   ​   m  2   ​   (  C  )      1  −    ∑    B  ∩  C   =  ∅      m  1   ​   (  B  )   ​   m  2   ​   (  C  )        ,   (m_{1}\oplus m_{2})(A)=\frac{\sum_{B\cap C=A}m_{1}(B)m_{2}(C)}{1-\sum_{B\cap C=\emptyset}m_{1}(B)m_{2}(C)},    
+  (2)    
+ for all     A  ≠  ∅   A\neq\emptyset   , where      ∑    B  ∩  C   =  ∅      m  1   ​   (  B  )   ​   m  2   ​   (  C  )     \sum_{B\cap C=\emptyset}m_{1}(B)m_{2}(C)    is the degree of conflict among the two pieces of evidence, The nice information fusion attribute of BFT points out the high potential in heterogenetic medical data analysis. 
+ After aggregating all available evidence, the final decision of BFT can be made based on the pignistic transformation proposed by Smets in the Transferable Belief Model   Smets and Kennes (1994)   that combinese all mass functions using the following expression: 
+     p   (  ω  )   =   ∑   A  ⊆  Ω  :   ω  ∈  A       m  ⁡   (  A  )     |  A  |    ,  ∀  ω  ∈  Ω  .   p(\omega)=\sum_{A\subseteq\Omega:\omega\in A}\frac{m(A)}{|A|},\forall\omega\in\Omega.    
+  (3)    
+  2.2  Evidential neural network 
+ Denœux   Denoeux (2000)   proposed an evidential neural network (ENN) that maps imperfect (uncertain, imprecise, or noise) input features into degrees of belief and ignorance (uncertainty) under the framework of BFT   Shafer (1976) ;  Dempster (2008)  .
+The essential concept of ENN is to consider each prototype as a piece of evidence, which is discounted based on its distance from the input vector. The evidence from different prototypes is then aggregated using Dempster’s combination rule. 
+ As illustrated in Figure   1  , the ENN consists of one input layer, one hidden layer, and one output layer. The input layer is composed of    H  H    units (   H  H    is the number of prototypes), whose weights vectors are prototypes      π  1   ,   π  2   ,  ⋯  ,   π  H    \pi_{1},\pi_{2},\cdots,\pi_{H}    in input space.
+The activation of unit    h  h    in the input layer is 
+       s  h   =    β  h   ​  exp  ​   (   −    γ  h   ​   d  h  2     )     ,   s_{h}=\beta_{h}\mathrm{exp}(-\gamma_{h}d_{h}^{2}),    
+  (4)    
+   Figure 1 :   The illustration of ENN  
+ where      d  h   =   ‖   x  −   π  h    ‖    d_{h}=||x-\pi_{h}||    denotes the Euclidean distance between input vector    x  x    and prototype     π  h   \pi_{h}    ,      γ  h   >  0   \gamma_{h}>0    is a scale parameter, and      β  h   ∈   [   0  ,  1   ]    \beta_{h}\in[0,1]    is an extra parameter.
+The hidden layer computes mass functions     m  h   m_{h}    (evidence) of each prototype     π  h   \pi_{h}    is defined as: 
+      m  h   ​   (   {   ω  c   }   )    \displaystyle m_{h}(\{\omega_{c}\})    
+     =  u     h       (  c  )    s     h   ,  c  =  1  ,  2  ,  ⋯  ,  M  ,   \displaystyle=u_{h}^{(c)}s_{h},\quad c=1,2,\cdots,M,    
+  (5a)   
+      m  h   ​   (  Ω  )    \displaystyle m_{h}(\Omega)    
+        =   1  −   s  h     ,   \displaystyle=1-s_{h},    
+  (5b)    
+ where     u  h   (  c  )    u_{h}^{(c)}    is the membership degree of prototype    h  h    to class     ω  c   \omega_{c}   ,       ∑   c  =  1   M    u  h   (  c  )     =  1   \sum_{c=1}^{M}u_{h}^{(c)}=1   , and    M  M    is the number of classes. Therefore, the vector of mass functions induced by prototypes is denoted as: 
+       m  h   =   (    m  h   ​   (   {   ω  1   }   )    ,    m  h   ​   (   {   ω  2   }   )    ,  ⋯  ,    m  h   ​   (   {   ω  M   }   )    ,    m  h   ​   (  Ω  )    )   ∈   ℝ   M  +  1     .   m_{h}=(m_{h}(\{\omega_{1}\}),m_{h}(\{\omega_{2}\}),\cdots,m_{h}(\{\omega_{M}\}),m_{h}(\Omega))\in\mathbb{R}^{M+1}.    
+  (6)    
+ Finally, the mass functions are then aggregated by Dempster’s combination rule
+using Eq.   2   in the output layer. A combined mass function    m  m    is computed as the orthogonal sum of the    H  H    mass functions: 
+      m  =    m  1   ⊕   m  2   ⊕  ⋯  ⊕   m  H    ∈   ℝ   M  +  1     .   m=m_{1}\oplus m_{2}\oplus\cdots\oplus m_{H}\in\mathbb{R}^{M+1}.    
+  (7)    
+ The combined mass functions (the outputs of the ENN) represent the degrees of belief about the given class with     m  ⁡   (   {   ω  c   }   )    m(\{\omega_{c}\})   , as well as its prediction uncertainty with     m  ⁡   (  Ω  )    m(\Omega)   . In our binary classification case, the dimension of ENN outputs would be three. 
+  3  METHODS 
+  3.1  Model architecture 
+ The overview of the proposed framework is illustrated in Figure   2  .
+The general idea of this framework is to generate the modality-level evidence for both structured data and free-text notes using the evidence mapping module and fuse the modality-level evidence with Dempster’s combination rule for final prediction. 
+   Figure 2 :   The overview of our proposed framework. EM: evidence mapping and EF: evidence fusion  
+  3.1.1  Evidence mapping (EM) 
+ Inspired by ENN and its promising adoptions in medical data analysis   Lian et al. (2018) ;  Huang et al. (2022a) ;  Huang et al. (2022b) ;  Huang et al. (2025)  , we propose incorporating ENN as an evidence mapping module with the state-of-the-art encoders to generate evidence for structured EHRs and free-text notes.
+Given modality level input, the evidence mapping module can output the evidence for each class as well as the uncertainty regarding this prediction. 
+ Structured data evidence mapping 
+ To produce modality evidence for structured data, we initially used a structured data encoder to extract deep features (the output dimension is set to 32). We considered three popular encoders to extract the embeddings: MLP, ResNet, FT-Transformer   Gorishniy et al. (2021)   (see
+ Baselines section  for more details).
+Subsequently, we introduced an evidence mapping module (the number of prototypes is set to 20) to transform the deep features into evidence embeddings for structured data. 
+ Free-text notes evidence mapping 
+ Similarly, we utilized pre-trained language models to extract the deep features from clinical notes, on which we developed an evidence mapping module (the number of prototypes is set to 20) to produce the evidence of the modality. Our primary analysis focused on pre-trained architectures similar to BERT. Accordingly, three BERT-based architectures were evaluated: BERT   Devlin (2018)  , BioBERT   Devlin (2018)  , Clinical BERT   Alsentzer et al. (2019)   (see  Baselines section  for more details). To minimize computational overhead while maintaining high predictive performance, we froze the pre-trained language models and fine-tuned an additional layer (128 hidden units) on top in model training. 
+  3.1.2  Evidence fusion (EF) 
+ Based on the modality-level evidence obtained from structured EHR and free-text notes, we developed the evidence fusion module based on Dempster’s combination rule to generate the final evidence for decision-making. 
+ To combine multiple mass functions      m  1   ,   m  2   ,  ⋯  ,   m  K    m_{1},m_{2},\cdots,m_{K}    from different modalities/data types/data sources, Dempster’s combination rule is applied again Eq.   2   to aggregate evidence for multiple sources for final evidence generation. 
+      m  =    m  1   ⊕   m  2   ⊕  ⋯  ⊕   m  K    ∈   ℝ   M  +  1     ,   m=m_{1}\oplus m_{2}\oplus\cdots\oplus m_{K}\in\mathbb{R}^{M+1},    
+  (8)    
+ where    K  K    is the number of mass functions to combine. For example,    K  K   =2 for the fusion of evidence from structured EHRs and free-text notes. 
+  3.2  Augmented model optimization algorithm 
+ We optimize the proposed framework using an augmented learning algorithm, which includes two types of optimization objectives: (1) main objective and (2) auxiliary objective. The main objective is to optimize predictive performance based on transformed evidence as the primary loss function. Additionally, two auxiliary cross-entropy losses are incorporated to enhance the feature representation capability of the independent encoders for the two modalities, as the evidence mapping module performs more effectively with high-quality representations. 
+ Let      p  i   =   (    p  i   ​   (   ω  1   )    ,  ⋯  ,    p  i   ​   (   ω  c   )    ,  ⋯  ,    p  i   ​   (   ω  M   )    )    p_{i}=(p_{i}(\omega_{1}),\cdots,p_{i}(\omega_{c}),\cdots,p_{i}(\omega_{M}))    be the final probability after the pignistic transformation (  3  ) for training sample    i  i   , and      y  i   =   (   y   i  ,  1    ,   y   i  ,  2    ,  ⋯  ,   y   i  ,  M    )    y_{i}=(y_{i,1},y_{i,2},\cdots,y_{i,M})    denotes the one-hot encoding for corresponding ground-truth labels.
+The main loss function     ℒ   m  ​  a  ​  i  ​  n    \mathcal{L}_{main}    is computed as: 
+      ℒ   m  ​  a  ​  i  ​  n    =  −   1  N    ∑   i  =  1   N    ∑   c  =  1   M    w  c    y   i  ,  c    log   (   p  i    (   ω  c   )   )   ,   \mathcal{L}_{main}=-\frac{1}{N}\sum_{i=1}^{N}\sum_{c=1}^{M}w_{c}y_{i,c}\mathrm{log}(p_{i}(\omega_{c})),    
+  (9)    
+ where    N  N    is the number of training samples,    M  M    denotes the number of classes, and     w  c   w_{c}    is the weight assigned to each class to address the class imbalance issue. 
+ Moreover, two auxiliary cross-entropy losses are introduced to optimize the feature representation performance of the encoders, as the evidence mapping module performs more effectively with high-quality representations.
+Firstly, to regulate the representation generated by encoders, we added an additional fully connected network (FCN) to generate logits     o  i   o_{i}    for each modality. Let      o  i  s   =   (   o   i  ,  1   s   ,   o   i  ,  2   s   ,  ⋯  ,   o   i  ,  M   s   )    o^{s}_{i}=(o_{i,1}^{s},o_{i,2}^{s},\cdots,o_{i,M}^{s})    and      o  i  n   =   (   o   i  ,  1   n   ,   o   i  ,  2   n   ,  ⋯  ,   o   i  ,  M   n   )    o^{n}_{i}=(o_{i,1}^{n},o_{i,2}^{n},\cdots,o_{i,M}^{n})    be the logits from the encoders for structured data and free-text notes, respectively, the cross-entropy losses     ℒ   a  ​  u  ​  x   s   \mathcal{L}^{s}_{aux}    and     ℒ   a  ​  u  ​  x   n   \mathcal{L}^{n}_{aux}    are then calculated with     y  i   y_{i}    for structured data and notes, respectively: 
+     ℒ     s       a  ​  u  ​  x    =  −   1  N   ∑      i  =  1       N   ∑      c  =  1       M   w     c   y      i  ,  c    log    exp  ⁡   (   o   i  ,  c   s   )      ∑   b  =  1   M    exp  ⁡   (   o   i  ,  b   s   )      ,   \mathcal{L}^{s}_{aux}=-\frac{1}{N}\sum_{i=1}^{N}\sum_{c=1}^{M}w_{c}y_{i,c}\mathrm{log}\frac{\mathrm{exp}(o_{i,c}^{s})}{\sum_{b=1}^{M}\mathrm{exp}(o_{i,b}^{s})},    
+  (10)    
+     ℒ     n       a  ​  u  ​  x    =  −   1  N   ∑      i  =  1       N   ∑      c  =  1       M   w     c   y      i  ,  c    log    exp  ⁡   (   o   i  ,  c   n   )      ∑   b  =  1   M    exp  ⁡   (   o   i  ,  b   n   )      ,   \mathcal{L}^{n}_{aux}=-\frac{1}{N}\sum_{i=1}^{N}\sum_{c=1}^{M}w_{c}y_{i,c}\mathrm{log}\frac{\mathrm{exp}(o_{i,c}^{n})}{\sum_{b=1}^{M}\mathrm{exp}(o_{i,b}^{n})},    
+  (11)    
+ Ultimately, the overall loss function     ℒ   o  ​  v  ​  e  ​  r  ​  a  ​  l  ​  l    \mathcal{L}_{overall}    is defined as follows: 
+       ℒ   o  ​  v  ​  e  ​  r  ​  a  ​  l  ​  l    =    ℒ   m  ​  a  ​  i  ​  n    +   α  ​   ℒ   a  ​  u  ​  x   s    +   β  ​   ℒ   a  ​  u  ​  x   n      ,   \mathcal{L}_{overall}=\mathcal{L}_{main}+\alpha\mathcal{L}^{s}_{aux}+\beta\mathcal{L}^{n}_{aux},    
+  (12)    
+ where     α  ,  β   \alpha,\beta    are the hyperparameters that control the balance between the main loss and the auxiliary cross-entropy losses. In both tasks, we set     α  =  2   \alpha=2    and     β  =  1   \beta=1   . 
+  4  Experiments 
+  4.1  Study Cohort 
+ This study used data from MIMIC-III (Medical Information Mart for Intensive Care III), a large, publicly available database containing de-identified health records from patients in critical care units at Beth Israel Deaconess Medical Center (from the US) between 2001 and 2012   Johnson et al. (2016)  . We collected structured EHR data and free-text clinical notes from the database. Patients were excluded if they (1) were under 18 years of age at admission and (2) had incomplete length of stay or mortality data. For patients with multiple ICU stays, we considered only the first. 
+  4.2  Input features 
+ Input features include both structured EHR data and unstructured free-text notes. In this section, we demonstrate the patient features in our study and provide details about the data preprocessing steps. 
+ Structured EHR data 
+ The structured data were collected during patients’ ICU stays and included demographic information, vital signs and laboratory tests, medical treatments, and comorbidities.
+For demographic information, the patient’s age, gender, weight, ethnicity, and admission type at the time of admission were included in the study.
+Vital signs/lab tests are the most crucial health indicators, easily measured using non-invasive equipment, and are readily understood by all healthcare professionals. For each variable considered, we used the first value recorded within 24 hours of admission time. We then excluded any variables with       ≥   50  %    \geq 50\%    missingness rate; this resulted in the inclusion of only heart rate among vital signs features alongside 19 lab test features, such as blood urea nitrogen, eosinophil count, and lymphocyte count, over the same period. All vital sign/lab test features were numerical variables.
+Medical treatments, which include services and interventions provided to patients and recorded in digital systems, were also analyzed. Treatments such as sedatives, statins, diuretics, antibiotics, ventilation, and vasopressors were included, with each treatment feature coded as a binary variable, indicating whether the patient received the treatment.
+Comorbidities refer to the presence of additional medical conditions, which play a role in decision-making models. In this study, comorbidities such as hypertension, diabetes, alcohol abuse, cerebrovascular accident (stroke), congestive heart failure, and ischemic heart disease were included, all represented as binary variables. 
+ All categorical features were encoded using one-hot encoding, and numerical features were normalized. Missing data were addressed by imputing the mean for continuous features and the mode for categorical features, ensuring data consistency. Eventually, the structured data contained 41 features. 
+ Free-text EHR notes 
+ Free-text notes contain a rich repository of clinical information about observations, assessments, and the overall clinical picture, which structured data often fails to capture. Furthermore, they provide an important context for interpreting structured data. For instance, while lab results may indicate abnormal values, free-text notes can clarify the relevance of these results by considering the patient’s history, comorbidities, or specific circumstances at the time of testing. As a result, NLP techniques, especially pre-trained LLM, can be applied to these notes to gain deeper insights for data-driven predictions. In this study, we focus on  Nursing ,  Nursing/Other ,  Physician , and  Radiology  notes, as these comprise the majority of clinical documentation and are frequently recorded in the MIMIC-III database   Zhang et al. (2020)  . We extracted only the first 24 hours of notes for each admission to facilitate early outcome prediction. 
+ All notes were preprocessed by appending the feature name at the front to help the pre-trained language model better understand the clinical texts. For instance, if the content  [x]  of a note is under  Nursing , the processed note would be  Nursing: [x] .
+The four types of notes were then concatenated using a newline symbol (\n) to form a unified  Notes  for each patient.
+Tokenizers from pre-trained language models in Huggingface were employed to break the notes into tokens, standardizing the free-text data for further NLP tasks. The  Notes  was transformed to a fixed length of 512 tokens to ensure input consistency; longer notes were truncated, while shorter notes were padded. 
+  4.3  Prediction Tasks 
+ In this study, we focus on two ICU prediction outcomes: mortality and prolonged length of stay. Since the two clinical outcomes are rare in patient popularity, we applied a simple class weighting approach during training based on relative class frequencies to mitigate biases and handle the imbalance in EHR data. 
+ Mortality 
+ Mortality is widely acknowledged as a critical outcome in ICUs. The primary objective of this task is to determine whether a patient is likely to die during their hospital stay. Accurate predictions enable the early identification of high-risk patients and support the efficient allocation of ICU resources. This prediction task is typically framed as a binary classification problem, with the label indicating the occurrence or absence of a death event. 
+ Prolonged length of stay 
+ Length of stay refers to the duration between a patient’s admission to and discharge from the ICU. In this study, we aim to predict prolonged length of stay (PLOS), defined as a stay exceeding 7 days   Liu et al. (2010) ;  Rajkomar et al. (2018) ;  Zhang et al. (2020)  . Prolonged ICU stays are often linked to severe illnesses, complications, and increased mortality. Moreover, they place considerable pressure on hospital resources by reducing the availability of ICU beds and specialized personnel. Efficient management of ICU LOS not only improves patient outcomes but also enhances the overall effectiveness of healthcare systems. This problem is framed as a binary classification task. 
+  4.4  Baselines  
+ To comprehensively evaluate the effectiveness of our proposed fusion framework, we compared it against three baseline model categories:
+(1) models using only structured data, (2) models using only free-text notes, and (3) existing multimodal models that integrate both data types. 
+ Structured data baseline  
+ The following models were used to evaluate performance with structured EHR data: 
+  •  
+  Random Forest    Breiman (2001)  : A decision tree-based ensemble learning method for making predictions. 
+  •  
+  MLP    Gorishniy et al. (2021)  : A fundamental neural network with fully connected layers to encode structured data and serves as a reliable baseline. The model was configured with 3 layers, 32 hidden units, and a dropout rate of 0.1. 
+  •  
+  ResNet    Gorishniy et al. (2021)  : Because of the success of ResNet in computer vision   He et al. (2016)  , it has also been adapted for structured data modeling. Specifically, the main building block is simplified by providing a direct path from input to output. The configuration in our study has 3 residual blocks, 32 hidden units, and a dropout rate of 0.1. 
+  •  
+  FT-Transformer    Gorishniy et al. (2021)  : It converts all categorical and numerical features into embeddings, which are then processed through a couple of Transformer layers. It has demonstrated superior performance as a structured data encoder across various tasks. The model configuration has 3 Transformer layers with 192 hidden units, 8 attention heads, and a dropout rate of 0.2. 
+ Free-text notes baseline  
+ To assess text-based prediction performance, we compared our model against three BERT-based text classification approaches: 
+  •  
+  BERT    Devlin (2018)  : A pre-trained language model trained on a large English corpus using self-supervised learning. It learns contextual representations through masked language modeling and next-sentence prediction. In this study, we used the Google-bert/bert-base-uncased model from Huggingface   Wolf (2019)   for feature extraction. 
+  •  
+  BioBERT    Lee et al. (2020)  : a variant of BERT pre-trained on biomedical literature, such as PubMed abstracts, and is optimized to perform more effectively on biomedical NLP tasks. In this study, we used  dmis-lab/biobert-v1.1  from Huggingface as the extraction model. 
+  •  
+  Clinical BERT    Alsentzer et al. (2019)  :
+A fine-tuned version of BERT on clinical notes from the MIMIC-III database, making it well-suited for handling medical terminology and clinical narratives to enhance performance on clinical tasks. In our study, we used  emilyalsentzer/Bio_ClinicalBERT  from the Huggingface transformer library for extracting embeddings from clinical notes. 
+ Multimodal modal baseline 
+ To compare against multimodal models, we implemented the concatenation-based approach from   Lin et al. (2024)  . This method combines structured EHR data with extracted text embeddings from free-text notes, followed by two fully connected layers for prediction. To ensure fairness, we tested this approach with BERT, BioBERT, and Clinical BERT as text encoders. 
+  4.5  Implementation details 
+ The dataset was randomly divided with 60% for training, 20% for validation, and 20% for testing. For model training, a mini-batch size of 32 was used, and the maximum number of epochs was set to 150, with early stopping applied.
+To handle data imbalance, we used a simple class weighting technique   2    2 
+               2 
+             https://scikit-learn.org/stable/modules/generated/sklearn.utils.class_weight.compute_class_weight.html     based on class frequencies, as this was not the main focus of our research. The positive to negative weight ratios were set to 4.254:0.567 for the mortality prediction task and 3.660:0.579 for the PLOS prediction task. 
+ Each model was trained five times with different random seeds, and we reported the average results along with the standard error of the metrics to ensure statistical reliability. Hyperparameters were optimized for all baseline models to achieve the best results. All compared models were implemented using Scikit-learn   Pedregosa et al. (2011)  , PyTorch   Paszke et al. (2019)  , and Hugging Face’s Transformers library   Wolf (2019)   in Python 3.8.19. The MLP, ResNet, and FT-Transformer models were built using the original source code on GitHub   3    3 
+               3 
+             https://github.com/yandex-research/rtdl-revisiting-models.    . The Multimodal approach was modified based on the code on Github   4    4 
+               4 
+             https://github.com/WeiChunLin/Bio_Clinical_BERT_Multimodal_Model.    . 
+  4.6  Model evaluation 
+ For comprehensive model evaluation and comparison, we reported the two types of metrics: predictive accuracy and reliability. 
+  •  
+  Predictive accuracy  ensures that models correctly identify critically ill patients who require urgent intervention, thereby reducing the risk of misdiagnosis and unnecessary treatments. To comprehensively assess accuracy, we consider two aspects: 
+   –   
+  Class-specific  accuracy metrics which evaluate performance separately for positive and negative cases using metrics such as precision, recall, specificity, and negative predictive value (NPV). 
+  Precision  
+        =    TP   TP  +  FP      ,   \displaystyle=\frac{\text{TP}}{\text{TP}+\text{FP}},    
+  (13)    
+  Recall  
+        =    TP   TP  +  FN      ,   \displaystyle=\frac{\text{TP}}{\text{TP}+\text{FN}},    
+  (14)    
+  Specificity  
+        =    TN   TN  +  FP      ,   \displaystyle=\frac{\text{TN}}{\text{TN}+\text{FP}},    
+  (15)    
+  NPV  
+        =    TN   TN  +  FN      ,   \displaystyle=\frac{\text{TN}}{\text{TN}+\text{FN}},    
+  (16)    
+ where TP, TN, FP, and FN are True Positive, True Negative, False Positive, and False Negative, respectively. 
+   –   
+  Holistic  accuracy metrics include balanced accuracy (BACC), F1 score, the area under the receiver operating characteristic curve (AUROC), and the area under the precision-recall curve (AUPRC). AUROC is determined by calculating the area under the ROC curve (TP rate against FP rate across different threshold settings) and AUPRC calculates the area under the Precision-Recall curve across various threshold settings. 
+  BACC  
+        =     1  2    ​   (   Recall  +  Specificity   )     ,   \displaystyle=\frac{1}{2}\left(\text{Recall}+\text{Specificity}\right),    
+  (17)    
+  F1  
+        =   2  ⋅     Precision  ⋅  Recall    Precision  +  Recall       .   \displaystyle=2\cdot\frac{\text{Precision}\cdot\text{Recall}}{\text{Precision}+\text{Recall}}.    
+  (18)    
+ BACC, F1 score, and AUPRC are well-suited for evaluating model performance in imbalanced class distributions, as they provide a more balanced assessment than traditional accuracy measures. 
+  •  
+  Reliability  metrics quantify the model’s confidence in predictions. A model with high reliability provides well-calibrated probability estimates, allowing clinicians to make informed risk assessments. Here, we evaluate the performance of the Brier score and negative log-likelihood (NLL). 
+  Brier Score  
+        =     1  N    ​     ∑   i  =  1   N      (    p  i   −   o  i    )   2      ,   \displaystyle=\frac{1}{N}\sum_{i=1}^{N}(p_{i}-o_{i})^{2},    
+  (19)    
+  NLL  
+     =  −    1  N      ∑   i  =  1   N     (   o  i   log   (   p  i   )   +   (  1  −   o  i   )   log   (  1  −   p  i   )   )   ,   \displaystyle=-\frac{1}{N}\sum_{i=1}^{N}\left(o_{i}\log(p_{i})+(1-o_{i})\log(1-p_{i})\right),    
+  (20)    
+ where    N  N    is the number of instances,     p  i   p_{i}    is the predicted probability of the positive class for instance    i  i   , and     o  i   o_{i}    is the actual outcome for instance    i  i    (1 if positive, 0 if negative). 
+  5  RESULTS 
+  5.1  Data description 
+ Table   1   shows the descriptive characteristics of the patients in the study cohort. Our cohort includes 38469 patients in total under the inclusion criteria, in which 4540 (11.8%) patients were identified as dead during the stay while 5220 (13.6%) patients were identified as having prolonged length of stay. The patient demographic showed that the majority of patients were white, and male patients were slightly more than the female. Most of the admitted patients in the ICU were identified as emergency. Over half (51.2%) of patients received mechanical ventilation during their ICU stay and hypertension (38.8%) and congestive heart failure (31.2%) were among the most common patient comorbidities. 
+  Patient  
+  characteristic  
+  Mortality  
+  PLOS   
+  Yes (N=4540)  
+  No (N=33928)  
+  Yes (N=5220)  
+  No (N=33248)  
+ Age 
+ 68.6 (15.1) 
+ 61.6 (16.9) 
+ 62.9 (16.3) 
+ 62.3 (16.9) 
+ Gender 
+ Male 
+ 2399 (52.8%) 
+ 19378 (57.1%) 
+ 2943 (56.4%) 
+ 18834 (56.6%) 
+ Female 
+ 2141 (47.2%) 
+ 14550 (42.9%) 
+ 2277 (43.6%) 
+ 14414 (43.4%) 
+ Weight 
+ 79.1 (22.7) 
+ 83.0 (23.1) 
+ 84.6 (24.3) 
+ 82.2 (22.9) 
+ Ethnicity 
+ White 
+ 3100 (68.3%) 
+ 24343 (71.7%) 
+ 3661 (70.1%) 
+ 23782 (71.5%) 
+ Black 
+ 260 (5.7%) 
+ 2688 (7.9%) 
+ 354 (6.8%) 
+ 2594 (7.8%) 
+ Asian 
+ 106 (2.3%) 
+ 1166 (3.4%) 
+ 153 (2.9%) 
+ 1101 (3.3%) 
+ Hispanic 
+ 88 (1.9%) 
+ 803 (2.4%) 
+ 104 (2.0%) 
+ 805 (2.4%) 
+ Other 
+ 986 (21.7%) 
+ 4928 (14.5%) 
+ 948 (18.2%) 
+ 4966 (14.9%) 
+ Admission type 
+ Emergency 
+ 4240 (93.4%) 
+ 27062 (79.8%) 
+ 4480 (85.8%) 
+ 26822 (80.7%) 
+ Elective 
+ 165 (3.6%) 
+ 5911 (17.4%) 
+ 533 (10.2%) 
+ 5543 (16.7%) 
+ Urgent 
+ 135 (3.0%) 
+ 955 (2.8%) 
+ 207 (4.0%) 
+ 883 (2.7%) 
+ Heart rate 
+ 91.4 (22.0) 
+ 86.8 (18.7) 
+ 91.5 (21.0) 
+ 86.7 (18.8) 
+ APTT 
+ 39.7 (27.1) 
+ 34.7 (21.6) 
+ 37.2 (23.8) 
+ 35.0 (22.2) 
+ BUN 
+ 34.1 (25.1) 
+ 23.8 (19.0) 
+ 28.1 (22.3) 
+ 24.5 (19.7) 
+ Eosinophil 
+ 1.3 (3.1) 
+ 1.5 (1.9) 
+ 1.2 (1.7) 
+ 1.5 (2.1) 
+ Lymphocytes 
+ 12.1 (11.9) 
+ 15.5 (11.4) 
+ 12.5 (10.8) 
+ 15.4 (11.6) 
+ Neutrophils 
+ 77.3 (17.7) 
+ 76.6 (13.9) 
+ 77.8 (15.2) 
+ 76.5 (14.4) 
+ RDW 
+ 15.5 (2.4) 
+ 14.5 (1.9) 
+ 14.9 (2.1) 
+ 14.6 (2.0) 
+ Bicarbonate 
+ 22.6 (5.7) 
+ 24.3 (4.4) 
+ 23.6 (5.2) 
+ 24.1 (4.5) 
+ Chloride 
+ 103.3 (7.3) 
+ 104.1 (6.0) 
+ 104.0 (6.7) 
+ 104.0 (6.1) 
+ Creatinine 
+ 1.6 (1.4) 
+ 1.3 (1.4) 
+ 1.4 (1.5) 
+ 1.3 (1.4) 
+ Hemoglobin 
+ 11.3 (2.3) 
+ 11.8 (2.3) 
+ 11.6 (2.2) 
+ 11.7 (2.3) 
+ Mean cell volume 
+ 91.5 (7.7) 
+ 89.4 (6.6) 
+ 90.3 (7.1) 
+ 89.6 (6.7) 
+ Platelet count 
+ 227.2 (132.2) 
+ 239.0 (112.3) 
+ 231.8 (119.8) 
+ 238.5 (114.0) 
+ Potassium 
+ 4.3 (0.9) 
+ 4.2 (0.7) 
+ 4.2 (0.8) 
+ 4.2 (0.7) 
+ Sodium 
+ 138.2 (6.2) 
+ 138.6 (4.6) 
+ 138.7 (5.2) 
+ 138.5 (4.7) 
+ PT 
+ 17.4 (10.6) 
+ 15.1 (6.8) 
+ 16.0 (8.2) 
+ 15.3 (7.3) 
+ INR 
+ 1.8 (2.2) 
+ 1.4 (1.3) 
+ 1.6 (1.9) 
+ 1.4 (1.4) 
+ WBC 
+ 14.3 (16.5) 
+ 11.5 (8.8) 
+ 12.9 (8.8) 
+ 11.6 (10.2) 
+ PLR 
+ 39.9 (56.7) 
+ 30.4 (47.4) 
+ 38.4 (57.5) 
+ 30.6 (47.3) 
+ NLR 
+ 13.9 (15.6) 
+ 9.9 (13.7) 
+ 13.0 (15.2) 
+ 10.1 (13.8) 
+ Sedatives 
+ 1263 (27.8%) 
+ 9114 (26.9%) 
+ 2360 (45.2%) 
+ 8017 (24.1%) 
+ Statin 
+ 405 (8.9%) 
+ 5164 (15.2%) 
+ 556 (10.7%) 
+ 5013 (15.1%) 
+ Diuretic 
+ 567 (12.5%) 
+ 5435 (16.0%) 
+ 865 (16.6%) 
+ 5137 (15.5%) 
+ Antibiotics 
+ 952 (21.0%) 
+ 4836 (14.3%) 
+ 1122 (21.5%) 
+ 4666 (14.0%) 
+ Ventilation 
+ 2326 (51.2%) 
+ 10923 (32.2%) 
+ 3105 (59.5%) 
+ 10144 (30.5%) 
+ Vasopressor 
+ 1538 (33.9%) 
+ 6340 (18.7%) 
+ 1639 (31.4%) 
+ 6239 (18.8%) 
+ Hypertension 
+ 1760 (38.8%) 
+ 16221 (47.8%) 
+ 2199 (42.1%) 
+ 15782 (47.5%) 
+ Diabetes 
+ 1107 (24.4%) 
+ 9249 (27.3%) 
+ 1401 (26.8%) 
+ 8955 (26.9%) 
+ Alcohol abuse 
+ 202 (4.4%) 
+ 1554 (4.6%) 
+ 333 (6.4%) 
+ 1423 (4.3%) 
+ CVA 
+ 309 (6.8%) 
+ 1139 (3.4%) 
+ 364 (7.0%) 
+ 1084 (3.3%) 
+ CHF 
+ 1416 (31.2%) 
+ 8711 (25.7%) 
+ 1867 (35.8%) 
+ 8260 (24.8%) 
+ IHD 
+ 1276 (28.1%) 
+ 12390 (36.5%) 
+ 1634 (31.3%) 
+ 12032 (36.2%) 
+   Table 1 :   Characteristics of structured features in the patient cohort. For categorical features, the number of instances in each category is reported along with the percentage. For continuous features, the mean and standard deviation are reported in the study.  
+  5.2  Model performance 
+  5.2.1  Predictive accuracy 
+ Table   2   and   3   present the comparison of model performance for holistic predictive accuracy in mortality and PLOS prediction tasks, respectively. 
+  Model  
+  Struct.  
+  Notes  
+  BACC   ↑  \uparrow     
+  F1   ↑  \uparrow     
+  AUROC   ↑  \uparrow     
+  AUPRC   ↑  \uparrow     
+ Random Forest 
+ x 
+ 0.7172   ±  \pm    0.0019  
+ 0.3820   ±  \pm    0.0018  
+ 0.7988   ±  \pm    0.0010  
+ 0.3766   ±  \pm    0.0030  
+ MLP 
+ x 
+ 0.7486   ±  \pm    0.0003  
+ 0.4043   ±  \pm    0.0019  
+ 0.8326   ±  \pm    0.0011  
+ 0.4429   ±  \pm    0.0033  
+ ResNet 
+ x 
+ 0.7521   ±  \pm    0.0011  
+ 0.4113   ±  \pm    0.0007  
+ 0.8350   ±  \pm    0.0006  
+ 0.4468   ±  \pm    0.0016  
+ FT-Transformer 
+ x 
+ 0.7592   ±  \pm    0.0025  
+ 0.4166   ±  \pm    0.0021  
+ 0.8426   ±  \pm    0.0013  
+ 0.4577   ±  \pm    0.0029  
+ BERT as text encoder  
+ Text encoder only 
+ x 
+ 0.6300   ±  \pm    0.0014  
+ 0.2814   ±  \pm    0.0019  
+ 0.6777   ±  \pm    0.0014  
+ 0.2037   ±  \pm    0.0012  
+ Multimodal 
+ x 
+ x 
+ 0.7531   ±  \pm    0.0016  
+ 0.4079   ±  \pm    0.0031  
+ 0.8398   ±  \pm    0.0006  
+ 0.4596   ±  \pm    0.0021  
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+ 0.7610   ±  \pm    0.0015  
+  0.4507   ±  \pm    0.0007   
+  0.8486   ±  \pm    0.0011   
+ 0.4796   ±  \pm    0.0027  
+ Ours (ResNet) 
+ x 
+ x 
+ 0.7581   ±  \pm    0.0037  
+ 0.4404   ±  \pm    0.0038  
+ 0.8415   ±  \pm    0.0011  
+ 0.4688   ±  \pm    0.0014  
+ Ours (FT-Trans) 
+ x 
+ x 
+  0.7634   ±  \pm    0.0012   
+ 0.4432   ±  \pm    0.0060  
+ 0.8485   ±  \pm    0.0007  
+  0.4797   ±  \pm    0.0029   
+ BioBERT as text encoder  
+ Text encoder only 
+ x 
+ 0.6164   ±  \pm    0.0043  
+ 0.2759   ±  \pm    0.0021  
+ 0.6695   ±  \pm    0.0016  
+ 0.2181   ±  \pm    0.0009  
+ Multimodal 
+ x 
+ x 
+ 0.7558   ±  \pm    0.0007  
+ 0.4073   ±  \pm    0.0027  
+ 0.8362   ±  \pm    0.0006  
+ 0.4570   ±  \pm    0.0032  
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+ 0.7492   ±  \pm    0.0042  
+ 0.4493   ±  \pm    0.0060  
+ 0.8408   ±  \pm    0.0012  
+ 0.4758   ±  \pm    0.0009  
+ Ours (ResNet) 
+ x 
+ x 
+ 0.7546   ±  \pm    0.0039  
+ 0.4438   ±  \pm    0.0053  
+ 0.8424   ±  \pm    0.0012  
+ 0.4671   ±  \pm    0.0014  
+ Ours (FT-Trans) 
+ x 
+ x 
+  0.7610   ±  \pm    0.0015   
+  0.4507   ±  \pm    0.0007   
+  0.8486   ±  \pm    0.0011   
+  0.4796   ±  \pm    0.0027   
+ Clinical BERT as text encoder  
+ Text encoder only 
+ x 
+ 0.6614   ±  \pm    0.0007  
+ 0.3080   ±  \pm    0.0009  
+ 0.7240   ±  \pm    0.0001  
+ 0.2928   ±  \pm    0.0008  
+ Multimodal 
+ x 
+ x 
+ 0.7584   ±  \pm    0.0005  
+ 0.4218   ±  \pm    0.0019  
+ 0.8404   ±  \pm    0.0004  
+ 0.4686   ±  \pm    0.0026  
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+ 0.7467   ±  \pm    0.0022  
+  0.4629   ±  \pm    0.0033   
+ 0.8465   ±  \pm    0.0008  
+ 0.4935   ±  \pm    0.0011  
+ Ours (ResNet) 
+ x 
+ x 
+ 0.7580   ±  \pm    0.0023  
+ 0.4472   ±  \pm    0.0042  
+ 0.8474   ±  \pm    0.0006  
+ 0.4899   ±  \pm    0.0015  
+ Ours (FT-Trans) 
+ x 
+ x 
+  0.7672   ±  \pm    0.0032   
+ 0.4541   ±  \pm    0.0032  
+  0.8534   ±  \pm    0.0012   
+  0.4977   ±  \pm    0.0011   
+   Table 2 :   Comparison of  predictive accuracy  on  mortality  prediction. The best results among models using the same text encoder are in bold, and the overall best results are shaded in grey.  
+  Model  
+  Struct.  
+  Notes  
+  BACC   ↑  \uparrow     
+  F1   ↑  \uparrow     
+  AUROC   ↑  \uparrow     
+  AUPRC   ↑  \uparrow     
+ Random Forest 
+ x 
+ 0.6680   ±  \pm    0.0025  
+ 0.3492   ±  \pm    0.0038  
+ 0.7270   ±  \pm    0.0018  
+ 0.2980   ±  \pm    0.0029  
+ MLP 
+ x 
+ 0.6845   ±  \pm    0.0009  
+ 0.3736   ±  \pm    0.0011  
+ 0.7528   ±  \pm    0.0010  
+ 0.3353   ±  \pm    0.0010  
+ ResNet 
+ x 
+ 0.6851   ±  \pm    0.0017  
+ 0.3774   ±  \pm    0.0018  
+ 0.7532   ±  \pm    0.0004  
+ 0.3366   ±  \pm    0.0021  
+ FT-Transformer 
+ x 
+ 0.6956   ±  \pm    0.0011  
+ 0.3790   ±  \pm    0.0021  
+ 0.7674   ±  \pm    0.0006  
+ 0.3404   ±  \pm    0.0021  
+ BERT as text encoder  
+ Text encoder only 
+ x 
+ 0.6087   ±  \pm    0.0011  
+ 0.2960   ±  \pm    0.0016  
+ 0.6507   ±  \pm    0.0015  
+ 0.2262   ±  \pm    0.0009  
+ Multimodal 
+ x 
+ x 
+ 0.6903   ±  \pm    0.0018  
+ 0.3739   ±  \pm    0.0012  
+ 0.7625   ±  \pm    0.0006  
+ 0.3427   ±  \pm    0.0007  
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+ 0.6878   ±  \pm    0.0016  
+ 0.3868   ±  \pm    0.0030  
+ 0.7580   ±  \pm    0.0004  
+ 0.3499   ±  \pm    0.0015  
+ Ours (ResNet) 
+ x 
+ x 
+ 0.6931   ±  \pm    0.0013  
+  0.3887   ±  \pm    0.0040   
+ 0.7655   ±  \pm    0.0011  
+  0.3584   ±  \pm    0.0007   
+ Ours (FT-Trans) 
+ x 
+ x 
+  0.7005   ±  \pm    0.0010   
+ 0.3809   ±  \pm    0.0024  
+  0.7725   ±  \pm    0.0006   
+ 0.3524   ±  \pm    0.0011  
+ BioBERT as text encoder  
+ Text encoder only 
+ x 
+ 0.6057   ±  \pm    0.0016  
+ 0.2940   ±  \pm    0.0012  
+ 0.6487   ±  \pm    0.0014  
+ 0.2214   ±  \pm    0.0012  
+ Multimodal 
+ x 
+ x 
+ 0.6905   ±  \pm    0.0022  
+ 0.3731   ±  \pm    0.0025  
+ 0.7606   ±  \pm    0.0007  
+ 0.3364   ±  \pm    0.0009  
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+ 0.6866   ±  \pm    0.0022  
+ 0.3905   ±  \pm    0.0038  
+ 0.7573   ±  \pm    0.0010  
+ 0.3461   ±  \pm    0.0023  
+ Ours (ResNet) 
+ x 
+ x 
+ 0.6896   ±  \pm    0.0011  
+  0.3918   ±  \pm    0.0037   
+ 0.7647   ±  \pm    0.0009  
+  0.3532   ±  \pm    0.0010   
+ Ours (FT-Trans) 
+ x 
+ x 
+  0.6986   ±  \pm    0.0011   
+ 0.3847   ±  \pm    0.0030  
+  0.7701   ±  \pm    0.0012   
+ 0.3504   ±  \pm    0.0014  
+ Clinical BERT as text encoder  
+ Text encoder only 
+ x 
+ 0.6420   ±  \pm    0.0016  
+ 0.3261   ±  \pm    0.0015  
+ 0.6946   ±  \pm    0.0009  
+ 0.2661   ±  \pm    0.0006  
+ Multimodal 
+ x 
+ x 
+ 0.6933   ±  \pm    0.0014  
+ 0.3714   ±  \pm    0.0023  
+ 0.7648   ±  \pm    0.0009  
+ 0.3544   ±  \pm    0.0018  
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+ 0.6870   ±  \pm    0.0012  
+ 0.3952   ±  \pm    0.0032  
+ 0.7633   ±  \pm    0.0008  
+ 0.3557   ±  \pm    0.0021  
+ Ours (ResNet) 
+ x 
+ x 
+ 0.6974   ±  \pm    0.0011  
+  0.4019   ±  \pm    0.0015   
+ 0.7705   ±  \pm    0.0009  
+  0.3639   ±  \pm    0.0010   
+ Ours (FT-Trans) 
+ x 
+ x 
+  0.7027   ±  \pm    0.0011   
+ 0.3942   ±  \pm    0.0020  
+  0.7743   ±  \pm    0.0006   
+ 0.3575   ±  \pm    0.0014  
+   Table 3 :   Comparison of  predictive accuracy  on  PLOS  prediction. The best results among models using the same text encoder are in bold, and the overall best results are shaded in grey.  
+  Model  
+  Struct.  
+  Notes  
+  Brier   ↓  \downarrow     
+  NLL   ↓  \downarrow     
+ Random Forest 
+ x 
+ 0.1891   ±  \pm    0.0006  
+ 0.5639   ±  \pm    0.0015  
+ MLP 
+ x 
+ 0.1677   ±  \pm    0.0015  
+ 0.4937   ±  \pm    0.0037  
+ ResNet 
+ x 
+ 0.1654   ±  \pm    0.0006  
+ 0.4895   ±  \pm    0.0015  
+ FT-Transformer 
+ x 
+ 0.1648   ±  \pm    0.0014  
+ 0.4832   ±  \pm    0.0037  
+ BERT as text encoder  
+ Text encoder only 
+ x 
+ 0.2302   ±  \pm    0.0070  
+ 0.6523   ±  \pm    0.0159  
+ Multimodal 
+ x 
+ x 
+ 0.1691   ±  \pm    0.0030  
+ 0.4992   ±  \pm    0.0077  
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+  0.1345   ±  \pm    0.0050   
+  0.4041   ±  \pm    0.0128   
+ Ours (ResNet) 
+ x 
+ x 
+ 0.1435   ±  \pm    0.0052  
+ 0.4296   ±  \pm    0.0133  
+ Ours (FT-Trans) 
+ x 
+ x 
+ 0.1450   ±  \pm    0.0049  
+ 0.4345   ±  \pm    0.0129  
+ BioBERT as text encoder  
+ Text encoder only 
+ x 
+ 0.2214   ±  \pm    0.0021  
+ 0.6326   ±  \pm    0.0048  
+ Multimodal 
+ x 
+ x 
+ 0.1725   ±  \pm    0.0028  
+ 0.5084   ±  \pm    0.0088  
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+  0.1301   ±  \pm    0.0062   
+  0.3927   ±  \pm    0.0159   
+ Ours (ResNet) 
+ x 
+ x 
+ 0.1392   ±  \pm    0.0061  
+ 0.4187   ±  \pm    0.0157  
+ Ours (FT-Trans) 
+ x 
+ x 
+ 0.1358   ±  \pm    0.0014  
+ 0.4095   ±  \pm    0.0045  
+ Clinical BERT as text encoder  
+ Text encoder only 
+ x 
+ 0.2132   ±  \pm    0.0030  
+ 0.6086   ±  \pm    0.0070  
+ Multimodal 
+ x 
+ x 
+ 0.1606   ±  \pm    0.0022  
+ 0.4792   ±  \pm    0.0046  
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+  0.1176   ±  \pm    0.0027   
+  0.3594   ±  \pm    0.0066   
+ Ours (ResNet) 
+ x 
+ x 
+ 0.1387   ±  \pm    0.0043  
+ 0.4178   ±  \pm    0.0110  
+ Ours (FT-Trans) 
+ x 
+ x 
+ 0.1390   ±  \pm    0.0043  
+ 0.4192   ±  \pm    0.0112  
+   Table 4 :   Comparison of  reliability  performance on  mortality  prediction.  
+  Model  
+  Struct.  
+  Notes  
+  Brier   ↓  \downarrow     
+  NLL   ↓  \downarrow     
+ Random Forest 
+ x 
+ 0.2350   ±  \pm    0.0009  
+ 0.6649   ±  \pm    0.0018  
+ MLP 
+ x 
+ 0.1950   ±  \pm    0.0018  
+ 0.5739   ±  \pm    0.0044  
+ ResNet 
+ x 
+ 0.1929   ±  \pm    0.0012  
+ 0.5702   ±  \pm    0.0027  
+ FT-Transformer 
+ x 
+ 0.1947   ±  \pm    0.0031  
+ 0.5704   ±  \pm    0.0079  
+ BERT as text encoder  
+ Text encoder only 
+ x 
+ 0.2316   ±  \pm    0.0043  
+ 0.6557   ±  \pm    0.0091  
+ Multimodal 
+ x 
+ x 
+ 0.2017   ±  \pm    0.0028  
+ 0.5960   ±  \pm    0.0082  
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+  0.1773   ±  \pm    0.0022   
+  0.5288   ±  \pm    0.0063   
+ Ours (ResNet) 
+ x 
+ x 
+ 0.1815   ±  \pm    0.0045  
+ 0.5398   ±  \pm    0.0107  
+ Ours (FT-Trans) 
+ x 
+ x 
+ 0.1927   ±  \pm    0.0039  
+ 0.5617   ±  \pm    0.0100  
+ BioBERT as text encoder  
+ Text encoder only 
+ x 
+ 0.2297   ±  \pm    0.0029  
+ 0.6518   ±  \pm    0.0063  
+ Multimodal 
+ x 
+ x 
+ 0.1974   ±  \pm    0.0026  
+ 0.5888   ±  \pm    0.0043  
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+  0.1720   ±  \pm    0.0031   
+  0.5172   ±  \pm    0.0076   
+ Ours (ResNet) 
+ x 
+ x 
+ 0.1752   ±  \pm    0.0048  
+ 0.5241   ±  \pm    0.0123  
+ Ours (FT-Trans) 
+ x 
+ x 
+ 0.1832   ±  \pm    0.0045  
+ 0.5376   ±  \pm    0.0113  
+ Clinical BERT as text encoder  
+ Text encoder only 
+ x 
+ 0.2225   ±  \pm    0.0031  
+ 0.6350   ±  \pm    0.0069  
+ Multimodal 
+ x 
+ x 
+ 0.2027   ±  \pm    0.0056  
+ 0.5871   ±  \pm    0.0136  
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+  0.1637   ±  \pm    0.0054   
+  0.4943   ±  \pm    0.0145   
+ Ours (ResNet) 
+ x 
+ x 
+ 0.1694   ±  \pm    0.0018  
+ 0.5082   ±  \pm    0.0042  
+ Ours (FT-Trans) 
+ x 
+ x 
+ 0.1760   ±  \pm    0.0018  
+ 0.5205   ±  \pm    0.0038  
+   Table 5 :   Comparison of  reliability  performance on  PLOS  prediction.  
+ Overall, our framework demonstrated superior performance across both tasks. In the mortality prediction task, our framework using MLP and Clinical BERT as the backbones achieved the highest F1 score (0.4629). Furthermore, with FT-Transformer and Clinical BERT, it achieved the highest BACC of 0.7672, AUROC of 0.8534, and AUPRC of 0.4977. Compared to the best baseline models, our framework improved predictive performance by approximately 1.05% in BACC, 9.74% in F1 score, 1.28% in AUROC, and 6.21% in AUPRC.
+In the PLOS prediction task, our framework demonstrated exceptional performance across all evaluation metrics for predictive accuracy , achieving a BACC of 0.7027, an F1 score of 0.4019, an AUROC of 0.7743, and an AUPRC of 0.3639. Compared to the best baselines, our framework showed notable improvements: a 1.02% increase in BACC, a 6.04% increase in F1 score, a 0.9% increase in AUROC, and a 2.68% increase in AUPRC. 
+ Over the baseline models, the multimodal approaches showed marginally worse predictive accuracy than others in both tasks.
+Specifically, in the mortality prediction task, the multimodal approach with clinical BERT as the backbone achieved the highest F1 of 0.4218 and AUPRC of 0.4686. In the PLOS task, it achieved the highest AUPRC of 0.3544. 
+  5.2.2  Reliability 
+ In clinical settings, assessing prediction reliability is as important as evaluating predictability. Table   4   and   5   present the comparison of model performance based on reliability across both prediction tasks. 
+ In the mortality prediction task, our framework achieved the lowest Brier score (0.1176) and NLL (0.3594) with MLP and Clinical BERT as the backbones.
+It improved prediction reliability significantly compared to the best baseline models, reducing the Brier score by about 26.8% and NLL by 25.0%.
+In the PLOS prediction task, our framework also showed strong performance, with a Brier score of 0.1637 and an NLL of 0.4943. These results showed notable improvements over the best baseline model, with a 15.1% reduction in Brier score and a 13.3% reduction in NLL. 
+ Compared to other baselines, the multimodal approaches exhibited slightly better reliability in the mortality prediction task, achieving a Brier score of 0.1606 and an NLL of 0.4792. However, in the PLOS prediction tasks, the multimodal approaches demonstrated weaker reliability. 
+   Figure 3 :   The illustration of different fusion settings.  
+  5.3  Evaluation on different fusion settings 
+ We also validate the effectiveness of our fusion setting in EHR groups by comparing it with two other additional fusion settings: data types and data sources. The illustration is shown in Figure   3  . For the data types fusion, we divided the structured data into two types: numerical and categorical data. For the data sources fusion, we split the structured data into four sources: demographics, vital signs/lab tests, medical treatments, and comorbidities, and categorized the clinical notes into four types: Nursing, Nursing/Other, Physician, and Radiology notes. Figures   4   and   5   illustrate the evaluation of our framework using clinical BERT as text encoder across three fusion settings for both tasks. Evaluation results about models using BERT and BioBERT as text encoders can be found in Appendix  A . 
+ Regarding predictive accuracy, the models achieved lower BACC across the three fusion settings for both tasks. Notably, the model based on modalities outperformed those based on data types and data sources in F1, AUROC, and AUPRC metrics. In terms of reliability evaluation metrics, the model based on modalities demonstrated superior reliability across three different structured data encoders.
+Additionally, Figure   4   and   5   suggest a positive relationship between predictability and reliability in our framework. 
+   Figure 4 :   The evaluation of our framework using  Clinical BERT  as text encoder on different fusion settings for  mortality  prediction: (1) modalities, (2) data types, (3) data sources.  
+   Figure 5 :   The evaluation of our framework using  Clinical BERT  as text encoder on different fusion settings for  PLOS  prediction: (1) modalities, (2) data types, (3) data sources.  
+  6  DISCUSSION 
+ In this section, we present our findings across four key areas: the advantages of using free-text notes for mortality and PLOS prediction, the effectiveness of the evidence-based multimodal framework, the impact of various fusion settings, and the influence of encoder selection. 
+  6.1  Benefits of free-text notes 
+ From Tables   2   and   3  , it is evident that integrating free-text notes with structured data enhances ICU outcome prediction, boosting predictability. Free-text notes provide information not included in structured EHR data, such as nursing details, physician documentation, and radiology reports after ICU admission. This suggests that free-text EHR notes and structured inputs can complement each other in predictive modeling, leading to improved performance. 
+  6.2  Effectiveness on multimodal evidence fusion 
+ Accurate and reliable ICU decision support 
+ The proposed framework outperforms existing multimodal approaches by leveraging belief function theory for the effective fusion of structured and unstructured EHR data. This enables more accurate and robust predictions, which is essential for clinical decision-making in ICU settings.
+Notably, while the improvement in BACC is not significant (1.05% for mortality and 1.02% for PLOS prediction), the F1 score shows a significant increase (9.74% for mortality and 6.04% for PLOS prediction). This highlights the ability of the framework to identify critical ICU cases, as the F1 score prioritizes precision and recall, making it especially valuable in imbalanced datasets where positive cases are rare. Given the high-stakes nature of ICU outcomes, this improvement suggests our model enhances early identification of high-risk patients, potentially supporting timelier interventions in critical care. 
+ Unlike traditional multimodal approaches, our evidence-based framework demonstrates greater prediction reliability, which is particularly valuable in clinical decision-making.
+By effectively handling uncertainty and inconsistencies in patient data under the proposed multimodal fusion framework, our approach ensures more trustworthy predictions with lower Brier and NLL (shown in Table   4   and   5  ).
+This enhanced reliability is crucial for ICU decision support, where inaccurate predictions can lead to overuse of critical resources or missed early interventions. 
+ Efficient resource allocation 
+ The experimental results in Tables   6   and   7   demonstrate that while existing multimodal approaches can effectively capture true positive instances, they often come at the cost of increased false positives. In ICU settings, such false positives can lead to the unnecessary use of medical resources and equipment. In contrast, our framework achieves a better balance by demonstrating higher precision and specificity, effectively reducing false positives. This capability is crucial for ensuring that ICU resources are allocated appropriately to patients in critical need. 
+  Model  
+  Struct.  
+  Notes  
+  Precision   ↑  \uparrow     
+  Recall   ↑  \uparrow     
+  Specificity   ↑  \uparrow     
+  NPV   ↑  \uparrow     
+ Random Forest 
+ x 
+ 0.2634   ±  \pm    0.0014  
+ 0.6946   ±  \pm    0.0037  
+ 0.7398   ±  \pm    0.0015  
+ 0.9476   ±  \pm    0.0006  
+ MLP 
+ x 
+ 0.2741   ±  \pm    0.0023  
+ 0.7707   ±  \pm    0.0045  
+ 0.7264   ±  \pm    0.0047  
+ 0.9594   ±  \pm    0.0005  
+ ResNet 
+ x 
+  0.2809   ±  \pm    0.0007   
+ 0.7676   ±  \pm    0.0036  
+ 0.7367   ±  \pm    0.0017  
+ 0.9594   ±  \pm    0.0005  
+ FT-Transformer 
+ x 
+ 0.2838   ±  \pm    0.0015  
+ 0.7832   ±  \pm    0.0054  
+ 0.7352   ±  \pm    0.0019  
+ 0.9620   ±  \pm    0.0009  
+ BERT as text encoder  
+ Text encoder only 
+ x 
+ 0.1767   ±  \pm    0.0030  
+ 0.6966   ±  \pm    0.0225  
+ 0.5634   ±  \pm    0.0217  
+ 0.9330   ±  \pm    0.0021  
+ Multimodal 
+ x 
+ x 
+ 0.2761   ±  \pm    0.0034  
+  0.7807   ±  \pm    0.0063   
+ 0.7255   ±  \pm    0.0064  
+  0.9611   ±  \pm    0.0008   
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+  0.3297   ±  \pm    0.0076   
+ 0.6957   ±  \pm    0.0168  
+  0.8094   ±  \pm    0.0114   
+ 0.9522   ±  \pm    0.0020  
+ Ours (ResNet) 
+ x 
+ x 
+ 0.3179   ±  \pm    0.0073  
+ 0.7206   ±  \pm    0.0168  
+ 0.7916   ±  \pm    0.0118  
+ 0.9550   ±  \pm    0.0020  
+ Ours (FT-Trans) 
+ x 
+ x 
+ 0.3163   ±  \pm    0.0080  
+ 0.7433   ±  \pm    0.0109  
+ 0.7836   ±  \pm    0.0110  
+ 0.9580   ±  \pm    0.0012  
+ BioBERT as text encoder  
+ Text encoder only 
+ x 
+ 0.1793   ±  \pm    0.0011  
+ 0.6029   ±  \pm    0.0278  
+ 0.6299   ±  \pm    0.0194  
+ 0.9225   ±  \pm    0.0028  
+ Multimodal 
+ x 
+ x 
+ 0.2741   ±  \pm    0.0031  
+  0.7934   ±  \pm    0.0065   
+ 0.7182   ±  \pm    0.0067  
+  0.9629   ±  \pm    0.0008   
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+  0.3377   ±  \pm    0.0115   
+ 0.6792   ±  \pm    0.0218  
+  0.8191   ±  \pm    0.0148   
+ 0.9503   ±  \pm    0.0023  
+ Ours (ResNet) 
+ x 
+ x 
+ 0.3244   ±  \pm    0.0100  
+ 0.7092   ±  \pm    0.0219  
+ 0.8000   ±  \pm    0.0150  
+ 0.9538   ±  \pm    0.0025  
+ Ours (FT-Trans) 
+ x 
+ x 
+ 0.3282   ±  \pm    0.0015  
+ 0.7193   ±  \pm    0.0055  
+ 0.8027   ±  \pm    0.0027  
+ 0.9553   ±  \pm    0.0007  
+ Clinical BERT as text encoder  
+ Text encoder only 
+ x 
+ 0.1962   ±  \pm    0.0012  
+ 0.7158   ±  \pm    0.0080  
+ 0.6071   ±  \pm    0.0073  
+ 0.9410   ±  \pm    0.0009  
+ Multimodal 
+ x 
+ x 
+ 0.2908   ±  \pm    0.0027  
+  0.7678   ±  \pm    0.0063   
+ 0.7489   ±  \pm    0.0054  
+  0.9601   ±  \pm    0.0008   
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+  0.3609   ±  \pm    0.0075   
+ 0.6478   ±  \pm    0.0123  
+  0.8454   ±  \pm    0.0079   
+ 0.9472   ±  \pm    0.0013  
+ Ours (ResNet) 
+ x 
+ x 
+ 0.3260   ±  \pm    0.0067  
+ 0.7151   ±  \pm    0.0131  
+ 0.8010   ±  \pm    0.0097  
+ 0.9546   ±  \pm    0.0015  
+ Ours (FT-Trans) 
+ x 
+ x 
+ 0.3289   ±  \pm    0.0070  
+ 0.7371   ±  \pm    0.0171  
+ 0.7974   ±  \pm    0.0108  
+ 0.9578   ±  \pm    0.0021  
+   Table 6 :   Comparison of class-specific prediction accuracy on  mortality  prediction.  
+  Model  
+  Struct.  
+  Notes  
+  Precision   ↑  \uparrow     
+  Recall   ↑  \uparrow     
+  Specificity   ↑  \uparrow     
+  NPV   ↑  \uparrow     
+ Random Forest 
+ x 
+ 0.2360   ±  \pm    0.0045  
+ 0.6744   ±  \pm    0.0131  
+ 0.6616   ±  \pm    0.0150  
+ 0.9295   ±  \pm    0.0014  
+ MLP 
+ x 
+ 0.2615   ±  \pm    0.0013  
+ 0.6542   ±  \pm    0.0034  
+ 0.7147   ±  \pm    0.0030  
+ 0.9305   ±  \pm    0.0004  
+ ResNet 
+ x 
+ 0.2673   ±  \pm    0.0016  
+ 0.6420   ±  \pm    0.0039  
+ 0.7282   ±  \pm    0.0025  
+ 0.9295   ±  \pm    0.0006  
+ FT-Transformer 
+ x 
+ 0.2603   ±  \pm    0.0026  
+ 0.6974   ±  \pm    0.0061  
+ 0.6938   ±  \pm    0.0067  
+ 0.9369   ±  \pm    0.0007  
+ BERT as text encoder  
+ Text encoder only 
+ x 
+ 0.2004   ±  \pm    0.0031  
+ 0.5685   ±  \pm    0.0147  
+ 0.6488   ±  \pm    0.0160  
+ 0.9070   ±  \pm    0.0009  
+ Multimodal 
+ x 
+ x 
+ 0.2568   ±  \pm    0.0029  
+ 0.6892   ±  \pm    0.0141  
+ 0.6915   ±  \pm    0.0108  
+ 0.9347   ±  \pm    0.0022  
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+  0.2809   ±  \pm    0.0038   
+ 0.6218   ±  \pm    0.0050  
+  0.7538   ±  \pm    0.0064   
+ 0.9281   ±  \pm    0.0005  
+ Ours (ResNet) 
+ x 
+ x 
+ 0.2787   ±  \pm    0.0071  
+ 0.6460   ±  \pm    0.0158  
+ 0.7402   ±  \pm    0.0148  
+ 0.9314   ±  \pm    0.0016  
+ Ours (FT-Trans) 
+ x 
+ x 
+ 0.2595   ±  \pm    0.0036  
+  0.7180   ±  \pm    0.0116   
+ 0.6830   ±  \pm    0.0110  
+  0.9402   ±  \pm    0.0014   
+ BioBERT as text encoder  
+ Text encoder only 
+ x 
+ 0.2006   ±  \pm    0.0022  
+ 0.5504   ±  \pm    0.0160  
+ 0.6610   ±  \pm    0.0141  
+ 0.9051   ±  \pm    0.0013  
+ Multimodal 
+ x 
+ x 
+ 0.2554   ±  \pm    0.0034  
+  0.6943   ±  \pm    0.0136   
+ 0.6868   ±  \pm    0.0114  
+ 0.9358   ±  \pm    0.0018  
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+  0.2892   ±  \pm    0.0048   
+ 0.6022   ±  \pm    0.0061  
+  0.7710   ±  \pm    0.0071   
+ 0.9262   ±  \pm    0.0007  
+ Ours (ResNet) 
+ x 
+ x 
+ 0.2848   ±  \pm    0.0059  
+ 0.6212   ±  \pm    0.0126  
+ 0.7580   ±  \pm    0.0119  
+ 0.9285   ±  \pm    0.0012  
+ Ours (FT-Trans) 
+ x 
+ x 
+ 0.2668   ±  \pm    0.0042  
+ 0.6914   ±  \pm    0.0106  
+ 0.7059   ±  \pm    0.0109  
+  0.9368   ±  \pm    0.0012   
+ Clinical BERT as text encoder  
+ Text encoder only 
+ x 
+ 0.2208   ±  \pm    0.0024  
+ 0.6251   ±  \pm    0.0133  
+ 0.6587   ±  \pm    0.0116  
+ 0.9193   ±  \pm    0.0014  
+ Multimodal 
+ x 
+ x 
+ 0.2507   ±  \pm    0.0045  
+  0.7201   ±  \pm    0.0188   
+ 0.6664   ±  \pm    0.0163  
+  0.9394   ±  \pm    0.0024   
+ [2.5pt/5pt]
+Ours (MLP) 
+ x 
+ x 
+  0.2980   ±  \pm    0.0075   
+ 0.5899   ±  \pm    0.0134  
+  0.7841   ±  \pm    0.0117   
+ 0.9254   ±  \pm    0.0012  
+ Ours (ResNet) 
+ x 
+ x 
+ 0.2968   ±  \pm    0.0029  
+ 0.6227   ±  \pm    0.0073  
+ 0.7720   ±  \pm    0.0058  
+ 0.9299   ±  \pm    0.0008  
+ Ours (FT-Trans) 
+ x 
+ x 
+ 0.2782   ±  \pm    0.0026  
+ 0.6766   ±  \pm    0.0046  
+ 0.7288   ±  \pm    0.0050  
+ 0.9359   ±  \pm    0.0005  
+   Table 7 :   Comparison of class-specific prediction accuracy on  PLOS  prediction.  
+  6.3  Analysis on different fusion settings 
+ To explore the performance of our framework across different fusion settings, it is evident that models based on modalities achieved higher F1 scores but lower BACCs compared to the other two fusion settings. This discrepancy arises from the metrics’ focus: the F1 score emphasizes performance on the positive class by balancing precision and recall, while BACC provides an overall assessment of recall across all classes. Thus, models based on modalities are more effective at identifying ICU outcomes, likely due to the enhanced integration of information from independent sources facilitated by belief function theory.
+This observation aligns with our analysis of data independence. Figures   6   and   7   visualize the independence of structured features and four types of free-text notes, respectively. In Figure   6  , correlation coefficients confirm that features within structured data are not independent. Meanwhile, Figure   7   shows that Radiology notes form a distinct cluster, while the other types of notes overlap, indicating a lack of independence among them.
+Moreover, the difference in BACC performance using the FT-Transformer across three fusion settings is smaller than with the MLP. This is likely due to the stronger predictive capability of the FT-Transformer. 
+   Figure 6 :   The pair plots and correlation coefficients of some structured features from different sources.  
+   Figure 7 :   The t-SNE visualization on extracted embeddings of four different types of free-texts in EHRs: Nursing, Nursing/other, Physician, Radiology.  
+  6.4  Influence of encoders selection 
+ The evaluations presented in Table   2   and   3   reveal that the choice of encoders plays a critical role in determining predictability. Among the assessed models, the FT-Transformer stands out as highly effective for structured tabular data, aligning with the findings of   Gorishniy et al. (2021)  . This effectiveness can be attributed to the transformer’s capability to capture complex relationships among transformed numerical and categorical features, which enhances its predictive power. 
+ For pre-trained language encoders, Clinical BERT demonstrates the best performance in extracting clinical information from free-text notes. Its superiority stems from its unique pre-training on clinical text from the MIMIC-III database. This specialized pre-training enables Clinical BERT to generate more informative embeddings by leveraging its pre-learned clinical knowledge and domain-specific term embeddings, resulting in improved model performance. 
+  7  CONCLUSION 
+ In this paper, we address the challenge of accurately and reliably predicting ICU outcomes by introducing a multimodal framework based on belief function theory that models both structured EHR data and free-text EHR notes. Our framework transforms deep features extracted from these two modalities into evidence through the evidence mapping module, which is then fused using Dempster’s rule to make final predictions. Through experiments on the MIMIC-III dataset, we demonstrate the effectiveness of our framework in terms of predictive accuracy and reliability. The study highlights its capability in managing heterogeneous multimodal EHR data, reducing false positives and potentially improving the allocation of medical resources in the ICU. 
+ While this paper focuses on binary classification tasks, many clinical applications require solutions for multiclass tasks (e.g., disease diagnosis) and continuous regression tasks (e.g., survival prediction). These are equally important and relevant for advancing clinical practice. In the future, we plan to expand our framework by incorporating additional data modalities, such as time series and medical images, to provide deeper clinical insights and enhance model performance. We also aim to extend the framework to handle multimodal EHR multiclass tasks, offering valuable predictive guidance for complex clinical scenarios. Additionally, we intend to investigate regression tasks, leveraging the recently introduced Epistemic Random Fuzzy Set (ERFS) theory   Denœux (2021) ;  Denœux (2023)   and further building on developments in evidential regression   Huang et al. (2024b)  . 
+ Acknowledgements 
+ This research is supported by the National Research Foundation, Singapore under its AI Singapore Programme (AISG Award No: AISG-GC-2019-001-2B). 
+ Code Availability 
+ The code implementation is available on Github repository ( https://github.com/yuchengruan/evid_multimodal_ehr ). 
+ Declarations 
+ Ethics Approval 
+ Not applicable. 
+ Conflict of Interest 
+ The authors declare no competing interests. 
+ References 
+  Terwiesch et al. (2011) 
+Terwiesch, C.,
+KC, D.,
+Kahn, J.M.:
+Working with capacity limitations: operations management in critical care.
+Critical Care
+ 15 ,
+1–6
+(2011)
+  Arabi et al. (2021) 
+Arabi, Y.M.,
+Azoulay, E.,
+Al-Dorzi, H.M.,
+Phua, J.,
+Salluh, J.,
+Binnie, A.,
+Hodgson, C.,
+Angus, D.C.,
+Cecconi, M.,
+Du, B.,  et al. :
+How the covid-19 pandemic will change the future of critical care.
+Intensive care medicine
+ 47 ,
+282–291
+(2021)
+  Halpern and Pastores (2010) 
+Halpern, N.A.,
+Pastores, S.M.:
+Critical care medicine in the united states 2000–2005: an analysis of bed numbers, occupancy rates, payer mix, and costs.
+Critical care medicine
+ 38 (1),
+65–71
+(2010)
+  Wang et al. (2024) 
+Wang, S.,
+Jiang, Y.,
+Li, Q.,
+Zhang, W.:
+Timely icu outcome prediction utilizing stochastic signal analysis and machine learning techniques with readily available vital sign data.
+IEEE Journal of Biomedical and Health Informatics
+(2024)
+  Iwase et al. (2022) 
+Iwase, S.,
+Nakada, T.-a.,
+Shimada, T.,
+Oami, T.,
+Shimazui, T.,
+Takahashi, N.,
+Yamabe, J.,
+Yamao, Y.,
+Kawakami, E.:
+Prediction algorithm for icu mortality and length of stay using machine learning.
+Scientific reports
+ 12 (1),
+12912
+(2022)
+  Ashrafi et al. (2024) 
+Ashrafi, N.,
+Liu, Y.,
+Xu, X.,
+Wang, Y.,
+Zhao, Z.,
+Pishgar, M.:
+Deep learning model utilization for mortality prediction in mechanically ventilated icu patients.
+Informatics in Medicine Unlocked
+ 49 ,
+101562
+(2024)
+  Gao et al. (2024) 
+Gao, J.,
+Lu, Y.,
+Ashrafi, N.,
+Domingo, I.,
+Alaei, K.,
+Pishgar, M.:
+Prediction of sepsis mortality in icu patients using machine learning methods.
+BMC Medical Informatics and Decision Making
+ 24 (1),
+228
+(2024)
+  Sheikhalishahi et al. (2019) 
+Sheikhalishahi, S.,
+Miotto, R.,
+Dudley, J.T.,
+Lavelli, A.,
+Rinaldi, F.,
+Osmani, V.,  et al. :
+Natural language processing of clinical notes on chronic diseases: systematic review.
+JMIR medical informatics
+ 7 (2),
+12239
+(2019)
+  Koleck et al. (2021) 
+Koleck, T.A.,
+Tatonetti, N.P.,
+Bakken, S.,
+Mitha, S.,
+Henderson, M.M.,
+George, M.,
+Miaskowski, C.,
+Smaldone, A.,
+Topaz, M.:
+Identifying symptom information in clinical notes using natural language processing.
+Nursing research
+ 70 (3),
+173–183
+(2021)
+  Oliwa et al. (2021) 
+Oliwa, T.,
+Furner, B.,
+Schmitt, J.,
+Schneider, J.,
+Ridgway, J.P.:
+Development of a predictive model for retention in hiv care using natural language processing of clinical notes.
+Journal of the American Medical Informatics Association
+ 28 (1),
+104–112
+(2021)
+  Zhou et al. (2023) 
+Zhou, H.,
+Silverman, G.,
+Niu, Z.,
+Silverman, J.,
+Evans, R.,
+Austin, R.,
+Zhang, R.:
+Extracting complementary and integrative health approaches in electronic health records.
+Journal of Healthcare Informatics Research
+ 7 (3),
+277–290
+(2023)
+  Zhang et al. (2020) 
+Zhang, D.,
+Yin, C.,
+Zeng, J.,
+Yuan, X.,
+Zhang, P.:
+Combining structured and unstructured data for predictive models: a deep learning approach.
+BMC medical informatics and decision making
+ 20 ,
+1–11
+(2020)
+  Shin et al. (2021) 
+Shin, J.,
+Li, Y.,
+Luo, Y.:
+Early prediction of mortality in critical care setting in sepsis patients using structured features and unstructured clinical notes.
+In: 2021 IEEE International Conference on Bioinformatics and Biomedicine (BIBM),
+pp. 2885–2890
+(2021).
+IEEE
+  Lin et al. (2024) 
+Lin, W.-C.,
+Chen, A.,
+Song, X.,
+Weiskopf, N.G.,
+Chiang, M.F.,
+Hribar, M.R.:
+Prediction of multiclass surgical outcomes in glaucoma using multimodal deep learning based on free-text operative notes and structured ehr data.
+Journal of the American Medical Informatics Association
+ 31 (2),
+456–464
+(2024)
+  Guo et al. (2019) 
+Guo, W.,
+Wang, J.,
+Wang, S.:
+Deep multimodal representation learning: A survey.
+Ieee Access
+ 7 ,
+63373–63394
+(2019)
+  Kelly et al. (2019) 
+Kelly, C.J.,
+Karthikesalingam, A.,
+Suleyman, M.,
+Corrado, G.,
+King, D.:
+Key challenges for delivering clinical impact with artificial intelligence.
+BMC medicine
+ 17 ,
+1–9
+(2019)
+  Kumar et al. (2023) 
+Kumar, P.,
+Chauhan, S.,
+Awasthi, L.K.:
+Artificial intelligence in healthcare: review, ethics, trust challenges & future research directions.
+Engineering Applications of Artificial Intelligence
+ 120 ,
+105894
+(2023)
+  Wubineh et al. (2024) 
+Wubineh, B.Z.,
+Deriba, F.G.,
+Woldeyohannis, M.M.:
+Exploring the opportunities and challenges of implementing artificial intelligence in healthcare: A systematic literature review.
+In: Urologic Oncology: Seminars and Original Investigations,
+vol. 42,
+pp. 48–56
+(2024).
+Elsevier
+  Shafer (1976) 
+Shafer, G.:
+A Mathematical Theory of Evidence
+vol. 42.
+Princeton university press, ???
+(1976)
+  Dempster (1967) 
+Dempster, A.P.:
+Upper and lower probability inferences based on a sample from a finite univariate population.
+Biometrika
+ 54 (3-4),
+515–528
+(1967)
+  Denoeux (2000) 
+Denoeux, T.:
+A neural network classifier based on Dempster-Shafer theory.
+IEEE Transactions on Systems, Man, and Cybernetics-Part A: Systems and Humans
+ 30 (2),
+131–150
+(2000)
+  Huang et al. (2023) 
+Huang, L.,
+Ruan, S.,
+Denœux, T.:
+Application of belief functions to medical image segmentation: A review.
+Information fusion
+ 91 ,
+737–756
+(2023)
+  Huang et al. (2024a) 
+Huang, L.,
+Ruan, S.,
+Xing, Y.,
+Feng, M.:
+A review of uncertainty quantification in medical image analysis: probabilistic and non-probabilistic methods.
+Medical Image Analysis,
+103223
+(2024)
+  Huang et al. (2024b) 
+Huang, L.,
+Xing, Y.,
+Mishra, S.,
+Denoeux, T.,
+Feng, M.:
+Evidential time-to-event prediction model with well-calibrated uncertainty estimation.
+arXiv preprint arXiv:2411.07853
+(2024)
+  Huang et al. (2024c) 
+Huang, L.,
+Xing, Y.,
+Lin, Q.,
+Ruan, S.,
+Feng, M.:
+Esurvfusion: An evidential multimodal survival fusion model based on gaussian random fuzzy numbers.
+arXiv preprint arXiv:2412.01215
+(2024)
+  Denœux (2023) 
+Denœux, T.:
+Reasoning with fuzzy and uncertain evidence using epistemic random fuzzy sets: General framework and practical models.
+Fuzzy Sets and Systems
+ 453 ,
+1–36
+(2023)
+  Ruan et al. (2024) 
+Ruan, Y.,
+Huang, L.,
+Xu, Q.,
+Feng, M.:
+An evidence-based framework for heterogeneous electronic health records: A case study in mortality prediction.
+In: International Conference on Belief Functions,
+pp. 78–86
+(2024).
+Springer
+  Smets and Kennes (1994) 
+Smets, P.,
+Kennes, R.:
+The Transferable Belief Model.
+Artificial Intelligence
+ 66 ,
+191–243
+(1994)
+  Dempster (2008) 
+Dempster, A.P.:
+Upper and lower probabilities induced by a multivalued mapping.
+In: Classic Works of the Dempster-Shafer Theory of Belief Functions,
+pp. 57–72.
+Springer, ???
+(2008)
+  Lian et al. (2018) 
+Lian, C.,
+Ruan, S.,
+Denœux, T.,
+Li, H.,
+Vera, P.:
+Joint tumor segmentation in pet-ct images using co-clustering and fusion based on belief functions.
+IEEE Transactions on Image Processing
+ 28 (2),
+755–766
+(2018)
+  Huang et al. (2022a) 
+Huang, L.,
+Ruan, S.,
+Decazes, P.,
+Denœux, T.:
+Lymphoma segmentation from 3D PET-CT images using a deep evidential network.
+International Journal of Approximate Reasoning
+ 149 ,
+39–60
+(2022)
+  Huang et al. (2022b) 
+Huang, L.,
+Denoeux, T.,
+Vera, P.,
+Ruan, S.:
+Evidence fusion with contextual discounting for multi-modality medical image segmentation.
+In: International Conference on Medical Image Computing and Computer-Assisted Intervention,
+pp. 401–411
+(2022).
+Springer
+  Huang et al. (2025) 
+Huang, L.,
+Ruan, S.,
+Decazes, P.,
+Denœux, T.:
+Deep evidential fusion with uncertainty quantification and reliability learning for multimodal medical image segmentation.
+Information Fusion
+ 113 ,
+102648
+(2025)
+  Gorishniy et al. (2021) 
+Gorishniy, Y.,
+Rubachev, I.,
+Khrulkov, V.,
+Babenko, A.:
+Revisiting deep learning models for tabular data.
+Advances in Neural Information Processing Systems
+ 34 ,
+18932–18943
+(2021)
+  Devlin (2018) 
+Devlin, J.:
+Bert: Pre-training of deep bidirectional transformers for language understanding.
+arXiv preprint arXiv:1810.04805
+(2018)
+  Alsentzer et al. (2019) 
+Alsentzer, E.,
+Murphy, J.R.,
+Boag, W.,
+Weng, W.-H.,
+Jin, D.,
+Naumann, T.,
+McDermott, M.:
+Publicly available clinical bert embeddings.
+arXiv preprint arXiv:1904.03323
+(2019)
+  Johnson et al. (2016) 
+Johnson, A.E.,
+Pollard, T.J.,
+Shen, L.,
+Lehman, L.-w.H.,
+Feng, M.,
+Ghassemi, M.,
+Moody, B.,
+Szolovits, P.,
+Anthony Celi, L.,
+Mark, R.G.:
+Mimic-iii, a freely accessible critical care database.
+Scientific data
+ 3 (1),
+1–9
+(2016)
+  Liu et al. (2010) 
+Liu, V.,
+Kipnis, P.,
+Gould, M.K.,
+Escobar, G.J.:
+Length of stay predictions: improvements through the use of automated laboratory and comorbidity variables.
+Medical care
+ 48 (8),
+739–744
+(2010)
+  Rajkomar et al. (2018) 
+Rajkomar, A.,
+Oren, E.,
+Chen, K.,
+Dai, A.M.,
+Hajaj, N.,
+Hardt, M.,
+Liu, P.J.,
+Liu, X.,
+Marcus, J.,
+Sun, M.,  et al. :
+Scalable and accurate deep learning with electronic health records.
+NPJ digital medicine
+ 1 (1),
+1–10
+(2018)
+  Breiman (2001) 
+Breiman, L.:
+Random forests.
+Machine learning
+ 45 ,
+5–32
+(2001)
+  He et al. (2016) 
+He, K.,
+Zhang, X.,
+Ren, S.,
+Sun, J.:
+Deep residual learning for image recognition.
+In: Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition,
+pp. 770–778
+(2016)
+  Wolf (2019) 
+Wolf, T.:
+Huggingface’s transformers: State-of-the-art natural language processing.
+arXiv preprint arXiv:1910.03771
+(2019)
+  Lee et al. (2020) 
+Lee, J.,
+Yoon, W.,
+Kim, S.,
+Kim, D.,
+Kim, S.,
+So, C.H.,
+Kang, J.:
+Biobert: a pre-trained biomedical language representation model for biomedical text mining.
+Bioinformatics
+ 36 (4),
+1234–1240
+(2020)
+  Pedregosa et al. (2011) 
+Pedregosa, F.,
+Varoquaux, G.,
+Gramfort, A.,
+Michel, V.,
+Thirion, B.,
+Grisel, O.,
+Blondel, M.,
+Prettenhofer, P.,
+Weiss, R.,
+Dubourg, V.,  et al. :
+Scikit-learn: Machine learning in python.
+the Journal of machine Learning research
+ 12 ,
+2825–2830
+(2011)
+  Paszke et al. (2019) 
+Paszke, A.,
+Gross, S.,
+Massa, F.,
+Lerer, A.,
+Bradbury, J.,
+Chanan, G.,
+Killeen, T.,
+Lin, Z.,
+Gimelshein, N.,
+Antiga, L., et al.:
+Pytorch: An imperative style, high-performance deep learning library.
+Advances in neural information processing systems
+ 32 
+(2019)
+  Denœux (2021) 
+Denœux, T.:
+Belief functions induced by random fuzzy sets: A general framework for representing uncertain and fuzzy evidence.
+Fuzzy Sets and Systems
+ 424 ,
+63–91
+(2021)
+  Appendix A  Evaluation on different fusion settings using BERT and BioBERT as text encoders  
+   Figure 8 :   The evaluation of our framework using  BERT  as text encoder on different fusion settings for  mortality  prediction: (1) modalities, (2) data types, (3) data sources.  
+   Figure 9 :   The evaluation of our framework using  BERT  as text encoder on different fusion settings for  PLOS  prediction: (1) modalities, (2) data types, (3) data sources.  
+   Figure 10 :   The evaluation of our framework using  BioBERT  as text encoder on different fusion settings for  mortality  prediction: (1) modalities, (2) data types, (3) data sources.  
+   Figure 11 :   The evaluation of our framework using  BioBERT  as text encoder on different fusion settings for  PLOS  prediction: (1) modalities, (2) data types, (3) data sources.  
+    Experimental support, please
+     view the build logs 
+    for errors. Generated by
+        L
+         A 
+        T
+         E 
+       xml 
+     .
+     Instructions for reporting errors 
+     We are continuing to improve HTML versions of papers, and your feedback helps enhance accessibility and mobile
+      support. To report errors in the HTML that will help us improve conversion and rendering, choose any of the
+      methods listed below: 
+       Click the "Report Issue"  ( 
+           )  button, located in the page header. 
+      Tip:  You can select the relevant text first, to include it in your report. 
+     Our team has already identified  the following issues . We appreciate your time reviewing and reporting rendering errors we
+      may not have found yet. Your efforts will help us improve the HTML versions for all readers, because disability
+      should not be a barrier to accessing research. Thank you for your continued support in championing open access for
+      all. 
+     Have a free development cycle? Help support accessibility at arXiv! Our collaborators at LaTeXML maintain a  list of packages that need conversion , and welcome  developer contributions . 
+        We gratefully acknowledge support from our   major funders  ,
+          member institutions   ,    ,
+        and all contributors.
+         About   · 
+         Help   · 
+         Contact   · 
+         Subscribe   · 
+         Copyright   · 
+         Privacy   · 
+         Accessibility   · 
+         Operational Status  (opens in new tab)  

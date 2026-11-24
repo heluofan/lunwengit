@@ -1,0 +1,10 @@
+﻿COLS=patient_id,study_id,mri_date,patient_age,psa,psad,prostate_volume,histopath_type,lesion_PIRADS,lesion_GS,lesion_ISUP,case_ISUP,case_csPCa,center
+ROWS=1500
+--- center 分布 ---
+PCNN  n=350
+RUMC  n=800
+ZGT  n=350
+--- center x csPCa ---
+PCNN  n=350 pos=109
+RUMC  n=800 pos=236
+ZGT  n=350 pos=80

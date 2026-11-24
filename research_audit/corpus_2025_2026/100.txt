@@ -1,0 +1,1188 @@
+=== PDF_PAGE 1 ===
+面向脑影像配准的深度展开网络研究
+孙嘉颖 1，杨双燕 2*，应时辉 3
+1.  上海大学理学院数学系 ，上海 200444； 2.  同济大学附属上海市肺科医院放疗科 ，上海 200433； 
+3.  上海大学上海市应用数学与力学研究所 ，上海 200072
+摘 要： 目的　医学图像配准在手术导航 、疾病监测和多模态诊断等临床应用中具有关键作用 。传统迭代优化方
+法可解释性强但计算效率低下 ，深度学习方法存在黑盒特性导致模型的可解释性不足 。对此，提出了一种基于模型
+解耦的深度展开配准网络 ，旨在兼顾高效计算与模型可解释性 。方法　首先通过变量松弛将配准问题解耦为相似
+性约束和形变正则化两个子问题 。在此基础上，受深度展开网络的启发 ，进一步将迭代优化过程映射为多层神经网
+络。保真项模块用于解决相似性约束子问题 ，采用基于 TransUnet 的架构，实现融合局部特征与全局上下文 ；去噪模
+块用于解决形变正则化子问题 ，采用基于残差连接的去噪网络架构近似正则项 。两模块协同完成单次交替迭代 ，并
+通过级联构成深度展开网络 。所提出的深度展开配准网络与迭代优化步骤严格对应 ，每层操作具有明确物理意义
+和数学依据 ，显著提升了模型的可解释性 。结果　本文方法在 LPBA40（laboratory of neuro imaging probabilistic brain 
+atlas）和 OASIS（open access series of imaging studies ）公开脑部数据集上的戴斯相似系数 （Dice similarity coefficient ，
+Dice）分别为 70. 1% 和 79. 9%，负雅可比矩阵行列式百分比为 0. 01%，验证了所提方法的有效性 。结论　提出的基
+于模型解耦的深度展开配准网络有效融合了传统迭代优化方法与深度学习方法的优势 ，在保持较高计算效率和精
+度的同时显著提升了可解释性 。
+关键词： 医学图像配准 ；展开网络；模型解耦；正则项学习；脑影像
+Deep unfolding network for brain image registration
+Sun　Jiaying1， Yang 　Shuangyan2*， Ying 　Shihui3
+1.  Department of Mathematics ，College of Sciences ，Shanghai University ，Shanghai 200444，China； 
+2.  Department of Radiation Oncology ，Shanghai Pulmonary Hospital Affiliated to Tongji University ，Shanghai 200433，China； 
+3.  Shanghai Institute of Applied Mathematics and Mechanics ，Shanghai University ，Shanghai 200072，China
+Abstract： Objective 　Medical image registration plays an important role in clinical applications such as surgical naviga ⁃
+tion， disease progression monitoring ， and multimodal diagnosis .  The accuracy of image registration is critical to ensuring 
+the reliability of subsequent image analysis .  Traditional methods formulate the registration process as an optimization prob ⁃
+lem by maximizing the similarity between the fixed and warped moving images and employ iterative optimization strategies 
+to update the deformation field gradually .  While such approaches provide clear theoretical interpretability ， their high com ⁃
+putational costs fail to meet real -time clinical demands .  By contrast ， deep learning -based methods leverage large -scale 
+中图法分类号 ：O29； TP391  文献标识码 ： A  文章编号： 1006-8961（2026）07-2538-15
+论文引用格式 ：Sun J Y， Yang S Y and Ying S H .  2026.  Deep unfolding network for brain image registration .  Journal of Image and Graphics ， 31（7） ：
+2538-2552（孙嘉颖 ， 杨双燕 ， 应时辉 .  2026.  面向脑影像配准的深度展开网络研究 .  中国图象图形学报 ， 31（7） ：2538-2552）［DOI：10. 11834/
+jig. 250283］
+收稿日期：2025-07-14；修回日期：2025-12-29；预印本日期 ：2026-01-05
+ * 通信作者：杨双燕 yang_shuang_yan@ 163.com
+基金项目：国家重点研发计划资助（2021YFA1003004） ；白求恩·中青年医师肿瘤研究基金项目（YDTR-008）
+Supported by ：National Key R&D Program of China （2021YFA1003004） ；Bethune Young and Middle -aged Physicians Oncology Research Fund
+（YDTR-008）
+2538
+
+=== PDF_PAGE 2 ===
+第 31 卷 / 第 7 期 / 2026 年 7 月 孙嘉颖，杨双燕，应时辉 / 面向脑影像配准的深度展开网络研究
+datasets to learn the deformation field directly .  Although these data -driven approaches have demonstrated remarkable 
+improvements in registration speed and accuracy ， they operate as black -box models with limited interpretability .  More ⁃
+over， most current approaches continue to depend on manually designed regularization terms ， which may lack adaptability 
+to diverse anatomical structures .  To address these challenges ， we propose an unfolding -based registration network that com ⁃
+bines the theoretical guarantees of traditional optimization with the high efficiency and adaptive learning capabilities of deep 
+neural networks . Method　Specifically， by introducing variable splitting ， we first decouple the registration problem into two 
+subproblems： a similarity -constraint subproblem and a deformation -regularization subproblem .  This decomposition reduces 
+optimization complexity and allows each subproblem to be addressed separately .  Inspired by deep unfolding networks ， the 
+method maps the alternating update process between the two subproblems to a multistage cascaded architecture .  Each stage 
+corresponds to one complete iteration of the optimizer ， providing clear physical and mathematical foundations and enhanc ⁃
+ing interpretability compared with traditional end -to-end models .  Within this framework ， two specialized modules are 
+designed to address each subproblem .  The fidelity module （FM） is employed to solve the similarity -constraint subproblem .  
+Convolutional neural networks （CNN） are widely used in deep learning -based registration .  However ， the limited receptive 
+field of the convolution kernel leads the network to focus on local feature information ， while the Transformer uses the self -
+attention mechanism to capture global dependencies effectively .  By integrating the strengths of these two architectures ， the 
+FM is designed on the basis of the TransUnet framework .  This hybrid design allows the FM to combine local features with 
+global context .  The denoising module （DM） is designed to solve the deformation -regularization subproblem .  Instead of 
+using handcrafted regularization terms ， we approximate the regularization term using a trainable neural network .  Con ⁃
+cretely， the DM adopts the denoising convolutional neural network architecture and incorporates residual connections ， 
+allowing the model to learn priors adaptively in a data -driven manner and thus improving generalization across different ana ⁃
+tomical structures .  These two modules jointly complete a single alternating iteration and are cascaded to form the deep 
+unfolding network .  The overall network is trained with a loss function that balances image similarity ， deformation consis ⁃
+tency between the outputs of the FM and DM ， and smoothness of the deformation field .  The proposed network is imple ⁃
+mented using the PyTorch framework and trained on an NVIDIA Tesla V 100 GPU with 32 GB of memory .  The model is opti ⁃
+mized using the Adam optimizer with a learning rate of 1E-4， a batch size of 1， and is trained for 500 epochs.  The Trans ⁃
+former component in the FM was configured with four attention heads ， eight encoder layers ， and an MLP dimension of 96.  
+The unfolding network was constructed with three cascaded stages . Result　Experiments were conducted on two publicly 
+available brain magnetic resonance imaging （MRI） datasets ： LPBA40 and OASIS .  We compared our method with a range 
+of state -of-the-art models ， including traditional registration methods （i. e. ， large deformation diffeomorphic metric map ⁃
+ping and symmetric normalization ） and learning -based methods （e. g. ， VoxelMorph ， TransMorph ， UTSRMorph and  
+H-SGANet）.  The quantitative evaluation metrics contained a dice similarity coefficient （Dice） ， the percentage of nonposi ⁃
+tive Jacobian determinants ， and inference time .  The proposed method achieved an average Dice of 70. 1% on LPBA 40 and 
+79. 9% on OASIS ， while the percentage of nonpositive Jacobian determinants remained at a low level of 0. 01% on both 
+datasets， and the inference time was 0. 55 s on LPBA 40 and 0. 37 s on OASIS .  Although slightly higher than some deep 
+learning-based models due to the cascaded unfolding architecture and Transformer modules ， the time remained clinically 
+feasible.  Visualized results also indicated that the deformation fields produced by the proposed method was smoother and 
+more consistent with anatomical priors .  Additionally ， we conducted a set of ablation studies and reported corresponding 
+quantitative results .  These ablation studies explicitly demonstrated the effectiveness of individual modules in our proposed 
+model， including the variable splitting strategy ， the TransUnet -based fidelity module ， and the residual connection -based 
+denoising module and assessed the influence of key hyperparameters . Conclusion　In this study， we proposed a deep unfold ⁃
+ing network for medical image registration that effectively combines the interpretability of traditional iterative methods with 
+the efficiency and adaptability of deep learning .  By unrolling a decoupled optimization model into a trainable network with 
+fidelity and denoising modules ， the proposed approach strictly corresponds to a specific step in iterative algorithms .  Experi⁃
+ments demonstrate that the proposed method remarkably enhances interpretability while maintaining high efficiency and 
+accuracy.
+Key words： medical image registration ； unfolding network ； model decoupling ； regularization learning ； brain image
+2539
+
+=== PDF_PAGE 3 ===
+Vol. 31，No. 7，Jul. 2026
+0　引 言
+医学图像配准作为现代医学图像分析的关键技
+术，在临床实践中发挥着不可替代的作用 。目前，医
+学图像配准技术广泛应用于临床诊断 、疾病治疗以
+及 手 术 导 航 等 场 景（Sotiras 等 ，2013；Brock 等 ，
+2017） 。脑部医学图像配准因其解剖结构的特殊性
+及临床应用的迫切性 ，已成为该领域的核心研究议
+题之一 。大脑结构高度复杂 ，不仅具有精细的多尺
+度结构特征 ，还常因病理状态引发局部或全局的形
+态变化 。因此，开发能够适应脑部图像特点的高精
+度配准方法，对于提升脑疾病诊断 、手术规划及治疗
+效果评估具有重要的临床意义 。
+从技术实现层面而言 ，图像配准的本质在于建
+立不同图像之间的空间对应关系 ，使得不同图像的
+相应解剖结构能够在同一坐标系下实现精准对齐 。
+在数学上 ，通常将上述实现过程建模为一个能量泛
+函优化问题。传统的医学图像配准方法通过显式定
+义图像相似性度量和形变正则项 ，采用迭代优化的
+策略逐步更新形变场 ，经典代表方法包括 ：大变形微
+分 同 胚 度 量 映 射（large deformation diffeomorphic 
+metric mapping ，LDDMM） （Beg 等，2005） 、对称归一
+化 算 法（symmetric normalization ，SyN） （Avants 等 ，
+2008） 。尽管上述方法具有明确的可解释性并能生
+成高质量形变场 ，但是其计算复杂性导致求解效率
+低下，无法满足临床场景的实时性要求 。
+近年来 ，深度学习的快速发展为医学图像配准
+带来了突破性进展 。基于深度学习的方法能够显著
+提升配准速度 ，有效学习复杂解剖变化 ，并展现出强
+大的泛化能力 ，迅速成为该领域的研究热点 （施俊
+等，2020） 。代表性深度学习方法 VoxelMorph（Bal⁃
+akrishnan 等，2019）通过构建端到端的神经网络 ，实
+现直接从数据中学习形变映射 。在深度学习驱动的
+配准方法中 ，卷积神经网络（convolutional neural net ⁃
+work，CNN）凭借其强大的局部特征提取能力 ，成为
+此类方法的主流架构 。然而，卷积核有限的感受野
+导致网络在长程依赖建模方面存在不足 。为弥补上
+述缺陷，研究者提出了许多基于 Transformer 的模型，
+包括 Transmorph（Chen 等，2022）和 UTSRMorph（uni⁃
+fied Transformer and super-resolution morphing）（Zhang
+等，2025） ，并展现出良好的性能 。尽管目前已有诸
+多配准方法，但是这类方法固有的黑箱特性 ，缺乏对
+过程的显式建模 ，导致模型的可解释性不足等问题
+（Chen 等，2025） 。此外 ，当前方法中手工设计的正
+则项也存在显著局限 。这些正则项通常基于预设的
+数学公式 ，此类单一或固定形式的正则项 。难以捕
+捉和适应不同解剖部位 。尤其在处理大形变或形变
+复杂的区域时 ，影响配准的精度和泛化能力（马露凡 
+等，2021） 。
+与此同时 ，深度展开网络在反问题领域得到广
+泛应用，相比于一般的神经网络 ，深度展开网络具有
+更好的可解释性与性能 （Monga 等，2021；Xiang 等，
+2021） 。算法展开技术将经典优化算法中的迭代步
+骤进行展开，使其映射为一个网络层级 ，通过级联这
+些层级 ，即可构建深度神经网络架构 。网络的前馈
+过程相当于对原算法进行有限次数的迭代求解 。原
+算法中的超参数均被重构为可学习的网络参数 ，在
+端到端训练中实现优化 。这种方法不仅保留了神经
+网络强大的表征能力 ，又通过显式建模优化迭代过
+程，提高了算法的可解释性 ，为医学图像配准提供了
+新思路。
+受深度展开网络优化思想启发 ，针对当前深度
+学习方法在脑影像配准中可解释性差 、卷积感受野
+有限的问题 ，本文提出了一种基于模型解耦的深度
+展开配准方法 。具体而言 ，通过引入松弛变量将原
+问题解耦为相似性约束和形变正则化这两个物理意
+义明确的子问题 。并通过展开技术 ，嵌入正则项学
+习，分别将两个子问题映射为可训练的神经网络模
+块，分别称为保真项模块和去噪模块 ，从而使得网络
+架构与迭代优化过程严格对应 。
+本文主要创新点如下 ：1）提出模型解耦策略 ，将
+医学图像配准问题解耦成两个复杂度较低的子问
+题，从而降低模型求解复杂度 。同时，为每个子问题
+设计物理意义明确的可训练神经网络模块 ，实现更
+精确高效的配准 。2）构建深度展开配准网络架构 ，
+将传统优化算法的迭代过程显式映射为神经网络的
+层级结构 。每层网络对应一次迭代更新 ，显式实现
+解耦后子问题的交替优化 ，增强了模型的可解释性 。
+3）设计结合 CNN 局部特征提取与 Transformer 全局
+上下文建模的保真项模块用于配准任务 。该模块突
+破了卷积核局部感受野的限制 ，实现跨区域长程依
+赖建模，增强模型处理复杂形变的能力 。与此同时，
+设计基于残差学习的去噪模块用于逼近正则项 ，克
+2540
+
+=== PDF_PAGE 4 ===
+第 31 卷 / 第 7 期 / 2026 年 7 月 孙嘉颖，杨双燕，应时辉 / 面向脑影像配准的深度展开网络研究
+服手工设计正则项的局限性 ，以数据驱动的方式实
+现自适应学习 。
+在公开脑部数据集 LPBA40（laboratory of neuro 
+imaging probabilistic brain atlas ） 和 OASIS （open 
+access series of imaging studies ）上，将所提方法与主
+流方法进行对比实验 ，验证了本文方法的有效性 。
+1　相关工作
+1. 1　传统配准方法
+传统医学图像配准方法基于物理模型构建形变
+场，具备良好的可解释性 。早期研究利用弹性力学
+原理设计数学函数描述形变 ，如 Bookstein（1989）提
+出薄板样条插值函数 、Rohde 等人（2003）提出径向
+基函数模型 、Xia 和 Liu（2004）提出 B 样条插值函数 ，
+通过光滑函数或基函数组合逼近形变场 ，确保形变
+连续性和平滑性 ，但对大尺度非线性形变建模能力
+有限。为突破上述限制 ，微分同胚变换理论提供了
+新的思路 。Beg 等人（2005）提出大形变微分同胚度
+量映射，将配准问题转化为测地线计算问题 ，通过速
+度场的积分生成微分同胚变换 。Avants 等人（2008）
+提出对称归一化算法 ，通过联合优化正向形变和逆
+向 形 变，构 建 对 称 能 量 泛 函。 Vercauteren 等 人
+（2009）在 Demons 算法（Thirion，1998）的基础上引入
+了 微 分 同 胚 约 束，提 出 了Diffeomorphic Demons 算
+法，通过速度场的积分生成可逆形变场 。上述方法
+具有强大的数学理论支持 ，并且能生成高质量形变
+场，但是它们计算成本高 、求解速度慢 ，难以满足实
+时性需求。
+1. 2　基于深度学习的配准方法
+基于深度学习的配准方法主要可分为有监督方
+法和无监督方法 。
+在监督学习框架下 ，采用源图像和目标图像之
+间的形变场或形变参数作为真值标签 。并将网络输
+出与真值标签之间的误差定义为损失函数 ，以驱动
+神经网络的训练 。Miao 等人（2016）率先将深度学
+习应用于刚性配准参数预测 ，构建了适用于 2D/3D
+影像配准的卷积神经网络 。由于形变场真值获取困
+难，研究者提出采用传统配准方法合成形变场作为
+监督信号 ，如 Yang 等人（2016）采用 LDDMM 生成形
+变场，Cao 等人（2017）则使用 SyN 算法获取形变场 。
+Uzunova 等人（2017）进一步提出基于统计外观模型
+的形变场生成方法 。但此类方法存在以下问题 ：真
+实医学图像形变场的获取成本极高 ；使用传统方法
+生成的形变场作为监督 ，会使得训练出的模型精度
+受限于传统方法的精度 ；随机生成的形变场与真实
+形变场存在偏差 ，缺乏合理性。
+空 间 变 换 网 络（spatial Transformer network ，
+STN） （Jaderberg 等，2015）的提出推动研究转向无监
+督 方 法。 Balakrishnan 等 人（2018）提 出 的Voxel⁃
+Morph 框架是无监督配准的代表性工作 ，通过联合
+优化图像相似性损失与形变场正则化损失实现端到
+端训练。其后续工作（Balakrishnan 等，2019）进一步
+开发了微分同胚版本 。de Vos 等人（2019）则构建了
+多阶段深度学习框架处理单模态配准问题 。Zhou
+等人（2020）使用级联的思想 ，提出了嵌套的 U-Net
+模型 ，进一步提高了配准精度 。Kim 等人（2021）提
+出 CycleMorph 模型，通过生成正向和逆向的形变场 ，
+并强制形变后的图像经过逆向网络后恢复到原始图
+像，从而有效保证了形变场的拓扑特征 。Wang 等人
+（2024）提出了递归可变形的纯卷积金字塔网络 ，利
+用分步递归策略和高层语义信息 ，从粗到精地预测
+形变场。在无监督医学图像配准领域 ，基于 CNN 的
+方法长期占据研究主流 。然而，此类方法受限于其
+自身的结构特性 。CNN 设计的关键因素之一是感
+受野的大小 ，尽管通过堆叠连续卷积层和池化操作
+能够扩大网络的理论感受野范围 ，但其有效感受野
+仍存在显著局限性 。这种局部感受野的特性难以捕
+捉长距离空间对应关系 ，而这正是医学图像配准中
+大范围形变建模所必需的 。
+相比之下 ，Transformer 模型凭借其自注意力机
+制，在长距离依赖建模方面具有显著优势 （Li 等，
+2023） 。因此，研究者开始将其引入图像配准领域 。
+Chen 等人（2021）最早将 Transformer 用于配准的任
+务，提出了 ViT-V-Net。在后续研究中 ，进一步提出
+了 TransMorph（Chen 等，2022） ，在编码器结构中使
+用 Swin Transformer（Liu 等，2021）取代了原有的卷积
+特征提取器与视觉变换器 （vision Transformer ，ViT）
+模块 ，在三维脑部磁共振影像 （magnetic resonance 
+imaging，MRI）和 腹 部 计 算 机 脑 层 扫 描（computed 
+tomography，CT）图 像 配 准 中 取 得 了 更 好 的 结 果。
+Chen 等人（2023）提出了 TransMatch，通过独立的特
+征提取和基于 Transformer 自注意力机制的多级特征
+匹 配，实 现 了 图 像 间 的 显 式 对 应。 Zhang 等 人
+2541
+
+=== PDF_PAGE 5 ===
+Vol. 31，No. 7，Jul. 2026
+（2025）提出了一种名为 UTSRMorph 的无监督医学
+图像配准网络 ，它通过融合 Transformer 和卷积网络
+的优势构建高效编码器 ，并利用超分辨率模块生成
+高分辨率位移场 ，在多个 3D 医学数据集上实现了优
+于现有方法的性能 。杨小龙等人（2025）提出双分支
+网络，通过 CNN 局部分支提取细节特征 、Transformer
+全局分支捕捉全局位置与上下文信息 ，再经注意力
+融合模块自适应整合特征并结合辅助配准头强化监
+督，实现单椎体的 2D/3D 配准。
+此外，近年来对抗学习 、扩散模型和神经常微分
+方 程（neural ordinary differential equation ，NODE）等
+模型也引入到医学图像配准领域 ，极大推动了配准
+方法的发展。大多数应用于图像配准的对抗学习都
+依赖于生成对抗网络（generative adversarial network ，
+GAN）的基本原理 ，Fan 等人（2018）将配准网络作为
+生成器产生形变场 ，判别器作为形变图像和固定图
+像 之 间 的 相 似 性 度 量。 Mahapatra 等 人（2018）将
+GAN 应用于多模态配准 ，并额外实现了 CycleGAN
+（Zhu 等，2017） 。Kim 等人（2022）提出 DiffuseMorph，
+由一个扩散网络和一个变形网络组成 。扩散网络学
+习移动图像与固定图像之间的条件分数函数 ，获得
+二者的空间对应关系 。形变网络通过条件分数的潜
+在特征生成形变场 。Xu 等人（2021）首次将 NODE
+应用于无监督医学图像配准领域 ，通过 NODE 将图
+像配准优化问题建模为一个连续的动态过程 。
+2　基于解耦的深度展开网络
+本研究在无监督的医学图像配准框架下 ，提出
+一种基于模型解耦的深度展开配准网络 。本节将具
+体介绍所提出的方法 。
+2. 1　模型解耦
+在医学图像配准领域中 ，经典的求解方法是通
+过最小化能量泛函 ，实现固定图像与移动图像的空
+间对齐 。具体而言 ，给定固定图像 If 与移动图像 Im，
+对应的能量泛函为
+E(ϕ) = Lsim(Im ∘ ϕ，If) + λR(ϕ) （1）
+式中 ，Lsim( ⋅ ，⋅) 是保真项 ，用于衡量变换后的移动
+图像与固定图像的相似性 ；R(ϕ) 是正则项 ，通常采
+用手工设计的光滑性约束 ，确保形变场的合理性 ；
+λ 是权衡图像相似性与形变正则化的超参数 。
+但是由于目标函数中保真项与正则项的耦合 ，
+其计算复杂度高 ，并且在优化过程极易收敛至局部
+最优解。对此，本文提出采用模型解耦策略 ，通过将
+原问题解耦成两个子问题 ，从而有效降低模型求解
+复杂度 。具体而言 ，通过引入辅助变量 v，将原问题
+转化为带有等式约束的形式 ，即
+arg min
+u,v
+Lsim(Im ∘ u, If) + λR( v)    s.t. u = v （2）
+对于式（2） ，采用惩罚函数引入二次惩罚项 ，将
+其转换为无约束优化问题 ，具体为
+arg min
+u,v
+Lsim(Im ∘ u, If) + λR( v) + ρ‖ ‖u - v
+2
+（3）
+式中， ρ 为惩罚系数 。进一步，将此无约束问题转化
+为可分离的多变量优化问题 ，通过交替迭代以下子
+问题实现联合优化 ，具体为
+uk + 1 = arg min
+u
+Lsim(Im ∘ u, If) + α‖ ‖u - vk 2 （4）
+vk + 1 = arg min
+v
+R( v) + β‖ ‖uk + 1 - v 2 （5）
+式中 ，α 和 β 是平衡参数 。u 子问题（式（4） ）的目标
+是优化形变场 ，使得移动图像经过形变后与固定图
+像相似，同时保持与辅助变量 v 的一致性 ，相当于在
+固定辅助变量 v 时，可将其视为一个配准问题 ；v 子
+问题（式（5） ）的目标是约束形变场 ，同时保持与 u 的
+一致性，相当于在固定 u 时，可将其视为一个去噪问
+题。上述操作实现了保真项与正则项的显式解耦 ，
+显著提升了计算效率 ，并为后续算法的设计提供了
+清晰的物理意义与理论可解释性 。在后面小节中将
+进一步介绍子问题的具体解法 。
+2. 2　正则项学习
+在上一节中明确了解耦后的 v 子问题承担着约
+束形变场光滑性和合理性的任务 。传统方法通过手
+工设计正则项显式约束形变场 ，这样的做法存在显
+著缺陷：依赖固定数学形式 ，难以适应复杂多变的医
+学图像特征；正则项权重需反复手动调试 ，泛化能力
+不足。
+为了突破上述瓶颈 ，将解耦后的 v 子问题重构
+为数据驱动的去噪问题 ，通过神经网络逼近正则项 ，
+实现正则项的自适应学习 。因此 ，v 子问题可以重
+写为
+vk + 1 = Nθ(uk + 1) （6）
+式中 ，Nθ 是参数化的神经网络 ，θ 是可学习的参数 。
+这样的设计赋予了算法更强大的表达能力和灵活
+性，尤其在复杂病理形变中能提供更精准的约束 ，显
+2542
+
+=== PDF_PAGE 6 ===
+第 31 卷 / 第 7 期 / 2026 年 7 月 孙嘉颖，杨双燕，应时辉 / 面向脑影像配准的深度展开网络研究
+著提升模型的泛化能力 。同时，也为后续深度展开
+网络的构建奠定了理论与架构基础 。后文将具体介
+绍实现正则项学习的神经网络架构 。
+2. 3　深度展开配准网络
+2. 3. 1　展开网络架构
+在 2. 1 节中 ，将配准问题解耦为两个子问题 。
+为了减少迭代所需的计算成本 ，受深度展开网络的
+启发，考虑将其应用到图像配准问题中 。本文提出
+的深度展开配准网络架构如图 1 所示 ，该网络由
+K 个阶段级联而成 ，每个阶段对应一次子问题的交
+替求解过程 。具体而言，将解耦后的 u 子问题和 v 子
+问题映射到两个可学习的神经网络模块 ：保真项模
+块（fidelity module ，FM）和去噪模块 （denoising mod ⁃
+ule，DM） ，再 联 合 空 间 变 换 网 络，共 同 完 成 一 次
+迭代。
+图 2 展示了深度展开配准网络单阶段的具体流
+程。首先，将上一阶段得到的形变后图像与固定图
+像拼接后输入至保真项模块 。保真项模块依据数据
+相似性驱动，对形变场进行优化 ，确保形变后的移动
+图像与固定图像对齐 ，从而输出更新后的形变场 。
+接着，将形变场输入至去噪模块 ，对形变场进行正则
+化处理，约束形变场的光滑性和合理性 ，输出优化后
+的形变场。最终空间变换网络将优化后的形变场应
+用于移动图像 ，生成形变后的图像 。
+与传统的端到端深度学习网络不同 ，这样的设
+计使得网络中的每一层都具有明确的物理意义和
+数学依据 ，确保网络在拥有神经网络强大学习能力
+的同时 ，具备传统方法的可解释性 。同时可以根据
+具体需求 ，独立设计各个模块 ，充分发挥各模块在
+特定任务上的优势 ，增强了模型兼容性 ，提升了计
+算 效 率。 在 下 面 的 章 节 中 将 详 细 阐 述 各 模 块 的
+架构。
+2. 3. 2　保真项模块
+u 子 问 题 的 本 质 为 配 准 问 题，因 此 本 文 采 用
+U-Net 类似的结构，并在此基础上加入 Transformer 模
+块，即一种基于 TransUnet 的配准网络 ，核心设计思
+想 在 于 结 合CNN 的 局 部 特 征 提 取 能 力 和Trans⁃
+former 的 全 局 上 下 文 建 模 优 势，网 络 架 构 如 图3
+图 1　基于模型解耦的深度展开配准网络架构
+Fig. 1　Deep unfolding registration network architecture based on model decoupling
+图 2　深度展开配准网络单阶段流程
+Fig. 2　Single stage of the deep unfolding registration network
+2543
+
+=== PDF_PAGE 7 ===
+Vol. 31，No. 7，Jul. 2026
+所示。
+在编码阶段 ，通过多层下采样模块逐层提取多
+尺度特征 。每个下采样模块包含以下核心组件 ：使
+用 3 × 3 × 3 卷积核的卷积层 、批归一化（batch nor ⁃
+malization，BN）和 激 活 函 数（rectified linear unit ，
+ReLU） 。在编码器末端 ，将生成的深层特征（hidden 
+feature）F ∈ RC × D × H × W 展 平 为 序 列S ∈ R(D × H × W ) × C，
+输 入 至Transformer 模 块，建 立 跨 区 域 长 程 依 赖。
+Transformer 层 可 划 分 为 多 头 自 注 意 力（multi-head 
+self-attention，MSA） 、层 归 一 化（layer normalization ，
+LN）和 多 层 感 知 机（multilayer perceptron ，MLP）部 
+分。在解码阶段 ，由一系列上采样模块逐步恢复空
+间分辨率 。并且通过跳跃连接 ，将每个上采样层的
+特征与编码器中对应尺度的特征进行融合 。最终经
+过卷积操作和 ReLU 激活函数输出预测形变场 ，该
+形变场维度与图像空间维度相匹配 。
+2. 3. 3　去噪模块
+如 2. 2 节所述 ，传统方法中正则项依赖手工设
+计，而本文通过神经网络逼近正则项 。在实现细节
+上 ，去 噪 模 块 采 用 图 像 去 噪 领 域 经 典 的DnCNN
+（denoising convolutional neural network ）网 络 架 构
+（Zhang 等 ，2017） ，并 融 入 了 深 度 学 习 中 常 用 的
+ResNet（residual network ）残 差 学 习 机 制（He 等 ，
+2016） 。该模块的网络架构如图 4 所示。具体而言 ，
+网络级联了多个去噪模块 ，每个模块都遵循 DnCNN
+的设计范式 ，包含使用 3 × 3 × 3 卷积核的卷积层 、
+BN 和 ReLU。最后，采用残差连接机制 ，将输入直接
+与多层变换后的输出相加 。这样的设计使网络专注
+于学习形变场中非物理形变或非光滑形变 ，避免了
+直接对完整形变场进行重构 ，从而降低了网络 训练
+的难度，减少了可能出现的梯度消失或过拟合问题 。
+2. 3. 4　损失函数
+在整个训练过程中 ，本文使用均方误差评估固
+定图像与变换后的移动图像之间的相似度 ，形变场
+梯度的 L2 范数用于确保形变场的合理性以及一致
+性损失约束解耦变量的一致性 。因此，总损失为
+Ltotal = λ1 Lsim(Im ∘ u, If) +
+     (1 - λ1) Lsim(Im ∘ v, If) +
+     λ2‖ ‖∇u
+2
++ λ3‖ ‖u - v
+2
+（7）
+3　实 验
+3. 1　数据集
+为证明所提出的基于模型解耦和正则项学习的
+深 度 展 开 配 准 方 法 的 有 效 性，在 公 开 的LPBA40
+（Shattuck 等，2008）与 OASIS（Marcus 等，2007）脑部
+数据集上展开实验 。
+LPBA40 包含 40 例脑部 MRI 扫描数据 ，手动分
+图 3　保真项模块网络架构
+Fig. 3　Network architecture of the fidelity module
+图 4　去噪模块网络架构
+Fig. 4　Network architecture of the denoising module
+2544
+
+=== PDF_PAGE 8 ===
+第 31 卷 / 第 7 期 / 2026 年 7 月 孙嘉颖，杨双燕，应时辉 / 面向脑影像配准的深度展开网络研究
+割了 54 个解剖区域 。对于 LPBA40 数据集 ，所有图
+像先使用核磁共振数据处理软件 FreeSurfer 工具包
+进 行 颅 骨 去 除 操 作，随 后 重 采 样 至 体 素 尺 寸 为
+1 mm × 1 mm × 1 mm，再将图像进行仿射变换 ，最后
+所有图像裁剪为 160 mm × 192 mm × 160 mm 大小。
+在实验中 ，从数据集中随机选取 1 例作为固定图
+像，其余作为移动图像 ，最终构建 30 对训练样本和
+9 对测试样本 。
+OASIS 数据集包含 414 例脑部 MRI 扫描数据 ，
+手动分割了 35 个解剖区域。对于 OASIS 数据集进行
+预处理，主要流程涵盖基于 FreeSurfer 的强度校正、颅
+骨去除以及空间标准化等步骤 ，随后被重新采样为
+1 mm × 1 mm × 1 mm ，并 将 大 小 裁 剪 为160 mm ×
+192 mm × 224 mm。在实验中，将数据集随机划分为
+254 例训练样本、20 例验证样本及 140 例测试样本。
+3. 2　实验设置
+3. 2. 1　实验环境
+本 文 实 验 基 于PyTorch 框 架，GPU 为 NVIDIA 
+Tesla V 100，显 存 大 小 为32 GB 。 在 实 验 中，选 择
+Adam 优化器进行网络训练 ，批处理大小为 1，学习
+率为 1 × 10-4，迭代次数为 500。Transformer 模块参
+数设置如下 ：注意力头数为 4、编码器层数为 8、MLP 
+维度为 96。展开网络层数为 3。
+3. 2. 2　比较算法
+为了证明所提出算法的有效性 ，实验选取以下
+代表性算法作为对比 ，包括传统方法和基于深度学
+习的方法 。首先 ，考虑 LDDMM（Beg 等，2005）和对
+称归一化算法（Avants 等，2008） ，该方法通过迭代更
+新来寻找最优形变 。同时使用了基于 CNN 的配准
+方法：VoxelMorph（Balakrishnan 等，2019） ，该方法是
+深度学习配准的代表性工作 。此外，比较了近年来
+将 Transformer 融入配准网络的模型 ，分别是 Trans⁃
+Morph（Chen 等，2022） 、UTSRMorph（Zhang 等，2025）
+和 H-SGANet（Zhou 和 Cao，2025） 。LDDMM 和 SyN 方
+法使用 Python 的 Ants 工具包实现 。除了 H-SGANet，
+基于深度学习的方法都采用作者公开的官方代码及
+默认参数设置进行训练 。由于 H-SGANet 的源代码
+尚未公开，本研究直接引用了原文献中报告的结果 ，
+与本文方法在训练集 、验证集和测试集的比例设置
+上保持一致，但具体样本的分配不同 。
+3. 2. 3　评价指标
+1）戴 斯 相 似 系 数（Dice similarity coefficient ，
+Dice） 。戴斯相似系数用于计算两幅图像相同解剖
+结构的重合程度 ，是医学图像配准中常用的评价指
+标。戴斯相似系数的取值范围为 0～1，值越接近 1
+表明配准精度越高 。其计算式为
+Dice( X, Y ) = 2 ⋅ || X ∩ Y|| X + ||Y （8）
+式中 ，X 和 Y 分别表示配准后的移动图像和固定图
+像的标签图像 。
+2）雅可比行列式 。为了定量地评估形变场 ϕ 的
+质量，可以计算形变场的雅可比行列式 。理想的形
+变场应保持雅可比行列式值均为正数 ，若出现负值
+则表明该区域存在拓扑结构破坏 。通过计算负雅可
+比矩阵行列式百分比 ，可以有效检测形变场是否存
+在折叠现象。雅可比行列式计算为
+Jϕ =
+■
+■
+|
+|
+|
+|
+|
+|
+|
+|
+||||||||||
+■
+■
+|
+|
+|
+|
+|
+|
+|
+|
+||||||||||
+∂ϕx
+∂x
+∂ϕx
+∂y
+∂ϕx
+∂z
+∂ϕy
+∂x
+∂ϕy
+∂y
+∂ϕy
+∂z
+∂ϕz
+∂x
+∂ϕz
+∂y
+∂ϕz
+∂z
+（9）
+3. 3　结果与讨论
+表 1 展示了在 LPBA40 和 OASIS 数据集上 ，所提
+出的方法与其他几种对比方法比较的结果 。其中，
+Dice 分别是 LPBA40 数据集 54 个区域 Dice 值的平均
+结果和 OASIS 数据集 35 个区域 Dice 值的平均结果 。
+在实验数据集上 ，本文方法在配准精度上处于较高
+水平，负雅可比矩阵行列式百分比 也处于较低水平 ，
+表 1　不同方法在 LPBA40 和 OASIS 上的实验结果
+Table 1　Experimental results of different methods on 
+LPBA40 and OASIS
+方法
+LDDMM
+SyN
+VoxelMorph
+TransMorph
+UTSRMorph
+H-SGANet
+本文
+LPBA40
+Dice
+/%
+67.3
+69.5
+68.3
+69.9
+69.5
+69.1
+70.1
+% | Jϕ | ≤ 0
+0.000
+0.000
+0.030
+0.004
+0.010
+0.080
+0.010
+时间/s
+89.24
+18.74
+0.45
+0.35
+0.35
+0.28
+0.55
+OASIS
+Dice
+/%
+75.2
+76.0
+77.6
+79.8
+78.1
+81.4
+79.9
+% | Jϕ | ≤ 0
+0.000
+0.000
+0.002
+0.005
+0.005
+0.020
+0.010
+时间/s
+132.99
+30.98
+0.17
+0.36
+0.27
+0.26
+0.37
+注：加粗字体表示各列最优结果 。
+2545
+
+=== PDF_PAGE 9 ===
+Vol. 31，No. 7，Jul. 2026
+说明所生成的形变场更符合解剖学规律 。在时间效
+率方面 ，本文方法配准耗时略高于某些深度学习对
+比方法 ，这主要由于深度展开架构中 Transformer 模
+块和级联设计所带来的计算开销所致 ，但仍在可接
+受范围内，远快于传统迭代优化算法 ，实现了模型可
+解释性、精度与效率之间的良好平衡 。
+图 5 和图 6 展示了所用方法的可视化结果 ，各图
+第 1 列为原始图像 ，包括固定图像和移动图像 。图 5
+为 LPBA40 数据集上的结果 ，图 6 为 OASIS 数据集上
+的结果 。对于每个数据集 ，第 1 行展示了所使用方
+法得到的形变后图像 ，第 2 行展示了残差 图，第 3 行
+展示了形变场网格 。从形变后图像及其残差图来
+看，相较于 VoxelMorph，本文方法在内部结构的对齐
+上更贴合固定图像 ，残差分布更为均匀且数值更小 ，
+说明引入 Transformer 模块能更精准地捕捉图像间的
+空间变换关系 ，体现了保真项模块全局和局部特征
+融合上的优势 。从形变场的可视化来看 ，本文方法
+形变场颜色分布更均匀 ，网格变化相对平滑 ，未出现
+异常强烈的颜色突变 ，很少出现局部的过度扭曲或
+折叠，表明形变更符合解剖学先验 。尽管形变场网
+图 5　不同方法在 LPBA40 数据集的可视化结果
+Fig. 5　Visualization results of different methods on LPBA 40 dataset
+图 6　不同方法在 OASIS 数据集的可视化结果
+Fig. 6　Visualization results of different methods on OASIS dataset
+2546
+
+=== PDF_PAGE 10 ===
+第 31 卷 / 第 7 期 / 2026 年 7 月 孙嘉颖，杨双燕，应时辉 / 面向脑影像配准的深度展开网络研究
+格变化未呈现过度复杂的模式 ，但结合配准图像的
+高精度，说明本文方法在保持整体结构对齐的同时 ，
+能 精 准 捕 捉 必 要 的 局 部 形 变。 与 其 他 方 法，如
+UTSRMorph、TransMorph 相 比，其 形 变 场 更 简 洁 有
+效，反映了深度展开网络通过迭代优化逐步细化形
+变的特性，避免了冗余的形变预测 。
+综上，本文方法在配准精度与形变场合理性上
+取得了更好的平衡 。配准精度体现了保真项模块对
+特征的有效利用 ，形变场合理性体现了去噪模块对
+解剖先验的融入 ，从而验证了本文方法的架构设计
+在医学图像配准中的有效性 。
+图 7 和图 8 分别展示了两个数 据集上，本文方法
+与其他深度学习的方法在每个解剖结构上的 Dice
+值的直方图。其中标星号的脑区表明本文方法在该
+图 7　不同方法在 LPBA40 每个解剖结构的 Dice 值
+Fig. 7　Dice scores of different methods for each anatomical structure in LPBA 40
+图 8　不同方法在 OASIS 每个解剖结构的 Dice 值
+Fig. 8　Dice scores of different methods for each anatomical structure in OASIS
+2547
+
+=== PDF_PAGE 11 ===
+Vol. 31，No. 7，Jul. 2026
+脑区的 Dice 值高于其他方法 。经统计在 LPBA 数据
+集上共有 19 个脑区标星号 ，在 OASIS 数据集上共有
+13 个脑区标星号 。本文方法在皮层脑区与深部结
+构等关键脑区中取得了更优的配准表现 。尤其是在
+结构形态差异大 、体积较小且通常难以准确配准的
+区域，如海马 、丘脑、扣带回 、楔前叶等表现出优势 ，
+体现了其在复杂脑区配准任务中的准确性 。
+图 9 展示了 K = 1，2，3 时形变场逐步优化的过程
+以及对应的Dice 和负雅可比行列式。其中，Dice 值随
+迭代次数单调上升。此外，负雅可比行列式先下降后
+上升，但是始终控制在0. 01%以内。结果表明，本文架
+构能够在配准精度与形变场合理性之间实现平衡。
+3. 4　消融实验
+3. 4. 1　模块组件的影响
+为验证各模块组件的必要性及其交互作用 ，避
+免功能冗余 ，本文进行了一系列消融实验 。首先验
+证保真项模块中 Transformer 结构与跳跃连接的贡
+献，进而探究该保真项模块与去噪模块的协同效应 。
+实验初始在固定去噪模块为 DnCNN 的条件下 ，
+设计了以下 3 组对照实验 ：TransUnet（基准模型 ，含
+CNN 特征提取 、Transformer 结构以及跳跃连接 ） ；仅
+CNN 模型（移除 Transformer 结构，保留原 CNN 结构
+及跳跃连接） ；TransUnet 去掉跳跃连接（保留完整的
+TransUnet，但移除各层特征之间的跳跃连接 ） 。表 2
+展示了各模型在配准性能与训练时间的对比结果 ，
+可以看出 ：虽然引入 Transformer 增加了额外的计算
+开销，导致时间略有增加 ，但其能通过全局注意力机
+制有效捕捉图像长程依赖关系 ，弥补 CNN 局部感受
+野对大尺度形变建模的不足 ，从而提升配准精度 。
+同时 ，跳跃连接以微量增加时间开销的代价 ，实现
+CNN 多尺度特征融合 ，进一步优化配准精度 。上述
+实验充分验证了二者在保真项模块中的必要性 。
+进一步，为深入分析模块间的交互作用 ，固定保
+真项模块为 TransUnet 的条件下 ，将去噪模块中的
+DnCNN 替换为简单的多层卷积 。从表 2 结果可以看
+出：使用 DnCNN 作为去噪模块 ，其性能优于卷积去
+噪模块 Conv，这表明使用 DnCNN 作为去噪模块能够
+对保真项模块的不足进行有效补偿与协同增强 。
+3. 4. 2　DnCNN 去噪的影响
+为验证将 DnCNN 作为形变场去噪模块的合理
+性，本文设计了以 U-Net 去噪为对照的消融实验 。
+由表 3 结果可知 ，在使用 DnCNN 时，不仅在两个数
+据集上的配准精度优于 U-Net，还能更高效约束形变
+场的合理性 ，同时其计算耗时更短 。上述结果验证
+了 本 研 究 选 择DnCNN 作 为 去 噪 模 块 的 合 理 性 与
+优势。
+3. 4. 3　超参数分析
+根据经验设置 λ2 = 1 和 λ3 = 0. 1，通过调整 λ1
+以找到最佳平衡权重 。然后，再固定 λ1 = 0. 8，通过
+调整 λ3 以找到最佳一致性权重 。表 4 展示了不同超
+参数组合下的消融实验结果 ，分别比较了 Dice 和负
+雅可比行列式百分比 。
+图 9　K = 1，2，3 时各阶段形变场可视化
+Fig. 9　Visualization of deformation fields for each stage at K = 1，2，3
+表 2　模块组件的消融实验结果
+Table 2　Ablation experimental results on module 
+components
+保真项模块
+CNN
+√
+√
+√
+√
+Transformer
+√
+-
+√
+√
+跳跃
+连接
+√
+√
+-
+√
+去噪模块
+DnCNN
+√
+√
+√
+-
+Conv
+-
+-
+-
+√
+LPBA40
+Dice
+/%
+70.1
+68.1
+67.7
+68.9
+% | Jϕ | ≤ 0
+0.010
+0.019
+0.005
+0.016
+时间
+/s
+0.55
+0.36
+0.54
+0.50
+注：加粗字体表示各列最优结果 。 “√”表示使用对应结构 ， “-”
+表示未使用。
+2548
+
+=== PDF_PAGE 12 ===
+第 31 卷 / 第 7 期 / 2026 年 7 月 孙嘉颖，杨双燕，应时辉 / 面向脑影像配准的深度展开网络研究
+3. 4. 4　Transformer 参数影响分析
+Transformer 模块的关键参数包括多头自注意力
+头数（num_heads） 、编码器层数（num_layers）和 MLP
+维度（MLP_dim）等。这些参数共同决定模型的特征
+建模能力 、计算复杂度与训练效率 。本文将通过控
+制变量法，仅调整 Transformer 的相关参数，依次考察
+上述参数在固定深度展开阶段数 （K = 3）时的作用
+效果。表 5 的结果明确了各个关键参数对医学图像
+配准性能的影响 ，最终确定最优参数配置为 ：注意力
+头数 4、编码器层数 8、MLP 维度 96。该配置在本文
+所用数据集上取得了配准精度 、形变场合理性与推
+理效率之间的良好平衡 。在实际应用时 ，可依据目
+标数据集的特性与可用硬件资源 ，对参数进行适当
+调整，以进一步提升模型性能 ，从而更好地适应不同
+临床场景下的医学图像配准需求 。
+3. 4. 5　展开网络层数分析
+表 6 展示了不同展开网络层数下的实验结果 。
+当 K = 2 时，配准精度较低 。当 K = 3 时，配准性能
+显著提升 。而 K = 5 时，配准效果却未如预期进一
+步提升 ，可能是由于过多的展开层数导致模型在训
+练过程中出现过拟合 。同时随着展开层数增加 ，负
+雅可比矩阵行列式百分比也随之下降 ，这表明增加
+展开层数有助于抑制不合理形变 。综上，网络展开
+层数应结合实际任务需求进行选择 ，并非越多越好 ，
+合适的层数才能实现配准精度 、形变合理性和计算
+效率的最大化平衡 。
+4　结 论
+针对当前基于深度学习的医学图像配准方法可
+解释性不足 ，本文提出了一种基于模型解耦和正则
+项学习的深度展开配准方法 ，该方法融合了传统优
+化理论的可解释性与深度学习的数据驱动优势 。通
+表 3　不同去噪模块的实验结果
+Table 3　Experimental results of different 
+denoising modules
+去噪
+模块
+U-Net
+DnCNN
+LPBA40
+Dice
+/%
+68.5
+70.1
+% | Jϕ | ≤ 0
+0.017
+0.010
+时间/s
+0.60
+0.55
+OASIS
+Dice
+/%
+78.3
+79.9
+% | Jϕ | ≤ 0
+0.015
+0.010
+时间/s
+0.44
+0.37
+注：加粗字体表示各列最优结果 。
+表 4　不同超参数下的实验结果
+Table 4　Experimental results of different 
+hyperparameters
+λ1
+λ1 = 0
+λ1 = 0.2
+λ1 = 0.5
+λ1 = 0.8
+λ1 = 1
+λ1 = 0.8
+λ1 = 0.8
+λ3
+λ3 = 0.1
+λ3 = 0.1
+λ3 = 0.1
+λ3 = 0.1
+λ3 = 0.1
+λ3 = 1
+λ3 = 10
+LPBA40
+Dice/%
+67.3
+67.8
+68.7
+69.5
+69.1
+69.3
+68.7
+% | Jϕ | ≤ 0
+0.003
+0.006
+0.008
+0.010
+0.011
+0.007
+0.007
+注：加粗字体表示各列最优结果 。
+表 5　Transformer 模块的不同关键参数的实验结果
+Table 5　Experimental results of different key parameters 
+of the Transformer module
+Transformer 关键参数
+注意力头数
+(num_layers = 8, 
+MLP_dim = 96)
+编码器层数
+(num_heads = 4, 
+MLP_dim = 96)
+MLP 维度
+(num_heads = 4, 
+num_layers = 8)
+2
+4
+8
+4
+8
+64
+96
+256
+LPBA40
+Dice/%
+68.5
+70.1
+70.2
+69.7
+70.1
+69.1
+70.1
+70.3
+% | Jϕ | ≤ 0
+0.030
+0.010
+0.020
+0.002
+0.010
+0.040
+0.010
+0.003
+时间/s
+0.55
+0.55
+0.57
+0.47
+0.55
+0.58
+0.55
+0.50
+注：加粗字体表示各列最优结果 。
+表 6　不同展开网络层数下的实验结果
+Table 6　Experimental results of different numbers of 
+unfolding network layers
+展开网络
+层数
+2
+3
+5
+LPBA40
+Dice/%
+69.2
+70.1
+68.3
+ | Jϕ | ≤ 0
+0.040
+0.010
+0.003
+时间/s
+0.54
+0.55
+0.56
+注：加粗字体表示各列最优结果 。
+2549
+
+=== PDF_PAGE 13 ===
+Vol. 31，No. 7，Jul. 2026
+过将原始配准问题解耦为图像对齐子问题与正则项
+约束子问题 ，降低了模型求解的复杂度 。通过深度
+展开技术 ，将两个子问题分别映射为保真项模块和
+去噪模块这两个可学习的神经网络模块 。两模块协
+同完成单次交替迭代 ，并通过级联构成深度展开网
+络。这样的展开策略 ，使得每一层网络严格对应迭
+代算法的优化步骤 ，增强了网络的可解释性 。在方
+法的具体实现上 ，保真项模块结合 CNN 局部特征提
+取与 Transformer 长程依赖建模 ，提升处理复杂结构
+能力；去噪模块借鉴残差学习的思想构建神经网络
+逼近正则项，实现在数据驱动下自适应学习正则项 ，
+突破了手工设计正则项的局限性 。最后，在公开脑
+部数据集上的实验验证了所提方法的有效性 。
+尽管本文方法展现出较好的性能 ，但是仍存在
+关键局限性需进一步突破 ：其一，当前方法仅针对单
+模态图像；其二，级联构成的深度展开网络增加了参
+数数量与计算量 。基于上述局限 ，未来研究可围绕
+以下几个方面展开 ：1）自适应确定展开深度层数 ，以
+实现计算资源根据配准难度的动态分配 ；2）研究适
+配 医 学 图 像 配 准 的 轻 量 化Transformer，优 化 网 络
+结构。
+参考文献（References）
+Avants B B ， Epstein C L ， Grossman M and Gee J C . 2008. Symmetric 
+diffeomorphic image registration with cross -correlation： evaluating 
+automated labeling of elderly and neurodegenerative brain . Medical 
+Image Analysis ， 12（1）： 26-41 ［DOI： 10.1016/j. media. 2007.
+06.004］
+Balakrishnan G ， Zhao A， Sabuncu M R ， Dalca A V and Guttag J . 2018. 
+An unsupervised learning model for deformable medical image reg ⁃
+istration//Proceedings of 2018 IEEE/CVF Conference on Computer 
+Vision and Pattern Recognition . Salt Lake City ， USA： IEEE： 9252-
+9260 ［DOI： 10.1109/cvpr.2018.00964］
+Balakrishnan G ， Zhao A， Sabuncu M R ， Guttag J and Dalca A V . 2019. 
+VoxelMorph： a learning framework for deformable medical image 
+registration. IEEE Transactions on Medical Imaging ， 38（8） ： 1788-
+1800 ［DOI： 10.1109/TMI.2019.2897538］
+Beg M F ， Miller M I ， Trouvé A and Younes L . 2005. Computing large 
+deformation metric mappings via geodesic flows of diffeomorphisms . 
+International Journal of Computer Vision ， 61（2） ： 139-157 ［DOI： 
+10.1023/B：VISI.0000043755.93987.aa］
+Bookstein F L . 1989. Principal warps ： thin-plate splines and the decom ⁃
+position of deformations . IEEE Transactions on Pattern Analysis 
+and Machine Intelligence ， 11（6） ： 567-585 ［DOI： 10.1109/34.
+24792］
+Brock K K ， Mutic S ， Mcnutt T R ， Li H and Kessler M L . 2017. Use of 
+image registration and fusion algorithms and techniques in radio ⁃
+therapy： report of the AAPM radiation therapy committee task 
+group No . 132. Medical Physics ， 44（7） ： 43-76 ［DOI： 10.1002/
+mp.12256］
+Cao X H ， Yang J H ， Zhang J ， Nie D ， Kim M ， Wang Q ， et al . 2017. 
+Deformable image registration based on similarity -steered CNN 
+regression//Proceedings of the 20th International Conference on 
+Medical Image Computing and Computer -Assisted Intervention . 
+Quebec City ， Canada ： Springer ： 300-308 ［DOI： 10.1007/978-3-
+319-66182-7_35］
+Chen J Y， Frey E C， He Y F， Segars W P ， Li Y and Du Y . 2022. Trans⁃
+Morph： transformer for unsupervised medical image registration . 
+Medical Image Analysis ， 82： # 102615 ［DOI： 10.1016/j. media.
+2022.102615］
+Chen J Y ， He Y F ， Frey E C ， Li Y and Du Y . 2021. ViT-V-Net： vision 
+transformer for unsupervised volumetric medical image registration
+［EB/OL］. ［2025-07-14］. https://arxiv.org/pdf/2104.06468.pdf
+Chen J Y ， Liu Y H ， He Y F and Du Y . 2023. Spatially -varying regular ⁃
+ization with conditional transformer for unsupervised image registra ⁃
+tion ［EB/OL］. ［2025-07-14］. https://arxiv.org/pdf/2303.06168.pdf
+Chen J Y ， Liu Y H ， Wei S W ， Bian Z X ， Subramanian S ， Carass A ， 
+et al . 2025. A survey on deep learning in medical image registra ⁃
+tion： new technologies ， uncertainty ， evaluation metrics ， and 
+beyond. Medical Image Analysis ， 100： #103385 ［DOI： 10.1016/j.
+media.2024.103385］
+de Vos B D ， Berendsen F F ， Viergever M A ， Sokooti H ， Staring M and 
+Išgum I . 2019. A deep learning framework for unsupervised affine 
+and deformable image registration . Medical Image Analysis ， 52： 
+128-143 ［DOI： 10.1016/j.media.2018.11.010］
+Fan J F ， Cao X H ， Xue Z ， Yap P T and Shen D G . 2018. Adversarial 
+similarity network for evaluating image alignment in deep learning 
+based registration//Proceedings of the 21st International Conference 
+on Medical Image Computing and Computer -Assisted Intervention . 
+Granada， Spain ： Springer ： 739-746 ［DOI： 10.1007/978-3-030-
+00928-1_83］
+He K M ， Zhang X Y ， Ren S Q and Sun J . 2016. Deep residual learning 
+for image recognition//Proceedings of 2016 IEEE Conference on 
+Computer Vision and Pattern Recognition . Las Vegas ， USA ： 
+IEEE： 770-778 ［DOI： 10.1109/CVPR.2016.90］
+Jaderberg M， Simonyan K ， Zisserman A and Kavukcuoglu K . 2015. Spa⁃
+tial transformer networks//Proceedings of the 29th International 
+Conference on Neural Information Processing Systems . Montreal ， 
+Canada： 2017-2025 ［DOI： 10.5555/2969442.2969465］
+Kim B ， Han I and Ye J C . 2022. DiffuseMorph ： unsupervised deform ⁃
+able image registration using diffusion model//Proceedings of the 
+17th European Conference on Computer Vision . Tel Aviv ， Israel ： 
+Springer： 347-364 ［DOI： 10.1007/978-3-031-19821-2_20］
+2550
+
+=== PDF_PAGE 14 ===
+第 31 卷 / 第 7 期 / 2026 年 7 月 孙嘉颖，杨双燕，应时辉 / 面向脑影像配准的深度展开网络研究
+Kim B ， Kim D H ， Park S H ， Kim J ， Lee J G and Ye J C . 2021. 
+CycleMorph： cycle consistent unsupervised deformable image regis ⁃
+tration. Medical Image Analysis ， 71： # 102036 ［DOI： 10.1016/j.
+media.2021.102036］
+Li J， Chen J Y， Tang Y C ， Wang C， Landman B A and Zhou S K . 2023. 
+Transforming medical imaging with Transformers ？ A comparative 
+review of key properties ， current progresses ， and future perspec ⁃
+tives. Medical Image Analysis ， 85： # 102762 ［DOI： 10.1016/j.
+media.2023.102762］
+Liu Z ， Lin Y T ， Cao Y ， Hu H ， Wei Y X ， Zhang Z ， et al . 2021. Swin 
+Transformer： hierarchical vision transformer using shifted win ⁃
+dows//Proceedings of 2021 IEEE/CVF International Conference on 
+Computer Vision . Montreal ， Canada ： IEEE ： 9992-10002. ［DOI： 
+10.1109/ICCV48922.2021.00986］
+Ma L F ， Luo F ， Yan J P ， Xu Z ， Luo J and Li X . 2021. Deep -learning 
+based medical image registration pathway ： towards unsupervised 
+learning. Journal of Image and Graphics， 26（9） ： 2037-2057 （马露凡， 
+罗凤， 严江鹏 ， 徐哲， 罗捷， 李秀 . 2021. 深度医学图像配准研
+究进展 ： 迈向无监督学习 . 中国图象图形学报 ， 26（9） ： 2037-
+2057） ［DOI： 10.11834/jig.200361］
+Mahapatra D ， Antony B ， Sedai S and Garnavi R . 2018. Deformable 
+medical image registration using generative adversarial networks//
+Proceedings of the 15th IEEE International Symposium on Biomedi ⁃
+cal Imaging . Washington ， USA ： IEEE ： 1449-1453 ［DOI： 10.
+1109/isbi.2018.8363845］
+Marcus D S ， Wang T H ， Parker J ， Csernansky J G ， Morris J C and 
+Buckner R L . 2007. Open access series of imaging studies 
+（OASIS） ： cross-sectional MRI data in young ， middle aged ， nonde⁃
+mented， and demented older adults . Journal of Cognitive Neurosci ⁃
+ence， 19（9） ： 1498-1507 ［DOI： 10.1162/jocn.2007.19.9.1498］
+Miao S ， Wang Z J and Liao R . 2016. A CNN regression approach for 
+real-time 2D/3D registration . IEEE Transactions on Medical Imag ⁃
+ing， 35（5） ： 1352-1363 ［DOI： 10.1109/TMI.2016.2521800］
+Monga V ， Li Y L and Eldar Y C . 2021. Algorithm unrolling ： interpre ⁃
+table， efficient deep learning for signal and Image processing . 
+IEEE Signal Processing Magazine ， 38（2） ： 18-44 ［DOI： 10.1109/
+MSP.2020.3016905］
+Rohde G K ， Aldroubi A and Dawant B M . 2003. The adaptive bases 
+algorithm for intensity -based nonrigid image registration . IEEE 
+Transactions on Medical Imaging ， 22（11） ： 1470-1479 ［DOI： 10.
+1109/TMI.2003.819299］
+Shattuck D W ， Mirza M ， Adisetiyo V ， Hojatkashani C ， Salamon G ， 
+Narr K L ， et al . 2008. Construction of a 3D probabilistic atlas of 
+human cortical structures . NeuroImage ， 39（3） ： 1064-1080 ［DOI： 
+10.1016/j.neuroimage.2007.09.031］
+Shi J ， Wang L L ， Wang S S ， Chen Y X ， Wang Q ， Wei D M ， et al . 
+2020. Applications of deep learning in medical imaging ： a survey . 
+Journal of Image and Graphics， 25（10） ： 1953-1981 （施俊， 汪琳琳， 
+王珊珊 ， 陈艳霞 ， 王乾， 魏冬铭 ， 等 . 2020. 深度学习在医学影
+像 中 的 应 用 综 述. 中 国 图 象 图 形 学 报， 25（10） ： 1953-1981） 
+［DOI： 10.11834/jig.200255］
+Sotiras A ， Davatzikos C and Paragios N . 2013. Deformable medical 
+image registration ： a survey . IEEE Transactions on Medical Imag ⁃
+ing， 32（7） ： 1153-1190 ［DOI： 10.1109/TMI.2013.2265603］
+Thirion J P . 1998. Image matching as a diffusion process ： an analogy 
+with Maxwell ’s demons . Medical Image Analysis ， 2（3） ： 243-260 
+［DOI： 10.1016/S1361-8415（98）80022-4］
+Uzunova H， Wilms M ， Handels H and Ehrhardt J . 2017. Training CNNs 
+for image registration from few samples with model -based data aug ⁃
+mentation//Proceedings of the 20th International Conference on 
+Medical Image Computing and Computer -Assisted Intervention . 
+Quebec City ， Canada ： Springer ： 223-231 ［DOI： 10.1007/978-3-
+319-66182-7_26］
+Vercauteren T ， Pennec X ， Perchant A and Ayache N . 2009. Diffeomor ⁃
+phic demons ： efficient non -parametric image registration . NeuroIm ⁃
+age， 45（S1） ： S 61-S72 ［DOI： 10.1016/J. NEUROIMAGE . 2008.
+10.040］
+Wang H Q， Ni D and Wang Y . 2024. Recursive deformable pyramid net ⁃
+work for unsupervised medical image registration . IEEE Transac ⁃
+tions on Medical Imaging ， 43（6） ： 2229-2240 ［DOI： 10.1109/TMI.
+2024.3362968］
+Xia M H and Liu B D . 2004. Image registration by “Super-curves”. 
+IEEE Transactions on Image Processing ， 13（5） ： 720-732 ［DOI： 
+10.1109/TIP.2003.822611］
+Xiang J X ， Dong Y G and Yang Y J . 2021. FISTA -Net： learning a fast 
+iterative shrinkage thresholding network for inverse problems in 
+imaging. IEEE Transactions on Medical Imaging ， 40（5） ： 1329-
+1339 ［DOI： 10.1109/TMI.2021.3054167］
+Xu J S ， Chen E Z ， Chen X ， Chen T and Sun S H . 2021. Multi -scale 
+Neural ODEs for 3D medical image registration//Proceedings of the 
+24th International Conference on Medical Image Computing and 
+Computer-Assisted Intervention . Strasbourg ， France ： Springer ： 
+213-223 ［DOI： 10.1007/978-3-030-87202-1_21］
+Yang X， Kwitt R and Niethammer M . 2016. Fast predictive image regis ⁃
+tration//Proceedings of the 1st International Workshop on Deep 
+Learning and Data Labeling for Medical Applications . Athens ， 
+Greece： Springer： 48-57 ［DOI： 10.1007/978-3-319-46976-8_6］
+Yang X L ， Zhang Z C ， Xu S K ， Zhang B C ， Luo X Q and Hu F Y . 
+2025. Single vertebra 2D/3D registration with fusion of local and 
+global features . Journal of Image and Graphics ， 30（8） ： 2851-2865 
+（杨小龙 ， 张战成 ， 徐少康 ， 张宝成 ， 罗晓清 ， 胡伏原 . 2025. 融
+合局部与全局特征的单椎体 2D/3D 配准网络 . 中国图象图形学
+报， 30（8） ： 2851-2865） ［DOI： 10.11834/jig.240502］
+Zhang K， Zuo W M ， Chen Y J ， Meng D Y and Zhang L . 2017. Beyond a 
+Gaussian denoiser ： residual learning of deep CNN for image denois ⁃
+ing. IEEE Transactions on Image Processing ， 26（7） ： 3142-3155 
+［DOI： 10.1109/TIP.2017.2662206］
+Zhang R S ， Mo H ， Wang J C ， Jie B M ， He Y ， Jin N H ， et al . 2025. 
+2551
+
+=== PDF_PAGE 15 ===
+Vol. 31，No. 7，Jul. 2026
+UTSRMorph： a unified transformer and superresolution network for 
+unsupervised medical image registration . IEEE Transactions on 
+Medical Imaging ， 44（2）： 891-902 ［DOI： 10.1109/TMI. 2024.
+3467919］
+Zhou Y F and Cao W M . 2025. H -SGANet： hybrid sparse graph atten ⁃
+tion network for deformable medical image registration . Neurocom ⁃
+puting， 633： #129810 ［DOI： 10.1016/j.neucom.2025.129810］
+Zhou Z W ， Siddiquee M M R ， Tajbakhsh N and Liang J M . 2020. 
+UNet++ ： redesigning skip connections to exploit multiscale fea ⁃
+tures in image segmentation . IEEE Transactions on Medical Imag ⁃
+ing， 39（6） ： 1856-1867 ［DOI： 10.1109/TMI.2019.2959609］
+Zhu J Y， Park T， Isola P and Efros A A . 2017. Unpaired image -to-image 
+translation using cycle -consistent adversarial networks//Proceed ⁃
+ings of 2017 IEEE International Conference on Computer Vision . 
+Venice， Italy： IEEE： 2242-2251 ［DOI： 10.1109/ICCV.2017.244］
+作者简介
+孙嘉颖，女，硕士研究生，主要研究方向为医学图像配准 。
+E-mail：sjying@shu.edu.cn
+杨双燕 ，通信作者 ，女，工程师 ，主要研究方向为临床放疗计
+划设计与呼吸运动管理技术实施 。
+E-mail：yang_shuang_yan@ 163.com
+应时辉 ，男，教授 ，主要研究方向为医学影像处理与智能分
+析。E-mail：shying@shu.edu.cn
+2552

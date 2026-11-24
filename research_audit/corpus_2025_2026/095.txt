@@ -1,0 +1,1713 @@
+=== PDF_PAGE 1 ===
+0628010 -1
+研究论文第 45 卷 第 6 期/2025  年 3 月/光学学报
+面向多模态图像的非线性辐射和几何不变匹配
+刘玉轩
+1
+， 张力
+1
+， 樊仲藜
+2*
+， 孙钰珊
+1
+， 艾海滨
+1
+， 班雪晴
+1
+1
+中国测绘科学研究院 ，北京  100036 ；
+2
+武汉大学测绘遥感信息工程国家重点实验室 ，湖北  武汉  430079
+摘要  多传感器影像数据的准确匹配是图像配准和三维重建等应用的基础 。针对不同传感器数据模态差异带来的匹配
+难 题，提 出 一 种 稳 健 的 多 模 态 图 像 匹 配 方 法，非 线 性 辐 射 和 几 何 不 变 匹 配 方 法（NRGM） ，能 够 自 适 应 处 理 复 杂 非 线 性 辐
+射畸变 、尺度差异和图像旋转等问题 。NRGM 采用先特征粗略匹配 、后模板增强匹配的两阶段匹配框架 。在特征匹配阶
+段，首 先，利 用 Log -Gabor 滤 波 将 影 像 转 换 至 频 率 域，并 在 相 位 一 致 性 模 型 计 算 的 加 权 矩 值 图 上 检 测 多 尺 度 显 著 特 征 点；
+然后 ，抓住图像局部结构不变的特点 ，提出一种适用于多模态图像的鲁棒主方向估计方法 ，可应对［0°， 360°）内任意角度
+的 图 像 旋 转，并 准 确 描 述 特 征；最 后，通 过 特 征 间 最 近 距 离 和 异 常 值 去 除，建 立 特 征 对 应 关 系。 在 模 板 匹 配 阶 段，基 于
+Log -Gabor 多方向和多尺度滤波响应值构建模板特征 ，并使用三维相位相关匹配策略进行快速高精度匹配 。实验结果表
+明：NRGM 在视觉 、遥感和医学等领域的多模态图像配准上表现出优异的性能 ；在定性实验以及正确匹配数目 、匹配成功
+率 、均 方 根 误 差、精 确 率、召 回 率 和F1 分 数 这 六 个 定 量 指 标 上，NRGM 均 优 于 五 种 手 工 特 征 方 法（SIFT 、RIFT 、HOWP 、
+ASS 、GIFT）与两种基于学习的方法 （MatchFormer 和 SemLA ） 。
+关键词  多模态图像 ；图像匹配 ；非线性辐射畸变 ；几何不变
+中图分类号  O436   文献标志码  A DOI ： 10.3788 /AOS 241321
+1　引　　言
+图 像 是 当 前 应 用 最 广 泛 的 数 据 形 式 之 一
+［1-2］
+。 随
+着 航 天 卫 星、无 人 机、移 动 测 量 车 等 数 据 获 取 平 台，以
+及 多 光 谱 和 高 光 谱 相 机、合 成 孔 径 雷 达（SAR） 、三 维
+激 光 雷 达（lidar）扫 描 仪、超 声 波 成 像 设 备 等 传 感 器 的
+快 速 发 展，当 前 已 初 步 实 现 对 目 标 对 象 在 不 同 波 段 和
+视角的协同观测 ，并不断朝着高空间 、高时间和高光谱
+分 辨 率 数 据 获 取 的 方 向 发 展
+［3］
+。不 同 传 感 器 获 取 的 不
+同 模 态 图 像 编 码 了 目 标 对 象 的 不 同 方 面 信 息，各 自 具
+有一定的局限性 。融合多模态图像数据有助于发挥不
+同 模 态 数 据 的 优 势，有 力 支 持 其 在 遥 感 变 化 监 测
+［4］
+、即
+时 定 位 与 地 图 构 建
+［5］
+、医 学 诊 断 与 治 疗
+［6］
+等 领 域 的
+应用 。
+多模态图像的高精度匹配是多模态数据联合处理
+的 核 心 问 题 之 一
+［7-8］
+。 尽 管 图 像 匹 配 任 务 已 经 被 研 究
+了几十年 ，但针对同模态图像的匹配算法
+［9-10］
+应用于多
+模态图像时 ，通常表现较差 。首先 ，不同模态图像由不
+同 传 感 器 获 取，其 成 像 原 理 和 成 像 波 段 不 同。 与 同 一
+模 态 图 像 之 间 的 线 性 辐 射 变 化 相 比，多 模 态 图 像 之 间
+存 在 显 著 的 非 线 性 辐 射 畸 变（NRD）
+［11］
+。其 次，由 于 数
+据获取平台 、传感器的空间分辨率以及成像视角不同 ，
+多模态图像间存在旋转 、尺度差异 ，甚至透视变换等几
+何畸变 ，增加了匹配难度
+［12］
+。最后 ，不同模态图像的多
+样 性 强，包 括 光 学 影 像、红 外 影 像、SAR 影 像、lidar 强
+度 图 和 深 度 图、夜 光 图 像、栅 格 地 图、磁 共 振 成 像 图 像
+（MRI） 、正电子发射计算机断层扫描图像 （PET）等，这
+种多样性使得制定通用的匹配方法以适用于不同模态
+图像变得十分困难
+［13］
+。
+学 者 们 广 泛 研 究 了 多 模 态 图 像 匹 配 问 题，传 统 方
+法多基于特征或模板匹配 ，有两种主要的改进策略 ：一
+类 方 法 将 不 同 模 态 的 图 像 转 换 为 统 一 的 中 间 模 态，再
+采用传统匹配算法进行处理 ，核心在于消除模态差异 ，
+然而 ，模态转换依赖特定的数据集和转换模型 ，在复杂
+场 景 中 效 果 有 限，模 态 转 换 不 准 确 时 匹 配 精 度 会 显 著
+下 降；另 一 类 方 法 是 在 特 征 或 模 板 匹 配 中 引 入 抗 模 态
+变化的策略 ，增强特征对模态变化的鲁棒性 ，直接在原
+始 模 态 下 进 行 匹 配，具 备 更 强 的 灵 活 性 和 适 应 性。 近
+期 研 究 探 索 了 多 尺 度 和 多 方 向 信 息 的 应 用，发 现 从 多
+尺 度 和 多 方 向 滤 波 中 恢 复 的 局 部 结 构 信 息 对NRD 具
+有 较 强 鲁 棒 性，特 别 是 在 仅 存 在 平 移 变 换 的 多 模 态 图
+像 中，表 现 出 更 好 的 匹 配 效 果
+［14-17］
+。 这 类 方 法 通 过 分
+析局部结构 、捕捉模态间不变的关键信息 ，来提升匹配
+的 精 度 和 稳 健 性。 在 实 际 应 用 中，尺 度 差 异 和 旋 转 是
+收稿日期 ：2024 -07-17；修回日期 ：2024 -09-09；录用日期 ：2024 -09-30；网络首发日期 ：2024 -10-08
+基金项目 ：国家重点研发计划 （2023 YFB 3907602 ）
+通信作者 ：
+*
+fanzhongli@whu .edu.cn
+
+=== PDF_PAGE 2 ===
+0628010 -2
+研究论文 第 45 卷 第 6 期/2025  年 3 月/光学学报
+常见的几何变化 ，对匹配算法提出更高要求 。理论上 ，
+尺 度 变 化 可 通 过 图 像 金 字 塔 策 略 进 行 处 理，但 图 像 旋
+转 的 处 理 较 为 有 限，传 统 方 法 依 赖 于 图 像 梯 度 或 强 度
+信 息 来 计 算 特 征 主 方 向
+［18-20］
+，而 NRD 会 导 致 这 些 信 息
+难以准确获取 ，进而影响匹配精度 ，尤其在高模态差异
+和复杂变形场景下 ，不确定性会进一步加剧 。
+随 着 人 工 智 能 技 术 的 快 速 发 展，卷 积 神 经 网 络
+（CNN） 、生成对抗网络（GAN） 、孪生神经网络（siamese 
+networks ）和 Transformer 等 深 度 学 习 方 法 逐 渐 应 用 于
+多 模 态 图 像 匹 配。 一 类 方 法 通 过GAN 等 进 行 风 格 迁
+移，实现不同来源图像的模态统一 ，削弱 NRD 影响 ，结
+合 传 统 区 域 或 特 征 配 准 方 法 完 成 匹 配
+［21-22］
+。 另 一 类 方
+法将深度学习技术直接应用于传统匹配的部分或全流
+程，可以细分为基于学习的模板匹配 、特征匹配和端到
+端匹配
+［23］
+。模板匹配通过训练神经网络获取深度特征 ，
+替 代 传 统 配 准 中 的 强 度 信 息 或 浅 层 特 征，再 通 过 神 经
+网络或相似性度量实现匹配
+［24-25］
+；特征匹配则通过深度
+架 构 生 成 特 征 检 测 器 或 描 述 符，以 提 升 配 准 性 能
+［26-29］
+；
+端 到 端 匹 配 使 用 完 整 神 经 网 络 结 构 替 代 整 个 匹 配 过
+程，尽管能找到全局最优解 ，但训练资源消耗大 、模型复
+杂度高 、解释性差
+［30-31］
+。尽管这些方法在实验中表现良
+好，但在工程实践中仍面临挑战 。首先 ，当前缺乏一个
+涵 盖 所 有 图 像 模 态 且 标 注 充 分 的 大 规 模 多 模 态 数 据
+集，导致在遇到未经训练的模态时算法性能下降 ；其次 ，
+主 流 学 习 框 架 在 处 理 遥 感 或 医 学 等 复 杂 光 谱 数 据，以
+及应对显著尺度差异与几何变形时仍存在困难 ；最后 ，
+深 度 学 习 方 法 在 训 练 中 需 消 耗 大 量 计 算 资 源，限 制 其
+实际应用的广泛推广 。
+为 实 现 多 模 态 图 像 的 高 精 度 稳 健 匹 配，本 文 提 出
+一 种 非 线 性 辐 射 和 几 何 不 变 匹 配 方 法 （nonlinear 
+radiation and geometric invariant matching ， NRGM ） ，
+能有效应对 NRD 、尺度 、旋转等几何变形 ，适用于多模
+态 影 像 匹 配 的 实 际 应 用。 研 究 发 现，从 多 方 向 和 多 尺
+度 滤 波 响 应 中 构 建 的 方 向 索 引 图，其 局 部 结 构 在 不 同
+旋 转 角 度 下 是 相 似 的。 基 于 这 一 发 现，提 出 一 种 准 确
+而鲁棒的主方向估计方法 ，通过分析索引值的分布 ，计
+算 其 加 权 质 心 点，并 将 从 特 征 点 到 计 算 得 到 的 质 心 点
+的方向作为主方向 ，从而实现图像旋转不变性 。此外 ，
+还引入从特征到模板的稳健匹配框架 。该框架先利用
+几 何 不 变 匹 配 大 致 消 除 几 何 差 异，再 利 用 模 板 匹 配 进
+行匹配增强 。具体而言 ，通过构建包含完整 、多方向滤
+波 结 果 的 模 板 特 征，可 以 获 得 分 布 更 加 均 匀 的 大 量 匹
+配点对 ，从而显著提高匹配精度 。
+综上所述 ，所作的主要贡献包括 ：
+1） 提出一种新的多模态图像匹配方法 NRGM ，能
+有效抵抗 NRD 、尺度变化和图像旋转等几何畸变 ；
+2） 引 入 从 特 征 到 模 板 的 稳 健 多 模 态 匹 配 框 架，结
+合 几 何 不 变 匹 配 和 模 板 匹 配，有 效 消 除 几 何 畸 变 并 提
+高匹配精度 ；
+3） 提 出 一 种 用 于 多 模 态 图 像 的 鲁 棒 主 方 向 估 计
+方 法，利 用 多 方 向 和 多 尺 度 滤 波 响 应 中 的 局 部 结 构 相
+似性 ，实现旋转不变匹配 。
+2　几何不变特征匹配
+2.1　特征提取
+为了提取高质量的特征点 ，首先 ，建立图像金字塔
+以 应 对 图 像 尺 度 的 变 化；其 次，针 对 每 层 金 字 塔 图 像，
+使 用 多 方 向 相 位 一 致 性 方 法
+［32］
+生 成 显 著 的 边 缘 图；最
+后 ，利 用 FAST 算 子
+［33］
+对 边 缘 图 进 行 特 征 点 定 位。 利
+用 边 缘 图 降 低 图 像 强 度 和 光 照 的 影 响，同 时 增 强 图 像
+的 结 构 信 息，从 而 提 高 对NRD 的 鲁 棒 性。 此 外，该 方
+法 在 纹 理 较 低 且 噪 声 较 多 的 区 域 中 也 表 现 出 良 好 的
+效果 。
+2.1.1　构建尺度空间
+利用图像重采样和高斯平滑构建尺度空间以实现
+尺 度 不 变 性。 具 体 而 言，尺 度 空 间 由h 个 外 层 组 影 像
+ai 和 h 个 内 层 组 影 像bi 组 成，i = {0，1，…，h - 1}。 其
+中 ，a0 对 应 于 原 始 图 像，b0 是 通 过 以1.5 的 比 例 对a0 进
+行 重 采 样 得 到 的，这 使 得b0 的 尺 寸 为a0 的 2/3。 其 他
+内 外 层 组 影 像 通 过 逐 步 对a0 和 b0 进 行 二 分 重 采 样 得
+到。通常情况下 ，h 可以设置为 4。构建过程公式表示
+如下 ：
+ai ( x，y ) = ∑-c
+c
+∑-v
+v
+G ( )c，v ⊗ ai - 1 (2x + c，2y + v)
+（1）
+G (c，v) = 1
+2πσ
+2
+exp
+■
+■
+|
+|||||-( )c
+2
++ v
+2
+2σ
+2
+■
+■
+|||| （2）
+式 中：G (c，v) 为 标 准 差 为σ 的 高 斯 滤 波；(c，v) 为 滤 波
+点的坐标 ；⊗为卷积操作 。
+2.1.2　多尺度特征检测
+对 于 每 一 层 金 字 塔 影 像，首 先 计 算 相 位 一 致 性
+（PC）图，并基于 PC 计算加权矩值图 ，然后在矩值图上
+检 测 FAST 特 征 点。 对 于 图 像I ( x，y )，首 先 将 其 与 多
+尺 度、多 方 向 的Log -Gabor 滤 波 器［34］进 行 卷 积，该 过 程
+可以描述如下 ：
+IRso ( x，y ) = F
+-1
+[ P (u，v) ⋅ LGso (r，θ ) ] （3）
+P (u，v) = F [ I ( x，y ) ] （4）
+LGso (r，θ ) = exp
+■
+■
+|
+|
+||||-ln
+2
+( )r fs
+2 ln
+2
+( )σr
+■
+■
+|
+||||| ⋅ exp ■■||||||-( )θ - θo 22σ 2θ ■■||||  （5）
+式中 ：IRso ( x，y ) 表示滤波结果 ；LGso (r，θ ) 表示二维 Log -
+Gabor 滤 波 器 ；s 和 o 分 别 表 示 滤 波 的 尺 度 和 方 向 ；
+(r，θ ) 表示极坐标 ；fs 和 θo 分别表示在尺度 s 和 o 方向上
+的 滤 波 器 中 心 频 率 和 方 向 角；σr 和 σθ 分 别 表 示 径 向 和
+切 向 带 宽；F ( ⋅ ) 和 F
+-1
+( ⋅ ) 分 别 表 示 傅 里 叶 变 换 和 逆
+傅 里 叶 变 换。 图 1 展 示 了 一 对 光 学-深 度 图 像 的Log -
+Gabor 卷积结果 。
+
+=== PDF_PAGE 3 ===
+0628010 -3
+研究论文 第 45 卷 第 6 期/2025  年 3 月/光学学报
+随 后，基 于 IRso ( x，y ) 的 实 部Rso 和 虚 部IMso 计 算 出
+幅 度 分 量Aso ( x，y ) 和 相 位 分 量Φso ( x，y )，并 进 一 步 计
+算得到 PC 图，如下 ：
+Aso ( x，y ) = Rso ( )x，y
+2
++ IMso ( )x，y
+2
+（6）
+Φso ( x，y ) = arctan 
+■
+■
+|
+||||| ■■||||||IMso ( )x，yRso ( )x，y （7）
+PC ( x，y ) = ∑s ∑o w ( )x，y [ ]Aso ( )x，y ΔΦso ( )x，y -T
+∑s ∑o Aso ( )x，y +ε
+（8）
+ΔΦso ( x，y ) = cos [ Φso ( x，y ) - Φˉ ( x，y ) ] -
+|| sin [ Φso ( x，y ) - Φˉ ( x，y ) ] || （9）
+式 中：w ( x，y ) 是 频 域 传 播 的 加 权 因 子；PC ( x，y ) 是 PC
+图 ；■ ■⋅ 是 截 断 函 数，当 值 为 正 值 时 取 其 本 身，否 则 取0；
+ΔΦso ( x，y ) 是 相 位 偏 差 函 数； T 是 根 据 滤 波 器 对 图 像
+响 应 确 定 的 噪 声 阈 值；ε 是 一 个 很 小 的 常 数 值，用 于 避
+免除以 0；Φˉ ( x，y ) 是平均相位分量 。
+根 据 得 到 的 PC 图 ，利 用 如 下 公 式 计 算 最 大 矩 图
+Mmax 和最小矩图 Mmin：
+Mmax = 12 ■■||||A + C + ( )A - C 2 + B2 ■■|||| （10）
+Mmin = 12 ■■||||A + C - ( )A - C 2 + B2 ■■|||| （11）
+A = ∑o [ ]PC ( )θo cos θo
+2
+（12）
+B = 2 ⋅∑o [ PC (θo ) cos θo ][ ]PC ( )θo sin θo （13）
+C = ∑o [ ]PC ( )θo sin θo
+2
+（14）
+式中 ：PC (θo ) 是方向角为 θo 的 PC 图。
+根据矩分析理论
+［17］
+，Mmax 编码特征信息 ，Mmin 编码
+边 缘 信 息，并 且 Mmin 是 Mmax 的 严 格 子 集。 考 虑 到 边 缘
+结 构 在 多 模 态 图 像 中 更 加 稳 定，通 过 结 合Mmax 和 Mmin
+来 抑 制 角 点 响 应 并 加 强 边 缘 响 应，以 减 弱 强 度 变 化 的
+影响 ，表达式为
+W =τ ⋅ Mmax + (τ - 1) ⋅ Mmin （15）
+式中 ：τ 表示权重系数 ，范围在 0.5~1 之间 。
+最 后，利 用 FAST 算 法 在 加 权 矩 值 图 上 进 行 特 征
+提 取。 图 2 展 示 了 一 对 光 学-深 度 图 像 的 特 征 提 取 结
+果 。 可 以 观 察 到，加 权 矩 值 图 有 效 地 保 持 了 图 像 的 结
+构，受不同图像模态的影响小 ，得到的特征点数量大且
+均匀分布 。
+2.2　特征描述
+提 出 一 种 新 的 多 模 态 图 像 特 征 描 述 符，其 具 备
+稳 健 的 旋 转 不 变 性 。 如 图 3 所 示 ，首 先 ，从 多 方 向
+滤 波 的 结 果 中 提 取 方 向 索 引 图；其 次 ，分 析 局 部 圆
+形 区 域 中 索 引 值 的 分 布 ，用 以 评 估 每 个 点 的 主 方
+向 ；最 后 ，将 多 个 子 区 域 的 直 方 图 值 按 照 一 定 顺 序
+排 列 在 局 部 正 方 形 窗 口 图 像 中 ，形 成 特 征 描 述
+向 量。
+图 1　一对光学 -深度图像的多尺度 、多方向 Log -Gabor 卷积结果
+Fig. 1　Multi -scale , multi -directional Log -Gabor convolution results for an optical -depth image pair
+
+=== PDF_PAGE 4 ===
+0628010 -4
+研究论文 第 45 卷 第 6 期/2025  年 3 月/光学学报
+2.2.1　提取方向索引图
+文献［11］和［17］指出 ，在不同方向滤波结果中 ，最
+大振幅分量对应的索引信息比振幅本身更有效地描述
+了 多 模 态 图 像 的 结 构 信 息。 然 而，这 些 研 究 并 未 深 入
+探 讨 其 背 后 的 原 因。 通 过 详 细 的 实 验 和 分 析 发 现，最
+大 振 幅 分 量 编 码 了 图 像 中 显 著 的 结 构 特 征，而 索 引 信
+息提供了一种统一的度量方式 ，相比之下 ，振幅本身在
+处 理 复 杂 的NRD 的 多 模 态 图 像 时 较 为 不 稳 定，因 此，
+首 先 从 多 尺 度 和 多 方 向 的 卷 积 图 像 中 提 取 一 个 索 引
+图，特别地 ，对每个方向上的所有尺度获得的振幅分量
+进 行 累 加，以 增 强 每 个 方 向 上 滤 波 结 果 的 稳 定 性 并 提
+高计算效率 ，操作如下 ：
+Ao ( x，y ) = ∑s = 1
+n
+Aso ( x，y ) （16）
+则索引图可用如下公式进行计算 ：
+Mmap ( x，y ) = Index{max [ Ao ( x，y ) ] } （17）
+式 中：Index ( ⋅ ) 和 max ( ⋅ ) 分 别 用 于 提 取 层 索 引 和 找
+到 所 有 方 向 幅 值 中 的 最 大 值。图 3 展 示 了 索 引 图 的 构
+建过程 。
+匹 配 过 程 中，选 择 适 当 数 量 的 滤 波 方 向 个 数o 对
+图 2　特征检测结果示例 。 （a）一对光学 -深度图像 ； （b）最大矩图 ； （c）最小矩图 ； （d）加权矩图 ； （e）检测到的特征点
+Fig. 2　Example of feature detection results . (a) An optical -depth image pair ; (b) maximum moment maps ; (c) minimum moment maps ; 
+(d) weighted moment maps ; (e) detected feature points
+图 3　特征描述过程
+Fig. 3　Process of feature description
+
+=== PDF_PAGE 5 ===
+0628010 -5
+研究论文 第 45 卷 第 6 期/2025  年 3 月/光学学报
+成 功 实 现 匹 配 至 关 重 要。 如 果 选 择 的 数 量 过 多，会 降
+低后续主方向估计的稳定性 ，并增加计算成本 ；而选择
+的数量过少 ，则意味着滤波器之间的角度间隔较大 ，在
+小图像旋转下可能会降低方向指数图的相似性 。通常
+情况下 ，对于一个像素点 ，在旋转角度为 180° n（n 为预
+设的方向索引个数 ）的整数倍时 ，其索引值具有最高的
+可 信 度 。 然 而 ，当 两 幅 图 像 之 间 的 旋 转 角 度 为
+180° ( )2n 的 整 数 倍 时，索 引 值 极 有 可 能 会 偏 向 错 误 的
+角 度。 例 如，当 正 确 角 度 是 180° ( )n + 1 时 ，索 引 值 可
+能 偏 向180° n，或 者 当 正 确 角 度 是180° n 时 ，索 引 值 可
+能偏向 180° ( n + 1 )。为解决该问题 ，提出双索引图策
+略 ，不 是 仅 使 用 从Ao ( x，y ) 的 所 有 层 中 提 取 的 一 个 索
+引图 ，而是分别使用奇数层和偶数层 ，提取一个奇数索
+引 图 和 一 个 偶 数 索 引 图。 这 种 策 略 能 够 保 证，在 一 个
+索 引 图 中 模 糊 的 角 度 在 另 一 个 索 引 图 中 更 为 明 显，从
+而确保高性能并降低计算成本 。
+2.2.2　主方向估计
+在 不 存 在 旋 转 的 情 况 下，不 同 多 模 态 图 像 的 索 引
+图 外 观 非 常 相 似。 然 而，由 于 Log -Gabor 滤 波 器 的 方
+向是固定的 ，当图像以不同角度旋转时 ，这一原则会被
+打 破，导 致 多 方 向 滤 波 器 在 图 像 旋 转 时 的 索 引 值 变 化
+变得不可预测 。为了验证这一点 ，手动旋转一对光学 -
+近 红 外 图 像，并 提 取 每 个 角 度 下 的 索 引 图，如 图 4 所
+示 ，展 示 了 图 像 在 旋 转 角 度 为0°、60°和 120°时 的 可 视
+化结果 。
+观 察 不 同 旋 转 角 度 下 的 索 引 图，尽 管 索 引 值 发 生
+了变化 ，但局部结构仍然保持一致 （如图 4 中方框标记
+部分所示 ） 。这是因为在不同的旋转角度下 ，图像局部
+区 域 的 内 部 结 构 保 持 不 变，因 此 索 引 图 上 的 局 部 结 构
+也 相 应 地 保 持 不 变。 基 于 这 一 特 性，利 用 以 下 步 骤 来
+估 计 特 征 点 的 主 方 向，并 恢 复 不 同 旋 转 角 度 下 图 像 索
+引 图 的 相 似 性：1） 确 定 一 个 以 特 征 点 为 中 心 的 索 引 图
+上的圆形区域 ；2） 统计该区域内所有像素的索引值分
+布，找到占最大百分比的像素集合 ，这些像素集合反映
+了 局 部 区 域 的 结 构；3） 估 计 这 些 像 素 集 合 的 重 心 坐
+标；4） 将 特 征 点 与 重 心 点 的 连 线 方 向 作 为 特 征 点 的 主
+方 向。 通 过 这 种 方 法，能 够 有 效 地 估 计 特 征 点 在 不 同
+旋 转 角 度 下 的 主 方 向，从 而 实 现 对 图 像 索 引 图 在 旋 转
+变化下的稳健匹配 。
+设 P 是以 p 为中心的局部圆形区域内的点集 ，pi 是
+P 的 一 个 内 点。 以 pi 的 坐 标 作 为 初 始 重 心 坐 标，逐 步
+引 入 P 中 未 处 理 的 像 素，利 用 如 下 公 式 不 断 更 新 重 心
+坐标 ：
+G  = a  + Np
+1 + Np
+⋅
+         
+aG （18）
+式 中：G  是 在 引 入 新 的 未 处 理 点 后 更 新 的 重 心 点G 的
+位 置 矢 量；Np 是 迭 代 过 程 中 加 入 点 的 数 量；a  是 处 理
+Np-1 个点后的重心点 a 的位置矢量 ；
+         
+aG 是点 a 到点 G
+的矢量 。
+当 所 有 像 素 都 被 处 理 后，获 得 了 局 部 区 域 重 心 点
+的坐标 ，可以计算特征点主方向 。在此基础上 ，基于得
+到的特征点主方向对不同图像中的相同方向滤波器的
+索 引 进 行 归 一 化 处 理。 如 图 5 所 示，将 区 域 中 索 引 值
+占 比 最 大 的 像 素 的 索 引 值 修 改 为o，并 相 应 调 整 其 余
+像素的索引值 ，具体表示如下 ：
+Ki = ki - kmod e + o，ki ≤ kmod e （19）
+Ki = ki - kmod e，ki > kmod e （20）
+式 中：ki 和 Ki 分 别 表 示 区 域 中 调 整 前 后 的 索 引 值，i 为
+整数且 i ∈ [1，o]；kmod e 表示区域中占比最大的索引值 。
+此 外，如 果 第 二 主 要 方 向 的 像 素 数 大 于 主 方 向 像
+素 数 的80%，则 同 样 为 具 有 第 二 主 要 方 向 的 点 构 建 一
+个特征描述符 。这种策略可以显著提高特征匹配的鲁
+棒 性。 以 仅 考 虑 主 方 向 的 方 法 作 为 基 准，表 1 中 的 结
+果证明了所提策略的有效性 。
+2.2.3　构建特征描述
+经过以上步骤 ，每个特征点的尺度 、位置和主方向
+图 4　一对光学 -近红外影像不同旋转角度下的方向索引图对比 。 （a）原始影像对 ； （b） 0°； （c） 60°； （d） 120°
+Fig. 4　Comparison of direction index maps for an optical -near infrared image pair under different rotation angles . (a) Original image pair ; 
+(b) 0°; (c) 60°; (d) 120°
+
+=== PDF_PAGE 6 ===
+0628010 -6
+研究论文 第 45 卷 第 6 期/2025  年 3 月/光学学报
+信息已经获得 。基于此 ，在所在尺度索引图上 ，以特征
+点为中心 ，取正方向窗口影像 ，并将该窗口影像划分为
+等分区域 ，利用直方图分布统计策略构建特征描述符 。
+具 体 过 程 如 图3 所 示。统 计 每 个 子 区 域 中 每 个 索 引 值
+的累积值 ，并将所有子区域中的统计结果连接起来 ，生
+成 o × n × n 维特征描述符 。最后 ，对特征描述符进行
+归一化处理 ，以降低光照变化的影响 。
+2.3　特征匹配
+基 于 最 近 邻 原 则 进 行 特 征 匹 配，并 利 用 FSC 算
+法
+［35］
+完 成 异 常 值 的 去 除。 具 体 而 言，对 于 每 个 特 征
+点 ，从 另 一 幅 图 像 中 找 到 距 离 最 近 的 特 征 点，并 将
+其 作 为 初 始 匹 配 点 对。 在 此 基 础 上，使 用 FSC 算 法
+对 初 始 匹 配 结 果 进 行 优 化，去 除 匹 配 中 的 异 常 值 和
+误 匹 配 点 对。 图 6 展 示 了 在 一 对 光 学-红 外 图 像 上 的
+初 始 匹 配 结 果 以 及 这 个 阶 段 的 一 些 中 间 结 果。 可 以
+看 到 ，该 方 法 得 到 了 大 量 分 布 均 匀 的 高 质 量 匹配 点
+对 。 实 验 部 分 给 出 了 更 为 全 面 的 定 性 和 定 量 分 析
+结 果。
+3　模板增强匹配
+特征匹配通常可以成功地对图像模态间的显著特
+征 进 行 匹 配，但 由 于 局 部 结 构 的 变 化 和 严 重 的NRD ，
+显著性较弱的特征点容易匹配失败 。为了解决这一问
+题，进一步采用模板匹配技术 ，重新匹配那些未能成功
+匹 配 的 高 质 量 FAST 特 征 点 ，以 显 著 提 升 匹 配 的 效
+果 。 特 别 地，该 步 骤 利 用 完 整 的 方 向 滤 波 结 果 而 不 是
+简 单 的 索 引 信 息 来 构 建 高 维 度 的 模 板 特 征，从 而 大 幅
+提高了匹配性能 。
+首 先，利 用 特 征 匹 配 得 到 的 结 果 计 算 影 像 间 的 相
+似 性 变 换 矩 阵M，并 基 于 该 矩 阵 对 匹 配 图 像 进 行 重 采
+样，粗略消除尺度变化和图像旋转的影响 。接着 ，使用
+累积的振幅分量 Ao ( x，y ) 构建模板特征 。对于参考图
+像，直接使用前一阶段生成的结果 ；对于重采样的匹配
+图 像，则 重 新 进 行Log -Gabor 滤 波，并 用 式（16）计 算 其
+振 幅 分 量Ao ( x，y )。 由 于 图 像 旋 转 已 经 基 本 消 除，计
+图 6　一对光学 -近红外影像在特征匹配不同阶段的可视化结果 。 （a）原始多模态影像对 ； （b）提取的特征点 ； （c）原始索引图及特征主
+方向 ； （d）修改后索引图及特征主方向 ； （e）匹配结果
+Fig. 6　Visualization results of feature matching at different stages for an optical -near infrared image pair . (a) Original multimodal image 
+pair ; (b) extracted feature points ; (c) original index map and main feature directions ; (d) modified index map and main feature 
+directions ; (e) matching results .
+图 5　不 同 旋 转 角 度 下 的 原 始 及 修 改 后 方 向 索 引 图。 （a）光 学 影 像 旋 转60°； （b）光 学 影 像 修 改 后； （c）近 红 外 影 像 旋 转60°； （d）近 红 外
+影像修改后
+Fig. 5　Original and modified direction index maps under different rotation angles . (a) Optical image rotated 60°; (b) optical image after 
+modification ; (c) near infrared image rotated 60°; (d) near infrared image after modification
+
+=== PDF_PAGE 7 ===
+0628010 -7
+研究论文 第 45 卷 第 6 期/2025  年 3 月/光学学报
+算 主 方 向 时 不 需 要 过 大 的o 值 ，通 常 可 以 设 置 为 特 征
+匹 配 阶 段 的 一 半。 最 后 ，按 方 向 顺 序 堆 叠 振 幅 分 量
+Ao ( x，y ) 的 值，从 而 构 建o 维 模 板 特 征T ( x，y，o)。 此
+外 ，对 T ( x，y，o) 进 行 归 一 化 处 理，以 增 强 对 光 照 变 化
+的鲁棒性 。
+为 高 效 匹 配 模 板 特 征，采 用 相 位 相 关 而 非 传 统 的
+归 一 化 交 叉 相 关 系 数 等 相 似 度 测 量 方 法 。 假 设
+T1 ( x，y，o) 和 T2 ( x，y，o) 分 别 是 参 考 图 像 和 重 采 样 的
+匹 配 图 像 的 模 板 特 征，则 它 们 之 间 的 几 何 关 系 可 以 描
+述为
+T1 ( x，y，o) = T2 ( x - x0，y - y0，o) （21）
+式中 ：x0 和 y0 分别为水平方向和垂直方向的偏移量 。
+对 T1 ( x，y，o) 和 T2 ( x，y，o) 进行三维傅里叶变换 ，
+可 以 得 到FT 1 (u，v，w ) 和 FT 2 (u，v，w )。 根 据 傅 里 叶 移
+位 定 理，FT 1 (u，v，w ) 和 FT 2 (u，v，w ) 之 间 的 相 关 性 可
+表示为
+FT 1 (u，v，w ) = FT 2 (u，v，w ) e
+-i ( )ux0 + vy0
+λ （22）
+式中 ：λ 表示三维单位向量 。然后计算互功率谱 ：
+FT 1 (u，v，w ) FT 2 (u，v，w )
+*
+= e
+-i ( )ux0 + vy0
+λ （23）
+式中 ：*表示复共轭 。进一步对互功率谱进行三维逆傅
+里叶变换 ，可得到关系函数 δ ( x - x0，y - y0 )：
+F
+-1
+[ FT 1 (u，v，w ) FT 2 (u，v，w )
+*
+] = δ ( x - x0，y - y0 )
+（24）
+通 过 在 局 部 图 像 区 域 内 搜 索δ ( x - x0，y - y0 ) 的
+最大响应值 ，找到最佳的匹配位置 。一般情况下 ，相关
+函 数 的 最 大 响 应 会 出 现 在( x0，y0 )。匹 配 完 成 后，同 样
+采 用 FSC 算 法 进 行 误 匹 配 的 剔 除。此 外，对 于 重 采 样
+的 匹 配 图 像 上 的 匹 配 点，利 用 变 换 矩 阵M 重 新 投 影 到
+原 始 匹 配 图 像 上，得 到 匹 配 点 的 坐 标。 图 7 展 示 了 在
+一对光学 -红外图像上的增强匹配结果 。可以看到 ，在
+特 征 匹 配 的 基 础 上 获 得 了 更 多 正 确 的 匹 配 点，证 明 了
+模板匹配的高准确性和有效性 。
+4　实验与分析
+首 先 通 过 大 量 实 验 给 出NRGM 的 一 般 参 数 设 置
+及 其 敏 感 性 分 析 ，其 次 通 过 与 SIFT
+［10］
+、RIFT
+［17］
+、
+ASS
+［19］
+、GIFT
+［20］
+、HOWP
+［36］
+、MatchFormer
+［37］
+和
+SemLA
+［38］
+这 7 种 最 新 算 法 的 定 性 和 定 量 对 比 分 析，表
+明 NRGM 的 有 效 性，最 后 验 证 了NRGM 对 尺 度 变 化
+和 旋 转 的 强 大 不 变 性。 对 于 每 种 对 比 方 法，使 用 作 者
+提供的代码以及参数设置 。
+实 验 数 据 采 用 来 自 计 算 机 视 觉、医 学 和 遥 感3 个
+领 域 的 多 模 态 图 像
+［39］
+，每 组 包 含6 种 具 有 挑 战 性 的 多
+模 态 图 像 对，以 增 加 算 法 的 鲁 棒 性 测 试。 应 用 的 多 种
+图 像 模 态 包 括 可 见 光 图 像（RGB） 、红 外 图 像（IR） 、近
+红 外 图 像（NIR） 、深 度 影 像（Depth） 、质 子 密 度 加 权 图
+像（PD） 、T1 加 权 图 像（T1） 、T2 加 权 图 像（T2） 、通 过
+不 同 血 管 造 影 技 术 拍 摄 的 视 网 膜 图 像（multisource -
+retina） 、光 学 遥 感 影 像（optical） 、SAR 图 像 等。这 些 图
+像 具 有 显 著 的NRD 和 几 何 差 异，包 括 尺 度、旋 转 和 平
+移等 。表 1 给出了更详细的数据介绍 。
+对 于 定 量 评 估，选 用 了 正 确 匹 配 数 目（NCM） 、匹
+配 成 功 率（SR） 、均 方 根 误 差（RMSE） 、精 确 率（Pre） 、
+召 回 率（Rec）和 F1 分 数（F1）共 6 个 指 标。 真 值 采 用 手
+动 选 择 的 每 对 图 像 的10~15 个 高 精 度 检 查 点。 对 于
+一对检查点 ( x1，y1 ) 和 ( x2，y2 )，可以使用基于获得的匹
+配计算出的相似性矩阵估算出一个点 ( x'1，y '1 )，则
+ERMS = 1NCM ∑i = 1NCM ■■|||| ■■( )xi2 - xi'1 2 + ( )y i2 - y i'1 2   （25）
+图 7　模版匹配结果 。 （a）原始多模态影像对 ； （b）粗校正后影像对 ； （c）模版特征 ； （d）校正后影像上得到的匹配点对 ； （e）原始影像上
+得到的匹配点对 ； （f）部分匹配点对坐标
+Fig. 7　Template matching results . (a) Original multimodal image pair ; (b) coarsely corrected image pair ; (c) template features ; 
+(d) matching point pairs obtained on corrected image ; (e) matching point pairs obtained on original image ; (f) coordinates of 
+partially matched points
+
+=== PDF_PAGE 8 ===
+0628010 -8
+研究论文 第 45 卷 第 6 期/2025  年 3 月/光学学报
+RS = Nsuccess
+Ntotal
+（26）
+式 中：Nsuccess 和 Ntotal 分 别 为 成 功 匹 配 的 图 像 对 数 和 总
+图 像 对 数；ERMS 为 RMSE 的 值；NCM 为 NCM 的 值；RS
+为 SR 的 值。 RMSE 体 现 了 匹 配 的 准 确 性，RMSE 越
+低 ，准 确 性 越 高。 此 外，如 果 RMSE 大 于 5 pixel ，则 结
+果 将 被 视 为 匹 配 失 败。SR 反 映 了 方 法 对 多 模 态 图 像
+对 的 鲁 棒 性 和 普 适 性，SR 越 高，方 法 的 鲁 棒 性 和 普 适
+性越好 。
+RPre = NTP
+NTP + NFP
+（27）
+RRec = NTP
+NTP + NFN
+（28）
+F1 = 2 ⋅ RPre ⋅ RRec
+RPre + RRec
+（29）
+式 中：NTP 为 正 确 预 测 的 匹 配 点 数；NFP 为 错 误 预 测 的
+点数 ；NFN 为未能匹配的点数 ；RPre 和 RRec 分别为 Pre 和
+Rec 的 值 。 Pre 体 现 了 算 法 对 错 误 匹 配 的 区 分 能 力，
+Pre 越 高 ，所 得 到 匹 配 点 对 中 的 正 确 匹 配 比 例 越 高；
+Rec 体 现 了 算 法 对 所 提 特 征 的 匹 配 能 力，Rec 越 高，算
+法 对 特 征 的 匹 配 能 力 越 强；F1 是 两 者 的 综 合，F1 越 高，
+表明算法越稳健 。
+4.1　参数设置
+测 试 NRGM 关 于 Log -Gabor 滤 波 器 的 尺 度s、方
+向 数 量 o 和 用 于 特 征 描 述 的 图 像 窗 口 大 小l 的 性 能。
+值得注意的是 ，两个图像窗口的大小均设置为 l。在实
+验 过 程 中，改 变 被 测 试 的 参 数，同 时 保 持 其 他 参 数 不
+变。表 2 给出了具体的实验参数设置和对应的实验结
+果，实验使用了 90 对各类图像 。
+通 过 控 制 变 量 法，分 别 将s 的 值 从2 变 化 到5，o 的
+值 从 8 变 化 到12，l 的 值 从60 变 化 到96。 实 验 结 果 表
+明 ：当 s=4、o=12、l=84 时 ，在 NCM 、RMSE 等 5 项 评
+价 指 标 上，整 体 性 能 最 佳，因 此，选 择 该 组 合 作 为 算 法
+的 默 认 参 数 ，并 将 其 应 用 于 其 他 实 验 中 。 此 外 ，
+NRGM 的最大特征数量设置为 5000 。
+4.2　定性对比分析
+图 8~10 展 示 了 不 同 算 法 在 视 觉、医 学 和 遥 感 领
+域数据集上的定性对比实验结果 。其中 ，SIFT 仅成功
+匹 配 了RGB -NIR 图 像 对，这 表 明SIFT 在 处 理 成 像 机
+理 和 波 段 相 近 的 图 像 对 时 效 果 较 好，但 在 处 理 模 态 差
+异 较 大 的 图 像 对 时 表 现 不 佳。 RIFT 对 NRD 表 现 出
+良 好 的 抗 性，并 成 功 匹 配 了9 对 图 像 中 的4 对 ，显 示 出
+一 定 的 鲁 棒 性，然 而，RIFT 未 能 匹 配 具 有 明 显 尺 度 差
+异 的 图 像 对，例 如 RGB -Depth（CV）图 像 对，这 表 明 其
+在 应 对 尺 度 变 化 时 存 在 局 限 性 。 HOWP 、
+MatchFormer 和 SemLA 在 这 些 图 像 对 上 的 表 现 相 似，
+在 CV 数据集中匹配了 1 对图像 ，在 MD 数据集中匹配
+了 1 对图像 ，在 RS 数据集中均匹配失败 。这些算法在
+处 理 多 模 态 图 像 匹 配 时 表 现 不 稳 定，容 易 受 到 图 像 间
+NRD 和 几 何 差 异 的 影 响 ，导 致 匹 配 失 败 。 ASS 和
+GIFT 显 示 出 较 高 的 可 靠 性，成 功 匹 配 了 全 部CV 数
+据、2 对 MD 数据以及 1 对 RS 数据 ，匹配成功率相对较
+高 ，然 而，未 能 匹 配Optical -SAR 和 Optical -IR 影 像 对，
+其 中 GIFT 获 取 的 匹 配 点 对 更 多 ，这 表 明 ASS 和
+GIFT 在 某 些 情 况 下 仍 存 在 局 限 性，尤 其 是 在 处 理 模
+态 差 异 较 大 的 图 像 对 时。相 比 之 下，NRGM 在 所 有 方
+法中表现最优 ，是唯一正确匹配所有 9 对图像的方法 。
+所 提 的 特 征 检 测 器 和 描 述 符 对NRD 和 几 何 差 异 具 有
+强 大 的 鲁 棒 性，而 匹 配 增 强 策 略 进 一 步 提 高 了 正 确 匹
+配 的 数 量 和 匹 配 精 度。NRGM 的 成 功 不 仅 在 于 其 特
+征 检 测 和 描 述 方 法 的 先 进 性，还 在 于 其 匹 配 增 强 策 略
+的 有 效 性。 这 些 优 势 使 得NRGM 在 处 理 各 种 多 模 态
+图 像 匹 配 任 务 时 表 现 出 色，具 有 广 泛 的 应 用 潜 力。 综
+上 所 述，NRGM 通 过 多 层 次 的 优 化 和 改 进，实 现 对 不
+表 1　实验数据
+Table 1　Experimental data
+Aera
+Vision
+Medical
+Remote
+sensing
+Dataset No .
+1
+2
+3
+1
+2
+3
+1
+2
+3
+Type
+Low light RGB-IR
+RGB-Depth
+RGB-NIR
+PD-T 1
+Multisource-Retina
+T1-T2
+Multitemporal-Optical
+Optical-SAR
+Optical-IR
+Number
+20
+20
+20
+20
+20
+20
+20
+20
+20
+表 2　不同参数设置下 NRGM 算法在不同数据的平均表现
+Table 2　Average performance of NRGM algorithm under 
+different parameter settings across various datasets
+s  o  l
+2 12 72
+3 12 72
+4 12 72
+5 12 72
+4  8  72
+4 10 72
+4 12 72
+4 16 72
+4 12 60
+4 12 72
+4 12 84
+4 12 96
+NCM
+1681 .24
+2261 .24
+2384 .59
+2152 .28
+2267 .76
+2294 .10
+2384 .59
+2387 .49
+2243 .63
+2384 .59
+2447 .78
+2476 .72
+Pre
+91.22
+97.80
+96.60
+92.18
+96.73
+93.44
+96.60
+95.82
+97.00
+96.60
+97.86
+93.56
+Rec
+76.32
+84.04
+83.96
+81.35
+83.52
+81.31
+83.96
+84.21
+82.83
+83.96
+86.17
+83.62
+F1
+82.28
+89.63
+89.21
+85.71
+88.93
+86.17
+89.21
+88.77
+88.61
+89.21
+90.82
+87.59
+RMSE
+1.49
+1.16
+1.19
+1.45
+1.20
+1.34
+1.19
+1.27
+1.20
+1.19
+1.16
+1.37
+SR
+94.44
+98.89
+97.78
+95.56
+97.78
+95.56
+97.78
+98.89
+98.89
+97.78
+100.00
+96.67
+
+=== PDF_PAGE 9 ===
+0628010 -9
+研究论文 第 45 卷 第 6 期/2025  年 3 月/光学学报
+同模态 、不同尺度 、不同旋转角度的图像匹配的高精度
+和 高 鲁 棒 性，不 仅 克 服 了 传 统 算 法 在 应 对 多 模 态 图 像
+匹 配 时 的 诸 多 不 足，还 通 过 匹 配 增 强 策 略 大 幅 度 提 升
+了匹配效果 ，使其在视觉 、医学和遥感领域的应用前景
+更加广阔 。
+4.3　定量对比分析
+表 3~5 展 示 了 不 同 算 法 在 视 觉、医 学 和 遥 感 领 域
+数 据 集 上 的 详 细 定 量 实 验 结 果。SIFT 在 成 像 机 理 和
+波段相近的 RGB -NIR 影像上表现良好 ，能够实现较高
+的 匹 配 精 度，然 而，当 面 对 模 态 差 异 较 大 的 影 像 时，表
+现 明 显 不 佳 ，难 以 实 现 有 效 的 特 征 匹 配 。 HOWP 、
+MatchFormer 和 SemLA 在 不 同 模 态 影 像 上 表 现 出 较
+强 的 抗 性，能 够 处 理 一 定 程 度 的NRD 和 几 何 差 异，但
+匹 配 效 果 并 不 稳 定。 例 如，HOWP 在 Optical -IR 影 像
+上 的 效 果 较 差，而 MatchFormer 在 Optical -SAR 影 像
+上 完 全 失 败，未 能 找 到 有 效 的 匹 配 点 对。RIFT 、ASS
+和 GIFT 表 现 出 更 高 的 鲁 棒 性，能 够 成 功 匹 配 部 分 不
+同 模 态 的 影 像，特 别 是 RIFT ，在 应 对 NRD 时 表 现 良
+好 ，但 在 处 理 几 何 差 异 和NRD 较 大 的Optical -SAR 影
+像 对 时，其 匹 配 效 果 显 著 下 降，SR 仅 为 10%；ASS 和
+图 8　不同算法在视觉多模态图像上可视化对比实验结果 （左图为匹配结果 ，右图为融合结果 ）
+Fig. 8　Visualization comparison of different algorithms on vision multimodal images (left image shows matching results , and right 
+image shows fusion results )
+
+=== PDF_PAGE 10 ===
+0628010 -10
+研究论文 第 45 卷 第 6 期/2025  年 3 月/光学学报
+GIFT 在 这 一 类 影 像 对 上 表 现 略 好，但 仍 未 能 达 到 理
+想 的 匹 配 效 果。相 比 之 下，NRGM 在 所 有 影 像 对 上 均
+表 现 优 异，成 功 匹 配 所 有 的 影 像 对，并 在 NCM 、Pre 、
+Recl 和 RMSE 等 指 标 方 面 展 示 了 显 著 的 优 越 性 和 有
+效 性 。 以 Optical -SAR 影 像 为 例 ，SIFT 和
+MatchFormer 完 全 失 败，无 法 找 到 有 效 匹 配 点；RIFT
+和 HOWP 仅 获 得 不 超 过10 个 匹 配 点 对；ASS 获 得 了
+50 多 个 匹 配 点；GIFT 则 明 显 优 于 其 他 方 法，获 得 了
+600 多 个 匹 配 点；然 而，NRGM 在 该 影 像 对 上 获 得 了
+1500 多 个 匹 配 点，且 匹 配 精 度RMSE 达 到 1.74 pixel 。
+这 些 结 果 表 明，NRGM 不 仅 具 有 强 大 的 泛 化 能 力，能
+够 处 理 各 种 类 型 的 多 模 态 影 像，还 具 有 高 精 度 的 匹 配
+性能 ，尤其在处理几何差异和 NRD 显著的影像时表现
+尤为突出 。
+4.4　旋转测试
+验 证 NRGM 对 尺 度 变 化 和 图 像 旋 转 的 鲁 棒 性。
+在 图 像 旋 转 方 面 ，手 动 调 整 RGB -Depth 、PD -T1 和
+Optical -SAR 三 对 图 像 的 旋 转 角 度，从 0°~ 360°，并 用
+NCM 和 RMSE 作为定量分析指标 ，结果如图 11 所示 。
+可 以 看 到，随 着 旋 转 角 度 的 变 化，NRGM 虽 然 会 表 现
+图 9　不同算法在医学多模态图像上可视化对比实验结果 （左图为匹配结果 ，右图为融合结果 ）
+Fig. 9　Visualization comparison of different algorithms on medical multimodal images (left image shows matching results , and right 
+image shows fusion results )
+
+=== PDF_PAGE 11 ===
+0628010 -11
+研究论文 第 45 卷 第 6 期/2025  年 3 月/光学学报
+出 周 期 性 的 波 动，但 总 体 保 持 相 对 高 且 稳 定 的 性 能。
+这种周期性包含两个周期 ：一个较大的 90°周期和一个
+较小的 15°周期 。较大的周期性波动由图像模拟引起 ，
+具体而言 ，模拟图像的信息在每旋转 90°时会产生一个
+波 动 周 期，这 与 所 提 方 法 无 关。 而 较 小 的 周 期 性 波 动
+是 由 Log -Gabor 滤 波 器 的 方 向 数 量o 引 起 的。 在 实 验
+中 ，o 设 为 12，两 个 相 邻 滤 波 器 之 间 的 角 度 差 为15°。
+当 旋 转 角 度 为i × 7.5°，i = 1，2，3，…，48 时 ，像 素 的 索
+引值与其相邻的两个索引值有类似的概率 ，产生混淆 ，
+导 致 两 个 方 向 索 引 图 的 相 似 性 最 低。 同 时，在 角 度 为
+i × 15°，i = 1，2，3，…，24 时 ，两 个 方 向 索 引 图 是 最 相
+似 的 。 理 论 上 ，o 的 值 越 大 ，受 图 像 旋 转 的 影 响 就
+越小 。
+4.5　运行效率
+表 6 展 示 了 SIFT 、 RIFT 、 HOWP 、 ASS 、
+MatchFormer 、SemLA 、GIFT 和 NRGM 在不同数据集
+上的平均运行时间结果 T（s） 。其中 ，SIFT 采用 C++
+实现，MatchFormer 和 SemLA 使用 Python 实现，其他方
+法 则 基 于MATLAB 实 现。所 有 实 验 均 在 相 同 计 算 机
+配置下进行 ，具体为第 12 代酷睿 i7-12700 H CPU（14 核，
+图 10　不同算法在遥感多模态图像上可视化对比实验结果 （左图为匹配结果 ，右图为融合结果 ）
+Fig. 10　Visualization comparison of different algorithms on remote sensing multimodal images (left image shows matching results , and 
+right image shows fusion results )
+
+=== PDF_PAGE 12 ===
+0628010 -12
+研究论文 第 45 卷 第 6 期/2025  年 3 月/光学学报
+表 3　不同算法在视觉多模态图像上的定量实验结果
+Table 3　Quantitative experimental results of different algorithms on visual multimodal images
+Dataset
+1
+2
+3
+Metrics
+NCM
+Pre
+Rec
+F1
+RMSE
+SR
+NCM
+Pre
+Rec
+F1
+RMSE
+SR
+NCM
+Pre
+Rec
+F1
+RMSE
+SR
+SIFT
+8.15
+73.51
+81.31
+77.08
+2.44
+85
+0
+0
+0
+0
+5.00
+0
+376.25
+93.53
+97.76
+95.15
+1.40
+95
+RIFT
+8.50
+24.48
+26.13
+24.94
+4.80
+25
+25.95
+40.43
+41.89
+40.19
+4.03
+55
+712.20
+85.48
+84.92
+83.46
+2.13
+90
+HOWP
+4.00
+12.78
+16.17
+14.00
+4.74
+10
+6.00
+11.71
+12.35
+11.95
+4.72
+15
+731.65
+89.96
+92.51
+90.89
+2.00
+95
+ASS
+112.30
+64.01
+67.60
+65.71
+2.90
+90
+59.50
+40.25
+40.48
+40.35
+3.69
+55
+1679 .25
+87.09
+90.13
+88.20
+1.89
+90
+MatchFormer
+0.80
+4.67
+6.66
+5.43
+4.88
+10
+3.30
+5.45
+9.71
+6.24
+4.85
+5
+1817 .55
+91.04
+96.85
+93.28
+1.87
+95
+SemLA
+11.05
+7.39
+10.29
+8.58
+4.84
+15
+8.80
+8.56
+10.78
+9.53
+4.87
+10
+261.70
+48.02
+51.07
+49.40
+3.72
+75
+GIFT
+1189 .60
+71.27
+86.59
+76.38
+2.67
+85
+968.55
+68.39
+80.76
+72.56
+2.85
+80
+2719 .10
+95.05
+98.98
+96.48
+1.25
+95
+NRGM
+2686 .40
+95.92
+69.74
+80.66
+1.48
+95
+2188 .00
+96.26
+75.59
+84.37
+1.39
+100
+3889 .40
+91.96
+96.31
+93.47
+1.23
+90
+表 4　不同算法在医学多模态图像上定量实验结果
+Table 4　Quantitative experimental results of different algorithms on medical multimodal images
+Dataset
+1
+2
+3
+Metrics
+NCM
+Pre
+Rec
+F1
+RMSE
+SR
+NCM
+Pre
+Rec
+F1
+RMSE
+SR
+NCM
+Pre
+Rec
+F1
+RMSE
+SR
+SIFT
+9.80
+41.13
+44.77
+42.52
+3.47
+40
+29.10
+22.88
+25.08
+23.51
+4.25
+20
+5.65
+41.16
+44.54
+41.99
+3.57
+35
+RIFT
+100.15
+47.29
+52.46
+49.52
+3.63
+60
+352.10
+45.84
+47.05
+46.40
+3.54
+50
+300.55
+68.64
+74.33
+71.18
+2.83
+80
+HOWP
+38.90
+16.44
+16.95
+16.66
+4.50
+20
+254.85
+42.44
+43.75
+43.07
+3.60
+50
+41.65
+11.93
+11.90
+11.90
+4.59
+15
+ASS
+285.25
+81.84
+87.32
+84.44
+2.21
+95
+302.85
+44.18
+45.15
+44.64
+3.50
+50
+414.30
+89.14
+93.09
+91.03
+1.88
+100
+MatchFormer
+73.85
+19.01
+19.46
+19.23
+4.32
+20
+588.15
+36.51
+41.59
+38.60
+3.77
+50
+41.20
+9.58
+9.49
+9.53
+4.67
+10
+SemLA
+68.50
+15.64
+16.24
+15.93
+4.48
+20
+316.20
+28.87
+38.41
+32.55
+4.12
+45
+74.25
+10.25
+10.59
+10.41
+4.68
+15
+GIFT
+309.50
+27.35
+36.53
+30.57
+4.28
+30
+1498 .00
+47.38
+49.61
+48.21
+3.13
+50
+1802 .85
+87.23
+92.80
+89.78
+1.79
+95
+NRGM
+1987 .05
+96.90
+99.53
+97.57
+0.88
+100
+3664 .80
+98.26
+96.80
+97.49
+1.11
+100
+2242 .00
+99.94
+99.91
+99.92
+0.65
+100
+
+=== PDF_PAGE 13 ===
+0628010 -13
+研究论文 第 45 卷 第 6 期/2025  年 3 月/光学学报
+2.30 GHz ，6 GB 内存） ，操作系统为 Windows 11，运行环
+境为 Python 3.6 和 MATLAB 2021 a。
+在 所 有 方 法 中，SIFT 的 运 行 时 间 最 短。SemLA 、
+MatchFormer 和 HOWP 的 计 算 效 率 同 样 较 高，运 行 时
+间 也 相 近。 但 是，以 上 这 些 方 法 在 具 有 高 度 挑 战 性 的
+多 模 态 图 像 数 据 集 上 表 现 较 差 ，其 中 SIFT 最 差 。
+RIFT 的 运 行 效 率 最 低，原 因 在 于 其 采 用 了 一 种 环 形
+结 构 来 模 拟 图 像 旋 转 以 实 现 旋 转 不 变 性，该 过 程 需 要
+表 5　不同算法在遥感多模态图像上定量实验结果
+Table 5　Quantitative experimental results of different algorithms on remote sensing multimodal images
+Dataset
+1
+2
+3
+Metrics
+NCM
+Pre
+Rec
+F1
+RMSE
+SR
+NCM
+Pre
+Rec
+F1
+RMSE
+SR
+NCM
+Pre
+Rec
+F1
+RMSE
+SR
+SIFT
+20.30
+53.16
+58.27
+55.51
+3.17
+60
+0
+0
+0
+0
+5.00
+0
+0.15
+3.75
+3.75
+3.75
+4.91
+5
+RIFT
+31.25
+30.59
+34.04
+31.99
+4.29
+40
+5.40
+14.36
+16.59
+15.21
+4.87
+10
+22.05
+53.04
+63.67
+56.80
+3.39
+75
+HOWP
+18.75
+15.31
+18.10
+16.51
+4.51
+20
+7.85
+14.62
+15.52
+15.03
+4.58
+25
+0.55
+6.78
+6.78
+6.78
+4.82
+10
+ASS
+195.05
+68.41
+69.50
+68.78
+2.80
+90
+58.20
+52.61
+51.49
+51.89
+3.31
+85
+6.55
+15.04
+17.60
+16.18
+4.46
+20
+MatchFormer
+40.15
+15.22
+18.51
+16.69
+4.48
+20
+0.05
+0.55
+0.83
+0.66
+5.00
+0
+25.20
+16.78
+19.26
+17.83
+4.66
+25
+SemLA
+29.20
+13.00
+16.52
+14.47
+4.58
+25
+9.10
+18.27
+22.74
+20.18
+4.44
+35
+18.95
+23.19
+22.86
+22.98
+4.59
+15
+GIFT
+2163 .15
+85.31
+91.24
+87.34
+1.93
+90
+662.90
+61.15
+78.10
+67.75
+3.11
+90
+41.70
+5.81
+8.27
+6.58
+4.84
+5
+NRGM
+3950 .80
+99.95
+92.41
+95.80
+0.98
+100
+1519 .65
+87.70
+59.64
+70.72
+1.74
+90
+438.85
+89.95
+89.23
+89.57
+1.40
+90
+图 11　不同旋转角度下的算法在 NCM 和 RMSE 上的表现
+Fig. 11　Performance of algorithm on NCM and RMSE under different rotation angles
+
+=== PDF_PAGE 14 ===
+0628010 -14
+研究论文 第 45 卷 第 6 期/2025  年 3 月/光学学报
+通 过 迭 代 进 行 优 化，频 繁 的 特 征 匹 配 带 来 显 著 的 计 算
+开 销。ASS 、GIFT 以 及 所 提 出 的NRGM 计 算 效 率 相
+近 ，尽 管 这 三 种 算 法 的 效 率 低 于HOWP ，但 具 备 更 为
+完 善 的 几 何 不 变 性 处 理 策 略，因 此 取 得 了 更 为 优 异 的
+匹 配 结 果。 与 传 统 的RIFT 相 比，这 三 种 算 法 在 效 率
+和 精 度 方 面 均 展 现 出 一 定 的 优 势。NRGM 采 用 的 旋
+转不变性增强策略以及先特征后模板的匹配策略虽然
+增加了处理时间 ，但其复杂度相较同类算法仍具优势 ，
+若 能 在C++ 环 境 下 对 其 进 行 重 写 和 编 译，运 行 效 率
+将得到显著提升 。
+5　结　　论
+提 出 一 种 新 的 多 模 态 图 像 匹 配 方 法NRGM ，旨 在
+有效处理不同图像模态 、尺度 、旋转等几何变化 。整个
+算 法 基 于 多 尺 度 和 多 方 向 的Log -Gabor 滤 波 响 应，这
+种滤波器使得 NRGM 在面对噪声时具有天然的抗性 。
+首 先，算 法 在 图 像 金 字 塔 的 相 位 一 致 性 图 上 检 测 显 著
+且高重复的特征点 ；其次 ，利用来自不同图像方向的索
+引信息来描述图像的局部结构 ，从而估计主方向 ，使得
+NRGM 能 够 在 处 理 图 像 旋 转 时 保 持 不 变 性；最 后，利
+用 多 尺 度 多 方 向 滤 波 结 果 构 建 模 板 特 征 进 行 匹 配 增
+强，进一步提升匹配效果 。
+在大量不同图像模态的图像数据集上进行的定性
+和 定 量 实 验 表 明 了NRGM 的 有 效 性。 未 来 的 研 究 计
+划 包 括 利 用 卷 积 神 经 网 络 生 成 更 精 确 的 方 向 索 引 图，
+以 优 化 主 方 向 估 计 和 特 征 描 述 符 的 构 建。 此 外，考 虑
+到 Log -Gabor 滤 波 器 的 高 计 算 成 本，将 尝 试 采 用 其 他
+轻量级的滤波器或方法来提取多尺度和多方向的图像
+信息 ，以提高算法的计算效率 。
+参 考 文 献
+[1] Zou X Y , Dou Z Y , Yang J W , et al . Generalized decoding for 
+pixel , image , and language [C] ∥2023  IEEE/CVF Conference 
+on Computer Vision and Pattern Recognition (CVPR ), June 17-
+24, 2023 , Vancouver , BC , Canada . New York : IEEE Press , 
+2023 : 15116 -15127 .
+[2] Vivone G . Multispectral and hyperspectral image fusion in remote 
+sensing : a survey [J]. Information Fusion , 2023 , 89: 405 -417.
+[3] 张 力, 刘 玉 轩, 孙 洋 杰, 等 . 数 字 航 空 摄 影 三 维 重 建 理 论 与 技
+术发展综述 [J]. 测绘学报 , 2022 , 51(7): 1437 -1457 .
+Zhang L , Liu Y X , Sun Y J , et al . A review of developments in 
+the theory and technology of three -dimensional reconstruction in 
+digital aerial photogrammetry [J]. Acta Geodaetica et 
+Cartographica Sinica , 2022 , 51(7): 1437 -1457 .
+[4] 张 莉, 李 彬, 田 联 房, 等 . 基 于 Log -Euclidean 协 方 差 矩 阵 描 述
+符的医学图像配准 [J]. 计算机学报 , 2019 , 42(9): 2087 -2099 .
+Zhang L , Li B , Tian L F , et al . Medical image registration 
+based on log -euclidean covariance matrices descriptor [J]. 
+Chinese Journal of Computers , 2019 , 42(9): 2087 -2099 .
+[5] Xu B, Zhang L , Liu Y X , et al. Robust hierarchical structure from 
+motion for large -scale unstructured image sets [J]. ISPRS Journal 
+of Photogrammetry and Remote Sensing , 2021 , 181: 367 -384.
+[6] Ebadi K , Bernreiter L , Biggie H , et al . Present and future of 
+SLAM in extreme environments : the DARPA SubT challenge
+[J]. IEEE Transactions on Robotics , 2024 , 40: 936 -959.
+[7] Ghamisi P , Rasti B , Yokoya N , et al . Multisource and 
+multitemporal data fusion in remote sensing : a comprehensive 
+review of the state of the art [J]. IEEE Geoscience and Remote 
+Sensing Magazine , 2019 , 7(1): 6-39.
+[8] Jiang X Y , Ma J Y , Xiao G B , et al . A review of multimodal 
+image matching : methods and applications [J]. Information 
+Fusion , 2021 , 73: 22-71.
+[9] Liu Y X , Mo F , Tao P J . Matching multi -source optical satellite 
+imagery exploiting a multi -stage approach [J]. Remote Sensing , 
+2017 , 9(12): 1249 .
+[10] Lowe D G . Distinctive image features from scale -invariant 
+keypoints [J]. International Journal of Computer Vision , 2004 , 60
+(2): 91-110.
+[11] Fan Z L , Liu Y X , Liu Y X , et al . 3MRS : an effective coarse -
+to-fine matching method for multimodal remote sensing imagery
+[J]. Remote Sensing , 2022 , 14(3): 478.
+[12] Zhang Y X , Liu Y X , Zhang H M , et al . Multimodal remote 
+sensing image matching combining learning features and 
+delaunay triangulation [J]. IEEE Transactions on Geoscience and 
+Remote Sensing , 2022 , 60: 5635517 .
+[13] Fan Z L , Wang M , Pi Y D , et al . A robust oriented filter -based 
+matching method for multisource , multitemporal remote sensing 
+images [J]. IEEE Transactions on Geoscience and Remote 
+Sensing , 2023 , 61: 4703316 .
+[14] Aguilera C A , Sappa A D , Toledo R . LGHD : a feature 
+descriptor for matching across non -linear intensity variations [C]∥
+2015  IEEE International Conference on Image Processing 
+(ICIP ), September 27-30, 2015 , Quebec City , QC , Canada . 
+New York : IEEE Press , 2015 : 178 -181.
+[15] Ma W P , Wen Z L , Wu Y , et al . Remote sensing image 
+registration with modified SIFT and enhanced feature matching [J]. 
+IEEE Geoscience and Remote Sensing Letters , 2017 , 14(1): 3-7.
+[16] Xiang Y M , Wang F , You H J . OS -SIFT : a robust SIFT -like 
+algorithm for high -resolution optical -to-SAR image registration 
+in suburban areas [J]. IEEE Transactions on Geoscience and 
+Remote Sensing , 2018 , 56(6): 3078 -3090 .
+[17] Li J Y , Hu Q W , Ai M Y . RIFT : multi -modal image matching 
+based on radiation -variation insensitive feature transform [J]. 
+IEEE Transactions on Image Processing , 2019 , 29: 3296 -3310 .
+[18] Li J Y , Xu W Y , Shi P C , et al . LNIFT : locally normalized 
+image for rotation invariant multimodal feature matching [J]. 
+IEEE Transactions on Geoscience and Remote Sensing , 2022 , 
+60: 5621314 .
+[19] Xiong X , Jin G W , Xu Q , et al . Robust registration algorithm 
+for optical and SAR images based on adjacent self -similarity 
+表 6　不同算法的平均运行时间
+Table 6　Average running time of different algorithms unit :s
+Aera
+Vision
+Medical
+Remote sensing
+SIFT
+（C++）
+0.94
+1.55
+0.83
+RIFT
+（MATLAB ）
+72.71
+43.52
+36.33
+HOWP
+（MATLAB ）
+8.62
+6.56
+7.26
+ASS
+（MATLAB ）
+21.40
+19.81
+8.73
+MatchFormer
+（Python）
+7.26
+5.15
+6.87
+SemLA
+（Python）
+3.77
+2.92
+3.53
+GIFT
+（MATLAB ）
+28.44
+22.13
+16.24
+NRGM
+（MATLAB ）
+23.23
+21.68
+13.51
+
+=== PDF_PAGE 15 ===
+0628010 -15
+研究论文 第 45 卷 第 6 期/2025  年 3 月/光学学报
+feature [J]. IEEE Transactions on Geoscience and Remote 
+Sensing , 2022 , 60: 5233117 .
+[20] Hou Z L , Liu Y X , Zhang L . POS -GIFT : a geometric and 
+intensity -invariant feature transformation for multimodal images
+[J]. Information Fusion , 2024 , 102: 102027 .
+[21] 杨 冰 超, 王 鹏, 李 晓 艳, 等 . 基 于 模 态 转 换 结 合 鲁 棒 特 征 的 红
+外 图 像 和 可 见 光 图 像 配 准[J]. 激 光 与 光 电 子 学 进 展, 2022 , 59
+(4): 0410013 .
+Yang B C , Wang P , Li X Y , et al . Infrared and visible light 
+image registration based on modal conversion and robust features
+[J]. Laser & Optoelectronics Progress , 2022 , 59(4): 0410013 .
+[22] Zhao J W , Yang D F , Li Y F , et al . Intelligent matching 
+method for heterogeneous remote sensing images based on style 
+transfer [J]. IEEE Journal of Selected Topics in Applied Earth 
+Observations and Remote Sensing , 2022 , 15: 6723 -6731 .
+[23] 朱 柏, 叶 沅 鑫. 多 模 态 遥 感 图 像 配 准 方 法 研 究 综 述[J]. 中 国 图
+象图形学报 , 2024 , 29(8): 2137 -2161 .
+Zhu B , Ye Y X . Multimodal remote sensing image registration : 
+a survey [J]. Journal of Image and Graphics , 2024 , 29(8): 2137 -
+2161 .
+[24] Liu Y , Qi H , Peng S Y . Optical and SAR images matching 
+based on phase structure convolutional features [J]. IEEE 
+Geoscience and Remote Sensing Letters , 2023 , 20: 6007805 .
+[25] Cao S Y , Yu B N , Luo L , et al . PCNet : a structure similarity 
+enhancement method for multispectral and multimodal image 
+registration [J]. Information Fusion , 2023 , 94: 200 -214.
+[26] Hong Y M , Leng C C , Zhang X Y , et al . Max -index based 
+local self -similarity descriptor for robust multi -modal image 
+registration [J]. IEEE Geoscience and Remote Sensing Letters , 
+2022 , 19: 4505805 .
+[27] Zhu B , Yang C , Dai J K , et al. R2FD2: fast and robust matching of 
+multimodal remote sensing images via repeatable feature detector 
+and rotation -invariant feature descriptor [J]. IEEE Transactions on 
+Geoscience and Remote Sensing , 2023 , 61: 5606115 .
+[28] Quan D , Wei H Y , Wang S , et al . A novel coarse -to-fine deep 
+learning registration framework for multimodal remote sensing 
+images [J]. IEEE Transactions on Geoscience and Remote 
+Sensing , 2023 , 61: 5108316 .
+[29] 徐晶 , 包利东 , 方明 , 等 . 基于 Gabor 表示特征描述符的红外可
+见 光 图 像 配 准 [J]. 激 光 与 光 电 子 学 进 展 , 2024 , 61(14): 
+1437007 .
+Xu J , Bao L D , Fang M , et al . Infrared visible image 
+registration based on Gabor representation feature descriptor [J]. 
+Laser & Optoelectronics Progress , 2024 , 61(14): 1437007 .
+[30] Ye Y X , Zhu B , Tang T F , et al . A robust multimodal remote 
+sensing image registration method and system using steerable 
+filters with first - and second -order gradients [J]. ISPRS Journal of 
+Photogrammetry and Remote Sensing , 2022 , 188: 331 -350.
+[31] Li L Z , Han L , Ding M T , et al . Multimodal image fusion 
+framework for end -to-end remote sensing image registration [J]. 
+IEEE Transactions on Geoscience and Remote Sensing , 2023 , 
+61: 5607214 .
+[32] Kovesi P . Phase congruency detects corners and edges [C] ∥
+VIIth Digital Image Computing : Techniques and Applications , 
+December 10-12, 2003 , Sydney . [S.l.: s.n.], 2003 .
+[33] Rosten E , Porter R , Drummond T . Faster and better : a 
+machine learning approach to corner detection [J]. IEEE 
+Transactions on Pattern Analysis and Machine Intelligence , 
+2010 , 32(1): 105 -119.
+[34] 高 华 . Log -Gabor 梯 度 方 向 下 的 角 点 检 测[J]. 中 国 图 象 图 形 学
+报, 2017 , 22(6): 797 -806.
+Gao H . Corner detection using the Log -Gabor gradient direction
+[J]. Journal of Image and Graphics , 2017 , 22(6): 797 -806.
+[35] Wu Y , Ma W P , Gong M G , et al . A novel point -matching 
+algorithm based on fast sample consensus for image registration
+[J]. IEEE Geoscience and Remote Sensing Letters , 2015 , 12(1): 
+43-47.
+[36] Zhang Y J , Yao Y X , Wan Y , et al . Histogram of the 
+orientation of the weighted phase descriptor for multi -modal 
+remote sensing image matching [J]. ISPRS Journal of 
+Photogrammetry and Remote Sensing , 2023 , 196: 1-15.
+[37] Xie H S , Zhang Y K , Qiu J H , et al . Semantics lead all : 
+towards unified image registration and fusion from a semantic 
+perspective [J]. Information Fusion , 2023 , 98: 101835 .
+[38] Wang Q , Zhang J M , Yang K L , et al . MatchFormer : 
+interleaving attention in transformers for feature matching [M] ∥
+Wang L , Gall J , Chin T J , et al .Computer vision -ACCV 2022 . 
+Lecture notes in computer science . Cham : Springer Nature 
+Switzerland , 2023 , 13843 : 256 -273.
+[39] Fan Z L , Pi Y D , Wang M , et al . GLS – MIFT : a modality 
+invariant feature transform with global -to-local searching [J]. 
+Information Fusion , 2024 , 105: 102252 .
+Nonlinear Radiation and Geometric Invariant Matching for Multimodal Imagery
+Liu Yuxuan
+1
+, Zhang Li
+1
+, Fan Zhongli
+2*
+, Sun Yushan
+1
+, Ai Haibin
+1
+, Ban Xueqing
+1
+1
+Chinese Academy of Surveying & Mapping , Beijing 100036 , China ; 
+2
+State Key Laboratory of Information Engineering in Surveying , Mapping and Remote Sensing , Wuhan 
+University , Wuhan 430079 , Hubei , China
+Abstract 
+Objective 　Image data has been widely used in various applications due to advancements in data acquisition platforms such 
+as satellites , drones , and mobile measurement vehicles , as well as sensors like multispectral and hyperspectral cameras , 
+synthetic aperture radar (SAR ), and lidar scanners . These advancements enable high -resolution data collection across 
+different wavelengths and perspectives , enhancing applications in remote sensing , real -time localization , and medical 
+diagnostics . However , integrating multimodal image data from various sensors presents challenges due to nonlinear 
+radiation distortion (NRD ) and geometric variations like rotation and scale differences . Traditional multimodal image 
+matching methods often struggle with these complexities . Conventional approaches either convert images to a common 
+
+=== PDF_PAGE 16 ===
+0628010 -16
+研究论文 第 45 卷 第 6 期/2025  年 3 月/光学学报
+modality or enhance feature robustness against modality differences . While recent advances in deep learning have improved 
+matching performance , practical applications still face challenges due to the lack of comprehensive datasets , difficulties 
+with complex data , and high computational demands . To address these issues , we propose a nonlinear radiation and 
+geometric invariant matching (NRGM ) method . NRGM effectively handles NRD , scale variation , and rotation by using 
+multi -directional and multi -scale filtering to build direction index maps with stable local structures . A robust principal 
+direction estimation method achieves rotation invariance , and a novel matching framework combining geometric invariant 
+and template matching improves accuracy . This approach significantly enhances multimodal image matching by overcoming 
+both geometric and radiometric distortion .
+Methods 　 NRGM adopts a two -stage framework involving feature matching and template matching . In the feature 
+matching stage , images are transformed into the frequency domain using Log -Gabor filters , and key features are detected 
+via phase congruency and weighted moment maps to improve robustness against illumination variation . The primary 
+direction estimation technique involves extracting a directional index map from Log -Gabor filter responses , summing the 
+index values within a local region , and analyzing the histogram to determine the feature ’s primary orientation . Feature 
+correspondences are established using nearest -neighbor distance , with outlier removal refined by the fast sample consensus 
+algorithm . In the template matching stage , high -dimensional template features are constructed from Log -Gabor responses , 
+and a three -dimensional phase correlation strategy is employed for precise matching , effectively aligning features despite 
+variations in scale and rotation . NRGM integrates robust feature detection , accurate direction estimation , and precise 
+template matching , delivering high -quality results even in the presence of severe NRD and geometric distortions .
+Results and Discussions 　 A comprehensive evaluation of NRGM is presented , including parameter settings , qualitative 
+and quantitative comparisons with advanced algorithms such as SIFT , RIFT , ASS , GIFT , HOWP , MatchFormer , and 
+SemLA , as well as robustness testing . A diverse set of multimodal images —such as visible light , infrared , and depth 
+images —is used to assess NRGM ’s performance . Sensitivity analysis identifies optimal parameters for NRGM : scale s=4, 
+orientations o=12, and window size l=84, resulting in the highest number of correct matches (NCM ) and the lowest root 
+mean square error (RMSE ) (Table 2). Figs . 8 ‒ 10 demonstrate that SIFT performs well for RGB -NIR pairs but struggles 
+with modality differences , while RIFT , despite its robustness to NRD , fails to handle scale variations effectively . 
+HOWP , MatchFormer , and SemLA show instability with multimodal images . While ASS and GIFT perform reliably , 
+they exhibit limitations with Optical -SAR and Optical -IR pairs . In contrast , NRGM excels by correctly matching all 9 
+image pairs . Its advanced feature detection , descriptor , and matching enhancement strategies ensure high precision and 
+robustness , making it highly effective across diverse modalities and conditions . Tables 3 ‒ 5 provide detailed quantitative 
+results for different algorithms across visual , medical , and remote sensing datasets . SIFT performs well with RGB -NIR 
+pairs but struggles with larger modality differences . HOWP , MatchFormer , and SemLA show some robustness but 
+deliver inconsistent results across modalities . RIFT , ASS , and GIFT demonstrate higher reliability , with GIFT 
+particularly excelling with Optical -SAR and Optical -IR pairs . NRGM , however , outperforms all algorithms , successfully 
+matching all image pairs and achieving superior metrics in NCM , Precision , Recall , and RMSE . NRGM's advanced 
+feature detection , feature description , and enhancement strategies make it highly effective and precise in addressing diverse 
+multimodal challenges . In addition , NRGM demonstrates stable performance with periodic accuracy fluctuations during 
+image rotations . Table 6 shows average run times for SIFT , RIFT , HOWP , ASS , MatchFormer , SemLA , GIFT , and 
+NRGM on various datasets . While SIFT , implemented in C++ , remains the fastest , SemLA , MatchFormer , and 
+HOWP perform efficiently but struggle on challenging multimodal datasets . RIFT has the lowest efficiency due to its 
+iterative optimization . ASS , GIFT , and NRGM share similar efficiency levels , outperforming RIFT , with NRGM 
+showing advantages in both accuracy and efficiency .
+Conclusions 　 A novel method , NRGM , is introduced for multimodal image matching , designed to effectively handle 
+various image modalities , scales , rotations , and other geometric transformations . NRGM leverages multi -scale and multi -
+directional Log -Gabor filter responses , providing the algorithm with inherent robustness against noise . The method begins 
+by detecting prominent and highly repetitive feature points on the phase congruency maps . It then utilizes directional index 
+information to describe local image structures and estimate the principal orientation , ensuring that NRGM remains 
+invariant to image rotations . Finally , NRGM enhances matching performance by constructing template features from multi -
+scale and multi -directional filter results . Extensive qualitative and quantitative experiments across diverse image modalities 
+validate NRGM's effectiveness . Future research will focus on using convolutional neural networks to create more precise 
+orientation index maps , improving the estimation of principal orientation and feature descriptor construction . To mitigate 
+the high computational cost associated with Log -Gabor filters , alternative lightweight filters or methods will be explored to 
+extract multi -scale and multi -directional image information , aiming to improve the algorithm's computational efficiency .
+Key words  multimodal images ; image matching ; nonlinear radiation distortion ; geometric invariance

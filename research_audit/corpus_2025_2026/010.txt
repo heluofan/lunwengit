@@ -1,0 +1,935 @@
+=== PDF_PAGE 1 ===
+http://www.zpwz.net
+2025 年 10 月
+中国普通外科杂志 Vol.34    No.10第 34 卷    第 10 期
+China Journal of General Surgery Oct.    2025
+从病理图像到分子预测：多模态人工智能驱动的结直肠癌
+MSI检测新范式
+李若涵1，秦雯2
+（1.广西医科大学第一附属医院 病理科，广西 南宁 530021；2. 广西医科大学附属武鸣医院 病理科，广西 南宁 530199）
+摘     要             结直肠癌是全球发病率和病死率均居前列的消化系统恶性肿瘤 。微卫星不稳定性 （MSI） 是结直肠癌
+的重要分子标志物 ，对患者预后评估及免疫治疗决策具有关键指导意义 。传统检测方法 （如免疫组
+化、PCR、二代测序 ） 虽已标准化 ，但仍受限于成本高 、操作复杂和结果不一致 。近年来 ，人工智能
+（AI） 在结直肠癌 MSI 检测中展现出显著潜力 ，通过整合病理图像 、基因组学及影像学等多模态数据 ，
+利用深度学习实现 MSI 的精准预测 ，推动癌症诊疗从经验模式向数据驱动范式转变 。本文综述了 AI 结
+合多模态医学数据构建结直肠癌 MSI 检测模型的最新进展 ，比较不同技术路径的性能特点与临床转化
+瓶颈，并展望多模态融合 、模型泛化及可解释性优化等未来方向 ，为精准医疗提供新思路 。
+关键 词             结直肠肿瘤 ；微卫星不稳定性 ；人工智能 ；深度学习 ；综述
+中图分类 号： R735.3
+From histopathological imaging to molecular prediction: 
+a multimodal AI-driven paradigm for MSI detection 
+in colorectal cancer
+LI Ruohan1, QIN Wen2
+(1. Department of Pathology, the First Affiliated Hospital of Guangxi Medical University, Nanning 530021, China; 
+2. Department of Pathology, Wuming Hospital Affiliated to Guangxi Medical University, Nanning 530199, China)
+Abstract             Colorectal cancer (CRC) ranks among the leading causes of cancer incidence and mortality worldwide . 
+Microsatellite instability (MSI) is a key molecular biomarker with important implications for prognosis 
+and immunotherapy selection. Although conventional detection methods such as immunohistochemistry , 
+PCR, and next-generation sequencing have been standardized , they remain limited by high costs , 
+technical complexity, and inconsistent results. In recent years, artificial intelligence (AI) has shown great 
+potential in MSI detection by integrating multimodal data that includes histopathological images , 
+genomic information , and medical imaging to achieve accurate prediction and enable a data-driven 
+paradigm in oncology. This review summarizes the latest advances in AI-based multimodal modeling for 
+· 文献综述 ·
+  
+基金项目：  广西壮族自治区自然科学基金资助项目 （2023GXNSFAA026242） 。
+收稿日期：  2025-06-20； 修订日期：  2025-09-19。
+作者简介：  李若涵，广西医科大学第一附属医院硕士研究生，主要从事消化系统肿瘤方面的研究。
+通信作者：秦雯，Email:fenglingcao1980@163.com
+doi:10.7659/j.issn. 1005-6947.250349
+http://dx.doi.org/ 10.7659/j.issn. 1005-6947.250349
+China Journal of General Surgery, 2025, 34(10):2232-2242 .
+2232
+
+=== PDF_PAGE 2 ===
+第 10 期 李若涵，等：从病理图像到分子预测：多模态人工智能驱动的结直肠癌MSI 检测新范式
+http://www.zpwz.net
+MSI detection in CRC , compares different methodological approaches and their translational challenges , 
+and discusses future directions such as multimodal integration , model generalizability , and 
+interpretability enhancement, providing new insights for precision medicine.
+Key words           Colorectal Neoplasms; Microsatellite Instability; Artificial Intelligence; Deep Learning; Review
+CLC number: R735.3
+结 直 肠 癌 是 目 前 世 界 上 最 常 见 的 恶 性 肿 瘤 之
+一 ， 其 发 病 率 在 全 球 癌 症 中 居 第 三 位， 是 癌 症 相
+关 死 亡 的 第 二 大 原 因。预 计 到2040 年 结 直 肠 癌 新
+发 病 例 将 增 至320 万 ， 死 亡 人 数 将 增 至160 万[1] 。
+微 卫 星 不 稳 定 性（microsatellite instability ， MSI） 是
+一 种 因DNA 错 配 修 复（mismatch repair ， MMR） 功
+能 缺 失 引 发 的 基 因 组 不 稳 定 性 突 变 表 型， 在 所 有
+结 直 肠 癌 中 约 有15% 的 检 出 率[2] 。研 究 表 明，MSI
+阳 性 肿 瘤 虽 然 可 能 对 传 统5- 氟 尿 嘧 啶（5-
+fluorouracil，5-FU） 为基础的化疗方案产生耐药性 ，
+但 在 特 定 临 床 分 期（如 局 部 进 展 期） 可 能 表 现 出
+良 好 的 预 后[3-4] 。 微 卫 星 高 度 不 稳 定 性
+（microsatellite instability-high，MSI-H） 结直肠癌的临
+床 病 理 学 特 征 及 生 物 学 行 为 与 微 卫 星 低 度 不 稳 定
+性 （microsatellite instability -low， MSI-L） 、微 卫 星 稳
+定 性（microsatellite stable ， MSS） 结 直 肠 癌 存 在 明
+显 差 异[5-6] 。 MSI-H 表 型 作 为 重 要 分 子 标 志 物， 与
+免 疫 检 查 点 抑 制 剂（如 抗PD-1 单 抗） 的 疗 效 显 著
+相 关[7-8] 。 在 结 直 肠 癌 的 诊 断 和 临 床 治 疗 中， MSI
+是评估患者预后及选择治疗方案的关键分 子标志 。
+目前 ，人工智能 （artificial intelligence ，AI） 在 医 学
+领 域 中 的 应 用 正 迅 速 扩 大， 已 大 量 应 用 于 疾 病 诊
+断 、 预 后 评 估、 患 者 管 理 等 多 个 领 域。 随 着 数 字
+病 理 学 的 发 展 和 计 算 机 视 觉 算 法 的 不 断 进 步， 肿
+瘤病理学已成为 AI 的重要研究领域 ：在前列腺癌
+活检分级的研究中 ，接受 AI 辅助的病理学家的表
+现优于未受辅助的病理学家 ，也优于独立的 AI 系
+统[9] ；在肝细胞癌研究中 ，AI 通过分析组织学切片
+特 征， 在 术 前 无 创 预 测 微 血 管 浸 润、 组 织 学 分 级
+等 关 键 病 理 学 指 标 方 面 展 现 出 优 越 性 能， 为 临 床
+决策提供了重要支持 [10] ；在宫颈癌细胞学筛查中 ，
+AI 的 运 用 有 效 精 简 了 筛 选 流 程，增 强 了 对 高 风 险
+病 例 的 识 别 能 力[11] ； AI 在 结 直 肠 癌 病 理 诊 断 中 的
+运 用 则 更 为 广 泛 和 成 熟， 例 如 它 为 提 高 腺 瘤 检 出
+率 、 切 除 更 多 的 癌 前 息 肉 提 供 了 有 效 的 帮 助， 再
+如其深度学习模型在 MSI 预测中的表现在某些情况
+下优于传统的病理检测方法 [12-13] 。本综述旨在总结
+探 讨AI 在 结 直 肠 癌MSI 检 测 中 模 型 构 建 的 研 究 进
+展，分析其优势与局限 。
+1     结直肠癌 MSI概述、临床病理特点及其检
+测方法 
+1.1 结直肠癌MSI概述　
+微 卫 星 是 分 布 在 人 类 基 因 组 编 码 区 和 非 编 码
+区的 1~4 个碱基对的短串联重复 DNA 序列 [14] 。由于
+特 殊 的 重 复 结 构， 微 卫 星 易 出 现 复 制 错 误， 且 通
+常由 MMR 系统修复 。MMR 是一个高度保守的细胞
+过程 ，其核心功能依赖于 MutS 和 MutL 蛋白复合物
+的 协 同 作 用。 其 中， MutS 复 合 物 由MSH2 与 MSH6
+（识 别 单 碱 基 错 配） 或 MSH3 （识 别 插 入/缺 失 错
+配） 组成 ；而 MutL 复合物则以 MLH1 与 PMS2 的异
+源 二 聚 体 为 主， 负 责 招 募 下 游 修 复 蛋 白（如
+EXO1） 完 成 错 配 切 除 及DNA 重 新 合 成[15-16] 。MMR
+系统损伤会导致微卫星的复制错误无法有效修正 ，
+细 胞 在 分 裂 期 间 不能 调 整 微 卫 星 序 列 长 度， 即
+MSI[17]。 在 医 学 分 型 中， 通 常 将 微 卫 星 状 态 分 为
+MSI-H、MSI-L 和 MSS[18]。
+1.2 结直肠癌MSI的临床病理特点　
+大 约12%~15% 的 结 直 肠 癌 具 有 以MSI 为 特 征
+的 DNA 错 配 修 复 缺 陷。在 病 理 学 上，肿 瘤 腺 腔 中
+无 坏 死 细 胞 的 局 灶 性 黏 液 性 肿 瘤、 出 芽 边 缘 和 癌
+细 胞 中 存 在 黏 液 分 化 等 特 征 均 与MSI 相 关[19-20] 。
+MSI 的结直肠癌更为显著的病理特征是肿瘤伴随大
+量淋巴细胞浸润 ，部分肿瘤出现类 Crohn 反应 [21] 。
+早 期MSI 结 直 肠 癌 的 临 床 发 展 较 为 缓 慢， 相
+较于 MSS 结直肠癌 ，其预后更为乐观 。Roth 等[22] 认
+为Ⅱ、Ⅲ期 MSI 结直肠癌患者在接受根治性手术治
+疗 后 的 预 后 显 著 好 于MSS 结 直 肠 癌 患 者。
+Guastadisegni 等[23] 发 现MSI 结 直 肠 癌 患 者 的 总 生 存
+期 和 无 病 生 存 期 均 优 于MSS 结 直 肠 癌 患 者。 该 机
+制 与 以 下 因 素 有 关： ⑴ MSI 免 疫 微 环 境 更 活 跃：
+2233
+
+=== PDF_PAGE 3 ===
+中国普通外科杂志 第 34 卷 
+http://www.zpwz.net
+MSI-H 肿瘤因高频突变产生更多新抗原 ，促进免疫
+细 胞 浸 润， 可 增 强 对 免 疫 检 查 点 抑 制 剂（如 PD-1
+抗 体） 的 敏 感 性； ⑵ 化 疗 敏 感 性 差 异： Ⅱ/Ⅲ 期
+MSI-H 患 者 对 传 统 化 疗（如 5-FU） 的 响 应 率 较 低，
+但其自身预后较好 ，可能无需强化辅助化疗 [24] 。
+在治疗方面 ，MSI 状态已经成为指导结直肠癌
+治疗策略选择的关键因素 ，MSI 结直肠癌对以 5-FU
+化 疗 为 基 础 的 化 疗 表 现 出 耐 药 性， 因 此 不 建 议 对
+Ⅱ期 MSI 结直肠癌进行辅助化疗 [25] 。在 MSI 环境下 ，
+突 变 产 生 的 新 肽 序 列（即 新 抗 原） 可 以 通 过 肿 瘤
+细 胞 的 人 类 白 细 胞 抗 原（human leukocyte antigen ，
+HLA） 分子呈递给细胞毒性 T 细胞 ，从而为肿瘤免
+疫反应创造更多机会 [26] 。在 MSI 且 T 细胞频繁浸润
+的 微 环 境 中， 细 胞 表 面 抑 制 性 检 查 点 分 子 的 高 表
+达 会 削 弱 免 疫 反 应， 这 些 分 子 包 括 程 序 性 死 亡 受
+体 1 （programmed cell death protein 1，PD-1） 及其配
+体 PD-L1， 以 及 细 胞 毒 性T 淋 巴 细 胞 相 关 抗 原4
+（cytotoxic T-lymphocyte-associated antigen 4，CTLA-4） ；
+因此 ，通过阻断 PD-1/PD-L1 和 CD 80/CTLA-4 相互作
+用可增加 T 细胞的增殖和活化 [27] 。帕博利珠单抗是
+一 种 抗PD-1 单 克 隆 抗 体，在 实 验 中 被 证 明 可 以 作
+为一线治疗药物并显著延长 MSI-H 型结直肠癌患者
+的无进展生存期 ，同时显著降低 3 级以上治疗相关
+不良事件发生率 [28] 。因此 ，检测 MSI 状态可以预估
+免 疫 检 查 点 抑 制 剂 对 临 床 患 者 的 使 用 价 值， 为 患
+者提供更合理的治疗方案 [29-30] 。结直肠癌 MSI 的临
+床病理特点如 图 1 所示 。MSI 状态不仅是免疫治疗
+疗 效 的 预 测 标 志 物， 还 直 接 影 响 治 疗 策 略 分 层：
+MSI-H/dMMR 型 患 者 因 其 高 肿 瘤 突 变 负 荷（tumor 
+mutation burden ， TMB） 和 免 疫 原 性 微 环 境， 被 推
+荐优先接受 PD-1 抑制剂单药或联合方案 ，而 MSS 型
+患者则需探索联合靶向治疗或化疗的增效策略 [31] 。
+1.3 结直肠癌MSI检测的传统方法及其优缺点　
+目前检测 MSI 主要采用以下三种方法 。第一种
+是 免 疫 组 织 化 学 法（immunohistochemistry， IHC） ，
+通过 IHC 检测 MLH1、PMS2、MSH2 和 MSH6 的蛋白
+表 达 缺 失 情 况， 判 断 错 配 修 复 功 能 是 否 完 整[32] 。
+IHC 的优点是方便快捷 ，可以在常规石蜡切片上直
+接 操 作， 且 可 以 直 接 观 察 不 同MMR 蛋 白 的 表 达，
+判 断 是 否 缺 失 和 缺 失 类 型， 但 IHC 不 能 检 测出 基
+因 沉 默 导 致 的MMR 功 能 缺 失， 且 结 果 由 于 微 卫
+星序列多态性可能导致假阳性或假阴性 [33]。第二种
+是 PCR， 通 过 扩 增 标 准 化 微 卫 星 位 点 并 比 较 肿 瘤
+与 正 常 组 织 之 间DNA 扩 增 片 段 长 度 差 异，判 断 微
+卫星的稳定性 [34] 。与 IHC 相比 ，PCR 的检验流程更
+复 杂， 对 实 验 仪 器 和 实 验 样 本 的 要 求 也 更 高， 但
+也具有较高的准确率 [35-36] 。第三种是二代测序技术
+（next-generation sequencing ， NGS） ，基 于 全 外 显 子
+组或靶向 Panel 的测序技术 ，可同时分析数百至数
+千个微卫星位点 ，并通过生物信息学算法量化 MSI
+状 态。 它 基 于 高 通 量 检 测 和 标 准 化 分 析， 可 有 效
+避 免 判 读 误 差， 尤 其 在 组 织 样 本 不 足 和 样 本 肿 瘤
+纯 度 低 的 情 况 下 表 现 优 异[37] ， 但 成 本 较 高、 数 据
+分析复杂 [38-39] 。临床上 ，仅使用单一方法检测可能
+会 导 致 结 果 误 差， 而 同 时 使 用 多 种 方 法 又 会 大 大
+增加成本 [40] 。此外 ，由于免疫治疗只对 MSI-H 结直
+肠 癌 患 者 有 效， 且 是 一 种 相 对 昂 贵 的 治 疗 方 案，
+因此精确识别相应患者对诊断和治疗非常重要 [41] 。
+尽管传统 MSI 检测方法已经建立标准化流程 ，但其
+对 组 织 样 本 和 数 据 的 依 赖 性、 高 昂 成 本 和 技 术 复
+杂 性 仍 然 限 制 了 其 在 临 床 上 的 普 及 和 动 态 检 测 能
+力 。 因 此， 寻 找 一 种 性 价 比 更 高、 更 可 靠 的 结 直
+肠癌 MSI 检测方法非常必要 。
+2     AI模型在结直肠癌MSI检测中的应用 
+AI 作 为 一 种 新 兴 的 计 算 机 科 学 技 术，通 过 分
+析 大 量 数 据 来 识 别 数 据 模 式 和 趋 势， 构 建 模 型 进
+而 可 以 完 成 复 杂 的 任 务。 AI 在 结 直 肠 癌MSI 检 测
+图 1　结直肠癌 MSI的临床病理特点
+Figure 1　Clinicopathological characteristics of MSI in 
+colorectal cancer
+2234
+
+=== PDF_PAGE 4 ===
+第 10 期 李若涵，等：从病理图像到分子预测：多模态人工智能驱动的结直肠癌MSI 检测新范式
+http://www.zpwz.net
+中 的 起 步 较 晚， 但 近 年 来 发 展 迅 速， 为 评 估 结 直
+肠癌的 MSI 状态提供了新的途径 [42] 。机器学习和深
+度 学 习 是AI 在 医 疗 领 域 广 泛 使 用 的 两 种 方 法[43] 。
+机器学习是 AI 的核心技术之一 ，通过开发算法使
+计 算 机 可 以 从 大 量 医 学 数 据 中 进 行 学 习， 再 训 练
+数 据 集 建 立 数 据 模 型 从 而 使 计 算 机 能 够 做 出 预 测
+或 决 策， 进 而 辅 助 医 生 完 成 诊 断、 治 疗 方 案 制 定
+和 药 物 研 发 等 任 务[44] ， 例 如 在 有 关 研 究 中， 研 究
+人员通过使用机器学习对 TCGA-COAD 和 GSE39582
+数据集进行筛选验证 ，确定了 EIF5A 基因为 MSI-H
+的特征基因 [45] 。
+2.1 AI 结合医学影像建模在结直肠 MSI 检测中的
+应用
+计 算 机 技 术 发 掘 医 学 成 像 信 息 并 将 其 转 化 为
+定 量 数 据， 机 器 学 习 算 法 可 根 据 这 些 数 据 构 建 预
+测模型 ，这种 AI 结合医学影像的技术模式被称为
+放 射 组 学[46] 。 近 年 来， 已 有 不 少 学 者 使 用 放 射 组
+学方法研究结直肠癌 MSI 的状态 。其原理是 ：CT、
+MRI 或 PET/CT 等 医 学 影 像 中 的 高 通 量 定 量 特 征
+（如 纹 理、 形 状、 强 度 等） 可 能 反 映 肿 瘤 的 异 质
+性、血管生成等生物学特性 ，与 MSI 相关的微环境
+变 化 存 在 潜 在 关 联， 因 此 可 通 过 放 射 组 学 技 术 提
+取 肿 瘤 的 定 量 特 征， 并 结 合 机 器 学 习 算 法 构 建 预
+测模型 [47] 。在放射组学研究中 ，数据选用多聚焦于
+未 经 抗 肿 瘤 治 疗 的 结 直 肠 癌 患 者； 作 为 关 键 环 节
+的影像采集则多选择门静脉期 CT 或 T2 加权 MRI 序
+列 ， 肿 瘤 图 像 边 界 划 定 分 割 以 手 动 为 主， 仅 少 数
+采 用 半 自 动 方 法[48-51] 。 数 据 特 征 提 取 常 使 用
+Pyradiomics 等 标 准 化 软 件， 提 取 特 征 包 含 形 态 学、
+纹 理 及 小 波 变 换 等 多 维 度 信 息， 使 用 逻 辑 回 归 和
+随 机 森 林 作 为 分 类 器， 在 模 型 构 建 中 将 输 入 数 据
+映射到相应类别的模型或算法中 [52-54] 。在评估 MSI
+神 经 网 络 模 型 的 性 能 时， 混 淆 矩 阵 和 受 试 者 工 作
+特 征 曲 线（receiver operating characteristic curve ，
+ROC） 是常用的评价工具 ，通常使用 pROC 软件包
+绘 制ROC 曲 线 并 计 算 曲 线 下 面 积（area under the 
+curve， AUC） ，AUC 的 取 值 范 围 为0~1， 其 值 越 接
+近 1， 表 明 模 型 的 判 别 性 能 越 佳， 预 测 结 果 越 准
+确[53] 。在 四 项 使 用CT 和 MRI 数 据 含 独 立 外 部 验 证
+队列的研究 [51,54-56] 中，其 AUC 中位数为 0.83 （范围
+0.78~0.96） ，敏 感 度 及 特 异 度 中 位 数 分 别 为0.76 和
+0.87，显示出较高的鉴别能力 。相较于 CT 和 MRI，
+PET/CT 通 过 整 合 功 能 代 谢 信 息， 如 标 准 摄 取 值
+（standard uptake value ， SUV） 与 解 剖 影 像， 可 更 敏
+感地反映肿瘤微环境异质性 。例如 Kim 等[57] 构建的
+模型评分在外部测试集中 AUC 达 0.867，提示功能
+影 像 特 征 有 可 能 更 精 准 地 捕 捉MSI 相 关 的 分 子 表
+型 ， 基 于PET/CT 的 放 射 组 学 模 型 在MSI 预 测 中 具
+有 独 特 的 优 势。总 体 来 看，AI 结 合 医 学 影 像 的 研
+究 不 断 拓 展MSI 检 测 的 边 界， 其 主 要 应 用 方 向 如
+图 2 所示 。
+2.2 AI 结合基因组学数据 、病理图像建模在结直肠
+MSI检测中的应用　
+深 度 学 习 是 机 器 学 习 的 一 个 特 定 子 领 域， 可
+以通过采用多层人工神经网络直接处理原始数据 、
+学 习 数 据 的 高 级 特 征， 具 备 更 强 的 学 习 能 力 和 适
+应性 [58-59] 。在肿瘤智能医学领域的深度学习中 ，卷
+积神经网络作为计算机视觉应用领域的核心方法 ，
+可处理多通道数组形式的数据 （例如包括红 、绿、
+蓝 通 道 的RGB 彩 色 图 像） [60] 。 相 比 于 机 器 学 习，
+深 度 学 习 模 型 在 处 理 多 维 度 数 据 时 表 现 出 更 强 的
+能 力， 能 够 有 效 提 取 复 杂 的 内 在 关 系， 在 图 像 识
+别 、 基 因 表 达 分 析 以 及 疾 病 预 后 的 特 定 任 务 中 展
+现出了显著优势 [61-62] 。
+AI 结 合 基 因 组 学 数 据 和 病 理 图 像 建 模 预 测 结
+直肠癌 MSI 的原理 ：通过多模态数据融合与深度学
+习 技 术， 从 分 子 和 形 态 学 层 面（如 细 胞 核 形 态、
+图2　AI检测模型在结直肠癌MSI中的应用
+Figure 2　Applications of AI models in detecting MSI in 
+colorectal cancer
+2235
+
+=== PDF_PAGE 5 ===
+中国普通外科杂志 第 34 卷 
+http://www.zpwz.net
+组 织 结 构、 淋 巴 细 胞 浸 润、 黏 液 分 泌 变 化 等） 挖
+掘 MSI 相关的特征模式 。
+癌 症 基 因 组 学 图 谱（The Cancer Genome Atlas ，
+TCGA） 是一个为癌症患者提供匹配的基因组学数
+据 的 大 规 模 计 划， 为 结 直 肠 癌 的 分 子 分 型 研 究 提
+供 了 重 要 的 数 据 基 础， 但 其 数 据 有 限[63] 。 因 此，
+研究者常常整合 TCGA 与病理图像等其他数据用以
+训练 AI 模型 ，通过构建跨机构训练集提升模型泛
+化 能 力。早 在2019 年，相 关 研 究 证 明 深 度 学 习 可
+以 直 接 从HE 染 色切 片 的 全 切 片 图 像（whole slide 
+image，WSI） 预测胃肠道癌的 MSI 状态 ，研究人员
+训 练 了Resnet 18 神 经 网 络， 用 于 对 患 者 队 列 中 的
+MSI 和 MSS 多克隆抗体情况进行分类 。模型可自动
+检 测 肿 瘤 组 织 并 将 其 细 分 为 多 个 边 长 为256 µm 的
+图 像 块， 同 时 施 加 随 机 水 平/垂 直 翻 转（P=0.5） 、
+颜色抖动 （亮度 ±10%、对比度 ±15%、色相 ±0.1）
+及 高 斯 噪 声（σ =0.01） 以 模 拟 染 色 差 异 和 技 术 误
+差 ， 最 终 证 实 深 度 学 习 模 型 可 以 较 为 稳 定 地 预 测
+MSI 特征 [64] 。
+2020 年 ， Kather 与 Echle 的 研 究 团 队[65-66] 分 别
+开发了基于 HE 染色切片的深度学习模型 ，用于结
+直 肠 癌 的MSI/dMMR 状 态 预 测。 后 者 纳 入8 836 例
+样 本（含 TCGA、 DACHS 等 队 列） ，通 过 颜 色 归 一
+化 技 术 优 化 模 型， 在 外 部 验 证 队 列（YCR-BCIP-
+RESECT，n=771） 中 AUC 达 0.96，增强了模型的跨
+队 列 泛 化 能 力， 实 现 了 临 床 级 高 精 度 预 测； 前 者
+则首次采用轻量级 Shufflenet 架构 ，在 TCGA-CRC 队
+列 中 实 现AUC 0.89， 为 其 在 临 床 环 境 中 的 快 速 部
+署 提 供 了 可 行 性。 后 者 还 通 过 外 部 验 证（DACHS
+队 列， AUC=0.77） 揭 示 了 肿 瘤 异 质 性 对 预 测 结 果
+的 影 响。 两 项 研 究 均 证 实 深 度 学 习 模 型 可 直 接 从
+HE 染 色 图 像 推 断MSI 状 态 而 无 需 额 外 分 子 检 测，
+显 著 降 低 成 本 与 时 间， 为 资 源 受 限 地 区 提 供 了 可
+扩展的筛查工具 。此外 ，Cao 等[67] 建立了一种基于
+多 实 例 学 习 和 迁 移 学 习 的 病 理 组 学 深 度 学 习 模 型
+EPLA， 该 模 型 利 用TCGA 和 亚 洲 结 直 肠 癌 队 列 的
+数据进行跨种族验证 ，有效预测了 MSI 状态 ，表明
+其 适 用 于 不 同 种 族 和 数 据 异 质 性 场 景。 同 年
+Yamashita 等[68] 开 发 的 基 于 深 度 学 习 的MSI Net 模 型
+在 斯 坦 福 队 列 中 实 现 了MSI 状 态 的 高 精 度 预 测
+（AUC=0.931） ，并首次直接对比模型和病理学家的
+表 现， 结 果 显 示 该 模 型 在 分 析HE 染 色WSI 的 MSI
+预测方面优于经验丰富的病理学家 。
+2021 年 ， Bilal 等[69] 开 发 了 一 种 新 型 的 用 于 预
+测 结 直 肠 癌 中 关 键 分 子 通 路 和 突 变 状 态 的 弱 监 督
+深 度 学 习 模 型， 该 模 型 通 过 迭 代 抽 取 和 排 序 采 样
+策 略 优 化 数 据 标 签， 在 TCGA 数 据 队 列 中 实 现 了
+MSI 的 高 精 度 预 测（AUC=0.86） ，其 开 发 的 卷 积 神
+经 网 络 模 型HoVer-Net 还 在MSI 预 测 之 外 的 多 分 子
+通 路 预 测（如 高 密 度 突 变、 染 色 体 不 稳 定 性、
+BRAF/TP53 突变） 中表现出通用性 ，为临床提供了
+可 扩 展 的 分 子 特 征 筛 查 方 案。 Schirris 等[70] 开 发 的
+一种名为 DeepSMILE 的深度学习模型通过结合自监
+督 学 习 和 异 质 性 感 知 多 实 例 学 习， 可 无 需 像 素 级
+注 释， 直 接 从HE 染 色 全 玻 片 图 像 预 测MSI 状 态，
+且仅需 40% 的标注数据即可达到 Kather 等[64] 传统方
+法 的 性 能。 多 实 例 学 习 技 术 还 被 用 于Jiang 等[71] 开
+发 的 深 度 学 习 模 型， 该 研 究 提 出 了 双 阈 值 策 略，
+通过结合多实例学习和域适应技术进一步减少 IHC
+检 测 的 患 者 数 量， 在 HE 染 色 切 片 预 测 结 直 肠 癌
+MMR 状态的测试中敏感度为 90%，特异度为 95%，
+并 首 次 验 证 了 深 度 学 习 模 型 在 活 检 样 本 中 的 有 效
+性，为临床 MSI 检测提供了新的低成本 、快周期途
+径 。 Bustos 等[72] 提 出 了Xdeep-MSI 框 架， 该 深 度 学
+习 架 构 结 合 多 实 例 学 习 和 对 抗 训 练， 通 过 消 除 数
+据中的批次效应 （如项目来源 、患者斑点 、热-力
+分析玻璃等 ） 提升模型泛化能力 ，在 TCGA 队列中
+AUC 达 0.87，在亚洲队列中 AUC 为 0.90。该研究还
+首 次 系 统 性 分 析 了 数 据 中 的 批 次 效 应， 结 合 多 尺
+度 分 析 整 合 特 征， 实 现 了 从 组 织 微 阵 列 预 测MSI
+状态 。
+2023 年 ， Saillard 等[73] 开 发 了 结 合 自 监 督 学 习
+和多实例学习的 MSIntuit 模型 ，该模型在两种不同
+扫 描 仪 上 的 预 测 结 果 一 致 性 表 现 优 异， Cohen's 
+Kappa 系数达到 0.82，显示出良好的泛化能力 ，可
+以 作 为 有 效 的 预 筛 选 工 具 减 轻 临 床 的MSI 检 测 负
+担。Guo 等[74] 研究开发了一种结合分层视觉和自监
+督学习的深度学习模型系统 Swin Transformer ，通过
+高效特征提取从 HE 全玻片图像直接预测 MSI 状态 ，
+在 内 部 验 证 中AUC 为 0.91， 外 部 验 证 中AUC 为
+0.90。该模型具有出色的泛化能力 ，减少了对训练
+数据的需求 ，在仅 250 例训练样本时仍表现优异 ，
+AUC 达 0.83，使未来在临床工作中基于小规模数据
+集 的AI 应 用 成 为 可 能。Gerwert 等[75] 提 出 了 可 使 用
+未 染 色 石 蜡 切 片 对MSI 状 态 进 行 诊 断 的 病 理 学 方
+法，这 种 模 型 使 用 红 外 成 像 结 合AI，利 用 量 子 级
+2236
+
+=== PDF_PAGE 6 ===
+第 10 期 李若涵，等：从病理图像到分子预测：多模态人工智能驱动的结直肠癌MSI 检测新范式
+http://www.zpwz.net
+联 激 光、 红 外 显 微 镜 和 卷 积 神 经 网 络 观 察 未 染 色
+石 蜡 切 片， 在 验 证 队 列 中AUC 达 0.90 且 无 需 染 色
+或 分 子 检 测。相 较 于 其 他HE 图 像 深 度 学 习 模 型，
+该 技 术 保 留 组 织 的 完 整 性， 避 免 了 染 色 干 扰， 支
+持 后 续 多 组 学 分 析。 Wagner 等[76] 开 发 了 一 种 基 于
+Transformer 框架的技术方法 ，用于从病理切片中进
+行 “ 端 到 端” 分 子 标 志 物 预 测， 该 模 型 通 过 动 态
+选 择 高 信 息 量 区 域（如 黏 液 和 淋 巴 细 胞 浸 润 区）
+提 升 敏 感 度， 仅 利 用 切 除 标 本 进 行 训 练 就 在 活 检
+组 织 上 达 到 了 临 床 级 别 的 性 能 表 现， 具 有 重 要 的
+临床转化潜力 。
+2024 年 ， Lo 等[77] 提 出 了 一 种 基 于Vision 
+Transformer （ViT） 架 构 的 深 度 学 习 模 型， 首 次 将
+ViT 应用于结肠镜图像的 MSI 预测 ，利用自注意力
+机 制 解 决 卷 积 神 经 网 络 在 全 局 特 征 提 取 上 的 局 限
+性 ， 该 模 型 通 过 自 注 意 力 机 制 有 效 捕 捉 肿 瘤 病 灶
+（如溃疡面 、不规则边缘 ） 与周围组织 （如淋巴细
+胞 浸 润、 基 质 反 应） 的 全 局 关 联， 实 现 肿 瘤 宏 观
+形 态 与 微 环 境 特 征 的 整 合 分 析， 尤 其 适 用 于 无 法
+获取病理切片的场景 。Gustav 等[78] 基于 ViT 架构开
+发了一个通过 HE 染色病理切片图像预测 MSI 状态
+的深度学习模型 ，该模型具有对 MSI 和 POLE 突变
+的 双 重 检 测 能 力， 可 有 效 减 少 临 床 上 分 级 检 测 策
+略 的 成 本。 El Nahhas 等[79] 提 出 的STAMP 框 架 通 过
+结合自监督特征提取和 Transformer 架构 ，自动学习
+与 MSI 相 关 的 形 态 学 特 征（如 黏 液 分 泌、 印 戒 细
+胞） ，实 现 从 图 像 到 分 子 标 志 物 的 直 接 映 射， 在
+TCGA 队 列 中， STAMP 对 MSI 的 预 测 准 确 率 达84%
+（AUC=0.84）， 且 外 部 验 证 队 列 保 持 稳 定 性 能
+（AUC=0.85） ，预测的 MSI 状态与基因组高突变负荷
+显著相关 （P<0.000 1） ，提示该模型或可作为基因
+组检测的替代预筛选工具 。Nowak 等[80] 研究开发了
+AIMMeR，这是一种基于单细胞水平的深度学习模
+型，通过免疫组化染色图像检测 MSI，该模型结合
+细 胞 核 形 态 学 分 类 与 二 氨 基 联 苯 胺
+（diaminobenzidine， DAB） 信 号 分 析， 实 现 单 个 细
+胞 MMR 蛋 白 表 达 的 精 准 量 化， 该 方 法 在SCOT 和
+QUASAR2 队 列 中 表 现 优 异（AUC=0.98） ，对 常 见
+的 MLH 1-PMS2 联 合 缺 失 的 阳 性 预 测 值 达99%。
+Zamanitajeddin 等[81] 提出了一种结合社会网络分析与
+深 度 学 习 的 方 法 模 型， 通 过 社 会 网 络 分 析 量 化 细
+胞间关系 （如节点度 、聚类系数 ） ，捕捉肿瘤微环
+境的空间分布特征 ，揭示了 MSI-H 肿瘤的高节点度
+和 聚 类 系 数 与 高 免 疫 原 性 一 致， 为 免 疫 治 疗 响 应
+提供形态学依据 。
+2.3 影像组学与病理组学 AI 模型在 MSI 预测中的
+差异分析　
+影 像 组 学 与 病 理 组 学AI 模 型 在MSI 预 测 中 呈
+现 出 显 著 差 异。 两 种 技 术 的 核 心 差 异 在 于 数 据 维
+度 ： 影 像 组 学 侧 重 宏 观 解 剖 信 息， 病 理 组 学 则 聚
+焦 分 子 水 平 的 形 态 学 变 化， 这 种 差 异 直 接 影 响 了
+它们的临床适用场景 、技术实现路径和预测精度 。
+影像组学通过 CT、MRI 等医学影像提取定量特征 ，
+其 优 势 在 于 非 侵 入 性、 高 效 性 和 全 身 覆 盖 能 力，
+尤 其 适 用 于 术 前 评 估、 动 态 监 测、 随 访 监 测、 无
+创 筛 查 和 大 规 模 人 群 的 初 步 评 估。 然 而， 其 局 限
+性在于空间分辨率不足 ，难以捕捉微观分子特征 。
+由 于 影 像 数 据 依 赖 宏 观 解 剖 结 构， 对 早 期 病 变 或
+组织学亚型的判别灵敏度较低 ，且易受扫描参数 、
+患者运动等因素干扰 。
+而 病 理 组 学 则 依 赖 高 分 辨 率 组 织 切 片， 通 过
+卷 积 神 经 网 络 捕 捉 细 胞 核 形 态、 组 织 结 构 等 微 观
+特 征， 其 预 测 精 度 可 达AUC 0.9 以 上。 相 比 之 下，
+病 理 组 学 虽 需 侵 入 性 活 检， 但 能 直 接 解 析 细 胞 形
+态 与 基 因 组 关 联， 为 精 准 治 疗 提 供 更 高 置 信 度 的
+依据 。病理组学在 MSI 预测中的核心优势在于其微
+观解析能力与高精度特征提取 。通过高分辨率 WSI
+分 析，AI 模 型 可 识 别 细 胞 核 异 型 性、肿 瘤 浸 润 淋
+巴 细 胞 分 布 等 细 微 特 征， 其 预 测 性 能 显 著 优 于 影
+像 组 学， 且 能 直 接 关 联 基 因 组 变 异。 这 种 精 度 源
+于 病 理 数 据 的 分 子 级 信 息 密 度。 然 而， 病 理 组 学
+的 局 限 性 同 样 突 出： 依 赖 侵 入 性 活 检， 无 法 实 现
+动 态 监 测； 且 样 本 制 备 过 程 易 受 染 色 质 量、 切 片
+厚 度 等 技 术 因 素 干 扰， 导 致 数 据 一 致 性 挑 战。 此
+外 ， 算 法 训 练 需 大 规 模 标 注 数 据 集， 而 罕 见 病 例
+（如 MSI-H 亚型） 的样本稀缺可能影响模型泛化 。
+两 种 技 术 的 互 补 性 在 临 床 实 践 中 体 现 为 分 层
+诊 断 流 程 的 构 建。 影 像 组 学 可 作 为 初 筛 工 具， 通
+过 无 创 检 测 快 速 锁 定 高 风 险 患 者， 而 病 理 组 学 则
+用 于 确 诊 阶 段 的 精 准 分 型。 例 如， 结 直 肠 癌 患 者
+可先通过 CT 放射组学评估全身肿瘤负荷 ，再对疑
+似 MSI-H 病例进行活检验证 ，从而优化资源分配 。
+目前已报道的主要 AI 模型及其性能指标见 表 1。
+2237
+
+=== PDF_PAGE 7 ===
+中国普通外科杂志 第 34 卷 
+http://www.zpwz.net
+3     AI模型在结直肠癌MSI检测中的局限性 
+AI 模 型 在 结 直 肠 癌MSI 检 测 中 的 研 究 已 展 现
+出 显 著 的 临 床 应 用 潜 力， 但 其 技 术 瓶 颈 与 伦 理 风
+险 仍 需 系 统 剖 析。 在 技 术 层 面， 数 据 质 量 与 模 型
+泛化性仍是核心挑战 [82] ，例如 Zamanitajeddin 等[81] 在
+TCGA 队 列 中 发 现， 不 同 医 疗 中 心 的HE 染 色 强 度
+差 异 导 致 细 胞 核 分 割 模 型 性 能 下 降， 需 额 外 进 行
+染 色 归 一 化 算 法 处 理。 同 时， 适 合 进 行 深 度 学 习
+开 发 的 医 学 组 织 学 图 像 数 据 并 不 丰 富， 公 开 可 用
+的 匹 配 组 织 学 和 遗 传 学 的 数 据 相 对 缺 乏[83] ， 用 于
+训 练AI 模 型 的 数 据 中 仍 可 能 存 在 固 有 偏 差[84-85] 。
+在 模 型 开 发 方 面， 可 解 释 性 不 足 与 过 拟 合 问 题 仍
+然 存 在， 小 样 本 场 景 下 的 模 型 偏 差 难 以 避 免， 模
+型算法的可解释性不足也是制约医学界接受 AI 模
+型的主要障碍 [86] 。
+在 伦 理 上，AI 医 疗 数 据 往 往 包 含 敏 感 的 个 人
+信息 ，如何在使用 AI 进行训练分析的同时保证数
+据 隐 私 与 安 全 至 关 重 要[87] 。 为 此， 已 有 研 究 将 生
+成 模 型 用 于 合 成 组 织 学 图 像。 由 于 此 类 合 成 图 像
+与 组 织 学 图 像 不 同， 不 与 特 定 患 者 直 接 关 联， 其
+公 开 共 享 在 法 律 和 道 德 层 面 面 临 的 挑 战 相 对 较
+少[88-90] 。此外 ，如果模型预测失误导致治疗过程出
+错，相关医疗责任的承担也是值得争议的话题 [91] 。
+4     小结与展望 
+结 直 肠 癌MSI 检 测AI 模 型 未 来 发 展 的 方 向 可
+能包括 ：⑴ 开发多模态融合模型 ，整合影像的宏
+观信息与病理的微观特征 ；⑵ 通过学习解决小样
+本问题 ，增强模型在罕见亚型中的泛化能力 ；⑶ 建
+立 动 态 监 测 体 系， 利 用 影 像 组 学 实 现 治 疗 响 应 的
+实 时 评 估， 同 时 以 病 理 组 学 为 金 标 准 校 准 结 果。
+这 种 协 同 模 式 将 推 动 肿 瘤 诊 疗 从 静 态 分 型 向 动 态
+精准化演进 。
+作者贡献声明 ：李若涵负责调研文献 、内容设计、
+论文撰写与修改 ；秦雯负责确定研究选题 、确定论文结
+构框架、确定论文撰写内容、论文修订。
+利益冲突：所有作者均声明不存在利益冲突。
+参考文献
+[1] Sung H , Ferlay J , Siegel RL , et al . Global cancer statistics 2020: 
+GLOBOCAN estimates of incidence and mortality worldwide for 
+36 cancers in 185 countries[J]. CA Cancer J Clin, 2021, 71(3):209-
+249. doi:10.3322/caac.21660. 
+[2] Richard Boland C , Goel A . Microsatellite instability in colorectal 
+cancer[J]. Gastroenterology, 2010, 138(6):2073-2087. doi:10.1053/
+表 1　本文中所涉及的 AI模型
+Table 1　AI models involved in this review
+作者
+Kather, 等[64]
+Kather, 等[65]
+Cao, 等[67]
+Yamashita, 等[68]
+Bilal, 等[69]
+Bustos, 等[72]
+Schirris, 等[70]
+Jiang, 等[71]
+Kim, 等[57]
+Saillard, 等[73]
+Guo, 等[74]
+Gerwert, 等[75]
+Wagner, 等[76]
+Lo, 等[77]
+Gustav, 等[78]
+Nowak, 等[80]
+Zamanitajeddin, 等[81]
+El Nahhas, 等[79]
+年份
+2019
+2020
+2020
+2021
+2021
+2021
+2022
+2022
+2023
+2023
+2023
+2023
+2023
+2024
+2024
+2024
+2024
+2025
+AI 模型名称
+ResNet18
+ShuffleNet
+ensembled patch likelihood aggregation（EPLA）
+MSINet
+iterative draw and rank sampling（IDaRS）
+xDEEP-MSI
+a feature variability-aware variant of DeepMIL
+MIL model
+rad_score
+MSIntuit
+Swin Transformer
+CompSegNet/VGG-Net
+Transformer-based biomarker prediction pipeline
+ViT
+ViT-based deep learning model
+AIMMeR
+Cell-SNA MIL framework
+STAMP
+2238
+
+=== PDF_PAGE 8 ===
+第 10 期 李若涵，等：从病理图像到分子预测：多模态人工智能驱动的结直肠癌MSI 检测新范式
+http://www.zpwz.net
+j.gastro.2009.12.064.
+[3] Ribic CM , Sargent DJ , Moore MJ , et al . Tumor microsatellite -
+instability status as a predictor of benefit from fluorouracil -based 
+adjuvant chemotherapy for colon cancer [J]. N Engl J Med , 2003, 
+349(3):247-257. doi:10.1056/NEJMoa022289.
+[4] Popat S , Hubner R , Houlston RS . Systematic review of 
+microsatellite instability and colorectal cancer prognosis [J]. J Clin 
+Oncol, 2005, 23(3):609-618. doi:10.1200/JCO.2005.01.086.
+[5] Mei WJ, Mi M , Qian J , et al . Clinicopathological characteristics of 
+high microsatellite instability/mismatch repair -deficient colorectal 
+cancer: a narrative review [J]. Front Immunol , 2022, 13: 1019582. 
+doi:10.3389/fimmu.2022.1019582.
+[6] Rudzki Z , Zazula M , Okoń K , et al . Low -level microsatellite 
+instability colorectal carcinomas : do they really belong to a "gray 
+zone" between high -level microsatellite instability and 
+microsatellite-stable cancers?[J]. Int J Colorectal Dis , 2003, 18(3):
+216-221. doi:10.1007/s00384-002-0460-1.
+[7] Le DT, Durham JN , Smith KN , et al . Mismatch repair deficiency 
+predicts response of solid tumors to PD -1 blockade [J]. Science , 
+2017, 357(6349):409-413. doi:10.1126/science.aan6733.
+[8] Benson AB , Venook AP , Al -Hawary MM , et al . Colon cancer , 
+version 2.2021, NCCN clinical practice guidelines in oncology [J]. J 
+Natl Compr Canc Netw , 2021, 19(3): 329-359. doi : 10.6004/
+jnccn.2021.0012.
+[9] Bulten W, Balkenhol M , Belinga JA , et al . Artificial intelligence 
+assistance significantly improves Gleason grading of prostate 
+biopsies by pathologists[J]. Mod Pathol, 2021, 34(3):660-671. doi:
+10.1038/s41379-020-0640-y.
+[10] 李永海, 钱桂香, 荚卫东 . 影像组学赋能肝细胞癌智慧诊疗的初
+步 探 索 进 展[J]. 中 国 普 通 外 科 杂 志, 2025, 34(1): 40-46. doi :
+10.7659/j.issn.1005-6947.240648.
+Li YH , Qian GX , Jia WD , et al . Preliminary explorations and 
+advances in radiomics empowering the intelligent diagnosis and 
+treatment of hepatocellular carcinoma [J]. China Journal of General 
+Surgery, 2025, 34(1):40-46. doi:10.7659/j.issn.1005-6947.240648.
+[11] Kurita Y, Meguro S , Kosugi I , et al . Enhancing cervical cancer 
+cytology screening via artificial intelligence innovation [J]. Sci Rep, 
+2024, 14(1):19535. doi:10.1038/s41598-024-70670-6.
+[12] Joseph J , LePage EM , Cheney CP , et al . Artificial intelligence in 
+colonoscopy[J]. World J Gastroenterol , 2021, 27(29): 4802-4817. 
+doi:10.3748/wjg.v27.i29.4802.
+[13] Pinto-Coelho L . How artificial intelligence is shaping medical 
+imaging technology : a survey of innovations and applications [J]. 
+Bioengineering (Basel), 2023, 10(12): 1435. doi : 10.3390/
+bioengineering10121435.
+[14] De' Angelis GL , Bottarelli L , Azzoni C , et al . Microsatellite 
+instability in colorectal cancer [J]. Acta Biomed, 2018, 89(9-S):97-
+101. doi:10.23750/abm.v89i9-S.7960.
+[15] Li ZD, Pearlman AH, Hsieh P. DNA mismatch repair and the DNA 
+damage response [J]. DNA Repair (Amst), 2016, 38: 94-101. doi :
+10.1016/j.dnarep.2015.11.019.
+[16] Li GM . Mechanisms and functions of DNA mismatch repair [J]. 
+Cell Res, 2008, 18(1):85-98. doi:10.1038/cr.2007.115.
+[17] Jiricny J . The multifaceted mismatch -repair system [J]. Nat Rev 
+Mol Cell Biol, 2006, 7(5):335-346. doi:10.1038/nrm1907.
+[18] Yamamoto H, Watanabe Y, Arai H, et al. Microsatellite instability:a 
+2024 update[J]. Cancer Sci , 2024, 115(6):1738-1748. doi:10.1111/
+cas.16160.
+[19] Greenson JK , Bonner JD , Ben -Yzhak O , et al . Phenotype of 
+microsatellite unstable colorectal carcinomas : Well-differentiated 
+and focally mucinous tumors and the absence of dirty necrosis 
+correlate with microsatellite instability [J]. Am J Surg Pathol , 2003, 
+27(5):563-570. doi:10.1097/00000478-200305000-00001.
+[20] Mitrovic B , Schaeffer DF , Riddell RH , et al . Tumor budding in 
+colorectal carcinoma:time to take notice [J]. Mod Pathol , 2012, 25
+(10):1315-1325. doi:10.1038/modpathol.2012.94.
+[21] Boissière-Michot F, Lazennec G , Frugier H , et al . Characterization 
+of an adaptive immune response in microsatellite -instable 
+colorectal cancer [J]. Oncoimmunology , 2014, 3: e29256. doi :
+10.4161/onci.29256.
+[22] Roth AD, Tejpar S , Delorenzi M , et al . Prognostic role of KRAS 
+and BRAF in stage Ⅱ and Ⅲ resected colon cancer : results of the 
+translational study on the PETACC-3, EORTC 40993, SAKK 60-00 
+trial[J]. J Clin Oncol , 2010, 28(3): 466-474. doi : 10.1200/
+JCO.2009.23.3452.
+[23] Guastadisegni C , Colafranceschi M , Ottini L , et al . Microsatellite 
+instability as a marker of prognosis and response to therapy: a meta-
+analysis of colorectal cancer survival data [J]. Eur J Cancer , 2010, 
+46(15):2788-2798. doi:10.1016/j.ejca.2010.05.009.
+[24] Xiao YP , Freeman GJ . The microsatellite instable subset of 
+colorectal cancer is a particularly good candidate for checkpoint 
+blockade immunotherapy[J]. Cancer Discov, 2015, 5(1):16-18. doi:
+10.1158/2159-8290.CD-14-1397.
+[25] Alwers E , Jansen L , Bläker H , et al . Microsatellite instability and 
+survival after adjuvant chemotherapy among stage Ⅱ and Ⅲ colon 
+cancer patients : results from a population -based study [J]. Mol 
+Oncol, 2020, 14(2):363-372. doi:10.1002/1878-0261.12611.
+[26] Le DT, Uram JN , Wang H , et al . PD -1 blockade in tumors with 
+mismatch-repair deficiency[J]. N Engl J Med , 2015, 372(26):2509-
+2520. doi:10.1056/NEJMoa1500596.
+[27] Zhang Y , Sun Z , Mao X , et al . Impact of mismatch -repair 
+deficiency on the colorectal cancer immune microenvironment [J]. 
+2239
+
+=== PDF_PAGE 9 ===
+中国普通外科杂志 第 34 卷 
+http://www.zpwz.net
+Oncotarget, 2017, 8(49): 85526-85536. doi : 10.18632/
+oncotarget.20241.
+[28] André T, Shiu KK, Kim TW, et al. Pembrolizumab in microsatellite-
+instability-high advanced colorectal cancer[J]. N Engl J Med , 2020, 
+383(23):2207-2218. doi:10.1056/NEJMoa2017699.
+[29] Casak SJ , Marcus L , Fashoyin -Aje L , et al . FDA approval 
+summary: pembrolizumab for the first -line treatment of patients 
+with MSI-H/dMMR advanced unresectable or metastatic colorectal 
+carcinoma[J]. Clin Cancer Res , 2021, 27(17): 4680-4684. doi :
+10.1158/1078-0432.CCR-21-0557.
+[30] Li J , Deng Y , Zhang W , et al . Subcutaneous envafolimab 
+monotherapy in patients with advanced defective mismatch repair/
+microsatellite instability high solid tumors [J]. J Hematol Oncol , 
+2021, 14(1):95. doi:10.1186/s13045-021-01095-1.
+[31] Benson AB , Venook AP , Al -Hawary MM , et al . Rectal cancer , 
+version 2.2022, NCCN clinical practice guidelines in oncology [J]. J 
+Natl Compr Canc Netw , 2022, 20(10): 1139-1167. doi : 10.6004/
+jnccn.2022.0051.
+[32] Manavis J , Gilham P , Davies R , et al . The immunohistochemical 
+detection of mismatch repair gene proteins (MLH1 MSH 2 MSH 6 
+and PMS 2): practical aspects in antigen retrieval and biotin 
+blocking protocols[J]. Appl Immunohistochem Mol Morphol, 2003, 
+11(1):73-77. doi:10.1097/00129039-200303000-00012.
+[33] 戴北飞, 杨叶宁, 粟占三 . 免疫组化法和聚合酶链反应法对结直
+肠癌微卫星不稳定性诊断价值 [J]. 中华肿瘤防治杂志 , 2024, 31
+(3):160-166. doi:10.16073/j.cnki.cjcpt.2024.03.06.
+Dai BF , Yang YN , Su ZS . Diagnostic value of 
+immunohistochemistry and polymerase chain reaction for 
+microsatellite instability in colorectal cancer [J]. Chinese Journal of 
+Cancer Prevention and Treatment , 2024, 31(3): 160-166. doi :
+10.16073/j.cnki.cjcpt.2024.03.06.
+[34] Bacher JW, Flanagan LA , Smalley RL , et al . Development of a 
+fluorescent multiplex assay for detection of MSI -high tumors [J]. 
+Dis Markers, 2004, 20(4/5):237-250. doi:10.1155/2004/136734.
+[35] Kim N , Kim SM , Lee BJ , et al . Detection of microsatellite 
+instability in colorectal cancer patients with a plasma -based real -
+time PCR analysis [J]. Front Pharmacol , 2021, 12: 758830. doi :
+10.3389/fphar.2021.758830.
+[36] Favier A , Varinot J , Uzan C , et al . The role of 
+immunohistochemistry markers in endometrial cancer with 
+mismatch repair deficiency : a systematic review [J]. Cancers 
+(Basel), 2022, 14(15):3783. doi:10.3390/cancers14153783.
+[37] Salipante SJ , Scroggins SM , Hampel HL , et al . Microsatellite 
+instability detection by next generation sequencing [J]. Clin Chem , 
+2014, 60(9):1192-1199. doi:10.1373/clinchem.2014.223677.
+[38] Marino P, Touzani R , Perrier L , et al . Cost of cancer diagnosis 
+using next -generation sequencing targeted gene panels in routine 
+practice: a nationwide French study [J]. Eur J Hum Genet , 2018, 26
+(3):314-323. doi:10.1038/s41431-017-0081-3.
+[39] Lee CY , Yen HY , Zhong AW , et al . Resolving misalignment 
+interference for NGS -based clinical diagnostics [J]. Hum Genet , 
+2021, 140(3):477-492. doi:10.1007/s00439-020-02216-5.
+[40] Evrard C , Tachon G , Randrian V , et al . Microsatellite instability : 
+diagnosis, heterogeneity , discordance , and clinical impact in 
+colorectal cancer [J]. Cancers (Basel), 2019, 11(10): 1567. doi :
+10.3390/cancers11101567.
+[41] Andre T , Shiu KK , Kim TW , et al . Pembrolizumab versus 
+chemotherapy for microsatellite instability -high/mismatch repair 
+deficient metastatic colorectal cancer :The phase 3 KEYNOTE-177 
+study[J]. J Clin Oncol , 2020, 38(18_suppl): LBA 4. doi : 10.1200/
+jco.2020.38.18_suppl.lba4.
+[42] Yin Z, Yao C, Zhang L, et al. Application of artificial intelligence in 
+diagnosis and treatment of colorectal cancer : a novel prospect [J]. 
+Front Med (Lausanne), 2023, 10: 1128084. doi : 10.3389/
+fmed.2023.1128084.
+[43] Castiglioni I, Rundo L , Codari M , et al . AI applications to medical 
+images: From machine learning to deep learning [J]. Phys Med , 
+2021, 83:9-24. doi:10.1016/j.ejmp.2021.02.006.
+[44] Swanson K , Wu E , Zhang A , et al . From patterns to patients : 
+advances in clinical machine learning for cancer diagnosis , 
+prognosis, and treatment [J]. Cell , 2023, 186(8): 1772-1791. doi :
+10.1016/j.cell.2023.01.035.
+[45] 李秀勤, 韩腾辉, 王帅, 等 . 基于机器学习的结直肠癌微卫星不稳
+定基因挖掘及其应用价值分析 [J]. 中国普通外科杂志 , 2022, 31
+(10):1355-1362. doi:10.7659/j.issn.1005-6947.2022.10.011.
+Li XQ , Han TH , Wang S , et al . Mining of genes involved in 
+microsatellite instability in colorectal cancer through machine 
+learning and evaluation of their application values [J]. China 
+Journal of General Surgery, 2022, 31(10):1355-1362. doi:10.7659/j.
+issn.1005-6947.2022.10.011.
+[46] Hosny A, Parmar C , Quackenbush J , et al . Artificial intelligence in 
+radiology[J]. Nat. Rev. Cancer, 2018, 18(8):500-510. doi:10.1038/
+s41568-018-0016-5.
+[47] Wang Q , Xu J , Wang A , et al . Systematic review of machine 
+learning-based radiomics approach for predicting microsatellite 
+instability status in colorectal cancer [J]. Radiol Med , 2023, 128(2):
+136-148. doi:10.1007/s11547-023-01593-x.
+[48] Fan S , Li X , Cui X , et al . Computed tomography -based radiomic 
+features could potentially predict microsatellite instability status in 
+stage Ⅱ colorectal cancer : a preliminary study [J]. Acad Radiol , 
+2019, 26(12):1633-1640. doi:10.1016/j.acra.2019.02.009.
+[49] Golia Pernicka JS , Gagniere J , Chakraborty J , et al . Radiomics -
+2240
+
+=== PDF_PAGE 10 ===
+第 10 期 李若涵，等：从病理图像到分子预测：多模态人工智能驱动的结直肠癌MSI 检测新范式
+http://www.zpwz.net
+based prediction of microsatellite instability in colorectal cancer at 
+initial computed tomography evaluation [J]. Abdom Radiol (NY), 
+2019, 44(11):3755-3763. doi:10.1007/s00261-019-02117-w.
+[50] Zhang W, Huang Z , Zhao J , et al . Development and validation of 
+magnetic resonance imaging -based radiomics models for 
+preoperative prediction of microsatellite instability in rectal 
+cancer[J]. Ann Transl Med, 2021, 9(2):134. doi:10.21037/atm-20-
+7673.
+[51] Cao Y, Zhang G, Zhang J, et al. Predicting microsatellite instability 
+status in colorectal cancer based on triphasic enhanced computed 
+tomography radiomics signatures : a multicenter study [J]. Front 
+Oncol, 2021, 11:687771. doi:10.3389/fonc.2021.687771.
+[52] Yuan H, Peng Y, Xu X , et al . A tumoral and peritumoral CT -based 
+radiomics and machine learning approach to predict the 
+microsatellite instability of rectal carcinoma [J]. Cancer Manag Res , 
+2022, 14:2409-2418. doi:10.2147/CMAR.S377138.
+[53] 郝俊, 王帅, 朱军, 等 . 神经网络预测模型辅助诊断结直肠癌微卫
+星状态的研究 [J]. 中国普通外科杂志 , 2023, 32(4):488-496. doi:
+10.7659/j.issn.1005-6947.2023.04.002.
+Hao J, Wang S, Zhu J , et al . Neural network prediction model for 
+assisting diagnosis of microsatellite status in colorectal cancer [J]. 
+China Journal of General Surgery , 2023, 32(4): 488-496. doi :
+10.7659/j.issn.1005-6947.2023.04.002.
+[54] Jing G , Chen Y, Ma X , et al . Predicting mismatch -repair status in 
+rectal cancer using multiparametric MRI-based radiomics models: a 
+preliminary study [J]. Biomed Res Int , 2022, 2022: 6623574. doi :
+10.1155/2022/6623574.
+[55] Chen X, He L, Li Q, et al. Non-invasive prediction of microsatellite 
+instability in colorectal cancer by a genetic algorithm -enhanced 
+artificial neural network -based CT radiomics signature [J]. Eur 
+Radiol, 2023, 33(1):11-22. doi:10.1007/s00330-022-08954-6.
+[56] Li Z, Zhang J, Zhong Q, et al. Development and external validation 
+of a multiparametric MRI -based radiomics model for preoperative 
+prediction of microsatellite instability status in rectal cancer : a 
+retrospective multicenter study [J]. Eur Radiol , 2023, 33(3): 1835-
+1843. doi:10.1007/s00330-022-09160-0.
+[57] Kim S , Lee JH , Park EJ , et al . Prediction of microsatellite 
+instability in colorectal cancer using a machine learning model 
+based on PET/CT radiomics [J]. Yonsei Med J , 2023, 64(5): 320-
+326. doi:10.3349/ymj.2022.0548.
+[58] Shrestha A, Mahmood A . Review of deep learning algorithms and 
+architectures[J]. IEEE Access, 2019, 7:53040-53065.
+[59] Pesapane F , Codari M , Sardanelli F . Artificial intelligence in 
+medical imaging : threat or opportunity ? radiologists again at the 
+forefront of innovation in medicine [J]. Eur Radiol Exp , 2018, 2(1):
+35. doi:10.1186/s41747-018-0061-6.
+[60] Mobadersany P , Yousefi S , Amgad M , et al . Predicting cancer 
+outcomes from histology and genomics using convolutional 
+networks[J]. Proc Natl Acad Sci USA , 2018, 115(13): E2970-
+E2979. doi:10.1073/pnas.1717139115.
+[61] Tran KA, Kondrashova O, Bradley A, et al. Deep learning in cancer 
+diagnosis, prognosis and treatment selection [J]. Genome Med , 
+2021, 13(1):152. doi:10.1186/s13073-021-00968-x.
+[62] LeCun Y, Bengio Y, Hinton G. Deep learning[J]. Nature, 2015, 521
+(7553):436-444. doi:10.1038/nature14539.
+[63] Cancer Genome Atlas Network . Comprehensive molecular 
+characterization of human colon and rectal cancer [J]. Nature, 2012, 
+487(7407):330-337. doi:10.1038/nature11252.
+[64] Kather JN, Pearson AT, Halama N , et al . Deep learning can predict 
+microsatellite instability directly from histology in gastrointestinal 
+cancer[J]. Nat Med , 2019, 25(7):1054-1056. doi:10.1038/s41591-
+019-0462-y.
+[65] Kather JN , Heij LR , Grabsch HI , et al . Pan -cancer image -based 
+detection of clinically actionable genetic alterations [J]. Nat Cancer, 
+2020, 1(8):789-799. doi:10.1038/s43018-020-0087-6.
+[66] Echle A, Grabsch HI , Quirke P , et al . Clinical -grade detection of 
+microsatellite instability in colorectal tumors by deep learning [J]. 
+Gastroenterology, 2020, 159(4): 1406-1416. doi : 10.1053/j.
+gastro.2020.06.021.
+[67] Cao R, Yang F, Ma SC , et al . Development and interpretation of a 
+pathomics-based model for the prediction of microsatellite 
+instability in Colorectal Cancer [J]. Theranostics , 2020, 10(24):
+11080-11091. doi:10.7150/thno.49864.
+[68] Yamashita R, Long J , Longacre T , et al . Deep learning model for 
+the prediction of microsatellite instability in colorectal cancer : a 
+diagnostic study [J]. Lancet Oncol , 2021, 22(1): 132-141. doi :
+10.1016/S1470-2045(20)30535-0.
+[69] Bilal M, Raza SEA , Azam A, et al . Development and validation of 
+a weakly supervised deep learning framework to predict the status 
+of molecular pathways and key mutations in colorectal cancer from 
+routine histology images : a retrospective study [J]. Lancet Digit 
+Health, 2021, 3(12): e763-e772. doi : 10.1016/S2589-7500(21)
+00180-1.
+[70] Schirris Y, Gavves E , Nederlof I , et al . DeepSMILE : Contrastive 
+self-supervised pre -training benefits MSI and HRD classification 
+directly from H&E whole -slide images in colorectal and breast 
+cancer[J]. Med Image Anal , 2022, 79: 102464. doi : 10.1016/j.
+media.2022.102464.
+[71] Jiang W, Mei WJ , Xu SY , et al . Clinical actionability of triaging 
+DNA mismatch repair deficient colorectal cancer from biopsy 
+samples using deep learning [J]. EBioMedicine , 2022, 81: 104120. 
+doi:10.1016/j.ebiom.2022.104120.
+2241
+
+=== PDF_PAGE 11 ===
+中国普通外科杂志 第 34 卷 
+http://www.zpwz.net
+[72] Bustos A, Payá A, Torrubia A, et al. xDEEP-MSI: explainable bias-
+rejecting microsatellite instability deep learning system in 
+colorectal cancer[J]. Biomolecules, 2021, 11(12):1786. doi:10.3390/
+biom11121786.
+[73] Saillard C, Dubois R , Tchita O, et al . Validation of MSIntuit as an 
+AI-based pre -screening tool for MSI detection from colorectal 
+cancer histology slides [J]. Nat . Commun ., 2023, 14: 6695. doi :
+10.1038/s41467-023-42453-6.
+[74] Guo B, Li X, Yang M, et al. Predicting microsatellite instability and 
+key biomarkers in colorectal cancer from H&E -stained images : 
+achieving state -of-the-art predictive performance with fewer data 
+using Swin Transformer[J]. J Pathol Clin Res , 2023, 9(3):223-235. 
+doi:10.1002/cjp2.312.
+[75] Gerwert K, Schörner S , Großerueschkamp F , et al . Fast and label -
+free automated detection of microsatellite status in early colon 
+cancer using artificial intelligence integrated infrared imaging [J]. 
+Eur J Cancer, 2023, 182:122-131. doi:10.1016/j.ejca.2022.12.026.
+[76] Wagner SJ , Reisenbüchler D , West NP , et al . Transformer -based 
+biomarker prediction from colorectal cancer histology : a large-scale 
+multicentric study [J]. Cancer Cell , 2023, 41(9): 1650-1661. doi :
+10.1016/j.ccell.2023.08.002.
+[77] Lo CM , Jiang JK , Lin CC . Detecting microsatellite instability in 
+colorectal cancer using Transformer -based colonoscopy image 
+classification and retrieval [J]. PLoS One , 2024, 19(1): e0292277. 
+doi:10.1371/journal.pone.0292277.
+[78] Gustav M , Reitsam NG , Carrero ZI , et al . Deep learning for dual 
+detection of microsatellite instability and POLE mutations in 
+colorectal cancer histopathology [J]. NPJ Precis Oncol , 2024, 8(1):
+115. doi:10.1038/s41698-024-00592-z.
+[79] El Nahhas OSM , van Treeck M , Wölflein G , et al . From whole -
+slide image to biomarker prediction : end-to-end weakly supervised 
+deep learning in computational pathology [J]. Nat Protoc , 2025, 20
+(1):293-316. doi:10.1038/s41596-024-01047-2.
+[80] Nowak M , Jabbar F , Rodewald AK , et al . Single -cell AI -based 
+detection and prognostic and predictive value of DNA mismatch 
+repair deficiency in colorectal cancer [J]. Cell Rep Med , 2024, 5(9):
+101727. doi:10.1016/j.xcrm.2024.101727.
+[81] Zamanitajeddin N , Jahanifar M , Bilal M , et al . Social network 
+analysis of cell networks improves deep learning for prediction of 
+molecular pathways and key mutations in colorectal cancer [J]. Med 
+Image Anal, 2024, 93:103071. doi:10.1016/j.media.2023.103071.
+[82] Fischer L , Ehrlinger L , Geist V , et al . AI system engineering : key 
+challenges and lessons learned[J]. Mach Learn Knowl Extr, 2021, 3
+(1):56-83. doi:10.3390/make3010004.
+[83] Campanella G , Hanna MG , Geneslaw L , et al . Clinical -grade 
+computational pathology using weakly supervised deep learning on 
+whole slide images [J]. Nat Med , 2019, 25(8): 1301-1309. doi :
+10.1038/s41591-019-0508-1.
+[84] Ameen S , Wong MC , Yee KC , et al . AI and clinical decision 
+making: the limitations and risks of computational reductionism in 
+bowel cancer screening [J]. Appl Sci , 2022, 12(7): 3341. doi :
+10.3390/app12073341.
+[85] Shreve JT , Khanani SA , Haddad TC . Artificial intelligence in 
+oncology: current capabilities , future opportunities , and ethical 
+considerations[J]. Am Soc Clin Oncol Educ Book , 2022, 42:1-10. 
+doi:10.1200/EDBK_350652.
+[86] Ching T, Himmelstein DS , Beaulieu-Jones BK, et al . Opportunities 
+and obstacles for deep learning in biology and medicine [J]. J R Soc 
+Interface, 2018, 15(141):20170387. doi:10.1098/rsif.2017.0387.
+[87] Meurisch C , Mühlhäuser M . Data protection in AI services [J]. 
+ACM Comput Surv, 2022, 54(2):1-38. doi:10.1145/3440754.
+[88] Levine AB, Peng J, Farnell D, et al. Synthesis of diagnostic quality 
+cancer pathology images by generative adversarial networks [J]. J 
+Pathol, 2020, 252(2):178-188. doi:10.1002/path.5509.
+[89] Han T, Nebelung S , Haarburger C , et al . Breaking medical data 
+sharing boundaries by using synthesized radiographs [J]. Sci Adv , 
+2020, 6(49):eabb7973. doi:10.1126/sciadv.abb7973.
+[90] Krause J, Grabsch HI, Kloor M, et al. Deep learning detects genetic 
+alterations in cancer histology generated by adversarial 
+networks[J]. J Pathol, 2021, 254(1):70-79. doi:10.1002/path.5638.
+[91] Bouhouita-Guermech S , Gogognon P , Bélisle -Pipon JC . Specific 
+challenges posed by artificial intelligence in research ethics [J]. 
+Front Artif Intell, 2023, 6:1149082. doi:10.3389/frai.2023.1149082.
+（本文编辑 宋涛）
+本文引用格式：李若涵, 秦雯 . 从病理图像到分子预测 ：多模态人工
+智能驱动的结直肠癌 MSI 检测新范式[J]. 中国普通外科杂志, 2025, 
+34(10):2232-2242. doi：10.7659/j.issn.1005-6947.250349
+Cite this article as : Li RH, Qin W. From histopathological imaging to 
+molecular prediction : a multimodal AI -driven paradigm for MSI 
+detection in colorectal cancer[J]. Chin J Gen Surg, 2025, 34(10):2232-
+2242. doi：10.7659/j.issn.1005-6947.250349
+2242

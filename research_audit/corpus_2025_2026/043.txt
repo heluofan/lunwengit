@@ -1,0 +1,758 @@
+=== PDF_PAGE 1 ===
+ISSN 1004 ⁃9037 ，CODEN SCYCE 4
+Journal of Data Acquisition and Processing Vol . 40，No. 4，Jul. 2025 ，pp. 922-933
+DOI ：10. 16337 /j. 1004 ⁃9037 . 2025 . 04. 007
+http ：// sjcj. nuaa . edu. cn
+E⁃mail ：sjcj @ nuaa . edu. cn
+Tel/Fax ： +86⁃025⁃84892742
+基于多尺度注意力和图神经网络的多模态医学实体识别研究
+韩 普
+1，2
+， 刘森嶺
+1
+， 陈文祺
+1
+（1. 南京邮电大学管理学院 ，南京  210003 ； 2. 江苏省数据工程与知识服务重点实验室 ，南京  210023）
+摘 要 ： 随 着 信 息 技 术 的 快 速 发 展，医 疗 健 康 领 域 中 文 文 本、图 像 等 多 模 态 数 据 呈 现 出 了 爆 发 式 增 长。
+多 模 态 医 学 实 体 识 别（Multi⁃modal medical entity recognition ， MMER ）是 多 模 态 信 息 抽 取 的 关 键 环 节，
+近 期 受 到 了 极 大 关 注。 针 对 多 模 态 医 学 实 体 识 别 任 务 中 存 在 图 像 细 节 信 息 损 失 和 文 本 语 义 理 解 不 足
+问 题 ，提 出 一 种 基 于 多 尺 度 注 意 力 和 图 神 经 网 络（Multi⁃scale attention and dependency parsing graph 
+convolution ，MADPG ）的 MMER 模型 。该模型一方面基于 ResNet 引入多尺度注意力机制 ，协同提取不
+同空间尺度融合的视觉特征 ，减少医学图像重要细节信息丢失 ，进而增强图像特征表示 ，补充文本语义
+信息 ；另一方面利用依存句法结构构建图神经网络 ，捕捉医学文本中词汇间复杂语法依赖关系 ，以丰富
+文 本 语 义 表 达，促 进 图 像 文 本 特 征 深 层 次 融 合。 实 验 表 明，本 文 提 出 的 模 型 在 多 模 态 中 文 医 学 数 据 集
+上 F1 值达到 95.12%，相较于主流的单模态和多模态实体识别模型性能得到了明显提升 。
+关键词 ：  多模态医学实体识别 ；多尺度注意力 ；图卷积神经网络 ；多模态融合 ；语义特征
+中图分类号 ：  TP391.1;TP183    文献标志码 ：A
+Multi-modal Medical Entity Recognition Based on Multi-scale Attention and Graph 
+Neural Networks
+HAN Pu
+1，2
+， LIU Senling
+1
+， CHEN Wenqi
+1
+(1. School of Management , Nanjing University of Posts and Telecommunications , Nanjing 210003 , China ; 2. Jiangsu Province Key 
+Lab of Data Engineering and Knowledge Service , Nanjing 210023 , China )
+Abstract ： With the rapid development of information technology ， multi -modal data such as Chinese texts 
+and images in the medical and health field has shown explosive growth . Multi -modal medical entity 
+recognition （MMER） is a key step in multi -modal information extraction ， and has attracted great attention 
+recently . Aiming at the problems of image detail loss and insufficient text semantic understanding in multi -
+modal medical entity recognition tasks ， this paper proposes a novel MMER model based on multi -scale 
+attention and dependency parsing graph convolution （MADPG ）. This model introduces a multi -scale 
+attention mechanism based on ResNet to collaborate to extract visual features fused with different spatial 
+scales and to reduce the loss of important details of medical images . Thus the image feature representation 
+and complementing text semantic information are enhanced . Then ， the dependency syntactic structure is 
+used to construct the graph neural network to capture the complex grammatical dependencies between 
+基金项目 ：国家社会科学基金项目 （22BTQ 096）;南京邮电大学 1311 人才计划资助 。
+收稿日期 ：2025 ⁃01⁃07；修订日期 ：2025 ⁃03⁃03
+
+=== PDF_PAGE 2 ===
+韩 普  等：基于多尺度注意力和图神经网络的多模态医学实体识别研究
+words in medical texts ， so as to enrich the semantic expression of texts and promote the deep integration of 
+image text features . Experiments show that the F1 value of the proposed model reaches 95.12% on the 
+multi -modal Chinese medical data set ， and the performance of the proposed model is significantly improved 
+compared with the mainstream single - and multi -modal entity recognition models .
+Key words : multi -modal medical entity recognition (MMER ); multi -scale attention ; graph convolutional 
+neural network ; multi -modal fusion ; semantic feature
+引  言
+近 年 来，随 着“ 健 康 中 国”国 家 战 略 持 续 推 进 以 及 人 工 智 能 的 快 速 发 展，医 疗 健 康 领 域 的 知 识 服 务
+正朝着智能化 、精准化和个性化方向发展
+［1］
+。医疗健康信息抽取和知识挖掘是知识服务智能化的关键 ，
+其 水 平 高 低 很 大 程 度 上 决 定 了 知 识 服 务 的 效 率 和 质 量
+［2］
+。同 时，随 着 医 学 影 像 等 信 息 技 术 和 医 疗 信 息
+系 统 的 迅 猛 发 展，各 类 平 台 和 系 统 积 累 了 海 量 文 本、图 像 等 多 模 态 医 疗 健 康 数 据。 而 传 统 的 单 模 态 数
+据 处 理 和 分 析 主 要 针 对 单 一 模 态 的 文 本 或 图 像，难 以 支 撑 多 模 态 医 疗 健 康 数 据 的 语 义 理 解 和 知 识 融
+合 。 因 此，如 何 增 强 模 态 间 深 层 语 义 理 解、实 现 深 度 知 识 融 合 是 当 前 医 疗 健 康 领 域 信 息 抽 取 和 知 识 挖
+掘的关键问题 。
+多模态医学实体识别 （Multi ⁃modal medical entity recognition ， MMER ）是多模态医疗健康知识组织
+的 基 础 和 关 键 任 务，旨 在 通 过 医 学 图 像、音 频 等 辅 助 模 态 补 充 文 本 语 义 进 而 提 升 医 学 实 体 识 别 效 果
+［3］
+。
+相 比 于 通 用 领 域，医 疗 健 康 领 域 数 据 更 为 复 杂 和 专 业，MMER 任 务 更 具 挑 战 性。现 有 研 究 主 要 利 用 文
+本 特 征 和 图 像 视 觉 信 息 进 行MMER 研 究。Wang 等
+［4］
+和 Ning 等
+［5］
+分 别 利 用 多 模 态 树 和 交 叉 注 意 力 机
+制 将 词 特 征 和 字 符 特 征 进 行 模 态 信 息 融 合，进 而 丰 富 医 学 文 本 语 义 信 息 实 现 多 模 态 实 体 识 别。 韩 普
+等
+［6］
+将 医 学 图 像 作 为 辅 助 模 态 以 补 充 文 本 语 义 特 征，并 通 过 多 模 态 表 示 学 习 和 双 线 性 注 意 力 机 制 实 现
+图 像 文 本 特 征 融 合。 虽 然 这 些 方 法 在MMER 任 务 中 取 得 了 一 定 进 展，但 仍 存 在 两 个 关 键 问 题： （1）忽
+略 了 医 学 图像由于对比度差 、边界模糊等问题丢失的重要细节信息 ，造成多模态信息交互不充分 ； （2）忽
+略了医学文本中术语和词汇间的复杂依赖关系 ，未能充分挖掘和理解文本语义信息 ，限制了多模态特征
+的有效融合 。
+鉴 于 通 道 和 空 间 注 意 力 机 制 在 多 个 计 算 机 视 觉 任 务 中 的 显 著 优 势，为 了 增 强 图 像 特 征 表 示，Ouy ⁃
+ang 等
+［7］
+在图像特征提取中提出了多尺度注意力 （Efficient multi⁃scale attention ，EMA）方法 ，该方法将每
+个 特 征 组 中 空 间 语 义 信 息 均 匀 分 布，有 效 减 少 了 图 像 细 节 丢 失。 在 文 本 分 类 任 务 中，为 了 捕 捉 更 丰 富
+的 文 本 特 征，Wang 等
+［8］
+利 用 图 卷 积 神 经 网 络（Graph convolutional networks ， GCN）捕 捉 词 间 语 义 依 赖
+关 系 进 而 建 模 复 杂 语 义 表 示，增 强 了 模 型 对 文 本 语 义 的 理 解 能 力。 在 已 有 研 究 基 础 上，本 文 提 出 了 一
+种基于 EMA 和图神经网络的多模态实体识别模型 ，一方面在图像特征提取阶段引入 EMA 捕捉不同尺
+度 信 息 以 减 少 图 像 细 节 丢 失；另 一 方 面 在 多 模 态 特 征 融 合 过 程 中 利 用 句 法 结 构 构 建GCN 以 丰 富 文 本
+语义特征 。
+本 文 在 中 文MMER 数 据 上 验 证 了 所 提 模 型 的 有 效 性，进 一 步 推 进 了 中 文 医 学 领 域 信 息 抽 取 研 究
+进 展。本 文 的 主 要 贡 献 如 下： （1） 将 EMA 用 于 MMER 任 务，从 多 个 维 度 提 取 图 像 模 态 特 征，充 分 利 用
+医学图像中的关键细节信息 ； （2） 引入依存句法结构充分挖掘文本深层语义信息 ，并利用图神经网络进
+一步促进图像和文本的深层语义交互 。
+923
+
+=== PDF_PAGE 3 ===
+数据采集与处理  Journal of Data Acquisition and Processing  Vol . 40, No. 4, 2025
+1 相关研究  
+1. 1　多尺度注意力相关研究　
+EMA 通过引入多个尺度的注意力权重 ，并结合并行注意力子模块 ，能够同时关注局部细节和整体
+结 构，可 有 效 提 升 模 型 特 征 表 示 能 力 和 泛 化 性 能，在 图 像 分 类、目 标 检 测 和 语 义 分 割 等 任 务 中 表 现
+出色
+［9⁃10］
+。
+Jiao 等
+［11］
+提出了多尺度空洞注意力 ，通过设置不同空洞率捕捉多尺度语义信息 ；Wang 等
+［12］
+结合多
+尺 度 和 门 控 机 制 构 建 了EMA 网 络 以 聚 合 全 局 和 局 部 信 息，并 降 低 了 图 像 噪 声 干 扰。 雷 浩 等
+［13］
+在
+ResNet⁃ 18 网 络 中 引 入 多 尺 度 卷 积 模 块 替 代 单 一 尺 度 卷 积 核，使 模 型 更 充 分 地 提 取 多 种 局 部 特 征。
+Ding
+［14］
+在 语 义 分 割 任 务 中 提 出 了 一 个 新 型 多 尺 度 卷 积 注 意 力 模 块，通 过 不 同 的 感 受 野 大 小 捕 获 特 征，
+提 高 了 模 型 语 义 分 割 准 确 性 。 Shao 等
+［15］
+利 用 EMA 卷 积 神 经 网 络（Convolutional neural network ， 
+CNN）提取多尺度 、低噪声的特征 ，在仅有少量标记数据的情况下实现高精度的故障检测 。Zhong 等
+［16］
+在医学图像分割任务中引入了一个基于注意力机制的多尺度特征增强模块 ，促进了多尺度语义信息与
+全局上下文特征的有效融合 ，增强了模型特征表示能力 。陈龙等
+［17］
+在小样本图像识别任务中构建了一
+种 EMA 与领域自适应模型 ，通过突出类别相关特征提升了图像识别准确率 。李烨等
+［18］
+引入 EMA 融合
+模 块，利 用 不 同 分 辨 率 特 征 信 息 之 间 的 差 异，提 高 了 多 尺 度 遥 感 目 标 检 测 精 度。 为 提 取 全 面 且 关 键 特
+征 信 息，刘 拥 民 等
+［19］
+结 合 CNN 和 EMA 融 合 图 像 局 部 特 征 信 息 与 全 局 特 征 信 息，提 升 了 小 样 本 图 像 分
+类准确率 。
+1. 2　图神经网络相关研究　
+图 神 经 网 络（Graph neural network ， GNN）是 处 理 图 结 构 数 据 的 深 度 学 习 模 型，其 核 心 在 于 通 过 多
+次迭代聚合邻居节点信息更新节点表示 ，以捕捉数据深层次特征 。
+为 解 决 传 统 深 度 学 习 仅 能 处 理 局 部 语 义 关 系 问 题，Kipf 等
+［20］
+构 建 了GCN ，通 过 在 图 结 构 数 据 上 进
+行卷积操作 ，有效捕获了 GNN 中全局结构特征和节点间复杂关系 。GCN 已广泛应用于谣言检测 、情感
+分析和语音情感识别等任务 ，在谣言检测任务中 ，Cui 等
+［21］
+采用图卷积网络挖掘文本内以及文本间的深
+层 语 义 关 联，从 局 部 和 全 局 两 个 层 面 对 文 本 和 知 识 信 息 进 行 建 模，从 而 提 升 模 型 检 测 性 能；Wang 等
+［22］
+提出一种结合语法与语义的双图神经网络 ，该网络通过 GCN 捕捉句子中的语义信息 ，并将其与句法信
+息相融合 ，以提升方面级情感分析性能 。为了缓解句子信息丢失的影响 ，充分利用句子间依赖结构 ，Lu
+等
+［23］
+提 出 了 一 种 情 感 交 互 式 图 卷 积 网 络，用 于 捕 捉 句 法 中 的 长 距 离 依 赖 关 系 以 及 语 义 中 的 情 感 交 互；
+Shang 等
+［24］
+利用 GCN 模型建模不同单词间的依赖关系以及句子间依存句法关系 ，提升了情感分析任务
+性能 ；常远等
+［25］
+在中文医学实体识别任务中引入句法结构捕捉字符间依赖关系 ，借助关系 GCN 融合句
+法依赖信息 ，以提升模型对口语化和表述不规范文本的实体识别效果 ；Jain 等
+［26］
+等将 RoBERTa 和 GCN
+相结合 ，利用图卷积网络捕捉依存关系图中的节点特征 ，增强了模型对实体边界的理解和提取能力 。
+2 模型设计  
+为充分挖掘医学图像语义信息和文本深层语义特征 ，解决医学图像细节丢失和文本语义理解不足
+问 题 ，本 文 提 出 一 种 基 于 多 尺 度 注 意 力 和 图 神 经 网 络（Multi⁃scale attention and dependency parsing 
+graph convolution ，MADPG ）的 MMER 模型 。
+具 体 而 言，首 先 利 用ResNet 和 EMA 协 同 提 取 多 尺 度 图 像 特 征 以 减 少 图 像 细 节 丢 失，接 着 基 于 门
+控 注 意 力 机 制 将 文 本 序 列 和 多 尺 度 视 觉 序 列 在RoBERTa 中 进 行 多 模 态 特 征 融 合，然 后 通 过 依 存 句 法
+结 构 构 建GCN 学 习 文 本 深 层 语 义 信 息 以 丰 富 多 模 态 语 义 特 征，最 后 结 合 双 向 长 短 期 记 忆 网 络 和 条 件
+随机场进行实体识别序列标注预测输出 ，如图 1 所示 。
+924
+
+=== PDF_PAGE 4 ===
+韩 普  等：基于多尺度注意力和图神经网络的多模态医学实体识别研究
+2. 1 多模态特征提取
+（1） 文本特征提取
+文 本 特 征 表 示 对 多 模 态 实 体 识 别 具 有 重 要 影 响
+［27］
+。 本 文 利 用 在 中 文 维 基 百 科 大 规 模 语 料 中 进 行
+预训练的语言模型进行文本特征表示 。鉴于 RoBERTa⁃WWM
+［28］
+能够利用全词掩码技术学习词级先验
+语义特征 ，并且能够捕获输入数据中的复杂模式并生成更精细的特征表示 ，本文选用 RoBERTa⁃WWM
+作为文本信息编码器 ，得到文本标记序列的特征表示 T = [ ]w1，w2，…，wn 。
+（2） 图像特征提取
+多维度的图像语义信息能够充分补充文本语义 ，进而提升多模态实体识别效果 。ResNet⁃ 152
+［29］
+在
+大 规 模 图 像 数 据 集 上 进 行 了 预 训 练，学 习 了 丰 富 的 视 觉 特 征，具 有 较 强 的 泛 化 能 力。 但 重 要 病 理 特 征
+可能存在于图像局部区域 ，仅使用单尺度卷积难以有效捕捉局部特征 。为获得更多维度的视觉上下文
+信 息，本 文 在ResNet⁃ 152 基 础 上 引 入EMA
+［30］
+，构 建 了 一 个 并 行 层 次 结 构，从 不 同 空 间 尺 度 提 取 图 像 的
+局部特征和全局表示 。首先将图像输入 ResNet 提取最后一层卷积层输出作为 EMA 的输入 ，然后 EMA
+将 输 出 通 道 维 度 按 批 处 理 维 度 重 新 排 列，从 全 局（水 平 和 垂 直）和 局 部 多 个 维 度 提 取 多 尺 度 视 觉 信 息，
+以补充 ResNet 卷积层输出 ，进而增强图像特征表示 ，最后形成有序的视觉特征序列 V = [ ]v1，v2，…，vm 。
+图 1 本文 模型整体架构
+Fig.1　Overall architecture of the proposed model
+925
+
+=== PDF_PAGE 5 ===
+数据采集与处理  Journal of Data Acquisition and Processing  Vol . 40, No. 4, 2025
+2. 2　多模态特征融合　
+传统多模态特征融合方法通常采用简单的特征拼接 ，无法充分捕捉图像文本模态间的深层语义关
+联
+［31］
+，本文提出了一种两阶段融合方法 ，该方法通过细粒度融合策略来获得图像文本模态间更丰富的交互
+信息 ，能够动态调整文本对图像不同区域的关注度 ，并在多层次上实现模态间深度融合 。具体流程如下 。
+（1） 通过注意力机制实现图像与文本特征的初步融合
+在第 1 阶段特征融合过程中 ，为引导文本特征和多尺度视觉特征融合 ，本文首先将医学文本特征和
+医学图像特征结合 ，形成初步的多模态序列表示 Z 作为多模态特征融合网络的输入 ，如式（1）所示 ，其中
+[ CLS] 表示文本与图像之间的关系分类 ，[ SEP] 表示文本和图像特征之间的分离 。
+Z = [ CLS] w1 w2…wn[ SEP] v1 v2…vm （1）
+接 着 将 多 模 态 序 列 表 示Z 输 入 全 连 接 层 得 到 标 量 值x，然 后 使 用 向 量 归 一 化 函 数 得 到 文 本⁃图 像 关
+系 的 相 关 性 得 分r。根 据 相 关 性 得 分r，本 文 在 门 控 注 意 力 单 元 中 引 入 一 个7×7 的 权 重 参 数 矩 阵W，构
+建视觉掩码矩阵 R，即
+r = [ Gate ( softmax ( x )) ]
+2
+（2）
+R = ( xi，j = r ) ⊙w + d （3）
+式中 ：d 表示 7×7 的可学习偏置矩阵 ，“⊙”表示矩阵点乘 。在视觉掩码矩阵 R 基础上 ，本文进一步通过
+Hadamard 积 对 医 学 图 像 特 征 进 行 加 权 得 到 加 权 后 的 视 觉 特 征V '，并 将 其 与 文 本 特 征 拼 接 形 成 新 的 多
+模 态 特 征 表 示Z' 后 送 入Transformer 层 中 进 行 处 理。 最 后，利 用 多 头 自 注 意 力 机 制 和 前 馈 神 经 网 络 在
+不 同 层 次 上 捕 捉 文 本 和 图 像 特 征 间 的 全 局 依 赖 关 系，得 到 多 尺 度 视 觉 语 义 增 强 的 文 本 特 征 表 示H ( )0 ，
+Concat 表示矩阵拼接 ，具体过程如式 （4~6）所示 。
+V '= V⊙R =
+■
+■
+|
+|
+||
+|
+|
+■
+■
+|
+|
+||
+|
+|
+v11 v12 ⋯ v1d
+v21 v22 ⋯ v2d
+⋮ ⋮ ⋱ ⋮
+vw1 vw2 ⋯ vwd
+⊙
+■
+■
+|
+|
+||
+|
+|
+■
+■
+|
+|
+||
+|
+|
+r11 r12 ⋯ r1d
+r21 r22 ⋯ r2d
+⋮ ⋮ ⋱ ⋮
+rw1 rw2 ⋯ rwd
+（4）
+Z' = Concat ( T，V ') （5）
+H ( )0 = Transformer ( Z' ) （6）
+（2） 构建依存句法结构图 ，利用 GCN 实现深度融合
+在第 2 阶段特征融合过程中 ，本文首先使用 Spacy（https ：//spacy .io）的依存句法分析功能从原始输
+入 文 本 中 生 成 依 存 句 法 结 构 图DpG = ( X，E )，其 中 文 本 中 的 词 向 量 构 成 图 结 构 中 的 节 点 集 合X，词 汇
+间的依存句法关系构成图中的边集合 E。接着将依存句法结构图转换为邻接矩阵 A ∈ M n × n，若词与词
+之间存在依存关系 ，对应位置赋值为 1，否则赋值 0，即
+Ani，j = fspa ( x )= ■■
+■
+||
+||
+1 wi ∈ M且wj ∈ M，或i = j
+0 其他
+（7）
+然 后 基 于 邻 接 矩 阵A，利 用 GCN 对 多 尺 度 视 觉 语 义 增 强 的 文 本 特 征 表 示H ( )0 进 行 卷 积 操 作，来 更
+新每个节点的特征表示 ，具体如式（8）所示 ，H ( )k + 1i 为节点 i 在第 k + 1 层的特征 ，ϕ ( • ) 使用了非线性激活
+函数（Retctifeid linear unit ， ReLU） ，W ( )l 是第 k 层权重矩阵 ，b( )k 为第 k 层截距 。
+H ( k + 1 )i = ϕ ( ∑j = 1
+n
+ ci Aij(W ( k ) H ( k )j + b( k ) ) ) （8）
+鉴 于 长 短 期 记 忆 网 络（Long short⁃term memory ， LSTM ）能 够 有 效 解 决 长 期 依 赖 问 题，并 且 缓 解 了
+梯 度 弥 散 和 梯 度 爆 炸 影 响，利 用 正 反 向 LSTM 构 建 的 双 向 长 短 期 记 忆 网 络（Bidirectional LSTM ， 
+BiL STM）能够更好地学习文本上下文信息
+［32］
+。因此 ，本文最后将 GCN 的输出 Hi 送入 BiLSTM 网络进
+926
+
+=== PDF_PAGE 6 ===
+韩 普  等：基于多尺度注意力和图神经网络的多模态医学实体识别研究
+行特征抽取 ，最后得到每个序列标记对应的隐藏状态向量 H，即
+H ={ }hi =[ h LSTMi ；h LSTMi ]
+n
+i = 1
+（9）
+2. 3　特征解码　
+由 于 BiLSTM 模 型 难 以 学 习 标 签 之 间 的 相 关 性，而 条 件 随 机 场（Conditional random field ， CRF）能
+够 通 过 全 局 特 征 归 一 化 得 到 求 解 过 程 中 的 全 局 最 优 解，有 效 降 低 了 标 记 过 程 中 可 能 出 现 的 偏 差 问
+题
+［33］
+。 本 文 基 于CRF 模 型 给 定 输 入H = [ ]h1，h2，…，hn ，在 训 练 过 程 中 通 过 最 小 化 损 失 函 数 优 化 模 型
+参 数，最 后 使 用Viterbi 算 法 得 到 最 佳 命 名 实 体 标 签。 对 于 标 签 序 列y = [ ]y1，y2，…，yn ，最 大 化 标 签 序
+列 y 的似然概率和损失函数分别定义为
+s( H，y )= ∑
+i = 0
+n
+T ( yi，yi + 1 ) + ∑
+i = 0
+n
+U ( hi，yi ) （10）
+■
+■
+■
+||||
+|
+|||
+ln [ P ( y|H ) ]= s( H，y )- ln ( )∑y  = Yh1
+Yhn
+es( H，y )         y  ∈ YH
+loss = -ln [ p ( y|H ) ]
+（11）
+式 中：n 表 示 序 列 长 度，T ( yi，yi + 1 ) 表 示 第i 步 的 标 签 是yi、第 i+1 步 标 签 是yi + 1 的 转 移 分 数，U ( hi，yi )
+表示第 i 步输入 hi 对应的标签是 yi 的发射分数 ，P ( y|H ) 为条件概率 ，y  为真实标注序列 ，YH 为所有可能
+的标注序列 。
+3 实验设计与结果分析  
+3. 1　数据准备　
+本 文 实 验 数 据 来 自 爱 爱 医 临 床 病 历 数 据 库（https ：//
+www .iiyi.com） 、影像园（http ：// www .xctmr .com）和 Radio ⁃
+paedia（https ：//radiopaedia .org）等在线医疗健康 平台 ，主要
+收 集 文 本 和 图 像 两 种 模 态 数 据。 文 本 数 据 主 要 由 病 历 记
+录 和 诊 断 报 告 组 成；图 像 数 据 是 文 本 对 应 的 患 者 诊 断 图
+像 。 参 照 已 有 研 究，本 实 验 定 义 了 疾 病（Disease） 、症 状
+（Symptom ） 、器 官（Organ） 、属 性（Attribute ）和 治 疗 手 段
+（Treatment ）五类医学实体 。经过对收集的数据进行脱敏 、
+清 洗 和 归 一 化 处 理 后 得 到6 995 条 高 质 量 的 图 片 文 本 对，
+数据集划分细节如表 1 所示 。
+同 时，在 具 有 专 业 医 学 知 识 的 专家 指 导 下 采 用BIO 标
+注 体 系（B⁃X ，I⁃X 和 O）进 行 标 注，其 中 X 代 表 实 体 类 别，
+B⁃X 表 示 实 体X 的 开 始，I⁃X 表 示 实 体X 的 内 部，O 表 示 非
+实体 ，具体示例如图 2 所示 。
+3. 2　实验环境与参数设置　
+本文实验均在 Ubuntu 操作系统进行 ，服务器 CPU 型号
+为 Intel（R） ，频 率 为 2 GHz ；GPU 型 号 为 24 GB 显 存 的
+RTX 3090 的 显 卡；服 务 器 内 存 为43 GB ；开 发 环 境 为py⁃
+thon 3.10、cuda 12.1 和 torch 2.2.1。实验参数设置如表 2 所示。
+表 1　数据集划分详情
+Table 1　Dataset partitioning details
+数据集划分
+训练集
+验证集
+测试集
+数据数量
+5 000
+1 000
+995
+实体数量
+76 070
+15 236
+15 193
+图 2　医学图像文本对标注示例
+Fig.2　Annotation example of medical image 
+and text
+表 2　实验参数设置
+Table 2　Experimental parameter setting
+模型参数
+批尺寸
+迭代次数
+学习率
+Dropout 机制
+参数值
+32
+16
+1e-5
+0.5
+模型参数
+优化器
+激活函数
+注意力头
+最大序列长度
+参数值
+Adam
+ReLU
+12
+256
+927
+
+=== PDF_PAGE 7 ===
+数据采集与处理  Journal of Data Acquisition and Processing  Vol . 40, No. 4, 2025
+3. 3　评价指标　
+参 照 已 有 研 究
+［34］
+，实 验 采 用 的 评 价 指 标 为 准 确 率（Precision ） 、召 回 率（Recall）和 F1 值（F1⁃score） ，计
+算方式如式（12~14）所示 。
+Precision ( P ) = TPTP + FP （12）
+Recall ( R ) = TPTP + FN （13）
+F1 = 2PRP + R （14）
+式中 ：TP 是正样本正确预测的数量 ；FP 指负样本预测为正样本的数量 ；FN 是正样本预测为负样本的 数
+量；F1 值是准确率和召回率的调和平均数 ，能够平衡两者之间的影响 ，提供一个更为全面的性能评估 。
+3. 4　基准模型对比实验　
+为 验 证 本 文 所 提 模 型MADPG⁃MMER 在 中 文 多 模 态 医 学 实 体 识 别 任 务 中 的 有 效 性，本 实 验 将 所
+提 模 型 与 经 典 文 本 模 态 模 型 以 及 常 见 多 模 态 模 型 进 行 对 比。 对 比 实 验 模 型 具 体 如 下，实 验 结 果 如 图3
+和表 3 所示 。
+（1） CNN⁃CRF
+［35］
+：使 用 CNN 提 取 文 本 特 征 表 示 并 使 用CRF 建 模 序 列 标 注 实 体 之 间 依 赖 关 系，输
+出最优预测结果 。
+（2） BiLSTM⁃CRF
+［36］
+：使 用 双 向 长 短 期 记 忆 网 络BiLSTM 学 习 序 列 数 据 的 特 征 表 示 并 利 用CRF
+完成实体识别 。
+（3） BERT⁃CRF
+［37］
+：使 用 预 训 练 语 言 模 型BERT 学 习 本 文 语 义 表 示，编 码 上 下 文 信 息 并 结 合CRF
+进行实体识别 。
+（4） RoBERTa⁃CRF
+［38］
+：使 用 BERT 的 改 进 模 型RpBERTa 提 取 文 本 特 征 并 使 用CRF 完 成 实 体 识
+别任务 。
+（5） BERT⁃BiLSTM⁃CRF
+［37］
+：在 BERT⁃CRF 模 型 中 引 入BiLSTM 加 强 模 型 捕 捉 时 间 序 列 依 赖 的
+能力 ，提高实体识别效果 。
+（6） RoBERTa⁃ BiLSTM⁃CRF
+［38］
+：在 RoBERTa⁃CRF 模 型 中 引 入BiLSTM 同 时 对 前 后 信 息 进 行 学
+习，更全面地捕获上下文信息 ，提高模型识别实体的准确性 。
+（7） 统 一 多 模 态Transformer（Unified multimodal Transformer ， UMT）
+［39］
+：使 用 BERT 提 取 文 本 特
+征 和 ResNet 提 取 视 觉 对 象 图 像 特 征，并 通 过Transformer
+交互文本和图像信息进行实体识别 。
+（8） 统一多模态图融合 （Unified multi⁃modal graph fu ⁃
+sion ， UMGF ）
+［40］
+：使用 BERT 提取文本特征 、ResNet 提取
+图像特征 ，并结合多模态图融合方法实现文本和图像语义
+信息交互完成实体识别任务 。
+（9） RpBERT
+［41］
+：使 用 BERT 和 ResNet 分 别 提 取 文
+本和视觉对象图像特征 ，然后基于文本图像关系传播机制
+进行图像文本特征融合 。
+（10） EMA⁃RpRoBERTa ：改 进 RpBERT 模 型 ，使 用
+RoBERTa 提 取 文 本 特 征、ResNet 和 EMA 提 取 多 尺 度 图
+像 特 征，然 后 利 用 文 本 图 像 关 系 传 播 机 制 融 合 图 像 文 本
+图 3 基准模型实验结果
+Fig.3　Experimental results of the benchmark 
+models
+928
+
+=== PDF_PAGE 8 ===
+韩 普  等：基于多尺度注意力和图神经网络的多模态医学实体识别研究
+特征 。
+（11） DPGCN⁃RpRoBERTa ：改进 RpBERT 模型 ，使用 RoBERTa 和依存句法分析图卷积网络 （De⁃
+pendency parsing graph convolutional networks ， DPGCN ）提取文本深层语义信息 、ResNet 提取视觉对象
+图像特征 ，然后通过文本图像关系传播机制进行图像文本特征融合 。
+（12） RpRoBERTa⁃DPGCN ：改 进 RpBERT 模 型，使 用 RoBERTa 和 ResNet 分 别 提 取 文 本 和 视 觉
+图像特征 ，然后使用文本图像关系传播机制融合图像文本特征 ，最后使用 DPGCN 挖掘深层语义信息 。
+3. 5　消融实验　
+为 探 究 本 文 所 提 模 型MADPG⁃MMER 中 各 模 块 在 中 文 多 模 态 医 学 实 体 识 别 任 务 中 的 有 效 性，本
+实验分别去掉不同单一模块或组合模块与完整 MADPG⁃MMER 模型进行对比 ，采用同样评价指标 ，具
+体结果如表 4 所示 。其中“w/o ”代表从 MADPG⁃MMER 中去除对应模块 ， “w/o EMA ”代表去除 EMA ，
+“w/o DPGCN ”代表去除基于依存句法结构的图卷积网络 ， “w/o Gating mechanism ”代表去 掉门控注意
+力机制 。
+表 3　基准模型实验结果
+Table 3　Experimental results of the benchmark models %
+数据模态
+文本
+文本 +图像
+模型名称
+CNN⁃CRF
+BiLSTM⁃CRF
+BERT⁃CRF
+RoBERTa⁃CRF
+BERT⁃BiLSTM⁃CRF
+RoBERTa⁃BiLSTM⁃CRF
+UMT
+UMGF
+RpBERT
+EMA⁃RpRoBERTa
+DPGCN⁃RpRoBERTa
+RpRoBERTa⁃DPGCN
+MADPG⁃MMER
+P
+76.49
+77.58
+79.79
+83.17
+86.16
+87.66
+91.73
+94.85
+93.67
+94.88
+94.01
+95.87
+96.35
+R
+76.24
+78.69
+83.39
+85.72
+87.03
+88.56
+92.25
+89.96
+91.11
+93.29
+91.99
+92.38
+93.92
+F1
+76.36
+78.13
+81.55
+84.43
+86.59
+88.11
+91.41
+91.85
+92.37
+94.08
+92.98
+94.10
+95.12
+表 4　消融实验结果
+Table 4　Ablation experiment results %
+模型名称
+MADPG⁃MMER
+w/o EMA
+w/o DPGCN
+w/o Gating mechanism
+w/o EMA & DPGCN
+w/o EMA & Gating mechanism
+w/o DPGCN & Gating mechanism
+w/o EMA &DPGCN & Gating mechanism
+P
+96.35
+95.87
+94.88
+94.78
+94.09
+95.14
+93.53
+93.23
+R
+93.92
+92.38
+93.29
+93.32
+92.71
+91.46
+92.28
+90.36
+F1
+95.12
+94.10
+94.08
+94.05
+93.39
+93.26
+92.90
+91.77
+929
+
+=== PDF_PAGE 9 ===
+数据采集与处理  Journal of Data Acquisition and Processing  Vol . 40, No. 4, 2025
+3. 6　实验结果分析　
+（1） 基准模型对比实验结果分析
+通 过 分 析 表 3 可 知 ，在 单 一 文 本 模 态 模 型 中 ，BERT⁃CRF 和 RoBERTa⁃CRF 模 型 F1 值 较
+BiLSTM⁃CRF 模型分别提升 3.42% 和 6.3%，表明通过预训练可以增强模型的语义理解和表征能力 ，并
+且动态掩码机制在医学文本特征提取过程中更具优势 。进一步分析发现 ，RoBERTa⁃BiLSTM⁃CRF 模
+型 相 较 于RoBERTa⁃CRF 模 型，F1 值 提 升 了3.68%，这 一 结 果 表 明 结 合 预 训 练 模 型 和LSTM 显 著 增 强
+了模型对医学文本长期依赖关系的捕捉能力 ，从而提升了实体识别的准确性 。
+在 文 本⁃图 像 多 模 态 模 型 中，UMT 模 型 和 UMGF 模 型 F1 值 相 较 于 单 模 态 基 线 模 型 分 别 提 升 了
+3.3% 和 3.74%，这表明通过引入多模态交互注意力和多模态图融合网络 ，能够有效利用视觉辅助信息 ，
+从而提升文本理解准确性 。RpBERT 模型 F1 值相较于 UMGF 模型进一步提升了 0.52%，这是因为 Rp⁃
+BERT 模 型 引 入 文 本⁃图 像 关 系 传 播 机 制，能 够 降 低 图 像 相 关 性 低 的 区 域 对 文 本 特 征 的 干 扰，使 得 模 型
+能够更细粒度地利用图像文本间的互补信息 ，进而提高模型对中文医疗实体识别的准确性 。
+从图 3 可以明显看出 ，文本 ⁃图像多模态模型在 P、R 和 F1 这 3 个评价指标上的折线始终高于所有单
+一 文 本 模 态 模 型，这 表 明 图 像 和 文 本 特 征 融 合 可 有 效 提 升 模 型 实 体 识 别 性 能。 在 RpBERT 模 型 基 础
+上，本文所提 MADPG⁃MMER 模型在所有指标上均表现最优 ，其中 F1 值为 95.12%，相较于最优单模态
+和 多 模 态 基 线 模 型，分 别 提 升7.01% 和 2.75%。MADPG⁃MMER 模 型 的 优 势 可 以 归 结 于 以 下 两 个 原
+因：① 在 医 学 图 像 特 征 提 取 过 程 中，通 过 引 入EMA 模 块，模 型 能 够 沿 水 平 维 度 和 垂 直 维 度 两 个 方 向 对
+图 像 特 征 进 行 加 权 融 合，进 而 聚 合 更 加 全 面 完 整 的 空 间 结 构 信 息；而 经 典 的 多 模 态 基 线 模 型UMT 、
+UMGF 和 RpBERT 均 采 用ResNet 编 码 器，这 种 基 于 单 尺 度 卷 积 的 方 法 在 医 学 图 像 表 征 过 程 中 会 导 致
+细节丢失 ，因此本文选用 EMA 模块可为医学实体提供丰富的视觉语义信息 ，显著提升多模态医学实体
+识 别 任 务 效 果。② 在 多 模 态 特 征 融 合 过 程 中，通 过 引 入 依 存 句 法 结 构 图，模 型 能 够 聚 合 邻 居 节 点 信 息
+来理解医学文本中的复杂句法结构 ，进而捕捉医学实体间的细粒度关系 。该方法从更多维度对多尺度
+视 觉 语 义 增 强 的 医 学 文 本 特 征 进 行 挖 掘，不 仅 丰 富 了 文 本 特 征 的 多 层 次 语 义 信 息，还 进 一 步 增 强 了 图
+像文本特征间的深层语义融合 ，显著提高了模型对多模态医学实体识别的准确性 。
+（2） 消融实验结果分析
+分 析 表4 可 知，移 除 MADPG⁃MMER 模 型 的 单 一 模 块 或 组 合 模 块 均 会 导 致 模 型 识 别 效 果 下 降：①
+去除 EMA 模块 ，模型 F1 值降低 1.02%，表明 EMA 能够有效捕捉医学图像多尺度语义特征 ；②去掉门控
+注意力机制 ，F1 值下降 1.07%，表明通过计算文本特征和图像特征区域的相关度 ，有效降低了无关视觉
+区域的噪声干扰 ；③移除 DPGCN 模块的 F1 值减少 1.04%，表明基于依存句法结构构建图卷积网络能够
+帮 助 模 型 更 好 地 理 解 文 本 依 存 句 法 信 息；④ 去 除 EMA 和 门 控 注 意 力 组 合 模 块，模 型 F1 值 下 降1.86%，
+说明这两个模块结合能够有效地捕捉图像特征深层语义信息 ；⑤同时去掉 EMA 和 DPGCN 模块 ，F1 值
+降 低 1.73%，表 明 结 合 这 两 种 技 术 能 够 提 高 模 型 对 多 模 态 信 息 的 挖 掘 能 力；⑥ 移 除 门 控 注 意 力 和DP ⁃
+GCN 模块 ，F1 值降低 2.73%，说明组合这两个模块能够更充分地利用图像文本信息间深层语义关联 ；⑦
+同时去掉 EMA 、门控注意力和 DPGCN 模块 ，F1 值降低 3.35%，表明这 3 大模块能够相互协作共同提高
+模型的多模态实体识别效果 。综上所述 ，实验结果验证了 EMA 、依存句法结构图卷积网络以及门控注
+意力机制这 3 个关键组件在多模态医学实体识别模型 MADPG⁃MMER 中的必要性和有效性 ，它们共同
+作用能够提升模型性能 。
+4 结束语  
+为深入挖掘医学图像细节信息和文本深层语义特征 ，本文提出了基于 EMA 和 GNN 的多模态实体
+930
+
+=== PDF_PAGE 10 ===
+韩 普  等：基于多尺度注意力和图神经网络的多模态医学实体识别研究
+识 别 模 型。该 模 型 一 方 面 在ResNet 中 引 入EMA 模 块 从 不 同 空 间 尺 度 捕 捉 图 像 模 态 特 征，能 够 更 充 分
+利用医学图像中的关键细节信息 ；另一方面通过设计门控注意力机制动态调整文本对图像区域的关注
+度 ，减 少 了 无 关 区 域 噪 声 干 扰，并 利 用 依 存 句 法 结 构 构 建GCN 充 分 挖 掘 文 本 深 层 语 义 信 息，通 过 多 尺
+度 视 觉 特 征 和 文 本 特 征 间 深 层 语 义 交 互，有 效 提 升 多 模 态 医 学 实 体 识 别 准 确 性。 与 最 优 单 模 态、多 模
+态 基 线 模 型 对 比，本 文 所 提 模 型F1 值 分 别 提 升 了7.01%、2.75%，表 明 该 模 型 能 够 有 效 降 低 图 像 噪 声 干
+扰 ，丰 富 文 本 语 义 特 征，促 进 文 本 和 图 像 特 征 有 效 融 合，从 而 更 准 确 地 识 别 医 学 实 体。 尽 管 如 此，本 研
+究 还 存 在 一 定 不 足，所 构 建 模 型 主 要 基 于 文 本 和 图 像 模 态，并 且 未 在 多 个 多 模 态 医 学 实 体 识 别 数 据 集
+上 验 证 该 模 型 泛 化 性 能。 在 未 来 工 作 中，一 方 面 将 继 续 探 究 融 合 声 音、视 频 等 其 他 模 态 数 据 的 实 体 识
+别 模 型；另 一 方 面 将 在 不 同 规 模 多 模 态 医 学 实 体 识 别 数 据 集 上 进 行 实 验，以 进 一 步 验 证 本 文 所 提 模 型
+的有效性 。
+参考文献 ：
+[1] 韩普 , 叶东宇 , 陈文祺 , 等 . 面向多模态医疗健康数据的知识组织模式研究 [J]. 现代情报 , 2023 , 43(10): 27-34.
+HAN  Pu , YE Dongyu , CHEN  Wenqi , et al . Research on the knowledge organization model of multimodal medical and health 
+data [J]. Journal of Modern Information , 2023 , 43(10): 27-34.
+[2] 杨善林 , 丁帅 , 顾东晓 , 等 . 医疗健康大数据驱动的知识发现与知识服务方法 [J]. 管理世界 , 2022 , 38(1): 219 -229.
+YANG  Shanlin , DING  Shuai , GU  Dongxiao , et al . Healthcare big data driven knowledge discovery and knowledge service ap ⁃
+proach [J]. Journal of Management World , 2022 , 38(1): 219 -229.
+[3] 韩普 , 李雄 . 基于增强异构图融合的多模态医学实体识别研究 [J]. 现代情报 , 2025 , 45(6):34-45.
+HAN  Pu , LI Xiong . Multimodal medical named entity recognition based on augmented heterogeneous graph fusion [J]. Journal 
+of Modern Information , 2025 , 45(6): 34-45.
+[4] WANG  C , WANG  H , ZHUANG  H , et al . Chinese medical named entity recognition based on multi -granularity semantic 
+dictionary and multimodal tree [J]. Journal of Biomedical Informatics , 2020 , 111: 103583 .
+[5] NING  J, LI J, YANG  Z, et al . BioNER -CFEM : Biomedical named entity recognition based on character feature enhancement 
+with multimodal method [C]//Proceedings of the 2022  IEEE International Conference on Bioinformatics and Biomedicine 
+(BIBM ). Las Vegas , USA : IEEE , 2022 : 787 -790.
+[6] 韩普 , 陈文祺 , 顾亮 , 等 . 融合多模态数据的中文医学实体识别研究 [J]. 情报理论与实践 , 2024 , 47(9): 174 -182.
+HAN  Pu , CHEN  Wenqi , GU  Liang , et al . Research on Chinese medical named entity recognition with fusion of multimodal 
+data [J]. Information Studies : Theory & Application , 2024 , 47(9): 174 -182.
+[7] OUYANG  D , HE S , ZHANG  G , et al . Efficient multi -scale attention module with cross -spatial learning [C]//Proceedings of 
+the IEEE International Conference on Acoustics , Speech and Signal Processing (ICASSP ). Rhodes Island , Greece : IEEE , 
+2023 : 1-5.
+[8] WANG  Y , WANG  Y , HU  H , et al . Knowledge -graph - and GCN -based domain Chinese long text classification method [J]. 
+Applied Sciences , 2023 , 13(13): 7915 .
+[9] LI X , FU C , WANG  Q , et al . DMSA -UNet : Dual multi -scale attention makes UNet more strong for medical image 
+segmentation [J]. Knowledge -Based Systems , 2024 , 299: 112050 .
+[10] 阎 菩 提, 邱 实, 岳 程 斐. 结 合 局 部 高 清 图 像 的 遥 感 集 群 目 标 区 域 超 分 辨 率 重 建[J]. 南 京 航 空 航 天 大 学 学 报, 2023 , 55(6): 
+956 -965.
+YAN  Puti , QIU  Shi , YUE  Chengfei . Remote sensing image super -resolution reconstruction with local high -resolution clus ⁃
+tered object images [J]. Journal of Nanjing University of Aeronautics & Astronautics , 2023 , 55(6): 956 -965.
+[11] JIAO  J , TANG  Y M , LIN  K Y , et al . DilateFormer : Multi -scale dilated Transformer for visual recognition [J]. IEEE 
+Transactions on Multimedia , 2023 , 25: 8906 -8919 .
+[12] WANG  Y , LI Y , WANG  G , et al . Multi -scale attention network for single image super -resolution [C]//Proceedings of the 
+IEEE/CVF Conference on Computer Vision and Pattern Recognition . Seattle , USA : IEEE , 2024 : 5950 -5960 .
+931
+
+=== PDF_PAGE 11 ===
+数据采集与处理  Journal of Data Acquisition and Processing  Vol . 40, No. 4, 2025
+[13] 雷浩 , 苑迎春 , 何振学 . 基于多尺度卷积和注意力机制的枣品种识别 [J]. 中国农机化学报 , 2024 , 45(6): 135 -141, 148.
+LEI  Hao , YUAN  Yingchun , HE Zhenxue . Jujube varieties recognition based on multi -scale convolution and attention mecha ⁃
+nism [J]. Journal of Chinese Agricultural Mechanization , 2024 , 45(6): 135 -141, 148.
+[14] DING  B . LENet : Lightweight and efficient LiDAR semantic segmentation using multi -scale convolution attention [EB/OL ]. 
+(2023 -01-11). https ://doi .org/ 10.48550 /arXiv .2301 .04275 .
+[15] SHAO  X , KIM  C S . Adaptive multi -scale attention convolution neural network for cross -domain fault diagnosis [J]. Expert 
+Systems with Applications , 2024 , 236: 121216 .
+[16] ZHONG  J , TIAN  W , XIE  Y , et al . PMFSNet : Polarized multi -scale feature self -attention network for lightweight medical 
+image segmentation [J]. Computer Methods and Programs in Biomedicine , 2025 , 261: 108611 .
+[17] 陈龙 , 张建林 , 彭昊 , 等 . 多尺度注意力与领域自适应的小样本图像识别 [J]. 光电工程 , 2023 , 50(4): 66-80.
+CHEN  Long , ZHANG  Jianlin , PENG  Hao , et al . Few -shot image classification via multi -scale attention and domain adaptation
+[J]. Opto -Electronic Engineering , 2023 , 50(4): 66-80.
+[18] 李烨 , 周生翠 , 张驰 . MSDAB -DETR : 一种多尺度遥感目标检测算法 [J]. 数据采集与处理 , 2024 , 39(6): 1455 -1469 .
+LI Ye , ZHOU  Shengcui , ZHANG  Chi . MSDAB -DETR : A multi -scale remote sensing target detection algorithm [J]. Journal 
+of Data Acquisition and Processing , 2024 , 39(6): 1455 -1469 .
+[19] 刘 拥 民, 肖 凤 姣, 乔 梦 媛, 等 . CA -MFE : CNN 与 注 意 力 机 制 多 尺 度 的 图 神 经 小 样 本 图 像 分 类 网 络[J]. 控 制 工 程, 2025 , 32
+(6): 1008 -1015 .
+LIU  Yongmin , XIAO  Fengjiao , QIAO  Mengyuan , et al . CA -MFE : CNN and attention mechanism multiscale graph neural 
+network for few -shot image classification [J]. Control Engineering of China , 2025 , 32(6): 1008 -1015 .
+[20] KIPF  T N , WELLING  M . Semi -supervised classification with graph convolutional networks [EB/OL ]. (2016 -09-09). https ://
+doi.org/ 10.48550 /arXiv .1609 .02907 .
+[21] CUI  W, SHANG  M. KAGN : Knowledge -powered attention and graph convolutional networks for social media rumor detection
+[J]. Journal of Big Data , 2023 , 10(1): 45.
+[22] WANG  P , TAO  L , TANG  M , et al . Incorporating syntax and semantics with dual graph neural networks for aspect -level 
+sentiment analysis [J]. Engineering Applications of Artificial Intelligence , 2024 , 133: 108101 .
+[23] LU Q , SUN  X , GAO  Z , et al . Coordinated -joint translation fusion framework with sentiment -interactive graph convolutional 
+networks for multimodal sentiment analysis [J]. Information Processing & Management , 2024 , 61(1): 103538 .
+[24] SHANG  W , CHAI  J , CAO  J , et al . Aspect -level sentiment analysis based on aspect -sentence graph convolution network [J]. 
+Information Fusion , 2024 , 104: 102143 .
+[25] 常远 , 季长伟 , 张春玲 , 等 . 融合多特征嵌入的中文医疗命名实体识别模型 MF -MNER [J]. 小型微型计算机系统 , 2024 , 45
+(12): 2915 -2922 .
+CHANG  Yuan , JI Changwei , ZHANG  Chunling , et al . MF -MNER : Chinese medical named entity recognition model fusing 
+multi -feature embedding [J]. Journal of Chinese Computer Systems , 2024 , 45(12): 2915 -2922 .
+[26] JAIN  A , SHARMA  R . Enhancing legal named entity recognition using RoBERTa -GCN with CRF : A nuanced approach for 
+fine -grained entity recognition [M]//Advances in Information Retrieval . Cham : Springer Nature Switzerland , 2024 : 261 -267.
+[27] 范涛 , 王昊 , 陈玥彤 . 基于深度迁移学习的地方志多模态命名实体识别研究 [J]. 情报学报 , 2022 , 41(4):  412 -423.
+FAN  Tao , WANG  Hao , CHEN  Yuetong . Research on multimodal named entity recognition of local history based on deep 
+transfer learning [J]. Journal of the China Society for Scientific and Technical Information , 2022 , 41(4): 412 -423.
+[28] CUI  Y , CHE  W , LIU  T , et al . Pre -training with whole word masking for Chinese BERT [J]. IEEE/ACM Transactions on 
+Audio , Speech , and Language Processing , 2021 , 29: 3504 -3514 .
+[29] HE K, ZHANG  X, REN  S, et al . Deep residual learning for image recognition [C]//Proceedings of the 2016  IEEE Conference 
+on Computer Vision and Pattern Recognition (CVPR ). Las Vegas , USA : IEEE , 2016 : 770 -778.
+[30] SINGH  V K , ABDEL -NASSER  M , RASHWAN  H A , et al . FCA -Net : Adversarial learning for skin lesion segmentation 
+based on multi -scale features and factorized channel attention [J]. IEEE Access , 2019 , 7: 130552 -130565 .
+[31] 谢小东 , 吴洁 , 盛永祥 , 等 . 基于多模态特征融合的相似专利识别方法研究 [J]. 图书情报工作 , 2024 , 68(18): 112 -122.
+XIE  Xiaodong , WU  Jie, SHENG  Yongxiang , et al . Research on similar patent identification based on multimodal feature fusion
+932
+
+=== PDF_PAGE 12 ===
+韩 普  等：基于多尺度注意力和图神经网络的多模态医学实体识别研究
+[J]. Library and Information Service , 2024 , 68(18): 112 -122.
+[32] 刘佳 , 边俊伊 . 基于混合深度学习的藏医古籍命名实体识别研究 [J]. 现代情报 , 2023 , 43(11): 37-46.
+LIU  Jia , BIAN  Junyi . Research on named entity identification of tibetan medical ancient books based on hybrid deep learning [J]. 
+Journal of Modern Information , 2023 , 43(11): 37-46.
+[33] 李 纲, 潘 荣 清, 毛 进, 等 . 整 合 BiLSTM -CRF 网 络 和 词 典 资 源 的 中 文 电 子 病 历 实 体 识 别[J]. 现 代 情 报, 2020 , 40(4): 3-
+12, 58.
+LI Gang , PAN  Rongqing , MAO  Jin , et al . Entity recognition of Chinese electronic medical records based on BiLSTM -CRF 
+network and dictionary resources [J]. Journal of Modern Information , 2020 , 40(4): 3-12, 58.
+[34] 王永胜 , 李培峰 , 王中卿 , 等 . 多模态信息抽取研究综述 [J]. 软件学报 , 2025 , 36(4): 1665 -1691 .
+WANG  Yongsheng , LI Peifeng , WANG  Zhongqing , et al . Survey on multimodal information extraction research [J]. Journal of 
+Software , 2025 , 36(4): 1665 -1691 .
+[35] CHIU  J P C , NICHOLS  E . Named entity recognition with bidirectional LSTM -CNNs [J]. Transactions of the Association for 
+Computational Linguistics , 2016 , 4: 357 -370.
+[36] HUANG  Z , XU W , YU  K . Bidirectional LSTM -CRF models for sequence tagging [EB/OL ]. (2015 -08-09). https ://doi .org/
+10.48550 /arXiv .1508 .01991 .
+[37] DEVLIN  J, CHANG  M W , LEE  K , et al . BERT : Pre -training of deep bidirectional transformers for language understanding
+[EB/OL ]. (2018 -10-11). https ://doi .org/ 10.48550 /arXiv .1810 .04805 .
+[38] LIU  Y , OTT M , GOYAL  N , et al . RoBERTa : A robustly optimized BERT pre -training approach [EB/OL ]. (2019 -07-26). 
+https ://doi .org/ 10.48550 /arXiv .1907 .11692 .
+[39] YU  J , JIANG  J , YANG  L , et al . Improving multimodal named entity recognition via entity span detection with unified 
+multimodal transformer [C]//Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics . 
+Stroudsburg , USA : [s.n.], 2020 : 3342 -3352 .
+[40] ZHANG  D , WEI  S , LI S , et al . Multi -modal graph fusion for named entity recognition with targeted visual guidance [J]. 
+Proceedings of the AAAI Conference on Artificial Intelligence , 2021 , 35(16): 14347 -14355 .
+[41] SUN  L , WANG  J, ZHANG  K , et al . RpBERT : A text -image relation propagation -based BERT model for multimodal NER
+[J]. Proceedings of the AAAI Conference on Artificial Intelligence , 2021 , 35(15): 13860 -13868 .
+作者简介 :
+韩 普（1983 ⁃） ，通 信 作 者 ，
+男 ，博 士，教 授，研 究 方 向：
+智 能 信 息 处 理、医 疗 健 康
+数 据 分 析 及 应 用，E⁃mail ：
+hanpu@njupt .edu.cn。
+刘森嶺（2002 ⁃） ，男，硕士研
+究 生，研 究 方 向：数 据 分 析
+与处理 。
+陈文祺（2000 ⁃） ，男，硕士研
+究 生，研 究 方 向：数 据 分 析
+与处理 。
+(编辑 ：张蓓 ，王婕）
+933

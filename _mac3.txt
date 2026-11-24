@@ -1,0 +1,66 @@
+﻿=== 1. 注册表 NetworkAddress（软件层改MAC的唯一位置）===
+(若上面为空=注册表没被改过)
+
+=== 2. 网卡驱动信息 ===
+
+
+Name                 : 以太网
+InterfaceDescription : Intel(R) Ethernet Connection (7) I219-V
+DriverProvider       : Intel
+DriverVersion        : 12.19.1.37
+DriverDate           : 2021-06-22
+DriverFileName       : e1d68x64.sys
+
+
+
+=== 3. WMI/SMBIOS 看到的 MAC ===
+
+
+Name        : Intel(R) Ethernet Connection (7) I219-V
+MACAddress  : 88:88:88:88:87:88
+PNPDeviceID : PCI\VEN_8086&DEV_15BC&SUBSYS_86721043&REV_10\3&11583659&0&FE
+
+Name        : WAN Miniport (IP)
+MACAddress  : 4A:D5:20:52:41:53
+PNPDeviceID : SWD\MSRRAS\MS_NDISWANIP
+
+Name        : WAN Miniport (IPv6)
+MACAddress  : 4A:D5:20:52:41:53
+PNPDeviceID : SWD\MSRRAS\MS_NDISWANIPV6
+
+Name        : WAN Miniport (Network Monitor)
+MACAddress  : 4C:38:20:52:41:53
+PNPDeviceID : SWD\MSRRAS\MS_NDISWANBH
+
+Name        : Hyper-V Virtual Ethernet Adapter
+MACAddress  : 00:15:5D:FA:44:C0
+PNPDeviceID : ROOT\VMS_MP\0000
+
+
+
+=== 4. 主板 / BIOS ===
+
+
+Manufacturer      : American Megatrends Inc.
+SMBIOSBIOSVersion : 1704
+ReleaseDate       : 2020/9/21 8:00:00
+SerialNumber      : System Serial Number
+
+
+
+
+
+Manufacturer : ASUSTeK COMPUTER INC.
+Product      : PRIME Z390-A
+SerialNumber : MB-1234567890
+
+
+
+
+
+Manufacturer : System manufacturer
+Model        : System Product Name
+SystemFamily : To be filled by O.E.M.
+
+
+

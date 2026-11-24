@@ -1,0 +1,1060 @@
+=== PDF_PAGE 1 ===
+ 
+ 
+·论　著·
+融合形状感知的跨模态域自适应分割模型
+刘禹思1, 2, 3，齐良策1, 2, 3，刁兆恒1, 2, 3，冯冠元1, 2, 3，李玉琴1, 2, 3，蒋振刚1, 2, 3
+1. 长春理工大学 计算机科学技术学院（长春  130022）
+2. 长春理工大学 吉林省医学影像智能技术重点实验室（长春  130022）
+3. 长春理工大学 吉林省医用智能技术及精准诊疗装备跨区域科技创新中心（长春  130022）
+【摘要】  跨模态无监督域自适应（UDA）方法旨在将训练于源模态上的分割模型有效迁移至无标注的目标
+模态。然而，现有方法未能充分利用图像中的形状信息和中间层特征，导致模型在跨模态迁移任务中的泛化能力
+受限。为此，本文提出了一种基于形状感知的自适应加权分割（SAWS）模型，以增强模型对目标区域的感知能力
+和对全局与局部信息的捕获能力。首先，本文提出多角度条带形状感知（MSSP）模块，通过多角度池化策略在不
+同角度提取形状特征，从而提高跨模态场景下对目标结构的建模能力；其次，引入自适应加权分层对比
+（AWHC）损失，以充分挖掘中间层特征信息，提升模型在小目标结构上的分割精度；最后，利用多模态全心脏分
+割（MMWHS）数据集验证该算法的有效性。实验结果表明，在跨模态心脏分割任务中，该算法在计算机断层扫
+描（CT）→磁共振图像（MRI）任务下的骰子系数（Dice）为70.1%，平均对称表面距离（ASSD）为4.0；在
+MRI→CT任务下，Dice为83.8%，ASSD为3.7，均优于主流算法。本研究提出了一种融合形状感知的跨模态医学
+影像分割方法，有效提升了UDA模型的结构感知能力与泛化性能。
+【关键词】  域自适应；跨模态；语义分割；自适应；形状感知
+Shape-aware cross-modal domain adaptive segmentation model
+LIU Yusi 1, 2, 3,  QI Liangce 1, 2, 3,  DIAO Zhaoheng 1, 2, 3,  FENG Guanyuan 1, 2, 3,  LI Yuqin 1, 2, 3,  
+JIANG Zhengang 1, 2, 3
+1. School of Computer Science and Technology, Changchun University of Science and Technology, Changchun 130022, P. R. China
+2. Key Laboratory of Medical Imaging Intelligence Technology of Jilin Province, Changchun University of Science and Technology,
+Changchun 130022, P. R. China
+3. Jilin Cross-regional Science and Technology Innovation Center of Medical Intelligent Technology and precision Diagnosis and Treatment
+Equipment, Changchun University of Science and Technology, Changchun 130022, P. R. China
+Corresponding author: JIANG Zhengang, Email: jiangzhengang@cust.edu.cn
+【Abstract】 Cross-modal unsupervised domain adaptation (UDA) aims to transfer segmentation models trained on
+a labeled source modality to an unlabeled target modality. However, existing methods often fail to fully exploit shape
+priors and intermediate feature representations, resulting in limited generalization ability of the model in cross-modal
+transfer tasks. To address this challenge, we propose a segmentation model based on shape-aware adaptive weighting
+(SAWS) that enhance the model's ability to perceive the target area and capture global and local information. Specifically,
+we design a multi-angle strip-shaped shape perception (MSSP) module that captures shape features from multiple
+orientations through an angular pooling strategy, improving structural modeling under cross-modal settings. In addition,
+an adaptive weighted hierarchical contrastive (AWHC) loss is introduced to fully leverage intermediate features and
+enhance segmentation accuracy for small target structures. The proposed method is evaluated on the multi-modality
+whole heart segmentation (MMWHS) dataset. Experimental results demonstrate that SAWS achieves superior
+performance in cross-modal cardiac segmentation tasks, with a Dice score (Dice) of 70.1% and an average symmetric
+surface distance (ASSD) of 4.0 for the computed tomography (CT)→magnetic resonance imaging (MRI) task, and a Dice
+of 83.8% and ASSD of 3.7 for the MRI→CT task, outperforming existing state-of-the-art methods. Overall, this study
+proposes a cross-modal medical image segmentation method with shape-aware, which effectively improves the structure- 
+ 
+ 
+DOI：10.7507/1001-5515.202506045
+基金项目：国家自然科学基金资助项目（82472118）；吉林省高教学会高教科研课题（JGJX24D0119）
+通信作者：蒋振刚，Email：jiangzhengang@cust.edu.cn
+• 1216 • Journal of Biomedical Engineering, Dec. 2025, Vol. 42, No.6
+   http://www.biomedeng.cn
+
+=== PDF_PAGE 2 ===
+aware ability and generalization performance of the UDA model.
+【Key words】 Domain adaptation; Cross modal; Semantic segmentation; Self-adaptation; Shape perception
+ 0    引言
+磁共振成像（magnetic resonance imaging，
+MRI）和计算机断层扫描（computed tomography，
+CT）是医学诊断中广泛使用的两种模态的成像技
+术。CT能够提供更丰富的解剖结构信息[1]，MRI
+则包含更全面的软组织和定量诊断信息[2]。在临床
+医疗诊断中，通常需要结合多种模态的成像信息，
+以便进行更全面和精准的分析[3]。因此，构建可以
+同时利用两种模态的医学影像分割方法，有助于充
+分利用两种模态的互补信息，为多模态医学影像分
+析提供更加有效的解决方案[4]。然而，由于成像原
+理和采集条件差异，CT与MRI图像通常难以获得
+精确配对。同时，不同模态之间的标注往往不一
+致，如果为每种模态单独训练模型则成本较高。另
+一方面，模态间缺乏空间对齐且语义不一致，导致
+模型在融合其互补信息时受限，无法发挥多模态协
+同的优势。此外，由于CT与MRI图像之间分布存
+在差异，直接将一种模态数据训练好的模型应用于
+另一种不同模态的数据时，通常会导致模型的分割
+性能下降。已有研究表明，训练数据集（源域）与
+测试数据集（目标域）之间存在被称为域偏移的分
+布差异[5]，这种域偏移问题在很大程度上阻碍了深
+度学习方法在临床诊断中的推广与应用。
+为克服上述挑战，研究者们提出了跨模态无监
+督域自适应（unsupervised domain adaptation，UDA）
+方法[6]。如图1所示，分别是无域自适应分割效果
+图和跨模态UDA分割效果图。其中，MRI图像为
+源域，CT图像为目标域。
+跨模态UDA方法无需依赖目标域的标注数
+据，通过对齐源域与目标域之间的分布差异，从而
+实现在目标域上的准确分割。对抗性训练是实现
+跨模态分布对齐的有效手段之一[7-8]，该方法采用
+生成对抗思想，通过引入判别器对源域与目标域特
+征进行区分；同时，利用对抗性策略引导特征提取
+器学习跨域一致的特征表示，从而实现源域和目标
+域间的分布对齐，从而有效缓解不同模态间的域偏
+移问题。
+现有的基于对抗性训练的跨模态UDA分割方
+法主要分为三类[9-10]。第一类基于图像翻译的方
+法，旨在学习源域和目标域之间的映射关系，从图
+像外观的角度实现分布对齐[11-14]。如Tomar等[11]
+提出一种基于自注意空间归一化的UDA方法，有
+效缩小模态间域偏移并减轻标注负担。Chen等[12]
+通对抗性训练和循环一致性约束将源域数据转换
+为目标域风格，并利用判别器在不同层面增强特征
+适应性。Zou等[13]基于循环一致性对抗网络架
+构，通过构建源域和目标域之间的映射关系，有效
+缩小域之间的分布差异。Pei等[14]通过特征解纠缠
+方法，将域特征分解为域不变和域相关两部分，以
+保持解剖结构的一致性。第二类基于特征的方法，
+旨在通过学习语义层面的域不变特征，缩小不同域
+之间的表示差距。该方法主要基于变换器（Trans-
+former）[15-17]和卷积神经网络[18-20]实现特征提取与
+对齐。如Ji等[15]提出一种基于Transformer的
+UDA模型，通过对不同层级的注意力特征进行层
+次对齐，增强模型传递关键判别特征的能力。
+Zhang等[16]构建基于移位窗口（shifted window，
+Swin）的Transformer生成对抗网络（generative
+adversarial network，GAN），以建立特征的全局语
+义相关性。Guo等[17]将U型架构与交叉自注意力
+机制结合，实现了对特定模态关键信息的保留，并
+ 
+MRI
+图像
+CT
+图像
+CT
+图像
+CT
+图像
+传统
+分割网络
+MRI
+标签
+CT 分割图
+无域自适应分割效果图
+MRI
+图像
+域适应
+分割网络
+MRI
+标签
+CT
+无标签
+CT 分割图
+跨模态 UDA 分割效果图
+ 
+ 
+图 1　语义分割结果对比
+Fig.1　Comparison of semantic segmentation result
+生物医学工程学杂志  2025年12月第42卷第6期 • 1217 •
+http://www.biomedeng.cn 
+
+=== PDF_PAGE 3 ===
+增强了不同模态特征的深层交互。Ge等[18]通过在
+特征空间中引入风格适应模块和边界增强模块，有
+效对齐不同模态间的分布差异。Ding等[19]针对类
+别不平衡和边界模糊问题，提出一种全心脏分割的
+级联框架，并结合心脏的解剖先验对初始结果进行
+精细化调整。Liu等[20]将图像特征沿通道维度解
+耦为语义与风格两部分，通过对齐风格特征实现跨
+域分布的一致性。上述两类方法通常需要复杂的
+域间映射过程，在源域与目标域偏移较大时，可能
+会导致模型分割效果受限。第三类基于伪标签的
+方法，通常将模型的预测结果作为目标域的伪标
+签，并对目标域进行监督优化[21-22]，该类方法在一
+定程度上降低了对源域的直接依赖。如Liu等[21]
+提出了自步优化伪标签（self-paced pseudo labels，
+SPL）方法，实现类别感知的分布对齐与跨域一致特
+征学习。Lin等[22]则将对抗性学习与解纠缠表示
+学习相结合，并利用伪标签和真实标签对模型迭代
+优化。尽管当前多数研究方法通过伪标签在一定
+程度上缓解了源域的依赖，但其对图像形状信息的
+利用仍不充分，限制了模型对目标结构的建模与感
+知能力。
+形状感知策略，通过在特征提取过程中融入几
+何或拓扑先验知识，从而强化对目标形状与结构的
+表征能力[23]。如Huang等[24]提出一种融合区域约
+束与形状感知的双重损失函数，以在边界层面强化
+模型对形状细节的捕捉与学习。Liu等[25]则通过
+形状感知与局部上下文约束，引导模型生成与真实
+解剖结构高度一致的预测结果。Zhou等[26]在解码
+阶段引入边界约束机制，以增强模型对小器官及模
+糊边界的分割性能。Zhou等[27]利用协同感知策略
+在尺度与形状层面施加联合约束，从而实现更优的
+特征匹配。由此可见，当前结合形状感知策略能够
+有效提升模型的准确性与鲁棒性，尤其在捕捉复杂
+目标的形状和结构特征方面展现出显著优势。
+基于此，本文提出一种基于形状感知的自适应
+加权分割（shape-aware adaptive weighted segmenta-
+tion，SAWS）模型。其中，针对形状信息提取不足
+的问题，提出一种多角度条带形状感知（multi-
+angle strip shape perception，MSSP）模块，该模块通
+过多角度池化操作，显示建模目标结构在不同角度
+上的形状特征，从而提高对目标结构的感知能力。
+此外，为进一步提升模型对全局与局部信息的捕获
+能力，本文提出一种自适应加权分层对比（adap-
+tively weighted hierarchical contrast，AWHC）损失，
+在分层对比学习的基础上引入自适应加权机制，动
+态调整不同层级特征的权重，以期有效提升UDA
+模型的结构感知能力与泛化性能。
+ 1    模型与算法
+ 1.1    问题定义
+Xsou
+Ysou
+F : Xsou !
+Ysou
+LCE
+Ldice
+Lseg
+本研究给定一个带标签的源域数据集，学习从
+图像域  到标签域  的映射关系（ 
+  ）。该映射关系通过最小化由交叉熵损失 
+和骰子系数（dice coefficient，Dice）损失  组成的
+监督学习损失  进行优化，如式(1)所示：
+Lseg = LCE(ysou; psou) + Ldice(ysou; psou) (1)
+ 
+psou
+F
+ysou
+其中，  为  的逐像素预测；  为图像的
+真实标签。然而，由于源域和目标域之间存在域偏
+移问题，仅在源域上训练的模型难以直接泛化到目
+标域。为缓解此问题，研究人员提出了UDA方
+法，可概括表示如式(2)所示：
+Fuda = Xsou [ Xtar ! Ysou [ Ytar (2)
+ 
+Fuda
+fXsou; Ysoug
+Xtar
+Ytar
+Ysou = Ytar
+其中，  在有标签的源域  和无标
+签的目标域  上进行训练，目的是学习源域与目
+标域之间可迁移的域特征表示；  表示目标域标
+签。通常情况下，假设源域与目标域的类别集合相
+同，即：  。
+ 1.2    模型框架
+xsoun
+xtarn
+psoun
+ysoun
+Lseg
+I()xn
+为提升UDA方法对目标结构的感知能力及全
+局与局部信息的捕获能力，本文提出一种SAWS分
+割模型，其整体框架如图2所示。该模型将
+GAN[28]作为骨干对齐网络，以促进源域  与目
+标域  之间的类别感知对齐。生成器G由三个
+分支组成，其中一个分支用于生成源域的预测掩码
+ ，并与真实标签  计算监督学习损失  ；另
+两个分支分别生成源域与目标域的加权自信息图
+ ，并传入判别器D进行对抗学习。模型以深度
+研究实验室V2（DeepLabV2）[29]作为基础框架；
+MSSP模块提取输入特征中的形状信息，增强模型
+对目标结构的感知能力；AWHC损失通过分层对
+比学习，在不同语义层次上强化模型对全局与局部
+信息的捕获。
+ 1.3    多角度条带形状感知模块
+双分支形状感知网络（dual-branch shape-aware
+network，DSANet）[26]通过垂直条带池化操作建模
+目标结构的形状特征，但存在单一角度的局限。为
+有效捕捉目标结构在不同角度的形状特征，本文在
+其基础上提出MSSP模块。
+如图3所示，MSSP模块首先将输入特征图沿
+• 1218 • Journal of Biomedical Engineering, Dec. 2025, Vol. 42, No.6
+   http://www.biomedeng.cn
+
+=== PDF_PAGE 4 ===
+多个预设角度旋转，并在每个角度上施加平均池化
+操作，以捕获结构在不同角度上的形状特征。随
+后，结合条带引导的注意力机制，模块能够自适应
+地分配各角度的特征权重，从而实现对多角度形状
+信息的有效建模。
+X 2 RB × C × H × W
+Q; K; V
+首先，输入特征图  分别通过三
+个1 × 1卷积操作生成查询（query，Q）、键值（key，
+K）、赋值（value，V）（分别以符号  表示），如
+式(3)～(5)所示：
+Q = Conv (X) (3)
+ 
+K = Conv (X) (4)
+ 
+V = Conv (X) (5)
+ 
+Conv ( )
+B
+C
+H
+W
+Q; K; V 2 RC′ × H × W
+C′ = C=4
+K
+Kd (θ)
+其中，  代表卷积操作；  为批量大小；
+  为通道数；  和  分别为特征图高度和宽度；
+ ，  。再对  进行旋转池
+化，得到多个角度的池化结果 ，如式(6)所示：
+Kd (θ) = MP (K; θ) (6)
+ 
+θ
+MP ()
+(H; 1)
+θ
+其中，  为旋转角度。  代表多角度池化操
+作，卷积核大小为  。对于每个角度 ，通过计
+Aθ
+算得到注意力权重 ，如式(7)所示：
+Aθ = soﬅmax
+( Q 
+ Kd (θ)p
+C′
+)
+(7)
+ 
+
+Aθ
+V
+Vw (θ)
+其中，softmax（）是归一化指数函数，  表示矩
+阵乘法。使用注意力权重  对  进行加权，获取加
+权特征图 ，如式(8)所示：
+Vw (θ) = Aθ 
+ V (8)
+ 
+Vw (θ)
+随后，将不同角度的加权特征图  拼接，
+如式(9)所示：
+M = Cat (Vw (θ1) ; : : : ;Vw (θn)) (9)
+ 
+Cat ()
+M
+X
+其中，  为拼接融合操作。最后，将拼接
+输出  与输入特征图  进行残差相加，如式(10)
+所示：
+Mf = M + X (10)
+ 
+Mf
+其中，  代表模块的最终输出。
+ 1.4    逐步优化伪标签方法
+l
+本文将SPL方法作为伪标签优化方法。SPL方
+法根据目标域像素的置信度动态生成伪标签，从而
+避免错误伪标签的干扰。首先，计算像素  归属于
+ 
+源域
+图像
+目标域
+图像
+MSSP 模块
+生成器 G
+AWHC 学习 生成伪标签
+加权自信息图Ixn 判别器 D
+目标域
+源域
+预测掩码pnsou 真实标签ynsou
+Lseg
+xntar
+xnsou
+(·)
+ 
+ 
+图 2　SAWS模型框架
+Fig.2　SAWS model framework
+ 
+特征图 X
+1×1 卷积
+1×1 卷积
+1×1 卷积
+Q
+K
+V ......
+多角度
+池化操作
+计算注意
+力权重
+注意力权重 Aθ
+获取加权特征图 Vw（θ）
+多角度特
+征图拼接
+特征图 Mf
+拼接融合
+矩阵乘法
+ 
+ 
+图 3　MSSP模块的基本流程
+Fig.3　The basic flow of the MSSP module
+生物医学工程学杂志  2025年12月第42卷第6期 • 1219 •
+http://www.biomedeng.cn 
+
+=== PDF_PAGE 5 ===
+i
+δth
+类别  的置信度；然后，选择最大置信度类别作为
+伪标签，并设定阈值  过滤低置信度像素，如式
+(11)所示：
+^y(k)*n [l; ^pl] =
+{1; r(k)n [l; I1] –r(k)n [l; I2] > δth
+0; otherwise (11)
+ 
+r(k)n [l; i]
+l
+i
+I1
+I2
+^pl
+l
+^y(k)*n [l; ^pl]
+l
+δth
+其中，  代表像素  属于类别  的余弦相似
+度分数；  和  分别对应预测中置信度最高的前两
+类的索引；  表示第  个像素的预测类别指数；
+  表示目标域像素  处的伪标签。当置信度
+值大于阈值  时，像素才会被赋予伪标签，从而避
+免低置信度伪标签的干扰。
+ 1.5    自适应权重分层对比损失
+X
+F (X) = fFl (X) ; l 2 [1,2]g
+Fl (X)
+l
+PF ()
+PY ()
+Fl (Xi)
+Yi
+边界保持对比学习（margin preserving contras-
+tive learning，MPCL）损失[21]首次将对比学习引入
+UDA医学影像分析中。然而，该损失仅作用于最
+后一层的特征嵌入，忽略了输入图像在抽象过程中
+形成的中间特征图，从而导致模型对小目标的分割
+性能有限。为此，本文提出AWHC损失，该方法
+在分层对比学习的基础上引入自适应加权机制。
+图像  输入到分割网络中，得到一系列特征图：
+  。  表示分割网络第 
+层提取的特征图。较低层级的特征蕴含图像的局
+部细节信息，较高层级的特征包含图像的全局语义
+信息。通过合理分配不同层级的特征贡献，提升模
+型对全局与局部信息的捕获能力。首先，分别使用
+投影层  和  将特征  和伪标签  投影到
+同一嵌入空间中，如式(12)～(13)所示：
+H(F li ) = PF (Fl (Xi)) (12)
+ 
+H(Yi) = PY (Yl) (13)
+ 
+H
+(
+F li)
+H (Yi)
+h
+simh
+其中，  和  表示投影后得到的统一
+嵌入特征。通过  个并行的相似度计算头计算原始
+相似度 ，如式(14)所示：
+simh = σ
+(
+H(F li ); H(Yi)) (14)
+ 
+σ ()
+ρh
+其中，  表示S型激活函数，用于将相似度值
+归一化；再获取自适应权重的缩放系数 ，如式
+(15)所示：
+ρh = σ
+(
+MLPh
+(
+Cat
+(
+H(F li ); H(Yi)))) (a–b) + b (15)
+ 
+MLPh ()
+h
+a
+b
+Cat ()
+i
+ωi
+其中，  表示第  个头对应的多层感知机
+（multilayer perceptron，MLP），用于学习自适应权
+重系数；  和  分别表示系数的上下界，用于约束
+系数的学习范围；  为拼接融合操作。最后，
+得到每个特征图中像素  的对应权重 ，如式
+(16)所示：
+ωi = MeanHh = 1(simh=ρh) (16)
+ 
+MeanHh = 1 ()
+其中，  计算平均值。最后，AWHC
+损失的表达式如式(17)所示：
+LA WHC =
+L∑
+l = 1
+1
+N
+N∑
+i = 1
+ωiLM (17)
+ 
+N
+LM
+其中，  表示像素总数。  表示MPCL损失。
+ 1.6    对抗训练
+G
+D
+D
+生成器  通过生成语义掩码，使得源域和目标
+域的结构尽可能相似。判别器  则通过区分输入
+图像是来自源域还是目标域，从而引导生成器学习
+域不变特征。判别器  的训练目标是最小化二元
+交叉熵损失LD，如式(18)所示：
+LD = 1Nsou
+Nsou∑
+n = 1
+LB
+(
+Ixsoun ; 1) + 1Ntar Ntar∑n = 1 LB(Ixtarn ; 0) (18)
+ 
+LB
+Nsou
+Ntar
+Ixsoun
+Ixtarn
+xsoun
+xtarn
+G
+其中，  表示二元交叉熵损失；  代表源域
+数据数量；  代表目标域数据数量；  和  分
+别代表源域  和目标域  生成的加权自信息
+图，用来表示像素级的预测概率。生成器  的对抗
+损失Ladv如式(19)所示：
+Ladv = 1Ntar
+Ntar∑
+n = 1
+LB
+(
+Ixtarn ; 1) (19)
+ 
+G
+生成器  的总优化目标LG如式(20)所示：
+LG = Lseg + α
+Nsou∑
+n = 1
+LSA WHC + β
+Ntar∑
+n = 1
+LTA WHC + γLadv (20)
+ 
+Lseg
+LSAWHC
+LTAWHC
+α、β、γ
+α、β
+γ
+其中，  代表源域分割损失；  和 
+分别代表源域和目标域的AWHC损失； 
+分别代表各损失的权重系数，系数  根据消融实
+验结果分别设置为1.0和0.1，系数  参照文献
+[21]的方法设定为0.003。
+ 2    实验与结果分析
+ 2.1    实验数据
+本文采用多模态全心脏分割（multi-modality
+whole heart segmentation，MMWHS）挑战赛公开数
+据集[30]进行实验。MMWHS数据集由英国伦敦大
+学学院建立并公开发布。该数据集共包含120例
+三维心脏影像数据，其中包括60例CT影像和
+60例MRI影像，每例数据均提供了高质量的人工
+标注作为金标准。
+本实验采用20例未配对的MRI影像和CT影
+• 1220 • Journal of Biomedical Engineering, Dec. 2025, Vol. 42, No.6
+   http://www.biomedeng.cn
+
+=== PDF_PAGE 6 ===
+像及其对应的真实标签作为训练数据。本研究主
+要在MRI→CT和CT→MRI两个方向上进行了跨模
+态分割实验，目标是分割升主动脉（ascending
+aorta，AA）、左心房腔（left atrial cavity，LAC）、左
+心室腔（left ventricular cavity，LVC）和心肌（myocar-
+dium，MYO）四个结构。其中，“→”表示迁移方
+向，即箭头左侧模态为源域，右侧模态为目标域。
+ 2.2    实验设置
+2:5 × 10 4
+0:9
+1 × 10 4
+本文实验基于深度学习框架PyTorch（Meta
+Inc.，美国）实现，并在英伟达显卡NVIDIA
+GeForce RTX 3 090（NVIDIA Inc，美国）上进行训
+练。模型采用随机梯度下降法（stochastic gradient
+descent，SGD）[31]优化，学习率设置为 ，
+动量为 ，衰减率为  。为确保评估的公平
+性与结果的可复现性，本文选取边界保持自步对比
+学习（margin preserving self-paced contrastive
+learning，MPSCL）[21]作为基线方法，并在关键参数
+上严格遵循其公开配置，其中批量大小为4，迭代
+次数为 50 000。对于CT→MRI任务，采用局部感
+受野判别器（PatchGAN）[32]的判别器配置。对于
+MRI→CT任务，采用自适应输出层（AdaOutput）[33]
+的判别器配置。
+ 2.3    评价指标
+本文采用Dice和平均对称表面距离（average
+symmetric surface distance，ASSD）作为模型分割性
+能的评价指标。Dice用于评估预测结果与真实标
+签之间的重叠程度，取值范围在[0，1]之间。Dice
+值越高表示预测区域与真实结构的一致性越高，分
+割效果越好，其计算公式如式(21)所示：
+Dice = 2 jP \ GjjPj + jGj (21)
+ 
+P
+G
+jP \ Gj
+其中，  为模型的预测结果；  为真实标签；
+  为两者重叠的像素数。
+ASSD距离主要衡量预测分割边界与真实标签
+边界之间的平均对称欧几里得距离。ASSD距离值
+越低表示分割效果越好，其计算公式如式(22)所示：
+ASSD (S1; S2) = 1jS1j + jS2j
+(∑
+s12S1
+d (s1; S2) +
+∑
+s22S2
+d (s2; S1)
+)
+(22)
+ 
+S1
+S2
+s1
+s2
+d (s; S)
+s
+S
+其中，  和  分别为预测分割和真实分割的边
+界点集；  和  为点集中的点；  表示点  到
+边界  的最近距离。
+ 2.4    对比实验
+为了验证所提算法的分割性能，本文在MMWHS
+挑战赛公开数据集上分别进行了MRI→CT与
+CT→MRI跨模态分割实验，并与协同图像与特征
+对齐（synergistic image and feature alignmen，
+SIFAv1）[12]、改进的SIFAv1（improved SIFAv1，
+SIFAv2）[12]、对抗熵最小化（adversarial entropy
+minimization，AdvEnt）[34]、MPSCL[21]和组合性的
+跨模态医学图像分割（cross-modal medical image
+segmentation through compositionality，CMS）[35]等
+常用的UDA分割方法进行对比，实验结果如表1
+所示。其中，粗体数据表示最优值；向上箭头↑表
+示Dice指标数值越大，对应分割效果越好；向下
+箭头↓表示ASSD指标数值越小，对应的分割效果
+就越好。由表1可见，在无域自适应策略的情况
+下，模型在目标域上的表现均显著低于监督训练所
+能达到的水平。该结果充分说明CT与MRI之间
+存在明显的域偏移问题，严重影响了模型的泛化
+能力。
+现有的跨模态UDA方法在一定程度上缓解了
+域偏移问题，但仍存在不足。SIFAv1与SIFAv2通
+过对抗式全局分布对齐来增强域间一致性，但整体
+改进幅度有限。AdvEnt利用熵最小化来提高目标
+域预测的置信度，但其语义一致性约束仅作用于输
+ 
+表 1　MMWHS数据集上的实验结果
+Tab.1　Results of the transition on the MMWHS dataset 
+方法
+!
+MRI  CT
+! CT  MRI
+"
+Dice 
+# ASSD 
+" Dice 
+# ASSD 
+AA LAC LVC MYO 平均值 AA LAC LVC MYO 平均值 AA LAC LVC MYO 平均值 AA LAC LVC MYO 平均值
+监督训练 91.7% 89.7% 90.9% 85.4% 89.4% 1.7 3 .1 2 .1 1 .9 2 .2 81.1% 86.1% 90.3% 76.5% 83.5% 4 .3 2 .8 2.0 1.8 2 .7
+无域自适应 51.1% 42.0% 1.9% 1.7% 24.2% 8.7 8 .0 29 .1 30 .3 19 .0 6.8% 6.0% 53.9% 13.5% 20.1% 31 .9 31 .2 7.8 7.0 19 .5
+SIFAv1 80.0% 82.2% 79.5% 49.5% 72.8% 8.2 10 .7 5 .3 4 .9 7 .3 66.8% 60.4% 74.7% 45.6% 61.9% 6 .4 9 .5 4.5 4.6 6 .3
+AdvEnt 82.7% 86.9% 82.2% 53.2% 76.3% 7.1 5 .2 4 .6 4 .6 5 .4 43.7% 63.9% 68.8% 43.9% 55.1% 7 .9 4 .7 5.2 5.3 5 .8
+SIFAv2 82.5% 83.6% 77.9% 51.5% 73.6% 8.5 8 .6 6 .0 5 .0 7 .0 64.6% 63.2% 79.1% 47.4% 63.6% 7 .4 7 .2 4.0 4.5 5 .8
+CMS 83.2% 84.2% 84.5% 63.2% 78.8% 7.3 4 .9 5 .0 3 .9 5 .3 62.9% 71.1% 77.0% 50.7% 65.4% 6 .1 3 .9 4.1 3.8 4 .5
+MPSCL 88.6% 87.0% 85.4% 70.8% 82.9% 6.7 3 .6 3 .2 3 .6 4 .3 60.3% 61.4% 74.3% 48.7% 61.2% 6 .5 8 .4 4.7 4.6 6 .1
+本文方法 88.9% 87.4% 86.8% 72.1% 83.8% 5.1 3 .1 2 .8 3 .7 3 .7 68.9% 76.7% 81.8% 52.8% 70.1% 5 .5 2 .9 3.5 4.2 4 .0
+生物医学工程学杂志  2025年12月第42卷第6期 • 1221 •
+http://www.biomedeng.cn 
+
+=== PDF_PAGE 7 ===
+出空间，对中间层特征的利用不足。CMS将组合
+性作为归纳偏置引入端到端的跨模态分割框架中，
+以获得可解释的组合内容表示。然而，该方法学习
+到的表征缺乏严格的一致性约束，当模态差异过大
+时，易受到域特征残留的干扰。MPSCL结合类别
+原型和对比损失，在一定程度上增强了嵌入空间的
+判别性，但其损失函数更侧重于整体特征空间的结
+构优化，未能充分利用中间层特征信息。相比之
+下，本文提出的SAWS方法在整体性能上均优于所
+有对比方法。其优势主要得益于：在网络结构中
+显式引入形状感知机制，有效增强模型对跨模态结
+构信息的建模能力。同时通过自适应分层对比策
+略充分挖掘中间层表征，从而在全局与局部层面实
+现更加稳健的跨模态特征对齐。
+MRI→CT与CT→MRI的定性结果如图4所
+示，其中红圈用于标注分割的不完整区域，红箭头
+用于标示边界模糊区域。从图4中可以看出，与其
+他代表性UDA方法相比，SAWS在两个迁移任务
+上均取得了更准确的分割结果。相比之下，
+AdvEnt和SIFAv2的分割结果存在不完整区域，
+MPSCL表现出边界模糊的现象。上述结果表明，
+在面临严重模态差异的条件下，SAWS具有更强的
+域自适应能力和跨模态泛化性能，整体分割效果显
+著优于现有对比方法。
+ 2.5    消融实验
+ 2.5.1    模块消融实验　本文通过MRI→CT和
+CT→MRI的消融实验来验证各模块的有效性，结
+果如表2所示。其中，“-”为不添加模块；“√”
+为添加模块；“#1、#2”表示不同的模块组合；粗
+体数据表示最优值。对于CT→MRI任务，单独使
+用MSSP模块时，所提方法Dice值与基线方法相比
+有所提升。对于MRI→CT任务，单独使用
+AWHC损失有效地降低了ASSD值。当MSSP模
+块和AWHC损失联合使用时，模型性能达到最
+优，上述结果充分说明了各模块的有效性。
+ 2.5.2    多角度条带形状感知模块分析　为进一步
+验证所提模块MSSP的有效性，本文通过一系列消
+融实验，系统评估不同角度组合对MSSP模块性能
+的影响。当角度设置为0 °时，其实现方式与
+DSANet中采用的形状感知策略一致。实验结果如
+表3所示，“#1～#6”表示不同的角度组合；粗体
+数据表示最优值。从表3中可以看出，适当增加角
+度数量，有助于捕捉结构在不同角度上的形状特
+征，提升模型的结构感知能力。然而，当引入的角
+度过多时，模型性能反而出现下降。实验结果表
+明，当MSSP模块采用0 °、45 °、90 °和135 °四个角
+度时，在多个指标上均取得最优性能。
+ 2.5.3    自适应权重分层对比损失分析　本文提出
+的AWHC损失能够有效提升模型对小目标的分割
+精度。为了验证其有效性，本文在两个迁移任务中
+分析AWHC损失对小目标的分割性能。同时，将
+所提方法与MPCL损失进行视觉比较，结果如图5
+ 
+MRI→CT CT→MRI
+CT 
+图像1
+CT
+图像2
+MRI
+图像1
+MRI
+图像2
+原图 真实标签 监督训练 SAWS MPSCL SIFAv2 AdvEnt
+AA LVC LAC MYO
+ 
+ 
+图 4　视觉比较
+Fig.4　Visual comparison
+• 1222 • Journal of Biomedical Engineering, Dec. 2025, Vol. 42, No.6
+   http://www.biomedeng.cn
+
+=== PDF_PAGE 8 ===
+所示。其中，红框用于标示小目标区域。AWHC
+损失在多层级上自适应地分配特征权重，充分融合
+低层级的局部细节与高层级的全局信息，从而实现
+对小目标区域的完整捕获。相比之下，MPCL损失
+仅作用于最后一层特征表示，忽略了中间层特征信
+息，导致在处理小目标时出现漏分割现象。因此，
+采用AWHC损失能够更好地实现小目标区域的精
+确分割。
+α、β
+α、β
+α、β
+ 2.5.4    超参数分析　如1.6小节公式所示，超参数
+  用于平衡源域与目标域对比损失在整体训练
+中的贡献，不同的取值对域对齐效果具有显著影
+响。因此，通过实验分析超参数  对模型最终分
+割性能的影响，实验结果如表4所示。当  取值
+α = 1:0、β = 0:1
+α = 1:0、β = 0:1
+较为接近时，模型在两个迁移任务中的性能均表现
+不佳，说明此时对比损失在源域与目标域之间的权
+重分配无法有效引导跨域特征对齐。相反，当
+  时，模型在两个迁移任务的分割性
+能均有明显提升，表明增强源域对比损失的权重能
+够提供更加稳定且语义一致的监督信号。因此，本
+文最终将超参数设定为  。
+ 3    结束语
+本文提出了一种SAWS模型，旨在充分利用图
+像中的形状信息和中间层特征，以增强模型对目标
+域的结构感知能力。该模型通过构建MSSP模块，
+利用多角度池化和可学习的注意力机制提取并融合
+ 
+表 2　模块消融实验
+Tab.2　Ablation study 
+!
+MRI  CT
+模型 MSSP AWHC
+"
+Dice 
+# ASSD 
+AA LAC LVC MYO 平均值 AA LAC LVC MYO 平均值
+基线 — — 88.2% 87.0% 85.1% 70.0% 82.6% 7.1 3.6 3.3 3.6 4.4
+#1 √ — 88.8% 87.1% 86.1% 69.0% 82.8% 6.7 3.4 3.1 3.6 4.2
+#2 — √ 89.8% 87.7% 85.8% 69.4% 83.2% 5.4 3.1 3.3 3.5 3.8
+本文方法 √ √ 88.9% 87.4% 86.8% 72.1% 83.8% 5.1 3.1 2.8 3.7 3.7
+!
+CT  MRI
+模型 MSSP AWHC
+"
+Dice 
+# ASSD 
+AA LAC LVC MYO 平均值 AA LAC LVC MYO 平均值
+基线 — — 63.9% 71.2% 74.1% 49.7% 64.7% 6.1 3.9 4.7 4.0 4.7
+#1 √ — 63.8% 72.2% 77.5% 50.6% 66.1% 6.0 3.5 4.2 4.3 4.5
+#2 — √ 65.3% 73.3% 79.1% 51.7% 67.3% 5.9 3.5 3.5 3.6 4.1
+本文方法 √ √ 68.9% 76.7% 81.8% 52.8% 70.1% 5.5 2.9 3.5 4.2 4.0
+ 
+表 3　MSSP添加不同角度的性能比较
+Tab.3　Performance comparison of MSSP modules added in different angles 
+!
+CT  MRI
+组合 0 ° 45 ° 90 ° 135 ° 180 ° 225 °
+"
+Dice 
+# ASSD 
+AA LAC LVC MYO 平均值 AA LAC LVC MYO 平均值
+#1 √ — — — — — 63.9% 71.1% 76.2% 49.2% 65.1% 6 .2 4.0 4.4 4.1 4.7
+#2 √ √ — — — — 63.4% 71.7% 77.4% 51.2% 65.9% 6 .0 3.7 3.7 3.7 4.3
+#3 √ √ √ — — — 64.8% 68.9% 76.9% 50.3% 65.2% 6 .0 4.0 4.0 4.1 4.5
+#4 √ √ √ √ — — 68.9% 76.7% 81.8% 52.8% 70.1% 5 .5 2.9 3.5 4.2 4.0
+#5 √ √ √ √ √ — 57.4% 71.4% 76.3% 50.0% 63.8% 6 .9 4.3 4.1 3.8 4.8
+#6 √ √ √ √ √ √ 59.2% 64.8% 76.8% 49.8% 62.7% 6 .6 4.3 3.8 4.0 4.7
+!
+MRI  CT
+组合 0 ° 45 ° 90 ° 135 ° 180 ° 225 °
+"
+Dice 
+# ASSD 
+AA LAC LVC MYO 平均值 AA LAC LVC MYO 平均值
+#1 √ — — — — — 88.5% 87.8% 84.2% 66.4% 81.7% 6 .1 3.4 3.6 3.8 4.2
+#2 √ √ — — — — 89.9% 87.4% 82.9% 61.0% 80.3% 4 .6 3.9 3.7 4.2 4.1
+#3 √ √ √ — — — 89.4% 88.0% 86.0% 67.3% 82.7% 6 .0 3.3 3.3 3.7 4.0
+#4 √ √ √ √ — — 88.9% 87.4% 86.8% 72.1% 83.8% 5 .1 3.1 2.8 3.7 3.7
+#5 √ √ √ √ √ — 88.9% 88.2% 84.5% 61.9% 80.9% 5 .1 3.5 3.4 3.9 4.0
+#6 √ √ √ √ √ √ 87.2% 87.6% 85.9% 67.6% 82.1% 10 .0 3.3 3.5 3.7 5.1
+生物医学工程学杂志  2025年12月第42卷第6期 • 1223 •
+http://www.biomedeng.cn 
+
+=== PDF_PAGE 9 ===
+目标结构的形状特征；通过引入AWHC损失，以
+充分挖掘中间层特征信息。实验结果表明，本文所
+提方法在心脏分割任务中表现出优越的分割性能，
+验证了其有效性和鲁棒性。未来，本研究团队将
+进一步探索该方法在跨模态域自适应任务中的适
+用性，并提高其在不同模态间的泛化能力与稳定性。
+重要声明
+利益冲突声明：本文全体作者均声明不存在利益冲突。
+作者贡献声明：刘禹思负责算法设计与实现、数据处
+理与分析、论文写作与修改；齐良策提供实验指导及论文
+审阅修订；刁兆恒、李玉琴参与实验结果的整理；冯冠元
+和蒋振刚提供论文审校和基金支持。
+参考文献 
+ 王新颖, 王婉秋, 王慧. 基于改进的L-BFGS稀疏降噪自编码网络
+的MRI脑图像识别方法. 图学学报, 2019, 40(2): 261-266.
+1
+ 王晴, 赵新尧, 刘心月, 等. Stroke-p2pHD: 脑梗CT到DWI图像
+的跨模态生成模型. 生物医学工程学杂志, 2025, 42(2): 255-262.
+2
+ Li Y, El Habib Daho M, Conze P H, et al. A review of deep
+learning-based information fusion techniques for multimodal
+medical image classification. Computers in Biology and Medicine,
+2024, 177: 108635.
+3
+ Zhou X, Sun Y, Deng M, et al. Robust semi-supervised multimodal
+medical image segmentation via cross modality collaboration//
+International Conference on Medical Image Computing and
+4
+Computer-Assisted Intervention (MICCAI), Morocco: Springer
+Nature Switzerland, 2024: 57-67.
+ 张桂梅, 陶辉, 鲁飞飞, 等. 基于双源判别器的域自适应城市场景
+语义分割. 图学学报, 2023, 44(5): 907-917.
+5
+ Chen C, Dou Q, Chen H, et al. Synergistic image and feature
+adaptation: towards cross-modality domain adaptation for medical
+image segmentation//Proceedings of the AAAI conference on
+artificial intelligence (AAAI), Hawaii: AAAI, 2019, 33(1): 865-872.
+6
+ Wu  F,  Zhuang  X.  Unsupervised  domain  adaptation  with
+variational  approximation  for  cardiac  segmentation.  IEEE
+Transactions on Medical Imaging, 2021, 40(12): 3555-3567.
+7
+ Cui H, Yuwen C, Jiang L, et al. Bidirectional cross-modality
+unsupervised domain adaptation using generative adversarial
+networks for cardiac image segmentation. Computers in Biology
+and Medicine, 2021, 136: 104726.
+8
+ Kumari  S,  Singh  P.  Deep  learning  for  unsupervised  domain
+adaptation in medical imaging: recent advancements and future
+perspectives. Computers in Biology and Medicine, 2024, 170:
+107912.
+9
+ 呼伟, 徐巧枝, 葛湘巍, 等. 医学图像分割的无监督域适应研究综
+述. 计算机工程与应用, 2024, 60(6): 10-26.
+10
+ Tomar D, Lortkipanidze M, Vray G, et al. Self-attentive spatial
+adaptive normalization for cross-modality domain adaptation.
+IEEE Transactions on Medical Imaging, 2021, 40(10): 2926-2938.
+11
+ Chen C, Dou Q, Chen H, et al. Unsupervised bidirectional cross-
+modality adaptation via deeply synergistic image and feature
+alignment for medical image segmentation. IEEE Transactions on
+Medical Imaging, 2020, 39(7): 2494-2505.
+12
+ Zou D, Zhu Q, Yan P. Unsupervised domain adaptation with dual-
+scheme  fusion  network  for  medical  image  segmentation//
+Proceedings of the Twenty-Ninth International Joint Conference
+on Artificial Intelligence (IJCAI), Yokohama: IJCA, 2020: 3291-
+3298.
+13
+ Pei C, Wu F, Huang L, et al. Disentangle domain features for cross-
+modality cardiac image segmentation. Medical Image Analysis,
+2021, 71: 102078.
+14
+ Ji W, Chung A C S. Unsupervised domain adaptation for medical
+image segmentation using transformer with meta-attention. IEEE
+Transactions on Medical Imaging, 2023, 43(2): 820-831.
+15
+ Zhang Y, Wang Y, Xu L, et al. ST-GAN: A swin transformer-based
+generative  adversarial  network  for  unsupervised  domain
+16
+ 
+CT→MRI MRI
+图像
+MRI→CT CT
+图像
+原图 真实标签 MPCL AW HC
+ 
+ 
+图 5　AWHC损失对小目标分割性能的视觉比较
+Fig.5　Visual comparison of AWHC loss on segmentation performance of small objects
+ 
+表 4　超参数α、β分析
+Tab.4　Analysis of hyperparameter α、β 
+!
+源域 
+目标域
+评估
+指标
+α、β）
+（ 
+(0.5、0.5) (0.6、0.4) (0.8、0.2) (1.0、0.1)
+!
+CT  MRI
+"
+# Dice 
+ASSD 
+65.6% 68.6% 64.2% 70.1%
+4.4 4.0 4.6 4.0
+!
+MRI  CT
+"
+# Dice 
+ASSD 
+64.6% 81.1% 83.2% 83.8%
+6.5 4.5 4.7 3.7
+• 1224 • Journal of Biomedical Engineering, Dec. 2025, Vol. 42, No.6
+   http://www.biomedeng.cn
+
+=== PDF_PAGE 10 ===
+adaptation of cross-modality cardiac segmentation. IEEE Journal of
+Biomedical and Health Informatics, 2024, 28(2): 893-904.
+ Guo M, Luo Z, Yang X. Transformer-enhanced cross-modal
+learning for robust biomedical image segmentation//2024 IEEE
+International Conference on Bioinformatics and Biomedicine
+(BIBM), Lisbo: IEEE, 2024: 4537-4544.
+17
+ Ge Y, Chen Z M, Zhang G, et al. Unsupervised domain adaptation
+via style adaptation and boundary enhancement for medical
+semantic segmentation. Neurocomputing, 2023, 550: 126469.
+18
+ Ding Y, Mu D, Zhang J, et al. A cascaded framework with cross-
+modality transfer learning for whole heart segmentation. Pattern
+Recognition, 2024, 147: 110088.
+19
+ Liu Z, Chen Z M, Chen H, et al. Style adaptation for avoiding
+semantic  inconsistency  in  unsupervised  domain  adaptation
+medical image segmentation. Biomedical Signal Processing and
+Control, 2025, 105: 107573.
+20
+ Liu  Z,  Zhu  Z,  Zheng  S,  et  al.  Margin  preserving  self-paced
+contrastive learning towards domain adaptation for medical image
+segmentation. IEEE Journal of Biomedical and Health Informatics,
+2022, 26(2): 638-647.
+21
+ Lin H, Schiffers F, López-Tapia S, et al. DRL-STNet: unsupervised
+domain adaptation for cross-modality medical image segmentation
+via disentangled representation learning//International Conference
+on Medical Image Computing and Computer Assisted Intervention
+(MICCAI), Morocco: Springer Nature Switzerland, 2024: 178-194.
+22
+ Li S, Zhang C, He X. Shape-aware semi-supervised 3D semantic
+segmentation for medical images//International Conference on
+Medical Image Computing and Computer-Assisted Intervention
+(MICCAI), Peru: Springer International Publishing, 2020: 552-561.
+23
+ Huang Q, Zhou Y, Tao L. Dual-term loss function for shape-aware
+medical  image  segmentation//2021  IEEE  18th  International
+Symposium on Biomedical Imaging (ISBI), Washington: IEEE,
+2021: 1798-1802.
+24
+ Liu J, Desrosiers C, Zhou Y. Semi-supervised medical image
+segmentation using cross-model pseudo-supervision with shape
+awareness and local context constraints//International Conference
+on  Medical  Image  Computing  and  Computer-Assisted
+Intervention (MICCAI), Singapore: Springer Nature Switzerland,
+2022: 140-150.
+25
+ Zhou G Q, Zhang W B, Shi Z Q, et al. DSANet: dual-branch shape-
+aware network for echocardiography segmentation in apical views.
+26
+IEEE Journal of Biomedical and Health Informatics, 2023, 27(10):
+4804-4815.
+ Zhou L, Jiang Y, Li W, et al. Shape-scale co-awareness network for
+3D brain tumor segmentation. IEEE Transactions on Medical
+Imaging, 2024, 43(7): 2495-2508.
+27
+ Goodfellow I J, Pouget-Abadie J, Mirza M, et al. Generative
+adversarial nets//Proceedings of the 27th International Conference
+on Neural Information Processing Systems (ICONIP), Montreal:
+MIT Press, 2014: 2672-2680.
+28
+ Chen L C, Papandreou G, Kokkinos I, et al. DeepLab: semantic
+image  segmentation  with  deep  convolutional  nets,  atrous
+convolution, and fully connected CRFs. IEEE Transactions on
+Pattern Analysis and Machine Intelligence, 2018, 40(4): 834-848.
+29
+ Zhuang X, Shen J. Multi-scale patch and multi-modality atlases for
+whole heart segmentation of MRI. Medical Image Analysis, 2016,
+31: 77-87.
+30
+ Bottou L. Large-scale machine learning with stochastic gradient
+descent//19th  International  Conference  on  Computational
+StatisticsParis France (COMPSTAT), Heidelberg: Physica-Verlag
+HD, 2010: 177-186.
+31
+ Isola P, Zhu J Y, Zhou T, et al. Image-to-image translation with
+conditional  adversarial  networks//Proceedings  of  the  IEEE
+Conference on Computer Vision and Pattern Recognition (CVPR),
+Hawaii: IEEE, 2017: 1125-1134.
+32
+ Tsai Y H, Hung W C, Schulter S, et al. Learning to adapt structured
+output space for semantic segmentation//Proceedings of the IEEE
+Conference on Computer Vision and Pattern Recognition (CVPR),
+Utah: IEEE, 2018: 7472-7481.
+33
+ Vu T H, Jain H, Bucher M, et al. Advent: adversarial entropy
+minimization for domain adaptation in semantic segmentation//
+Proceedings of the IEEE/CVF Conference on Computer Vision
+and Pattern Recognition (CVPR), California: IEEE, 2019: 2517-
+2526.
+34
+ Eijpe A, Corbetta V, Chupetlovska K, et al. Enhancing cross-modal
+medical  image  segmentation  through  compositionality//
+International Conference on Medical Image Computing and
+Computer-Assisted Intervention (MICCAI), Morocco: Springer
+Nature Switzerland, 2024: 43-53.
+35
+收稿日期：2025-06-17    修回日期：2025-10-23
+ 本文编辑：陈咏竹
+生物医学工程学杂志  2025年12月第42卷第6期 • 1225 •
+http://www.biomedeng.cn 

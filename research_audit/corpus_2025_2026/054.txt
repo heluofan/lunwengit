@@ -1,0 +1,4078 @@
+=== PDF_PAGE 1 ===
+ 
+基于联邦多模态的中文医学影像报告自动生成模型
+*
+骆 练1,2,黄保华1,张志诚3,金 强2,王晓华2,4
+(1.广西大学计算机与电子信息学院,广西
+ 
+南宁
+ 
+530004;2.遵义医科大学附属医院信息处,贵州
+ 
+遵义
+ 
+563000;
+3.中国科学院深圳先进技术研究院,广东
+ 
+深圳
+ 
+518055;4.遵义医科大学医学信息工程学院,贵州
+ 
+遵义
+ 
+563000)
+摘 要:准确、高效地自动生成医学影像报告成为提高诊疗效率、缓解医疗资源短缺的关键。目前,医学
+影像报告自动生成研究以英文为主,无法满足我国的临床需求,且存在医疗数据共享与患者隐私保护矛盾、
+从头训练模型成本高昂等问题。为此,提出基于联邦多模态的中文医学影像报告自动生成模型,该模型以联
+邦学习为框架,以多模态大模型 VisualGLM-6B为基座,采用低秩自适应大模型微调技术,允许医疗机构在不
+暴露本地数据的前提下微调以优化模型性能。同时,设计了一种联邦自适应算法,用于动态计算不同机构模
+型聚合系数以提 高 模 型 的 泛 化 性 能。实 验 结 果 表 明,所 提 模 型 在 MIMIC-CXR 内 部 测 试 集 上 的 BLEU-1,
+BLEU-2,BLEU-3,BLEU-4,METEOR 和 ROUGE 指 标 相 较 于 基 线 XrayGLM 分 别 提 高 了 18.06%,
+17.85%,11.37%,1.61%,13.44%和5.06%,且在外部测试数据集 OPEN-I上也表现出良好的泛化性能。
+关键词:医学影像报告自动生成;联邦学习;多模态大模型微调;医疗数据共享;患者隐私保护
+中图分类号:TP391;TP18 文献标志码:A
+doi:10.3969/j.issn.1007-130X.2026.07.017
+A
+ 
+federated
+ 
+multimodal
+ 
+model
+ 
+for
+ 
+automatic
+ 
+generation
+ 
+of
+ 
+Chinese
+ 
+medical
+ 
+imaging
+ 
+reports
+LUO
+ 
+Lian
+1,2,HUANG
+ 
+Baohua
+1,ZHANG
+ 
+Zhicheng
+3,JIN
+ 
+Qiang
+2,WANG
+ 
+Xiaohua
+2,4
+(1.School
+ 
+of
+ 
+Computer,Electronics
+ 
+and
+  
+Information,Guangxi
+ 
+University,Nanning
+ 
+530004;
+2.Information
+ 
+Department,Affiliated
+ 
+Hospital
+ 
+of
+ 
+Zunyi
+ 
+Medical
+ 
+University,Zunyi
+ 
+563000;
+3.Shenzhen
+ 
+Institutes
+ 
+of
+ 
+Advanced
+ 
+Technology,Chinese
+ 
+Academy
+ 
+of
+ 
+Sciences,Shenzhen
+ 
+518055;
+4.School
+ 
+of
+ 
+Medical
+ 
+Information
+ 
+Engineering,Zunyi
+ 
+Medical
+ 
+University,Zunyi
+ 
+563000,China)
+Abstract:Accurate
+ 
+and
+ 
+efficient
+ 
+automatic
+ 
+generation
+ 
+of
+ 
+medical
+ 
+imaging
+ 
+reports
+ 
+is
+ 
+crucial
+ 
+for
+ 
+improv-
+ 
+ing
+ 
+diagnostic
+ 
+efficiency
+ 
+and
+ 
+alleviating
+ 
+medical
+ 
+resource
+ 
+shortages.
+ 
+Currently,
+ 
+research
+ 
+on
+ 
+automatic
+ 
+medical
+ 
+imaging
+ 
+report
+ 
+generation
+ 
+is
+ 
+predominantly
+ 
+conducted
+ 
+in
+ 
+English,
+ 
+failing
+ 
+to
+ 
+meet
+ 
+the
+  
+clinical
+ 
+needs
+ 
+in
+ 
+China.
+ 
+Moreover,
+ 
+challenges
+ 
+persist
+ 
+regarding
+ 
+the
+ 
+conflict
+ 
+between
+ 
+medical
+ 
+data
+ 
+sharing
+ 
+and
+ 
+patient
+ 
+privacy
+ 
+protection,
+ 
+as
+ 
+well
+ 
+as
+ 
+the
+ 
+high
+ 
+cost
+ 
+of
+ 
+training
+ 
+models
+ 
+from
+ 
+scratch.
+ 
+To
+ 
+address
+ 
+these
+ 
+issues,
+ 
+this
+ 
+paper
+ 
+proposes
+ 
+a
+ 
+federated
+ 
+multimodal
+ 
+model
+ 
+for
+ 
+automatic
+ 
+generation
+ 
+of
+ 
+Chinese
+ 
+medical
+ 
+imaging
+ 
+report
+ 
+generation
+ 
+model.
+ 
+Built
+ 
+upon
+ 
+a
+ 
+federated
+ 
+learning
+ 
+framework
+ 
+with
+ 
+the
+ 
+multimodal
+ 
+large
+ 
+model
+ 
+VisualGLM-6B
+ 
+as
+ 
+its
+ 
+foundation,
+ 
+the
+ 
+model
+ 
+employs
+ 
+low-rank
+ 
+adaptation
+ 
+(LoRA)
+ 
+for
+ 
+fine-
+ 
+tuning,
+ 
+enabling
+ 
+medical
+ 
+institutions
+ 
+to
+ 
+optimize
+ 
+model
+ 
+performance
+ 
+without
+ 
+exposing
+ 
+local
+ 
+data.
+ 
+Addi-
+tionally,
+ 
+a
+ 
+federated
+  
+adaptive
+ 
+algorithm
+ 
+is
+ 
+designed
+ 
+to
+ 
+dynamically
+ 
+compute
+ 
+aggregation
+ 
+coefficients
+ 
+across
+ 
+institutions,
+ 
+enhancing
+ 
+the
+ 
+model’s
+ 
+generalization
+ 
+capability.
+ 
+Experimental
+ 
+results
+ 
+show
+ 
+that
+ 
+on
+ 
+the
+ 
+MIMIC-CXR
+ 
+internal
+ 
+testset,
+ 
+the
+ 
+proposed
+ 
+model
+ 
+improves
+ 
+BLEU-1,BLEU-2,BLEU-3,BLEU-4,
+ 
+* 收稿日期:2024-11-30;修回日期:2025-04-15
+基金项目:国家自然科学基金(61962005);北京市自然科学基金(L245015)
+通信作者:黄保华(bhhuang66@gxu.edu.cn)
+引用格式:骆练,黄保华,张志诚,等.基 于 联 邦 多 模 态 的 中 文 医 学 影 像 报 告 自 动 生 成 模 型 [J].计 算 机 工 程 与 科 学,
+2026,48(7):1319-1330.
+Citation:LUO
+ 
+Lian,HUANG
+ 
+Baohua,ZHANG
+ 
+Zhicheng,et
+ 
+al.A
+ 
+federated
+ 
+multimodal
+ 
+model
+ 
+for
+ 
+automatic
+ 
+genera-
+tion
+ 
+of
+ 
+Chinese
+ 
+medical
+ 
+imaging
+ 
+reports[J].Computer
+ 
+Engineering
+ 
+&
+ 
+Science,2026,48(7):1319-1330.
+ISSN
+ 
+1007-130X
+ CN
+ 
+43-1258/TP
+    计算机工程与科学
+Computer
+ 
+Engineering
+ 
+&
+ 
+Science
+第48卷第7期2026年7月 
+Vol.48,No.7,Jul.2026 
+文章编号:1007-130X(2026)07-1319-12
+
+=== PDF_PAGE 2 ===
+METEOR,
+ 
+and
+ 
+ROUGE
+ 
+scores
+ 
+by
+ 
+18.06%,
+ 
+17.85%,
+ 
+11.37%,
+ 
+1.61%,
+ 
+13.44%,
+ 
+and
+ 
+5.06%
+ 
+respec-
+tively
+ 
+compared
+ 
+with
+ 
+the
+ 
+baseline
+ 
+XrayGLM,
+ 
+and
+  
+demonstrates
+ 
+strong
+ 
+generalization
+ 
+performance
+ 
+on
+ 
+the
+ 
+external
+ 
+test
+ 
+dataset
+ 
+OPEN-I.
+Key
+ 
+words:automatic
+ 
+generation
+ 
+of
+ 
+medical
+ 
+imaging
+ 
+report;federated
+ 
+learning;
+ 
+multimodal
+ 
+large
+ 
+model
+ 
+fine-tuning;medical
+ 
+data
+ 
+sharing;patient
+ 
+privacy
+ 
+protection
+ 
+1 引言
+随着 医 学 影 像 技 术 的 飞 速 发 展,诸 如 X 射 线
+X-ray(X-radiation)、计 算 机 断 层 扫 描 CT(Computed
+ 
+Tomography)、磁 共 振 成 像 MRI(Magnetic
+ 
+Reso-
+nance
+ 
+Imaging)和正电 子 发 射 断 层 显 像/计 算 机 断
+层 扫 描 PET/CT (Positron
+ 
+Emission
+ 
+Tomo-
+graphy/Computed
+ 
+Tomography)等 医 学 影 像 数 据
+已成为临床医生对 多 种 疾 病 进 行 精 准 诊 疗 不 可 或
+缺的关键依据
+[1]。然而,依赖资深放射科医生撰写
+报告的传统方式 不 仅 耗 时 费 力,且 资 源 分 配 不 均,
+尤其在医疗资源匮乏的基层医疗机构中更为突出,
+严重制约了诊断效率。为降低医生工作负担、提升
+医学影像报告完成效率和精确度,并缓解医疗资源
+紧缺,开展医学影像报告自动生成研究变得十分必
+要。同时,医学影像与人工智能技术的深度融合及
+实践应用已被国际 医 学 影 像 领 域 视 为 关 键 的 研 究
+与发展方向
+[2]。鉴于此,医学影像报告自动生成技
+术的研究 应 运 而 生,已 逐 渐 从 传 统 计 算 机 辅 助 诊
+断
+[3]扩展到医学影像报告自动生成任务。近年来,
+在深度学习
+[4]和自然语言处理技术[5]的推动下,医
+学影像报告自动生成研究取得了显著的进展。
+目前,主流的医学影像报告自动生成研究多采
+用深度学习 中 的 编 码 器-解 码 器 结 构
+[6],该 结 构 一
+般以 卷 积 神 经 网 络 CNN(Convolutional
+ 
+Neural
+ 
+Network)作为视 觉 组 件 用 于 提 取 图 像 特 征;以 循
+环神经 网 络 RNN(Recurrent
+ 
+Neural
+ 
+Network)及
+其变体作为语言组件,该组件根据视觉组件提取的
+图像特征生成影像报告。文 献[7 10]基 于 CNN-
+RNN 结 构 开 展 医 学 影 像 报 告 自 动 生 成 研 究,解 决
+句子重复、异常描 述 有 限 等 问 题,提 高 了 报 告 的 准
+确性。然而,这 类 方 法 存 在 3 方 面 缺 陷:1)
+ 
+RNN
+的序列处理特 性 导 致 训 练 效 率 低 下;2)
+ 
+长 距 离 依
+赖建模能力不足,在生成长报告时流畅性差;3)
+ 
+缺
+乏跨模态深度交互及视觉 文本对齐依赖注意力机
+制。VASWANI 等 人
+[11] 于 2017 年 提 出 Trans-
+former
+ 
+结构,其并行计算、灵活 输 入 以 及 强 大 的 长
+距离依赖 建 模 能 力,为 CNN-RNN 模 型 及 其 变 体
+存在的问题提供 了 解 决 方 案。 文 献[12 16]基 于
+Transformer
+ 
+结构 开 展 医 学 影 像 报 告 自 动 生 成 研
+究,解决了正异常 数 据 偏 差、报 告 长 序 列 和 关 键 信
+息容易遗 漏 等 问 题,提 高 了 报 告 的 准 确 性 和 流 畅
+性。总体来讲,基于 Transformer结构的医学影像
+报告自动生成任务取得显著成果,但仍面临专业术
+语理解不够、长文本生成能力有限等多重挑战。
+近年来,多模态基础技术的快速发展为医学影
+像报 告 自 动 生 成 研 究 提 供 了 新 的 技 术 路 径。 以
+CLIP(Contrastive
+ 
+Language-Image
+ 
+Pre-training)
+[17]、
+BLIP(Bootstrapping
+ 
+Language-Image
+ 
+Pre-training)
+[18]
+和 BLIP2
+[19]为代表的突破性 技 术,通 过 建 立 视 觉
+语言联合表征空间,有效解决了传统模型中模态对
+齐的难题。在这一技术浪潮 推 动 下,R2GenGPT
+[20]
+和 XrayGPT
+[21]等创新模型采用视觉编码器 与 大 语
+言模型的对齐训练机制,在英文医学报告生成任务
+中展现出显著优势。然而,中文医学语言的特殊性
+使得这些模型难以直接应用于我国临床实践:尽管
+可通过翻译流程将英文生成报告转换为中文,但医
+学专业术语体系在2种语言间存在系统性差异
+[22],
+直接转换易导致专业表述失真,甚至可能引发临床
+误判风险。针对中文医学报告生成需求,文献[23]
+以 VisualGLM-6B (Visual
+ 
+General
+ 
+Language
+ 
+Model-6B)
+[24,25]为 基 座 进 行 微 调,构 建 XrayGLM
+模型,但实验表明其性能不佳,鲁棒性能差。
+此 外,随 着 《中 华 人 民 共 和 国 数 据 安 全 法》和
+《中华人民共和国个人信息保护法》的颁布实施,医
+疗大数据的合规使 用 与 患 者 隐 私 保 护 之 间 的 矛 盾
+日益凸显
+[26],上 述 传 统 集 中 式 训 练 范 式 已 难 以 满
+足法律要求,这引发出关键性挑战———如何在分布
+式数据存储结构下实现模型的高效训练并确保模型
+具有良好的泛化能力,成为决定中文医学影像报告
+自动生成系统能否在临床落地的关键要素。同时,
+更深层次的产业化困境体现在模型训练成本层面,
+从零开始构 建 医 学 领 域 大 语 言 模 型 需 要 消 耗 大 量
+GPU 计算资源
+[27],这种量级的投入严重制约着医学
+影像报告自动生成技术在医疗机构的普及应用。因
+此,建立符合法律 要 求 的 医 疗 数 据 共 享 体 系,探 索
+低资源依赖的渐进式模型优化路径,已成为推动医
+学人工智能技术临床转化亟待突破的关键课题。
+0231 Computer
+ 
+Engineering
+ 
+&
+ 
+Science 计算机工程与科学 2026,48(7)
+
+=== PDF_PAGE 3 ===
+为解决上述问题,本文将联邦学习与多模态大
+模型微调技术应用 于 中 文 医 学 影 像 报 告 自 动 生 成
+任务,构建基于联邦多模态的中文医学影像报告自
+动生成 模 型 Ch-FedXrayGLM(Chinese
+ 
+Federated
+ 
+XrayGLM)。该模 型 在 确 保 医 疗 机 构 无 需 集 中 存
+储敏感数据的前提下,以 VisualGLM-6B 为基座模
+型,运用先进的低秩自适应 LoRA(Low-Rank
+ 
+Ad-
+aptation)
+[27]微 调 技 术 和 提 示 工 程 (Prompt
+ 
+Engi-
+neering)技术
+[28],允许各医疗机构基于本地数据独
+立训练并优化本地模型权重,仅需共享轻量级参数
+聚合联邦模型,克服传统联邦学习需客户端上传完
+整模型参数(通常数百 MiB 至 GiB 级)导致通信开
+销巨大的局限性,且解决从零构建医学领域大语言
+模型计算资源开销巨大的问题。同时,本文提出一
+种联邦自适应FedAdapt算法(Federated
+ 
+Adaptive
+ 
+algorithm),联邦 中 心 服 务 器 采 用 该 聚 合 算 法,根
+据每轮联邦训练中 各 医 疗 机 构 模 型 的 报 告 评 估 指
+标动态计算各医疗机构模型的聚合系数,并将不同
+医疗机构共享的模型参数融合形成联邦模型。Ch-
+FedXrayGLM 不 仅 有 助 于 保 护 患 者 隐 私、促 进 数
+据的有效利用,还 有 助 于 降 低 成 本、提 升 模 型 的 泛
+化能力。总体上,本文主要研究工作如下:
+1)提出基于联 邦 多 模 态 的 中 文 医 学 影 像 报 告
+自动生成模型。 该 模 型 融 合 联 邦 学 习 框 架 和 多 模
+态大模型微调技 术,从 医 疗 数 据 共 享、模 型 泛 化 能
+力和算力层面改革 现 有 医 学 影 像 报 告 自 动 生 成 模
+型,有助于推动中文医学影像报告自动生成研究进
+展、有助于解决我国医疗资源极度紧缺问题。
+2)提 出 联 邦 自 适 应 FedAdapt算 法。 不 同 于
+传统的 联 邦 平 均 FedAvg 算 法 (Federated
+ 
+Avera-
+ging
+ 
+algorithm),该算法通过计算各医疗机构本地
+模型在联邦验证集上的评估指标,动态计算聚合系
+数并聚合模型。 该 算 法 既 保 留 了 医 疗 机 构 数 据 的
+独特性与互补优势,又强化了模型的泛化力。
+3)鉴于中 文 X-ray 影 像 报 告 自 动 生 成 研 究 对
+数据的迫切需求,本文将公开一份数量庞大的中文
+X-ray影像报告数据 集,为 后 续 深 入 研 究 奠 定 坚 实
+的基础。
+4)根据得到的实验评估结果,该模型在内部测
+试集上取得了 较 好 的 中 文 X-ray 影 像 报 告 生 成 能
+力,且在外部测试集上表现出良好的泛化性。
+2 相关工作
+2.1 医学影像报告生成任务
+医学 影 像 报 告 自 动 生 成 类 似 于 自 然 图 像 描
+述
+[22],是近年来 人 工 智 能 医 疗 领 域 的 研 究 热 点 之
+一。目前,国内外的主流方法主要聚焦于深度学习
+中的 CNN RNN 结 构,且 多 以 生 成 英 文 报 告 为
+主。借鉴图像字幕任务的灵感,研究人员从不同角
+度提出医学影像报 告 自 动 生 成 方 案 并 取 得 了 一 定
+成果。但由于该结构计算效率低、难以处理长序列
+等问题,限制了其在复杂任务中的表现。基于注意
+力机制的 Transformer结 构 在 医 学 影 像 报 告 自 动
+生成任务中由于其并行计算、灵活输入以及长距离
+依赖建模 能 力 使 其 更 具 优 势,为 CNN-RNN 存 在
+的问题提供了新颖的解决方案。CHEN 等人
+[12]提
+出记忆驱动 Transformer生成放射学长报告,包含
+医学术语和有意义的图 文注意力映射。针对医学
+影像报告自动生成 任 务 中 存 在 的 正 异 常 数 据 偏 差
+及报告长序列问 题,YI等 人
+[15]提 出 了 无 监 督 疾 病
+标签模型,通过引 入 一 般 疾 病 标 签 聚 类、并 行 双 注
+意力和并行视觉标签混合3大模块,提供了更准确
+的 异 常 发 现。 邢 素 霞 等 人
+[16] 提 出 的 mMIRmd
+(multimodal
+ 
+Medical
+ 
+Imaging
+ 
+Report
+ 
+based
+ 
+on
+ 
+memory
+ 
+drive)方法,融合医学影像与病史信息,提
+高了对不同疾病类型 的 识 别 能 力,同 时 利 用 Swin-
+Transformer和 BERT 提取特征,并引入记忆驱动
+模块解决 长 距 离 依 赖,提 高 了 报 告 准 确 性 和 流 畅
+性。总之,基于 Transformer结构的模型已取得了
+显著成效,但仍需 克 服 专 业 术 语 理 解 不 足 的 挑 战。
+而多模态大模型以其处理文本、图像和音频等多种
+数据类型的能力,实现了跨模态数据的融合与深度
+理解,能够提取高 维 特 征 并 精 准 把 握 语 义 关 系,为
+上述难题提供了新的解决方案。
+2.2 大模型微调应用于医学影像报告生成
+随着大模型技术的深入推进,医学影像报告自
+动生成 任 务 取 得 一 定 进 展。 WANG 等 人
+[20]提 出
+R2GenGPT 模 型,建 立 医 学 影 像 特 征 与 LLMs
+(Large
+ 
+Language
+ 
+Models)语义空间的动态 映 射 关
+系,提升了模型性 能。THAWAKAR 等 人
+[21]提 出
+会话式医疗 视 觉 语 言 模 型 XrayGPT,该 模 型 结 合
+医学视觉编码器 与 预 训 练 大 语 言 模 型,基 于 X-ray
+影像 和 医 学 知 识 生 成 约 217
+ 
+000 个 高 质 量 摘 要 训
+练,从 而 改 进 模 型 性 能。然 而,这 些 模 型 均 以 英 文
+报告生成为 目 标,不 适 合 中 国 的 临 床 实 际。为 此,
+WANG 等 人
+[23]提 出 中 文 医 学 影 像 报 告 生 成 模 型
+XrayGLM,该 模 型 以 多 模 态 大 模 型 VisualGLM-
+6B 为基座进行微调,但效果不佳,且未考虑中国临
+床实际,即如何在保障病人隐私的前提下获得高性
+能 X-Ray影像报告生成模型。
+1231骆 练等:基于联邦多模态的中文医学影像报告自动生成模型
+
+=== PDF_PAGE 4 ===
+2.3 联邦学习应用于医学影像处理领域
+联 邦 学 习 在 保 护 数 据 隐 私 的 同 时 实 现 了 跨 机
+构协作学 习,它 与 医 疗 数 据 隐 私 保 护 需 求 高 度 契
+合,越来越多研究人员开展联邦学习与医学图像分
+割、分 类、疾 病 检 测 和 报 告 生 成 等 方 面 的 研 究。
+TULADHAR 等 人
+[29]通 过 优 化 训 练 周 期、学 习 率
+衰减和权重聚合策略,实现了基于联邦学习的肿瘤
+分割,其性 能 接 近 中 心 化 训 练。LIU 等 人
+[30]提 出
+联邦对比学习方 法,结 合 全 局 与 局 部 模 型 优 势,增
+强了模型泛化能 力,有 效 应 对 了 数 据 异 质 性 挑 战。
+GUNESLI等 人
+[31]引 入 FedDropoutAvg 方 法,采
+用dropout机制减轻了联邦学习中的过拟合问题,
+在肿瘤检 测 任 务 中 表 现 优 异。 近 几 年,CHEN 等
+人
+[32]开展了基于多模态联邦学习的 医 学 图 像 报 告
+生 成 研 究,提 出 一 种 联 邦 评 分 权 重 算 法 Fedsw
+(Federal
+ 
+score
+ 
+weight
+ 
+algorithm)聚 合 本 地 模 型,
+实验评估证明了该算法的有效性。因此,联邦学习
+技术在医疗图像处理领域展现出巨大潜力。
+图1 Ch-FedXrayGLM 模型结构
+Figure
+ 
+1 Structure
+ 
+of
+ 
+Ch-FedXrayGLM
+ 
+model
+3 细节介绍
+3.1 模型框架
+本 文 提 出 基 于 联 邦 多 模 态 的 中 文 医 学 影 像 报
+告自动生成模 型 Ch-FedXrayGLM,模 型 结 构 如 图
+1所示。该模型以 VisualGLM-6B 为基础底座,在
+联邦去中心化训练框架下,经过多轮联邦训练得到
+最终的中文 X-ray 影 像 报 告 生 成 模 型。 在 每 轮 联
+邦微调训练中,首先从联邦中心服务器端向各医疗
+机构端下发模型参数,各医疗机构端根据本地产生
+的 X-ray 影 像 及 报 告 数 据,采 用 大 模 型 微 调 技 术
+LoRA 及提 示 工 程 技 术 Prompt基 于 本 地 数 据 进
+行微调,完成微调 后,仅 需 共 享 本 地 微 调 后 的 轻 量
+级 LoRA 增 量 参 数 至 联 邦 中 心 服 务 器 端。 其 次,
+联邦中心服务器端 利 用 联 邦 验 证 集 动 态 计 算 各 医
+疗机构端聚合系数并聚合联邦模型。最后,评估该
+轮联邦模型在联邦验证集上的表现,以决定是否继
+续进行模型训练。根据研究涉及的工作,后文将从
+预训练大模型基 座 VisualGLM-6B、大 模 型 微 调 技
+术 LoRA 和 联 邦 聚 合 方 法 3 个 方 面 描 述 本 文
+工作。
+3.2 多模态预训练大模型 VisualGLM-6B
+实验以 多 模 态 预 训 练 大 模 型 VisualGLM-6B
+为基座进行 微 调,其 整 体 思 路 见 图 1 中 右 侧 虚 线
+框。VisualGLM-6B 是清华大学智谱 AI开源的一
+款多模态视觉语 言 大 模 型,具 有 图 像 识 别、中 英 文
+处 理 能 力,其 以 ChatGLM-6B
+[33]为 基 座,并 利 用
+BLIP2
+[19]思路,将 图 像 特 征 对 齐 到 预 训 练 语 言 模
+型,实现 视 觉 特 征 与 文 本 语 言 的 无 缝 融 合。 由 于
+VisualGLM-6B 在图 文 对 话 验 证 任 务 中 展 现 出 卓
+越的中文文本生 成 能 力,本 文 选 择 VisualGLM-6B
+作为实验的多模态视觉语言预训练基础模型。
+3.3 微调技术 LoRA
+LoRA 是一种大模型微调技术,旨在通过一种
+高效且轻量级的方 法 来 微 调 预 先 训 练 好 的 大 语 言
+模型,其原理见图1中左侧虚线框。LoRA 的基本
+思想是保持预训练矩 阵 W0(W0∈Rd×k)冻 结,d 表
+示输出特征维 度,k 表 示 输 入 特 征 维 度,并 且 只 在
+其旁插入一个和它 并 行 的 新 的 参 数 矩 阵 ΔW 进 行
+训练,以达到优化模型的目的。其中,ΔW =BA,A
+2231 Computer
+ 
+Engineering
+ 
+&
+ 
+Science 计算机工程与科学 2026,48(7)
+
+=== PDF_PAGE 5 ===
+(A ∈ Rr×k )使 用 随 机 高 斯 分 布 初 始 化,矩 阵
+B(B∈Rd×r)全0初始 化,使 得 在 训 练 初 始 状 态 下
+这2个 矩 阵 相 乘 的 结 果 为 0。r 是ΔW 的 秩,r≪
+min(d,k),将 A 和B 乘 得 到ΔW (d×k),这 样 只
+需训练少量的参数(即 B 和A 中的元素)就能达到
+微调模型的目 的。 微 调 之 后 的 模 型 权 重 与 基 座 模
+型权重合并得到最后模型Y,如式(1)所示:
+Y =(W0 +ΔW)X =W0X +BAX (1)
+  LoRA 微调 技 术 不 仅 能 大 幅 减 少 需 要 训 练 的
+参数数量、降低计 算 复 杂 性 和 显 存 使 用,还 能 保 持
+原始模型性能,在 新 任 务 上 达 到 较 好 的 效 果,有 效
+防止过 拟 合,增 强 模 型 泛 化 能 力
+[27]。 鉴 于 LoRA
+的以上 优 点,本 文 选 择 LoRA 作 为 大 模 型 微 调
+技术。
+3.4 联邦聚合模型
+本文 提 出 一 种 联 邦 自 适 应 算 法 FedAdapt,即
+联邦中心服务器端 根 据 各 医 疗 机 构 端 模 型 的 医 学
+影像报告生成,动态调整聚合系数并聚合本地模型
+权重,形成联邦级强 大 模 型。 如 算 法
+ 
+1 所 示,假 设
+D 表示大 模 型 微 调 数 据 集,W0 表 示 基 座 Visual-
+GLM-6B 的模型权 重,Wfed 表 示 联 邦 模 型 权 重(初
+始权重为 W0),Wclient 表 示 医 疗 机 构 端 模 型 权 重,
+F(W ,D)为大模型微 调 函 数,E(W ,D)为 大 模 型
+医学影像报 告 生 成 能 力 评 估 函 数,M 表 示 大 模 型
+医学影像报告 生 成 能 力 评 估 指 标 值。 根 据 以 上 假
+设,FedAdapt具体实现如下:
+1)各医疗 机 构 利 用 本 地 X-ray 影 像 及 报 告 训
+练集 Dtrain,基于联 邦 中 心 下 发 的 模 型 权 重 Wfed 进
+行大模型微调,得到各医疗机构端模型权重 Wclient,
+并将对应轻量级 LoRA 参 数 矩 阵 上 传 至 联 邦 中 心
+服务器端,如式(2)所示:
+Wclient=F(Wfed,Dtrain) (2)
+  2)首 先,联 邦 中 心 服 务 器 端 将 当 前 Wfed 与 各
+医疗机构 LoRA 参 数 矩 阵 合 并 后 获 得 对 应 Wclient,
+并 基 于 联 邦 验 证 集 Dvalid 计 算 医 疗 机 构 端 模 型
+Wclient 的 评 估 指 标 Mclient。 然 后,采 用 聚 合 算 法
+FedAdapt动态计算各医疗机构模型权重聚合系数
+ɑ,并根据该系 数 ɑ 聚 合 各 医 疗 机 构 端 模 型 权 重,
+得到该轮联邦微调后模型权重 Wfed,最后计算联邦
+模型 Wfed 评估指标 Mfed,如式(3)—式(6)所示:
+Mclient=E(Wclient,Dvalid) (3)
+αi = e
+Mclienti 
+∑
+n
+i=1e
+Mclienti 
+(4)
+Wfed =∑
+n
+i=1αiWclienti (5)
+Mfed =E(Wfed,Dvalid) (6)
+  3)每轮联邦训练完成后,联邦中心服务器端将
+聚合后的 LoRA 参数矩阵下发至各医疗机构端,继
+续进行下一轮大模型微调训练,即重复步骤1)至步
+骤2)进行 微 调、聚 合 和 评 估,直 到 聚 合 后 的 联 邦 模
+型权重生成报告评估指标 Mfed 不再持续提升为止。
+算法1 Ch-FedXrayGLM
+ 
+training
+ 
+algorithm
+输入:MIMIC-CXR 数据集 D,总 训 练 迭 代 数I,当 前 训 练
+迭代数iter,参与联邦学 习 的 医 疗 机 构 数n,i 为 第
+几个医疗机构。
+输出:联邦模型权重 Wfed。
+1.iter=0,n=10,i=1,Wfed=W0;
+2.各客户端并行执行:
+3.while
+ 
+iter≤I
+ 
+do
+4. Wclient=F(Wfed,Dtrain);
+5. iter++
+ 
+;
+6.end
+ 
+while
+7.服务器端执行:
+8.Mclienti =E(Wclienti ,Dvalid);
+9.αi= e
+Mclienti 
+∑
+n
+i=1e
+Mclienti ;
+10.Wfed=∑
+n
+i=1αiWclienti ;
+11.Mfed=E(Wfed,Dvalid);
+12.return
+  
+Wfed;
+4 实验与结果分析
+4.1 数据集
+4.1.1 数据集选择
+本文研 究 使 用 了 数 据 集 MIMIC-CXR(Medi-
+cal
+ 
+Information
+ 
+Mart
+ 
+for
+ 
+Intensive
+ 
+Care-Chest
+ 
+X-
+Ray)
+[34]和 OPEN-I(OPEN
+ 
+access
+ 
+biomedical
+ 
+Image
+ 
+search
+ 
+engine)
+[35]。MIMIC-CXR 包 含 377
+ 
+110 幅
+胸部 X-ray影像 及227
+ 
+827 份 报 告。 借 鉴 MOON
+等人
+[36]的 方 法,本 文 采 用 MIMIC-CXR 数 据 集 中
+91
+ 
+685 幅 前 后 位 AP(AnteroPosterior)视 图 图 像
+和相关报告进行实验,选择报告中与 X-ray成像相
+关的客观描述部分(“发 现”或“印 象”)作 为 医 学 影
+像报 告。 同 时,由 于 MIMIC-CXR 与 OPEN-I 在
+数 据 量 和 临 床 特 性 上 存 在 显 著 差 异,本 文 将
+OPEN-I用于评估所提模型的泛化能力。
+4.1.2 数据集处理
+由 于 目 前 已 有 的 医 学 影 像 报 告 自 动 生 成 研 究
+大多应用英文报告数据集进行训练,而英文和中文
+在语义空间上具 有 一 定 差 异,且 无 公 开 中 文 X-ray
+3231骆 练等:基于联邦多模态的中文医学影像报告自动生成模型
+
+=== PDF_PAGE 6 ===
+影像报告数据集,因 此,为 促 进 中 文 医 学 影 像 报 告
+自动 生 成 研 究 的 发 展,本 文 利 用 MIMIC-CXR 和
+OPEN-I对应的英文报告作 为 参 考 报 告,通 过 调 用
+专业 API接口 批 量 翻 译 并 经 过 医 生 精 心 校 准,获
+得中文医 学 影 像 报 告 (见 图 2),以 便 进 行 中 文 X-
+ray影像报告自动生成研究。
+图2 影像报告翻译过程
+Figure
+ 
+2 Translation
+ 
+process
+ 
+of
+ 
+imaging
+ 
+report
+4.1.3 实验数据划分
+实验采用联 邦 学 习 框 架,模 拟10 家 医 疗 机 构
+参与训练。将 MIMIC-CXR 数据集中89
+ 
+395对影
+像及 报 告 随 机 分 为 10 份 (第 1—9 家 机 构 分 配
+8
+ 
+940对,第10家机 构 分 配 8
+ 
+935 对)作 为 各 医 疗
+机构本 地 数 据 集 用 于 微 调 训 练。 将 MIMIC-CXR
+数据集中759对影 像 及 报 告 作 为 服 务 器 端 联 邦 验
+证集,用于评估各 医 疗 机 构 模 型 评 估 指 标,动 态 计
+算各机构模 型 聚 合 系 数 ɑ。 将 MIMIC-CXR 数 据
+集中1
+ 
+531对影 像 及 报 告 作 为 联 邦 中 心 服 务 器 端
+内部测试集,测试最终联邦模型的医学影像报告生
+成性能。随机分 配 OPEN-I数 据 集 中 863 对 影 像
+及报告作为联邦中心服务器端外部测试集,测试模
+型的泛化性能。
+4.2 评价指标
+为 了 对 模 型 的 医 学 影 像 报 告 生 成 性 能 进 行 客
+观且全面的 评 估,本 文 采 用 了 3 种 不 同 的 评 价 指
+标:BLEU(BiLingual
+ 
+Evaluation
+ 
+Understudy)
+[37]、
+ROUGE(Recall-Oriented
+ 
+Understudy
+ 
+for
+ 
+Gisting
+ 
+Evaluation)
+[38]和 METEOR (Metric
+ 
+for
+ 
+Evalua-
+tion
+ 
+of
+ 
+Translation
+ 
+with
+ 
+Explicit
+ 
+ORdering)
+[39]。
+这些指标均关注生成文本与源文本之间的相似度,
+但各有侧重。BLEU 作 为 一 种 广 泛 使 用 的 机 器 翻
+译评价指标,通过比较生成文本与源文本中连续词
+的匹 配 程 度 来 衡 量 相 似 度。 本 文 研 究 中 使 用
+BLEU 的 4 个 变 种———BLEU-1,BLEU-2,
+BLEU-3和 BLEU-4,分 别 考 虑 了 连 续 1~4 个 词
+的匹 配 情 况,以 全 面 评 估 生 成 文 本 的 质 量。
+ROUGE 是一个基于召回率的指标,特别适用 于 文
+本生成 任 务。METEOR 评 价 指 标 关 注 生 成 文 本
+与原文本中相似词的替换情况,它通过引入同义词
+和词干匹配等机制,更全面地衡量文本之间的语义
+相似度。
+4.3 实验细节
+本文实验环境如表1所示,中心服务器首先以
+VisualGLM-6B 的模 型 参 数 为 初 始 化 联 邦 模 型 参
+数。随后,各个医疗机构基于联邦中心服务器下发
+的模型,设置相应微调参数(训练 批 处 理 大 小 为8,
+每轮 联 邦 训 练 3 个 轮 次,输 入 图 像 大 小 为 224×
+224×3,并进行归一化处理,学习率为0.000
+ 
+1),在
+模型的第0层和第14层引入rank 为10 的 LoRA
+技术来实施微调。
+表1 实验环境
+Table
+ 
+1 Experimental
+ 
+environment
+ 
+项目名称 详细信息
+显卡 NVIDIA
+ 
+A40
+ 
+Data
+ 
+Center
+ 
+GPU(48
+ 
+GiB)×1
+内存 80
+ 
+GiB
+深度学习框架 PyTorch
+开发语言 Python
+ 
+3.8
+  每轮微调训练完成后,采用3.4节中描述的联
+邦自适应算法聚合本地模型参数,获得本轮联邦模
+型。最后,评估本轮联邦模型生成报告的指标。
+4.4 对比实验
+为验证本文模型的医学影像报告生成性能,将
+所 提 模 型 与 基 座 模 型 VisualGLM-6B、基 线 模 型
+XrayGLM 及 其 他 医 学 影 像 报 告 生 成 模 型 (Med-
+Vill
+[36]、XrayGPT[21]和 R2GenGPT[20])进 行 对 比。
+为确保对比实验的科学性,本文对比实验实施双重
+控制 策 略:1)数 据 同 源 性。 将 本 文 采 用 的 中 文
+MIMIC-CXR 医学影 像 报 告 数 据 集 分 别 在 已 公 开
+代码的主流模型 上 进 行 训 练,获 得 对 应 模 型 权 重。
+2)评估一致性。用同样的测试数据及评估方法,分
+别 在 内 部 测 试 集 MIMIC-CXR 及 外 部 测 试 集
+OPEN-I上进行评估。
+对比实验分别从生成报告的评估指标(定量)、
+生成报告的效果(定 性)和 联 邦 聚 合 算 法 3 个 方 面
+进行深入对比分析。
+4231 Computer
+ 
+Engineering
+ 
+&
+ 
+Science 计算机工程与科学 2026,48(7)
+
+=== PDF_PAGE 7 ===
+4.4.1 定量分析
+本文深入对 比 了 不 同 模 型 在 MIMIC-CXR 内
+部测试集及 OPEN-I
+ 
+外部测试集上的性能,结果详
+见表2。采用 本 文 研 究 中 的 中 文 医 学 影 像 报 告 数
+据集训练后获得的模型在表2中左上角标注 CH。
+从表 2 可 以 看 出,相 较 于 基 座 模 型 Visual-
+GLM-6B,本文模 型 在 内、外 部 测 试 集 上 的 各 项 指
+标均有较 大 提 升。 相 较 于 基 线 模 型CHXrayGLM,
+本 文 模 型 在 MIMIC-CXR 上 的 BLEU-1,BLEU-
+2,BLEU-3,BLEU-4,METEOR 和 ROUGE 指 标
+分别提升 了 18.06%,17.85%,11.37%,1.61%,
+13.44%和5.06%,在 OPEN-I
+ 
+上的各项 指 标 也 分
+别提 升 了 17.85%,27.33%,25.44%,24.14%,
+16.21% 和 11.68%。 相 较 于CHMedVill、
+ 
+CH
+Xray-
+GPT,本 文 模 型 在 MIMIC-CXR 及 OPEN-I上 的
+各项指标更优。相较于CHR2GenGPT,本文模型在
+MIMIC-CXR 上的各项指标与其总体持平,但在外部
+测试集 OPEN-I上的各项指标分别提升了15.77%,
+23.33%,46.69%,33.88%,19.45%和22.11%。
+这充分表明,采用联邦结构基于医疗垂直领域
+数据进行 LoRA 微 调,可 以 明 显 提 升 模 型 生 成 X-
+ray影像报告的能力 并 具 有 更 好 的 泛 化 性 能,使 得
+本文模型生成的中文 X-ray影像报告更准确、流畅
+且专业,以更好地 适 用 于 下 游 任 务,提 升 模 型 跨 机
+构应用能力。
+4.4.2 定性分析
+为了定性 分 析 模 型 的 报 告 生 成 能 力,本 文 从
+内部 测 试 集 中 随 机 选 取3个X-ray影 像 样 本 作 为 模
+型的输入,生成相 应 影 像 报 告,并 与 不 同 模 型 生 成
+的 X-ray 影 像 报 告 进 行 对 比 (见 表 3)。 从 表 3 看
+出,VisualGLM-6B 生 成 的 X-ray影 像 报 告 与 参 考
+报 告 基 本 不 相 关,CHMedVill、CHXrayGPT 生 成 的
+影像报 告 只 能 捕 捉 到 较 少 的 关 键 词 且 流 畅 度 欠
+佳,CHXrayGLM 生成 的 影 像 报 告 流 畅,但 捕 获 的
+关键词 较 少,CHR2GenGPT 捕 捉 到 相 应 医 学 专 业
+关键词,但报告流畅度欠佳。本文模型能够捕捉到
+参考报告中的医学 关 键 词,如“心 脏 大 小 正 常”“胸
+腔积液”和“肺气肿”等,构词方式与参考报告相似,
+符合临床用语 习 惯 且 流 畅。 这 说 明 本 文 模 型 在 生
+成中文 X-ray影像报告上的表现更佳,相较其他模
+型能够生成更准 确、流 畅 的 报 告,更 适 用 于 实 际 临
+床场景。
+4.4.3 不同联邦聚合算法对模型性能的影响
+为验证本文聚 合 算 法 FedAdapt的 有 效 性,用
+经 典 的 联 邦 平 均 FedAvg 算 法 与 本 文 聚 合 算 法
+FedAdapt分别聚合联 邦 模 型,并 将 得 到 的 2 种 模
+型 在 内 部 测 试 集 MIMIC-CXR 和 外 部 测 试 集
+OPEN-I上进行评估(结 果 见 表4)。 从 表 4 看 出,
+总 体 上,FedAdapt在 内 部 测 试 集 MIMIC-CXR 上
+的 评 估 指 标 比 FedAvg对 应 指 标 高,且 在 外 部 测
+试 集 OPEN-I上 的 评 估 指 标 也 比 采 用 FedAvg高。
+实 验 结 果 表 明 了 FedAdapt的 优 越 性 ,这 一 策 略
+可 以 有 效 平 衡 不 同 医 疗 机 构 间 数 据 差 异 对 模 型
+学 习 的 影 响 ,确 保 模 型 能 够 全 面 利 用 各 医 疗 机
+构 临 床 患 者 数 据 特 征 增 强 模 型 的 泛 化 性 和 临 床
+实 用 性 。
+表2 不同模型在 MIMIC-CXR 和 OPEN-I测试集上的评估性能
+Table
+ 
+2 Evaluation
+ 
+performance
+ 
+of
+ 
+different
+ 
+models
+ 
+on
+ 
+MIMIC-CXR
+ 
+and
+ 
+OPEN-I
+ 
+testsets
+数据集 模型 BLEU-1 BLEU-2 BLEU-3 BLEU-4 METEOR ROUGE
+VisualGLM-6B(基座) 0.112
+ 
+5 0.018
+ 
+9 0.008
+ 
+1 0.004
+ 
+9 0.082
+ 
+1 0.136
+ 
+0
+CH
+MedVill 0.159
+ 
+8 0.082
+ 
+0 0.046
+ 
+9 0.026
+ 
+6 0.152
+ 
+3 0.245
+ 
+8
+MIMIC-CXR
+CH
+XrayGPT 0.167
+ 
+0 0.054
+ 
+5 0.023
+ 
+3 0.012
+ 
+7 0.153
+ 
+3 0.184
+ 
+2
+CH
+XrayGLM(基线) 0.194
+ 
+9 0.087
+ 
+4 0.043
+ 
+1 0.024
+ 
+9 0.159
+ 
+2 0.253
+ 
+2
+CH
+R2GenGPT 0.244
+ 
+8 0.105
+ 
+1 0.0418 0.018
+ 
+6 0.180
+ 
+8 0.263
+ 
+2
+Ch-FedXrayGLM(本文) 0.230
+ 
+1 0.103
+ 
+0 0.048
+ 
+0 0.025
+ 
+3 0.180
+ 
+6 0.266
+ 
+0
+VisualGLM-6B(基座) 0.141
+ 
+6 0.033
+ 
+1 0.012
+ 
+4 0.006
+ 
+8 0.106
+ 
+6 0.198
+ 
+1
+CH
+MedVill 0.118
+ 
+6 0.054
+ 
+2 0.028
+ 
+6 0.015
+ 
+7 0.109
+ 
+2 0.200
+ 
+0
+OPEN-I
+CH
+XrayGPT 0.152
+ 
+9 0.038
+ 
+1 0.013
+ 
+8 0.006
+ 
+9 0.136
+ 
+5 0.169
+ 
+5
+CH
+XrayGLM(基线) 0.178
+ 
+7 0.062
+ 
+2 0.028
+ 
+3 0.014
+ 
+5 0.132
+ 
+6 0.220
+ 
+8
+CH
+R2GenGPT 0.181
+ 
+9 0.062
+ 
+2 0.024
+ 
+2 0.011
+ 
+9 0.129
+ 
+0 0.200
+ 
+3
+Ch-FedXrayGLM(本文) 0.210
+ 
+6 0.079
+ 
+2 0.035
+ 
+5 0.018
+ 
+0 0.154
+ 
+1 0.244
+ 
+6
+5231骆 练等:基于联邦多模态的中文医学影像报告自动生成模型
+
+=== PDF_PAGE 8 ===
+表3 不同模型生成的报告效果
+Table
+ 
+3 Effect
+ 
+of
+ 
+reports
+ 
+generated
+ 
+by
+ 
+different
+ 
+models
+不同模型
+生成的报告
+X-ray影像1
+ X-ray影像2
+ X-ray影像3
+参考报告
+肺容量 低。 心 脏 和 纵 隔 轮 廓 稳 定。 右
+颈内静脉中心静脉导管 有 间 隔 性 移 除。
+未见明 确 的 局 灶 性 固 结。 无 大 面 积 胸
+腔积液或肺气肿。无明显的肺水肿。
+肺部体 积 较 低,但 除 了 一 些 心 后 肺 不
+张外,看起来 很 清 楚。 心 脏 大 小 正 常。
+正常的心纵 隔 轮 廓。 未 见 胸 腔 积 液 或
+肺气肿。没有确定的肋骨骨折。
+与先 前 的 X 线 片 相 比,先 前 存 在
+的肺水肿 的 程 度 和 严 重 程 度 有 了
+进一步的改善。水肿 现 在 很 轻 微。
+中度心 脏 肥 大 持 续 存 在。 没 有 胸
+腔积液。没有肺炎,没有肺气肿。
+VisualGLM-6B
+(基座)
+通过这张 胸 部 X 光 影 像,可 以 确 定 如
+下信息:
+ 
+1.X 射 线 显 示 两 叶 支 气 管 和
+一根肋骨骨 折。2.在 肺 段 周 围 有 广 泛
+的 实 变 影,表 明 存 在 肺 部 损 伤 或 感 染。
+3.横膈 膜 上 见 一 液 性 暗 区,可 能 为 胸
+膜炎、肺炎等的表现。
+ 
+4.纵隔未见明 显
+异常结构。
+这张胸部 X 光 影 像 显 示,左 侧 肋 骨 骨
+折和胸骨柄 骨 折。 骨 骼 损 伤 可 能 由 跌
+倒或撞 击 引 起,并 可 能 导 致 剧 烈 的 疼
+痛不适、呼 吸 急 促 和 胸 痛。 应 进 行 进
+一步检 查 以 确 定 任 何 潜 在 的 并 发 症,
+如感染或肿瘤等。
+这张 胸 部 X 光 图 像 显 示,有 一 张
+右侧的 上 腹 部 和 左 侧 下 腹 部 的 X
+射线片。
+CH
+MedVill
+与容量 低,心 脏 大 纵 隔 轮 廓 正 定。 无
+侧内 静 脉 中 度 静 脉 导 管 尖 一 隔 和 和
+位。没发胸确的胸灶性实结。
+与携式胸立式胸部 X 线 片 显 示 右 没 度
+心侧 胸 腔 积 液。 有 侧 胸 底 部 脉 混 不
+张。混 隔 改 加,没 侧 胸 腔 积 液 没 大。
+可有少侧胸底动脉肺不张。
+与_前的 研 线 片 相 比,没 前 存 在 的
+肺水肿的 间 度 有 心 重 的 度 心 所 改
+展个 的。 善。 没 肿 没 没 右 小 度 的
+没度心脏肥大。续存在。
+CH
+XrayGPT
+肺容量低。心 脏 和 纵 隔 轮 廓 稳 定。 心
+脏の再 次 子 混 浊 时 期 严 重 度 相 似,伴
+有轻度血管 管 壁 积 液 等。 以 前 所 证 的
+血管肎 炎 已 经 改 善,但 心 脏 肿 症 相 似
+度低下。 如 果 血 液 流 动 良 好,心 脏 肿
+症的严重性 很 低。 肺 管 肿 症 的 相 似 性
+相比,心 脏 肿 症 相 当 低。 心 脏 肿 症 既
+有血管 支 枝 的 患 者,有 可 能 更 多 均 血
+管肎疾。 与 之 前 的 证 据 相 比,几 乎 没
+有进一步的 血 液 和 肺 管 肿 症。 即 使 血
+液流
+异常肺 门 瓣 户 放 置,放 置 的 血 管 异 常
+移位和左中下 肺 的 混 浊 起 枢 自 移 位 标
+记可能是由于 肺 门 瓣 和 肺 血 管 的 恶 性
+漂溢! 的大量 流 动。 中 下 肺 单 独 体 大
+多变 化。 右 侧 大 肿 填 涯 已 被 稍 微 缩
+小,但 左 侧 侧 肺 稍 微 下 低。 肺 质 上 有
+新的移 位,但 大 多 数 血 管 已 被 稍 微 减
+小,其 余 血 管 被 正 常 显 示。 右 侧 大 肿
+填涯的 右 侧 肺 管 增 加,右 上 肺 中 部 的
+流动减少。左 侧 新 的 肺 炎 和 填 满 肺 质
+增 加,并 且 扩 张 肺 质 中 的 大 肿 区 增 加。
+右?
+心脏轮 廓 看 起 来 稳 定。 心 脏 大 小
+正常。纵 隔 阶 增 大 标 志 示 心 脏 轮
+廓稳定。 肺 血 管 细 化 低 于 前 肺 部
+的轮廓 下 胶。 胸 腔 静 脉 气 液 量 有
+变化。肺部突异性轮 廓 没 有 变 化。
+胸腔 内 有 溢 出 的 液 盘 通 常 存 在。
+左心腔 轮 廓 看 起 来 均 匀。 心 脏 高
+耳静态 得 到 改 善。 肺 血 管 区 域 有
+不同的轮廓,但各轮廓 没 有 突 出 的
+变化。总体来说,血管 区 域 轮 廓 相
+对平稳。胸腔内有多 的 溢 出 液 盘。
+肺血管的
+CH
+XrayGLM
+(基线)
+与之前 的 射 线 照 片 相 比,没 有 发 现 相
+关变化。监测 和 支 持 设 备 处 于 不 变 的
+位置。肺 容 量 低,伴 有 双 侧 实 质 性 混
+浊,尤其 是 右 中 叶 和 下 叶 的 不 透 明 性
+增加。中度心 脏 肥 大 持 续 存 在。 无 胸
+腔积液或肺气肿。
+与 的 研 究 相 比,监 测 和 支 持
+设备基本上 没 有 变 化。 心 脏 轮 廓 再 次
+增大 伴 肺 静 脉 压 升 高 和 右 基 底 部 混
+浊,左半横膈膜抬高,双侧胸腔积液。
+与 的研究相 比,肺 容 量 略
+低。心脏 轮 廓 持 续 扩 大 伴 心 后 混
+浊。没有急性肺炎的证据。
+CH
+R2GenGPT
+与 的 肺 容 量 线 导 管。 心
+脏轮有 变 化。 左 侧 胸 腔 积 液 混 浊,但
+持是 相 比,可 能 是 右 侧 胸 腔 积 液 肿。
+<[UNK]和 纵 隔 内。 中 度 性 部 肺 水
+肿。肺气肿。<[UNK]质性不 张。 双
+侧肺血之前一上。
+与 的 肺 不 变 化。 右 侧 胸
+腔积液混浊有 发 中 线 导 管 在 心 脏 轮 廓
+是相比,可 能 是 肿。 < [UNK]之 纵 隔
+部 性 肺 水 肿。 左 持 出 现 改 善。 肺 气
+肿。<[UNK]质性大小。肺容量 的 双
+侧胸腔积液。
+与 肺 不 变 化。
+心脏轮廓胸腔积液的 肺 容 量,可 能
+是 相 比,右 侧 胸 腔 积 液 肿。 <
+[UNK]有 变 化。 左 肺 水 肿 在 小。
+纵 隔 ≡ 管 改 善 出 现 一 上。 <
+[UNK]中 线 导 管 性 部 域 充 脉 气
+肿。<敞持是见颛。<>榷。<
+Ch-FedXrayGLM
+(本文)
+肺部的 混 浊 有 所 改 善,特 别 是 右 下 叶
+区域。 在 肺 水 肿 和 胸 腔 积 液 的 情 况
+下,肺容量较 低,但 心 脏 大 小 正 常。 没
+有证据表明有肺气肿或肺血管充血。
+与之前 的 研 究 相 比,右 肺 门 周 围 的 空
+气和肺不张 的 程 度 没 有 变 化。 左 心 尖
+的少重积液可 能 反 映 胸 腔 积 液 或 肺 气
+肿。心脏大小 正 常。 纵 隔 和 肺 门 轮 廓
+稳定。
+与之前的 x线片相比,双 侧 基 底 动
+脉混浊有所改善。肺 部 扩 张 良 好。
+心纵隔 廓 形 正 常。 没 有 胸 腔 积 液
+或肺气 肿。 右 下 叶 的 肺 不 张 在 先
+前的研究中已经消失。
+4.5 消融实验
+为验 证 本 文 模 型 的 有 效 性,以CHXrayGLM 为
+基线,分别针对联邦结构、Prompt报告长度引导进
+行消融实验。
+4.5.1 联邦结构对模型性能的影响
+首先,为验证 联 邦 结 构 对 实 验 结 果 的 影 响,本
+文基于同样的数据集 MIMIC-CXR,在联邦结 构 和
+非联邦结构下进行多模态大模型微调训练,并测试
+在不同结 构 下 模 型 报 告 生 成 能 力 评 估 指 标 (见 表
+5)。从表5明显 看 出,总 体 上,联 邦 结 构 下 训 练 获
+得的模型生成的 X-ray报告在准确性、流畅性方面
+优于非联邦结 构。 这 表 明 联 邦 结 构 下 利 用 本 地 数
+据进行预训练大模 型 微 调 不 仅 能 够 解 决 患 者 隐 私
+保护与医 疗 数 据 共 享 的 制 度 性 矛 盾、降 低 训 练 成
+本,还能提高模型性能,这 充 分 表 明 了 联 邦 结 构 下
+6231 Computer
+ 
+Engineering
+ 
+&
+ 
+Science 计算机工程与科学 2026,48(7)
+
+=== PDF_PAGE 9 ===
+表4 不同聚合方法在 MIMIC-CXR 和 OPEN-I测试集上的评估性能
+Table
+ 
+4 Evaluation
+ 
+performance
+ 
+of
+ 
+different
+ 
+aggregation
+ 
+methods
+ 
+on
+ 
+MIMIC-CXR
+ 
+and
+ 
+OPEN-I
+ 
+testsets
+数据集 聚合方法 BLEU-1 BLEU-2 BLEU-3 BLEU-4 METEOR ROUGE
+MIMIC-CXR
+FedAvg 0.228
+ 
+2 0.099
+ 
+8 0.045
+ 
+9 0.023
+ 
+8 0.177
+ 
+9 0.263
+ 
+5
+FedAdapt(本文) 0.230
+ 
+1 0.103
+ 
+0 0.048
+ 
+0 0.025
+ 
+3 0.180
+ 
+6 0.266
+ 
+0
+OPEN-I
+FedAvg 0.210
+ 
+9 0.078
+ 
+2 0.034
+ 
+7 0.017
+ 
+6 0.154
+ 
+8 0.242
+ 
+0
+FedAdapt(本文) 0.210
+ 
+6 0.079
+ 
+2 0.035
+ 
+5 0.018
+ 
+0 0.154
+ 
+1 0.244
+ 
+6
+表5 联邦与非联邦结构在 MIMIC-CXR 和 OPEN-I测试集上的评估性能
+Table
+ 
+5 Evaluation
+ 
+performance
+ 
+for
+ 
+federal
+ 
+and
+ 
+non-federal
+ 
+structures
+ 
+on
+ 
+MIMIC-CXR
+ 
+and
+ 
+OPEN-I
+ 
+testsets
+数据集 模型 BLEU-1 BLEU-2 BLEU-3 BLEU-4 METEOR ROUGE
+MIMIC-CXR
+非联邦结构 0.194
+ 
+9 0.087
+ 
+4 0.043
+ 
+1 0.024
+ 
+9 0.159
+ 
+2 0.253
+ 
+2
+联邦结构(本文) 0.228
+ 
+2 0.100
+ 
+0 0.045
+ 
+7 0.023
+ 
+8 0.180
+ 
+0 0.265
+ 
+9
+OPEN-I
+非联邦结构 0.178
+ 
+7 0.062
+ 
+2 0.028
+ 
+3 0.014
+ 
+5 0.132
+ 
+6 0.220
+ 
+8
+联邦结构(本文) 0.187
+ 
+5 0.068
+ 
+0 0.029
+ 
+0 0.014
+ 
+8 0.141
+ 
+3 0.232
+ 
+1
+利用多模态大模型进行本地数据微调的有效性
+[40]。
+同 时,在 联 邦 学 习 额 外 开 销 方 面,本 文 采 用
+LoRA 微调 技 术,每 轮 仅 需 传 输12.5
+ 
+MiB 的 增 量
+参数(10×1.25
+ 
+MiB/客 户 端)聚 合 联 邦 模 型,克 服
+了传统联邦学习需客户端上传完整模型参数(通常
+数百 MiB 至 GiB 级)导致通信开销巨大的局限性。
+因此,针对医学影 像 报 告 生 成 任 务,本 文 采 用 联 邦
+学习框架及多模 态 LoRA 微 调 技 术 带 来 的 额 外 开
+销很小。
+4.5.2 Prompt报告长度对模型性能的影响
+在 评 估 模 型 性 能 阶 段 发 现 模 型 生 成 的 文 本 报
+告比参考报告偏短,这种差异一定程度上影响了模
+型的 性 能。 为 解 决 该 问 题,本 文 在 内 部 测 试 集
+MIMIC-CXR 及 外 部 测 试 集 OPEN-I 上,通 过
+Prompt方 式 引 导 Ch-FedXrayGLM 生 成 指 定 长
+度 中 文 字 符(如 50,80,100和 120等)的 报 告 并 进
+行评估,如“请根据该影像图像进行诊断,要求输出
+的报告在80字以 上”,评 估 指 标 详 见 表 6。 从 表 6
+可以看出,在内部 测 试 集 MIMIC-CXR 上,Prompt
+报告长度设置为80时总体效果最佳。而在外部测
+试集 OPEN-I上指定 报 告 长 度 设 置 为 100 时 总 体
+效果最佳,但与指 定 长 度 为 80 时 的 效 果 相 差 微 乎
+其微,这表明 Prompt方式 引 导 模 型 生 成 指 定 长 度
+报告有利于提升 模 型 性 能,且 报 告 长 度 越 长,推 理
+时间越长。为了平衡性能和速度,本文将模型生成
+报告长度设置为80。
+综上所述,通过将联邦结构、Prompt报告长度
+引导进行消融实 验 得 出 表 7 实 验 数 据。 从 表 7 可
+以看出,Prompt报 告 长 度 及 联 邦 结 构 均 有 助 于 提
+升模型的性能,当 Prompt报 告 长 度 与 联 邦 结 构 组
+合时模型生成报告的准确性、语义流畅度及相似性
+最好。
+表6 不同报告长度在 MIMIC-CXR 及 OPEN-I测试集上的评估性能
+Table
+ 
+6 Evaluation
+ 
+performance
+ 
+on
+ 
+MIMIC-CXR
+ 
+and
+ 
+OPEN-I
+ 
+testsets
+ 
+for
+ 
+different
+ 
+report
+ 
+lengths
+数据集 报告长度 BLEU-1 BLEU-2 BLEU-3 BLEU-4 METEOR ROUGE
+0.228
+ 
+2 0.100
+ 
+0 0.045
+ 
+7 0.023
+ 
+8 0.180
+ 
+0 0.265
+ 
+9
+50 0.223
+ 
+6 0.100
+ 
+4 0.047
+ 
+8 0.025
+ 
+4 0.179
+ 
+5 0.265
+ 
+6
+MIMIC-CXR 80 0.230
+ 
+1 0.103
+ 
+0 0.048
+ 
+0 0.025
+ 
+3 0.180
+ 
+6 0.266
+ 
+0
+100 0.224
+ 
+6 0.098
+ 
+9 0.045
+ 
+8 0.023
+ 
+9 0.178
+ 
+5 0.265
+ 
+8
+120 0.223
+ 
+1 0.098
+ 
+5 0.045
+ 
+4 0.023
+ 
+6 0.178
+ 
+3 0.266
+ 
+3
+0.187
+ 
+5 0.068
+ 
+0 0.029
+ 
+0 0.014
+ 
+8 0.141
+ 
+3 0.232
+ 
+1
+50 0.212
+ 
+8 0.078
+ 
+8 0.034
+ 
+9 0.017
+ 
+6 0.156
+ 
+4 0.244
+ 
+3
+OPEN-I 80 0.210
+ 
+6 0.079
+ 
+2 0.035
+ 
+5 0.018
+ 
+0 0.154
+ 
+1 0.244
+ 
+6
+100 0.212
+ 
+5 0.080
+ 
+1 0.035
+ 
+9 0.018
+ 
+2 0.157
+ 
+8 0.248
+ 
+8
+120 0.210
+ 
+0 0.079
+ 
+2 0.035
+ 
+0 0.018
+ 
+0 0.153
+ 
+5 0.244
+ 
+5
+7231骆 练等:基于联邦多模态的中文医学影像报告自动生成模型
+
+=== PDF_PAGE 10 ===
+表7 Ch-FedXrayGLM 在 MIMIC-CXR 和 OPEN-I测试集上的消融实验
+Table
+ 
+7 Ch-FedXrayGLM
+ 
+ablation
+ 
+experiments
+ 
+on
+ 
+MIMIC-CXR
+ 
+and
+ 
+OPEN-I
+ 
+testsets
+ 
+数据集 模型 BLEU-1 BLEU-2 BLEU-3 BLEU-4 METEOR ROUGE
+CH
+XrayGLM(基线) 0.194
+ 
+9 0.087
+ 
+4 0.043
+ 
+1 0.024
+ 
+9 0.159
+ 
+2 0.253
+ 
+2
+MIMIC-CXR
+Prompt报告长度 0.205
+ 
+5 0.092
+ 
+5 0.046
+ 
+7 0.027
+ 
+4 0.165
+ 
+7 0.255
+ 
+2
+联邦结构 0.228
+ 
+2 0.100
+ 
+0 0.045
+ 
+7 0.023
+ 
+8 0.180
+ 
+0 0.265
+ 
+9
+报告长度+联邦结构(本文) 0.230
+ 
+1 0.103
+ 
+0 0.048
+ 
+0 0.025
+ 
+3 0.180
+ 
+6 0.266
+ 
+0
+CH
+XrayGLM(基线) 0.178
+ 
+7 0.062
+ 
+2 0.028
+ 
+3 0.014
+ 
+5 0.132
+ 
+6 0.220
+ 
+8
+OPEN-I
+Prompt报告长度 0.191
+ 
+8 0.067
+ 
+6 0.030
+ 
+1 0.015
+ 
+4 0.138
+ 
+7 0.226
+ 
+6
+联邦结构 0.187
+ 
+5 0.068
+ 
+0 0.029
+ 
+0 0.014
+ 
+8 0.141
+ 
+3 0.232
+ 
+1
+报告长度+联邦结构(本文) 0.210
+ 
+6 0.079
+ 
+2 0.035
+ 
+5 0.018
+ 
+0 0.154
+ 
+1 0.244
+ 
+6
+5 结束语
+本 文 提 出 了 中 文 联 邦 多 模 态 医 学 影 像 报 告 自
+动生成 模 型—Ch-FedXrayGLM,该 模 型 专 为 中 文
+X-ray影像报告的自 动 化 生 成 而 设 计,通过巧妙融
+合联邦学习结构与多模态大模型微调策略,有效解
+决了隐私保护与医疗数据共享之间的制度性矛盾。
+Ch-FedXrayGLM 不仅允许各 医 疗 机 构 在 数 据 本 地
+化的前提下进行高效微调,还引入联邦自适应算法
+FedAdapt,根据各 客 户 端 模 型 的 性 能 智 能 调 整 聚
+合系数,实现了模 型 权 重 的 优 化 融 合,既 保 留 了 医
+疗机构数据差异性与互补性,又确保了模型的泛化
+能力和 准 确 性。 实 验 结 果 表 明,Ch-FedXrayGLM
+模型在生成 X-ray 影 像 报 告 方 面 展 现 出 卓 越 的 性
+能,不 仅 在 内 部 测 试 集 MIMIC-CXR 上 表 现 优 异,
+还能在外部 测 试 集 OPEN-I上 实 现 了 良 好 的 泛 化
+性能,具有跨机构应用的潜力。
+未来,将围绕 以 下2 个 维 度 进 一 步 开 展 研 究:
+1)在医学知识融合方向,通过与专业临床医生及影
+像科医生合作,整 合 影 像 特 征、放 射 学 语 义 及 结 构
+化临床 诊 疗 数 据 (诊 断、病 程 记 录 和 入 出 院 记 录
+等),构建多模态医学知识图谱,将医学知识图谱与
+现有联邦多模态微调框架结合,优化模型生成报告
+的质量。2)在医疗信息隐私保护方面,结合知识图
+谱,拟引入差分隐私、同态加密等技术,开展联邦多模
+态大模型微调训练,进一步提升现有模型的安全性。
+参考文献:
+[1] REALE-NOSEI
+ 
+G,AMADOR-DOMÍNGUEZ
+ 
+E,SER-
+RANO
+ 
+E.From
+ 
+vision
+ 
+to
+ 
+text:A
+ 
+comprehensive
+ 
+re-
+view
+ 
+of
+ 
+natural
+ 
+image
+ 
+captioning
+ 
+in
+ 
+medical
+ 
+diagnosis
+ 
+and
+ 
+radiology
+ 
+report
+ 
+generation[J].Medical
+ 
+Image
+ 
+Analysis,2024,97:Article
+ 
+No.:103264.
+[2] 沈秀轩,吴 春 雷,冯 叶 棋,等.基 于 双 分 支 特 征 融 合 的
+医学 报 告 生 成 方 法 [J].计 算 机 工 程,2023,49
+ 
+(6):
+274-283.
+SHEN
+ 
+Xiuxuan,WU
+ 
+Chunlei,Feng
+ 
+Yeqi,et
+ 
+al.Medi-
+cal
+ 
+report
+ 
+generation
+ 
+method
+ 
+based
+ 
+on
+ 
+dual-branch
+ 
+feature
+ 
+fusion[J].Computer
+ 
+Engineering,2023,49
+ 
+(6):274-283.
+[3] BECKER
+ 
+H
+ 
+C,NETTLETON
+ 
+W
+ 
+J,MEYERS
+ 
+P
+ 
+H,
+et
+ 
+al.Digital
+ 
+computer
+ 
+determination
+ 
+of
+ 
+a
+ 
+medical
+ 
+di-
+agnostic
+ 
+index
+ 
+directly
+ 
+from
+ 
+chest
+ 
+X-ray
+ 
+images[J].
+IEEE
+ 
+Transactions
+ 
+on
+ 
+Biomedical
+ 
+Engineering,1964,
+BME-11(3):67-72.
+[4] DAS
+ 
+P
+ 
+K,SREEVATSAV
+ 
+S,ABRAHAM
+ 
+A.An
+ 
+ef-
+ficient
+ 
+deep
+ 
+learning
+ 
+network
+ 
+with
+ 
+orthogonal
+ 
+soft-
+max
+ 
+layer
+ 
+for
+ 
+automatic
+ 
+detection
+ 
+of
+ 
+tuberculosis[J].
+Engineering
+ 
+Applications
+ 
+of
+ 
+Artificial
+ 
+Intelligence,
+2024,133:Article
+ 
+No.:108116.
+[5] GALASSI
+ 
+A,
+ 
+LIPPI
+ 
+M,TORRONI
+ 
+P.Attention
+ 
+in
+ 
+natural
+ 
+language
+ 
+processing[J].IEEE
+ 
+Transactions
+ 
+on
+ 
+Neural
+ 
+Networks
+ 
+and
+ 
+Learning
+ 
+Systems,2021,32
+(10):4291-4308.
+[6] MESSINA
+ 
+P,PINO
+ 
+P,PARRA
+ 
+D,et
+ 
+al.A
+ 
+survey
+ 
+on
+ 
+deep
+ 
+learning
+ 
+and
+ 
+explainability
+ 
+for
+ 
+automatic
+ 
+report
+ 
+generation
+ 
+from
+ 
+medical
+ 
+images[J].ACM
+ 
+Computing
+ 
+Surveys,2022,54(10s):Article
+ 
+No.:203.
+[7] SHIN
+ 
+H-C,
+ 
+ROBERTS
+ 
+K,LU
+ 
+L,et
+ 
+al.Learning
+ 
+to
+ 
+read
+ 
+chest
+ 
+X-rays:Recurrent
+ 
+neural
+ 
+cascade
+ 
+model
+ 
+for
+ 
+automated
+ 
+image
+ 
+annotation[C]∥Proceedings
+ 
+of
+ 
+the
+ 
+2016
+ 
+IEEE
+ 
+Conference
+ 
+on
+ 
+Computer
+ 
+Vision
+ 
+and
+ 
+Pat-
+tern
+ 
+Recognition,2016:2497-2506.
+[8] KRAUSE
+ 
+J,JOHNSON
+ 
+J,KRISHNA
+ 
+R,et
+ 
+al.A
+ 
+hi-
+erarchical
+ 
+approach
+ 
+for
+ 
+generating
+ 
+descriptive
+ 
+image
+ 
+paragraphs[C]∥Proceedings
+ 
+of
+ 
+the
+ 
+2017
+ 
+IEEE
+ 
+Con-
+ference
+ 
+on
+ 
+Computer
+ 
+Vision
+ 
+and
+ 
+Pattern
+ 
+Recognition,
+2017:3337-3345.
+[9] HARZIG
+ 
+P,CHEN
+ 
+Y-Y,CHEN
+ 
+F,et
+ 
+al.Addressing
+ 
+data
+ 
+bias
+ 
+problems
+ 
+for
+ 
+chest
+ 
+X-ray
+ 
+image
+ 
+report
+ 
+gen-
+eration[J].arXiv:1908.02123,2019.
+8231 Computer
+ 
+Engineering
+ 
+&
+ 
+Science 计算机工程与科学 2026,48(7)
+
+=== PDF_PAGE 11 ===
+[10] YIN
+ 
+C
+ 
+C,QIAN
+ 
+B
+ 
+Y,WEI
+ 
+J
+ 
+S,et
+ 
+al.Automatic
+ 
+gen-
+eration
+ 
+of
+ 
+medical
+ 
+imaging
+ 
+diagnostic
+ 
+report
+ 
+with
+ 
+hi-
+erarchical
+ 
+recurrent
+ 
+neural
+ 
+network[C]∥Proceedings
+ 
+of
+ 
+the
+ 
+2019
+ 
+IEEE
+ 
+International
+ 
+Conference
+ 
+on
+ 
+Data
+ 
+Mining,2019:728-737.
+[11] VASWANI
+ 
+A,SHAZEER
+ 
+N,PARMAR
+ 
+N,et
+ 
+al.
+Attention
+ 
+is
+ 
+all
+ 
+you
+ 
+need[C]∥Proceedings
+ 
+of
+ 
+the
+ 
+31st
+ 
+International
+ 
+Conference
+ 
+on
+ 
+Neural
+ 
+Information
+ 
+Processing
+ 
+Systems,2017:6000-6010.
+[12] CHEN
+ 
+Z
+ 
+H,SONG
+ 
+Y,CHANG
+ 
+T-H,et
+ 
+al.Genera-
+ting
+ 
+radiology
+ 
+reports
+ 
+via
+ 
+memory-driven
+ 
+Trans-
+former[C]∥Proceedings
+ 
+of
+ 
+the
+ 
+2020
+ 
+Conference
+ 
+on
+ 
+Empirical
+ 
+Methods
+ 
+in
+ 
+Natural
+ 
+Language
+ 
+Processing,
+2020:1439-1449.
+[13] WANG
+ 
+Z
+ 
+Y,HAN
+ 
+H
+ 
+W,WANG
+ 
+L,et
+ 
+al.Automa-
+ted
+ 
+radiographic
+ 
+report
+ 
+generation
+ 
+purely
+ 
+on
+ 
+Trans-
+former:A
+ 
+multicriteria
+ 
+supervised
+ 
+approach[J].
+IEEE
+ 
+Transactions
+ 
+on
+ 
+Medical
+ 
+Imaging,2022,41
+(10):2803-2813.
+[14] GAO
+ 
+D
+ 
+Y,KONG
+ 
+M,ZHAO
+ 
+Y
+ 
+R,et
+ 
+al.Simulating
+ 
+doctors’
+ 
+thinking
+ 
+logic
+ 
+for
+ 
+chest
+ 
+X-ray
+ 
+report
+ 
+gener-
+ 
+ation
+ 
+via
+ 
+Transformer-based
+ 
+semantic
+ 
+query
+ 
+learning
+[J].Medical
+ 
+Image
+ 
+Analysis,2024,91:Article
+ 
+No.:
+102982.
+[15] YI
+ 
+X
+ 
+L,FU
+ 
+Y,HUA
+ 
+R,et
+ 
+al.Unsupervised
+ 
+disease
+ 
+tags
+ 
+for
+ 
+automatic
+ 
+radiology
+ 
+report
+ 
+generation[J].
+Biomedical
+ 
+Signal
+ 
+Processing
+ 
+and
+ 
+Control,2024,89:
+Article
+ 
+No.:105742.
+[16] 邢素霞,方俊泽,鞠子涵,等.基于记忆驱动的多模 态
+医学影像报告自动生成研究[J].生物医 学 工 程 学 杂
+志,2024,41(1):60-69.
+XING
+ 
+Suxia,FANG
+ 
+Junze,JU
+ 
+Zihan,et
+ 
+al.Research
+ 
+on
+ 
+automatic
+ 
+generation
+ 
+of
+ 
+multimodal
+ 
+medical
+ 
+im-
+age
+ 
+reports
+ 
+based
+ 
+on
+ 
+memory
+ 
+driven[J].Journal
+ 
+of
+ 
+Biomedical
+ 
+Engineering,2024,41(1):60-69.
+[17] RADFORD
+ 
+A,KIM
+ 
+J
+ 
+W,HALLACY
+ 
+C,et
+ 
+al.
+Learning
+ 
+transferable
+ 
+visual
+ 
+models
+ 
+from
+ 
+natural
+ 
+language
+ 
+supervision[C]∥Proceedings
+ 
+of
+ 
+the
+ 
+38th
+ 
+International
+ 
+Conference
+ 
+on
+ 
+Machine
+ 
+Learning,
+2021:8748-8763.
+[18] LI
+ 
+J
+ 
+N,LI
+ 
+D
+ 
+X,XIONG
+ 
+C
+ 
+M,et
+ 
+al.BLIP:Bootstrap-
+ping
+ 
+language-image
+ 
+pre-training
+ 
+for
+ 
+unified
+ 
+vision-
+language
+ 
+understanding
+ 
+and
+ 
+generation[C]∥Pro-
+ceedings
+ 
+of
+ 
+the
+ 
+39th
+ 
+International
+ 
+Conference
+ 
+on
+ 
+Machine
+ 
+Learning,2022:12888-12900.
+[19] LI
+ 
+J
+ 
+N,LI
+ 
+D
+ 
+X,SAVARESE
+ 
+S,et
+ 
+al.BLIP-2:Boot-
+strapping
+ 
+language-image
+ 
+pre-training
+ 
+with
+ 
+frozen
+ 
+image
+ 
+encoders
+ 
+and
+ 
+large
+ 
+language
+ 
+models[C]∥Pro-
+ceedings
+ 
+of
+ 
+the
+ 
+40th
+ 
+International
+ 
+Conference
+ 
+on
+ 
+Machine
+ 
+Learning,2023:19730-19742.
+[20] WANG
+ 
+Z
+ 
+Y,LIU
+ 
+L
+ 
+Q,WANG
+ 
+L,et
+ 
+al.R2GenGPT:
+Radiology
+ 
+report
+ 
+generation
+ 
+with
+ 
+frozen
+ 
+LLMs[J].
+Meta-Radiology,2023,1(3):Article
+ 
+No.:100033.
+[21] THAWAKAR
+ 
+O
+ 
+C,SHAKER
+ 
+A
+ 
+M,MULLAPPIL-
+LY
+ 
+S
+ 
+S,et
+ 
+al.XrayGPT:Chest
+ 
+radiographs
+ 
+summa-
+rization
+ 
+using
+ 
+large
+ 
+medical
+ 
+vision-language
+ 
+models
+[C]∥Proceedings
+ 
+of
+ 
+the
+ 
+23rd
+ 
+Workshop
+ 
+on
+ 
+Biomed-
+ical
+ 
+Natural
+ 
+Language
+ 
+Processing,2024:440-448.
+[22] 张军燕,赵一鸣,林兵,等.基于多级视觉与图文动 态
+交互的图 像 中 文 描 述 方 法 [J/OL].计 算 机 应 用.
+(2024-09-26)
+ 
+[2024-10-05].http:∥kns.cnki.net/
+kcms/detail/51.1307.tp.20240925.1539.004.ht-
+ml.
+ZHANG
+ 
+Junyan,ZHAO
+ 
+Yiming,LIN
+ 
+Bing,et
+ 
+al.
+Chinese
+ 
+image
+ 
+captioning
+ 
+method
+ 
+based
+ 
+on
+ 
+multi-
+level
+ 
+visual
+ 
+and
+ 
+text-image
+ 
+dynamic
+ 
+interaction[J/
+OL].Journal
+ 
+of
+ 
+Computer
+ 
+Applications.(2024-09-
+26)
+ 
+[2024-10-05].http:∥kns.cnki.net/kcms/de-
+tail/51.1307.tp.20240925.1539.004.html.
+[23] WANG
+ 
+R
+ 
+S,DUAN
+ 
+Y
+ 
+F,LI
+ 
+J
+ 
+R,et
+ 
+al.XrayGLM:
+The
+ 
+first
+ 
+Chinese
+ 
+medical
+ 
+multimodal
+ 
+model
+ 
+that
+ 
+chest
+ 
+radiographs
+ 
+summarization[EB/OL].[2024-
+01-27].https:∥github.com/WangRongsheng/Xray-
+GLM.
+[24] DU
+ 
+Z
+ 
+X,QIAN
+ 
+Y
+ 
+J,LIU
+ 
+X,et
+ 
+al.GLM:General
+ 
+lan-
+guage
+ 
+model
+ 
+pretraining
+ 
+with
+ 
+autoregressive
+ 
+blank
+ 
+infilling[C]∥Proceedings
+ 
+of
+ 
+the
+ 
+60th
+ 
+Annual
+ 
+Meet-
+ing
+ 
+of
+ 
+the
+ 
+Association
+ 
+for
+ 
+Computational
+ 
+Linguis-
+tics,2022:320-335.
+[25] DING
+ 
+M,YANG
+ 
+Z
+ 
+Y,HONG
+ 
+W
+ 
+Y,et
+ 
+al.CogView:
+Mastering
+ 
+text-to-image
+ 
+generation
+ 
+via
+ 
+Transform-
+ers[C]∥Proceedings
+ 
+of
+ 
+the
+ 
+35th
+ 
+Conference
+ 
+on
+ 
+Neu-
+ral
+ 
+Information
+ 
+Processing
+ 
+Systems,2021:19822-
+19835.
+[26] TAO
+ 
+Y
+ 
+D,TU
+ 
+Y
+ 
+X,SHYU
+ 
+M-L.Efficient
+ 
+incre-
+mental
+ 
+training
+ 
+for
+ 
+deep
+ 
+convolutional
+ 
+neural
+ 
+net-
+works[C]∥Proceedings
+ 
+of
+ 
+the
+ 
+2019
+ 
+IEEE
+ 
+Confer-
+ence
+ 
+on
+ 
+Multimedia
+ 
+Information
+ 
+Processing
+ 
+and
+ 
+Re-
+trieval,2019:286-291.
+[27] HU
+ 
+E
+ 
+J,SHEN
+ 
+Y,WALLIS
+ 
+P,et
+ 
+al.LoRA:Low-
+rank
+ 
+adaptation
+ 
+of
+ 
+large
+ 
+language
+ 
+models[J].arXiv:
+2106.09685,2021.
+[28] ZAGHIR
+ 
+J,NAGUIB
+ 
+M,BJELOGRLIC
+ 
+M,et
+ 
+al.
+Prompt
+ 
+engineering
+ 
+paradigms
+ 
+for
+ 
+medical
+ 
+applica-
+tions:Scoping
+ 
+review[J].Journal
+ 
+of
+ 
+Medical
+ 
+Inter-
+net
+ 
+Research,2024,26:Article
+ 
+No.:e60501.
+[29] TULADHAR
+ 
+A,TYAGI
+ 
+L,SOUZA
+ 
+R,et
+ 
+al.Feder-
+ated
+ 
+learning
+ 
+using
+ 
+variable
+ 
+local
+ 
+training
+ 
+for
+ 
+brain
+ 
+9231骆 练等:基于联邦多模态的中文医学影像报告自动生成模型
+
+=== PDF_PAGE 12 ===
+tumor
+ 
+segmentation
+ 
+[C]∥Proceedings
+ 
+of
+ 
+the
+ 
+2021
+ 
+International
+ 
+MICCAI
+ 
+Brainlesion
+ 
+Workshop,2022:
+392-404.
+[30] LIU
+ 
+Z
+ 
+B,WU
+ 
+F
+ 
+F,WANG
+ 
+Y
+ 
+M,et
+ 
+al.FedCL:Fed-
+erated
+ 
+contrastive
+ 
+learning
+ 
+for
+ 
+multi-center
+ 
+medical
+ 
+image
+ 
+classification[J].Pattern
+ 
+Recognition,2023,
+143:Article
+ 
+No.:109739.
+[31] GUNESLI
+ 
+G
+ 
+N,BILAL
+ 
+M,RAZA
+ 
+S
+ 
+E
+ 
+A,et
+ 
+al.A
+ 
+federated
+ 
+learning
+ 
+approach
+ 
+to
+ 
+tumor
+ 
+detection
+ 
+in
+ 
+colon
+ 
+histology
+ 
+images[J].Journal
+ 
+of
+ 
+Medical
+ 
+Sys-
+tems,2023,47:Article
+ 
+No.:99.
+[32] CHEN
+ 
+J
+ 
+Y,PAN
+ 
+R.Medical
+ 
+report
+ 
+generation
+ 
+based
+ 
+on
+ 
+multimodal
+ 
+federated
+ 
+learning[J].Computerized
+ 
+Medical
+ 
+Imaging
+ 
+and
+ 
+Graphics,2024,113:Article
+ 
+No.:102342.
+[33] ZENG
+ 
+A,XU
+ 
+B,WANG
+ 
+B
+ 
+W,et
+ 
+al.ChatGLM:A
+ 
+family
+ 
+of
+ 
+large
+ 
+language
+ 
+models
+ 
+from
+ 
+GLM-130B
+ 
+to
+ 
+GLM-4
+ 
+all
+ 
+tools[J].arXiv:2406.12793,2024.
+[34] JOHNSON
+ 
+A
+ 
+E
+ 
+W,POLLARD
+ 
+T
+ 
+J,BERKOWITZ
+ 
+S
+ 
+J,et
+ 
+al.MIMIC-CXR,a
+ 
+de-identified
+ 
+publicly
+ 
+avail-
+able
+ 
+data-base
+ 
+of
+ 
+chest
+ 
+radiographs
+ 
+with
+ 
+free-text
+ 
+re-
+ports[J].Scientific
+ 
+Data,2019,6:Article
+ 
+No.:317.
+[35] DEMNER-FUSHMAN
+ 
+D,KOHLI
+ 
+M
+ 
+D,ROSEN-
+MAN
+ 
+M
+ 
+B,et
+ 
+al.Preparing
+ 
+a
+ 
+collection
+ 
+of
+ 
+radiology
+ 
+examinations
+ 
+for
+ 
+distribution
+ 
+and
+ 
+retrieval[J].Jour-
+nal
+ 
+of
+ 
+the
+ 
+American
+ 
+Medical
+ 
+Informatics
+ 
+Associa-
+tion,2016,23(2):304-310.
+[36] MOON
+ 
+J
+ 
+H,LEE
+ 
+H,SHIN
+ 
+W,et
+ 
+al.Multi-modal
+ 
+understanding
+ 
+and
+ 
+generation
+ 
+for
+ 
+medical
+ 
+images
+ 
+and
+ 
+text
+ 
+via
+ 
+vision-language
+ 
+pre-training[J].IEEE
+ 
+Journal
+ 
+of
+ 
+Biomedical
+ 
+and
+ 
+Health
+ 
+Informatics,2022,
+26(12):6070-6080.
+[37] PAPINENI
+ 
+K,ROUKOS
+ 
+S,WARD
+ 
+T,et
+ 
+al.BLEU:
+A
+ 
+method
+ 
+for
+ 
+automatic
+ 
+evaluation
+ 
+of
+ 
+machine
+ 
+translation[C]∥Proceedings
+ 
+of
+ 
+the
+ 
+40th
+ 
+Annual
+ 
+Meeting
+ 
+of
+ 
+the
+ 
+Association
+ 
+for
+ 
+Computational
+ 
+Lin-
+guistics,2002:311-318.
+[38] LIN
+ 
+C-Y.
+ 
+ROUGE:A
+ 
+package
+ 
+for
+ 
+automatic
+ 
+evalu-
+ation
+ 
+of
+ 
+summaries[C]∥Proceedings
+ 
+of
+ 
+the
+ 
+2004
+ 
+Workshop
+ 
+on
+ 
+Text
+ 
+Summarization
+ 
+Branches
+ 
+Out,
+2004:74-81.
+[39] BANERJEE
+ 
+S,LAVIE
+ 
+A.METEOR:An
+ 
+automatic
+ 
+metric
+ 
+for
+ 
+MT
+ 
+evaluation
+ 
+with
+ 
+improved
+ 
+correlation
+ 
+with
+ 
+human
+ 
+judgments[C]∥Proceedings
+ 
+of
+ 
+the
+ 
+2005
+ 
+ACL
+ 
+Workshop
+ 
+on
+ 
+Intrinsic
+ 
+and
+ 
+Extrinsic
+ 
+Evalua-
+tion
+ 
+Measures
+ 
+for
+ 
+Machine
+ 
+Translation
+ 
+and/or
+ 
+Sum-
+marization,2005:65-72.
+[40] 杨强.AI与 数 据 隐 私 保 护:联 邦 学 习 的 破 解 之 道
+[J].信息安全研究,2019,5(11):961-965.
+YANG
+ 
+Qiang.AI
+ 
+and
+ 
+data
+ 
+privacy
+ 
+protection:The
+ 
+way
+ 
+to
+ 
+federated
+ 
+learning[J].Journal
+ 
+of
+ 
+Information
+ 
+Security
+ 
+Research,2019,5(11):961-965.
+作者简介:
+骆 练 (1991—),女,贵 州 遵 义 人,硕 士
+生,高级工程师,研究方向为医疗 人 工 智 能
+和 信 息 安 全。E-mail:1239061407@qq.
+com
+LUO
+ 
+Lian,born
+ 
+in
+ 
+1991,MS
+ 
+candi-
+date,senior
+ 
+engineer,her
+ 
+research
+ 
+interests
+ 
+include
+ 
+medical
+ 
+artificial
+ 
+intelligence
+ 
+and
+ 
+information
+ 
+security.
+黄 保 华 (1973—),男,贵 州 六 盘 水 人,
+博 士,副 教 授,CCF 会 员 (25443S),研 究 方
+向 为 信 息 安 全。E-mail:bhhuang66@gxu.
+edu.cn
+HUANG
+ 
+Baohua,born
+ 
+in
+ 
+1973,PhD,
+associate
+ 
+professor,CCF
+ 
+mmber(25443S),his
+ 
+research
+ 
+in-
+terest
+ 
+includes
+ 
+information
+ 
+security.
+张志 诚 (1989—),男,湖 北 黄 冈 人,博
+士,高 级 工 程 师,研 究 方 向 为 基 于 人 工 智 能
+的医学影像分析。E-mail:zhangzhicheng13
+@mails.ucas.edu.cn
+ZHANG
+ 
+Zhicheng,born
+ 
+in
+ 
+1989,PhD,
+senior
+ 
+engineer,his
+ 
+research
+ 
+interest
+ 
+includes
+ 
+artificial
+ 
+intel-
+ligence
+ 
+based
+ 
+on
+ 
+medical
+ 
+image
+ 
+analysis.
+金强(1975—),男,贵 州 遵 义 人,硕 士,
+高级工 程 师,研 究 方 向 为 医 学 信 息 学。E-
+mail:40596283@qq.com
+JIN
+ 
+Qiang,born
+ 
+in
+ 
+1975,MS,senior
+ 
+engineer,his
+ 
+research
+ 
+interest
+ 
+includes
+ 
+medical
+ 
+informatics.
+王晓 华 (1970—),男,贵 州 遵 义 人,博
+士,教授,研究方向为医学信息学。E-mail:
+350031712@qq.com
+WANG
+ 
+Xiaohua,born
+ 
+in
+ 
+1970,PhD,
+professor,his
+ 
+research
+ 
+interest
+ 
+includes
+ 
+medical
+ 
+informatics.
+0331 Computer
+ 
+Engineering
+ 
+&
+ 
+Science 计算机工程与科学 2026,48(7)

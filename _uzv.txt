@@ -1,0 +1,17 @@
+﻿==== unzip
+== 娓呯悊鍒嗗潡 ==
+downloads: 51251MB -> 25625MB
+== 瑙ｅ帇 ==
+--- downloads/picai_public_images_fold0.zip
+
+==== img
+3.8G	/data/heluofan/picai/images
+1120
+
+==== proc
+1
+
+==== du
+26G	/data/heluofan/picai/downloads
+4.0G	/data/heluofan/picai/images
+/dev/nvme0n1    7.0T  1.7T  5.0T  26% /data

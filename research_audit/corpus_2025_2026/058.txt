@@ -1,0 +1,942 @@
+=== PDF_PAGE 1 ===
+ 第 56 卷 第 3 期
+ 2025 年 5 月
+太 原 理 工 大 学 学 报
+JOURNAL OF TAIYUAN UNIVERSITY OF TECHNOLOGY
+Vol. 56 No . 3
+May  2025   
+引文格式 ：常锐云 ，冯秀芳 ，张昊 . 基于遗传编码和耦合超混沌映射的多模态医学图像保护算法 ［J］. 太原理工大学学报 ，
+2025 ，56（3） ：515-523.
+CHANG Ruiyun ，FENG Xiufang ，ZHANG Hao .Multimodal medical image protection algorithm based on genetic 
+coding and coupled hyperchaotic mapping ［J］.Journal of Taiyuan University of Technoloty ，2025，56（3） ：515-523.①
+基于遗传编码和耦合超混沌映射的
+多模态医学图像保护算法
+常锐云 a，冯秀芳 a，张 昊 b
+（太原理工大学  a. 软件学院 ， b. 信息与计算机学院 ，山西 晋中）
+摘 要：【【目的】】为了保证多模态医学图像的安全性 ，提出了一种基于遗传编码和耦合超混沌
+映射的多模态医学图像保护算法 。【【方法】】在混沌序列生成阶段 ，提出了 CMC -CTBCS 耦合模型 ，
+以 正 弦 映 射（Sine）和 无 限 折 叠 映 射（ICMIC）作 为 种 子 映 射，构 建 出 三 维Sine-ICMIC 级 联 映 射
+（3D-SICM） ，并将其应用于多模态医学图像加密的设计 。图像加密阶段主要包括三部分 ：多模态
+医学图像融合算法 、基于边缘检测的零水印认证算法 、遗传编码选择加密算法 。首先 ，采用基于相
+位一致性和局部拉普拉斯能量的 NSCT 域多模态医学图像融合方案 ，对磁共振成像（MRI）和单光
+子发射计算机断层成像 （SPECT）进行融合 ，并在融合过程中实现基于边缘检测的零水印信息认
+证，进而生成融合后的标记图像 ，然后采用基于动态 DNA 编码和 6 比特 RNA -S 盒替换的选择性加
+密方案对标记图像进行加密 。【【结果】】理论分析和数值模拟表明 ，该算法具有良好的安全性 。
+关键词 ：边缘检测 ；DNA 编码 ；6 比特 RNA -S 盒；耦合混沌系统 ；零水印
+中图分类号：TP309.7  文献标识码：A
+DOI：10.16355 /j.tyut.1007 -9432.20230577    文章编号：1007 -9432（2025）03-0515-09
+Multimodal Medical Image Protection Algorithm Based on Genetic 
+Coding and Coupled Hyperchaotic Mapping
+CHANG Ruiyun a, FENG Xiufang a, ZHANG Hao b
+（a.College of Software ； b.College of Information and Computer ， 
+Taiyuan University of Technology ， Jinzhong ， Shanxi ， China）
+Abstract : 【【Purposes】】In order to ensure the security of multimodal medical images , a multi ‐
+modal medical image protection algorithm based on genetic coding and coupled hyperchaotic mapping 
+is proposed . 【【Methods】】In the stage of chaotic sequence generation , the CMC -CTBCS coupling 
+model was proposed , and the three -dimensional Sine -ICMIC cascade mapping (3D-SICM ) was con ‐
+structed with Sine mapping (Sine) and iterative chaotic map with infinite collapses (ICMIC ) as seed 
+mapping , which was applied for the design of multimodal medical image encryption . The stage of im ‐
+age encryption mainly included three parts : multimodal medical image fusion algorithm , zero water ‐
+marking authentication algorithm based on edge detection , and genetic coding selection encryption al ‐
+gorithm . First , a multimodal medical image fusion scheme in NSCT domain based on phase consis ‐
+收稿日期 ：2023 -07-09；修回日期 ：2023 -09-27
+基金项目 ：山西省重点研发计划 （项目编号 ：202102020101007 ）
+第一作者 ：常锐云（1997−） ，硕士研究生 ， （E-mail）changruiyun 0927@126.com
+通信作者 ：冯秀芳（1966−） ，博士 ，教授 ，主要从事计算机应用 、物联网技术 、人工智能 、无线传感器网络覆盖和定位 、虚拟现实技术等 ，
+（E-mail）feng_tyut@ 126.com
+
+=== PDF_PAGE 2 ===
+太 原 理 工 大 学 学 报 第 56 卷
+tency and local Laplace energy was used to fuse magnetic resonance imaging and single photon emis ‐
+sion computed tomography . Zero watermark information authentication based on edge detection was 
+realized in the fusion process , and the fused mark images were generated . The tagged images were 
+then encrypted by using a selective encryption scheme based on dynamic DNA coding and 6-bit RNA -
+S-box substitution . 【【Results】】Theoretical analyses and numerical simulations show that the algorithm 
+has good security . 
+Keywords : edge detection ; DNA encoding ; 6bit RNA -S-box; coupled chaotic map ; zero water ‐
+marking 
+在医学诊断中 ，许多成像模式被用于处理细胞
+或器官的不同病变 ，其中包括正电子发射断层扫描
+（PET） 、单光子发射计算机断层成像 （SPECT） 、计
+算 机 断 层 扫 描（CT）和 磁 共 振 成 像（MRI）等［1］。 每
+种医学成像方式都有其独特的诊疗目的 ，因此一种
+模 式 通 常 不 能 为 整 个 医 学 诊 断 提 供 足 够 的 病 理 信
+息 。 医 学 图 像 融 合 技 术 整 合 了 来 自 不 同 模 式 的 医
+学图像的互补信息 ，为医学分析提供了更丰富多样
+的图像病理特征 ［2］。医生可以更直观地从融合图像
+中获得附加信息 ，从而更精确地发现病变的位置 ［3］。
+融 合 以 后 的 医 学 图 像 包 含 有 大 量 且 直 观 的 隐 私 信
+息，因此必须在传输过程中确保其安全性 。
+在过去的几年中 ，针对不同的医疗场景提出了
+许 多 医 疗 图 像 保 护 算 法，有 些 是 基 于 数 字 水 印 的。
+例 如，Anand 等 人［4］提 出 了 一 种 基 于 融 合 医 学 图 像
+的多水印算法 ，将融合的医学图像作为水印嵌入到
+宿 主 图 像 中，并 利 用 混 沌 映 射 对 其 进 行 加 密。El-
+Shafai 等 人［5］提 出 了 一 种 基 于 小 波 融 合、奇 异 值 分
+解 和 混 沌 加 密 技 术 的 医 学 彩 色 图 像 的 多 级 数 字 安
+全 系 统，将 加 密 的 医 学 图 像 与 普 通 图 像 进 行 融 合，
+然后将其作为水印嵌入到彩色宿主图像 。SINGH
+等 人［6］提 出 了 一 种 基 于 无 损 加 密 和NSCT -HD-
+SVD 的信息隐藏算法 ，利用 NSCT -HD-SVD 变换
+对秘密信息进行变换 ，进而将秘密信息隐藏在载体
+图像中生成标记图像 ，最后设计了一种无损加密算
+法 对 标 记 图 像 进 行 加 密。VAIDYA 等 人［7］提 出 了
+一种基于提升 LWT -DWT 域和混沌加密的医学图
+像 隐 私 水 印 技 术，将 患 者 指 纹 作 为 水 印，借 助 宿 主
+医 学 图 像 的 局 部 二 值 模 式 自 适 应 计 算 缩 放 因 子 和
+嵌 入 因 子，实 现 了 更 好 的 不 可 察 觉 性 和 鲁 棒 性。
+DAOUI 等人［8］利用 SCA 和修正的逻辑映射提出了
+一种稳健的图像加密和零水印方案 ，使用正弦余弦
+算 法 和 适 用 于 校 正 应 用 于 加 密 图 像 的 几 何 攻 击 的
+适当算法获得了较高的安全性 。
+有些是基于混沌映射的 。例如 ，KHASHAN 等
+人［9］提出了一种轻量级的基于边缘的数字医疗图像
+的选择性加密方案 ，利用边缘检测方法来提取重要
+图像块 ，进而提出了一种一次性的加密算法对检测
+到 的 重 要 图 像 块 进 行 加 密。LIU 等 人［10］提 出 了 一
+种基于 DNA 动态编码和自适应排列的彩色图像超
+混 沌 加 密 算 法，设 计 了 一 个 新 的 四 维 超 混 沌，并 利
+用 超 混 沌 产 生 的 序 列 来 动 态 控 制 图 像 加 密 算 法 中
+的 DNA 动态编码 、DNA 动态计算和 DNA 动态解码
+方 法，使 运 算 结 果 更 加 不 可 预 测。WANG 等 人［11］
+提出了一种基于改进锯齿变换和四元数 DNA 编码
+的图像加密算法 ，提出了一种新的一维混合混沌映
+射，使用改进的锯齿变换来置乱原始图像并使用动
+态 四 元 数DNA 编 码 来 进 行 扩 散 操 作。ZHENG 等
+人［12］提出了一种基于动态 S 盒和混沌映射的图像加
+密算法 ，利用混沌映射生成 S 盒，将置乱的概念引入
+S 盒的构造 ，通过置乱 、扩散和替换获得最终的加密
+图。YANG 等［13］提 出 了 一 种 基 于 二 维 耦 合 混 沌 和
+多目标优化 S 盒的高效彩色图像加密算法 ，提出了
+二维 SLG 混沌映射 ，并采用多目标粒子群优化来优
+化初始 S 盒，提高了算法的安全性 。
+从目前的研究情况来看 ，针对融合图像的保护
+方案大多 数都是基于数字水印 ，通过将融合图像作
+为 秘 密 信 息 嵌 入 宿 主 图 像 来 实 现 对 融 合 图 像 的 保
+护，但并未实现信息认证功能 。本文提出了一种基
+于遗传编码和耦合超混沌映射的多模态医学图像保
+护算法 ，将包含医患信息和诊断信息的二维码作为
+水印 ，在多模态医学图像融合过程中实现了患者信
+息的认证功能 ，通过扫描二维码 ，能够准确获取融合
+图像的归属信息 ，实现患 者 和 医 疗 图 像 的 相 对 应。
+本文的主要贡献有以下几点 ：1）提出了一个基于级
+联 调 制 耦 合 模 型 和CTBCS 结 构 的 耦 合 混 沌 模 型，
+并以正弦（Sine） 映射和 ICMIC 作为种子映射 ，构建
+了 三 维Sine-ICMIC 级 联 映 射（3D-SICM） ，将 其 应
+用于医学图像加密的设计 ；2）提出了一种针对医学
+图像的动态遗传编 码选择性加密算法，实现对融合图
+516
+
+=== PDF_PAGE 3 ===
+第 3 期 常锐云 ，等：基于遗传编码和耦合超混沌映射的多模态医学图像保护算法
+像的保护 ；3）设计了一种基于边缘检测的零水印信息
+认证算法，实现患者信息和医疗图像的相互认证 。
+1 耦合混沌模型
+本 文 基 于 级 联 调 制 耦 合 （CMC）模 型［14］ 和
+CTBCS 结构［15］设计了一种新型三维超混沌映射模
+型，并研究了其混沌行为 。
+假 设 f 是 一 个 线 性 函 数，F 和 G 是 一 维 混 沌 映
+射。级联调制耦合模型定义为 ：
+ì
+í
+î
+ïï
+ïï
+x ( )i + 1 = F ( f ( y ( i ) )G ( kx ( i ) ) ) ，
+y ( )i + 1 = F ( f ( kx ( i + 1 ) )G ( y ( i ) ) ) .
+（1）
+变 量 x，y 是 状 态 参 数，变 量 k 是 调 制 参 数。 在 该 模
+型中 ，G 由耦合控制器 f 调制 ，然后其输出与混沌映
+射 F 进行级联以进一步改善系统动力学特征 。
+CTBCS 结构可以表示为 ：
+x ( )j+1 =cos (π( F( a，x( j )))+G(b，x( j ))+β )) .（2）
+F ( a，x ( j ) ) 和 G ( b，x ( j ) ) 是 两 个 现 有 的 混 沌 映 射，
+称为种子映射 ，变量 a 和 b 是其的控制参数 ，变量 β
+是移位常数 。基于 CMC 模型和 CTBCS 结构 ，本文
+提 出 的 三 维 CMC -CTBCS 模 型 定 义 为 ：
+ì
+í
+î
+ï
+ï
+ï
+ïïïï
+ï
+ï
+ï
+ï
+ï
+ï
+ïïïï
+ï
+ï
+ï
+x ( i+ 1 )=F ( cos ( π ( G ( c，y ( i ) )+F ( b，x ( i ) )+
+β ) )G ( a，z ( i ) ) )
+y ( i+ 1 )=F ( cos ( π ( G ( c，z ( i ) )+F ( b，y ( i ) )+
+β ) )G ( a，x ( i+ 1 ) ) )
+z ( i+ 1 )=F ( cos ( π ( G ( c，x ( i ) )+F ( b，z ( i ) )+
+β ) )G ( a，y ( i+ 1 ) ) )
+.（3）
+其中 F 和 G 是两个现有的混沌映射 ，将其作为种子映
+射。变量a，b和c是它的控制参数， 变量β是移位常数。
+在 实 验 过 程 中 发 现，基 于 CMC -CTBCS 模 型
+生成 的混沌系统 ，移位常数 β 对其混沌特性产生的影
+响不大 ，保留移位常量 β，是因为 β 是原始 CTBCS 结
+构的一部分 。因此 ，本文随机设置 β = 1，将 ICMIC
+和正弦映射作为种子映射 ，获得了三维 Sine-ICMIC
+级联映射（3D-SICM） ，其表达式如下 ：
+    
+ì
+í
+î
+ï
+ï
+ï
+ïïïï
+ï
+ï
+ï
+ï
+ï
+ï
+ïïïï
+ï
+ï
+ï
+x ( i + 1 )= sin ( 21/ cos ( cπ ( sin ( πy ( i ) ) )+
+sin ( b/x ( i ) )+ 1 ) ) sin ( az ( i ) ) )
+y ( i + 1 )= sin ( 21/ cos ( cπ ( sin ( πz ( i ) ) )+
+sin ( b/y ( i ) )+ 1 ) ) sin ( ax ( i + 1 ) ) )
+z ( i + 1 )= sin ( 21/ cos ( cπ ( sin ( πx ( i ) ) )+
+sin ( b/z ( i ) )+ 1 ) ) sin ( ay ( i + 1 ) ) )
+ . （4）
+其 中 a，b 和 c 是 它 的 控 制 参 数，并 且 a，b，c ⊂ ( 0，+
+∞ )。
+本文通过相图 、李雅普诺夫指数图 、分岔图 、置
+乱 熵 复 杂 性 和NIST 随 机 性 测 试 分 析 了3D-SICM
+的混沌性能 。
+1.1 相图
+混 沌 映 射 的 相 图 可 以 直 接 反 映 混 沌 时 间 序 列
+的 分 布 。 图 1（a）显 示 了 当 { }x0，y0，z0，a，b，c =
+{ }1，1，1，9，9，9 时，3D-SICM 超混沌映射迭代 50 000
+次的相图 。由图中可以看出 ，混沌序列能遍历 D =
+{ }( x，y，z ) | x ⊂[ ]-1，1 ，y ⊂[ ]-1，1 ，z ⊂[ ]-1，1
+的全部区域 ，并且能够相对均匀的分布 。图 1（b-d）
+分 别 显 示 了 所 提 出 的3D-SICM 超 混 沌 映 射 在x-y
+平面 、x-z 平面和 y-z 平面中的吸引子分布 。
+1.2 李雅普诺夫指数图
+混 沌 映 射 的 李 雅 普 诺 夫 指 数 可 以 在 相 空 间 的
+几 个 方 向 上 表 现 出 扩 张 或 收 缩 的 性 质［16］。 正 的 李
+雅普诺夫指数代表混沌映射具有扩展性 ，如果有一
+个 正 的 李 雅 普 诺 夫 指 数，该 映 射 是 混 沌 的；如 果 有
+两个或更多的正的李雅普诺夫指数 ，则该映射是超
+混沌的［17］。本文设置 3D-SICM 超混沌映射初始值
+{ }x0，y0，z0 = { }1，1，1 ，并 将 其 迭 代1 000 次，分 别 计
+算随着参数 a，b 和 c 的变化而变化的李雅普诺夫指
+数值 。如图 2（a-c）所示 ，3D-SICM 有三个李雅普诺
+夫指数大于 0，说明该映射是超混沌的 ，可以产生随
+机性优越的混沌序列 。
+1.3 分岔图
+分岔图可以显示混沌序列随参数变化的情况 。
+如 图 3（a-c）所 示，分 别 绘 制 了3D-SICM 超 混 沌 映
+射的混沌序列随参数 a，b 和 c 的分岔分布 。从图中
+可以看出 ，当参数 a，b，c 改变时 ，伪随机序列 x，y，z
+（a）x-y-z 平面                                      （b）x-y 平面
+ 
+        （c）x-z 平面                                （d）y-z 平面
+图 1 3D-SICM 的吸引子
+Fig.1 Attractor of 3D-SICM
+z
+1
+0
+-1
+1
+0
+-1
+0
+1
+y x
+y
+1
+0.5
+0
+-0.5
+-1
+-1 -1     -0.5       0        0.5       1x
+y
+z
+1
+0.5
+0
+-0.5
+-1-1     -0.5       0        0.5       1
+x
+-1     -0.5       0        0.5       1
+z
+1
+0.5
+0
+-0.5
+-1
+517
+
+=== PDF_PAGE 4 ===
+太 原 理 工 大 学 学 报 第 56 卷
+仍然可以均匀分布在 [ ]-1，1 中，这表明 3D-SICM 可以稳定地保持混沌 。
+1.4 置乱熵复杂性
+由 于 计 算 的 简 单 性 和 快 速 性 以 及 对 非 线 性 单
+调变换的鲁棒性 ，置乱熵（PE）成为衡量混沌序列复
+杂 性 的 一 个 合 适 的 指 标［18］。 图 4（a-c）显 示 了 随 机
+序 列 x 计 算 出 的PE 值 随 参 数a，b，c 变 化 的 情 况。
+结果显示 ，当参数值发生变化时 ，PE 值略有变化 ，并
+保持在接近 1 的水平 ，说明 3D-SICM 超混沌映射产
+生的混沌序列都具有较高的复杂性 ，并不随参数的
+变化而发生明显变化 。
+图 2 3D-SICM 的李雅普诺夫指数图
+Fig.2 Lyapunov Index charts of 3D-SICM
+LEs
+10
+5
+0
+1 2 3 4 5
+λ1
+λ2
+λ3
+LEs
+15
+10
+5
+01 2 3 4 5
+λ1
+λ2
+λ3
+LEs
+15
+10
+5
+0
+1 2 3 4 5
+λ1
+λ2
+λ3
+                                                          a                                                                b                                                                c
+                  （a）参数 a                                                  （b）参数 b                                                  （c）参数 c
+图 3 3D-SICM 分岔图
+Fig.3 3D-SICM bifurcation diagrams
+（a）参数 a                                                   （b）参数 b                                                 （c）参数 c
+x/y/z
+1
+0
+-1
+x/y/z
+1
+0
+-1
+x/y/z
+1
+0
+-1
+1 2 3 4 5 1 2 3 4 5 1 2 3 4 5
+                                                          a                                                                b                                                                c
+图 4 3D-SICM 的置乱熵复杂性
+Fig.4 PE values of 3D-SICM
+（a）参数 a                                                （b）参数 b                                                  （c）参数 c
+PE
+1.0
+0.8
+0.6
+0.4
+0.2
+0
+1 2 3 4 5
+PE
+1.0
+0.8
+0.6
+0.4
+0.2
+0
+PE
+1.0
+0.8
+0.6
+0.4
+0.2
+0
+1 2 3 4 5 1 2 3 4 5
+                                                          a                                                                b                                                                c
+1.5 NIST 随机性测试
+NIST SP 800-22 测 试 是 国 家 标 准 与 技 术 研 究
+所提出的序列随机性的标准测试 。它由 15 个统计
+检 验 组 成。 每 个 测 试 产 生 一 个 或 一 组 数 值。 如 果
+该 值 大 于 或 等 于0.01，则 该 混 沌 系 统 具 有 随 机 性。
+本文随机设置初始值 { }x0，y0，z0 = { }1，1，1 ，控制参
+数 { }a，b，c = { }1，9，2 ，将 其 输 入3D-SICM ，生 成 三
+条 长 度 为1 000 000 的 序 列 进 行 随 机 性 测 试。 表 1
+显示测试结果均超过 0.01，表明这三条混沌序列是
+随机的 。
+2 多模态医学图像保护算法
+本 文 提 出 了 一 种 基 于 遗 传 编 码 和 耦 合 超 混 沌
+映射的多模态医学图像保护算法 ，加密流程如图 5
+所示 。
+算 法 设 计 思 路 受DNA 转 录 和RNA 碱 基 翻 译
+启发 。生物的遗传信息由 DNA 承载 ，RNA 是 DNA
+转录的初级产物 。DNA 编码和 RNA 转录均有 8 种
+编码规则来确定碱基之间的互补关系 。在 RNA 翻
+译 过 程 中，每 三 个 碱 基 可 以 翻 译 为 一 种 氨 基 酸［19］， 
+518
+
+=== PDF_PAGE 5 ===
+第 3 期 常锐云 ，等：基于遗传编码和耦合超混沌映射的多模态医学图像保护算法
+翻 译 为 哪 种 氨 基 酸 由 密 码 子 表 决 定。 基 于 这 个 特
+点 ，本 文 采 用 混 沌 序 列 动 态 构 造 大 小 为4×16 的 6
+比特Ｓ盒子作为 RNA 翻译的密码子表 。随着生物
+技术的发展 ，更多非标准氨基酸可以成功嵌入到蛋
+白质当中［20］。因此 ，在将 RNA 翻译为氨基酸链时 ，
+可 以 充 分 利 用 密 码 子 所 有 的 可 能 性。 密 码 子 的 每
+一种排列都可以代表一种氨基酸 ，S 盒中的 64 个值
+分别对应 64 种氨基酸［19］。
+如图 5 所示 ，算法流程包括混沌系统序列生成 、
+基于边缘检测的零水印生成 、多模态医学图像融合
+和基于遗传编码的选择性加密算法四个阶段 。
+2.1 混沌序列生成
+混沌系统初值和序列生成步骤如下 ：
+步骤 1：输入 MRI 图像 PM，将其作为哈希 256 函
+数的输入 ；
+K1 ( k1，k2，…，k32 )= SHA256( PM ) . （5）
+步骤2：输入SPECT 图像PS，将彩色图像分为RGB
+三通道记作RS，GS，BS，分别计算行、列和对角线上的元素
+和，并作为 MD5 函数的输入 ，获得 D1 ( k1，k2，⋯，k32 )，
+D2 ( k1，k2，⋯，k32 )和 D3 ( k1，k2，⋯，k32 )；
+步 骤3：再 将MD5 的 输 出 值 作 为 哈 希256 函 数
+的输入值 ；
+K2 ( k1，k2，⋯，k32 )=
+SHA256( [ D1 ( k1，⋯，k32 ) D2 ( k1，⋯，k32 )
+D3 ( k1，⋯，k32 ) ] )
+ . （6）
+随机性测试
+单比特频率测试
+块内频率试验
+游程测试
+块内最长 1 游程测试
+二元矩阵秩检验
+离散傅里叶变换检验
+非重叠模板匹配测试
+重叠模板匹配
+Maurer 通用测试
+线性复杂度测试
+序列测试
+近似熵测试
+累积总和测试
+随机偏移测试
+随机偏移变异测试
+x
+0.861 1
+0.648 6
+0.591 9
+0.869 4
+0.037 1
+0.542 3
+0.276 2
+0.553 7
+0.305 8
+0.592 3
+0.078 6
+0.347 6
+0.022 2
+0.841 9
+0.718 0
+y
+0.199 5
+0.334 6
+0.504 4
+0.376 3
+0.258 3
+0.794 0
+0.793 0
+0.596 0
+0.445 7
+0.386 6
+0.019 7
+0.024 8
+0.718 5
+0.558 9
+0.482 9
+z
+0.997 6
+0.255 9
+0.023 3
+0.868 5
+0.122 0
+1.000 0
+0.943 3
+0.598 9
+0.848 1
+0.096 5
+0.041 5
+0.433 6
+1.000 0
+0.598 0
+0.465 4
+表 1 NIST SP 800-22 随机性测试
+Table 1 NIST SP 800-22 randomness test
+图 5 加密流程图
+Fig.5 Encryption flow chart
+混沌系统序列生成 多模态图像融合
+基于相位一致性和局部
+拉普拉斯能量的多模态
+医学图像融合算法
+零水印生成
+零水印
+Zencrypt
+基于边 缘检测的零水
+印生成算法
+融合 Y 通道
+MRI 图像 PM Y 通道
+SHA-256 3D-SICM
+SPECT 图像 PS YUV 图像 融合图像 Pf
+量化
+加密图像 C
+6比特-
+RNAS 盒
+替换
+同步置乱
+扩散
+分块 DNA
+编码
+MRI 图像的
+边缘检测
+标记矩阵
+基于遗传编码的选择性加密 B
+G
+R
+Y U V
+xi,yi,zi
+519
+
+=== PDF_PAGE 6 ===
+太 原 理 工 大 学 学 报 第 56 卷
+步骤 4：将 K1 和 K2 转换为十六进制进行异或运
+算，得到长度为 32 字节的数组 K；
+步骤 5：根据公式（7）计算混沌系统的四组初值
+Keyi，其中 ⊕ 代表异或运算 ，i = 1，2，3，4；
+ì
+í
+î
+ïïïï
+ïïïï
+Keyi ( 1 )=( K ( 1 × i ) ⊕K ( 2 × i ) ⊕K ( 3 × i ) ) /32
+Keyi ( 2 )=( K ( 4 × i ) ⊕K ( 5 × i ) ⊕K ( 6 × i ) ) /32
+Keyi ( 3 )=( K ( 7 × i ) ⊕K ( 8 × i ) ) /32
+.
+（7）
+步 骤6：将 Keyi 作 为 初 值 输 入 混 沌 系 统 分 别 产
+生三条随机序列 xi，yi，zi，i = 1，2，3，4。
+2.2 零水印生成
+本 文 采 用 大 小 为256×256 的 QR 码 作 为 水 印
+使 用 ，并 将 其 标 记 为 Plog o。 在 融 合 过 程 中，选 用
+SPECT 图 像 的Y 通 道 作 为 水 印 的 认 证 通 道，实 现
+患 者 信 息 和 医 疗 图 像 的 对 应。 生 成 零 水 印 的 具 体
+步骤如下 。
+步 骤 1：使 用 混 沌 序 列x1 来 进 行 索 引 置 乱QR
+码；
+步骤 2：置乱后的 QR 码使用公式（8）二值化 ；
+Plog o ( Plog o > 127 ) = 1 .   （8）
+步骤 3：选择 SPECT 图像的 Y 通道作为水印的
+嵌入通道 ，使用′canny′ 运算器检测 Y 通道的边缘 ，得
+到边缘图像 Esy；
+步骤 4：对 Esy 进行三级平稳小波变换 （SWT） ，
+得到第三级的系数矩阵 Swa；
+步 骤 5：将 系 数 矩 阵Swa 中 的 元 素 左 移 一 个 位
+置，得到 Swashift；
+步骤 6：将 Swashift 与 Swa 相减计算其差值 ，进而
+使用公式（8）二值化 ，得到 Pindex；
+步 骤 7：根 据 公 式（9）生 成 零 水 印，其 中⊕ 代 表
+异或操作 ；
+Z =( Pindex ⊕Plog o )× 255 .  （9）
+步骤 8：为了保证零水印的安全性 ，最后根据文
+献［21］中 的 算 法 进 行 同 步 置 换 和 扩 散，最 终 得 到
+Zencrypt。
+2.3 多模态医学图像融合
+零水印认证完成后 ，根据基于相位一致性和局
+部拉普拉斯能量的多模态医学图像融合方法 ［3］继续
+执行 MRI 和 SPECT 图像的融合步骤 ，最终获得融
+合标记图像 Pf。
+2.4 基于遗传编码的选择性加密
+这部分主要介绍融合标记图像 Pf 的加密步骤 。
+步 骤1：采 用canny 边 缘 检 测 方 法［22］，输 入 灰 度
+图 像 PM，通 过 canny 算 子 检 测 出 边 缘 图EM，如 图 6
+（b）所示 ；
+步骤 2：将边缘图 EM 划分成 16×16 的不重叠的
+小块 ，其中 m × m 为边缘图中块的总数 ；
+步骤 3：计算每个检测到的区块 Ei，j 中的像素总
+数 ，然 后 使 用Si，j = sum ( Ei，j ) /( 16 × 16 ) 计 算 其 相
+应的显著度 ，其中 i，j 是该区块在检测图像中的坐标
+位置 ；
+步骤 4：将阈值设置为 0.05，若 α ≥ 0.05，则将块
+标 记 为“1” 。如 图 6（c）中 所 示 为 标 记 矩 阵，标 记 元
+素“1”反 映 了 相 应 的 块 是 有 效 的，而“0”表 示 无 效
+块，本文仅对有效块进行逐块加密 。
+步 骤 5： 将 融 合 标 记 图 像Pf 进 行 量 化 处 理 到
+［0，255］ ，量化后的结果记作 PI；
+步 骤 6：将 PI 分 解 为 大 小 为M×N 的 R 通 道 分
+量、G 通道分量和 B 通道分量 ；
+步骤 7： 根据标记矩阵划分有效块并进行分通
+道的 DNA 编码［10］加密 ；
+步骤 8： 根据文献［21］中的算法进行分通道的同
+步置换和扩散 ；
+步骤 9：将三通道融合成一个一维序列 SRGB；
+算法 1 6 比特 RNA -S 盒生成
+输入 ： 三条随机序列 。
+输出 ：大小为 4×16 的 Sbox1， Sbox2 和 Sbox3。
+1：
+2：
+3：
+4：
+5：
+6：
+7：
+8：
+9：
+10：
+11：
+更 新 混 沌 序 列 的 值 ，其 中 k 代 表 三 条 初 始 序 列 Vk =
+ë ûk × 107 mod64；
+三条序列两两异或生成 Xs1，Xs2 和 Xs3；
+for i = 1：length ( Xsj )
+if isempty( find( Sboxj == Xsj ( i ) ) )
+Sboxj = [ ]Sboxj，Xs1 ( i ) ；
+end
+if length ( Sboxj )== 64
+break ；；
+end
+end
+将 Sboxj 转换成 4×16 的大小 j = 1，2，3
+步 骤 10：对 这 个 一 维 序 列 进 行RNA 编 码 得 到
+SRNA；
+图 6 边缘检测图
+Fig.6 Edge detection diagram
+（a）MRI 图像        （b）边缘检测结果            （c）标记矩阵
+520
+
+=== PDF_PAGE 7 ===
+第 3 期 常锐云 ，等：基于遗传编码和耦合超混沌映射的多模态医学图像保护算法
+步骤 11：根据算法 1 生成三个 6 比特 RNA -S 盒；
+步骤 12：计算密钥 K1、K2 之间的汉明距离 D，并
+根据公式（10）进行更新 ；
+Dchose = Dmod3 .  （10）
+步 骤 13：根 据 Dchose 进 行 6 比 特 RNA -S 盒 的 选
+择 ，如 果 Dchose = 0，选 择 Sbox1 作 为 替 换 盒 ，如 果 
+Dchose = 1，选择 Sbox2 作为替换盒 ，如果 Dchose = 2，选
+择 Sbox3 作为替换盒 ；
+步 骤 14：将 碱 基 序 列SRNA 分 为 每 三 个 一 组，按
+照第一个碱基决定行 ，后两个决定列的方式进行 6
+比特 RNA -S 盒的替换 ，替换结果记作 Cs；
+步骤 15：将一维密文序列 Cs 转换为三通道 ，并
+将图像块按索引放回原来的位置 ，得到最终的加密
+图像 C。
+至此 ，加密步骤完成 。图像 C 是多模态医学图
+像的加密图像 ，Zencrypt 是加密后包含患者隐私信息的
+零水印 。解密操作和水印提取是反向进行的 。
+3 实验仿真
+在本节中 ，将通过仿真实验测试所提出算法的
+性能 。所有实验在 MATLAB 2016b 中使用具有 In‐
+tel I 5 CPU 和 16.0 GB RAM 的 计 算 机 进 行。 从 视
+觉安全分析 、直方图分析 、信息熵分析 、相关性分析
+和 密 钥 敏 感 性 分 析 等 方 面 对 所 提 出 的 安 全 算 法 进
+行了评估 。
+3.1 视觉安全分析
+图 7 显 示 了 该 算 法 的 加 密 结 果。 如 图 7（d）所
+示，融合医学图像的重要部分的所有细节都被有效
+加密 。
+解密后的图像是融合后的 MRI -SPECT 图，包
+含病人信息的 QR 码水印可以从解密后的图像中成
+功提取，可以实现患者信息和融合图像的相互认 证。
+3.2 直方图分析
+通过直方图分析呈现图像的像素值分布 ［23］，原
+始图像和加密图像的直方图必须不同 ，确保这些图
+像 的 统 计 信 息 不 会 泄 漏。 直 方 图 分 析 测 量 并 估 计
+所提出算法的安全性能和抵抗统计攻击的能力 。
+如图 8 所示 ，可以清楚地发现加密图像的各个
+通道分量的像素值分布接近均匀 ，与各自原始图像
+的像素值有显著差异 ，这意味着加密算法大大降低
+了像素之间的统计相关性特征 ，图像加密算法具有
+较好的抵抗统计分析攻击的能力 。
+3.3 信息熵分析
+信息熵是 Shannon 在 1948 年提出的 ，它反映了
+信息源的不确定性和随机性 ［24］。信息熵越大 ，图像
+识别效果越差 ，保密性越强 。信息熵的理想值应该
+是 8，其计算方法在公式（11）中给出 。
+H ( c )= -∑i = 0
+2L - 1
+P ( ci )× log2 P ( ci ) .   （11）
+其中 ，ci 是医学图像中第 i 个灰度量 ，而 P ( ci ) 是
+像素 ci 的统计概率 ，L 指的是灰度等级 。
+表 2 显 示了该方案和不同加密方案的信息熵 。
+观察到原始图像和解密图像的熵值相似 ，这证明它
+们具有相同的信息强度和不可区分的感知可视化 。
+加密结果的熵接近理想值 8，这意味着在加密过程中
+可以忽略信息泄漏 ，该方案对熵攻击具有鲁棒性 。
+x
+图 8 RGB 三通道直方图
+Fig.8 RGB three -channel histograms
+（a）原图直方图                           （b）加密图直方图
+6 000
+4 000
+2 000
+0              100           200
+150
+100
+50
+0             100            200
+像素值
+像素值
+x
+图 7 视觉安全分析
+Fig.7 Visual security analysis
+  （a）MRI 图像          （b）SPECT 图像       （c）二维码水印
+     （d）加密图                 （e）解密图               （f）提取水印
+表 2 信息熵分析
+Table 2 Information entropy analyses
+文本
+本文
+文献［13］
+文献［10］
+文献［23］
+R
+G
+B
+R
+G
+B
+平均
+平均
+原始
+7.065 6
+7.156 4
+6.954 1
+6.717 8
+6.799 0
+6.213 8
+-
+-
+加密
+7.993 9
+7.993 8
+7.995 0
+7.999 3
+7.999 3
+7.999 2
+7.997 3
+7.989 6
+解密
+7.065 6
+7.156 4
+6.954 1
+6.717 8
+6.799 0
+6.213 8
+-
+-
+521
+
+=== PDF_PAGE 8 ===
+太 原 理 工 大 学 学 报 第 56 卷
+3.4 相关性分析
+统 计 安 全 分 析 是 评 估 明 文 和 加 密 图 像 中 相 邻
+像 素 之 间 的 相 关 性 的 一 种 方 法［24］。 相 邻 对 像 素 之
+间的相关系数可以公式化如下 ：
+ì
+í
+î
+ï
+ï
+ïïïïïï
+ï
+ï
+ïïïïïï
+rxy = E (( X- E ( X ) )(Y= E (Y ) ) ) D ( X ) D (Y )
+E ( X )= 1n ∑i= 1n xi
+D ( X )= 1n ∑i= 1n ( xi - E ( X ) )2
+.
+（12）
+随 机 选 择 2 000 个 像 素 对 值 来 计 算 相 关 性。
+图 9（a-c）是加密图像 RGB 三通道的相邻像素在水
+平、垂直和正对角线方向上的相关性表示图 。可以
+看出 ，加密的多模态医学图像的像素点几乎均匀分
+布。
+表 3 显示了水平 、垂直和正对角线上加密融合
+图像相邻像素之间的定量相关性发现 ，结果表明加
+密 的 多 模 态 医 学 图 像 对 于 所 有 测 试 方 向 都 具 有 低
+相关值 。
+3.5 密钥敏感性分析
+安 全 的 算 法 必 须 对 所 使 用 的 密 钥 的 任 何 微 小
+图 9 相关性定型分析
+Fig.9 Correlation stereotyping analyses
+（a）R 通道                                                       （b）G 通道                                                       （c）B 通道
+点（x+1,y）的像素值
+250
+200
+150
+100
+50
+0
+0        50     100    150    200     250
+点（x,y）的像素值
+点（x+1,y）的像素值
+250
+200
+150
+100
+50
+0
+0        50     100    150    200     250
+点（x,y）的像素值
+点（x+1,y）的像素值
+250
+200
+150
+100
+50
+0
+0        50     100    150    200     250
+点（x,y）的像素值
+变化敏感 。由于本文使用哈希 256 函数生成加密密
+钥 ，而 哈 希 函 数 对 明 文 敏 感，具 有 单 向 性，能 实 现
+“一次一密 ”的效果 。当明文发生微小改变时 ，哈希
+函 数 将 生 成 完 全 不 同 的 加 密 密 钥。 当 密 钥 被 改 变
+时 ，解 密 结 果 是 错 误 的，保 证 了 方 案 的 明 文 敏 感 性
+和密钥敏感性 。
+K1 = 17b73bc1764⋯ca634ba68 ，
+K2 = ae288aae39f⋯1665da341 ，
+K3 = ee288aae39f⋯1665da341 .
+在 本 文中 ，正 确 的 密 钥 是K1 和 K2。 当 使 用 错
+误的 K3 解密时 ，解密结果如图 10 所示 。K2 和 K3 之
+间的区别只是第一个字符的变化 。
+如 图 10（b-c）所 示，当 密 钥 发 生 一 个 字 符 的 改
+变 时，解 密 的 图 像 与 原 始 图 像 完 全 不 同，提 取 出 的
+水 印 信 息 也 完 全 无 效，本 算 法 具 有 密 钥 敏 感 性，能
+够确保医学图像安全 。
+4 结束语
+提 出 了 一 种 基 于 耦 合 超 混 沌 系 统 和 遗 传 编 码
+技术的多模态医学图像加密和认证算法 。首先 ，构
+造了一种新型耦合混沌系统框架 ，设计了一个三维
+超混沌系统 ，克服了基于低维混沌映射的伪随机序
+列随机性差的缺点 。然后 ，采用基于 NSCT 域的融
+合方案对 MRI 和 SPECT 图像进行融合 ，并且在融
+合 过 程 中 实 现 基 于 边 缘 检 测 的 零 水 印 信 息 认 证。
+最后 ，采用与明文相关的动态遗传编码选择性加密
+算法 ，增强了算法抵抗明文攻击的能力 。仿真结果
+和 理 论 分 析 表 明，该 密 码 系 统 具 有 较 高 的 安 全 性。
+然 而，图 像 加 密 算 法 在 时 间 效 率 方 面 成 本 较 高；未
+水平
+本文
+文献［10］
+文献［13］
+文献［23］
+R
+G
+B
+R
+G
+B
+R
+G
+B
+平均
+0.002 9
+-0.002 5
+0.045 0
+-0.001 5
+0.003 5
+0.005 3
+0.001 7
+0.002 6
+0.001 7
+0.037 3
+竖直
+0.006 6
+0.033 5
+-0.003 1
+0.006 3
+-0.002 3
+0.008 7
+0.001 9
+0.001 9
+0.001 5
+0.028 8
+正对角线
+0.028 6
+0.009 2
+0.005 5
+0.004 3
+-0.008 1
+0.001 1
+0.001 7
+0.002 1
+0.002 0
+-0.022 1
+表 3 相关性定量分析
+Table 3 Correlation quantitative analyses
+图 10 密钥敏感性分析
+Fig.10 Key sensitivity analyses
+（a）原图                 （b）解密图             （c）二维码水印
+522
+
+=== PDF_PAGE 9 ===
+第 3 期 常锐云 ，等：基于遗传编码和耦合超混沌映射的多模态医学图像保护算法
+来，将探索轻量级加密算法在医学图像加密和认证 领域的应用 ，降低算法存储成本 ，提高时间效率 。
+参考文献 ：
+［1］ AZAM M A ，KHAN K B ，SALAHUDDIN S ，et al .A review on multimodal medical image fusion ：Compendious analysis of 
+medical modalities ，multimodal databases ，fusion techniques and quality metrics ［J］.Computers in Biology and Medicine ，2022 ，
+144：105253 .
+［2］ SINGH K N ，SINGH O P ，SINGH A K ，et al .WatMIF ：multimodal medical image fusion -based watermarking for telehealth 
+applications［J］.Cognitive Computation ，2022 ：1-17.
+［3］ ZHU Z ，ZHENG M ，QI G ，et al . A phase congruency and local Laplacian energy based multi -modality medical image fusion 
+method in NSCT domain ［J］.IEEE Access ，2019 ，7：20811 -20824 .
+［4］ ANAND A ，SINGH A K .Health record security through multiple watermarking on fused medical images ［J］.IEEE Transac ‐
+tions on Computational Social Systems ，2021 ，9（6） ：1594 -1603.
+［5］ EL-SHAFAI W ，HEMDAN E E D .Robust and efficient multi -level security framework for color medical images in telehealth ‐
+care services［J］.Journal of Ambient Intelligence and Humanized Computing ，2021 ：1-16.
+［6］ SINGH O P ，SINGH A K .A robust information hiding algorithm based on lossless encryption and NSCT -HD-SVD［J］.Ma‐
+chine Vision and Applications ，2021 ，32（4） ：101.
+［7］ VAIDYA S P .Fingerprint -based robust medical image watermarking in hybrid transform ［J］.The Visual Computer ，2023 ，39
+（6） ：2245 -2260.
+［8］ DAOUI A ，KARMOUNI H ，SAYYOURI M ，et al .Robust image encryption and zero -watermarking scheme using SCA and 
+modified logistic map［J］.Expert Systems with Applications ，2022 ，190：116193 .
+［9］ KHASHAN O A ，ALSHAIKH M .Edge -based lightweight selective encryption scheme for digital medical images ［J］.Multime ‐
+dia Tools and Applications ，2020 ，79（35/36） ：26369 -26388 .
+［10］ LIU X ，TONG X ，WANG Z ，et al .A novel hyperchaotic encryption algorithm for color image utilizing DNA dynamic encoding 
+and self -adapting permutation［J］.Multimedia Tools and Applications ，2022 ，81（15） ：21779 -21810 .
+［11］ WANG Q ，ZHANG X ，ZHAO X .Image encryption algorithm based on improved Zigzag transformation and quaternary DNA 
+coding［J］.Journal of Information Security and Applications ，2022 ，70：103340 .
+［12］ ZHENG J ，ZENG Q .An image encryption algorithm using a dynamic S -box and chaotic maps ［J］.Applied Intelligence ，2022 ，52
+（13） ：15703 -15717 .
+［13］ YANG S ，TONG X ，WANG Z ，et al.Efficient color image encryption algorithm based on 2D coupled chaos and multi -objective 
+optimized S -box［J］.Physica Scripta ，2022 ，97（4） ：045204 .
+［14］ CAO C ，SUN K ，LIU W .A novel bit -level image encryption algorithm based on 2D-LICM hyperchaotic map ［J］.Signal Pro ‐
+cessing ，2018 ，143：122-133.
+［15］ HUA Z ，ZHOU Y ，HUANG H .Cosine -transform -based chaotic system for image encryption ［J］.Information Sciences ，2019 ，
+480：403-419.
+［16］ WOLF A ，SWIFT J B ，SWINNEY H L ，et al .Determining Lyapunov exponents from a time series ［J］.Physica D ：Nonlinear 
+Phenomena ，1985 ，16（3） ：285-317.
+［17］ WANG X Y ，XU B ，ZHANG H G .A multi -ary number communication system based on hyperchaotic system of 6th-order cel ‐
+lular neural network［J］.Communications in Nonlinear Science and Numerical Simulation ，2010 ，15（1） ：124-133.
+［18］ LIU W ，SUN K ，HE S .SF-SIMM high -dimensional hyperchaotic map and its performance analysis ［J］.Nonlinear Dynamics ，
+2017 ，89：2521 -2532.
+［19］ 李振宇，张昊，王莉，等 . 基于分数阶混沌系统和 RNA 编码的立体图像加密算法［J］ ．太原理工大学学报 ，2021，52（5） ：718-727.
+LI Z Y ，ZHANG H ，WANG L ，et al.Encryption of stereo image based on fractional chaotic system and RNA encoding ［J］.Jour‐
+nal of Taiyuan University of Technology ，2021 ，52（5） ：718-727.
+［20］ JIN X ，PARK O J ，HONG S H .Incorporation of non -standard amino acids into proteins ：challenges ，recent achievements ，and 
+emerging applications ［J］.Applied Microbiology and Biotechnology ，2019 ，103：2947 -2958.
+［21］ TENG L ，WANG X ，XIAN Y .Image encryption algorithm based on a 2D-CLSS hyperchaotic map using simultaneous permu ‐
+tation and diffusion［J］.Information Sciences ，2022 ，605：71-85.
+［22］ GONG L H ，TIAN C ，ZOU W P ，et al . Robust and imperceptible watermarking scheme based on Canny edge detection and 
+SVD in the contourlet domain ［J］.Multimedia Tools and Applications ，2021 ，80：439-461.
+［23］ WU X ，WANG K ，WANG X ，et al .Color image DNA encryption using NCA map -based CML and one -time keys［J］.Signal 
+Processing ，2018 ，148：272-287.
+［24］ NAN S ，FENG X ，WU Y ，et al . Remote sensing image compression and encryption based on block compressive sensing and 
+2D-LCCCM［J］.Nonlinear Dynamics ，2022 ，108（3） ：2705 -2729.
+（编辑 ：万 佳）
+523

@@ -1,0 +1,945 @@
+=== PDF_PAGE 1 ===
+书书书
+研究论文 第5 1卷 第1 1期/2 0 2 5年1 1月/计算机工程
+收稿日期 :2 0 2 3 - 0 8 - 0 1��修回日期 :2 0 2 4 - 0 6 - 0 3
+基金项目:国家自然科学基金 (1 2 3 7 3 1 1 3,6 2 0 0 4 2 0 1) :上海市人才发展资金项目 (E 1 3 2 2 E 1) :上海核工程研究设计院股份有限公司知识图谱应
+用开发与测试项目 (E 3 4 2 3 E 1) 。
+通信作者 E - m a i 1:*z h e ngxy@s a r i . a c . c n
+多头自注意力与双线性池化融合的心肌缺血影像分类
+周嘉文1,2,郑小盈1,2* ,祝永新1,2,林思敏3,陈凌曜1,2,曾洪斌4,郭俞4,王馨莹4
+(1 .中国科学院上海高等研究院 ,上海 2 0 1 2 1 0:2 .中国科学院大学 ,北京 1 0 1 4 0 8:
+3 .厦门大学医学院厦门大学附属心血管病医院放射科 ,福建 厦门3 6 1 0 0 6:
+4 .上海核工程研究设计院股份有限公司 ,上海 2 0 0 0 3 0)
+摘�要:深度学习在心肌缺血辅助诊断中有重要应用价值 ,但传统深度学习医学图像分类网络存在无法捕捉心
+肌计算机断层扫描 (C T)类别间细微差异 、丢失 C T数据三维 (3 D)结构信息等问题 。为此,提出一种 D B T M e d 3 D
+网络,采用3 D双线性细粒度池化对传统 M e d 3 D网络中的卷积模块进行改进 ,用于处理包括 C T和 M R I在内的多
+模态医学图像数据 。同时,模仿 R e s N e t网络,在模块中引入跳跃连接 ,融合图像细粒度二阶特征和卷积模块提取
+到的特征 ,使得网络在关注局部特征的同时保留整体特征 。此外,引入3 D类别激活图 ,将热力图叠加在原心肌图
+像的 C T切片上,突出网络模型重点关注的心肌位置 。最后,设计3 D层次化多头自注意力模块 ,通过捕获图像局
+部特征解决 3 D医学图像的细粒度分类问题 。实验结果表明 ,D B T M e d 3 D在心肌 C T数据集上的分类准确率为
+8 6 . 4 %,相比基准网络 3 DR e s N e t - 5 0提升了6 . 7百分点,具有较优的分类效果 。
+关键词:心肌缺血 :卷积神经网络 :双线性细粒度 :多头自注意力机制 :类别激活图 :跳跃连接
+中图分类号 :T P 3 9 1���文献标志码 :A D O I:1 0 . 1 9 6 7 8/j. i s s n . 1 0 0 0 - 3 4 2 8 . 0 0 6 8 1 6 6
+Myo c a r d i a 1 I s c h e m i a I m age C 1 a s s i f i c a t i o u v i a F u s i o u o f
+M u 1 t i - H e a d S e 1 f - A t t e u t i o u a u dB i 1 i u e a r P o o 1 i ug
+Z H O UJ i a w e n
+1 , 2
+, Z H E N GX i a oyi ng
+1 , 2*
+, Z H U Y o ngx i n
+1 , 2
+, L I NS i m i n
+3
+, C H E NL i ng ya o
+1 , 2
+, Z E N G H o ngb i n
+4
+,
+G U O Y u
+4
+, W A N GX i nyi ng
+4
+(1 . S h a ngh a i A d v a n c e dR e s e a r c h I n s t i t u t e , C h i n e s eA c a d e myo f S c i e n c e s , S h a ngh a i 2 0 1 2 1 0 , C h i n a ;
+2 . U n i v e r s i tyo f C h i n e s eA c a d e myo f S c i e n c e s , B e iji ng1 0 1 4 0 8 , C h i n a ;
+3 . R a d i o l og yD epa r t m e n t o f X i a m e nC a r d i o v a s c u l a rH o spi t a l o f X i a m e nU n i v e r s i ty,
+S c h o o l o fM e d i c i n e , X i a m e nU n i v e r s i ty, X i a m e n 3 6 1 0 0 6 , F uji a n , C h i n a ;
+4 . S h a ngh a i N u c l e a r E ngi n e e r i ngR e s e a r c h a n dD e s ign I n s t i t u t e C o . , L t d . , S h a ngh a i 2 0 0 0 3 0 , C h i n a)
+【A b s t r a c t】D e epl e a r n i ngh a ss ign i f i c a n tap pl i c a t i o nv a l u ei nt h ea u x i l i a ryd i agn o s i so f myo c a r d i a l i s c h e m i a .
+H o w e v e r , t r a d i t i o n a l d e epl e a r n i ngn e t w o r k s f o rm e d i c a l i m age c l a s s i f i c a t i o ns u f f e r f r o ml i m i t a t i o n s s u c ha s t h e
+i n a b i l i tyt o c apt u r e s u b t l e i n t e r - c l a s s d i f f e r e n c e s i nmyo c a r d i a l C o mpu t e dT o m ogr aphy (C T)s c a n s a n d t h e l o s s o f
+t h r e e - d i m e n s i o n a l(3 D)s t r u c t u r a l i n f o r m a t i o nf r o m C T d a t a .T oa d d r e s st h e s ei s s u e s , t h i ss t u dy pr opo s e s
+D B T M e d 3 D , a n e t w o r k t h a t i mpr o v e s t h e c o n v o l u t i o n a lm o d u l e s i n t h e c o n v e n t i o n a lM e d 3 Da r c h i t e c t u r e t h r o ugh
+3 Db i l i n e a r f i n e -gr a i n e dpo o l i ng, t h e r e bye n a b l i ngt h epr o c e s s i ngo fm u l t i m o d a lm e d i c a l i m agi ngd a t a , i n c l u d i ng
+b o t hC Ta n dM R I . Bye m u l a t i ngt h eR e s N e t d e s ign , s k ipc o n n e c t i o n s a r e i n t r o d u c e dw i t h i n t h em o d u l e s t o f u s e
+f i n e -gr a i n e d s e c o n d - o r d e r i m age f e a t u r e sw i t ht h o s ee x t r a c t e dbyc o n v o l u t i o n a l b l o c k s , a l l o w i ngt h en e t w o r kt o
+pr e s e r v egl o b a lc h a r a c t e r i s t i c s w h i l ef o c u s i ng o nl o c a ld e t a i l s .A d d i t i o n a l ly,3 D c l a s s a c t i v a t i o n m aps a r e
+i n c o rpo r a t e d t oo v e r l ayh e a t m apso n t ot h eo r igi n a lmyo c a r d i a lC Ts l i c e s , h igh l igh t i ngt h er egi o n so fpr i m a ry
+i n t e r e s t i d e n t i f i e d byt h em o d e l . F u r t h e r m o r e , t h e s t u dyd e s ign s a 3 Dh i e r a r c h i c a l m u l t i - h e a d s e l f - a t t e n t i o nm o d u l e
+t or e s o l v ef i n e -gr a i n e dc l a s s i f i c a t i o nc h a l l e nge si n3 D m e d i c a l i m age sbyc apt u r i ngl o c a l i z e di m agef e a t u r e s .
+E xpe r i m e n t a l r e s u l t s d e m o n s t r a t e t h a t D B T M e d 3 D a c h i e v e s a n 8 6 . 4 %c l a s s i f i c a t i o n a c c u r a cyo n t h emyo c a r d i a l C T
+d a t a s e t , w h i c h i s a 6 . 7pe r c e n t agepo i n t s i mpr o v e m e n t c o mpa r e dw i t h t h e a c c u r a cyo f t h e b a s e l i n e 3 DR e s N e t - 5 0
+m o d e l , t h e r e byv a l i d a t i ngi t s s upe r i o r c l a s s i f i c a t i o npe r f o r m a n c e .
+【K eyw o r d s】myo c a r d i a l i s c h e m i a ; C o n v o l u t i o n a lN e u r a lN e t w o r k(C N N); b i l i n e a r f i n e -gr a i n e d ; m u l t i - h e a d s e l f -
+a t t e n t i o nm e c h a n i s m ; c l a s s a c t i v a t i o nm ap; s k ipc o n n e c t i o n
+
+=== PDF_PAGE 2 ===
+第5 1卷 第1 1期/2 0 2 5年1 1月/计算机工程
+0�引言
+��近年来,中国心血管疾病患病率处于持续上升
+时期,文献[1]推算中国心血管疾病 现患者人数 达
+3 . 3亿,其中冠心病达1 1 3 9万人。心肌缺血是冠心
+病中的一种,在城乡居民疾病死亡构成比中,心血管
+疾病占首位。因此,对于心肌缺血进行 及时检测和
+治疗,具有非常重要的意义。
+��心肌缺血的诊断 很复杂,首先,患者需要做心电
+图检查,如果心电图中出现S T - T改变[2],则患者有
+一定可能性患心肌缺血 ,此时,医生需要进一步借助
+运动实验
+[3]、冠脉计算机断层扫描 (C T) 、冠脉造影
+等检查,明确血管是否堵塞或者狭窄 。另外,可以通
+过一些核医学检查(心脏放射性核素显像)看清心脏
+的缺血情况等。由于心肌缺血诊断的 复杂 性,对其
+诊断往往耗时较长,并且漏诊、误诊的风险较大。此
+外,运动实验虽然是判断心肌缺血的重要 检查方法,
+但是在很多医院已经不再开展。医生诊断心肌缺血
+需要结合患者的心纹痛症状、病史、高危因素以及动
+态心电图的改变来综合判断,非常依赖医生的经验。
+倘若患者是无痛型心肌缺血,更增加了漏诊的风险。
+因此,借助深度学习对 胸部 C T进行分 析,对辅助 判
+断心肌缺血具有重要意 义。
+��近年来,深度学习在医学 影像诊断 领域已 经取
+得了广泛的应用,在肺癌、肺结节、糖尿 病等疾病的
+影像诊断中取得了 不错的效果。医学图像分类和识
+别是计算机辅助诊断的最 终目标,随着 卷积神经网
+络(C N N)的广泛应用,其不同变体在临床医疗诊断
+中发挥着重要作用。目前,在常见的 C N N变体中,
+R e s N e t
+[4]和 V G G[5]在医学 影像分类中表 现最佳,
+因此,大多数的肿瘤检 测、心血管疾病 检测、皮肤 病
+变分类等都以这2种模型为基准进行研究 。
+��心肌 C T影像数据集具有 正负样本非常 相近的
+特征,由灰度像素组成 ,是形 态不规则 、密度不均匀
+的软组织影像,常规的三维(3 D)医学图像分类网络
+不能很好地对其进行 区分。因此,本文考虑 在网络
+中加入细粒度图像分类 方法,借助双线性池化 方法
+对细粒度图像 精准分类的 能力,对难以区 分的心肌
+C T图像进行 精准分类 。本文 设计基于 R e s N e t的
+改进 M e d 3 D
+[6]的医学深度学习网络 ,以精准辨别心
+肌缺血图像。本文的主要贡献如下:
+��1)基于双线性池化 方法,结合 3 D细粒度医学
+图像特征,改进 M e d 3 D网络。网络模块包 含3 D语
+义分组层和3 D双线性池化层 ,通过融合图像特征
+之间的二阶关 系提升网络对细粒度图像的识别 能
+力。同时,效仿 T r a n s f o r m e r网络的做法,引入位置
+编码,解决双线性池化位置信息丢失问题 。
+��2)设计一 个3 D层次化多头自注意力模块 ,该
+模块可以方便地移植 到3 DC N N网络中,模块将3 D
+图像分割成立体像素块,在每个 像素块中进行多头
+注意力的计算 ,最后聚合来自局部和 全局层次化结
+构的多头注意力 。通过捕获图像局部关 键特征来实
+现3 D图像的细粒度分类 。
+��3)在原始心脏影 像上分 割出心肌部分 ,将本文
+方法和基准3 DC N N网络进行对比 ,在心肌数据集
+上 验证 方法 的 分 类 准 确 性。 同 时, 在
+M e d M N I S T 3 D数据集上进行 实 验,验证模 型 在 医
+学影像分类任务中的泛化性。
+1�相关工作
+1 . 1�心血管疾病的计算机辅助分类模型
+��根据 E A N M指南
+[7],C T心肌 灌注成像(M P I)
+是一种有效的冠心病诊断 技术。C T图像通 常由专
+家进行视觉判读 ,图像的 初步评估是 基于对 3 D方
+向进行切片实 现的,受到读者 经验的 影响。使用计
+算机辅助诊断工具 ,可以 提高诊断的 客观 性、准确
+性,节约诊断时间和成本。
+��在心血管疾病的诊断 方面,基于 非深度学习的
+量 化 方 法 得 到广 泛应 用,如 Q P S(Q u a n t i t a t i v e
+P e r f u s i o n S P E C T)[8]用于定量分析 M P I,帮助测 量
+心肌血流和灌注情况,从而检 测心肌缺血等心血管
+疾病。近年来,基于深度学习和机 器学习的辅助分
+类模型在心血管疾病分类中得到进一 步发展 。文
+献[8]将计算机衍生的高效心肌 灌注量化分 析与目
+视分析进行对比分 析,得出自 动量 化和 视觉 解释之
+间具有良好一致性的结 论。文献 [9]应用 支持向量
+机对冠心病患者的心肌 灌注图像进行 训练,诊断准
+确性显著优于自 动计算 总灌 注赤字 (T P D)量化方
+法。文献[1 0]用 Y O L O v 3目标检 测技术 确定心肌
+缺损面 积,消除周围噪声 后,采用 3 DC N N模型对
+冠心病患者进行识别。文献[1 1]提出基于深度学习
+和基于知识的 2种分类模型 :第一种分类模型采用
+迁移学习和预训练 的深度神经网络 ,从这些 网络中
+提取特征的支持向量 机分类 器:第二种模型将 专家
+的知识转化为特定的图像处理 技术,包括特 定的颜
+色阈值、分割、特征提取的启发式方法。文献[1 2]利
+用迁移 学 习,将 分 类前 列 腺癌 和 乳 腺癌 的 R G B -
+C N N模型应用于心血管疾病诊断 。
+��从相关文献可以看 出,基于深度学习的分类模
+型在独立应用中提 供了与医 生相似的准确性 ,将其
+7 4 2
+
+=== PDF_PAGE 3 ===
+第5 1卷 第1 1期/2 0 2 5年1 1月/计算机工程
+作为医生的辅助工具时 ,整体性 能将显著 提高[1 3]。
+但是,现有基于深度学习的心血管疾病分类模型在
+C T小数 据 集 上 的 分 类 效 果不 佳。 同 时,除 了 文
+献[1 0]之外,大部分相关研究处理 C T或 M P I成像
+切片 之后的心肌图像 ,不能 有效 利用图像中的 3 D
+位置信息。此外,上述研究 没有针对细粒度分类 任
+务进行改进,难以在细粒度医学图像分类问题中获
+得优良结果。
+�� M e d 3 D
+[6]是一个用于分 割不 同医学 成像模 式
+下的3 D医 学影 像 的 高 性能 深 度 卷 积 神 经 网 络
+(D C N N)模型。传统的 D C N N不能 充分利用医学
+图像第三维度的结构信息 ,同时医学图像数据 也具
+有数据量小的特点,从头训练 小模型 难以达 到较高
+的精度。因此,本文 基于 M e d 3 D网络,针对细粒度
+医学图像分类进行改进 ,提出 D B T M e d 3 D网络,用
+于处 理3 D心 肌C T图 像,对 心 肌 缺 血情 况进 行
+分类。
+1 . 2�双线性细粒度图像分类
+��细粒度图像分类
+[1 4]是对大类 下的子类进行识
+别,细粒度图像分 析任务 相对于通用图像分类 任务
+更有挑战性,需要网络更加关注图像局部特征 。
+��双线性细粒度 是一种用于解决细粒度图像分类
+问题的方法,其核心思想 是通过将 2个特征图的外
+积进行汇总来获得图像的特征描 述。具体 而言,该
+方法利用2个特征图的点积 或外积 操作,将它们汇
+总为一个二维(2 D)矩阵,然后通过 全连接层 或者其
+他操作进行分类,这样可以 有效 地捕捉到特征 之间
+的相关性和细微差异 ,从而 提高细粒度图像分类的
+准确性。
+��文献[1 4]首先 提出了双线性卷积神经网络 (B -
+C N N) ,网络主要结构 如图1所示 (彩色效果 见《计
+算机工程》官网 H T M L版,下同) 。该网络 主要基
+于双线性池化 方法,结合 C N N的特征学习和双线
+性池化的特征融合 能力。双线性池化包 含2个特征
+提取器,对同一个样本提取出特征x 和特征y,通过
+双线性池化得到 2个特征融合 之后的高阶 向量,用
+于图像分类。
+图1�双线性细粒度网络结构
+F ig. 1�B i 1 i u e a r f i u e -gr a i u e d u e t w o r k s t r u c t u r e
+��但是,双线性 C N N也存在一 些问题,双线性池
+化可以捕捉到特征 之间的二阶关 系,但是会引入高
+维特征,导致计算和存 储开销较大。常用的双线性
+池化降 维 方 法 有P C A降 维、低 秩近 似、近 似 核 计
+算等。
+��由于双线性池化对于处理细粒度图像具有 良好
+特性,因此研究人 员通常基于此 方法进行改进 。文
+献[1 5]将特征层划分为 不同的 组,以进行 组内双线
+性池化,用0 . 4 %的参数达到和 完全双线性池化相
+同的精度。文献[1 6]为解决基于图像的 动作识别问
+题,将注意力机制引入具有 掩码聚 合的分层双线性
+池化框架中,所提模型 可以组 合来自通 道和空间注
+意力特征的多 个注意力掩码图特征信息。
+1 . 3�V i T
+��V i T(V i s i o nT r a n s f o r m e r)在计算机 视觉任务
+中实现了与 C N N相当甚至 更好的性能。V i T是第
+一个具有纯 T r a n s f o r m e r结构的图像分类模型 ,包
+含图像分块嵌入层和一 个编码器 ,它由一个多头注
+意力机制和一 个多层感知模块组成。为了解决 V i T
+的潜 在 问 题,文 献[1 7]提 出 基 于T r a n s f o r m e r和
+C N N的混合 C M T模型,用 T r a n s f o r m e r捕获 远距
+离依赖性,同时用 C N N提取 本地 信息。文献 [1 8]
+提出基于 T r a n s f o r m e r框架的 H A V T模型,通过注
+意力图捕获图像的分 区,实现细粒度图像分类 任务,
+同时提出注意力 选择 的关 键令牌选择 方法,以融合
+局部特征。文献[1 9]提出 可变形 的令牌 融合模块 ,
+自适应合并分层的图像块信息 。
+2�D B T M e d 3 D网络架构
+��本文以 M e d 3 D作为基 础网络 ,通过融合双线
+性 特 征变 换,加 入 C A M(C l a s s A c t i v a t i o n
+M ap pi ng)可视化[2 0]等方法,构建 适用于细粒度 3 D
+医学图像识别的 D B T M e d 3 D网络。双线性特征 变
+换部分包 含语义 分组层和分 组双线性层 ,根据3 D
+医学图像的输入通道语义 信息,在语义组 内进行双
+线性池化,有效提高细粒度医学图像分类的准确率 。
+通过加入 C A M可视化方法提取医学图像中最具 判
+别性的特征,给疾病诊断提供依据。
+2 . 1�问题定义
+��本文的心肌 C T影像数据分成缺血型心肌和 正
+常心肌两大类,所有心肌 影像都是 来自厦门大学附
+属心血管病医院放射科 ,从胸 腔 C T中按照 医生所
+给标签分割出来,并且 提前依 据传统心肌缺血诊断
+流程对其进行分类。图2为在原始的心脏 C T上叠
+加心肌部分的分 割l a b e l,图3为分割出的心肌 轮廓
+8 4 2
+
+=== PDF_PAGE 4 ===
+第5 1卷 第1 1期/2 0 2 5年1 1月/计算机工程
+的3 D立体图,由I T K - S N A P软件[2 1]生成,图4为
+本文输入网络进行训练的心肌 C T图像。
+图2�叠加心肌1 a b e 1的心脏 C T
+F ig. 2�C a r d i a c C Tw i t h o v e r 1 a i dmyo c a r d i a 1 1 a b e 1
+图3�心肌轮廓的 3 D立体图
+F ig. 3�3 D s t e r e ogr a mo fmyo c a r d i a 1 c o u t o u r
+图4�心肌 C T图像
+F ig. 4�Myo c a r d i a 1 C T i m age
+��现有网络 对 于本 文的 心 肌C T影像 分 类 效 果
+一 般,本 文的 心 肌C T分 类是 弱 监 督问 题,即 除 了
+标签以外没有其他更多的 先验知识 ,并且 心肌 C T
+作为医学 3 D图 像,由 灰度 像素 组 成,导 致 缺 血 心
+肌 C T和正常 心肌特征 非 常相 近。同 时,心 肌C T
+又具有密度 分辨 率 高、软 组 织分 辨 能力 强 等 医 学
+C T图像特点 。为了更好地 利用心肌 C T图像的 这
+些特性,本文提出了 D B T M e d 3 D网络架构,其能有
+效地利用 医 学影 像 数 据 特 征,同 时 融 合 图 像 局 部
+特征。
+2 . 2�D B T M e d 3 D模型架构
+��D B T M e d 3 D模型结构 如图 5 所示 ,在 M e d 3 D
+网络基本结构的基础上进行 修改,M e d 3 D采用现有
+的 R e s N e t网络架构,对其进行调整,使其可以 处理
+不同格式的3 D医学数据 ,如 M R I和 C T。网络中
+2个卷积层和2个双线性池化层的 残差模块数分别
+由参数 N1、N2、N3、N4 确定。D B T M e d 3 D主要包
+含 B o t t l e n e c k模 块 和B i l i n e a rT r a n s f o r m a t i o n模
+块。B o t t l e n e c k模块是 M e d 3 D网络的基 本模块,用
+于基 本 的 特 征 提 取:B i l i n e a rT r a n s f o r m a t i o n模 块
+关注不同 通道 的 语 义特 征,对 不 同 空 间 位 置 的 特
+定语义 信息进行双线性 变换,得到双线性特征 ,以
+捕捉 医 学 图 像 特 征之 间 的 二 阶 关系
+[2 2]。 加 入
+B i l i n e a r T r a n s f o r m a t i o n模块后 ,网络可以获得比一
+般医学深 度 模 型更 强 的 特 征 表示,更 好 地提 取 医
+学图像的 局 部 特 征,从 而获 得更 好的 细 粒 度 医 学
+3 D图像分 类 结 果。最 后,在 S o f t m a x输 出 层之 前
+加入 C A M层,从而定 位医学图像中 需要重点关注
+的部分 ,给医生的诊断提 供依据,增强模型的 可解
+释性。
+图5�D B T M e d 3 D模型的网络架构
+F ig. 5�N e t w o r k a r c h i t e c t u r e o f D B T M e d 3 Dm o d e 1
+2 . 3�3 DB i 1 i u e a r T r a u s f o r m a t i o u模块
+��由于 M R I和 C T生成 的不同部位的医学图像
+之间在视觉上通常很 相近,因此考虑 采用细粒度图
+像识别方法来区分不同医学图像 之间的细微差别 。
+医学图像分类问题大多 只包含弱监督 信息
+[2 3],双线
+性模型在 这类细粒度图像分类上取得了较 好的效
+果。本模块在双线性 汇合方法的基 础上,结合医学
+3 D图 像 特 点,包 含 3 D S e m a n t i cG r o upi ng 层、3 D
+b i l i n e a r P o o l i ng层以 及2 个 卷 积 层。首 先,在 3 D
+S e m a n t i cG r o upi ng层根据通 道对医学图像进行 语
+义分组:然后,3 Db i l i n e a rP o o l i ng层在分 组后的 组
+内进行双线性 汇合计算:最后,得到医学图像双线性
+细粒度 特 征。 图 6 为 输 入 特 征 经 过3 D B i l i n e a r
+T r a n s f o r m a t i o n模块的运算过程,包括语义分组、组
+内双线性变换、非线性激活、批归一化、组间聚合、跳
+跃连接等部分 。
+9 4 2
+
+=== PDF_PAGE 5 ===
+第5 1卷 第1 1期/2 0 2 5年1 1月/计算机工程
+图6�3 DB i 1 i u e a r T r a u s f o r m a t i o u模块运算流程
+F ig. 6�Ope r a t i o u a 1pr o c e s s o f t h e 3 DB i 1 i u e a r T r a u s f o r m a t i o um o d u 1 e
+2 . 3 . 1�3 DS e m a n t i cG r o upi ng层
+��深层特征图包 含更 多的高阶 语义 信息,往往不
+同的 卷 积 通道 包 含 了 特定 的 语 义信 息。3 D
+S e m a n t i cG r o upi ng层根据卷积通 道对特征图进行
+语义分组。首先确定语义组 的组数,将卷积通 道均
+匀分组。假设卷积特征为 F1∈RC×H W D,则每 一个
+卷积通道视为一 个特征图 fi ∈ RH W D,i∈[1,C] 。
+根据不同医学图像的特点 ,将其一共划分成G 个语
+义组,分组映射函数 S G(fi)∈[1,G]将每一个卷
+积通 道 均 匀映 射 到G 个 语 义 组中,分 组 映 射 函
+数为:
+��S G(Fi)=⌊i/G⌋,i∈[1,G] (1)
+��在本层中,通过1 × 1 × 1卷积来实 现这 一映射
+过程,定义语义 映射矩阵 为 W,经过 矩阵 卷积 运算
+输出语义分组结果。利用卷积来实现映射过程的好
+处在于语义映射矩阵W 是学习的,在网络 训练过程
+中可以迭代 得到 更合理的 语义 映射矩阵 W。模型
+的损失一部分在 本层中计算得到 ,记为分 组双线性
+损失Lg ,每一组的双线性 损失Lg 分成组内损失和
+组间损失两部分,通过计算相关 系数分别得到 两部
+分的损失函数。利用相关系数不仅可以衡量2个特
+征的相关性,同时相关 系数不会受到特征 尺度变换
+的影响,是稳定的度 量方 式。组内成对交互 的相关
+性越高,说明模型更好地融合了组内双线性特征 ,能
+获得更好的细粒度分类效果 ,而组 间成对交互 的相
+关性则越小越好。因此,l o s s计算公式如下:
+��Lg =Li n t r a+Li n t e r= ∑
+0≤i,j<C
+⌊i/G⌋=⌊j/G⌋
+—ρ
+2
+ij + ∑
+0≤i,j<C
+⌊i/G⌋≠⌊j/G⌋
+ρ
+2
+ij
+(2)
+式中:ρ2ij=  fTi fj fi 2·  fj 2 : fi是fi与语义映射矩阵
+W 相乘后得到的语义分组特征图。
+��[ f1, f2, …, fC ]=[f1,f2, …,fC ]WT (3)
+2 . 3 . 2�3 DB i l i n e a r P o o l i ng层
+��经过 3 DS e m a n t i cG r o upi ng层得到分 组卷积
+特征,在组内进行双线性 汇合得到双线性特征 。双
+线性汇合通过计算 输入卷积特征的 格拉姆矩阵 G
+捕获特征通 道之间成对的关 系。输入卷积特征为
+F∈R
+C×H W D,格拉姆矩阵 G∈RC×C [2 4]定义为:
+��G= 1HW D∑
+H W D
+i=1
+fif
+T
+i = 1HW DF FT (4)
+��之后将格拉姆矩阵展开成向量s:= v e c(G) 。
+��但是,原始的双线性 汇合存在融合后得到的双
+线性特征维度过高的问题 ,融合后的特征维度为 F
+维度的平方。本文采用 组内双线性 变换,在组内进
+行与 格 拉 姆 矩 阵类 似 的 运 算,可 以使 得 经 过3 D
+B i l i n e a r P o o l i ng层 后输入输出 特 征 维 度不 变。同
+时,分组双线性变化可以 使得 不同组别专注于图像
+不同部位或者不同类别的特征 ,增强双线性细粒度
+变化提取局部特征的 能力。传统双线性汇合的特征
+位置维度被运算消除掉了,但是位置信息包 含了3 D
+医学图像中 很重要的信息 ,因此,本文通过 Pj 编码
+位置信息,将其融合到双线性特征中 。组内双线性
+汇合公式如下:
+��y= v e c(∑
+G
+j=1
+( (IjW x+Pj) (IjW x+Pj)T))
+(5)
+式中:Ij ∈R
+C
+G ×C 是包含G 个块的 单位矩阵 块:Pj
+可以采用绝对位置编码来实现,如三角式位置编码、
+旋转式位置编码以及相对位置编码。经过上述变换
+的双线性特征y∈R
+C
+G()2 ,特别地,取G=■C ,可以
+保持输入输出特征维度不变。
+��为了融合双线性特征和 浅层网络提取到的卷积
+特征,同时解决网络 可能存在的退化问题,本文效仿
+R e s N e t网 络,在 3 D B i l i n e a rT r a n s f o r m a t i o n模 块
+中加入跳跃连接 。同时,在模型中加入 非线性激活
+函数加强 网 络 的拟 合 和泛 化 能 力,加 入批 归一 化
+(B N)对特征进行 归一化 ,提升网络的 收敛速 度和
+精度。
+0 5 2
+
+=== PDF_PAGE 6 ===
+第5 1卷 第1 1期/2 0 2 5年1 1月/计算机工程
+2 . 4�3 DC A M切片可视化模块
+��C A M是 类 激 活映 射。医 学 深 度 学 习 模 型 通
+常需要作为医生诊断的 补充 依据,因此,对模型分
+类过程进 行 解释,以 及对 网 络 重 点 关 注 的 医 学 图
+像部分进行 标 注,具 有 重 要 的 意义。由 文 献[2 0]
+的研究发 现,针对 C N N最后一层卷积 输出的特征
+图,对其通道值进行加 权叠加后 ,其激活值 所在的
+区域为图像中 物体所在区域 ,因此,可以 用于 弱监
+督模型的 目标 定位。对 于 医 学 图 像而 言,可 以 借
+助 C A M这一特点 找到模型重点关注的 区域 ,将激
+活值转化为热力图 覆盖 到 原 来C T图 像 的 切 片 图
+像上,值越大的像 素颜 色越深,越有可 能 是C T图
+像中患病 器官所在区域。
+��本文在网络最后一层激活层和 输出层 之间加
+入3 DC A M可视化层。C A M的基 本计算过程为 :
+对最后一 个特 征 图 进 行全 局 平 均 池 化(G A P) ,计
+算各通道均 值,然 后 通 过全 连 接 层映 射 到 分 类 类
+别,计算最大的类别的 输出对于特征图的 梯度,最
+后通过热力图的 形式将梯度可视 化到原图上 。本
+文中特征图在网络中的 变化过程 如图7所示 。由
+于 N I F T I 3 D医学 影 像 经 过 网 络 卷 积 层 的运 算 会
+丢失一部分 原始 医 学 信 息,难 以恢 复 成N I F T I影
+像,因此将特征图 沿着3个方向 分别切片得到 3 D
+C A M可视化图像 。
+图7�数据维度在模型中的变化过程
+F ig. 7�T h e t r a u s f o r m a t i o upr o c e s s o f d a t a d i m e u s i o u s w i t h i u t h em o d e 1
+��假设 W1～Wn 为全局平均池化层 ～输出层 全
+连接到目标类别的权重,3 DC A M计算公式如下:
+��Mc(x,y,z)= ∑
+k
+w
+c
+kfk(x,y,z) ( 6)
+式中:fk(x,y,z)是最后一层特征图位置 (x,y,z)
+对应的值:wck 为类别c 的全连接权重。
+2 . 5�3 D层次化多头自注意力模块
+��为了解决 3 D C N N网络在类 似心肌缺血等细
+粒度分类任务中的性能瓶颈,本文在3 DC N N网络
+中加入层次化多头自注意力机制 ,可以 用较 小的计
+算代价换取精度的提高。相比于 3 D双线性池化模
+块,该模块具有高度的 独立性和灵活性,能够方便地
+集成到3 DC N N网络中。
+��3 D层次化多头自注意力机制将 3 D医学 影像
+划分成立体像素块,每个 像素块通过与 令牌 相同的
+方式进行处理,将立体像素块分组成小网格,并在每
+个网格内计算注意力 。然后,将小立体像 素块合 并
+成较大的小像素块,视为全新的令牌,通过计算全新
+令牌的自子注意力 直接建模 全局依赖 关系。最后,
+融合局部和全局层次结构注意力 ,获得包含粗粒度、
+细粒度的丰富特征。
+��假设输入特征图 尺寸 为 X ∈RH×W×D×C ,将特
+征图划分 为立 体 小 像 素 网 格,每 个网 格 块 尺 寸为
+G1×G1×G1,将特征变形为:
+��X∈R
+H×W×D×C
+→
+��X '∈R
+H
+G1× WG1× DG1( ) ×(G1×G1×G1)×C (7)
+��多头自注意力机制中的 Ω、K、V 矩阵通过如下
+计算得到:
+��Ω'=X'W9,K'=X'Wk,V'=X'Wv (8)
+式中:W9,Wk,Wv∈RC×C×C 是可学习权重矩阵。利
+用传统自注意力计算 方法计算得到局部自注意力 ,
+并且对其进行变形:
+��A '= S o f t m a x(Ω'K'T/■d)V' (9)
+��A '∈R
+H
+G1× WG1× DG1( ) ×(G1×G1×G1)×C
+→
+��A '∈R
+H×W×D×C (1 0)
+��在注意力机制中加入 残差连接 ,将局部自注意
+力特征 叠 加 到 原始 特 征 上,A '=A '+X。然 后,
+第i步将处理第i— 1步的小网格,其中,平均池化
+的步长和内核大小为Gi:
+��A
+ 
+i=A v e P o o lGi (Ai— 1) (1 1)
+��经过i— 1步上述步骤,得到 H 、W 、D 的大 小
+分别为:
+��Hi=H/ (G1G2…Gi— 1)
+��Wi=W/ (G1G2…Gi— 1)
+��Di=D/ (G1G2…Gi— 1)
+��在每一步局部注意力处理中加入残差连接,Ai=
+A
+ 
+i— 1+Ai,最终得到的层次化多头注意力输出为:
+��MH S A(X)=(A1+…+AM )WP +X (1 2)
+式中:M 是最大步数:WP 是可学习的 权重矩阵。通
+过这种方式得 到3 D层 次 化 注 意 力可 以减 少计 算
+量,同时建模局部和 全局特征关系。
+2 . 6�优化器与损失函数
+��在数据分 布稀疏 的场景 中,A d a m优化 器能 够
+1 5 2
+
+=== PDF_PAGE 7 ===
+第5 1卷 第1 1期/2 0 2 5年1 1月/计算机工程
+自动地为不同参数调整学习率 ,能更好地 利用稀疏
+梯度的信息,比标准的 随机梯度下降(S G D)算法 更
+有效地收敛。由于本文中采用的心肌数据 是从原始
+胸腔 C T数据中分割出来的,相对而言比较稀疏,很
+适合用 A d a m优化器计算 更新步长。但是,随着 时
+间步的增加,A d a m优化 器会导 致学习率 收缩 到太
+小而 无 法 对 模 型 进 行 有 效更 新,因 此,需 要 使 用
+s c h e d u l e r对优化器的学习率进行 调整,本文选用余
+弦退火学习率 C o s i n e A n n e a l i ngL R。余弦退火 学习
+率通过在每个周期内以余弦函数的形式对学习率进
+行调整,使得学习率在 周期 内从最大值线性 下降到
+最小值,在下一个周期开始时,学习率被重置为初始
+最大值,然后再进行 余弦退火 。这种学习 策略 可以
+帮助优化算法在 训练过程中更好地适应不同的数据
+分布和损失函数曲面,更好地逃离鞍点,并且避免训
+练轮次增多使得学习率 变为0的问题。
+��模型的损失函数由两部分构 成,一部分为 前文
+提到的分组双线性损失Lg ,另一部分为从模型最后
+一层分类结果得到的 交叉熵 损失Lc。模型 损失函
+数计算公式为:
+��L=Lc+ ∑
+G
+i=1
+L
+i
+g (1 3)
+式中:Lig 为第i组的分组双线性损失。
+3�实验及结果分析
+��为了验 证 D B T M e d 3 D网络 以及 3 D层次化多
+头自注意力模块对细粒度医学图像进行分类的准确
+性和有效性 ,本文 在 M e d M N I S T公开数据集 [2 5]以
+及真实的心肌 C T影像数据集上进行实验 ,并与基
+准网络在同样的实验环境下进行对比。本文比较了
+基准网络和所提网络在心肌 C T数据集上的分类准
+确率差异,并且将网络分类效果最优的网络 参数进
+行保存,利用类别激活图 可视化网络重点关注 区域,
+为 定 位 缺 血 心 肌 部 位 提供 依 据。 同 时,在
+D B T M e d 3 D网络和多 个3 DC N N网络中验 证加入
+层次 化 多 头 自 注 意 力 机 制 的 有 效 性。 此 外,在
+M e d M N I S T医学3 D影像公开数据集上进行实验 ,
+并与基准网络进行比较 ,验证本文网络的泛化性。
+3 . 1�数据集预处理
+��数据集 是从 医院 直接获 取 的真实 心 肌C T影
+像,包含原始数据及医生标注的数据标签,数据格式
+为 N I F T I。数据集一 共包含3 0 1张胸腔 C T图像,
+其中6 3张是心肌缺血患 者 C T图像,2 3 8张是正常
+心肌 C T图像。N I F T I中的原始图像数据被存储成
+3 D图像,N I F T I格式的主要特点是它包含2个能够
+将每个像素的索引(i,j,k)和它的空间位置 (x,y,
+z)关联起来的仿射坐标。
+��原始数据是医生手工从胸腔 C T中将心 脏部分
+切割出来,所以切片像素大小不一,需要对数据集进
+行预处理。数据预处理主要包含如下步骤:
+��1)将心肌3 D医学图像 从原始 C T图像中分 割
+出来。医生标准的数据标签 m a s k中包含不同的原
+始 C T图像对应的心肌部分的外 轮廓,是二值数据 ,
+其中,心肌位置部分值为 1,其他部分值为 0。为了
+避免 C T中其他无关部分对分类效果的 影响,利用
+m a s k标 签 数 据剪 切 C T图 像 中 心 肌 位 置以 外 的
+部分。
+��2)由于 C T图像 是从不 同机 器扫描得到的 ,需
+要将图像 旋 转 9 0 。,确 保C T图 像方 向 是固 定 的。
+C T图像中一 个 很重 要 的参数是 C T值,又 称H U
+(H o u n s f i l e dU n i t)值[2 6],反映了组织对 X射线的吸
+收程度。本文对 C T数据进行 归一化,将 H U值缩
+放到0～1之间,来实现对输入特征的归一化。然后
+调整输入 C T3 D图像的 宽度、高度和深度 ,将其尺
+寸统一为1 2 8 × 1 2 8 × 6 4。最后,将数据集分 成两部
+分,一部分用于网络的 训练,另外一部分用于网络的
+测试,在 训 练时 按 照8 : 2的 比例 划分 训 练集 和 验
+证集。
+3 . 2�实验环境
+�� 实验 硬件平台 为:U b u n t u1 6 . 0 4系统,I n t e lⓇ
+X e o nⓇ G o l d6 2 3 0 C P U,2 0 8 0 T iG P U,3 7 6 G B内
+存。编程语言为 Pyt h o n3 . 7,模型 搭建、训练 与测
+试均使用 PyC h a r m编译器处 理,使 用 机器学 习库
+PyT o r c h 1 . 1 3 . 1,该 机 器 学 习库 可 以 支持 强 大 的
+G P U加速,T o r c h(C a f f e 2)通过混合前端、分布式训
+练以及工具和库生态系统实 现快速、灵活的实验和
+高效生产,PyT o r c h是当今 最主流 的深度学习 框架
+之一。受到数据集 以及 实验 环境 的限制 ,训练 过程
+中的 B a t c hS i z e大小设定为4。本文选择自适应参
+数的优化算法 A d a m,学习率 初始 化为 1 × 1 0— 3,利
+用余弦退火学习率 C o s i n e A n n e a l i ngL R对优化器学
+习率进行 调整,其中每经过1 0个 Epo c h迭代一次,
+并且限定最小学习率为1 × 1 0— 6。
+3 . 3�评价指标
+��一般的二分类问题有 很多评价指标,本文 采用
+R O C曲线下面积(A U C)和准确率 (A c c u r a cy)作为
+模型评 价 指 标。为 了 保 持 模 型 验证 的 统 一 性,在
+M e d M N I S T多分类数据集上进行测试时采用 拓展
+到多分类的 A U C和准确率作为评价指标。
+��1)A U C定义 为 R O C曲线与 坐标轴围成 的面
+2 5 2
+
+=== PDF_PAGE 8 ===
+第5 1卷 第1 1期/2 0 2 5年1 1月/计算机工程
+积。R O C一般用于判断一个二值分类 器的优劣,为
+了将其拓展到本文中的多分类问题 ,可以 在计算过
+程中将每一类分别 视为正样本 ,其他类均视 为负样
+本,然后对所有类别的 A U C求平 均得到最 终的评
+价指标 A U C。根据样例真 实类别与 预测类别的 组
+合,将类别 划分为 真正例(T P,NT P) 、假正例(F P,
+NF P) 、真 反 例(T N,NT N) 、假 反 例(F N,NF N) 。
+R O C曲线的横坐标为负例覆盖 率 (F P R,NF P R) ,计
+算公式如式(1 4)所示:
+��NF P R= NF P
+NF P+NT N
+(1 4)
+� �R O C曲 线 的纵 坐标 为 正 例 覆 盖率 (T P R,
+NT P R) ,计算公式如式(1 5)所示:
+��NT P R= NT P
+NT P+NF N
+(1 5)
+�� 2)准确率 定义 为模型分类 正确的 样本 数占总
+样本数的比例。
+3 . 4�结果分析
+��为了验证网络能够适应医学细粒度图像分类 任
+务,本文在医院真实心肌 C T影像和 M e d M N I S T公
+开医学影像数据集上将 所提网络与 M e d 3 D网络进
+行对比,评估各个网络在 不同数据集上的准确率和
+A U C。
+3 . 4 . 1�医学图像分类实验
+��为了更直观地 展示 D B T M e d 3 D网络对分类心
+脏C T数据的有效性 ,本文 记录 了网络在 训练 集上
+的损失值以及在训练集、验证集上的准确率 ,如图8
+所示。随着训练轮次的增加,网络损失值不断减小,
+准确率逐步增加。经过对比实验 可知,D B T M e d 3 D
+网络在4个阶段的残差模块数设置为 (1,1,1,1)时
+收敛速度最快,分类效果最优 。心肌 C T影像数据
+集是小数据集,对于小数据集,更浅的网络分类效果
+更好,可以避免过拟合问题。
+图8�D B T M e d 3 D训练心肌 C T数据的过程
+F ig. 8�T h epr o c e s s o f D B T M e d 3 D t r a i u i ugmyo c a r d i a 1 C T d a t a
+��同时,为了验证模型具有良好的泛化性,记录其
+在 M e d M N I S T数 据 集 中 的O rga n M N I S T 3 D
+[2 7]数
+据上训练过程中的准确率 变化情况 ,如图 9 所示 。
+O rga n M N I S T 3 D是一个包含1 1个类别的医学 器官
+数据集,来源于真实的腹部 C T。可以看 出,本文 模
+型在该数据集上 训练 1 0 0轮左右会收敛 ,准确率为
+9 6 . 2 7 %,优于3 DC N N基准网络。
+图9�D B T M e d 3 D训练 O rga u M N I S T 3 D数据的过程
+F ig. 9�T h epr o c e s s o f D B T M e d 3 D t r a i u i ugO rga u M N I S T 3 Dd a t a
+3 . 4 . 2�消融实验
+��为了提升对心肌缺血的分类效果 ,本文 在模型
+中加入 3 D B i l i n e a rT r a n s f o r m a t i o n模 块。为 了 验
+证3 DB i l i n e a rT r a n s f o r m a t i o n模块对网络性 能的
+提升,分别对下面几种模型结构进行实验 :使用传统
+卷积 模 块,不 加 入3 D B i l i n e a rT r a n s f o r m a t i o n模
+块:加入1 个 3 D B i l i n e a rT r a n s f o r m a t i o n模块 :加
+入2个3 D B i l i n e a rT r a n s f o r m a t i o n模块 。消融实
+验的不同模型结构如图1 0所示。
+��消融实验结果 如图1 1所示,其中,A 1、A 2、A 3
+分别 对 应 图1 0的 3 种 网 络 结 构。与 不 加 入3 D
+B i l i n e a rT r a n s f o r m a t i o n模 块 相 比,加 入2 个 3 D
+B i l i n e a rT r a n s f o r m a t i o n模块后准确率 和A U C分
+别提高了1 1 . 8 3和3 1 . 9 7百分点。
+��为了验证3 D层次化多头自注意力模块对 本文
+网络的性能影响,在真实的心肌 影像 C T数据集上
+对 D B T M e d 3 D网络进行 3 D层次化多头自注意力
+模块的消融实验。消融实验网络结构 如图1 2所示,
+实验结果如图1 3所示。注意力模块加入的位置对网
+络的最终效果影响明显,其中,对于图中网络结构 2,
+将一个双线性池化模块 替换成注意力模块,在 A U C
+上 有1 . 2百分点的提升 ,网络在类别 不均 衡的情况
+3 5 2
+
+=== PDF_PAGE 9 ===
+第5 1卷 第1 1期/2 0 2 5年1 1月/计算机工程
+图1 0�双线性池化模块消融实验的 3种网络结构
+F ig. 1 0�T h r e e u e t w o r k s t r u c t u r e s f o r b i 1 i u e a rpo o 1 i ugm o d u 1 e a b 1 a t i o u e xpe r i m e u t
+图1 1�双线性池化模块的消融实验结果
+F ig. 1 1�A b 1 a t i o u e xpe r i m e u t r e s u 1 t s o f
+b i 1 i u e a rpo o 1 i ugm o d u 1 e
+下得到了更好的分类效果。
+��为了验证3 D层次化多头自注意力模块对 其他
+3 DC N N网络 性能的 提 升 效 果,在 M e d M N I S T数
+据集的 O rga n M N I S T 3 D上分别对多种 3 DC N N基
+准网络进行消融实验 。图1 4分别 记录 了使用原模
+型和在模型卷积层后加入层次化多头自注意力模块
+的实验结果,结果表明,在3 D层次化多头自注意力
+模块中加入多种 3 DC N N网络,均可带来不同程度
+的分类准确率提升 。
+3 . 4 . 3�网络性能对比
+��表1、表2分别为心肌 C T数据集和 M e d M N I S T
+公开 医 学影 像 数 据 集 上 的 分 类 实 验 结 果,其 中,
+M e d M N I S T数据集包 含多个医学 影像数据集 ,本文
+选取了其中一部分进行对比实验。
+��表1评估了本文算法在心肌 C T数据集上的性
+能。和 其 他 3 D C N N基 准 模 型 对 比,本 文
+图1 2�3 D层次化多头自注意力模块消融实验的网络结构
+F ig. 1 2�N e t w o r k s t r u c t u r e o f 3 Dh i e r a r c h i c a 1 m u 1 t i - h e a d
+s e 1 f - a t t e u t i o um o d u 1 e a b 1 a t i o u e xpe r i m e u t
+D B T M e d 3 D模型具有最优的准确率和 A U C,相较
+M e d 3 D网络,D B T M e d 3 D的准确率和 A U C分别提
+高了5和8 . 6百分点 。另外,将本文 提出的层次化
+多头自注意力模块加入 到D B T M e d 3 D模 型 中,在
+数据集上取得了最优的 A U C,达到了 9 0 . 1 %。同
+时,D B T M e d 3 D模型的 参数量相比 M e d 3 D标准网
+络下降了6 5 %,和3 D R e s N e t - 1 0相当,模型更加轻
+量,同时保持了良好性能。表格中 R e s N e t +MH S A
+模型是加入了层次化多头自注意力模块的 R e s N e t
+4 5 2
+
+=== PDF_PAGE 10 ===
+第5 1卷 第1 1期/2 0 2 5年1 1月/计算机工程
+模型,相比不加入该模块的模型,其在心肌数据集上
+准确率和 A U C分别提升了2和1 1百分点。
+图1 3�3 D层次化多头自注意力模块的消融实验结果
+F ig. 1 3�A b 1 a t i o u e xpe r i m e u t r e s u 1 t s o f 3 Dh i e r a r c h i c a 1
+m u 1 t i - h e a d s e 1 f - a t t e u t i o um o d u 1 e
+图1 4�层次化多头自注意力模块的消融实验结果
+F ig. 1 4�A b 1 a t i o u e xpe r i m e u t r e s u 1 t s o f h i e r a r c h i c a 1
+m u 1 t i - h e a d s e 1 f - a t t e u t i o um o d u 1 e
+表1�不同模型在心肌 C T数据集上的实验结果对比
+T a b 1 e 1�C o mpa r i s o u o f e xpe r i m e u t a 1 r e s u 1 t s o f
+d i f f e r e u t m o d e 1 s o umyo c a r d i a 1 C T d a t a s e t
+模型
+心肌 C T影像
+A c c u r a cy/% A U C/% 参数量/1 06
+3 DR e s N e t - 5 0
+[4] 7 9 . 7 5 9 . 4 9 2 . 6
+3 DR e s N e t - 1 0
+[4] 7 9 . 6 6 3 . 3 3 1 . 8
+D B T M e d 3 D 8 6 . 4 8 8 . 9 3 1 . 9
+D B T M e d 3 D +M H S A 8 6 . 0 9 0 . 1 3 3 . 4
+R e s N e t +M H S A 8 1 . 6 7 5 . 3 3 7 . 5
+M e d 3 D 8 1 . 4 8 0 . 3 9 2 . 6
+3 DD e n s e N e t
+[2 8] 7 7 . 9 6 5 . 4 1 8 . 5
+3 DS h u f f l e N e t
+[2 9] 8 3 . 1 6 2 . 1 0 . 9
+3 DE f f i c i e n t N e t
+[3 0] 7 9 . 6 5 9 . 2 1 9 . 6
+3 DSau e e z e N e t
+[3 1] 6 9 . 5 5 8 . 3 1 . 9
+3 D M o b i l e N e t
+[3 2] 7 4 . 6 6 7 . 7 3 . 3
+��表2在公开数据集 M e d M N I S T 3 D上进行实验
+对比,最优结果加粗标注。可以看出,在一部分类型
+的 C T上模型表现更加突出,研究这些数据集发 现,
+当本文模型在处理空间维度上信息 更加丰富的数据
+集 时 表现 更优,例 如 本 文的 心 肌C T和
+O rga n M N I S T 3 D数据集在 3 D医学图像的 每一个
+切面上都蕴含丰富 特征,将这些 特征整合到 3 D双
+线性变换模块中 ,可以 学习到 更丰富 的语义 信息 。
+而 F r a c t u r e M N I S T 3 D数据集
+[3 3]是骨 折 C T数 据,
+图像的关键信息蕴含在单一维度上 ,本文 模型 没有
+明显优势。
+表2�不同模型在 M e d M N I S T 3 D数据集上的实验结果对比
+T a b 1 e 2�C o mpa r i s o u o f e xpe r i m e u t a 1 r e s u 1 t s o f d i f f e r e u t m o d e 1 s o u t h eM e d M N I S T 3 Dd a t a s e t%
+模型 F r a c t u r e M N I S T 3 DO rga n M N I S T 3 DSyn aps e M N I S T 3 D
+A c c u r a cy A U C A c c u r a cy A U C A c c u r a cy A U C
+3 DR e s N e t - 5 04 9 . 4 7 2 . 5 8 8 . 3 9 9 . 4 7 9.5 8 5.1
+D B T M e d 3 D4 7 . 5 9 9.2 9 6.3 9 8 . 0 7 8 . 0 8 3 . 2
+3 DR e s N e t - 1 85 0.8 7 1 . 2 9 0 . 7 9 9.6 7 4 . 5 8 2 . 0
+A u t o - s k l e a r n4 5 . 3 6 2 . 8 8 1 . 4 9 7 . 9 7 3 . 0 6 3 . 1
+3 . 4 . 4�3 DC A M可视化结果分析
+��为了能够给网络分类过程提 供依据,本文 加入
+3 DC A M可视化层,将类别激活图叠加在切片后的
+C T图像上,从其中一个心肌 C T数据得到的结果中
+截取一部分切片展 示在图 1 5中。其中,数值越大,
+颜色越深,则为网络重点关注的部分 。从可视 化结
+果看出,网络会重点关注一些特定的心肌位置,这些
+特定部分可以为医生的诊断提 供参 考,帮助医 生更
+好地定位可能存在缺血的心肌血管位置 。
+图1 5�3 DC A M可视化切片
+F ig. 1 5�V i s u a 1 i z a t i o u s 1 i c i ugo f 3 DC A M
+5 5 2
+
+=== PDF_PAGE 11 ===
+第5 1卷 第1 1期/2 0 2 5年1 1月/计算机工程
+4�结束语
+��为了更好地满足 细粒度医学 影像分类的 需求,
+本文提出一种基于 M e d 3 D融合双线性池化的 新网
+络 D B T M e d 3 D和 3 D层 次 化 多 头 自 注 意 力 模 块。
+针对心肌 C T影像中缺血心肌和 正常心肌在 视觉上
+非常相近的特点,在 M e d 3 D网络中引入 3 D双线性
+变换,使得网络可以专注于局部细粒度特征 ,同时在
+网络中引入3 DC A M可视化层,可视化网络重点关
+注区域,为细粒度医学 影像分类提供一种新的方法。
+本文提出的3 D层次化多头自注意力模块具有高度
+的独立性,移植到多种3 DC N N网络中 均可带来性
+能提升。通过实验 证明,D B T M e d 3 D网络在含有细
+粒度特征的3 D医学影像上表 现优良。下一步考虑
+将3 DC A M可视 化方法改进为在原 C T影像上进
+行热力图标注,同时将 本文 模型 拓展到医学图像分
+割领域,对医学 C T影像进行分 割并 提取 需要的部
+位。此外,将本文工作应用到实 际的医 疗影 像系统
+中,构建实时医疗图像分类识别 、医学诊断等一体化
+智能医疗影像系统,也是今后的研究方向。
+参考文献
+[1]�中国心血管疾病 防治协会.中国心血管 健康与疾病报告[R].
+北京:科学出版社, 2 0 2 3 : 8 - 9 .
+���C h i n e s e A s s o c i a t i o nf o rt h e P r e v e n t i o n a n d T r e a t m e n to f
+C a r d i o v a s c u l a r D i s e a s e s . R epo r t o n c a r d i o v a s c u l a r h e a l t h a n d
+d i s e a s e s i nC h i n a[R]. B e iji ng: S c i e n c e P r e s s , 2 0 2 3 : 8 - 9 .(i n
+C h i n e s e)
+[2]�T H Y G E S E N K , A L P E R TJ S , J A F F E AS ,e t a l . F o u r t h
+u n i v e r s a l d e f i n i t i o n o f myo c a r d i a li n f a r c t i o n(2 0 1 8) [J].
+J o u r n a l o f t h e A m e r i c a n C o l l ege o f C a r d i o l og y,2 0 1 8 ,
+7 2(1 8): 2 2 3 1 - 2 2 6 4 .
+[3]�G A R N E R K K , P O M E R O Y W,A R N O L D JJ . E x e r c i s e
+s t r e s st e s t i ng:i n d i c a t i o n s a n d c o m m o nau e s t i o n s[J].
+A m e r i c a nF a m i lyP hys i c i a n , 2 0 1 7 , 9 6(5): 2 9 3 - 2 9 9 .
+[4]�曹春萍,李哲.基于 R e s N e t 1 0 1多特征融合的 新型冠状 病毒
+感 染 图 像 分 类方 法[J].小 型 微 型 计 算 机系 统, 2 0 2 4 ,
+4 5(1 0): 2 4 7 3 - 2 4 7 8 .
+���C A OC P , L IZ . N o v e lm e t h o d f o r c l a s s i fyi ngc o r o n a v i r u s
+i n f e c t i o n i m age s b a s e d o n R e s N e t 1 0 1m u l t i - f e a t u r e f u s i o n[J].
+J o u r n a l o f C h i n e s e C o mpu t e r Sys t e m s , 2 0 2 4 , 4 5(1 0): 2 4 7 3 -
+2 4 7 8 .(i nC h i n e s e)
+[5]�S I M O N Y A N K , Z I S S E R M A N A . V e ryd e epc o n v o l u t i o n a l
+n e t w o r k s f o r l a rge - s c a l e i m age r e c ogn i t i o n[E B / O L].[2 0 2 3 -
+0 5 - 0 5]. h t tps :∥a r x i v . o rg/ a b s / 1 4 0 9 . 1 5 5 6 .
+[6]�C H E NS , M A K , Z H E N GY . M e d 3 D : t r a n s f e r l e a r n i ngf o r
+3 D m e d i c a l i m age a n a lys i s[E B / O L].[2 0 2 3 - 0 5 - 0 5]. h t tps :∥
+a r x i v . o rg/ a b s / 1 9 0 4 . 0 0 6 2 5 .
+[7]�V A N D E N W Y N G A E R T T , S T R O B E LK , K A M P E N W U ,
+e t a l . T h eE A N Mpr a c t i c egu i d e l i n e s f o r b o n e s c i n t igr aphy [J].
+E u r ope a n J o u r n a l o fN u c l e a r M e d i c i n ea n d M o l e c u l a r I m agi ng,
+2 0 1 6 , 4 3(9): 1 7 2 3 - 1 7 3 8 .
+[8]�D U V A L L W L , S L O M K A PJ ,G E R L A C H J R ,e t a l .
+H igh - e f f i c i e n cy S P E C T M P I : c o mpa r i s o n o f a u t o m a t e d
+au a n t i f i c a t i o n , v i s u a l i n t e rpr e t a t i o n , a n d c o r o n a ry
+a ngi ogr aphy [J].J o u r n a l o f N u c l e a r C a r d i o l og y,2 0 1 3 ,
+2 0(5): 7 6 3 - 7 7 3 .
+[9]�A R S A N J A N I R , X U Y , D E Y D , e t a l . I mpr o v e d a c c u r a cy
+o fmyo c a r d i a lpe r f u s i o n S P E C T f o r t h e d e t e c t i o no f c o r o n a ry
+a r t e ryd i s e a s e u s i nga s up po r t v e c t o rm a c h i n e a lgo r i t h m[J].
+J o u r n a l o f N u c l e a rM e d i c i n e , 2 0 1 3 , 5 4(4): 5 4 9 - 5 5 5 .
+[1 0]�S U TY , C H E NJ J , C H E N W S , e t a l . D e epl e a r n i ngf o r
+myo c a r d i a l i s c h e m i aa u x i l i a ryd i agn o s i su s i ng C Z T S P E C T
+myo c a r d i a lpe r f u s i o ni m agi ng [J]. J o u r n a lo ft h e C h i n e s e
+M e d i c a l A s s o c i a t i o n , 2 0 2 3 , 8 6(1): 1 2 2 - 1 3 0 .
+[1 1]�K A P L A N B E R K A Y A S ,A K S I V R I K O ZI ,G U N A L S .
+C l a s s i f i c a t i o n m o d e l s f o r S P E C T myo c a r d i a lpe r f u s i o n
+i m agi ng [J]. C o mpu t e r s i n B i o l og ya n dM e d i c i n e , 2 0 2 0 , 1 2 3 :
+1 0 3 8 9 3 .
+[1 2]�P A P A N D R I A N O S N , P A P A G E O R G I O U E . A u t o m a t i c
+d i agn o s i so fc o r o n a rya r t e ryd i s e a s ei n S P E C T myo c a r d i a l
+pe r f u s i o ni m agi ng e mpl oyi ng d e ep l e a r n i ng [J]. Ap pl i e d
+S c i e n c e s , 2 0 2 1 , 1 1(1 4): 6 3 6 2 .
+[1 3]�P A P A N D R I A N O S N , P A P A G E O R G I O U E I ,
+A N A G N O S T I S A . D e v e l opm e n t o f c o n v o l u t i o n a l n e u r a l
+n e t w o r k st oi d e n t i fy b o n e m e t a s t a s i sf o rpr o s t a t e c a n c e r
+pa t i e n t s i n b o n e s c i n t igr aphy[J]. A n n a l s o f N u c l e a r
+M e d i c i n e , 2 0 2 0 , 3 4(1 1): 8 2 4 - 8 3 2 .
+[1 4]�G W I L L I A M M,T E U S C H E R A ,A N D E R S O N C ,e t a l .
+F a i rc o mpa r i s o n :au a n t i fyi ng v a r i a n c ei n r e s u l t sf o rf i n e -
+gr a i n e d v i s u a l c a t ego r i z a t i o n[C]∥P r o c e e d i ngso f t h e I E E E /
+C V F W i n t e r C o n f e r e n c e o nAp pl i c a t i o n s o f C o mpu t e r V i s i o n .
+W a s h i ngt o nD . C . , U S A : I E E EP r e s s , 2 0 2 1 : 3 3 0 9 - 3 3 1 8 .
+[1 5]�Z E N GR , H E J S . G r o upi ngb i l i n e a rpo o l i ngf o r f i n e -gr a i n e d
+i m age c l a s s i f i c a t i o n[J].Ap pl i e dS c i e n c e s , 2 0 2 2 , 1 2(1 0):
+5 0 6 3 .
+[1 6]�W U W,Y U J .A ni mpr o v e db i l i n e a rpo o l i ng m e t h o df o r
+i m age - b a s e d a c t i o n r e c ogn i t i o n[C]∥P r o c e e d i ngs o f t h e 2 5 t h
+I n t e r n a t i o n a lC o n f e r e n c eo n P a t t e r n R e c ogn i t i o n(I C P R).
+W a s h i ngt o nD . C . , U S A : I E E EP r e s s , 2 0 2 1 : 8 5 7 8 - 8 5 8 3 .
+[1 7]�G U OJ Y ,H A N K ,W U H,e t a l . C M T : c o n v o l u t i o n a l
+n e u r a l n e t w o r k sm e e t v i s i o n t r a n s f o r m e r s[C]∥P r o c e e d i ngs o f
+t h e I E E E / C V FC o n f e r e n c e o nC o mpu t e rV i s i o na n dP a t t e r n
+R e c ogn i t i o n(C V P R). W a s h i ngt o nD . C . , U S A : I E E EP r e s s ,
+2 0 2 2 : 1 2 1 6 5 - 1 2 1 7 5 .
+[1 8]�H U X B , Z H U S N , P E N G T L .H i e r a r c h i c a la t t e n t i o n
+v i s i o n t r a n s f o r m e r f o r f i n e -gr a i n e dv i s u a l c l a s s i f i c a t i o n[J].
+J o u r n a l o fV i s u a l C o m m u n i c a t i o n a n d I m ageR epr e s e n t a t i o n ,
+2 0 2 3 , 9 1 : 1 0 3 7 5 5 .
+[1 9]�P A NZZ , Z H U A N GB H, H E H Y ,e t a l . L e s s i sm o r e :
+payl e s s a t t e n t i o n i nv i s i o n t r a n s f o r m e r s[J]. P r o c e e d i ngs o f
+t h e A A A I C o n f e r e n c e o n A r t i f i c i a l I n t e l l ige n c e , 2 0 2 2 ,
+3 6(2): 2 0 3 5 - 2 0 4 3 .
+[2 0]�Z H O UBL , K H O S L AA , L A P E D R I Z AA , e t a l . L e a r n i ng
+d e epf e a t u r e s f o r d i s c r i m i n a t i v e l o c a l i z a t i o n[C]∥P r o c e e d i ngs
+o f t h eI E E E C o n f e r e n c eo n C o mpu t e r V i s i o na n d P a t t e r n
+R e c ogn i t i o n(C V P R). W a s h i ngt o nD . C . , U S A : I E E EP r e s s ,
+2 0 1 6 : 2 9 2 1 - 2 9 2 9 .
+[2 1]�Y U S H K E V I C HPA , G A O Y , G E R I G G . I T K - S N A P : a n
+i n t e r a c t i v et o o lf o rs e m i - a u t o m a t i cs egm e n t a t i o n o f m u l t i -
+m o d a l i tyb i o m e d i c a l i m age s[C]∥P r o c e e d i ngso ft h e3 8 t h
+A n n u a l I n t e r n a t i o n a l C o n f e r e n c e o f t h e I E E EE ngi n e e r i ngi n
+M e d i c i n e a n dB i o l og yS o c i e ty(E M B C).W a s h i ngt o nD . C . ,
+U S A : I E E EP r e s s , 2 0 1 6 : 3 3 4 2 - 3 3 4 5 .
+[2 2]�Y E C , Y A N G Y , F E R M U L L E R C , e t a l . O n t h e
+i mpo r t a n c e o f c o n s i s t e n cyi nt r a i n i ngd e epn e u r a ln e t w o r k s
+[E B / O L].[2 0 2 3 - 0 5 - 0 5].h t tps :∥a r x i v . o rg/ a b s / 1 7 0 8 .
+0 0 6 3 1 .
+[2 3]�R O T H HR , Y A N GD , X UZY , e t a l . G o i ngt o e x t r e m e s :
+w e a k lys upe r v i s e dm e d i c a l i m age s egm e n t a t i o n[J].M a c h i n e
+L e a r n i nga n dK n o w l e dge E x t r a c t i o n , 2 0 2 1 , 3(2): 5 0 7 - 5 2 4 .
+[2 4]�G A T Y S L A ,E C K E R A S ,B E T H G E M. I m ages tyl e
+t r a n s f e r u s i ngc o n v o l u t i o n a l n e u r a l n e t w o r k s[C]∥P r o c e e d i ngs
+6 5 2
+
+=== PDF_PAGE 12 ===
+第5 1卷 第1 1期/2 0 2 5年1 1月/计算机工程
+o f t h eI E E E C o n f e r e n c eo n C o mpu t e r V i s i o na n d P a t t e r n
+R e c ogn i t i o n(C V P R). W a s h i ngt o nD . C . , U S A : I E E EP r e s s ,
+2 0 1 6 : 2 4 1 4 - 2 4 2 3 .
+[2 5]�Y A N GJC , S H IR ,W E I D L ,e t a l .M e d M N I S T v 2 - a
+l a rge - s c a l e l igh t w e igh t b e n c h m a r k f o r 2 Da n d 3 Db i o m e d i c a l
+i m age c l a s s i f i c a t i o n[J]. S c i e n t i f i c D a t a , 2 0 2 3 , 1 0 : 4 1 .
+[2 6]�H O U N S F I E L D G N . A m e t h o d o f a n d ap pa r a t u s f o r
+e x a m i n a t i o no fa b o dy byr a d a t i o n s u c h a s X o rga m m a
+r a d i a t i o n[E B / O L].[2 0 2 3 - 0 5 - 0 5]. h t tps :∥c i r . n i i . a c .j p/ c r i d /
+1 5 7 0 0 0 9 7 4 9 9 7 8 3 9 2 7 0 4 ? l a ng= e n .
+[2 7]�X U X A , Z H O U F G , L I U B ,e t a l . E f f i c i e n t m u l t ipl e
+o rga nl o c a l i z a t i o ni n C T i m age u s i ng 3 D r egi o npr opo s a l
+n e t w o r k[J]. I E E ET r a n s a c t i o n s o n M e d i c a l I m agi ng, 2 0 1 9 ,
+3 8(8): 1 8 8 5 - 1 8 9 8 .
+[2 8]�H U A N G G ,L I U Z , V A N D E R M A A T E N L , e t a l .
+D e n s e lyc o n n e c t e dc o n v o l u t i o n a l n e t w o r k s[C]∥P r o c e e d i ngs
+o f t h eI E E E C o n f e r e n c eo n C o mpu t e r V i s i o na n d P a t t e r n
+R e c ogn i t i o n .W a s h i ngt o n D . C . , U S A : I E E E P r e s s , 2 0 1 7 :
+4 7 0 0 - 4 7 0 8 .
+[2 9]�Z H A N GXY , Z H O UXY , L I N MX , e t a l . S h u f f l e N e t : a n
+e x t r e m e lye f f i c i e n t c o n v o l u t i o n a l n e u r a ln e t w o r kf o r m o b i l e
+d e v i c e s[C]∥P r o c e e d i ngso ft h eI E E E / C V F C o n f e r e n c e o n
+C o mpu t e rV i s i o na n dP a t t e r nR e c ogn i t i o n .W a s h i ngt o nD . C . ,
+U S A : I E E EP r e s s , 2 0 1 8 : 6 8 4 8 - 6 8 5 6 .
+[3 0]�T A N M, L E Q . E f f i c i e n t N e t : r e t h i n k i ng m o d e l s c a l i ngf o r
+c o n v o l u t i o n a l n e u r a l n e t w o r k s[E B / O L].[2 0 2 3 - 0 5 - 0 5].
+h t tps :∥a r x i v . o rg/ a b s / 1 9 0 5 . 1 1 9 4 6 .
+[3 1]�I A N D O L A F N , H A N S , M O S K E W I C Z M W, e t a l .
+Sau e e z e N e t : A l e x N e t - l e v e l a c c u r a cy w i t h 5 0 × f e w e r
+pa r a m e t e r s a n d<0 . 5 M B m o d e l s i z e[E B / O L].[2 0 2 3 - 0 5 -
+0 5]. h t tps :∥a r x i v . o rg/ a b s / 1 6 0 2 . 0 7 3 6 0 .
+[3 2]�H O W A R D A G , Z H U M, C H E N B ,e t a l .M o b i l e N e t s :
+e f f i c i e n tc o n v o l u t i o n a l n e u r a l n e t w o r k s f o r m o b i l e v i s i o n
+ap pl i c a t i o n s[E B / O L].[2 0 2 3 - 0 5 - 0 5]. h t tps :∥a r x i v . o rg/ a b s /
+1 7 0 4 . 0 4 8 6 1 .
+[3 3]�J I NL , Y A N GJC , K U A N G K M,e t a l . D e ep- l e a r n i ng-
+a s s i s t e d d e t e c t i o n a n d s egm e n t a t i o n o f r i b f r a c t u r e s f r o m C T
+s c a n s : d e v e l opm e n t a n d v a l i d a t i o n o f F r a c N e t[J].
+e B i o M e d i c i n e , 2 0 2 0 , 6 2 : 1 0 3 1 0 6 .
+编辑�吴云芳
+7 5 2

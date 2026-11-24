@@ -1,0 +1,24 @@
+﻿TRUNCATED=False
+TREE ITEMS=10325
+
+Name                                             Count
+----                                             -----
+csPCa_lesion_delineations/human_expert               1
+csPCa_lesion_delineations/human_expert/Pooch25     208
+csPCa_lesion_delineations/human_expert/original   1296
+csPCa_lesion_delineations/human_expert/resampled  1296
+
+
+--- 顶层目录 ---
+
+Name                      Count
+----                      -----
+.gitignore                    1
+LICENSE                       1
+README.md                     1
+additional_resources          2
+anatomical_delineations    6013
+clinical_information          2
+csPCa_lesion_delineations  4305
+
+

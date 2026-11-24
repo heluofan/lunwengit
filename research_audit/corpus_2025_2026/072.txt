@@ -1,0 +1,671 @@
+=== PDF_PAGE 1 ===
+http://www．jsjkx．com
+DOI:１０．１１８９６/jsjkx．２４１０００１０５
+到稿日期:２０２４Ｇ１０Ｇ２１　返修日期:２０２５Ｇ０３Ｇ０４
+基金项目:国家自然科学基金(６２５７２０６２,６２５２５２０４);北京市自然科学基金(L２３２１０２)
+ThisworkwassupportedbytheNationalNaturalScienceFoundationofChina(６２５７２０６２,６２５２５２０４)andBeijing NaturalScienceFoundation
+(L２３２１０２)．
+通信作者:宋文凤(songwenfenga＠１６３．com)
+数据知识双增强的医学视觉问答网络
+闫玉静１ 侯　霞１ 郭玉婷２ 张铭梁１ 宋文凤１
+１ 北京信息科技大学计算机学院　北京１０２２０６
+２ 北京航空航天大学虚拟现实技术与系统国家重点实验室　北京１００１９１
+　(２０２２０２０６０５＠bistu．edu．cn)
+　
+摘　要　医学视觉问答(MedicalVisualQuestionAnswering,MedＧVQA)旨在正 确 回 答 与 给 定 医 学 图 像 相 关 的 临 床 问 题,在 临
+床医学智能化中起着至关重要的作用.虽然该领域研究已获得一定进展,但是在文本和图像多模态输入信息的深度提取,以 及
+小规模数据集上的有效模型训练方面仍然面临挑战.对此,提 出 一 种 数 据 知 识 双 增 强 的 医 学 视 觉 问 答 网 络.针 对 小 规 模 数 据
+集,设计了多模态条件混合模块对输入的图像和文本进行数据增 强,利 用 问 题 类 别 作 为 约 束 条 件 对 输 入 样 本 对 进 行 线 性 组 合,
+以提高答案生成的合理性.针对多模态特征提取,设计了一个基于卷积神经网络的图像位置识别器,将其捕获的图像位置 特 征
+编码到图像特征和问题特征的融合过程中进行 知 识 增 强,可 在 较 少 的 参 数 下 实 现 有 效 的 特 征 提 取. 在 SLAKE 和 VQAＧRAD
+数据集上的实验结果表明,与基线模型相比,所提模型的性能有明显提升.
+关键词:视觉问答;医学视觉问答;医学图像;数据增强;计算机视觉
+中图分类号　TP３９１
+　
+DataandKnowledgeEnhanced MedicalVisualQuestionAnswerNetwork
+YAN Yujing
+１,HOU Xia１,GUO Yuting２,ZHANG Mingliang１andSONG Wenfeng１
+１SchoolofComputerScience,BeijingInformationScienceandTechnologyUniversity,Beijing１０２２０６,China
+２StateKeyLaboratoryofVirtualRealityTechnologyandSystems,BeihangUniversity,Beijing１００１９１,China
+　
+Abstract　MedＧVQAaimstoaccuratelyanswerclinicalquestionsbasedonagivenmedicalimage,whichiskeyinadvancingcliniＧ
+calmedicalintelligence．Despitesomeprogressinthisfield,challengesremaininextractingdeep multimodalinformationfrom
+bothimagesandquestionsandineffectivelytrainingmodelsonsmallＧscaledatasets．Toaddresstheseissues,thispaperproposes
+aMedＧVQAnetworkthatincorporatesdualdataandknowledgeenhancement．AimingatsmallＧscaledatasets,amultimodalcondiＧ
+tionalmixingmoduleisdesignedtoenhancetheinputimageandquestiondata,andlinearcombinationsofinputsamplepairsare
+performedbyusingthecategoryofquestionsasconstraintstoimprovetherationalityofanswergeneration．FormultimodalfeaＧ
+tureextraction,animagelocationrecognizerbasedonconvolutionalneuralnetworksisdesignedtoencodethecapturedimageloＧ
+cationfeaturesintothefusionprocessofimageandquestionfeaturesforknowledgeenhancement,whichcaneffectivelyachieve
+featureextractionunderfewerparameters．ExperimentalresultsontheSLAKEand VQAＧRAD datasetsdemonstratethatthe
+proposedmodelsignificantlyoutperformsthebaselinemodels．
+Keywords　Visualquestionanswering,Medicalvisualquestionanswering,Medicalimages,Dataenhancement,Computervision
+　
+１　引言
+视觉问答(VisualQuestionAnswer,VQA)旨在理解图像
+和相关问题,以提供准确的回答 [１],是重要的视觉语言理解 任
+务之一,被广 泛 应 用 于 视 障 人 士 的 辅 助 技 术、教 育 和 文 化 传
+承、视觉聊 天 机 器 人、商 业 服 务、监 控 检 索 和 医 疗 诊 断 等 领
+域 [２].医学视觉问答(MedicalVisualQuestionAnswer,MedＧ
+VQA)则是通过 医 学 图 像 为 相 关 问 题 提 供 准 确 答 案,常 被 应
+用于临床决策、远程 医 疗 等 特 定 领 域. 医 疗 图 像 通 常 是 通 过
+CT,MRI,X 射线等多种成像方式 获 取 的 灰 度 图 像,而 问 题 则
+包括研 究 的 医 疗 细 节、使 用 的 成 像 方 法、涉 及 的 器 官 系 统
+等 [３].现有的研究表明,MedＧVQA 可 以 辅 助 放 射 科 医 生、病
+理学家或医疗助理 [３],有助于减少医护人员的工作量,降低 误
+诊 率 和 错 误 信 息 的 传 播,从 而 提 高 医 疗 保 健 服 务 的 安 全 性 和
+整体质量. 因 此,MedＧVQA 成 为 一 个 广 泛 研 究 的 课 题. 与
+通用 VQA 模型相比,MedＧVQA 在医学图像特征提 取 和 数 据
+集两方面面临挑战.
+特征 提 取 是 MedＧVQA 的 基 础 环 节 之 一,但 是 由 于 医 学
+
+=== PDF_PAGE 2 ===
+图像包含比自然图像更复杂的语义信息,专业性更强,因此 提
+升医学图像特征提 取 质 量 一 直 是 一 个 难 题. 现 有 工 作 [４Ｇ６]主
+要 关 注 图 像 的 语 义 特 征 提 取,往 往 忽 视 了 对 图 像 隐 含 信 息 的
+利用,如位置、形态和类别等.
+另外,医学图像标注 的 专 业 性 太 强,数 据 标 注 困 难,导 致
+医学问答数据集规 模 较 小. 针 对 该 类 问 题,许 多 研 究 通 过 改
+进预训练图像编码 器 来 提 升 特 征 提 取 的 效 果 [７Ｇ９],然 而,预 训
+练模型通常依赖额外的资源进行训练.为了进一步提高模 型
+的泛化能力,Liu等 [１０]引入数据增强技术,在不增加 额 外 数 据
+的情况下丰富数据 源,但 也 在 一 定 程 度 上 产 生 了 噪 声. 本 文
+将其作为基线模型,对数据增强方法做出改进.
+针对上述两个挑战,本 文 提 出 了 一 种 数 据 知 识 双 增 强 的
+医学视觉问答模型(DataandKnowledgeEnhancedNetwork,
+DKEN).DKEN 包 含 多 模 态 条 件 混 合 (MultimodalCondiＧ
+tionalMixup,MCM)和 图 像 位 置 识 别 器 (ImageLocationReＧ
+cognizer,ILR).MCM 将 图 像 和 问 题 进 行 线 性 组 合,并 通 过
+问题类别对训练样本对进行约束,实现低噪声的数据增强,丰
+富数据的多样性.ILR 通过 结 合 位 置 识 别 网 络 (LocationReＧ
+cognitionNetwork,LRNet)和 残 差 块 提 取 图 像 的 位 置 特 征,
+作为图像特征和问 题 特 征 的 引 导 与 补 充,实 现 知 识 增 强. 在
+两个基准数据集 SLAKE 和 VQAＧRAD 上 的 实 验 结 果 表 明,
+本文方法优于之前的方法,并实现了先进的性能.
+２　相关工作
+２．１　MedＧVQA 相关工作
+MedＧVQA 任 务 由 ImageCLEF MedＧVQA ２０１８ 竞 赛 提
+出,通常采用联合嵌 入 方 法 来 处 理 医 学 图 像 和 临 床 问 题. 一
+般来说,模型从图像和问题中提取模态特征,然后融合提取 的
+视觉特征与问题嵌入以预测答案或生成答案.大多数模型 使
+用卷积神经网 络 (CNN)作 为 视 觉 编 码 器,如 VGG Net[１１]和
+ResNet
+[１２],并利用 LSTM[４]或 基 于 Transformer[５]的 模 型(如
+BERT
+[６])提取给定问 题 的 特 征. 特 征 编 码 器 通 常 使 用 预 训
+练的权重进行初始 化,然 后 训 练 期 间 进 行 冻 结 或 微 调. 早 期
+的方法常采用矩阵的拼 接、张 量 和、点 积 等 方 式 进 行 特 征 融
+合 [３]. 之 后 的 工 作 引 入 了 注 意 力 机 制 提 高 了 模 型 性 能 ,如
+堆 叠 注 意 网 络 (SAN)[１３]、双 线 性 注 意 网 络 (BAN)[１４]等 .
+答 案 预 测 器 通 常 是 神 经 网 络 分 类 器 或 递 归 神 经 网 络 语 言
+生 成 器 .
+在最新 的 研 究 中,Chen 等 [７]使 用 VQAＧMedＧ２０１９ 数 据
+集 [１５]作为附加训练数据.Eslami等 [１６]在 外 部 医 学 数 据 的 支
+持下预练了一个 MedＧVQA 图像编 码 器.Allaouzi等 [１７]提 出
+的模型 以 及 Mmbert[１８]借 助 迁 移 学 习 分 别 在 图 像 数 据 集
+CheXpert
+[１９]和 ROCO[２０]上训练编码器.Nguyen等 [８]利用 元
+学 习 思 想 初 始 化 图 像 编 码 器 的 模 型 权 重,克 服 了 标 记 数 据 量
+的局限性.CPRD[９]引 入 对 比 学 习 技 术,在 自 监 督 方 案 中 对
+未 标 记 的 图 像 进 行 预 训 练,降 低 了 模 型 对 医 学 图 像 标 签 的 依
+赖.以上方法对图像 编 码 器 进 行 预 训 练,通 过 改 进 图 像 特 征
+的 提 取 来 提 升 问 答 准 确 率,但 是 提 取 到 的 图 像 特 征 仅 包 含 视
+觉特征,且预训练需花费更多的资源.
+２．２　MedＧVQA 中的数据增强
+为了 应 对 MedＧVQA 领 域 数 据 集 规 模 小 的 挑 战,数 据 增
+强方法 被 应 用 于 MedＧVQA 中.Liu 等 [１０]提 出 的 MＧMixup
+分 别 对 图 像 和 问 题 进 行 线 性 混 合,解 决 了 训 练 样 本 不 足 的 问
+题,但未考虑混合过 程 中 产 生 的 噪 声. 为 了 提 高 混 合 过 程 的
+合 理 性 和 可 解 释 性,Gong 等 [２１] 提 出 了 非 线 性 混 合 的
+VQAMix模型来过滤无意义的答 案,但 是 非 线 性 混 合 的 函 数
+更加复杂,混合的比例难以精准把控,因此生成的数据可能 失
+去原始数据的重要特征,难以确保数据的一致性.
+３　数据知识双增强的网络结构
+本文提出一种基于 MCM 和ILR 的数据知识双增强的医
+学视觉问答网 络 DKEN. 其 中,MCM 借 助 约 束 条 件 实 现 数
+据增强,ILR 提取图像 的 位 置 特 征 作 为 多 模 态 特 征 的 知 识 增
+强,框架如图１所示.
+图１　基于 MCM 和ILR 的 MedＧVQA 网络总体架构
+Fig．１　OverallarchitectureofMedＧVQAnetworkbasedon MCMandILR
+３５２闫玉静,等:数据知识双增强的医学视觉问答网络
+
+=== PDF_PAGE 3 ===
+３．１　网络整体结构
+DKEN 包含多模态特 征 提 取、特 征 融 合 和 答 案 预 测 ３ 个
+部分.总流程公式如下:
+Y′＝Classfication(MLPs(Fv,Ft,Fq)) (１)
+其中,Y′表示预测 答 案 标 签;Classfication(􀅰 )表 示 线 性 分 类
+器;MLPs(􀅰)表示融合网络;Fv,Ft和Fq分 别 表 示 图 像 特 征、
+图像位置特征和问题特征.
+令I∈RH×W ×C 和Q∈RL 分 别 表 示 输 入 的 图 像 和 问 题,模
+型借助 MCM 得到 数 据 增 强 后 的 图 像I′∈RH×W ×C 和 问 题 序
+列Q′∈RL ,其中 H 和 W 分 别 表 示 输 入 图 像 的 高 度 和 宽 度,C
+表示图像的通道数,L 表 示 问 题 序 列 的 长 度. 然 后 使 用 改 进
+后的池化令牌模块(PoolingTokens,PTs)[１０]提取深层次视觉
+特征Fv∈RM×D ,使用 GloVe[２２]提取 问 题 特 征Fq∈RL×E ,其 中
+M 表示可标记 的 数 量,E 是 词 向 量 的 维 度;利 用 ILR 提 取 图
+像位置特征Ft∈RN×D 作 为 知 识 增 强,其 中 N 表 示 图 像 类 别
+数量,D 表示通 道 数. 特 征 提 取 的 表 达 式 如 式 (２)－ 式 (４)
+所示:
+Fv＝G
+１(I′) (２)
+Fq＝G
+２(Q′) (３)
+Ft＝G
+３(I) (４)
+其中,Fv,Fq和Ft分别表示 图 像 特 征、问 题 特 征 和 图 像 位 置 特
+征;G１(􀅰),G２(􀅰)和G３(􀅰)分 别 表 示 提 取 图 像 特 征、问 题 特
+征和 图 像 位 置 特 征 的 函 数;I′和Q′分 别 表 示 数 据 增 强 后 的 图
+像和问题特征,I 表示原图像特征.
+为了让模型学习输 入 信 息 的 模 态 信 息,在 特 征 融 合 时 添
+加视觉模态类别嵌入Fvm 和 文 本 模 态 类 别 嵌 入Fqm ,其 中Fvm ,
+Fqm ∈R
+D ,初始化 为 零 向 量,且 在 训 练 期 间,借 助 损 失 函 数 反
+向传播进行更新.融合网络的输入特征表达式如式(５)所 示,
+即将以上特征进行拼接融合得到融合网络初始特征z０:
+z０＝[Fv＋Fvm ;Ft;Fq＋Fqm ] (５)
+其中,Fv,Fq和Ft表示输入的 多 模 态 特 征,Fvm 和Fqm 表 示 视 觉
+和文本模态嵌入,[;]表 示 矩 阵 级 联 操 作,[＋]表 示 矩 阵 加 法
+操作.
+特征 融 合 网 络 由 多 个 多 层 感 知 器 (MultilayerPercepＧ
+tron,MLP)组成,并利用 残 差 连 接 保 证 模 型 的 稳 定 性 和 有 效
+性.特征融合的表达式如式(６)和式(７)所示:
+zk′＝FC(GELU(FC(LN(zk－１)))) (６)
+其中,zk′和zk－１分别表示单个 MLP 的输出和输入特征,FC 表
+示全连接层,GELU 表示 激 活 函 数,LN 表 示 基 于 LayerNorm
+的归一化层.
+zk＝zk′＋zk－１,k＝１,􀆺,K (７)
+其中,zk表示特征融合网络的 最 终 特 征,zk′和zk－１分 别 表 示 单
+个 MLP 的输出和 输 入 特 征,K 表 示 MLP 个 数,k 的 取 值 为
+１~K,＋表示向量加法.
+在答案预测时,计算每个通道上的平均特征,并使用线 性
+分类器预测最终的答案标签Y′.预 测 过 程 表 达 式 如 式 (８)和
+式(９)所示:
+zk＝ １M＋L ∑M＋L－１k＝０ (zk) (８)
+其中,zk ＝ 表 示 融 合 后 特 征zk 的 平 均 值,M 表 示 可 标 记 的
+数量,L 表示问题序列的长度, ∑
+N＋L－１
+k＝０
+(􀅰)表示从 ０ 到 N＋L－
+１对(􀅰)进行求和.
+Y′＝FC(ReLU(LN(FC(zk)))) (９)
+其中,Y′表示预测答案标签,zk表示 分 类 器 的 输 入,FC 表 示 全
+连接层,RELU 表示激活函数,LN 表示基于 LayerNorm 的 归
+一化层.
+３．２　多模态条件混合的数据增强
+为了应对医学问答数据 集 规 模 小 的 挑 战,受 Mixup[２３]的
+启 发,本 文 提 出 了 以 问 题 类 别 作 为 约 束 条 件 的 数 据 增 强 模 块
+MCM,一定程 度 上 丰 富 了 训 练 数 据 的 多 样 性. 值 得 注 意 的
+是,不同于视觉信息的直接混合,本文首先用零将句子填充 到
+相同的长度,然 后 使 用 GloVe转 换 为 单 词 嵌 入,最 后 在 每 个
+单词维度上进行线性插值.具体的流程如算法１所示.
+将一对样本(vi,qi,yi,ti)和(vj,qj,yj,tj)合 成 为 (v,q,y,
+t)的表达式如下:
+(v,q,y,t)＝(λvi＋(１－λ)vj,λqi＋(１－λ)qj,λyi＋
+(１－λ)yj,λti＋(１－λ)tj) (１０)
+其中,(v,q,y,t)表示混合后的输入信息;λ 是混 合 策 略 的 混 合
+比,λ~Beta(α,β);v 和q 分 别 表 示 输 入 的 视 觉 编 码 和 文 本 编
+码;y 是答案标签;t是图像类别;i和j 表 示 样 本 序 号;＋ 表 示
+向量加法.
+在数据混合过程中,标签y 中存在噪声分量,这可能会 对
+深度神经网络的性 能 产 生 负 面 影 响. 经 过 分 析,不 同 领 域 的
+答案混合会引起噪 声. 为 了 解 决 这 个 问 题,本 文 提 出 了 一 种
+抑制混合数据生成噪声的策略,称为“条件混合”.
+针对 MedＧVQA 中两种 类 型 的 数 据 源 (图 像 和 文 本 ),本
+文提出３种条件混合的方法,分别是:１)仅混合具有相同 成 像
+模式的(v,q,y,t)元 组;２)仅 混 合 具 有 相 同 问 题 类 别 的 (v,q,
+y,t)元组;３)将具有同一图 像 模 式 和 问 题 类 别 的 (v,q,y,t)元
+组进行混合.
+通过分析可得出结 论:问 题 和 答 案 在 潜 在 空 间 上 更 为 接
+近,问题类型可以直接反映答案的类型;相同模态的图像包 含
+更 加 相 似 的 器 官 和 疾 病 类 别,不 同 模 态 的 图 像 进 行 混 合 可 以
+提高图像的多样性,使模型学习到更多器官和疾病信息;数 据
+集 中 有 许 多 关 于 图 像 的 模 式 和 器 官 的 问 题,如 果 以 图 像 类 别
+作为约束条件会减少训练过程中的不确定性,更容易过拟 合.
+因此,提出多 模 态 问 题 条 件 混 合,即 将 相 同 问 题 类 别 的 两 个
+(v,q,y,t)元组进行混合,增 强 混 合 过 程 的 可 解 释 性;同 时,模
+型 可 以 从 不 同 模 式 的 图 像 中 学 习 模 式 特 征,也 可 以 丰 富 特 征
+的多样性.
+根据问题类别(封闭式和开放式)划分类别问题集Qc作为
+条件问题约束,定义为:
+Qc＝{q,q′∈Q|category(q)＝category(q′)} (１１)
+其中,category(q)和category(q′)代 表 问 题 集 合 Q 中 随 机 问
+题q 和q′的 问 题 类 别,是 通 过 相 应 数 据 集 中 的 问 题 类 型 获
+得的.
+算法１　MCM
+输入:图像v１,v２;问题的 GloVe嵌入q１,q２;正 确 答 案 标 签 (oneＧhot向
+量)y１,y２;图像类别 标 签 (oneＧhot向 量 )t１,t２;两 个 数 据 加 载 器
+４５２ ComputerScience 计算机科学 Vol．５２,No．１２,Dec．２０２５
+
+=== PDF_PAGE 4 ===
+loader１,loader２;用于 Beta分布的超参数 α,β
+输出:预测的答案标签y′;预测的图像类别标签t′
+１．for(v１,q１,y１,t１),(v２,q２,y２,t２)inzip(loader１,loader２)do
+２．　 ifcategory(q１)＝category(q２)then
+３．　　 //初始化混合权重参数 λ
+４．　　 λ ← numpy．random．beta(α,β)
+５．　　 v←λ∗v１＋(１－λ)∗v２//混合后的图像
+６．　　 q←λ∗q１＋(１－λ)∗q２//混合后的问题
+７．　　 y←λ∗y１＋(１－λ)∗y２//混合后的答案
+８．　　 t←λ∗t１＋(１－λ)∗t２//混合后的类别标签
+９．　 //优化器的梯度清零
+１０．　　optimizer．zero_grad()
+１１．　　//通过模型获取预测的答案和类别标签
+１２．　　(y′,t′)←model(v,q)
+１３．　　lossy←criterion１(y′,y)//计算答案损失
+１４．　　losst←criterion２(t′,t)//计算类别标签损失
+１５．　　loss←lossy＋losst//总损失为两者的和
+１６．　　loss．backward()//反向传播计算梯度
+１７．　　optimizer．step()//更新模型参数
+１８．　endif
+１９．endfor
+３．３　自适应特征位置识别器
+为了增强模型提取 多 模 态 特 征 的 能 力,本 文 设 计 了 用 于
+提取图 像 位 置 特 征 的 ILR 来 实 现 知 识 增 强.ILR 在 ResＧ
+Net１８的基础上使用 LRNet放 大 医 学 图 像 的 中 间 特 征,在 不
+增加网络深度的情况下,自适 应 地 改 进 了ILR 的 特 征 提 取 能
+力.具体而言,在挤压 和 激 励 网 络 (SENet)[２４]的 基 础 上 设 计
+了 LRNet,并将其添加在 ResNet基础块(BasicBlock)之后,与
+卷积和池化层一起组成新的残差网络.为了进一步增强模 型
+的鲁棒性,将得到的模式类别特征与图像中间特征融合,然 后
+作为外部图像特征输入骨干网络.
+图像 特 征 首 先 完 成 从 X →U 的 卷 积 变 换,其 中,X ∈
+R
+h′×l′×c′ ,U∈Rh×l×c,h(h′)和l(l′)分 别 表 示 图 像 的 长 和 宽,c
+表示图像特征的 通 道 数. 然 后 特 征 图 U ＝ [u１,u２,􀆺,uc]沿
+着 空 间 维 度 压 缩,再 通 过 全 局 平 均 池 化 生 成 包 含 信 道 的 空 间
+信息描述符z.在这个过程中,每个通道的二维特征(h×l)被
+压缩为１个实数,特征图从(h,l,c)转换为(１,c),表示为:
+z＝Fsq(uc)＝ １h×l　 ∑hi＝１　 ∑lj＝１uc(i,j) (１２)
+其中,z是通道描述符,Fsq(．)表示压缩函数,uc是 大 小 为h×l
+的第c 层特征图,uc(i,j)表示 在 第c 个 通 道 上 的 坐 标 为 (i,j)
+的像素值,∑
+h
+i＝１
+　 ∑
+l
+j＝１
+(􀅰)表示从 坐 标(１,１)到(h,l)对uc(􀅰)进 行
+求和,h 和l 表示图像的长和宽.
+为了获得通道级的 注 意 力 权 重,设 置 了 两 个 完 全 连 接 层
+和两个激活函数传递通道信息,表示为:
+w＝Fex (z,W )＝σ(W２δ(W１z)) (１３)
+其中,w 是通道方 向 的 注 意 力 权 重,Fex (􀅰 )表 示 激 励 函 数,z
+和 W 表示函数参 数,σ 是 ReLU 激 活 函 数,δ 是 Sigmoid 激 活
+函数,W１和W２是两层全连接层.
+将通道注意力权重 应 用 于 从 前 面 的 层 中 导 出 的 特 征 图.
+与传统的 SENet不 同,本 文 加 入 了 残 差 块 来 强 化 通 道 特 征.
+缩放操作表示为:
+uc′＝(uc×w)×uc (１４)
+其中,uc′是权重更新后的特征图,uc表示第c 层通 道 上 的 特 征
+图,w 是通道方向的注意力权重,×表示两向量的叉乘.
+与普通的SEＧResNet不同,本文修改了最后一层的输出,
+使 图 像 位 置 特 征 同 时 受 到 图 像 类 别 和 图 像 中 间 特 征 的 影 响.
+最终,经过ILR 网络生成的特征Ft可以表示为:
+Ft＝Tc􀱋FC(Avg(Tc)) (１５)
+其中,Ft表 示 ILR 网 络 的 输 出,Tc 表 示 卷 积 层 最 终 输 出 的 特
+征,􀱋 表 示 矩 阵 拼 接 操 作,Avg 表 示 平 均 池 化 操 作,FC 表 示
+全连接层.
+４　实验验证
+４．１　数据集
+为全面评估本文方法的有效性,在两个广 泛 使 用 的 MedＧ
+VQA 基准数据集 SLAKE[２５]和 VQAＧRAD[２６]上进行了实验.
+这两个数据集的详细信息如表１所列.
+表１　SLAKE 和 VQAＧRAD 数据集详细信息
+Table１　DetailsofSLAKEandVQAＧRADdatasets
+数 据 集 数 据 类 别 训 练 集 验 证 集 测 试 集 模 态
+SLAKE
+图 像 ４５０ ９６ ９６
+问 答 对 ９８４９ ２１０９ ２０７０ ３
+VQAＧRAD
+图 像 ３１５ － ３１５
+问 答 对 ３０６４ － ４５１ ３
+SLAKE 数据集是一个 既 有 语 义 标 签 又 有 结 构 医 学 知 识
+库的综合双语数据 集,包 含 ６４２ 张 放 射 学 图 像,包 括 １２ 种 疾
+病和３９个 全 身 器 官.VQAＧRAD 是 医 学 VQA 领 域 人 工 构
+建的数据集,放射学图像来 自 MedPix开 放 获 取 数 据 库,包 含
+１１个类别 的 问 题,每 个 图 像 都 与 多 个 问 题 相 关 联.SLAKE
+和 VQAＧRAD 中的问题 分 为 “开 放 式 ”和 “封 闭 式 ”两 类. 开
+放式是指答案没有固定结构,存在多个备选答案;而封闭式 的
+答案形式有限,如“YES/NO”. 图 ２ 给 出 了 一 个 样 本 图 像 及
+其对应的问答对示例.
+图２　数据集中的图像和问答对示例
+Fig．２　Examplesofimageandquestionandanswerpairsindatasets
+４．２　实验参数设置
+本文中 PTs模块由 ４ 层 卷 积 和 池 化 层 组 成,在 每 层 PT
+中,卷积核数为３、步长为１,池化层核数为２、步长 为 ２. 输 入
+图像大小为２２４×２２４,提取的图像特征维度为 １４×１４×７６８,
+５５２闫玉静,等:数据知识双增强的医学视觉问答网络
+
+=== PDF_PAGE 5 ===
+输入的问题特征 维 度 为 ２０×７６８. 在 数 据 增 强 部 分,选 取 了
+混合权重参数λ~Beta(５,１),并 在 之 后 的 消 融 实 验 中 对λ 进
+行讨论.
+本文使用学习率为０．００５、权 重 衰 减 为 ０．００１ 的 AdamW
+优化器 [２７]进 行 优 化,batchsize 设 为 １２８,每 次 训 练 ５０００ 轮
+次.所有 训 练 均 在 单 个 内 存 为 ２４GB 的 NVIDIA GeForce
+RTX３０９０GPU 上进行.
+４．３　实验对比分析
+４．３．１　定量评估
+为了证明本文模型 的 有 效 性,将 其 与 一 些 现 有 的 SOTA
+方 法 进 行 了 对 比,包 括 BAN[１４],MEVF[８],CPRD[９],MMixＧ
+up
+[１０],VQAMix[２１],PubMedCLIP[２８]和 MISS[２９]. 评 价 指 标
+采用准 确 率 (Accuracy,ACC),其 中 大 多 数 模 型 将 VQA 视 为
+答案 分 类 或 排 序 任 务,而 MISS 模 型 将 MedＧVQA 视 为 生 成
+任务,因此,使用自动 评 估 方 法 评 估 封 闭 式 问 题,而 对 于 开 放
+式问题,将生成 的 回 答 与 基 本 事 实 答 案 进 行 人 工 评 估. 表 ２
+和表３分别列出了在 SLAKE 和 VQAＧRAD 数据集上的实 验
+结果.
+表２　在 SLAKE 数据集上不同方法的实验结果
+Table２　ExperimentalresultsofdifferentmethodsonSLAKE
+dataset
+(％)
+方 法 开 放 式 准 确 率 封 闭 式 准 确 率 总 体 准 确 率
+BAN[１４] ７４．６０ ７９．１０ ７６．３０
+MEVFＧSAN[８] ７５．３０ ７８．４０ ７６．５０
+MEVFＧBAN[８] ７７．８０ ７９．８０ ７８．６０
+CPRDＧBAN[９] ７９．５０ ８３．４０ ８０．１０
+MMixup[１０] ７９．３８ ８５．８２ ８１．９０
+PUBMEDCLIP[２８] ７８．４０ ８２．５０ ８０．１０
+MISS[２９] ８２．９１ ８１．４７ ８２．００
+Ours ８０．１６ ８６．５４ ８２．６６
+注 :加 粗 表 示 最 优 结 果 .
+表３　在 VQAＧRAD 数据集上不同方法的实验结果
+Table３　ExperimentalresultsofdifferentmethodsonVQAＧRAD
+dataset
+(％)
+方 法 开 放 式 准 确 率 封 闭 式 准 确 率 总 体 准 确 率
+BAN[１４] ３７．４０ ７２．１０ ５８．３０
+MEVFＧSAN[８] ４９．２０ ７３．９０ ６４．１０
+MEVFＧBAN[８] ４９．２０ ７７．２０ ６６．１０
+CPRDＧBAN[９] ５２．５０ ７７．９０ ６７．８０
+MMixup[１０] ５３．１０ ８１．３０ ７０．２０
+VQAMix[２１] ５６．６０ ７９．６０ ７０．４０
+PUBMEDCLIP[２８] ６０．１０ ８０．００ ７２．１０
+MISS[２９] ７１．８１ ８０．３５ ７６．０５
+Ours ５３．６３ ８１．９８ ７０．７３
+注 :加 粗 表 示 最 优 结 果 .
+与其他的视觉 语 言 模 型 相 比,本 文 模 型 在 SLAKE 数 据
+集 上 封 闭 式 问 题 和 全 类 别 问 题 中 均 达 到 了 最 高 的 准 确 率,分
+别为８６．７８％和８２．６６％,超过了所有采用答案分类 和 生 成 任
+务的方法.对于 VQAＧRAD 数据集,本 文 模 型 在 封 闭 式 问 题
+上的准确率达到８１．９８％,比第二名高出０．６８个百分点.
+本文模型在个 别 指 标 上 低 于 MISS 模 型,这 主 要 是 由 于
+MISS模型使用人工评估 方 式 计 算 准 确 率,存 在 主 观 性 偏 差.
+如图３所 示,MISS 的 预 测 结 果 来 自 其 原 论 文 中 的 数 据 [２９].
+图３(a)中,与 MISS模型预测结果相比,本文方法的预测 结 果
+包含更多真实答案 中 的 信 息;图 ３(b)中,本 文 方 法 的 预 测 结
+果与真实答案完全 匹 配. 除 此 之 外,由 于 开 放 式 的 答 案 种 类
+较多,语言更加灵活,在较少的数据量上训练无法使模型学 习
+到更多的答案特征,这也是本文模型指标略低的原因之一.
+(a) (b)
+图３　在 SLAKE 数据集上预测结果的可视化
+Fig．３　VisualizationofpredictionresultsonSLAKEdataset
+实验数据表明,本文 方 法 在 处 理 封 闭 式 问 题 上 有 显 著 优
+势,与生成任务方法相比,本文方法在处理开放式问题上仍 有
+提升空间.
+４．３．２　定性评估
+为了验证本文模型 的 有 效 性,对 问 答 结 果 进 行 了 定 性 分
+析.从 SLAKE 数据集和 VQAＧRAD 数据集中选取了６个 样
+例,在 图 ４ 中 对 基 线 模 型 和 本 文 模 型 对 答 案 的 预 测 情 况 进 行
+比较分析,用绿色和红色区分预测答案的正确和错误情况.
+图４　在 SLAKE 和 VQAＧRAD 数据集上的预测结果
+(电子版为彩图)
+Fig．４　PredictionresultonSLAKEandVQAＧRADdatasets
+６５２ ComputerScience 计算机科学 Vol．５２,No．１２,Dec．２０２５
+
+=== PDF_PAGE 6 ===
+其中,左边的３个示例来 自 SLAKE 数 据 集,右 边 的 ３ 个
+示 例 来 自 VQAＧRAD 数 据 集. 为 了 保 证 分 析 结 果 的 合 理 性
+和均衡性,分别选取 了 封 闭 式 和 开 放 式 问 题,问 题 涉 及 器 官、
+疾病、方位和数量等不同方面.
+从图４中的示例可以看出,基 线 模 型 [１０]预 测 出 错 误 答 案
+的原因是基线模型不能准确定位异常信息,如示例(sＧ１)(sＧ２)
+和(rＧ１)所示.相比之下,本文模型通过ILR 模 块 学 习 不 同 图
+像类别的位置特征,增加了模 型 预 测 的 准 确 性.对 于 示 例 (sＧ
+３)和(rＧ２),基 线 模 型 输 出 与 基 本 事 实 相 反 的 答 案,因 为 它 只
+关 注 到 了 图 像 中 的 左 侧,而 忽 略 了 图 像 中 的 左 侧 代 表 着 人 体
+的右侧这一事实情 况. 然 而,所 提 模 型 通 过 学 习 到 更 全 面 的
+多模态信息,提供了 一 个 准 确 的 答 案. 该 方 法 在 位 置 相 关 问
+题上表现出色,这 是 由 于 ILR 模 块 学 习 到 了 图 像 位 置 特 征,
+增强了模型对图像的隐式特征的理解.在 示 例r３ 中,基 线 模
+型 预 测 的 答 案 与 真 实 答 案 的 类 别 有 很 大 差 别,这 是 因 为 基 线
+模 型 在 不 合 理 的 数 据 混 合 中 产 生 了 噪 声 数 据,这 也 反 映 了 条
+件约束在有效数据 混 合 中 的 关 键 作 用. 上 述 示 例 表 明,本 文
+模 型 通 过 使 用 图 像 位 置 信 息 提 取 和 多 模 态 条 件 数 据 增 强,可
+以有效地提 取 丰 富 而 准 确 的 多 模 态 特 征,从 而 提 升 在 MedＧ
+VQA 任务中的正确性.
+４．４　消融实验
+本节通过消融研究 以 评 估 本 文 方 法 中 每 个 模 块 的 影 响.
+表４和表５分别列出了两个基准数据集上的实验结果. 可 以
+看出,在去掉 MCM 模 块 (w/o MCM)后,两 个 数 据 集 的 所 有
+类别问题中的准确 率 都 大 幅 度 降 低,证 明 了 MCM 模 块 能 够
+丰富数据集的多样性,有效 提 升 模 型 性 能. 在 去 掉ILR 模 块
+(w/oILR)后,开放式问题的准确率大 幅 度 降 低,说 明ILR 模
+块 能 够 有 效 提 取 图 像 中 位 置 相 关 的 特 征,帮 助 模 型 更 准 确 地
+理 解 图 像 信 息,特 别 是 在 处 理 需 要 位 置 感 知 的 开 放 式 问 题 时
+效果显著,可 以 参 考 图 ５ 中 的 (sＧb). 当 同 时 去 掉 MCM 和
+ILR 模块(w/o MCM &ILR)后,模 块 的 性 能 进 一 步 下 降,且
+在所有评估 指 标 上 表 现 最 差. 这 表 明,MCM 和ILR 模 块 是
+模型性能提升的关键组成部分,两者相辅相成,共同优化模 型
+对多模态和位置特征的处理能力.
+表４　在 SLAKE 数据集上的消融实验
+Table４　AblationstudiesonSLAKEdataset
+(％)
+方 法 开 放 式 准 确 率 封 闭 式 准 确 率 总 体 准 确 率
+w/o MCM&ILR ７７．９８ ８１．２５ ７９．２６
+w/o MCM ７８．２９ ８２．２１ ７９．８３
+w/oILR ７８．７６ ８６．３０ ８１．７２
+Ours ８０．１６ ８６．５４ ８２．６６
+表５　在 VQAＧRAD 数据集上的消融实验
+Table５　AblationstudiesonVQAＧRADdataset
+(％)
+方 法 开 放 式 准 确 率 封 闭 式 准 确 率 总 体 准 确 率
+w/o MCM&ILR ４１．９ ７２．７９ ６０．５３
+w/o MCM ３７．４３ ７６．４７ ６０．９８
+w/oILR ５５．３１ ８０．５１ ７０．５１
+Ours ５３．６３ ８１．９８ ７０．７３
+VQAＧRAD 数据 集 上,本 文 方 法 的 开 放 式 准 确 率 低 于
+“w/oILR”,这 主 要 是 VQAＧRAD 数 据 集 的 开 放 式 问 答 对 数
+量过少(１２４２个问答对),ILR 模块 引 入 的 额 外 位 置 特 征 提 取
+未能完全发挥作用,导致在开放式问题上的表现略差.
+但从总体性能来看,ILR 模 块 依 然 显 著 提 升 了 模 型 的 封
+闭式问题表现和总 体 准 确 率,使 模 型 达 到 平 衡 的 状 态. 其 价
+值依然得到了验证.
+为了进一 步 阐 明 MCM 和ILR 模 块 的 有 效 性,图 ５ 中 展
+示了在６个 MedＧVQA 实 例 中 消 融 实 验 的 可 视 化 结 果,用 绿
+色和红色区分预测答案的正确和错误情况.图５中左侧 ３ 个
+案例来自 SLAKE 数据集,右侧案例来自 VQAＧRAD 数据 集.
+在示例(sＧb)和(rＧc)中,两个模块都能在不同程 度 上 修 正 模 型
+的响应.从示例(rＧa)中可以看 出,所 提 模 块 有 助 于 模 型 准 确
+地响应两个基准的 封 闭 式 和 开 放 式 查 询. 结 合 示 例 (sＧa)(sＧ
+c)和(rＧb)的结 果 可 以 看 出,ILR 模 块 在 SLAKE 数 据 集 上 的
+提升效果更好,而 MCM 模 块 在 VQAＧRAD 数 据 集 上 能 发 挥
+更大的优势,分析其原因可 能 是 VQAＧRAD 数 据 集 的 问 题 种
+类更为单一,有较多的重复,这也体现出 MCM 模块 在 丰 富 数
+据多样性方面的优 势. 总 体 而 言,图 ５ 中 的 案 例 共 同 证 明 了
+ILR 和 MCM 模块显著提高了 模 型 在 应 对 MedＧVQA 挑 战 方
+面的性能.
+图５　在 SLAKE 和 VQAＧRAD 数据集上的消融实验结果
+(电子版为彩图)
+Fig．５　AblationresultsonSLAKEandVQAＧRADdatasets
+７５２闫玉静,等:数据知识双增强的医学视觉问答网络
+
+=== PDF_PAGE 7 ===
+４．４．１　MCM 中λ 取值对模型的影响
+为了确定 MCM 中 最 好 的λ~Beta(α,β)取 值,比 较 了 不
+同 Beta分布对模型性能的影响.表 ６ 的 结 果 表 明,适 当 选 择
+Beta分布能够 积 极 提 升 MedＧVQA 任 务 的 性 能. MedＧVQA
+任务要求模型理解两种模态的信息并进行推断.由于新样 本
+是由两个训练样本混合产生的,因 此 Beta分 布 的 选 择 直 接 影
+响着这些合成样本 的 质 量. 当λ~Beta(０．５,０．５)时,两 个 高
+比 例 样 本 的 插 值 生 成 了 复 杂 的 合 成 样 本,这 些 样 本 中 嵌 入 了
+过 多 冗 余 信 息,导 致 模 型 难 以 学 习 到 有 效 特 征 并 影 响 了 收 敛
+性.实验结果显示,随着插值样本的比例差增大,模型准 确 率
+在一定范围内有所提升.经过实验验证,当λ~Beta(５,１)时,
+模 型 表 现 最 佳,这 归 因 于 平 衡 的 插 值 样 本 的 比 例 对 模 型 的 泛
+化能力的正向 作 用. 然 而,当α 参 数 增 大 至λ~Beta(１０,１)
+时,模型的效果反而下降,过高的插值样本比例导致某一样 本
+的影响减弱,容 易 变 为 噪 声 数 据. 因 此,选 择 合 适 的 Beta分
+布有助于提高模型的泛化能力,从而提高其性能.
+表６　在 SLAKE 数据集上 MCM 模块参数的消融实验
+Table６　AblationstudiesofMCM parametersonSLAKEdataset
+(％)
+λ＝Beta(α,β) 开 放 式 准 确 率 封 闭 式 准 确 率 总 体 准 确 率
+(０．５,０．５) ７８．７６ ８５．８２ ８１．５３
+(１,１) ７９．８４ ８６．５４ ８２．４７
+(５,１) ８０．１６ ８６．５４ ８２．６６
+(１０,１) ７８．７６ ８４．１３ ８０．８７
+４．４．２　对数据增强方法的消融实验
+为了 证 明 本 文 所 提 出 的 数 据 增 强 方 法 的 优 越 性,在
+SLAKE 数据集上 对 不 同 的 数 据 增 强 方 法 进 行 了 评 估,实 验
+结果如表７所列.其中,“线 性 混 合 ”方 法 使 用 MMixup 中 的
+数据增强方法,将两个 训 练 样 本 按 权 重 参 数λ 进 行 线 性 加 权
+相加,而“非线性混合”方法则采用 VQAMix中的 数 据 增 强 方
+法,在计算过程中引入权重参数λ２,通过非 线 性 函 数 进 行 样 本
+的混合.在传统线性 混 合 方 法 的 基 础 上,本 文 引 入 了 约 束 条
+件,提出了一种新的数据增强方法,以进一步优化混合过程 并
+提升模型性能.从表 ７ 中 的 实 验 结 果 可 以 看 出,本 文 提 出 的
+数据增强方法在各项指标上均取得了最佳效果.
+表７　在 SLAKE 数据集上数据增强方法的消融实验
+Table７　Ablationstudiesofdataenhancementmethodson
+SLAKEdataset
+(％)
+数 据 增 强 方 法 开 放 式 准 确 率 封 闭 式 准 确 率 总 体 准 确 率
+线 性 混 合 ８０．００ ８５．５８ ８２．１９
+非 线 性 混 合 ７９．６９ ８６．３０ ８２．２８
+本 文 方 法 ８０．１６ ８６．５４ ８２．６６
+结束语　针对 MedＧVQA 中多模态特征提取质 量 低 和 数
+据 集 规 模 小 的 问 题,本 文 提 出 了 一 种 新 颖 的 数 据 知 识 双 增 强
+的 MedＧVQA 模 型 DKEN. 该 模 型 使 用 数 据 增 强 模 块 MCM
+将 图 像 问 题 对 在 问 题 类 别 约 束 下 进 行 线 性 组 合,丰 富 了 数 据
+集的多 样 性,避 免 了 混 合 过 程 中 产 生 额 外 的 噪 声. 通 过 将
+LRNet和残差块结合提出ILR,有效提取图像位置特征,并 将
+其 编 码 到 图 像 特 征 和 问 题 特 征 的 融 合 过 程 中,利 用 知 识 增 强
+使 得 提 取 到 的 多 模 态 特 征 更 详 细、丰 富. 在 SLAKE 和
+VQAＧRAD 数据集上进行的大量实验表 明,本 文 模 型 在 MedＧ
+VQA 任务中具有优越性.
+MedＧVQA 的可解释性可以为 医 生 的 诊 断 提 供 更 加 可 靠
+的 回 答 依 据 和 更 加 清 晰 的 推 理 思 路,在 一 定 程 度 上 保 证 了 深
+度学习模型的安全性,这也是当前视觉问答领域的研究热 点.
+为了进一步提升模型的可解释性,计划集成一个推理模块,这
+对模型的实际部署 和 临 床 应 用 具 有 重 要 意 义. 此 外,本 文 使
+用的公开医学问答数据集 SLAKE 和 VQAＧRAD 在数据集规
+模、病种和问题类型的多样性方面仍有提升空间.因此,提 升
+基 于 少 量 数 据 集 训 练 的 模 型 准 确 率,将 是 未 来 工 作 的 一 个 重
+要方向.
+参 考 文 献
+[１] ANTOLS,AGRAWALA,LUJS,etal．VQA:VisualQuestion
+Answering[C]∥２０１５IEEEInternationalConferenceonComＧ
+puterVision．２０１５:２４２５Ｇ２４３３．
+[２] ISHMAM M F,SHOVON M S H,MRIDHA M F,etal．From
+ImagetoLanguage:A CriticalAnalysisofVisualQuestion AnＧ
+swering(VQA)Approaches,Challenges,andOpportunities[J]．
+InformationFusion,２０２４,１０６:１０２２７０．
+[３] LINZ,ZHANG D,TAO Q,etal．MedicalVisualQuestion AnＧ
+swering:ASurvey[J]．ArtificialIntelligencein Medicine,２０２３,
+１４３:１０２６１１．
+[４] SCHMIDHUBER J,HOCHREITER S．Long ShortＧTerm MeＧ
+mory[J]．NeuralComputation,１９９７,９(８):１７３５Ｇ１７８０．
+[５] VASWANI A,SHAZEER N,PARMAR N,etal．Attentionis
+AllYouNeed[C]∥Proceedingsofthe３１stInternationalConＧ
+ferenceon NeuralInformationProcessingSystems．２０１７:６０００Ｇ
+６０１０．
+[６] DEVLINJ,CHANG M W,LEE K,etal．BERT:PreＧtrainingof
+deep bidirectional transformers for language understanding
+[C]∥Proceedingsofthe２０１９ConferenceoftheNorth AmeriＧ
+canChapterofthe AssociationforComputationalLinguistics:
+HumanLanguageTechnologies．２０１９:４１７１Ｇ４１８６．
+[７] CHEN G,GONG H,ANDLIG．HCPＧMICatVQAＧMed２０２０:
+Effective Visual Representation for Medical Visual Question
+Answering[C]∥CLEF(WorkingNotes)．２０２０．
+[８] NGUYEN BD ,DO TT,NGUYENBX,etal．OvercomingDaＧ
+taLimitationinMedicalVisualQuestionAnswering[C]∥InterＧ
+nationalConferenceon MedicalImageComputingand CompuＧ
+terＧAssistedIntervention．２０１９:５２２Ｇ５３０．
+[９] LIU B,ZHANL M,WU X M．ContrastivepreＧtrainingandrepＧ
+resentation distillation for medicalvisualquestion answering
+basedonradiologyimages[C]∥ MedicalImageComputingand
+ComputerAssistedIntervention．２０２１:２１０Ｇ２２０．
+[１０]LIU L,SU X．How wellapply multimodal mixupandsimple
+mlpsbackbonetomedicalvisualquestionanswering? [C]∥InＧ
+ternationalConferenceonBioinformaticsandBiomedicine．２０２２:
+２６４８Ｇ２６５５．
+[１１]SIMONYAN K,ZISSERMAN A．VerydeepconvolutionalnetＧ
+worksforlargeＧscaleimagerecognition[C]∥Proceedingsofthe
+３rd International Conference on Learning Representations．
+２０１５．
+８５２ ComputerScience 计算机科学 Vol．５２,No．１２,Dec．２０２５
+
+=== PDF_PAGE 8 ===
+[１２]HE K,ZHANG X,REN S,et al．Deep residuallearning for
+imagerecognition[C]∥IEEE Conferenceon Computer Vision
+andPatternRecognition．２０１６:７７０Ｇ７７８．
+[１３]YANG Z,HE X,GAO J,etal．Stackedattentionnetworksfor
+imagequestionanswering[C]∥ProceedingsoftheIEEEConfeＧ
+renceon Computer Visionand Pattern Recognition．２０１６:２１Ｇ
+２９．
+[１４]KIM J H,JUN J,ZHANG B T．Bilinearattention networks
+[C]∥Conferenceon NeuralInformation ProcessingSystems．
+２０１８．
+[１５]BEN ABACHA A,HASAN S A,DATLA V V,etal．VQAＧ
+Med:Overviewofthemedicalvisualquestionansweringtaskat
+imageCLEF ２０１９[C]∥ProceedingsofCLEF ２０１９ Working
+Notes．２０１９:９Ｇ１２．
+[１６]ESLAMIS,DE MELO G,MEINEL C．Doesclipbenefitvisual
+questionansweringinthemedicaldomainasmuchasitdoesin
+thegeneraldomain? [J]．arXiv:２１１２．１３９０６,２０２１．
+[１７]ALLAOUZII,AHMED M B,BENAMROU B．An EncoderＧ
+DecoderModelfor VisualQuestion Answeringinthe Medical
+Domain[C]∥CLEF．２０１９．
+[１８]KHARE Y,BAGAL V,MATHEW M,etal．Mmbert:MultimoＧ
+dalbertpretrainingforimprovedmedicalvqa[C]∥International
+SymposiumonBiomedicalImaging．２０２１:１０３３Ｇ１０３６．
+[１９] WANG X,PENG Y,LU L,etal．ChestXＧRay８:HospitalＧscale
+chest XＧRay database and benchmarks on weaklyＧsupervised
+classificationandlocalizationofcommonthoraxdiseases[C]∥
+IEEEConferenceonComputerVisionandPatternRecognition．
+２０１７:３４６２Ｇ３４７１．
+[２０]PELKAO,KOITKAS,RÜCKERTJ,etal．Radiologyobjectsin
+Context(ROCO):amultimodalimagedataset[C]∥International
+Conferenceon MedicalImaging Computingand ComputerＧAsＧ
+sistedIntervention．２０１８:１８０Ｇ１８９．
+[２１]GONG H,CHEN G,MAO M,etal．VQAMIX:ConditionaltripＧ
+let mixup for medical visual question answering [J]．IEEE
+Transactionson MedicalImaging,２０２２,４１(１１):３３３２Ｇ３３４３．
+[２２]PENNINGTONJ,SOCHER R,MANNING CD．GloVe:Global
+vectorsforwordrepresentation[C]∥Proceedingsofthe２０１４
+ConferenceonEmpiricalMethodsin NaturalLanguageProcesＧ
+sing．２０１４:１５３２Ｇ１５４３．
+[２３]ZHANG H,CISSE M,DAUPHIN Y N,etal．mixup:Beyond
+empiricalriskminimization[J]．arXiv:１７１０．０９４１２,２０１７．
+[２４]HUJ,SHENL,SUN G．SqueezeＧandＧexcitationnetworks[C]∥
+ProceedingsoftheIEEE Conferenceon Computer Visionand
+PatternRecognition．２０１８:７１３２Ｇ７１４１．
+[２５]LIU B,ZHAN L M,XU L,etal．SLAKE:A SemanticallyＧLaＧ
+beledKnowledgeＧEnhancedDatasetforMedicalVisualQuestion
+Answering[J]．arXiv:２１０２．０９５４２,２０２１．
+[２６]LAUJJ,GAYENS,ABACHA AB,etal．AdatasetofclinicalＧ
+lygeneratedvisualquestionsandanswersaboutradiologyimaＧ
+ges[J]．ScientificData,２０１８,５(１):１Ｇ１０．
+[２７]LOSHCHILOVI,HUTTERF．FixingweightdecayregularizaＧ
+tioninadam[J]．arXiv:１７１１．０５１０１,２０１７．
+[２８]ESΛIS,MEINELC,DE MELOG．Pubmedclip:How muchdoes
+clipbenefitvisualquestionansweringinthe medicaldomain?
+[C]∥Findingsofthe AssociationforComputationalLinguisＧ
+tics．２０２３:１１８１Ｇ１１９３．
+[２９]CHENJ,YANG D,JIANG Y,etal．MISS:A GenerativePreＧ
+trainingandFineＧTuning Approachfor MedＧVQA[C]∥InterＧ
+nationalConferenceon ArtificialNeuralNetworks．２０２４:２９９Ｇ
+３１３．
+YAN Yujing,born in １９９９,postgraＧ
+duate．Her mainresearchinterestsinＧ
+cludecomputervisionandvisualquesＧ
+tionanswering．
+SONG Wenfeng,bornin１９８７,Ph．D,asＧ
+sociateprofessor,isa memberofCCF
+(No．７１３３４S)．Her main researchinＧ
+terests include pattern recognition,
+computervisionandmachinelearning．
+(责任编辑:何杨)
+９５２闫玉静,等:数据知识双增强的医学视觉问答网络

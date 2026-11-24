@@ -1,0 +1,793 @@
+=== PDF_PAGE 1 ===
+磁共振成像  2025年 6月第 16卷第6期 Chin J Magn Reson Imaging , Jun, 2025, Vol. 16, No. 6
+https://www.chinesemri.com
+综 述｜｜Reviews
+人工智能在胃肠道肿瘤影像自动分割可视化的
+研究进展
+蒋常琴， 张友军， 马文珊， 冯强
+*
+作者单位 山东第二医科大学附属益都中心医院医学影像科， 潍坊 262500
+*
+通信作者 冯强，E-mail: fengqiang220812@163.com
+中图分类号 R445.2；R735.2；R735.3 文献标识码 A DOI 10.12015/issn.1674-8034.2025.06.033
+本文引用格式 蒋常琴, 张友军, 马文珊, 等 . 人工智能在胃肠道肿瘤影像自动分割可视化的研究进展 [J]. 磁共振成像 , 2025, 16(6): 
+214-219. 
+[摘要] 医学影像技术的快速发展显著提高了胃肠道肿瘤（ gastrointestinal tumors, GIT）的诊断和治疗水平。然而，由于肿瘤形
+态的复杂性、成像方式的变化以及对高精度描绘的需求， GIT的准确分割和可视化在临床实践中仍面临挑战。人工智能
+（artificial intelligence, AI） ，特别是深度学习（deep learning, DL）模型，已成为医学影像领域的一种变革性方法，在自动化肿瘤
+分割任务方面显示出巨大的潜力，但同时也存在模型泛化能力有限等问题。 GIT的高度异质性对分割模型提出了更高要求，且
+当前缺乏统一的评估标准与临床验证机制，限制了 AI工具在实际诊疗流程中的可信度和可解释性。本文通过系统地综述基于
+AI的 GIT图像自动分割研究进展，重点介绍不同影像检查方式的 DL架构、多模态成像模型等 AI框架应用方面的关键成果，总
+结现有研究的不足，探讨其未来研究的发展方向，为 AI驱动的分割工具在研究与临床转化中的应用提供理论支持与实践参考。
+[关键词] 人工智能；胃肠道肿瘤；深度学习；诊断；多模态成像
+Research progress of artificial intelligence in automatic segmentation and visualization of 
+gastrointestinal tumor images
+JIANG　Changqin, ZHANG 　Youjun, MA　Wenshan, FENG　Qiang
+*
+Medical Imaging Department of Yidu Central Hospital Affiliated to Shandong Second Medical University, Weifang 262500, China
+*
+Correspondence to   FENG Q, E-mail: fengqiang220812@163.com
+Received  6 Feb 2025, Accepted  5 Jun 2025; DOI  10.12015/issn.1674-8034.2025.06.033
+ACKNOWLEDGMENTS   Shandong Provincial Medical and Health Science and Technology Project (No. 202309010835).
+Cite this article as  JIANG C Q, ZHANG Y J, MA W S, et al. Research progress of artificial intelligence in automatic segmentation and 
+visualization of gastrointestinal tumor images[J]. Chin J Magn Reson Imaging, 2025, 16(6): 214-219.
+Abstract The rapid development of medical imaging technology has significantly enhanced the diagnosis and treatment of 
+gastrointestinal tumors (GIT). However, due to the complex morphology of tumors, variations in imaging modalities, and the need for 
+high-precision depiction, accurate segmentation and visualization of GIT remain challenging in clinical practice. Artificial intelligence 
+(AI), particularly deep learning (DL) models, has emerged as a transformative approach in medical imaging, demonstrating great 
+potential in automating tumor segmentation tasks. Nevertheless, issues such as limited generalization ability of models persist. The high 
+heterogeneity of GIT imposes greater demands on segmentation models, and the current lack of standardized evaluation criteria and 
+clinical validation mechanisms further limits the reliability and interpretability of AI tools in real-world diagnostic and therapeutic 
+settings. This article provides a comprehensive review of recent advancements in AI-based automatic segmentation of GIT images. It 
+focuses on the key achievements in AI frameworks, including DL architectures and multimodal imaging models, applied across various 
+imaging modalities. The article also summarizes the limitations of existing research and outlines future directions. By systematically 
+reviewing the progress in GIT segmentation and visualization, this work aims to explore future research trajectories and offer both 
+theoretical support and practical guidance for the application of AI-driven segmentation tools in research and clinical translation.
+Key words artificial intelligence; gastrointestinal tumors; deep learning; diagnosis; multimodal imaging
+0　引言
+胃肠道肿瘤 （gastrointestinal tumors, GIT） 涵盖结
+直肠癌、 胃癌、 食管癌等， 是全球范围内常见的恶性
+肿瘤之一， 也是主要癌症相关死亡原因之一
+[1-2]
+。在
+中国，GIT的发病率和死亡率也显著攀升 ， 严 重影响
+了我国居民健康水平。尽管治疗技术有所进步， 但
+晚期 GIT的预后仍不理想， 因此， 早期发现和精准诊
+断是提高患者生存率的关键
+[3-4]
+。然而， 由于肿瘤多
+具有形态复杂、 异质性高， 与周围组织关系紧密等特
+点， 也给临床诊疗带来重大挑战。
+目 前 ， 医 学 影 像 技 术 如 计 算 机 断 层 扫 描
+（computed tomography, CT ） 、 磁共振成像 （magnetic 
+resonance imaging, MRI） 、 内窥镜以及PET/CT（positron 
+emission tomography/computed tomography） 等在GIT的
+精准诊断、 分期与管理过程中发挥了关键作用。在
+影像上， 肿瘤分割能够精确定位和提取病灶， 为GIT
+的精准诊断提供形态学和空间信息支持， 是精准诊
+断的重要一环。但精准分割 GIT， 并将肿瘤可视化，
+仍面临挑战。传统上， 手动分割是肿瘤影像分析的
+主要手段， 但这一过程不仅耗时费力， 还高度依赖放
+收稿日期 2025-02-06 接受日期 2025-06-05
+基金项目 山东省医药卫生科技项目 （编号：202309010835）
+· ·214
+
+=== PDF_PAGE 2 ===
+磁共振成像  2025年 6月第 16卷第6期 Chin J Magn Reson Imaging , Jun, 2025, Vol. 16, No. 6
+https://www.chinesemri.com
+综 述｜｜Reviews
+射科医生的经验， 导致诊断结果存在客观性和一致
+性不足的问题
+[3, 5-6]
+。此外，GIT的不规则形状及其与
+邻近器官复杂紧密的解剖关系， 也进一步增加了精
+准分割的难度。
+近年来， 人工智能 （artificial intelligence, AI） 在医
+学影像领域展现出巨大的潜力
+[7]
+。深度学习 （deep 
+learning, DL） 算法如卷积神经网络 （convolutional 
+neural network, CNN） 等能显著提高肿瘤分割的准确
+性和效率
+[8-9]
+。与传统方法相比，AI在肿瘤边界划分、
+形态识别以及减少人力方面表现出色
+[10-11]
+。在 GIT分
+割领域，AI的应用也逐渐深入， 已有部分研究将AI应
+用于胃癌、 结直肠癌等肿瘤的术前评估、 辅助诊断及预
+后分析中。例如， 在结直肠癌中， 基于U-Net的分割模
+型用于CT图像肿瘤的自动分割， 取得了良好的分割性
+能，Dice相似系数 （Dice similarity coefficient, DSC） 超
+过 0.85
+[12]
+。DEVI等
+[13]
+提出的级联 DL架构也在结直
+肠癌检测与分割中表现出较高的准确度。在胃癌方
+面，TAO等
+[14]
+开发的基于增强 CT图像的 DL模型， 能
+够自动完成胃癌的分割与分期评估， 展现出较强的
+临床应用潜力。尽管如此， 聚焦于GIT的 AI研究仍
+面临多重挑战： 第一， 现有研究多基于小样本或单中
+心数据， 缺乏通用性强、 异质性高的大规模数据集，
+导致模型的泛化能力有限； 第二，GIT具有高度异质
+的影像表现， 如黏液腺癌、 环形病变、 溃疡型早期癌
+等， 对分割模型的识别能力提出更高要求； 第三， 目
+前尚缺乏统一的评价标准和临床验证机制， AI工具
+在实际诊疗流程中的可信度和可解释性仍待加强。
+因此， 有必要对AI在 GIT影像分割与可视化领域的
+研究进展进行系统综述， 明确当前技术在不同 GIT
+中的应用现状与主要成果， 总结尚未解决的关键问
+题， 探讨未来研究的发展方向。
+1　医学影像图像 AI自动分割
+影像学在 GIT的管理中至关重要， 可提供关于
+肿瘤位置、 大小及扩散的关键信息。常见的不同影
+像学检查在肿瘤的临床管理中各有优势。 CT扫描广
+泛用于 GIT的分期和治疗规划
+[8]
+，MRI由于其卓越的
+软组织对比度， 在检测直肠癌和肝转移瘤方面具有
+重要价值
+[15]
+。另外， 内窥镜检查可直接观察黏膜表
+面， 并常结合活检进行组织学分析。PET/CT可通过
+提供功能性影像， 基于代谢活性帮助区分良性与恶
+性病变
+[16]
+。在影像上对肿瘤进行分割是临床诊断的
+关键步骤， 也是精准诊断重要一环。近年来， 应用AI
+方法分割肿瘤表现出巨大潜力， 通过利用海量影像
+数据，AI算法能够学习复杂的模式， 并实现分割过程
+的自动化。建立 AI分割模型的主要步骤包括三步：
+预处理、 模型训练及模型评估。在评估分割算法的
+准确性时， 常用的分割性能评价指标包括：DSC， 用
+于衡量预测分割结果与真实分割掩膜之间的重叠程
+度，DSC得分越高 （接近1） ， 表明分割性能越好。交
+并比 （intersection over union, IOU ） ， 又称Jaccard 指
+数， 用于计算预测分割和真实分割区域的交集与并
+集的比值。此外， 敏感度、 特异度、 精确度与召回率
+等也是评价分割模型效果的常用指标。
+AI已经逐步改变了医学影像分析现状， 使复杂
+数据集的自动化处理成为可能
+[16-17]
+。与传统机器学
+习 （machine learning, ML） 依赖于手工勾画-提取特征
+不同，DL利用 CNN等方法自动学习特征
+[18]
+， 这一技
+术显著提升了医学影像中分割任务的性能
+[5]
+。作为
+AI的一个重要分支，DL模型可直接从原始图像中提
+取特征， 无需手动勾画及提取， 因而在解剖环境较复
+杂的 GIT分割方面有较大的应用潜力。尽管 AI模型
+在图像分割任务中取得了较高的准确率， 但跨研究
+的模型仍面临挑战， 主要原因是数据集和评估协议
+的差异 。为 解决这一问题， “标准化基准测试”
+（medical segmentation decathlon, MSD ） 在促进公平
+比较和推动领域发展方面发挥了重要作用
+[19]
+。此外，
+多种公开可用的数据集 （如MSD和 EndoVis挑战数
+据集等） 可能为 GIT 影像 AI 模型的开发提供支
+持
+[20-21]
+。这些基准数据集不仅推动了 AI技术的进步，
+还为不同影像技术和肿瘤类型的分割模型标准化评
+估创造了条件。
+2　GIT影像 AI自动分割
+2.1 基于CT的分割
+近年来， 通过AI模型进行的 CT肿瘤分割取得了
+显著进展
+[22-23]
+。例如， Pirabaharan 等提出的 “交互
+U-Net模型” ， 与使用加权损失函数的标准U-Net相比
+提高了整体分割精度。通过仅利用单个用户交互，
+与普通标准 U-net模型相比， 将整体准确度提高了
+10.39%
+[24]
+。王云利
+[25]
+提出了一种基于 “分水岭区域合
+并” 的胃部CT图像分割方法。该方法通过人工划线
+和区域特征相似性准则提高了分割准确性， 为了减
+少交互影响， 研究引入了 “种子点迁移生长” 技术， 解
+决了胃部 CT图像中边缘模糊以及与临近结构界限
+不清的问题， 提高了分割速度和准确性。郑楷宜等
+[26]
+等评估了三维 no-new-U-Net（3D nnU-Net）DL网络模
+型， 基于腹部CT图像自动分割结直肠癌， 并经多中
+心、 多机型的数据集训练和验证后， 发现3D nnU-Net 
+DL模型可实现在腹部 CT图像对结直肠癌的自动分
+割， 模型具有较好的鲁棒性及泛化能力， 动脉期分割
+能 力 优 于 静 脉 期 ， 计 算 分 割 覆 盖 率（calculate 
+segmentation-coverage ratio, SCR ）、DSC 分 别 为
+0.865、0.714。以上研究显示， 基于CNN的分割模型
+在分割 GIT上表现不俗， 但CT不同扫描仪及成像协
+议之间的差异， 加上胃癌浸润性生长模式和不规则
+形态， 仍然是GIT分割面临的主要挑战。基于此， LI
+等
+[27]
+提出一种新型的 “3D改进特征金字塔网络” （3D 
+· ·215
+
+=== PDF_PAGE 3 ===
+磁共振成像  2025年 6月第 16卷第6期 Chin J Magn Reson Imaging , Jun, 2025, Vol. 16, No. 6
+https://www.chinesemri.com
+综 述｜｜Reviews
+improved feature pyramid network, 3D IFPN） ， 用于在CT
+图像中自动分割胃肿瘤， 并在三个外部中心验证了
+此模型的分割能力， 结果均优于标准的U-Net
+[27]
+。另
+有一些研究将注意力机制算法引入到 DL模型， 可能
+进一步改进 GIT的分割能力。例如， 李昭松
+[28]
+提出的
+多 任 务 注 意 力U-Net（multi task attention, MTA 
+U-Net） 模型， 利用半监督学习来减少腹部医学图像
+分割中的误分割和漏检问题， 通过引入注意力机制
+和分类分割一致性损失函数， 该模型在减少标注需
+求的同时， 分割模型的IOU提高了 2.20%。此外，HE
+等
+[29]
+提出了一种基于自注意力机制的 DL模型， 显著
+改进了胃癌的边界识别， 在测试集和外部验证集中，
+DSC 分别达到了 0.85 和 0.81， 具有较高的分割准
+确性
+[29]
+。
+以上这些胃癌分割的 AI模型， 主要停留在理论
+研究阶段， 仅有少数研究进行了临床外部验证， 但均
+尚未在真实临床场景中进行随机对照研究。尤其缺
+乏在肿瘤分期及治疗规划等关键应用领域的临床精
+度评估， 作为进入常规临床实践的必要前提
+[30-31]
+， 此
+方向的研究仍存在需要填补的空白。
+2.2 基于MRI的分割
+MRI也是 GIT检查的重要技术， 在GIT的术前分
+期、 术后或治疗后效果评价方面表现出重要价值。
+基于 CNN 的 GIT分割也是研究热点之一
+[31]
+。冉昭
+等
+[32]
+提出了一种基于 Res Net50的全自动肿瘤分割网
+络模型， 用于直肠癌的MRI图像分割， 该方法提高了
+分割结果的可重复性和准确性， 在多个指标上优于
+传统方法。另外， 结合注意力机制与三维CNN的分
+割模型也在直肠癌的 MRI分割中表现出较好的分割
+价值。例如， 马玉兰
+[33]
+开发了一种空间频域双分支注
+意 力 模 型（spatial frequency-dual branch attention 
+model, SF-DBAM） ， 该模型结合CNN和 Transformer
+模块， 实现了结直肠癌肿瘤区域的精确分割，DSC达
+到了 92.08%， 阳性预测值达到93.93%， 并且在此基
+础做了 KRAS基因突变状态的预测模型， 预测准确
+度达 89.87%， 曲线下面积 （area under the curve, AUC）
+达 96.03%， 优于现有的其他非侵入性方法。另一项
+较有前景的研究方向是多模态、 多技术交叉融合， 通
+过整合多种影像信息以提高诊断精度和分割效果。
+例如，XUE等
+[34]
+开发了一种融合模型， 将基于 PET/
+CT的各参数以多分支、 多通道和级联网络的基线技
+术进行比较， 最终提出一种联合学习模型 （federal 
+learning model, FLM） ， 该模型在应用到肝脏分割时
+比单纯的 CNN模型具有更高的准确性
+[34]
+， 该技术可
+能为建立更优越的 GIT分割模型提供新的方向。此
+外，HE等
+[30]
+探索了胃癌基于融合变压器和 U-Net的
+双分支混合网络多模态分割办法， 通过仅聚合深度
+特征来获得两个分支的显著病变特征， 并降低模型
+的复杂性， 最终胃癌的分割 IOU 为 81.3%，DSC 为
+89.5%， 准确度为94.0%
+[30]
+。此外， 国内的一些研究者
+也在 CNN的基础上进行了一定优化， 例如， 康帅等
+[35]
+提出一种多任务学习模型 DPU-Net， 在联合分割与直
+肠肿瘤分期的多任务工作模式下， 分割精度 DSC为
+0.83， 相比于标准模型U-Net提升了 17.96%， 并在研
+究中和其他的一些传统分割模型进行了效能对比，
+分割准确率较 Dense-Net 模型提高了 9.43%， 该研究
+进一步进行了肿瘤分类预测， 准确率达76.24%， 表现
+出较好的临床应用潜力。
+呼吸运动和胃肠蠕动引起的运动伪影是胃肠道影
+像中的常见挑战， 近年来在这一领域的研究取得了显
+著进展。动态 MRI序列结合基于 AI的运动校正算法
+在减少运动引起的失真和改善图像质量方面显示出巨
+大
+潜力
+[36]
+。MRI数据的高维性是 AI分割的另一主要
+挑战， 这需要开发既能保证处理速度又能实现高分割
+精度的高效模型。例如，LIU等
+[36]
+受 Fovea在视觉神经
+科学中工作原理的启发， 提出了一种新的基于U-Net
+的肿瘤分割网络框架 Fovea-U-Net， 聚焦于与结直肠
+淋巴结转移 （lymph node metastasis, LNM ） 的相关区
+域， 并采用基于Ghost Net的改进型轻量级骨干网， 以
+降低浮点数 （floating point, FP） 计算成本， 该模型计
+算参数量大大降低， 但分割效能与其他一些分割模
+型相当，IOU 为 79.38%，DSC 为 88.51%， 敏感度为
+92.82%， 准确度为84.57%
+[35]
+。虽然目前这些模型在
+实时应用中显示出潜力， 但在处理复杂解剖结构或
+肿瘤边界较为模糊的情况时， 可能会牺牲分割的精
+准度。这种效率与精度之间的权衡， 凸显了在模型
+设计中持续创新的必要性， 尤其是在需要高分辨率
+分割的 GIT应用中是更需考量的因素。 GIT分割在
+常规临床工作流程中的整合仍处于起步阶段。大量
+计算资源的需求、 扫描仪之间的变异性以及监管审
+批是临床应用前需要解决的主要问题。在前瞻性临
+床试验中进一步验证该方法， 并优化其可扩展性， 是
+确保其临床实用性的关键步骤
+[37]
+。此外， 不同产品的
+MRI协议缺乏标准化， 也为模型的训练和通用性部
+署带来难题。由于扫描仪类型、 采集参数以及患者
+人群的差异， 模型在不同数据源之间可能面临领域
+偏移问题， 从而导致其在外部数据集上的分割性能
+不一致
+[38]
+。这些变异性均可能影响 GIT分割模型的
+鲁棒性。尽管目前初步结果令人鼓舞， 但这些方法
+仍处于临床研究的早期阶段， 在实现广泛应用前仍
+需要进一步的研究及证据支持。
+2.3 基于内镜影像与视频的分割
+内镜检查是诊断和管理 GIT重要的工具之一，
+它可直接观察胃肠道并对可疑病灶进行活检。但内
+镜图像和视频的解读高度依赖操作人员经验， 且由
+于光照条件差、 组织外观多样化以及视频成像的动
+态特性， 实时分割肿瘤存在较大挑战性。
+AI在解决内镜图像解读和肿瘤分割方面取得显
+· ·216
+
+=== PDF_PAGE 4 ===
+磁共振成像  2025年 6月第 16卷第6期 Chin J Magn Reson Imaging , Jun, 2025, Vol. 16, No. 6
+https://www.chinesemri.com
+综 述｜｜Reviews
+著进展。基于 CNN和 Transformer的架构已被应用
+于内镜影像的自动肿瘤分割。目前， 内镜影像分割
+最大的问题在于对伪影的处理， 如运动模糊、 气泡、
+镜面反射、 漂浮物体等均可能影响最终的视觉解
+析
+[39]
+。为解决这些问题，ALI等
+[39]
+在 CNN模型的基础
+上， 使用编码器-解码器模型对不规则形状的伪影进
+行逐像素分割， 并引入质量分数来评估视频帧质量
+并预测图像恢复成功率， 探测器在 25% 和 50% 的
+IOU阈值下分别产生 45.7和 34.7的最高平均精度， 最
+低计算时间为 88 毫秒， 允许近乎实时的分析处
+理
+[39-40]
+， 大大增加了模型在临床应用的实效性。此
+外， 一些模型开发了适合临床应用的帧速率算法处
+理内镜图像， 使其具有更高的临床适用性。例如， 刘
+小琪
+[41]
+提出了一种名为 Hue-texture-embedded 的活
+动轮廓分割模型， 专为胃癌的放大内镜窄带成像
+（magnifying endoscopy-narrow band imaging, ME-NBI）
+图像设计， 该模型通过结合全局色度和局部纹理能
+量泛函， 并采用水平集方法， 有效地分割边界模糊的
+区域。此外， 该研究利用深度迁移学习对类内差异
+显著的胃部 ME-NBI图像进行分类， 将其分为慢性胃
+炎、 低级别瘤变和胃癌三类， 在分割肿瘤的基础上，
+同时提高了分类诊断的准确性
+[41]
+。
+整体来说， 由于视频成像的动态特性， 目前基于
+视频的分割涉及对连续帧的分析， 复杂性进一步增
+加， 现有的模型仍存在精度不够理想的问题。且研
+究胃肠道内镜下分割的研究仍然较少， 仍需进一步
+探索
+[42]
+。此外， 出于捕捉视频帧之间的时间依赖性，
+先进的 DL模型， 如时间依赖的CNN模型和循环神
+经网络算法等可能为提高实时系统的分割准确性提
+供可能。
+2.4 其他检查
+其他一些影像检查， 例如PET/CT， 通过突出代
+谢活动区域作为解剖影像的功能性补充， 使得 PET/
+CT在检测肿瘤边界和评估 GIT转移扩散方面尤为有
+用。然而， 由于PET分辨率较低， 手动分割PET/CT
+图像比单独分割 CT或 MRI更加困难
+[15, 43-45]
+。应用 AI
+在对 PET/CT图像自动化肿瘤分割方面展现了潜力。
+以往有研究将基于 PET/CT的不同 DL分割模型对淋
+巴瘤的分割效能进行比较， 发现SAC贝叶斯分割准确
+性高于手动分割，DSC为 0.94 vs.0.84，P<0.001
+[44]
+。此
+外， 多模态融合网络 （multi-modality fusion networks, 
+MFN） 正在成为另一前沿研究领域， 即将PET、CT和
+MRI数据联合使用， 以进一步提高分割精度。这类
+DL网络模型通常利用注意力机制动态加权各模态
+的重要特征， 从而增强分割模型的鲁棒性
+[45]
+。尽管以
+上方法在肿瘤分割方面显示出潜力， 但目前PET/CT
+主要应用于全身转移瘤、 淋巴瘤等的评价， 缺少大规
+模标注 PET/CT的 GIT数据集， 加之处理多模态数据
+的高计算需求等障碍， 目前尚未有基于此类AI分割
+模型在 GIT的临床研究， 因此该研究方向仍存在需
+要填补的空白。
+3　局限性与未来发展方向
+尽管 AI在 GIT影像分割中取得了显著进展， 但
+其在临床实践中的应用仍面临诸多挑战。首先， 数
+据集的规模普遍较小且标注不足，DL模型的训练和
+验证需要大规模的标注数据集。而构建这些数据集
+是一项劳动密集型工作， 需要影像专家对图像进行
+精确标注， 尤其是对于罕见或非典型肿瘤， 这一过程
+则更为困难。其次， 目前公开的标注数据集数量有
+限， 且覆盖的患者群体和影像模式不足， 限制了模型
+在不同患者群体和临床场景中的普适性。另一个关
+键问题是 AI模型的泛化能力， 由于成像设备、 采集参
+数以及患者人口学特征的差异， 不同机构和患者群
+体的数据可能存在偏倚， 从而影响模型性能。这种
+差异性凸显了数据预处理和验证流程标准化的必要
+性
+[18]
+。此外， 由于数据集和评估协议的不同， 跨研究
+比较模型性能仍具有挑战性， MSD在促进公平比较
+和推动领域发展方面可能发挥重要作用
+[21]
+。
+未来的 AI模型可能通过整合多种影像方法 （如
+CT、MRI、PET/CT和内镜影像等） ， 进一步提高肿瘤
+分割的准确性和鲁棒性。混合网络 （hybrid network, 
+HN） 能够动态加权各模态的重要特征， 为研发更全
+面的诊断工具奠定基础
+[30, 46]
+。FLM等无需共享原始
+数据即可实现跨机构协作训练的技术， 能够在保障
+患者隐私的同时解决数据稀缺性问题
+[47]
+。通过整合
+多机构的多样化数据，FLM有助于构建大规模高质
+量的数据集， 从而提升模型的泛化能力、 可解释性与
+临床可信度。此外，FLM还可推动开发具备可视化或
+文本解释能力的可解释 AI模型， 进一步增强临床医生
+对 AI工具的信任。增加 AI模型的解释性功能将帮助
+临床医生更好地理解算法决策， 并使AI工具更容易融
+入临床实践。此外， 建立标准化的数据集、 评估协议
+和报告指南， 对于确保AI研究的公平性和可重复性也
+至关重要， 未来可推动全球性合作， 制定统一标准， 以
+促进 AI技术在医学影像领域的规范化发展。
+4　总结
+AI作为未来医学领域变革的关键工具， 在肿瘤
+诊治中展现出了巨大的应用潜能， 尤其在自动化GIT
+影像分割方面取得了显著进展。尽管当前研究在
+CT、MRI、 内镜和PET/CT等多种影像模态上均已取
+得初步成果， 但数据可用性、 模型泛化性及临床转化
+仍是亟需解决的核心问题 （表1） 。
+综上， 通过对各模态下AI辅助 GIT分割的临床
+价值、 主要优势与现存缺陷进行总结发现，AI在不同
+影像技术中的应用各有侧重， 也面临不同的发展瓶
+颈。只有通过多方协同努力， 才能真正实现AI驱动
+· ·217
+
+=== PDF_PAGE 5 ===
+磁共振成像  2025年 6月第 16卷第6期 Chin J Magn Reson Imaging , Jun, 2025, Vol. 16, No. 6
+https://www.chinesemri.com
+综 述｜｜Reviews
+的 GIT智能诊疗体系， 从而改善患者预后、 提升医疗
+服务水平。
+作者利益冲突声明：全体作者均声明无利益冲突。
+作者贡献声明：冯强设计本研究方案， 参与研究
+的构思和设计， 对关键内容进行解释， 对稿件重要内
+容进行了修改， 获得了山东省医药卫生科技项目资
+助； 蒋常琴起草和撰写稿件， 获取、 分析或解释本研
+究的数据， 对稿件重要内容进行了修改； 张友军、 马
+文珊等获取、 分析或解释本研究的数据， 对稿件重要
+内容进行了修改； 全体作者都同意发表最后的修改
+稿， 同意对本研究的所有方面负责， 确保本研究的准
+确性和诚信。
+参考文献[References]
+[1] BRAY F, LAVERSANNE M, SUNG H, et al. Global cancer statistics 
+2022: GLOBOCAN estimates of incidence and mortality worldwide 
+for 36 cancers in 185 countries[J]. CA Cancer J Clin, 2024, 74(3): 229-263. 
+DOI: 10.3322/caac.21834.
+[2] FERLAY J, COLOMBET M, SOERJOMATARAM I, et al. Cancer 
+statistics for the year 2020: An overview[J/OL]. Int J Cancer, 2021 
+[2025-04-18]. https://onlinelibrary.wiley.com/doi/10.1002/ijc.33588. DOI: 
+10.1002/ijc.33588.
+[3] 中华医学会肿瘤学分会早诊早治学组 , 苗智峰 , 徐忠法 , 等 . 胃癌早
+诊早治中国专家共识 (2023 版) [J]. 中华消化外科杂志 , 2024(1): 
+23-36. DOI: 10.3760/cma.j.cn115610-20231207-00239.
+Early Diagnosis and Treatment Group Chinese Society of Oncology of 
+Chinese Medical Association, MIAO Z F, XU Z F, et al. Chinese expert 
+consensus on early diagnosis and treatment of gastric cancer(2023 
+edition)[J]. Chin J Dig Surg, 2024(1): 23-36. DOI: 10.3760/cma.j.
+cn115610-20231207-00239.
+[4] 中华人民共和国国家卫生健康委员会 , 中华医学会肿瘤学分会 , 顾
+晋, 等 . 中国结直肠癌诊疗规范 (2023年版)[J]. 中华外科杂志 , 2023, 
+61(8): 617-644. DOI: 10.3760/cma.j.cn112139-20230603-00222.
+National Health Commission of the People ′s Republic of China, 
+Chinese Society of Oncology of Chinese Medical Association, GU J, et 
+al. Chinese protocol of diagnosis and treatment of colorectal cancer
+(2023 edition)[J]. Chin J Surg, 2023, 61(8): 617-644. DOI: 10.3760/
+cma.j.cn112139-20230603-00222.
+[5] LITJENS G, KOOI T, BEJNORDI B E, et al. A survey on deep 
+learning in medical image analysis[J]. Med Image Anal, 2017, 42: 
+60-88. DOI: 10.1016/j.media.2017.07.005.
+[6] ESTEVA A, CHOU K, YEUNG S, et al. Deep learning-enabled 
+medical computer vision[J/OL]. NPJ Digit Med, 2021, 4(1): 5 
+[2025-04-18]. https://pmc.ncbi.nlm.nih.gov/articles/PMC7794558/. DOI: 
+10.1038/s41746-020-00376-2.
+[7] BOHLENDER S, OKSUZ I, MUKHOPADHY AY A. A survey on 
+shape-constraint deep learning for medical image segmentation[J]. IEEE 
+Rev Biomed Eng, 2023, 16: 225-240. DOI: 10.1109/RBME.2021.3136343.
+[8] XUE H Z, YAO Y D, TENG Y Y. Multi-modal tumor segmentation 
+methods based on deep learning: a narrative review[J]. Quant Imaging 
+Med Surg, 2024, 14(1): 1122-1140. DOI: 10.21037/qims-23-818.
+[9] LEWIS J, CHA Y J, KIM J. Dual encoder-decoder-based deep polyp 
+segmentation network for colonoscopy images[J/OL]. Sci Rep, 2023, 13(1): 
+1183 [2025-04-18]. https://pmc.ncbi.nlm.nih.gov/articles/PMC9867760/. 
+DOI: 10.1038/s41598-023-28530-2.
+[10] YANG P, WU J M, LIU M Q, et al. Preoperative CT-based radiomics 
+and deep learning model for predicting risk stratification of gastric 
+gastrointestinal stromal tumors[J]. Med Phys, 2024, 51(10): 7257-7268. 
+DOI: 10.1002/mp.17276.
+[11] TSANG B, GUPTA A, TAKAHASHI M S, et al. Applications of 
+artificial intelligence in magnetic resonance imaging of primary pediatric 
+cancers: a scoping review and CLAIM score assessment[J]. Jpn J Radiol, 
+2023, 41(10): 1127-1147. DOI: 10.1007/s11604-023-01437-8.
+[12] SOOMRO M H, COPPOTELLI M, CONFORTO S, et al. Automated 
+segmentation of colorectal tumor in 3D MRI using 3D multiscale 
+densely connected convolutional neural network[J/OL]. J Healthc Eng, 
+2019, 2019: 1075434 [2025-04-18]. https://pubmed. ncbi. nlm. nih. gov/
+30838121. DOI: 10.1155/2019/1075434.
+[13] DEVI K G, RADHAKRISHNAN R. Automatic segmentation of colon 
+in 3D CT images and removal of opacified fluid using cascade feed 
+forward neural network[ J/OL] . Comput Math Methods Med, 2015, 
+2015: 670739 [2025-04-18]. https://pubmed.ncbi.nlm.nih.gov/25838838. 
+DOI: 10.1155/2015/670739.
+[14] TAO J, LIU D, HU F B, et al. Development and validation of a 
+computed tomography-based model for noninvasive prediction of the T 
+stage in gastric cancer: multicenter retrospective study[J/OL]. J Med 
+Internet Res, 2024, 26: e56851 [2025-04-18]. https://pubmed.ncbi.nlm.
+nih.gov/39382960. DOI: 10.2196/56851.
+[15] GUO Z, LI X, HUANG H, et al. Deep learning-based image 
+segmentation on multimodal medical imaging[J]. IEEE Trans Radiat 
+Plasma Med Sci, 2019, 3(2): 162-169. DOI: 10.1109/trpms.2018.2890359.
+[16] YOUSEFIRIZI F, DECAZES P, AMYAR A, et al. AI-based detection, 
+classification and prediction/prognosis in medical imaging: : towards 
+radiophenomics[J]. PET Clin, 2022, 17(1): 183-212. DOI: 10.1016/j.
+cpet.2021.09.010.
+[17] CALV ARESE M, CORBETTA E, CONTRERAS J, et al. 
+Endomicroscopic AI-driven morphochemical imaging and fs-laser ablation 
+for selective tumor identification and selective tissue removal[J/OL]. Sci 
+Adv, 2024, 10(50): eado9721 [2025-04-18]. https://pmc.ncbi.nlm.nih.gov/
+articles/PMC11633757/. DOI: 10.1126/sciadv.ado9721.
+[18] XU J C, JING M J, WANG S M, et al. A review of medical image 
+detection for cancers in digestive system based on artificial intelligence[J]. 
+Expert Rev Med Devices, 2019, 16(10): 877-889. DOI: 10.1080/
+17434440.2019.1669447.
+[19] VAN DER VELDEN B H M, KUIJF H J, GILHUIJS K G A, et al. 
+Explainable artificial intelligence (XAI) in deep learning-based 
+medical image analysis[J/OL]. Med Image Anal, 2022, 79: 102470  
+[2025-04-18]. https://pubmed.ncbi.nlm.nih.gov/35576821/. DOI: 10.1016/
+j.media.2022.102470.
+[20] ZUNAIR H, BEN HAMZA A. Sharp U-Net: Depthwise convolutional 
+network for biomedical image segmentation[J/OL]. Comput Biol Med, 
+2021, 1 36: 104699 [2025-04-18]. https://pubmed.ncbi.nlm.nih.gov/
+34348214/. DOI: 10.1016/j.compbiomed.2021.104699.
+[21] VALANARASU J M J, SINDAGI V A, HACIHALILOGLU I, et al. 
+KiU-Net: overcomplete convolutional architectures for biomedical 
+image and volumetric segmentation[J]. IEEE Trans Med Imag, 2022, 
+41(4): 965-976. DOI: 10.1109/TMI.2021.3130469.
+[22] LIU Z S, LV Q J, YANG Z D, et al. Recent progress in 
+transformer-based medical image analysis[J/OL]. Comput Biol Med, 
+2023, 164: 107268 [2025-02-05]. https://pubmed.ncbi.nlm.nih.gov/37494821/. 
+DOI: 10.1016/j.compbiomed.2023.107268.
+[23] LI W X, QU C Y, CHEN X X, et al. AbdomenAtlas: A large-scale, 
+detailed-annotated, & multi-center dataset for efficient transfer learning 
+and open algorithmic benchmarking[J/OL]. Med Image Anal, 2024, 97: 
+103285 [2025-04-18]. https://pubmed.ncbi.nlm.nih.gov/37494821/. DOI: 
+10.1016/j.media.2024.103285.
+[24] PIRABAHARAN R, KHAN N. Interactive segmentation using U-Net 
+with weight map and dynamic user interactions[J]. Annu Int Conf 
+IEEE Eng Med Biol Soc, 2022, 2022: 4754-4757. DOI: 10.1109/
+EMBC48229.2022.9871361.
+[25] 王云利 . 基于迁移学习的胃部 CT序列图像 ROI区域提取 [D]. 西安: 
+西安电子科技大学 , 2013. DOI: 10.7666/d.D363549.
+WANG Y L. Transfer learning based ROI region extraction in stomach 
+CT image sequences[D]. Xi'an: Xidian University, 2013. DOI: 10.7666/
+d.D363549.
+[26] 郑楷宜 , 武毫, 袁文静 , 等 . 三维 nnU-Net深度学习网络基于腹部 CT
+图像自动分割结直肠癌的可行性研究 [J]. 中华放射学杂志 , 2024, 
+58(8): 829-835. DOI: 10.3760/cma.j.cn112149-20231231-00505.
+ZHENG K Y, WU H, YUAN W J, et al. Feasibility study of 
+three-dimensional nnU-Net deep learning network for automatic 
+segmentation of colorectal cancer based on abdominal CT images[J]. 
+Chin J Radiol, 2024, 58(8) : 829-835. DOI: 10.3760/cma.j.cn112149-2023
+1231-00505.
+[27] LI H M, LIU B, ZHANG Y T, et al. 3D IFPN: improved feature 
+表1  不同影像技术中 AI在 GIT诊疗中的应用价值、 优势与局限
+Tab. 1 Application value, advantages and limitations of AI in GIT diagnosis and treatment among different imaging techniques
+影像技术
+CT
+MRI
+内镜影像/视频
+PET/CT
+多模态融合
+临床价值
+提高术前评估效率， 支持精准治疗规划
+软组织对比度佳， 鉴别肿瘤浸润深度
+支持早癌筛查、 活检引导及术中决策
+功能与解剖融合成像， 提高良恶性鉴别
+提升诊断全面性与鲁棒性
+主要优势
+分辨率高、 覆盖广； 公开数据集多
+多序列成像提供丰富信息
+高时间/空间分辨率， 可视化病灶
+反映肿瘤生物学行为， 适用于全身评估
+利用互补信息增强鉴别诊断能力
+现存缺陷
+边界识别困难； 参数差异影响模型稳定性
+数据获取成本高； 计算资源消耗大
+易受光照、 伪影干扰； 动态视频分析难度大
+分辨率低； 手动分割困难； 标注成本高
+数据采集标准不一； 跨模态配准困难
+· ·218
+
+=== PDF_PAGE 6 ===
+磁共振成像  2025年 6月第 16卷第6期 Chin J Magn Reson Imaging , Jun, 2025, Vol. 16, No. 6
+https://www.chinesemri.com
+综 述｜｜Reviews
+pyramid network for automatic segmentation of gastric tumor[J/OL]. 
+Front Oncol, 2021, 11: 618496 [2025-04-18]. https://pmc.ncbi.nlm.nih.
+gov/articles/PMC8173118/. DOI: 10.3389/fonc.2021.618496.
+[28] 李昭松 . 基于半监督深度学习的直肠癌肿瘤自动分割方法研究 [D]. 
+天津: 天津大学, 2021. DOI: 10.27356/d.cnki.gtjdu.2021.005043.
+LI Z S. Research on automatic segmentation of rectal cancer based on 
+semi-supervised deep learning[D]. Tianjin: Tianjin University, 2021. 
+DOI: 10.27356/d.cnki.gtjdu.2021.005043.
+[29] HE J J, ZHANG M D, LI W C, et al. SaB-Net: Self-attention backward 
+network for gastric tumor segmentation in CT images[J/OL]. Comput 
+Biol Med, 2024, 169: 107866 [2025-04-18]. https://pubmed. ncbi. nlm.
+nih.gov/38134751/. DOI: 10.1016/j.compbiomed.2023.107866.
+[30] HE D Z, ZHANG Y Y, HUANG H, et al. Dual-branch hybrid network 
+for lesion segmentation in gastric cancer images[J/OL]. Sci Rep, 2023, 13(1): 
+6377 [2025-04-18]. https://pmc. ncbi. nlm. nih. gov/articles/PMC10115814/. 
+DOI: 10.1038/s41598-023-33462-y.
+[31] LU D W, WU Y F, ACAR A, et al. ASSIST-U: a system for 
+segmentation and image style transfer for ureteroscopy[J]. Healthc 
+Technol Lett, 2023, 11(2/3): 40-47. DOI: 10.1049/htl2.12065.
+[32] 冉昭, 简俊明 , 王蒙蒙 , 等 . 基于全卷积神经网络的直肠癌肿瘤磁共
+振影像自动分割方法 [J]. 北京生物医学工程 , 2019, 38(5): 465-471. 
+DOI: 10.3969/j.issn.1002-3208.2019.05.004.
+RAN Z, JIAN J M, WANG M M, et al. Automatic segmentation 
+method based on full convolution neural network for rectal cancer 
+tumors in magnetic resonance image[J]. Beijing Biomed Eng, 2019, 
+38(5): 465-471. DOI: 10.3969/j.issn.1002-3208.2019.05.004.
+[33] 马 玉兰 . 基于深度学习的结直肠癌患者肿瘤区域分割及 KRAS基因
+状态预测 [D]. 太原 : 太原理工大学 , 2022. DOI: 10.27352/d. cnki.
+gylgu.2022.001557.
+MA Y L. Tumor region segmentation and KRAS gene status prediction in 
+colorectal cancer patients based on deep learning[D]. Taiyuan: Taiyuan 
+University of Technology, 2022. DOI: 10.27352/d.cnki.gylgu.2022.001557.
+[34] XUE Z L, LI P, ZHANG L, et al. Multi-modal co-learning for liver 
+lesion segmentation on PET-CT images[J]. IEEE Trans Med Imaging, 
+2021, 40(12): 3531-3542. DOI: 10.1109/TMI.2021.3089702.
+[35] 康帅 , 奚峥皓 , 黄陈 , 等 . 基于 DPU-Net 的直肠癌肿瘤分割与 T分
+期研究 [J]. 中国医学物理学杂志 , 2023, 40(10): 1189-1197. DOI: 
+10.3969/j.issn.1005-202X.2023.10.001.
+KANG S, XI Z H, HUANG C, et al. Rectal tumor segmentation and T 
+staging based on DPU-net[J]. Chin J Med Phys, 2023, 40(10): 
+1189-1197. DOI: 10.3969/j.issn.1005-202X.2023.10.001.
+[36] LIU Y J, WANG J, WU C P, et al. Fovea-UNet: detection and 
+segmentation of lymph node metastases in colorectal cancer with deep 
+learning[J/OL]. Biomed Eng Online, 2023, 22(1): 74 [2025-04-18]. 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC10362618/. DOI: 10.1186/s12938-
+023-01137-4.
+[37] NAGARAJU G P, SANDHYA T, SRILATHA M, et al. Artificial 
+intelligence in gastrointestinal cancers: diagnostic, prognostic, and 
+surgical strategies[J/OL]. Cancer Lett, 2025, 612: 217461 
+[2025-04-18]. https://pubmed.ncbi.nlm.nih.gov/39809357/. DOI: 10.1016/
+j.canlet.2025.217461.
+[38] MATTA S, LAMARD M, ZHANG P, et al. A systematic review of 
+generalization research in medical image classification[J/OL]. Comput 
+Biol Med, 2024, 183: 109256 [2025-04-18]. https://pubmed.ncbi. nlm.
+n
+ih.gov/39427426/. DOI: 10.1016/j.compbiomed.2024.109256.
+[39] ALI S, ZHOU F, BAILEY A, et al. A deep learning framework for 
+quality assessment and restoration in video endoscopy[J/OL]. Med 
+Image Anal, 2021, 68: 101900 [2025-04-18]. https://pubmed.ncbi.nlm.
+nih.gov/33246229/. DOI: 10.1016/j.media.2020.101900.
+[40] JIANG Y, CHEN J, GONG C, et al. Deep-learning-based real-time and 
+automatic target-to-background ratio calculation in fluorescence 
+endoscopy for cancer detection and localization[J/OL]. Diagnostics 
+(Basel), 2022, 12(9): 2031 [2025-04-18]. https://pmc.ncbi.nlm.nih.gov/
+articles/PMC9497969/. DOI: 10.3390/diagnostics12092031.
+[41] 刘小琪 . ME-NBI内镜图像胃部病变自动识别与分割方法的研究 [D]. 
+重庆: 重庆大学, 2019. DOI: 10.27670/d.cnki.gcqdu.2019.001488.
+LIU X Q. The study of automatic recognition and segmentaion methods of 
+gastric lesion on ME-NBI endoscopic images[D]. Chongqing: Chongqing 
+University, 2019. DOI: 10.27670/d.cnki.gcqdu.2019.001488.
+[42] CHEN K C, QIN T X, LEE V H, et al. Learning robust shape 
+regularization for generalizable medical image segmentation[J]. IEEE 
+Trans Med Imag, 2024, 43(7): 2693-2706. DOI: 10.1109/TMI.2024.3371987.
+[43] LI L Q, ZHAO X M, LU W, et al. Deep learning for variational 
+multimodality tumor segmentation in PET/CT[J]. Neurocomputing 
+(Amst), 2020, 392: 277-295. DOI: 10.1016/j.neucom.2018.10.099.
+[44] KLIMONT M,  ORONOWICZ-JAŚKOWIAK A , FLIEGER M, et al. 
+Deep learning-based segmentation and volume calculation of pediatric 
+lymphoma on contrast-enhanced computed tomographies[J/OL]. J Pers 
+Med, 2023, 13(2): 184 [2025-04-18]. https://pubmed.ncbi.nlm.nih.gov/
+36836418. DOI: 10.3390/jpm13020184.
+[45] CONSTANTINO C S, LEOCÁDIO S, OLIVEIRA F P M, et al. 
+Evaluation of semiautomatic and deep learning-based fully automatic 
+segmentation methods on [ 18F] FDG PET/CT images from patients 
+with lymphoma: influence on tumor characterization[J]. J Digit 
+Imaging, 2023, 36 (4) : 1864-1876. DOI: 10.1007/s10278-023-00823-y.
+[46] YUE Y T, LI N, XING W Y, et al. Condition control training-based 
+ConVMLP-ResU-Net for semantic segmentation of esophageal cancer 
+in 18F-FDG PET/CT images[J]. Phys Eng Sci Med, 2023, 46(4): 
+1643-1658. DOI: 10.1007/s13246-023-01327-3.
+[47] SHELLER M J, EDWARDS B, REINA G A, et al. Federated learning 
+in medicine: facilitating multi-institutional collaborations without 
+sharing patient data[J/OL]. Sci Rep, 2020, 10(1): 12598 [2025-04-18]. 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC7387485/. DOI: 10.1038/s41598-
+020-69250-1.
+（上接第188页）
+[51] JEON Y, KWON S M, RHEE H, et al. Molecular and radiopathologic 
+spectrum between HCC and intrahepatic cholangiocarcinoma[J]. 
+Hepatology, 2023, 77(1): 92-108. DOI: 10.1002/hep.32397.
+[52] KITAO A, MATSUI O, ZHANG Y, et al. Dynamic CT and gadoxetic 
+acid-enhanced MRI characteristics of P53-mutated hepatocellular 
+carcinoma[J/OL]. Radiology, 2023, 306(2): e220531 [2025-03-01]. 
+https://pubmed.ncbi.nlm.nih.gov/36219111/. DOI: 10.1148/radiol.220531.
+[53] LIU X Y, GUO Y, ZHAO L, et al. Can MRI features predict clinically 
+relevant hepatocellular carcinoma genetic subtypes [J]. Abdom Radiol 
+(NY), 2023, 48(6): 1955-1964. DOI: 10.1007/s00261-023-03876-3.
+[54] WANG Q Y, ZHU M H, LI W D, et al. CBX7 promotes choroidal 
+neovascularization by activating the HIF-1 α/VEGF pathway in 
+choroidal vascular endothelial cells[J/OL]. Exp Eye Res, 2024, 247: 
+110057 [2025-03-01]. https://pubmed.ncbi.nlm.nih.gov/39179168/. DOI: 
+10.1016/j.exer.2024.110057.
+[55] HUANG Z Q, MENG X J, XIU J J, et al. MR imaging in hepatocellular 
+carcinoma: correlations between MRI features and molecular marker VEGF
+[J/OL]. Med Oncol, 2014, 31(12): 313 [2025-03-01]. https://pubmed.ncbi.
+nlm.nih.gov/25367856/. DOI: 10.1007/s12032-014-0313-0.
+[56] KANEMATSU M, OSADA S, AMAOKA N, et al. Expression of 
+vascular endothelial growth factor in hepatocellular carcinoma and the 
+surrounding liver and correlation with MRI findings[J]. AJR Am J 
+Roentgenol, 2005, 184(3): 832-841. DOI: 10.2214/ajr.184.3.01840832.
+[57] HEO S H, JEONG Y Y, SHIN S S, et al. Apparent diffusion coefficient 
+value of diffusion-weighted imaging for hepatocellular carcinoma: 
+correlation with the histologic differentiation and the expression of 
+vascular endothelial growth factor[J]. Korean J Radiol, 2010, 11(3): 
+295-303. DOI: 10.3348/kjr.2010.11.3.295.
+[58] FAN T T, LI S J , LI K, et al. A potential prognostic marker for 
+recognizing VEGF-positive hepatocellular carcinoma based on 
+magnetic resonance radiomics signature[J/OL]. Front Oncol, 2022, 12: 
+857715 [2025-03-01]. https://pubmed. ncbi. nlm. nih. gov/35444942/. DOI: 
+10.3389/fonc.2022.857715.
+[59] YANG C, ZHANG Z M, ZHAO Z P, et al. Radiomic analysis based on 
+magnetic resonance imaging for the prediction of VEGF expression in 
+hepatocellular carcinoma patients[J]. Abdom Radiol (NY), 2024, 
+49(11): 3824-3833. DOI: 10.1007/s00261-024-04427-0.
+[60] DAI H T, YAN C, HUANG W R, et al. A nomogram based on MRI 
+visual decision tree to evaluate vascular endothelial growth factor in 
+hepatocellular carcinoma[J]. J Magn Reson Imaging, 2025, 61(2): 
+970-982. DOI: 10.1002/jmri.29491.
+[61] CAMPANI C, IMBEAUD S, COUCHY G, et al. Circulating tumour DNA 
+in patients with hepatocellular carcinoma across tumour stages and 
+treatments[J]. Gut, 2024, 73(11): 1870-1882. DOI: 10.1136/gutjnl-2024-331956.
+· ·219

@@ -1,0 +1,100 @@
+﻿######## seg_work
+1.4T	/data/heluofan/seg_work/datasets
+7.1G	/data/heluofan/seg_work/nnUNet_raw
+7.1G	/data/heluofan/seg_work/flare22_extract
+5.1G	/data/heluofan/seg_work/nnUNet_preprocessed
+4.2G	/data/heluofan/seg_work/nnUNet_results
+1.5G	/data/heluofan/seg_work/flare22_train.zip
+1.5G	/data/heluofan/seg_work/flare22_train.parts
+1.2G	/data/heluofan/seg_work/analysis
+1.1G	/data/heluofan/seg_work/baselines
+940M	/data/heluofan/seg_work/seed_results
+578M	/data/heluofan/seg_work/flare22.zip.parts
+588K	/data/heluofan/seg_work/train.log
+580K	/data/heluofan/seg_work/fold4.log
+580K	/data/heluofan/seg_work/fold3.log
+
+######## models
+35G	/data/heluofan/models/Qwen3.6-35B-A3B-FP8
+17G	/data/heluofan/models/Qwen-Image-2.1
+16G	/data/heluofan/models/Qwen3-8B
+15G	/data/heluofan/models/Qwen-Image-2.1-Turbo-NVFP4
+15G	/data/heluofan/models/Qwen3-Embedding-8B
+8.9G	/data/heluofan/models/Qwen3-8B-blockfp8
+8.0K	/data/heluofan/models/Qwen3-8B-fp8-vllm
+
+######## image
+36G	/data/heluofan/image/qwen-image-stack-2.1-turbo-20261104.tar
+51M	/data/heluofan/image/ctx
+
+######## der_data
+6.9G	/data/heluofan/der_data/raw
+6.5G	/data/heluofan/der_data/tta_dataset
+551M	/data/heluofan/der_data/x
+21M	/data/heluofan/der_data/run1
+1.3M	/data/heluofan/der_data/logs
+
+######## eegfnirs
+6.5G	/data/heluofan/eegfnirs/work
+6.5G	/data/heluofan/eegfnirs/raw
+5.7G	/data/heluofan/eegfnirs/eeg
+1.9G	/data/heluofan/eegfnirs/env_tf
+762M	/data/heluofan/eegfnirs/nirs
+616K	/data/heluofan/eegfnirs/logs
+476K	/data/heluofan/eegfnirs/code
+4.0K	/data/heluofan/eegfnirs/install_tf.sh
+4.0K	/data/heluofan/eegfnirs/install_tf2.sh
+4.0K	/data/heluofan/eegfnirs/dl.sh
+4.0K	/data/heluofan/eegfnirs/dl_nirs.sh
+
+######## brats_work
+5.9G	/data/heluofan/brats_work/env
+725M	/data/heluofan/brats_work/data
+116K	/data/heluofan/brats_work/logs
+48K	/data/heluofan/brats_work/scripts
+8.0K	/data/heluofan/brats_work/configs
+4.0K	/data/heluofan/brats_work/link_torch.sh
+4.0K	/data/heluofan/brats_work/install_nnunet.sh
+4.0K	/data/heluofan/brats_work/install_env.sh
+
+######## thyroid_tta
+524M	/data/heluofan/thyroid_tta/work
+492M	/data/heluofan/thyroid_tta/raw
+90M	/data/heluofan/thyroid_tta/run_nn
+68M	/data/heluofan/thyroid_tta/code
+21M	/data/heluofan/thyroid_tta/run2
+21M	/data/heluofan/thyroid_tta/run
+2.9M	/data/heluofan/thyroid_tta/logs_nn
+1.6M	/data/heluofan/thyroid_tta/logs2
+956K	/data/heluofan/thyroid_tta/run4
+912K	/data/heluofan/thyroid_tta/logs
+20K	/data/heluofan/thyroid_tta/run3
+8.0K	/data/heluofan/thyroid_tta/_aspect.py
+8.0K	/data/heluofan/thyroid_tta/_aspect2.py
+4.0K	/data/heluofan/thyroid_tta/_verify_hd95.py
+
+######## qwen3-embed
+8.0G	/data/heluofan/qwen3-embed/venv-vllm
+738M	/data/heluofan/qwen3-embed/venv-litellm
+70M	/data/heluofan/qwen3-embed/data
+50M	/data/heluofan/qwen3-embed/bootstrap
+35M	/data/heluofan/qwen3-embed/venv-pg
+25M	/data/heluofan/qwen3-embed/pyheaders
+1.9M	/data/heluofan/qwen3-embed/security
+924K	/data/heluofan/qwen3-embed/logs
+176K	/data/heluofan/qwen3-embed/vllm-8021.log
+164K	/data/heluofan/qwen3-embed/config
+136K	/data/heluofan/qwen3-embed/docs
+124K	/data/heluofan/qwen3-embed/scripts
+24K	/data/heluofan/qwen3-embed/run
+16K	/data/heluofan/qwen3-embed/README.md
+
+######## venvs
+1.1G	/data/heluofan/venvs/eval
+97M	/data/heluofan/venvs/mdl
+
+######## wheels
+860M	/data/heluofan/wheels/torch-2.9.1+cu128-cp310-cp310-manylinux_2_28_x86_64.whl
+268M	/data/heluofan/wheels/nvidia_nvshmem_cu12-3.8.0-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+
+__SCAN_DONE__

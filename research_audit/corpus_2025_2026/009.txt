@@ -1,0 +1,414 @@
+=== PDF_PAGE 1 ===
+中国介入影像与治疗学 2025 年 第 22 卷 第 9 期 Chin J Interv Imaging Ther ,2025 ,Vol 22,No 9 
+Research progresses in diagnosis and treatment methods combining 
+interventional medical imaging with artificial intelligence
+ZHOU 　Shoujun 1，2， PENG 　Yongjun 3， LI　Maoquan 2，4*， ZHENG 　Fuchen 1， DU 　Yue1， 
+LI　Hongliang 5， LIU 　Xingang 6
+（1.Shenzhen Institutes of Advanced Technology ， CAS ， Shenzhen 518055 ， China ； 2.Integration Committee of Chinese 
+Anti -Cancer Association of Diagnosis & Treatment ［ICCA ］ ， Shanghai 200000 ， China ； 3.Medical Imaging Center ， 
+Zhuhai People ’s Hospital ［The Affiliated Hospital of Beijing Institute of Technology ， Zhuhai Clinical 
+Medical College of Jinan University ］ ， Zhuhai 519000 ， China ； 4.Department of Interventional and 
+Vascular Surgery ， Tenth People ’s Hospital of Tong University ， Shanghai 200072 ， China ；
+5.Dept of Med Engineering of Air Force Hospital of Southern Theater Command of 
+PLA ， Guangzhou 510180 ， China ； 6.Linying Medical Technology ［Shenzhen ］ 
+Co .， LTD ， Shenzhen 518055 ， China ）
+［Abstract］ The deep integration of interventional medical imaging and artificial intelligence （AI） technologies is 
+promoting th e intelligence of the entire diagnosis and treatment process and significantly improving the accuracy and safety of 
+minimally invasive operations ， and the relative hotspots includes intelligent detection of anatomical landmarks ， automatic 
+segmentation of lesions ， multimodal diagnosis and treatment and decision -making system ， as well as navigation of 
+interventional operations .  The future trends will emphasize the construction of integrated multi -modal diagnosis and treatment 
+platform， optimization of real -time reasoning engines and establishment of explicable decision -making system ， in order to 
+promote the transformation of precision medicine from theoretical innovation to large -scale clinical application .  The research 
+progresses in diagnosis and treatment methods combining interventional medical imaging with AI were reviewed in this article .
+［Keywords］ minimally invasive surgical procedures ; diagnostic imaging ; artificial intelligence
+DOI：10. 13929 /j. issn . 1672 -8475 . 2025 . 09. 011
+介入医学影像联合人工智能诊疗方法研究进展
+周寿军
+1，2
+，彭永军
+3
+，李茂全
+2，4*
+，郑福琛
+1
+，杜 悦
+1
+，李洪亮
+5
+，刘新刚
+6
+［1. 中国科学院深圳先进技术研究院 ，广东  深圳     518055 ;2. 中国抗癌协会诊疗一体化专业委员会 ，上海     200000 ;3. 珠
+海市人民医院（北京理工大学附属医院 ，暨南大学珠海临床医学院 ）医学影像中心 ，广东  珠海     519000 ;4. 同济大学附属
+第十人民医院介入血管外科 ，上海     200072 ;5. 南部战区空军医院医学工程科 ，广东  广州     510180 ;6. 临影医疗科技（深
+圳）有限公司，广东  深圳     518055 ］
+［摘 要］ 介入医学影像与人工智能 （AI）技术的深度融合正在推动诊疗全流程的智能化 ，显著提升微创操作的精准
+［基 金 项 目］ 广 东 省 肿 瘤 介 入 诊 治 研 究 重 点 实 验 室（2021 B1212040004 ） 、广 东 省 重 点 领 域 研 发 计 划（2025 B1111020001 ） 、广 东 省 自 然 科 学 基 金
+（2023 A1515010673 ） 、深 圳 市 科 技 计 划 资 助 （CJGJZD 20230724093303007 、 XMHT 20220104009 、 JSGG 20220831110400001 、
+KJZD 20240903101259001 、D2404001 ） 。
+［第一作者 ］ 周寿军（1971 —） ，男，四川德阳人 ，博士，研究员 。研究方向 ：智能介入手术机器人系统 。E-mail ： sj.zhou@siat .ac.cn
+［通信作者 ］ 李茂全，中国抗癌协会诊疗一体化专业委员会 ，200000 ;同济大学附属第十人民医院介入血管外科 ，200072 。
+E-mail ： cjr .limaoquan@vip .163.com 
+［收稿日期 ］ 2025 -05-30  ［修回日期 ］ 2025 -08-26
+· 综述 ·
+·· 609
+
+=== PDF_PAGE 2 ===
+中国介入影像与治疗学 2025 年 第 22 卷 第 9 期 Chin J Interv Imaging Ther ,2025 ,Vol 22,No 9 
+度与安全性 ;相关研究热点包括智能检测解剖标志 、自动分割病灶 、多模态诊疗及决策系统 ，以及介入操作导航 。未来
+更趋向于加强建设多模态诊疗一体化平台 、优化实时推理引擎及构建可解释决策体系 ，以推动精准医疗从理论创新向
+规模化临床落地转化 。本文就介入医学影像联合 AI 诊疗方法研究进展进行综述 。
+［关键词 ］ 微创性外科手术 ; 诊断显像 ; 人工智能
+［中图分类号 ］ R445 ; TP 18 ［文献标识码 ］ A  ［文章编号 ］ 1672 -8475（2025）09-0609 -04
+当 前 医 学 影 像 所 涉 及 的 人 工 智 能（artificial 
+intelligence， AI）技 术 主 要 为 深 度 学 习（deep learning ， 
+DL） ，二者相互交叉 、融合，通过学习特征与优化建模
+［1］
+实现利用计算机视觉与模式识别而自动化解析医学图
+像中的解剖结构 、病理特征及功能信息 ，辅助临床诊断
+疾病 、规划治疗及评估预后
+［2］
+。近 5 年来，基于介入医
+学 影 像 的AI 技 术 已 实 现 多 模 态 影 像 融 合 与 动 态 建
+模
+［3］
+，而数据异构性 、模型可解释性及临床转化壁垒为
+其面临的主要挑战 。
+1 现有介入影像与临床需求的差距  
+介入影像的核心目标之一是提供可靠的诊断和高
+精度 、实时 、安全的导航 ，但实际应用中的物理限制使
+其难以全面满足临床需求 ，存在“精度 -速度 -安全性 ”
+三角悖论 。传统介入影像包括 CT、数字减影血管造影
+（digital subtraction angiography ， DSA ） 、超 声 及MRI
+等，各项技术在空间 /时间分辨率 、组织对比度 、辐射剂
+量、穿透深度与功能定量方面形成互补 （表 1） ，但存在
+剂量 -质量 、实时性 -分辨率 、软组织对比 -速度，以及伪
+影与器械遮挡 、呼吸运动耦合 、时空配准一致性及定量
+标准缺乏等共同局限 ，使得单一模态难以同时实现 “亚
+毫 米 精 度+ 高 频 反 馈+ 剂 量 受 控”，需 通 过 多 模 态 协
+同、轻量化推理与自适应参数调控达成上述要求 。
+此外，新兴成像模态 ，包括光声成像 、磁粒子成像 、
+超 高 频 超 声、量 子 传 感 成 像 及 多 光 谱 光 声 断 层 扫 描
+等
+［4-7］
+，同样受到光 、声、电、磁等相关生理物理效应的
+限制 。
+2 AI 分析介入医学影像  
+针对介入医学影像的 AI 分析通过智能后处理与
+建模可无需改变成像物理过程而实现精准解析解剖结
+构与病灶 ;其主要应用包括分割与重建病灶
+［8］
+、检测关
+键标志
+［9］
+、特征提取与分类
+［10］
+，以及部署轻量化模型和
+可视化可解释性特征
+［11］
+等。
+2. 1　实时影像引导 　AI 算法可为介入操作提供导航
+与决策支持
+［12-15］
+，由此提高介入操作成功率 、控制局部
+复发率 。首先，AI 能通过多模态影像融合与智能算法
+实现动态追踪与自适应路径规划 ，进而实时追踪器械
+并进行姿态估计
+［16-17］
+，提高追踪精度与鲁棒性 。例如，
+基于光学导航系统 （如 NDI Polaris ）联合内镜以轻量化
+YOLOv 8 模型可实时定位导管尖端 （误差 ＜0. 5 mm） ，
+并通过图神经网络建模追踪柔性器械的形变轨迹 ，具
+有可多尺度表征 、降低轨迹抖动 、抵御遮挡及支持动态
+更新等优势
+［18］
+。此外，AI 还能增强术中路径规划
+［19-20］
+，
+通过深度融合强化学习与数字孪生技术而实现动态规
+避风险与多目标优化 。例如，基于术前 CT/MRI 构建
+3D 解 剖 数 字 孪 生 体 后，利 用 深 度 确 定 性 策 略 梯 度 算
+法，可实时优化穿刺路径 ，如在经皮肝穿刺过程中避开
+主要血管及其分支
+［21］
+。
+2. 2　融合影像与临床数据 　通过 AI 模型整合多模态
+医学影像（如 CT、MRI 及 PET 等）与多源临床数据进
+行跨尺度 、跨模态联合分析 ，有助于推动临床诊疗从单
+模态经验驱动向多模态智能决策范式转变
+［22］
+，实现动
+态预测 、个性化治疗决策及评估预后 。例如，多模态影
+表 1　传统介入影像特点及临床需求
+成像方法 /临床目标
+低剂量螺旋 /灌注 CT
+C 臂锥形线束 CT
+DSA（平板探测器 ）
+术中超声
+MR（快速序列 ）
+临床目标（介入导航 ）
+空间分辨率
+0. 5～0. 625 mm（横向）
+0. 4～0. 6 mm
+0. 18～0. 30 mm（探测器
+像素间距 ）
+0. 3～0. 6 mm
+0. 8～1. 2 mm
+器械 /末梢 ＜0. 5 mm ;
+针尖 ＜1. 0 mm
+时间 /帧频
+3～10 FPS
+0. 1～0. 5 FPS
+7. 5～30 FPS
+30～60 FPS
+1～2 FPS
+有效带宽 ≥10～15 Hz
+（＜70 ms）
+3D/重建延迟
+1～5 s
+20～40 s
+—
+实时
+＞5 s
+融合 /配准 ＜5 s;
+关键推理 ＜0. 5 s
+剂量 /能量
+每次 2～8 mSv
+1～4 mSv
+透视 +对比剂风险
+无电离（热/空化
+效应风险 ）
+无电离
+总剂量可控
+导航定位
+术前规划
+术中 3D
+需配准
+实时针尖 /界面回声定位
+术前 /间断参考
+动态器械追踪定位误差
+≤1. 0 mm
+注：FPS ：每秒帧数（frames per second ）
+·· 610
+
+=== PDF_PAGE 3 ===
+中国介入影像与治疗学 2025 年 第 22 卷 第 9 期 Chin J Interv Imaging Ther ,2025 ,Vol 22,No 9 
+像联合液体活检有望实现早期精准筛查胰腺癌
+［23］
+;基
+于 知 识 图 谱 的 推 荐 系 统 关 联 增 强CT 动 脉 期 强 化 模
+式 、分 级 及 靶 向 药 物 代 谢 基 因 型，优 化 生 成 个 体 化
+TACE 联合靶向治疗肝细胞癌方案
+［24］
+;利用术中多模
+态影像
+［25］
+与生命体征实时融合建模 ，精准指导切除脑
+胶质母细胞瘤 。
+2. 3　AI 驱动介入治疗 　AI 已深度融入介入治疗 ，如
+用于智能优化经血管介入操作与预测风险
+［26］
+、指导精
+准消融肿瘤与智能控制边界
+［27］
+、智能诊疗动脉瘤与卒
+中急救方案
+［28］
+及预测动脉瘤破裂风险等 ，在可视化三
+维重建 、病灶抵达率 、评估危险 、精准定位 、降低治疗风
+险、提高准确率及减少并发症等方面发挥极大优势
+［29］
+。
+3 挑战与对策  
+介入影像及 AI 相结合，在优化导航 、治疗决策与
+风险预测 ，以及技术普及 、医疗资源下沉 、学科融合与
+创新等方面具有重要意义和发展潜力 ;其面临的挑战
+主要在于“数据 -算法 -硬件 -临床接受度 ”四维要素空
+间及其关联耦合性
+［30-33］
+。
+3. 1　数据维度 　多中心数据之间存在异构性 、样本规
+模受限及长尾分布显著使小样本设计性能脆弱 。应加
+强数据质量控制与结构化预标注 ，利用弱 /半监督与对
+比式小样本学习扩展有效样本 ，通过仿真与数据增广
+覆盖边缘场景
+［33］
+，并通过构建子群（年龄 、性别 、解剖差
+异）性能分层报告为下游信任提供证据 。
+3. 2　 算 法 维 度　 当 前 应 用AI 算 法 面 临 的 主 要 矛
+盾
+［31-33］
+包 括 小 样 本 与 高 表 达 模 型 之 间 的 过 拟 合/不 稳
+定风险 、高性能深度模型 “黑箱 ”特征与临床可解释需
+求之间的张力 、跨模态对齐误差累积放大 ，以及策略型
+智能在安全与可验证性方面的缺口等等 。可通过引入
+病灶级显著性映射 、概念层级激活关联及不确定性量
+化（置信区间 、校准曲线 ）等方法提高模型的可解释性 。
+3. 3　硬件维度 　当前主流算力水平难以满足介入操
+作的实时性要求 。应采取以下对策 ，包括模型结构裁
+剪、运算图融合 、INT 8/更低比特量化 、增量式特征缓
+存以降低推理路径 ，通过边缘快速筛选 +云端全局优
+化协同，利用实时性能与时延监测抖动 ，建立最小安全
+功 能 集（Fail -safe）与 降 级 回 退 策 略，将 算 法 潜 在 失 效
+显式化而非隐性放大 。
+3. 4　 临 床 接 受 度 维 度　 受“黑 箱”与 可 信 度 影 响，AI
+临 床 转 化 不 足，AI 推 荐 与 专 家 经 验 吻 合 率 尚 不 足 一
+半，使得多数神经介入医师对其不能完全信赖
+［30］
+;且多
+中心协作中存在隐私与法律责任界定不清等问题 。为
+此可在保证数据不出域的前提下利用联邦学习与同态
+加密方案（仅传输加密权重 ）降低训练过程中的泄露风
+险并保持接近原性能
+［33］
+。为提升接受度 ，需要提供多
+维度性能与不确定性报告 ，记录决策路径与可追溯日
+志，明确分级决策责任 ，在部署后实施持续漂移监测与
+偏见审计 。
+4 小结  
+介入影像联合 AI 推动介入医学从 “经验导向 ”向
+“数据 -模型协同驱动 ”的范式跃迁 ，标志着介入医学迈
+入智能化诊疗的新阶段 ：在技术方面可突破传统介入
+操作中“手 -眼”协调的生理和经验极限而实现精准化
+与 微 创 化;在 临 床 方 面 可 使 诊 疗 流 程 从“术 中 应 急 决
+策 ”转 向“ 术 前 虚 拟 预 演-术 中 实 时 纠 偏-术 后 智 能 随
+访”，实现全周期闭环 ;在产业生态方面能加速介入器
+械智能化 、手术室物联化 、5G+AI 远程指导介入操作 ，
+催生百亿级智能介入新市场 。展望未来 ，随着强化学
+习 -安全约束 -智能决策的验证框架的逐步完善
+［31］
+、跨
+模态融合与风险预测模型的持续提升
+［32］
+，以及联邦与
+同态加密训练的多中心常态化
+［33］
+，AI 辅助下的介入诊
+疗有望由辅助工具 +人工经验逐步转向数字介入操作
+的链路驱动与决策的诊疗一体化模式 ，最终实现精度 、
+实时性 、可追溯性与智能化全面升级 。
+利益冲突 ：全体作者声明无利益冲突 。
+作 者 贡 献：周 寿 军 指 导、撰 写 和 修 改 文 章、经 费 支
+持 ；彭 永 军 审 阅 和 修 改 文 章；李 茂 全 指 导、审 阅 文 章；
+郑 福 琛 和 杜 悦 查 阅 文 献、撰 写 文 章；李 洪 亮 和 刘 新 刚
+审阅文章 。
+［参考文献 ］
+［1］ DAYARATHNA S ， ISLAM K T ， URIBE S ， et al . Deep 
+learning based synthesis of MRI ， CT and PET ： Review and 
+analysis［J］. Med Image Anal ， 2024 ，92：103046 .
+［2］ YASUI K ， SAITO Y ， ITO A ， et al . Validation of deep learning -
+based CT image reconstruction for treatment planning ［J］. Sci 
+Rep ， 2023 ，13（1）：15413 .
+［3］ PENG Y ， REN Y ， HOU J ， et al . Clinical outcomes and 
+prognostic factors in the surgical treatment of spinal dural 
+arteriovenous fistulas ： A retrospective study of 118 patients ［J］. 
+Sci Rep ， 2023 ，13（1）：18266 .
+［4］ HACKER L ， BROWN E L ， LEFEBVRE T L ， et al . 
+Performance evaluation of mesoscopic photoacoustic imaging ［J］. 
+Photoacoustics ， 2023 ，31：100505 .
+［5］ STIRRAT C G ， ALAM S ， MacGILLIVRAY T J ， et al . 
+Ultrasmall superparamagnetic particles of iron oxide -enhanced 
+·· 611
+
+=== PDF_PAGE 4 ===
+中国介入影像与治疗学 2025 年 第 22 卷 第 9 期 Chin J Interv Imaging Ther ,2025 ,Vol 22,No 9 
+magnetic resonance imaging in the assessment of cellular 
+inflammation after myocardial infarction ［J］. J Cardiovasc Magn 
+Reson ， 2015 ，17（Suppl 1）：252.
+［6］ ASLAM N ， ZHOU H ， URBACH E K ， et al . Quantum sensors 
+for biomedical applications ［J］. Nat Rev Phys ， 2023 ，5（3）：157 -
+169.
+［7］ LIU Y ， NIE L ， CHEN X . Photoacoustic molecular imaging ： 
+From multiscale biomedical applications towards early -stage 
+theranostics［J］. Trends in Biotechnology ， 2016 ，34（5）：420 -433.
+［8］ AZAM M A ， KHAN K B ， SALAHUDDIN S ， et al . A review 
+on multimodal medical image fusion ： Compendious analysis of 
+medical modalities ， multimodal databases ， fusion techniques and 
+quality metrics［J］. Comput Biol Med ， 2022 ，144 ：105253 .
+［9］ 梁洁 ，孙金磊 ，李梦远 ，等 . 基于深度学习人工智能辅助系统用于
+CT 检出肋骨新鲜骨折 ［J］. 中国介入影像与治疗学 ，2023 ，20（9）：
+555 -560.
+［10］ de BRUIJNE M . Machine learning approaches in medical image 
+analysis ： From detection to diagnosis ［J］. Med Image Anal ， 
+2016 ，33：94-97.
+［11］ KIM H E ， COSA -LINAN A ， SANTHANAM N ， et al . 
+Transfer learning for medical image classification ： A literature 
+review［J］. BMC Med Imaging ， 2022 ，22（1）：69.
+［12］ 夏春潮 ，李真林 . 医学影像技术研究进展及展望 ［J］. 中华放射学
+杂志 ，2020 ，54（2）：89-94.
+［13］ HU W ， JIANG H ， WANG M . Flexible needle puncture 
+path planning for liver tumors based on deep reinforcement 
+learning ［J］. Physics in Medicine & Biology ， 2022 ，67（19）：
+195008 .
+［14］ WANG R ， LEI T ， CUI R ， et al . Medical image segmentation 
+using deep learning ： A survey［J］. IET Image Processing ， 2022 ，
+16（5）：1243 -1267 .
+［15］ HU M ， ZHANG J ， MATKOVIC L ， et al . Reinforcement 
+learning in medical image analysis ： Concepts ， applications ， 
+challenges ， and future directions ［J］. J Appl Clin Med Phys ， 
+2023 ，24（2）：e13898 .
+［16］ SINGH A ， SENGUPTA S ， LAKSHMINARAYANAN V . 
+Explainable deep learning models in medical image analysis ［J］. J 
+Imaging ， 2020 ，6（6）：52.
+［17］ ZHANG L ， YE M ， CHAN P L ， et al . Real -time surgical tool 
+tracking and pose estimation using a hybrid cylindrical marker ［J］. 
+Int J Comput Assist Radiol Surg ， 2017 ，12（6）：921 -930.
+［18］ RIEKE N ， TAN D J ， ALSHEAKHALI M ， et al . Surgical tool 
+tracking and pose estimation in retinal microsurgery ［C］//
+Medical Image Computing and Computer -Assisted Intervention ： 
+MICCAI 2015 . Cham ： Springer International Publishing ， 2015 ：
+266 -273.
+［19］ XIAO L ， YANG X ， YANG X . A graph neural network -based 
+bearing fault detection method ［J］. Sci Rep ， 2023 ，13（1）：5286 .
+［20］ SEGATO A ， MARZO M D ， ZUCCHELLI S ， et al . Inverse 
+reinforcement learning intra -operative path planning for steerable 
+needle［J］. IEEE Trans Biomed Eng ， 2022 ，69（6）：1995 -2005 .
+［21］ BERNARDES M C ， ADORNO B V ， POIGNET P ， et al . 
+Robot -assisted automatic insertion of steerable needles with 
+closed -loop imaging feedback and intraoperative trajectory 
+replanning［J］. Mechatronics ， 2013 ，23（6）：630 -645.
+［22］ VALDES -SOSA P A ， ROEBROECK A ， DAUNIZEAU J ， et 
+al. Effective connectivity ： Influence ， causality and biophysical 
+modeling［J］. Neuroimage ， 2011 ，58（2）：339 -361.
+［23］ LIU K L ， WU T ， CHEN P T ， et al . Deep learning to distinguish 
+pancreatic cancer tissue from non -cancerous pancreatic tissue ： A 
+retrospective study with cross -racial external validation ［J］. 
+Lancet Digit Health ， 2020 ，2（6）：e303 -e313.
+［24］ HU X M ， SUN L  Y ， ZHENG R C ， et al . Application of graph 
+theory in liver research ： A review ［J］. Portal Hypertension & 
+Cirrhosis ，2024 ，3（4）：234 -248.
+［25］ FABELO H ， HALICEK M ， ORTEGA S ， et al . Deep learning -
+based framework for in vivo  identification of glioblastoma tumor 
+using hyperspectral images of human brain ［J］. Sensors （Basel ）， 
+2019 ，19（4）：920.
+［26］ GUO J ， SUN Y ， GUO S X . A training system for vascular 
+interventional surgeons based on local path planning ［C］//2021  
+IEEE International Conference on Mechatronics and Automation 
+（ICMA ）. New York ： IEEE Press ， 2021 ：1328 -1333 .
+［27］ ZHOU T ， LI Q ， LU H ， et al . GAN review ： Models and 
+medical image fusion applications ［J］. Information Fusion ， 2023 ，
+91：134 -148.
+［28］ HAN T ， AI D ， LI X ， et al . Coronary artery stenosis detection 
+via proposal -shifted spatial -temporal transformer in X -ray 
+angiography［J］. Comput Biol Med ， 2023 ，153 ：106546 .
+［29］ VISENTINI -SCARZANELLA M ， SUGIURA T ， KANEKO 
+T， et al . Deep monocular 3D reconstruction for assisted 
+navigation in bronchoscopy ［J］. Int J Comput Assist Radiol Surg ， 
+2017 ，12（7）：1089 -1099 .
+［30］ PENG Y ， WANG Y ， WEN Z ， et al . Deep learning and machine 
+learning predictive models for neurological function after 
+interventional embolization of intracranial aneurysms ［J］. Front 
+Neurol ， 2024 ，15：1321923 .
+［31］ KUCUKKAYA A S ， ZEEVI T ， CHAI N X ， et al . Predicting 
+tumor recurrence on baseline MR imaging in patients with early -
+stage hepatocellular carcinoma using deep machine learning ［J］. 
+Sci Rep ， 2023 ，13（1）：7579 .
+［32］ GAO Y ， LI Z ， ZHAI X ， et al . MRI -based habitat radiomics 
+combined with vision transformer for identifying vulnerable 
+intracranial atherosclerotic plaques and predicting stroke events ： 
+A multicenter ， retrospective study ［J］. EClinicalMedicine ， 2025 ，
+82：103186 .
+［33］ ANTUNES R S ， ANDRÉ DA COSTA C ， KÜDERLE A ， et 
+al. Federated learning for healthcare ： Systematic review and 
+architecture proposal ［J］. ACM Trans Intell Syst Technol ， 2022 ，
+13（4）：1-23.
+·· 612

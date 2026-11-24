@@ -1,0 +1,27 @@
+﻿/data/heluofan/picai/repos/nnUNet_v1/nnUNet-1.7.0
+python 3.10.22
+numpy 2.2.6
+torch 2.9.1+cu128 cuda 12.8
+cap (12, 0) dev NVIDIA GeForce RTX 5090
+LOAD default: OK(weights_only=True 鏀捐繃浜嗙函 dict)
+LOAD w_only=False: OK
+LOAD obj default: FAIL UnpicklingError
+LOAD obj w_only=False: OK
+
+
+Please cite the following paper when using nnUNet:
+
+Isensee, F., Jaeger, P.F., Kohl, S.A.A. et al. "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation." Nat Methods (2020). https://doi.org/10.1038/s41592-020-01008-z
+
+
+If you have questions or suggestions, feel free to open an issue at https://github.com/MIC-DKFZ/nnUNet
+
+nnUNet_raw_data_base is not defined and nnU-Net can only be used on data for which preprocessed files are already present on your system. nnU-Net cannot be used for experiment planning and preprocessing like this. If this is not intended, please read documentation/setting_up_paths.md for information on how to set this up properly.
+nnUNet_preprocessed is not defined and nnU-Net can not be used for preprocessing or training. If this is not intended, please read documentation/setting_up_paths.md for information on how to set this up.
+RESULTS_FOLDER is not defined and nnU-Net cannot be used for training or inference. If this is not intended behavior, please read documentation/setting_up_paths.md for information on how to set this up.
+IMPORT FAIL nnunet.training.network_training.nnUNetTrainerV2 -> ModuleNotFoundError No module named 'medpy'
+IMPORT FAIL nnunet.training.network_training.nnUNetTrainer -> ModuleNotFoundError No module named 'medpy'
+IMPORT OK   nnunet.preprocessing.preprocessing
+IMPORT FAIL nnunet.experiment_planning.experiment_planner_baseline_3DUNet_v21 -> ModuleNotFoundError No module named 'medpy'
+IMPORT FAIL nnunet.inference.predict -> ModuleNotFoundError No module named 'medpy'
+SM120 FORWARD+BACKWARD: OK (1, 8, 32, 64, 64)

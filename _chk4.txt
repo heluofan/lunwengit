@@ -1,0 +1,13 @@
+﻿TOTAL_CASES=1500
+UNIQ_PATIENTS=1476
+POS(has_lesion=True)=425
+NEG=1075
+has_lesion VALUES=False|True
+FOLD DIST:
+fold=0 cases=300 pos=87 pats=295
+fold=4 cases=296 pos=90 pats=296
+fold=2 cases=302 pos=88 pats=295
+fold=1 cases=298 pos=77 pats=295
+fold=3 cases=304 pos=83 pats=295
+CROSS_FOLD_PATIENTS=0
+LABEL_SUFFIX_CHECK: label空=0

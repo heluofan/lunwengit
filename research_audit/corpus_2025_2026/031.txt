@@ -1,0 +1,1214 @@
+=== PDF_PAGE 1 ===
+第 38 卷 第 3 期 计算机辅助设计与图形学学报  Vo l . 3 8 No.3 
+2026 年 3 月 Journal of Computer-Aided Design & Computer Graphics Mar. 2026 
+                    
+收稿日期： 2024-06-30 ；修回日期： 2025-01-25 。基金项目 ：国家自然科学基金面上项目（ 52374155 ）；南方林业与生态应用技
+术国家工程实验室开放基金（ 2023NFLY08 ）；安徽省自然科学基金面上项目（ 2308085MF218 ）；安徽省高等学校自然科学研究基金
+重大项目（ 2022AH040113 ）；安徽理工大学医学专项培育项目（ YZ2023H2B008 ，YZ2023H2A007 ）。许家昌 （1979— ），男，博士，
+副教授，硕士生导师， CCF 会员，主要研究方向为计算智能、优化控制； 吴浩楠（2001— ），男，硕士研究生，主要研究方向为生物
+计算智能、图像融合； 洪鼎（1998— ），男，硕士研究生，主要研究方向为生物计算智能、图像融合； 苏树智 （1987— ），男，博士，
+副教授，主要研究方向为人工智能、模式识别。  
+ 
+基于 NSST的 FL-DTNP 多模态医学图像超分辨率融合 
+许家昌1,2) ，吴浩楠 2)，洪鼎2)，苏树智 2) 
+1) (安徽理工大学第一附属医院 (淮南市第一人民医院 )  淮南  232001)  
+2) (安徽理工大学计算机科学与工程学院   淮南  232001)  
+(jcxu@aust.edu.cn) 
+摘  要： 针对传统动态阈值神经 P（DTNP）系统融合过程特征信息丢失、阈值设置不准确和融合过程中分辨率低造
+成的细节信息丢失的问题，提出一种基于特征链接模型优化的特征链接 DTNP（FL-DTNP ）系统多模态医学图像超
+分辨率融合方法。该方法采用自适应的链接强度进行图像特征提取，首先使用双三次插值和非下采样剪切波变换
+（NSST） 对图像进行增强和分解； 然后使用FL-DTNP 系统对高频子带的细节和边缘进行信息融合， 对于低频子带，
+使用视觉显著加权局部能量 -基于八邻域拉普拉斯加权和合并低频子带； 最后使用逆 NSST 对高频子带和低频子带进
+行重建。在 Harvard 数据集上，与基于多尺度变换、深度学习和稀疏表示的 8 种经典的融合方法在 7 种指标下进行
+实验，结果表明，所提方法具有卓越的性能，能够生成高质量融合图像。  
+关键词： 特征链接 -动态阈值神经 P 系统；超分辨率；特征增强；非下采样剪切波变换  
+中图法分类号： TP391.41      DOI ：10.3724/SP.J.1089.2024 -00331 
+Super-Resolution Fusion of Multimodal Medical Images Based on NSST and  
+FL-DTNP 
+Xu Jiachang1,2), Wu Haonan2), Hong Ding2), and Su Shuzhi2) 
+1) (The First Hospital of Anhui University of Science and Technology (Huainan First People’ s Hospital), Huainan  232001) 
+2) (School of Computer Science and Engineering, Anhui University of Science and Technology, Huainan  232001) 
+Abstract: To address the issues of feature information loss,  inaccurate threshold settings, and detail informa-
+tion loss due to low resolution during the fusion process of traditional Dynamic Threshold Neural P (DTNP) 
+systems, a multi-modal medical image super-resolution fusion method based on a feature link model opti-
+mization, called Feature Link DTNP (FL-DTNP) syst em, is proposed. This method uses adaptive link 
+strength for image feature extraction. First, bicubic interpolation and Non-Subsampled Shearlet Transform 
+(NSST) are applied to enhance and decompose the image.  Then, the FL-DTNP system is used to fuse the 
+detail and edge information of the high-frequency sub-bands. For the low-frequency sub-bands, a visually 
+significant weighted local energy approach—based on an eight-neighborhood Laplacian weighting—is ap-
+plied to merge the low-frequency sub-bands. Finally, in verse NSST is used to reconstruct the high-frequency 
+and low-frequency sub-bands. Experime nts were conducted on the Harvard da taset, comparing the proposed 
+method with eight classic fusion methods based on multi-scale transformations, deep learning, and sparse 
+
+=== PDF_PAGE 2 ===
+522 计算机辅助设计与图形学学报  第 38 卷 
+ 
+     
+      
+representation across seven evaluation metrics. The results demonstrate that the proposed method exhibits 
+outstanding performance and is capable of generating high quality fused images. 
+ 
+Key words:  feature linkage-dynamic threshold neural P systems; super-resolution; feature enhancements; 
+non-subsampled shearlet transform 
+多模态医学图像融合是将不同的医学图像细
+节信息整合到一幅图像中，为临床诊断的准确性提
+供了有效的帮助 [1]。 每种医学图像成像都有自己的
+优点和缺点，例如，电子计算机断层扫描（computed 
+tomography ，CT）主要包含骨骼等硬组织信息，
+而无法详细显示软组织信息；磁共振（ magnetic 
+resonance imaging ，MRI）显示软组织结构解剖对
+比， 但是无法像CT 一样将骨骼等硬组织信息完整
+地显示出来 [2-3] ；正电子发射断层扫描（ positron 
+emission tomography ，PET）和单光子发射计算机
+断层扫描（ single photon emission computed tomo-
+graphy，SPECT）形成的医学图像敏感性强、对比
+分辨率高、成像范围广，缺点是组织分辨率低 [4]。
+多模态医学图像融合的意义是能够将这些图像的
+优点和缺点进行互补，在临床诊断时为医师提供更
+加准确的信息； 此外， 高分辨率的多模态医学图像
+融合的结果可以更好地帮助医学诊断。  
+随着新一代信息技术的发展，出现了许多多模
+态医学图像融合方法， 主要分为2 种： 基于空间域
+的方法[5]和基于变换域的方法 [6]。基于空间域的方
+法直接处理源图像的像素，根据图像的特征信息选
+择符合条件的像素或者区域，通过合并这些像素或
+区域获得融合图像。 Yang 等[7]在高斯平滑滤波器
+域中，将对比度显著性、锐度和结构显著性相结合，
+并且结合决策图优化技术生成融合图像， 但在参数
+自适应方面还存在一些问题，缺乏对不同类型融合
+图像的自适应能力； Wang 等[8]提出一种在空间域
+中结合耦合神经 P 系统和最大云的多模态医学图
+像融合模型， 融合效果优异， 但所提出的最大云方
+法基于像素进行计算， 计算效率较低。 基于变换域
+的方法从源图像的像素进行处理， 通过分解将图像
+变换为低频图像和高频图像，然后通过提取方法将
+图像的信息提取出来，最后通过逆变换生成融合图
+像[9]；Peng 等[10] 提出一种在非下轮廓波变换域中
+的多模态医学图像融合方法，使用耦合神经 P 系统
+作为低频系数融合规则，为了克服变换域方法的常
+见缺点，采用一致性验证方法提高初始融合图像的
+质量，获得最终的融合图像，但由于耦合神经 P 系
+统的参数过多， 导致计算效率降低。2024 年，Sinha
+等[11]将双通道脉冲耦合神经网络用于图像融合任
+务，并且在多尺度分解方法下使用脉冲耦合神经网
+络对图像的信息进行提取。在传统的图像融合任务
+中，Peng 等[12] 根据膜计算的极大并行性，提出动
+态阈值神经 P（dynamic threshold neural P ，DTNP）
+系统，并验证了该系统在图像处理方面具有图灵机
+的计算能力； Li 等[13] 提出一种使用二维 DTNP 系
+统的图像融合方法， 虽然融合效果良好， 但因为若
+图像中每个像素点的灰度特征不同， 则神经元的阈
+值和链接强度应不相同，而传统 DTNP 系统有着
+链接强度相同的问题，造成不同神经元之间链接强
+度也相同，导致特征信息提取缺失。  
+尽管上述方法在融合效率和质量方面表现较
+好，但仍存在信息丢失、模型复杂和色彩失真等问
+题。为了解决上述问题，本文构建了一种链接强度
+模型（feature link model ，FLM）优化的特征链接 - 
+DTNP（feature link-DTNP ，FL-DTNP ）系统，以
+进行图像增强， 并利用脉冲时序生成决策图。 传统
+的 FLM 由 Zhan 等[14]提出，用于解决图像亮度低
+等问题以及进行图像增强，其核心思想是使用脉冲
+时序进行图像增强； Liu 等[15]利用 FLM 进行特征
+的提取。 FL-DTNP 系统克服了特征信息缺失的问
+题， 在效率和融合质量方面有显著提升， 因此本文
+使用 FL-DTNP 系统在高频子带进行特征提取。由
+于低频子带包含图像主要能量等信息， 在进行低频
+子带融合过程中容易造成能量缺失等问题， 为了解
+决上述低频子带的冗余和能量丢失等缺点， 本文设
+计一种视觉显著加权局部能量 -基于八邻域拉普拉
+斯加权和（ visual significant weighted local en-
+ergy-weighted sum of eight-neighborhood based 
+modified Laplacian ，VSWLE-WSEML ），用于低频
+子带融合。  
+本文首先构建 FL-DTNP 系统，根据每个源图
+像的像素值，结合拉普拉斯算子，为 FL-DTNP 系
+统中各个神经元分配不同的链接强度， 并根据神经
+元发射的脉冲时序生成融合结果， 显著提高工作效
+率；然后提出一种基于非下采样剪切波变换
+
+=== PDF_PAGE 3 ===
+第 3 期 许家昌，等：基于 NSST 的 FL-DTNP 多模态医学图像超分辨率融合  523  
+ 
+     
+      
+（non-subsampled shearlet transform ，NSST）多模
+态医学图像融合的方法，使用 FL-DTNP 系统的脉
+冲时序进行高频子带融合；对于低频子带能量和结
+构信息，设计 VSWLE-WSEML ，对低频子带进行
+合并；最后引入医学图像超分辨率（ super resolu-
+tion，SR），将其与多模态医学图像融合，提出的
+基于 FL-DTNP 系统融合方法在 SR 图像中取得了
+较好的效果。  
+1  相关工作  
+1.1  P 系统 
+P 系统是自然计算的一个新兴分支，由 Păun[16]
+于 2000 年提出。 P 系统分为细胞型 P 系统、组织
+型 P 系统和神经型 P 系统 3 种类型，其中，应用
+最广泛的是脉冲型神经 P（spiking neural P ，SNP）
+系统。SNP 系统是一种分布式并行计算模型，其中，
+每个神经元包括一个或多个数据存储单元， 通过脉
+冲发射规则进行信息传递。与细胞型和组织型 P 系
+统不同，SNP 系统通过时间步长对数据进行更新。  
+随着对 SNP 系统研究的深入，其在解决组合
+优化问题和计算机视觉领域的优势日益凸显。 Paul
+等[17]提出一种 SNP 变体模型 ——确定性的 SNP 系
+统，与神经元划分相结合，成功地解决了 SAT 问
+题，证明了 SNP 在解决优化问题方面有着明显的
+优势。SNP 系统在图像融合中具有极高的适用性和
+效率，尤其在多聚焦图像融合和多模态医学图像融
+合中取得了显著的提升。 2024 年，Li 等[18] 提出一
+种多通道 DTNP 系统，用于多聚焦图像融合，生
+成更加精确的决策图； Dinh[19]则将 SNP 系统应用
+于多模态医学图像融合， 实验结果表明， 与现有方
+法相比， SNP 表现出明显的提升。  
+1.2  NSST 
+多尺度变换 （multiscale transformation ，MST）
+是图像融合中被广泛研究和使用的一种对源图像
+进行分解的方法，基于 MST 的方法包括拉普拉斯
+金字塔 [20] 和小波变换 [21] ，但这些方法存在缺乏平
+移不变性、 易产生伪吉布斯现象等缺点。 为了克服
+这些缺点，Hou 等[22]提出一种基于传统仿射系统理
+论的新型多尺度几何分析方法 NSST，可以多尺度
+和多方向有效地捕获图像的纹理信息， 并且克服了
+伪吉布斯现 象等缺点；最近， Hu 等[23]提出一种将
+NSST 和支持值变换结合的方法进行图像融合，融
+合结果的评价指标较好，并且提高了图像的对比度；
+Diwakar 等[24]首先使用 NSST 分解，然后使用局部
+极值方法和共生滤波的新颖的图像融合方法， 在医
+学图像融合实验中有着较好的效果。在各种基于
+MST 的方法中，NSST 分解在进行图像融合方面的
+效果最佳，这是因为 NSST 克服了很多传统变换的
+缺点， 如其能够有效捕获边缘、 轮廓信息等。 将剪
+切波滤波器改变为非下采样金字塔滤波器 （non-su-
+bsampled pyramid transform ，NSPF） 和剪切滤波器
+（shear filter ，SFB），解决了多数 MST 的平移不
+变性和伪吉布斯现象，成为图像融合领域中的工作
+热点，进一步得到研究人员的使用和特别关注，其
+中，二维的 NSST 的分解如图 1 所示。 
+ 
+ 
+ 
+图 1  NSST 的二层分解结构  
+ 
+图 1 中，NSST 分解包含 NSPF 和 SFB 这 2 个
+滤波器。首先将最初源图像通过 NSPF 分解成高频
+和低频子带，方向定位通过 SFB 实现，产生 1 个
+低频和 k 个高频子带，其中， k 是分解级数，分解
+前后图像的尺寸不变；然后 SFB 对高频子带进行
+分解， 得到多个不同方向的高频子带， 这些高频子
+带的尺寸也保持不变。因此，该过程设计 2 个步骤： 
+Step1：生成非下采样金字塔，其中，每个尺度使
+用剪切波累积所有方向的分解滤波结果获得。  
+Step2：使用重建滤波器，从粗略到精细地重建非
+下采样金字塔捕获的图像。  
+NSST 作为一种高效率的 MST 的分解方法，
+计算方式如下：对于维度 2n= ，具有复合膨胀
+( )M ΨXY 的仿射系统的形式为  
+() ( )1/2 2,, det : , , kllkm yy m l k mΨ Ψ=- ∈ ∈ ZZXY X 。 
+其中， ( )22LRΨ ∈ ；l 为多尺度分解的层级， k 为
+方向分解的数量，m 为平移参数，y 为空间域坐标；
+X 和 Y 分别表示各向异性膨胀矩阵和剪切矩阵，它
+们都是 22× 的可逆矩阵， det 1 =Y 。如果 ( )M ΨXY
+满足 Parseval 框架，则系统分量是复合小波 
+() ( )2 2 22,,
+,,
+,, jlk
+jkl
+f ff L RΨ =∀ ∈Σ 。 
+
+=== PDF_PAGE 4 ===
+524 计算机辅助设计与图形学学报  第 38 卷 
+ 
+     
+      
+其中， lX 表示多尺度变换； kY 表示几何变换，如
+剪切和旋转。  
+在此基础上，本文提出一种在 NSST 域中使用
+FL-DTNP 和 VSWLE-WSEML 分别进行高频和低
+频子带的图像融合方法。  
+1.3  双三次插值  
+图像的 SR 通过处理一幅低分辨率的图像， 生
+成一幅高分辨率的图像。在医学图像方面，图像
+的清晰度和细节丰富程度直接影响医生的诊断。
+本文提出融合方法，使用双三次插值将低分辨率
+医学图像转化为高分辨率的医学图像，细节化医
+学图像里的细节和轮廓。由于双三次插值可以提
+高多模态医学图像的分辨率，将源图像从低分辨
+率放大到高分辨率，使得图像变得更加清晰和细
+致， 因此进行图像的预处理时， 使用双三次插值对
+源图像进行处理 [25]。 
+最近邻插值、双线性插值和双三次插值是常用
+的 3 种插值方法。最近邻插值通过计算待插入点与
+周围像素点的距离，选择最近位置的像素值作为待
+插入像素的值， 该方法计算量小、 运行速度快， 但
+只考虑最近的灰度值作为采样点的灰度值， 忽略了
+其他灰度值的影响，导致处理后的图像有明显的灰
+度值不连续问题， 出现模糊和锯齿现象。 双线性插
+值方法在水平和垂直方向上各进行一次线性插值，
+然后将插值结果组合在一起，虽然该方法的效果好
+于最近邻插值法，但其只考虑到 4 个邻近灰度值的
+影响， 未能充分考虑灰度值变化率， 导致输出图像
+质量受损。双三次插值是二维空间最常用的插值方
+法，其克服了最近邻插值和双线性插值方法的不
+足， 能够比双线性插值法更好地平滑边缘， 计算精
+度更高，经过该方法处理后的图像效果更佳。 因此，
+本文使用双三次插值法对源图像进行平滑， 采用多
+项式插值，考虑 4 个直接相邻像素的灰度值以及相
+邻点之间灰度值变化率的影响，在插值点附近使用
+更多的像素值获得更高的插值精度。  
+在图像的预处理方面，本文使用双三次插值方
+法使融合图像避免噪声影响，提高源图像的分辨
+率。双三次插值利用源图像中待插入点周围的 16
+个像素点，对 16 个像素点的像素进行加权平均，
+计算待插入点的像素值，公式为  
+()
+() ()
+33
+32
+23 1 ,   1
+58 4 ,  12
+0,                                              otherwise
+xa x a x x
+Wx y a x a x a x a x
+■ =+ -+ +||■== - + - <<|
+|■
+≤
+。 
+其中， a =−0.5。得到权值后，只需将 16 个点的像
+素加权相加，插值公式为  
+() () ( )
+33
+00
+(, ) , ii i i
+ij
+f xy f x y W x x W y y
+==
+=- -ΣΣ 。 
+近年来， 在多模态医学图像融合方法中， 出现
+了基于对比度增强、细节增强和亮度增强的方法，
+用于对源图像进行预处理，虽然取得了一定的效
+果， 但会引入源图像中不存在的信息。 本文采用双
+三次插值技术对医学图像进行信息增强， 提高源图
+像的分辨率 [25] 。双三次插值的结果图 2 所示，可
+以看出，该技术不会改变源图像的对比度和细节信
+息，也不会引入噪声。  
+ 
+ 
+  
+a. 源图像 MRI b. 源图像 CT 
+ 
+c. a 的双三次插值 ×2 d. b 的双三次插值 ×2 
+ 
+图 2  双三次插值  
+2  本文方法 
+本文提出一种基于 FL-DTNP 系统的多模态高
+分辨率医学图像融合方法， 本文方法流程图如图3
+所示。首先利用双三次插值对源图像进行预处理，
+以提高源图像的分辨率，并对图像中的动态伪影和
+噪声等问题进行去除；采用 NSST 将源图像分解为
+低频子带和高频子带，针对现有的 DTNP 系统进
+行高频子带的提取和融合效率低下、 容易造成信息
+的丢失的问题，使用 FL-DTNP 系统提取图像高频
+子带， 不仅可提取高频子带更丰富的细节信息， 还
+大幅度提高了效率。由于低频子带包含图像的能量
+信息， 使用VSWLE-WSEML 对低频子带能量信息
+进行提取，再使用逆 NSST 进行逆变换得到最终的
+融合图像。 当融合图像为彩色图像时， 为了避免颜
+色失真，将 RGB 图像转化为亮度 Y、色度 U 和色
+度 V 这 3 个通道，并且对 Y 通道进行图像分解、  
+
+=== PDF_PAGE 5 ===
+第 3 期 许家昌，等：基于 NSST 的 FL-DTNP 多模态医学图像超分辨率融合  525  
+ 
+     
+      
+ 
+ 
+图 3  本文方法  
+ 
+提取和重组； 再将Y、U 和 V 这 3 个通道进行合并
+形成新的图像。  
+2.1  多尺度形态学梯度  
+多尺度形态学梯度（ multi-scale morphology 
+gradient ，MSMG）是一种基于数学形态学梯度法
+的图像分割方法， 能够有效增强图像特征， 其包含
+腐蚀和膨胀 2 个基本算子。 若( ),f xy 是输入函数，
+()SE ,ij 是结构元素 （structural element ，SE）函 数 ，
+并且() ,x y 是目标像素坐标，其中，灰度膨胀和灰度
+腐蚀操作分别可以使用 SEf + 最大值和 SEf - 最小
+值作为结构元素，则构造 MSMG 函数的公式为 
+11 1SE SE SE SEk
+k
+=⊕⊕ ⊕ …■———■———■； 
+()() (),, S E , S Ekk kGx y f x y f x y=⊕ - ⊙ 。 
+其中， [1, ]kn∈ ，⊕ 和 ⊙ 分别表示膨胀和腐蚀算子。
+然后，使用梯度算子从图像 f 中提取尺度 k 的梯度
+特征 () ()
+1
+MSMG , ,
+n
+ik
+k
+x yw G x y
+=
+=Σ 。其中， iw 表示
+第 k 个等级梯度的权重，定义为 21k+ 。最后，将
+所有的梯度集成到 MSMG 中。 
+2.2  FL-DTNP 
+本文设计了一种二维拓扑结构的 FL-DTNP 系
+统，使用 MSMG 对源图像的梯度信息进行增强；
+提出一种阈值自适应的更新方式， 使得源图像中的
+信息可以进行交互，防止阈值设置不准确而造成信
+息丢失的问题； 设计一种时间矩阵生成决策图， 以
+更有效地提取强度高和信息丰富的像素点。  
+传统的 DTNP 系统是 SNP 系统的变体，拥有
+膜计算的极大并行性，但因为源图像的每个像素值
+都是不同的，所以在 DTNP 系统中每个神经元之
+间的链接强度也不相同。 为了解决这一问题， 提出
+一种 FLM 优化的 FL-DTNP 系统，根据每个像素
+值大小，结合拉普拉斯算子改变每个神经元的链接
+强度。 
+在 FL-DTNP 系统中， 假设源图像A 和 B 为大
+小为 mn× 的医学图像， ()MSMG mn× 为经过 MSMG
+增强之后包含源图像的 NSST 系数的特征矩阵，设
+计 FL-DTNP 系统， 其神经元呈mn× 矩阵排列， 如
+图 4 所示。其中，MSMGij 的特征值作为神经元 ijσ
+的外部输入，每个神经元 ijσ 与其邻域半径中神经
+元有一个局部连接为 rδ ，可以接受来自邻域 rσ 的
+神经元发射的脉冲；然后根据脉冲发射规则进行点
+火，产生的脉冲发射给周围的神经元。 局部连接 rδ
+定义为 
+( ) { }r ,, 1, 1ij kl ki r li r i m j nδσ σ =-- ≤≤ ≤ ≤ ≤ ≤ ； 
+ ( ),upEaa a τ →       （1） 
+ ( ) ( )( ) ( )( )ij ij ij ijEu t t t u t u ττ τ≡ ≥∩≥ ∩≥ （2） 
+ 
+ 
+ 
+图 4  FL-DTNP 系统及对应的 NSST 特征系数矩阵  
+ 
+由图 4 可知，每个神经元中有一个脉冲单元和
+阈值单元 00[,]u τ ，脉冲发射规则如式（ 1），脉冲
+发射条件如式 （2）， 只有满足发射条件之后， 神经
+元才能够发射脉冲。  
+
+=== PDF_PAGE 6 ===
+526 计算机辅助设计与图形学学报  第 38 卷 
+ 
+     
+      
+将源图像的像素值信息结合拉普拉斯算子进
+行初始化阈值，作为 FL-DTNP 系统的初始化阈值。
+当神经元满足脉冲的发射规则时， 则执行脉冲发射
+规则； 否则， 继续累加神经元里的脉冲值。 该过程
+的公式为  
+ 
+()
+()
+()
+r
+r
+,i f f i r e s
+1
+,o t h e r w i s e
+kl
+kl
+ij ij kl kl ij
+ij
+ij ij kl kl
+du V w p n
+un
+uV w pn
+σσ
+σσ
+σ
+∈
+∈
+■ ++
+||+= ■ ++||■ ΣΣ （3） 
+ 
+() ( ) , if  fires1 ,o t h e r w i s eij ijij ijnpn g σ+■|+= ■|■ττ τ  （4） 
+其中， n 表示迭代的次数； ()ijun 表示第 n 次迭代
+神经元 ijσ 的脉冲数量； p 表示脉冲发射产生的脉
+冲数量； d 和 g 表示抑制参数， 避免最高强度的像
+素过强和初始阈值过高； W 表示权值矩阵，其大
+小根据神经元链接半径而变化，本文中，  
+0.7 1 0.7
+10 1
+0.7 1 0.7
+■■
+||=||||■■W 。 
+结合源图像 A 和 B 的像素值进行初始化，作
+为 FL-DTNP 系统的神经元阈值，定义为  
+ 1Ci j V=⊗+τ Γ        （5） 
+ ()0 2AB=+ττ τ        （6） 
+14 1
+1 42 0 46 14 1■■||=- ||||■■Γ 。 
+其中，⊗ 表示卷积运算；C 表示源图像 A 和 B ；Γ
+表示拉普拉斯算子； 0τ 表示神经元的初始化阈值
+矩阵。 
+利用时间矩阵 T 记录神经元发射脉冲的时间，
+根据记录的脉冲时序判断生成决策图。 T 定义为 
+ () ( ) () 1ij ij ijnn n Y n=- +TT    （7） 
+其中， ()ijYn 记录在第 n 次迭代发射脉冲的神经元。 
+本文使用时间矩阵作为生成决策图的依据，为
+了防止出现一些神经元脉冲过小而不能发射脉冲，
+采用迭代的方式进行终止，进一步节约时间成本。  
+2.3  融合过程  
+（1）高频子带融合源图像 
+源图像 A 应用 NSST 得到 ,lkAH 高频频段；同理，
+源图像 B 应用 NSST 得到 ,lkBH 高频频段。因为通过
+NSST 分解得到的高频子带有轮廓和纹理信息，所
+以在最终的融合图像中产生很大的影响。 由于图像
+的成像机制不同，因此在不同的位置图像的轮廓和
+纹理等信息不同， 在融合过程中， 通常会因为图像
+的轮廓和纹理信息的丢失，造成图像的融合效果不
+佳。为了克服这一缺点，使用 FL-DTNP 系统执行
+图像的高频子带的融合规则。  
+假设 AΠ 和 BΠ 是 2 个 DTNP 系统，分别对应
+多模态医学图像 A 和 B ，它们的 NSST 高频子带
+系数作为 AΠ 和 BΠ 的外部输入进行工作， 2 个
+FL-DTNP 系统从初始状态进行工作，直到系统中
+的神经元全部发射完成，或者达到最大的迭代次
+数， 系统停止工作。 使用时间矩阵记录每个神经元
+第 1 次发射神经元的时间，即 AijT 和 BijT ，高频 NSST
+系数的融合规则为  
+ 
+() ()()FF F ,, i f  , ,, i f  ≥ABAi j i jH ABBi j i jCi j T TCi j Ci j T T■|=■ <|■    （8） 
+其中， ( )F ,ACi j 和 ( )F ,BCi j 分别表示为位置 ( ),ij 的
+高频 NSST 系数； ( )F ,HCi j 表示高频 NSST 融合图
+像 F 在 (, )ij 处的系数， 1≤≤im 且1≤≤jn 。 
+算法 1：FL-DTNP 融合算法。  
+输入：通过 MSMG 增强的 ()MSMG mn× 。 
+输出：高频子带决策图 FHC 。 
+Step1：根据式（ 5）（6）更新阈值 0τ 。 
+Step2：设置抑制参数 0.8d = ， 0.6g = 和邻域半径
+3r= 、 maxt 。 
+Step3：初始化时间矩阵 (0 )ij=T 。 
+Step4： ()( 0 )ij iju= =U 。 
+Step5：For max1:it= ： 
+      根据式（ 3）更新神经元脉冲 iju ； 
+      根据式（ 4）更新阈值 ijτ ； 
+      根据式 （7） 记录时间矩阵ijT 并判断是否跳
+出循环；  
+      E n d 。 
+Step6：根据式（ 8）生成决策图 FHC 。 
+（2）低频子带融合  
+低频 NSST 系数包含源图像的大量能量，为了
+生成包含源图像的大部分能量的低频融合图像， 使
+用 VSWLE-WSEML 对低频子带能量进行提取。 加
+权局部能量 （weighted local energy ，WLE）定 义 为 
+( )
+() ( )
+2
+WLE ,
+  1, 1 ,
+rr
+mr nr
+xy
+mr nr L xm yn
+=- =-
+=
+×+ ++ + × + +ΣΣ W 。 
+
+=== PDF_PAGE 7 ===
+第 3 期 许家昌，等：基于 NSST 的 FL-DTNP 多模态医学图像超分辨率融合  527  
+ 
+     
+      
+其中，
+12 1
+1 1 6 242
+12 1
+■■
+||= ||||■■W 表示权值矩阵。视觉显
+著加权局部能量（ visual significant weighted local 
+energy，VSWLE）的定义为  
+[]
+255
+0
+VSWLE WLE 1 ci j=× × - Σ 。 
+VSWLE 保存结构化信息，而基于八邻域的改
+进拉普拉斯算子的加权和（ weighted sum of 
+eight-neighborhood base d modified Laplacian ，
+WSEML）是对细节信息的一种扫描方法，定义为  
+() ( )
+WSEML=
+  1, 1 EML ,
+rr
+mr nr
+mr nr xm yn
+=- =-
+++ ++× + +ΣΣ W ， 
+其中，基于八邻域的改进拉普拉斯算子（ eight- 
+neighborhood based m odified Laplacian ，EML）可
+以充分利用邻域神经元中的信息， 更好地探测低频
+子带的细节信息，定义为  
+() () ( )( )
+()( )( )
+()( )( )
+()( )( )
+EML , 2 , 1, 1,
+  2, , 1 , 1
+  12 2 , 1 , 1 ,
+  12 2 , 1 , 1 ,
+x yL x y L x y L x y
+Lxy Lxy Lxy
+Lxy Lx y Lx y
+Lxy Lx y Lx y
+=- - - + +
+-+ -- +
+---++
+---+ ，  
+其中，
+( )
+()
+()
+F ,
+,,
+    if VSWLE WSEML VSWLE WSEML
+, , otherwise
+A
+AA BB
+B
+Lx y
+Lx y
+Lx y
+=
+■
+| ××■
+|
+■
+≥
+ 
+表示通过 VSWLE-WSEML 归一化得出的最终低频
+子带系数； (, )ALx y 和 (, )BLx y 分别表示源图像 A
+和 B 的低频子带系数。  
+（3）NSST 重组 
+利用 FL-DTNP 系统和 VSWLE-WSEML 分别
+从高频子带和低频子带得到的结果， 使用 NSST 进
+行重组，得到最终的融合图像。  
+3  实验结果与分析  
+本文实验使用广泛应用于医学图像融合领域的
+哈佛医学院的开源脑部扫描数据集
+①
+，其中的图像都
+已在使用之前进行配准，所有图像的大小为256 256×
+像素。实验平台为 matlab2021a，i5-10210U CPU ，
+MX250 1.60 GHz GPU。将本文方法在 72 组多模态医
+学图像数据集中与 8 种经典的融合方法[26-33]进行比
+较，其中传统融合方法包括 NSST-MSMG[27] 、
+MLMG[31] 、AGPCNN[33] ，深度学习融合方法包括
+IFCNN[26]、SDNet[28]、U2Fusion[29]、DSAGAN[30]、
+ZLFMI[32]。 
+3.1  实验设置  
+3.1.1  评价指标  
+使用 7 种评价指标对融合图像的结果进行评
+价，包括视觉保真度（ visual information fidelity ，
+VIF）[34]、标准差（ standard deviation ，SD）[35]、
+差异相关和（ sum of the correlations of differences ，
+SCD）[36] 、像素特征互信息（ pixel feature mutual 
+information ，FMI-piex ）[37] 、离散预选特征互信息
+（discrete preselected feature mutual information ，
+FMI_dct）[37]、 基于融合质量评估 （quality assessment 
+based on fusion，Qabf）[38]和信息熵 （entropy，EN）[39]。
+每组图像组合使用了 24 组数据集进行比较。  
+采用峰值信噪比（ peak signal-to-noise ratio ，
+PSNR）[40] 和结构相似性 （structural similarity index 
+measure，SSIM）[41] 作为客观评价指标，以评估双
+三次插值对融合图像的影响。  
+3.1.2  参数设置  
+为选择最优分辨率， 验证SR 在多模态医学图
+像融合领域的有效性和本文方法在医学图像 SR 融
+合中的适用性， 在不同分辨率下进行实验。 将灰度
+和彩色医学源图像的分辨率分别扩大为原来的 1.5
+倍、2.0 倍、2.5 倍和 3.0 倍。部分融合结果指标如
+图 5 所示。当增大分辨率时，图像融合质量为 2.0
+倍时最佳，此后逐渐平稳。在 MRI-CT、MRI-PET
+和 MRI-SPECT 这 3 个数据集上，不同分辨率下融
+合图像的质量对比如表 1 所示。可以看出，该 SR
+处理方法解决图像动态伪影的问题的有效性得到
+验证；当分辨率为 2.0 倍时图像融合质量达到最优，
+考虑时间成本，本文设置增强分辨率为 2.0 倍。 
+FL-DTNP 系统中，设置抑制参数 0.6g= ，
+0.8d= ，邻域半径 3r= ，发射脉冲大小 1.1p= 。使
+用控制变量法调整迭代次数，验证迭代次数 t 对
+FL-DTNP 系统的影响，结果如表 2 所示。可以看
+出，当 t 增加时，融合图像的质量不断提高，考虑
+融合成本，本文设置 200t= 。 
+ 
+                    
+① https://www.med.harvard.edu/aanlib/home.html 
+
+=== PDF_PAGE 8 ===
+528 计算机辅助设计与图形学学报  第 38 卷 
+ 
+     
+      
+ 
+ 
+图 5  不同分辨率融合结果部分指标  
+ 
+表 1  不同分辨率下融合图像质量对比  
+MRI-CT MRI-PET MRI-SPECT 
+分辨率倍数  
+PSNR[40] /dB SSIM [41]  PSNR [40] /dB SSIM [41]  PSNR [40] /dB SSIM [41]  
+1.0 61.252 3 0.508 8 60.123 5 0.642 2 66.149 7 0.579 7 
+1.5 61.367 7 0.524 0 60.469 0 0.662 5 66.821 1 0.606 3 
+2.0 61.804 4 0.552 5 60.990 0 0.682 5 66.927 1 0.620 3 
+2.5 61.996 2 0.574 4 61.223 0 0.698 2 67.200 1 0.628 9 
+3.0 61.340 5 0.591 1 60.758 1 0.709 4 66.952 2 0.698 8 
+注：粗体表示最优值。   
+ 
+表 2  不同 t 对 FL-DTNP 系统的影响  
+MRI-CT MRI-PET MRI-SPECT 
+t 
+SD[35]  SCD [36]  Qabf [38]  VIF [34]  SD [35]  SCD [36] Qabf[38] VIF[34] SD[35]  SCD [36]  Qabf [38] VIF[34]
+50 83.621 4 1. 374 0 0.403 4 0.631 6 82.713 8 1.043 1 0.522 2 0.589 4 60.461 7 1.177 2 0.687 9 0. 790 3
+75 83.770 8 1. 384 5 0.407 8 0.636 2 84.130 2 1.143 9 0.657 6 0.750 5 60.562 3 1.196 8 0.712 6 0. 821 7
+100 84.099 4 1. 407 8 0.420 8 0.645 1 84.692 3 1.192 5 0.723 8 0.837 1 60.603 1 1.205 6 0.724 6 0. 837 7
+125 84.352 3 1. 419 9 0.436 3 0.661 2 84.855 7 1.206 7 0.747 0 0.865 5 60.608 9 1.207 0 0.727 9 0. 842 4
+150 84.397 1 1.421 3 0.439 6 0.667 2 84.888 9 1.209 2 0.752 9 0.872 8 60.609 3 1.207 9 0.728 6 0. 843 6
+200 83.874 3 1.498 8 0.522 0 0.605 4 85.064 6 1.248 2 0.745 5 0.874 9 60.632 3 1.214 4 0.721 7 0. 835 5
+注：粗体表示最优值。  
+ 
+3.2  客观评价  
+在 MRI-CT 24 组数据集上，将本文方法与
+NSST-MSMG[27]、MLMG[31]和 AGPCNN[33] 这 3 种传
+统融合方法进行实验，结果如表 3 所示。可以看出，
+本文方法在 SD、VIF、FMI-piex 和 SCD 指标上均
+优于 3 种传统融合方法。 在MRI-PET 24 组数据集
+上， 与传统融合方法的实验结果如表4 所示。 可以
+看出，在 SD、VIF、FMI-piex 和 SCD 指标上，本
+文方法均达到最高值。在 MRI-SPECT 24 组数据集
+上， 与传统融合方法的实验结果如表5 所示。 可以
+看出，尽管本文方法的 FMI_dct 和 EN 指标较低，
+但其他客观指标均为最佳。 实验结果表明， 本文方 
+ 
+表 3  在 MRI-CT 24 组数据集上 9 种方法的 7 种指标的平均值对比  
+方法 FMI_dct [37]  SD [35]  VIF [34]  EN [39]  FMI-piex [37]  SCD [36]  Qabf [38]  
+IFCNN[26]  0.379 5 74.103 5 0.442 5 4.604 6 0.867 6 1.365 3 0.688 5 
+NSST-MSMG[27]  0.400 9 78.385 4 0.534 6 5.250 2 0.881 5 1.319 3 0.591 9 
+SDNet[28]  0.245 6 59.732 0 0.329 7 5.080 5 0.842 8 0.931 3 0.608 9 
+U2Fusion [29]  0.296 9 52.754 0 0.345 5 4.918 0 0.856 6 0.759 6 0.250 7 
+DSAGAN [30]  0.225 9 61.953 9 0.274 2 4.738 7 0.853 6 0.771 5 0.127 7 
+MLMG[31]  0.501 9 80.010 1 0.571 8 4.546 7 0.894 0 1.298 9 0.556 9 
+ZLFMI[32]  0.119 7 76.231 6 0.072 1 5.252 6 0.783 5 0.466 3 0.114 6 
+AGPCNN [33]  0.373 7 68.248 9 0.368 8 5.532 9 0.865 6 1.077 2 0.541 6 
+本文 0.342 8 83.874 3 0.605 4 4.927 8 0.923 4 1.498 8 0.522 0 
+注：粗体表示最优值。  
+
+=== PDF_PAGE 9 ===
+第 3 期 许家昌，等：基于 NSST 的 FL-DTNP 多模态医学图像超分辨率融合  529  
+ 
+     
+      
+表 4  在 MRI-PET  24 组数据集上 9 种方法的 7 种指标的平均值对比  
+方法 FMI_dct [37]  SD [35]  VIF [34]  EN [39]  FMI-piex [37]  SCD [36]  Qabf [38]  
+IFCNN[26]  0.380 2 81.184 1 0.573 3 5.336 9 0.833 6 1.330 5 0.688 4 
+NSST-MSMG[27]  0.300 0 75.791 4 0.582 4 5.540 8 0.834 2 0.884 4 0.591 9 
+SDNet[28]  0.418 8 76.735 7 0.503 5 5.125 3 0.816 8 1.286 0 0.608 9 
+U2Fusion [29]  0.278 0 44.155 7 0.472 5 5.164 8 0.813 5 0.075 4 0.250 6 
+DSAGAN [30]  0.115 3 61.523 9 0.113 8 5.258 0 0.752 0 0.052 2 0.127 7 
+MLMG[31]  0.288 7 77.165 5 0.547 0 5.104 2 0.830 4 0.873 9 0.556 9 
+ZLFMI[32]  0.115 2 77.875 1 0.065 9 5.128 1 0.851 2 0.006 1 0.114 6 
+AGPCNN [33]  0.365 1 74.072 2 0.476 4 5.786 9 0.834 4 0.906 3 0.600 3 
+本文 0.369 2 85.064 6 0.592 7 5.586 1 0.889 4 1.218 2 0.745 5 
+注：粗体表示最优值。  
+ 
+表 5  在 MRI-SPECT 24 组数据集上 9 种方法的 7 种指标的平均值对比  
+方法 FMI_dct [37]  SD [35]  VIF [34]  EN [39]  FMI-piex [37]  SCD [36]  Qabf [38]  
+IFCNN[26]  0.374 5 55.894 1 0.562 3  4.908 5 0.853 5 1.023 3 0.660 9 
+NSST-MSMG[27]  0.332 5 45.172 3 0.490 0 5.006 9 0.838 5 0.323 0 0.492 7 
+SDNet[28]  0.377 1 57.838 9 0.479 5 4.458 7 0.846 4 1.208 9 0.596 5 
+U2Fusion [29]  0.278 8 34.191 2 0.401 3 4.658 1 0.830 3 0.225 3 0.355 6 
+DSAGAN [30]  0.137 5 58.422 3 0.161 3 5.429 1 0.769 7 0.555 2 0.180 5 
+MLMG[31]  0.333 0 45.263 3 0.487 1 4.779 9 0.835 8 0.321 9 0.465 4 
+ZLFMI[32]  0.117 8 55.519 3 0.074 4 5.262 3 0.758 0 0.143 3 0.114 0 
+AGPCNN [33]  0.386 9 52.566 2 0.527 9 5.118 9  0.857 1 0.678 9 0.636 9 
+本文 0.334 7 60.632 3 0.835 5 5.212 9 0.858 6 1.214 4 0.721 7 
+注：粗体表示最优值。  
+ 
+法不仅优于传统融合方法，而且在视觉保真度和边
+缘保留能力方面也具有明显的优势。  
+将本文方法与 5 种深度学习的融合方法在 72 对
+多模态医学图像上进行实验。从表 3~表 5 可以看出： 
+（1）在 CT 和 MRI 融合结果中，本文方法在
+SD、VIF、FMI-piex 和 SCD 上得到最优结果，而
+深度学习方法仅 IFCNN[26]在边缘客观指标 Qabf 上
+表现最好。  
+（2）在 MRI 和 PET 融合结果中，本文方法在
+SD、VIF、EN、FMI-piex 和 Qabf 上达到最优结果。 
+（3）在MRI 和 SPECT 融合结果中， 本文方法
+在 SD、VIF、SCD、FMI-piex 和 Qabf 上达到最优
+结果。 
+通过对 3 种模态融合结果的客观评价指标分
+析可知， 在彩色图像融合中， 本文方法在视觉保真
+度、能量保留能力和边缘信息保留方面均优于 5
+种深度学习方法； 然而， 在灰度图像融合的客观评
+价指标中，该方法的边缘检测能力略低于
+IFCNN[26]和 SDNet[28]融合方法，原因是 IFCNN[26]
+融合网络在融合中可能导致边缘信息的过度增强。
+因此， 在多模态医学图像融合中， 与传统融合方法
+和深度学习融合方法相比，本文方法不仅更符合人
+类视觉感知， 还在对比度方面具有明显的优势； 同
+时， 本文方法能够充分提取源图像的信息， 使得融
+合图像能够保留更多的特征细节。  
+3.3  主观评价  
+本文方法不仅在客观指标上优势较大，而且在
+主观方面更加符合人类的视觉感知，融合后图像包
+含更多的信息。  
+对 MRI-CT 中第 4 组和第 16 组图像进行融合，
+结果如表 6 所示。 可以看出：（1） 在基于深度学习
+方法中， IFCNN[26] 融合效果较好，保留了源图像
+的细节信息，但亮度存在一定失真； SDNet[28] 和
+U2Fusion [29]的融合效果提升了 MRI 边缘利用率，
+但在一定程度上丢失了 CT 的亮度信息；
+DSAGAN[30]融合效果的放大图中，丢失了 MRI 的
+细节信息，融合质量较差。 （2）NSST-MSMG[27]
+和 MLMG[31] 融合结果中亮度信息保留较好，但放
+大图中， MRI 的细节信息融合不清晰，不利于医
+学诊断。（3） 与传统融合和深度学习方法相比， 本
+文方法对亮度和 MRI 信息都保留得比较充分，在
+很大程度上提高了融合图像的质量。  
+
+=== PDF_PAGE 10 ===
+530 计算机辅助设计与图形学学报  第 38 卷 
+ 
+     
+      
+表 6  在 MRI-CT 数据集上第 4 组和第 16 组融合结果对比  
+图像编号  CT MRI IFCNN [26]  NSST-MSMG [27] SDNet[28]  U2Fusion [29]  
+第 4 组 
+ 
+ 
+ 
+ 
+ 
+  
+   
+ 
+ 
+第 16 组 
+ 
+ 
+ 
+ 
+ 
+  
+  
+ 
+ 
+图像编号  DSAGAN [30]  MLMG [31]  ZLFMI [32]  AGPCNN [33]  本文   
+第 4 组 
+ 
+ 
+ 
+ 
+ 
+  
+  
+ 
+  
+第 16 组 
+ 
+ 
+ 
+ 
+ 
+  
+  
+ 
+  
+ 
+对 MRI-PET 中第 1 组和第 4 组图像进行融合，
+结果如表 7 所示。可以看出，IFCNN[26]、SDNet[28]、
+U2Fusion[29]、DSAGAN[30]和 ZLFMI[32]的融合结果都
+在一定程度上出现颜色失真，其中， U2Fusion[29]的
+颜色失真尤为严重； MLMG[31]、NSST-MSMG[27]和
+本文方法的融合效果明显地改善了这一问题，保留
+了彩色图像 PET 的细节信息，将 MRI 和 PET 的特征
+信息充分融合，增加 PET 图像的彩色区分度；
+AGPCNN[33]的融合结果中增加了一些源图像不存在
+的信息，导致融合图像出现模糊和略微失真的问题。 
+对 MRI-SPECT 中第 9 组和第 13 组图像进行
+融合，结果如表 8 所示。从放大图中可以看出，  
+ 
+表 7  在 MRI-PET 数据集上第 1 组和第 4 组融合结果对比  
+图像编号  MRI PET IFCNN [26]  NSST-MSMG [27] SDNet[28]  U2Fusion [29]  
+第 1 组 
+ 
+ 
+ 
+ 
+ 
+  
+  
+ 
+ 
+第 4 组 
+ 
+ 
+ 
+ 
+ 
+  
+  
+ 
+ 
+图像编号  DSAGAN [30]  MLMG [31]  ZLFMI [32]  AGPCNN [33]  本文   
+第 1 组 
+ 
+ 
+ 
+ 
+ 
+  
+  
+ 
+  
+第 4 组 
+ 
+ 
+ 
+ 
+ 
+  
+  
+ 
+  
+ 
+
+=== PDF_PAGE 11 ===
+第 3 期 许家昌，等：基于 NSST 的 FL-DTNP 多模态医学图像超分辨率融合  531  
+ 
+     
+      
+IFCNN[26]的融合结果保留了 MRI 的细节和特征信
+息，但对 SPECT 的融合信息丢失较多，融合效果
+较差；NSST-MSMG[27]和 MLMG[31]过度增强 SPECT
+信息，导致融合结果彩色信息不易观察；DSAGAN[30]、
+ZLFMI[32]、SDNet[28]和本文方法融合结果在视觉效
+果方面较优，与其他方法相比，保留了大量的细节
+和特征信息。由表 7 和表 8 可以看出，深度学习方
+法不能准确地识别彩色图像，导致彩色图像中亮度
+信息丢失或失真；与传统和深度学习方法相比，本
+文方法可以准确地识别彩色图像中的细节信息，并
+且对彩色图像处理后不会造成亮度失真。  
+深度学习方法 ZLFMI[32] 和 SDNet[28] 的融合结
+果中， 虽然与本文方法在主观视觉上差异较小， 但
+深度学习需要进行样本设置、 权重调整， 并且需要
+进行大量训练才能够达到预期结果， 导致时间成本
+较高；本文方法则不需进行复杂的训练就能够达到
+所期望的结果。  
+为了验证本文模型的有效性，使用传统的
+DTNP 系统对 MRI-CT、MRI-PET 和 MRI-SPECT
+的 72 组数据集进行实验，结果如图 6 所示。可以
+看出，在细节方面，本文方法融合效果明显提升；
+在彩色图像 MRI-PET 和 MRI-SPECT 中，传统的  
+ 
+表 8  在 MRI-SPECT 数据集上第 9 组和第 13 组融合结果对比  
+图像编号  MRI PET IFCNN [26]  NSST-MSMG [27] SDNet[28]  U2Fusion [29]  
+第 9 组 
+ 
+ 
+ 
+ 
+ 
+  
+  
+ 
+ 
+第 13 组 
+ 
+ 
+ 
+ 
+ 
+  
+  
+ 
+ 
+图像编号  DSAGAN [30]  MLMG [31]  ZLFMI [32]  AGPCNN [33]  本文   
+第 9 组 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+  
+第 13 组 
+ 
+ 
+ 
+ 
+ 
+  
+  
+ 
+  
+ 
+ 
+  
+  
+ 
+  
+  
+CT MRI 原 DTNP 本文 MRI PET 原 DTNP 本文 
+ 
+  
+  
+MRI SPECT 原 DTNP 本文 MRI SPECT 原 DTNP 本文 
+ 
+图 6  传统的 DTNP 系统与 FL-DTNP 结果对比 
+
+=== PDF_PAGE 12 ===
+532 计算机辅助设计与图形学学报  第 38 卷 
+ 
+     
+      
+DTNP 系统融合方法容易出现颜色失真现象， 本文
+方法改善了这一缺陷。 进一步， 在MRI-CT、MRI- 
+PET 和 MRI-SPECT 数据集上，对本文方法和 DTNP
+系统的 7 种指标进行实验，以验证本文方法的优越
+性，结果如表 9 所示。可以看出， MRI-CT 中，本
+文方法的 FMI_dct、VIF 和 EN 低于传统的 DTNP，
+但在 Qabf、SD、FMI-piex 和 SCD 中都有着显著的
+提升；在彩色图像中，本文方法的提升更加明显，
+MRI-SPECT 和 MRI-PET 上的 7 种客观评价指标均
+优于传统的 DTNP 系统。实验结果表明，无论从
+客观指标还是主观评价，本文方法都表现出最佳的
+性能，具有良好的鲁棒性。  
+3.4  医师评价  
+本文邀请安徽理工大学第一附属医院、 华中科
+技大学同济医学院附属同济医院、 山东第二医科大
+学附属医院和吉林大学白求恩第一医院的医生， 采
+用调查问卷方式对本文方法的实用性和可行性进
+行评价。从融合图像能否准确地表达源图像的内
+容、保留源图像的亮度和细节信息等方面进行评估
+打分， 打分标准为1~5 分。 对6 组融合图像进行评
+价，计算多位专家打分的总平均值。结果如表 10
+所示。其中，图像 1 和图像 2 为 CT 和 MRI 融合
+的 2 组源图像，图像 3 和图像 4 是 MRI 和 PET 融
+合的 2 组源图像，图像 5 和图像 6 为 MRI 和 SPECT
+融合的 2 组源图像。 可以看出， 与传统的融合方法
+相比，本文方法略低于 NSST-MSMG[27] ，高于
+AGPCNN[33]和 MLMG[31] ；与深度学习融合方法相
+比，本文方法的评分最高。  
+ 
+表 9  2 种方法 7 种评价指标平均值对比  
+数据集  方法 FMI_dct [37]  SD [35]  VIF [34]  EN [39]  FMI-piex [37]  SCD [36]  Qabf [38]  
+DTNP 0.512 1 78.557 8 0.642 8 5.073 1 0.898 1 1.153 4 0.484 5 
+MRI-CT 
+本文 0.342 8 83.874 3 0.605 4 4.927 8 0.923 4 1.498 8 0.522 0 
+DTNP 0.292 7 76.498 3 0.508 4 5.578 1 0.829 0 0.879 6 0.577 7 
+MRI-PET 
+本文 0.369 2 85.064 6 0.592 7 5.586 1 0.889 4 1.218 2 0.745 5 
+DTNP 0.330 5 45.279 9 0.469 3 5.076 6 0.838 2 0.281 1 0.504 2 
+MRI-SPECT 
+本文 0.334 7 60.632 3 0.835 5 5.212 9 0.858 6 1.214 4 0.721 7 
+注：不同数据集中各指标最优值。  
+ 
+表 10  放射科医生的客观评价值  
+图像 
+方法 
+1 2 3 4 5 6 
+平均值  
+IFCNN[26]  3.687 5 3.333 3 3.083 3 3.500 0 3.608 3 3.766 7 3.496 5 
+NSST-MSMG[27]  3.833 3 3.666 7 3.583 3 3.666 7 3.916 7 3.425 0 3.682 0 
+SDNet[28]  3.000 0 3.416 7 3.420 0 3.225 0 3.250 0 3.666 7 3.329 0 
+U2Fusion [29]  3.583 3 3.008 3 3.000 0 2.166 7 3.166 7 3.750 0 3.112 5 
+DSAGAN [30]  2.666 7 3.333 3 2.333 3 3.508 3 3.416 7 4.083 0 3.223 5 
+MLMG[31]  2.583 3 3.416 7 3.500 0 2.800 0 3.833 3 3.250 0 3.230 6 
+ZLFMI[32]  2.583 3 3.166 7 3.916 7 2.750 0 2.975 0 3.083 3 3.079 1 
+AGPCNN [33]  2.583 3 3.666 7 3.666 7 3.833 3 4.166 7 3.250 0 3.527 8 
+本文 3.583 3 4.083 3 3.000 0 3.916 7 3.693 3 3.583 3 3.643 3 
+注：粗体表示最优值。  
+ 
+4  总  结 
+本文提出一种基于 FL-DTNP 系统和 VSWLE- 
+WSEML 的 NSST 域医学图像超分辨率融合方法。
+客观实验结果表明，构建的高频子带融合规则能够
+有效地提取图像的细节信息和轮廓信息。设计的
+VSWLE-WSEML 融合规则能够有效融合低频子
+带， 融合结果证明， 该方法不仅可以充分提取图像
+中的能量，而且可以保留源图像的结构信息。在
+72 组融合图像数据集上，将本文方法与 8 种经典
+方法进行对比实验，得出如下结论： （1）基于
+FL-DTNP 系统融合方法不论在客观评价还是主观
+评价上， 均优于对比的医学图像融合方法；（2）引
+入的双三次插值可以有效地提高融合图像分辨率
+并丰富细节信息；（3） 从客观指标Qabf 可以看出，
+虽然与传统的 DTNP 系统相比，本文方法的边缘
+
+=== PDF_PAGE 13 ===
+第 3 期 许家昌，等：基于 NSST 的 FL-DTNP 多模态医学图像超分辨率融合  533  
+ 
+     
+      
+信息指标显著提高，但与 8 种先进的融合方法相
+比，边缘信息还有待提高。  
+本文工作集中在多模态医学图像融合， 还有很
+多种类的图像， 如红外光图像、 多聚焦图像等， 因
+为其成像方式不同， 所以具有不同的特征。 本文实
+验只能证明本文方法在 NSST 下结合 FL-DTNP 系
+统和 VSWLE-WSEML 对多模态医学图像融合具有
+良好的效果，将其推广到其他种类的图像融合是未
+来工作的重点。  
+参考文献（ References）： 
+[1] Yin M, Liu X N, Liu Y , et al. Medical image fusion with pa-
+rameter-adaptive pulse coupled neural network in nonsubsam-
+pled Shearlet transform domain[J]. IEEE Transactions on 
+Instrumentation and Measurement, 2019, 68(1): 49-64 
+[2] Huang Yuping, Li Weisheng. A review of medical image fusion 
+methods[J]. Journal of Image and Graphics, 2023, 28(1): 118- 
+143(in Chinese) 
+(黄渝萍 , 李伟生 . 医学图像融合方法综述 [J]. 中国图象图
+形学报, 2023, 28(1): 118-143) 
+[3] Lu Y , Zhang X L, Li X F,  et al . A three-layer decomposition 
+method based on structural texture perception for fusion of CT 
+and MRI images[J]. Biomedical Signal Processing and Control, 
+2024, 88: Article No.105518 
+[4] Wang Lei, Guo Quan, Yang Lisu. A medical image fusion 
+method based on phase and magn itude information in CST 
+domain[J]. Journal of Computer-Aided Design & Computer 
+Graphics, 2018, 30(3): 392-399(in Chinese) 
+(王雷, 郭全, 杨利素. 基于 CST 域相位与幅值信息的医学
+图像融合方法 [J]. 计算机辅助设计与图形学学报 , 2018, 
+30(3): 392-399) 
+[5] Kong W W, Miao Q G , Lei Y . Multimodal sensor medical im-
+age fusion based on local difference in non-subsampled do-
+main[J]. IEEE Transactions on Instrumentation and Measure-
+ment, 2019, 68(4): 938-951 
+[6] Gao Y , Ma S W, Liu J J, et al. Fusion of medical images based 
+on salient features extraction by PSO optimized fuzzy logic in 
+NSST domain[J]. Biomedical Signal Processing and Control, 
+2021, 69: Article No.102852 
+[7] Yang Y , Que Y , Huang S Y , et al . Multiple visual features 
+measurement with gradient domain guided filtering for 
+multi-sensor image fusion[J]. IEEE Transactions on Instru-
+mentation and Measurement, 2017, 66(4): 691-703 
+[8] Wang G F, Li W S, Gao X B, et al. Multimodal medical image 
+fusion based on multichannel c oupled neural P systems and 
+max-cloud models in spectral total variation domain[J]. Neu-
+rocomputing, 2022, 480: 61-75 
+[9] Chao Z, Duan X G, Jia S F, et al. Medical image fusion via dis-
+crete stationary wavelet transfor m and an enhanced radial basis 
+function neural network[J]. A pplied Soft Computing, 2022, 
+118: Article No.108542 
+[10] Peng H, Li B, Yang Q, et al . Multi-focus image fusion ap-
+proach based on CNP systems in NSCT domain[J]. Computer 
+Vision and Image Understanding, 2021, 210: Article No.103228 
+[11] Sinha A, Agarwal R, Kumar V , et al. Multi-modal medical im-
+age fusion using improved dual-channel PCNN[J]. Medical & 
+Biological Engineering & Computing, 2024, 62(9): 2629-2651 
+[12] Peng H, Wang J, Pérez-Jiménez M J, et al. Dynamic threshold 
+neural P systems[J]. Knowledge-Based Systems, 2019, 163: 
+875-884 
+[13] Li B, Peng H, Wang J. A novel fusion method based on dy-
+namic threshold neural P syst ems and nonsubsampled contour-
+let transform for multi-modality medical images[J]. Signal 
+Processing, 2021, 178: Article No.107793 
+[14] Zhan K, Teng J C, Shi J H, et al . Feature-linking model for 
+image enhancement[J]. Neural  Computation, 2016, 28(6): 
+1072-1100 
+[15] Liu Y Y , Zhou D M, Nie R C, et al. Green fluorescent protein 
+and phase contrast image fusion via spectral TV filter-based 
+decomposition[J]. Biomedical Signal Processing and Control, 
+2023, 79: Article No.104265 
+[16] P ăun G . Computing with membranes[J]. Journal of Computer 
+and System Sciences, 2000, 61(1): 108-143 
+[17] Paul P, Sosík P. Solving th e SAT problem using spiking neural 
+P systems with coloured spikes and division rules[J]. Journal of 
+Membrane Computing, 2024, 6(3): 222-233 
+[18] Li B, Zhang L L, Liu J, et al . Multi-focus image fusion with 
+parameter adaptive dual channel dynamic threshold neural P 
+systems[J]. Neural Networks, 2024, 179: Article No.106603 
+[19] Dinh P H. Combining spectral total variation with dynamic 
+threshold neural P systems for medical image fusion[J]. Bio-
+medical Signal Processing and Control, 2023, 80(2): Article 
+No.104343 
+[20] Toet A. Image fusion by a ratio of low-pass pyramid[J]. Pattern 
+Recognition Letters, 1989, 9(4): 245-253 
+[21] Chipman L J, Orr T M, Graham L N. Wavelets and image fu-
+sion[C] //Proceedings of the International Conference on Image 
+Processing. Los Alamitos: IEEE Computer Society Press, 1995: 
+248-251  
+[22] Hou B, Zhang X H, Bu X M, et al . SAR image despeckling 
+based on nonsubsampled shearlet transform[J]. IEEE Journal of 
+Selected Topics in Applied Ea rth Observations and Remote 
+Sensing, 2012, 5(3): 809-823 
+[23] Hu P, Wang C J, Li D Q, et al. An improved hybrid multiscale 
+fusion algorithm based on NSST fo r infrared-visible images[J]. 
+The Visual Computer, 2024, 40(2): 1245-1259 
+[24] Diwakar M, Singh P, Shankar A. Multi-modal medical image 
+fusion framework using co-occu rrence filter and local extrema 
+in NSST domain[J]. Biomedical Signal Processing and Control, 
+2021, 68: Article No.102788 
+[25] Yang Y , Cao S H, Wan W G, et al. Multi-modal medical image 
+super-resolution fusion base d on detail enhancement and 
+weighted local energy deviati on[J]. Biomedical Signal Proc-
+essing and Control, 2023, 80: Article No.104387 
+[26] Zhang Y , Liu Y , Sun P, et al. IFCNN: a general image fusion 
+framework based on convolutional neural network[J]. Informa-
+tion Fusion, 2020, 54: 99-118 
+[27] Tan W, Tiwari P, Pandey H M, et al. Multimodal medical image 
+fusion algorithm in the era of big data[J]. Neural Computing 
+and Applications, 2020: 1-21 
+[28] Zhang H, Ma J Y . SDNet: a versatile squeeze-and-decompo-
+
+=== PDF_PAGE 14 ===
+534 计算机辅助设计与图形学学报  第 38 卷 
+ 
+     
+      
+sition network for real-time image fusion[J]. International 
+Journal of Computer Vision, 2021, 129(10): 2761-2785 
+[29] Xu H, Ma J Y , Jiang J J, et al . U2Fusion: a unified unsuper-
+vised image fusion network[J]. IEEE Transactions on Pattern 
+Analysis and Machine Intelligence, 2022, 44(1): 502-518 
+[30] Fu J, Li W  S, Du J, et al. DSAGAN: a generative adversarial 
+network based on dual-stream attention mechanism for ana-
+tomical and functional image fusi on[J]. Information Sciences, 
+2021, 576: 484-506 
+[31] Tan W, Thitøn W, Xiang P, et al. Multi-modal brain image fu-
+sion based on multi-level edge-p reserving filtering[J]. Bio-
+medical Signal Processing and Control, 2021 64: Article 
+No.102280 
+[32] Lahoud F, Süsstrunk S. Zero-learning fast medical image fu-
+sion[C] //Proceedings of the 22 th International Conference on 
+Information Fusion (FUSION). Los Alamitos: IEEE Computer 
+Society Press, 2019: 1-8 
+[33] Vajpayee P, Panigrahy C, Kumar A. Medical image fusion by 
+adaptive Gaussian PCNN and improved Roberts operator[J]. 
+Signal, Image and Video Processing, 2023, 17(7): 3565-3573 
+[34] Sheikh H R, Bovik A C. Image information and visual qual-
+ity[J]. IEEE Transactions on Image Processing, 2006, 15(2): 
+430-444 
+[35] Li S T, Yang B, Hu J W. Performance comparison of different 
+multi-resolution transforms for image fusion[J]. Information 
+Fusion, 2011, 12(2): 74-84 
+[36] Aslantas V , Bendes E. A new image quality metric for image 
+fusion: the sum of the correlations  of differences[J]. AEU - In-
+ternational Journal of Electr onics and Communications, 2015, 
+69(12): 1890-1896 
+[37] Li H, Wu X J, Durrani T S. Infrared and visible image fusion 
+with ResNet and zero-phase component analysis[J]. Infrared 
+Physics & Technology, 2019, 102: Article No.103039 
+[38] Xydeas C S, Petrovic V . Objective image fusion performance 
+measure[J]. Electronics Letters, 2000, 36(4): 308-309 
+[39] Hempelmann C F, Sakoglu U, Gurupur V P, et al . An en-
+tropy-based evaluation method fo r knowledge bases of medical 
+information systems[J]. Expert Systems with Applications, 
+2016, 46: 262-273  
+[40] Horé A, Ziou D. Image qua lity metrics: PSNR vs. SSIM[C]// 
+Proceedings of the 20th Intern ational Conference on Pattern-
+Recognition. Los Alamitos: IEEE Computer Society Press, 
+2010: 2366-2369 
+[41] Wang Z, Bovik A C, Sheikh H R, et al. Image quality assess-
+ment: from error visibility to structural similarity[J]. IEEE 
+transactions on image processing, 2004, 13(4): 600-612 
+ 
+ 

@@ -1,0 +1,27 @@
+﻿$ ls -la /data/heluofan/picai/ 2>&1
+total 24
+drwxrwxr-x  3 heluofan heluofan 4096 Nov 23 23:08 .
+drwxr-x--- 35 heluofan heluofan 4096 Nov 23 23:08 ..
+-rw-rw-r--  1 heluofan heluofan  572 Nov 23 23:10 dl.log
+-rw-rw-r--  1 heluofan heluofan 4844 Nov 23 23:08 dl_picai.py
+drwxrwxr-x  2 heluofan heluofan 4096 Nov 23 23:09 downloads
+
+$ ls -la /data/heluofan/picai/downloads/ 2>&1 | head -5; echo COUNT=$(ls /data/heluofan/picai/downloads/ 2>/dev/null | wc -l)
+total 390152
+drwxrwxr-x 2 heluofan heluofan     4096 Nov 23 23:09 .
+drwxrwxr-x 3 heluofan heluofan     4096 Nov 23 23:08 ..
+-rw-rw-r-- 1 heluofan heluofan 11534336 Nov 23 23:10 picai_public_images_fold0.zip.p00000.tmp
+-rw-rw-r-- 1 heluofan heluofan 11534336 Nov 23 23:10 picai_public_images_fold0.zip.p00001.tmp
+COUNT=32
+
+$ ps -ef | grep -c '[d]l_picai.py'; echo '---'; tail -8 /data/heluofan/picai/dl.log 2>&1
+2
+---
+TOTAL=25.02 GB  CHUNK=64MB  WORKERS=32
+resume: 0 parts done, 402 to fetch
+[   16s]   0.00/ 25.02 GB   0.0%  inst= 0.00 MB/s avg= 0.00 MB/s ETA=447816444 min
+[   31s]   0.00/ 25.02 GB   0.0%  inst= 0.00 MB/s avg= 0.00 MB/s ETA=447816444 min
+[   46s]   0.00/ 25.02 GB   0.0%  inst= 0.00 MB/s avg= 0.00 MB/s ETA=447816444 min
+[   61s]   0.00/ 25.02 GB   0.0%  inst= 0.00 MB/s avg= 0.00 MB/s ETA=447816444 min
+[   76s]   0.00/ 25.02 GB   0.0%  inst= 0.00 MB/s avg= 0.00 MB/s ETA=447816444 min
+[   91s]   0.00/ 25.02 GB   0.0%  inst= 0.00 MB/s avg= 0.00 MB/s ETA=447816444 min

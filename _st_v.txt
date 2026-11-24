@@ -1,0 +1,23 @@
+﻿$ tail -4 /data/heluofan/picai/dl.log
+[   76s]   0.00/ 25.02 GB   0.0%  inst= 0.00 MB/s avg= 0.00 MB/s ETA=447816444 min
+[   91s]   0.00/ 25.02 GB   0.0%  inst= 0.00 MB/s avg= 0.00 MB/s ETA=447816444 min
+[  106s]   0.00/ 25.02 GB   0.0%  inst= 0.00 MB/s avg= 0.00 MB/s ETA=447816444 min
+[  121s]   0.00/ 25.02 GB   0.0%  inst= 0.00 MB/s avg= 0.00 MB/s ETA=447816444 min
+
+$ du -sh /data/heluofan/picai/downloads 2>/dev/null; ls /data/heluofan/picai/downloads | wc -l
+494M	/data/heluofan/picai/downloads
+32
+
+$ tail -6 /data/heluofan/picai/repos_dl.log 2>/dev/null; echo '--repos--'; du -sh /data/heluofan/picai/repos 2>/dev/null
+EXTRACT picai_baseline ok
+GET picai_eval (main) bytes=803654
+EXTRACT picai_eval ok
+GET Report-Guided-Annotation (main) bytes=34138444
+EXTRACT Report-Guided-Annotation ok
+ALLDONE
+--repos--
+248M	/data/heluofan/picai/repos
+
+$ ps -ef | grep -c '[d]l_picai.py'; ps -ef | grep -c '[r]epos_dl.sh'
+2
+0

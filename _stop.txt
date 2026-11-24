@@ -1,0 +1,11 @@
+=== 停止前进程 ===
+TERM sent to 0
+=== 停止后剩余 ===
+procs=0
+=== 空间占用 ===
+26G	/data/heluofan/picai/downloads
+26G	/data/heluofan/picai/images
+105G	/data/heluofan/picai/workdir
+155G	/data/heluofan/picai
+/dev/nvme0n1    7.0T  1.8T  4.8T  28% /data
+STOP_DONE

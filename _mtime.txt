@@ -1,0 +1,44 @@
+==== recent
+seg_work       2026-11-14 16:35:19
+picai          2026-11-24 09:50:10
+der_data       2026-11-21 15:41:20
+eegfnirs       2026-11-22 16:24:18
+brats_work     2026-11-11 00:38:51
+thyroid_tta    2026-11-21 16:56:17
+models         2026-11-20 10:17:32
+image          2026-11-11 17:14:59
+qwen3-embed    2026-11-17 17:48:34
+bench          2026-11-20 14:36:43
+
+==== segwork_newest
+/data/heluofan/seg_work/datasets/make_proof.py
+/data/heluofan/seg_work/datasets/nnUNet_results/Dataset701_PETCTLesions/nnUNetTrainer__nnUNetPlans__3d_fullres/fold_0/progress.png
+/data/heluofan/seg_work/datasets/nnUNet_results/Dataset701_PETCTLesions/nnUNetTrainer__nnUNetPlans__3d_fullres/fold_0/checkpoint_best.pth
+/data/heluofan/seg_work/datasets/nnUNet_results/Dataset701_PETCTLesions/nnUNetTrainer__nnUNetPlans__3d_fullres/fold_0/debug.json
+/data/heluofan/seg_work/datasets/nnUNet_results/Dataset701_PETCTLesions/nnUNetTrainer__nnUNetPlans__3d_fullres/fold_0/checkpoint_final.pth
+/data/heluofan/seg_work/datasets/nnUNet_results/Dataset701_PETCTLesions/nnUNetTrainer__nnUNetPlans__3d_fullres/fold_0/validation/psma_15268147652491287156.npz
+/data/heluofan/seg_work/datasets/nnUNet_results/Dataset701_PETCTLesions/nnUNetTrainer__nnUNetPlans__3d_fullres/fold_0/validation/fdg_25406155825715543338.nii.gz
+/data/heluofan/seg_work/datasets/nnUNet_results/Dataset701_PETCTLesions/nnUNetTrainer__nnUNetPlans__3d_fullres/fold_0/validation/fdg_41368939653576005979.pkl
+/data/heluofan/seg_work/datasets/nnUNet_results/Dataset701_PETCTLesions/nnUNetTrainer__nnUNetPlans__3d_fullres/fold_0/validation/fdg_31510064139342476709.nii.gz
+/data/heluofan/seg_work/datasets/nnUNet_results/Dataset701_PETCTLesions/nnUNetTrainer__nnUNetPlans__3d_fullres/fold_0/validation/psma_70627398276431720802.nii.gz
+/data/heluofan/seg_work/datasets/nnUNet_results/Dataset701_PETCTLesions/nnUNetTrainer__nnUNetPlans__3d_fullres/fold_0/validation/psma_25615272926681989907.pkl
+/data/heluofan/seg_work/datasets/nnUNet_results/Dataset701_PETCTLesions/nnUNetTrainer__nnUNetPlans__3d_fullres/fold_0/validation/psma_39239157386457728400.nii.gz
+--- count ---
+36589
+
+==== segwork_cfg
+-rw-rw-r-- 1 heluofan heluofan  48616 Nov 19 16:33 /data/heluofan/seg_work/datasets/met_fixed.csv
+-rw-rw-r-- 1 heluofan heluofan  48427 Nov 18 09:36 /data/heluofan/seg_work/datasets/met_exp.csv
+-rw-rw-r-- 1 heluofan heluofan  47494 Nov 18 09:35 /data/heluofan/seg_work/datasets/met_ctrl.csv
+-rw-rw-r-- 1 heluofan heluofan 187331 Nov 18 00:09 /data/heluofan/seg_work/datasets/met.csv
+-rw-rw-r-- 1 heluofan heluofan 241821 Nov 16 14:21 /data/heluofan/seg_work/datasets/cases_all.csv
+-rwxrwxr-x 1 heluofan heluofan    977 Nov 14 10:13 /data/heluofan/seg_work/launch_next.sh
+-rw-rw-r-- 1 heluofan heluofan    591 Nov 14 10:13 /data/heluofan/seg_work/seed_train.py
+-rw-rw-r-- 1 heluofan heluofan   5758 Nov 14 10:13 /data/heluofan/seg_work/postproc_sensitivity.py
+
+==== mos
+[{"study": "1.3.6.1.4.1.14519.5.2.1.4219.6651.300593273160912208382902336800", "patient": "PETCT_1fc35d02da", "date": "2003-08-09"}, {"study": "1.3.6.1.4.1.14519.5.2.1.4219.6651.209031475962647969886625799061", "patient": "PETCT_1781ba966c", "date": "2002-08-08"}, {"study": "1.3.6.1.4.1.14519.5.2.1.
+---
+tag,suffix,src,ct_shape,pet_shape,pet_zooms,mask_vox,dir
+fdg,10020013764949228012,fill,512x512x391,400x400x326,"2.036,2.036,3.000",0,/data/heluofan/seg_work/datasets/nifti_official/fdg/10020013764949228012
+1612 /data/heluofan/seg_work/datasets/cases_all.csv

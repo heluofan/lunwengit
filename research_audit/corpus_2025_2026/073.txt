@@ -1,0 +1,1506 @@
+=== PDF_PAGE 1 ===
+DOI 10.15302/J-SSCAE-2025.12.020
+中国工程科学 2026 年 第 28 卷 第 5 期
+数智病理驱动的诊疗闭环模式创新与
+工程实现路径研究
+杨雯珏 1, 2, 3，周亭玉 1, 2, 3，张琪琪 1, 2, 3，李佳霖 1, 2, 3，王大亮 4，王俊普 1, 2, 3*
+（1. 中南大学湘雅医院，长沙 410008；2. 中南大学湘雅基础医学院，长沙 410008；
+3. 中南大学湘雅医学院，长沙 410008；4. 清华大学基础医学院，北京 100084）
+摘要：在全切片图像、空间组学与自监督预训练等技术的驱动下，数智病理（ DIP）正推动病理学由传统经验诊断转向数据
+智能驱动的工程化新范式。在此基础上， DIP 正构建面向临床与制药需求的一体化工程系统，形成“诊断 ‒ 治疗 ‒ 反馈”的
+闭环。本文系统探讨 DIP 的技术演进，聚焦大规模自监督基础模型、跨模态虚拟染色、病理 ‒ 组学对齐与肿瘤微环境建模等
+关键进展，总结 DIP在自动化分级、多任务学习、肿瘤微环境解析与基因型 ‒ 表型预测中的核心能力。进一步结合靶点发
+现、机制研究、毒理评估、精准临床试验等应用实例，阐明 DIP赋能功能表型挖掘、革新药效预测、患者分层并释放可转化
+的临床与产业价值。最后，分析数据标准化、跨中心泛化、可解释性与监管治理等面临的关键挑战，展望 DIP在多模态、可
+信人工智能驱动下形成可持续迭代的“诊断 ‒ 治疗 ‒ 反馈”闭环。面向国家生物医药与健康体系建设， DIP有望作为“转化
+医学工程“核心枢纽” ，持续推动病理学由“诊断科学”迈向“治疗引擎” ，成为连接临床决策与药物研发、支撑我国生物医
+药产业源头创新与研发提效的关键支撑。
+关键词：数智病理；可计算表型；跨模态对齐；肿瘤微环境建模；诊疗闭环学习
+中图分类号：TD67；TD82  文献标识码：A
+Diagnostic-Therapeutic Closed-Loop Model Driven 
+by Digital-Intelligent Pathology: Engineering 
+Pathway and Implementation
+Yang Wenjue 1, 2, 3, Zhou Tingyu 1, 2, 3, Zhang Qiqi 1, 2, 3, Li Jialin 1, 2, 3, 
+Wang Daliang 4, Wang Junpu 1, 2, 3*
+(1. Xiangya Hospital of Central South University, Changsha 410008, China; 2. Xiangya School of Basic Medical Sciences, 
+Central South University, Changsha 410008, China; 3. Xiangya School of Medicine, Central South University, 
+Changsha 410008, China; 4. School of Basic Medical Sciences, Tsinghua University, Beijing 100084, China)
+Abstract: Driven by technologies such as whole-slide imaging (WSI), spatial omics, and self-supervised pretraining, digital-
+intelligent pathology (DIP) is shifting pathology from traditional experience-based diagnosis toward a new data-intelligence-driven 
+engineering paradigm. Building on these advances, DIP is establishing an integrated engineering system tailored to clinical and 
+收稿日期：2025-12-20；修回日期：2026-02-11
+通讯作者：*王俊普，中南大学湘雅医院／湘雅基础医学院副教授，研究方向为病理学与数智病理；E-mail: wang-jp2013@csu.edu.cn
+资助项目：湖南省科技厅实验室（芙蓉实验室）项目(2024PT5111)
+本刊网址：sscae.engineering.org.cn
+207
+
+=== PDF_PAGE 2 ===
+数智病理驱动的诊疗闭环模式创新与工程实现路径研究
+pharmaceutical needs, thereby forming a closed loop of diagnosis ‒ treatment ‒ Response. This study outlines the technological 
+evolution of DIP , focusing on large-scale self-supervised foundation models, cross-modal virtual staining, pathology‒omics alignment, 
+and tumor microenvironment (TME) modeling. It also outlines DIP ’s core functions: automated grading, multi-task learning, TME 
+characterization, and genotype-phenotype mapping. Through examples in target discovery, mechanism studies, toxicity assessment, 
+and precision trials, the study demonstrates how DIP enables functional phenotype mining, improves efficacy prediction and patient 
+stratification, and delivers clinical and industrial value. Moreover, it explores challenges regarding data standardization, cross-center 
+generalization, interpretability, and regulatory governance, and envisions DIP evolving, through multimodal and trustworthy artificial 
+intelligence, into a sustainable “diagnosis‒treatment‒Response”  loop. For the development of national biopharmaceutical and health 
+systems in China, DIP is positioned as a “core hub for translational medical engineering,” steadily advancing pathology from a diagnostic 
+science to a therapeutic engine. This suggests that DIP could become an important link between clinical decision-making and drug R&D, 
+bolstering original innovation and R&D efficiency of China’s biopharmaceutical industry.
+Keywords: digital-intelligent pathology; computable phenotype; cross-modal alignment; tumor microenvironment modeling; diagnostic-
+therapeutic closed-loop learning
+一、前言
+人工智能（AI）正快速重塑病理学的研究范式
+与应用范围。近年来，围绕多系统、多类型肿瘤等
+疾病，已有大量研究系统评估了 AI在良恶性鉴别、
+病理分型、预后评估及部分治疗反应预测中的应用
+潜力，显示其在提升诊断效率与一致性方面的显著
+优势[1-5]。随着全切片图像（ WSI）技术的成熟，病
+理学逐步进入以可计算表型为特征的数字化阶段，
+为深度学习模型在“诊断 ‒ 治疗 ‒ 反馈” （Dx‒Tx‒
+Rx）中的应用奠定了数据基础。在此基础上，自监
+督学习等方法进一步突破了对大规模人工标注的依
+赖，使模型能够从未标注或弱标注的 WSI中提取稳
+定的组织学表型，并将其与患者生存结局、分子通
+路特征及不同治疗方案下的疗效差异建立关联，初
+步揭示了病理信息在治疗决策支持中的潜在价
+值[6-7]。与此同时，数智病理正赋能药物研发与安全
+性评价等方面，在毒性识别、风险分级及作用机制
+解析等环节中展现出辅助甚至部分替代传统流程的
+能力[8-9]。然而，从研究整体来看，现有工作多聚焦
+于单一病种或局部任务，研究范式呈现出明显的碎
+片化特征：不同模型间缺乏统一的表型定义与评价
+体系，算法成果跨病种、跨中心泛化能力有待提
+升，病理证据也尚未系统性嵌入治疗决策与药物研
+发流程[10-12]。
+在上述背景下，数智病理（ DIP）逐渐成为病
+理学应对 AI驱动医疗发展时代的重要演进方向 [13]。
+DIP以数字化病理数据为核心载体，融合 AI、大数
+据与新一代信息技术，构建覆盖病理工作流的“智
+能感知 ‒ 智能分析 ‒ 智能决策 ‒ 智能治理”闭环新
+范式，其目标在于推动病理由“经验驱动、局部优
+化”向“数据驱动、系统优化”转型。需要强调的
+是，DIP不能简单等同于数字病理或计算病理。数
+字病理主要解决切片数字化与流程效率问题，而计
+算病理则侧重于针对特定任务的算法建模与性能提
+升[14-15]。受限于数据与表型组织方式的非统一性，
+现有计算病理方法在跨中心泛化、跨模态对齐方面
+仍存在明显不足，难以支撑工程化诊疗闭环。相比
+之下，DIP通过标准化、可扩展的数据与计算基础
+设施，以病理基础模型和跨模态对齐为核心能力，
+通过引入可计算表型，将病理信息转化为可计算、
+可迁移且可持续更新的表型表征，从而深度嵌入
+Dx‒Tx‒Rx一体化过程，支撑“诊疗闭环” 。
+面向“健康中国 2030”规划纲要及新药创制
+等国家重大需求，在现阶段数字病理研究高度分
+散的背景下，构建系统化、可持续演进的 DIP体系
+具有显著必要性。基于此，本文首先梳理 DIP的技
+术演进与关键方法，重点分析其在可计算表型构
+建、跨模态对齐及诊疗闭环形成中的核心作用；
+然后结合靶点发现、作用机制研究、毒理 ‒ 药效评
+估及临床试验分层等典型应用场景，阐明 DIP如何
+重塑 AI制药管线与精准诊疗模式；最后围绕多中
+心泛化能力、模型可解释性与监管治理等关键问
+题进行讨论，为 DIP在 AI驱动医疗发展时代提供
+参考。
+二、数智病理的技术基石与演进
+（一）基础设施与数据生态
+传统病理诊断仍受限于人工阅片的主观性与可
+变性。当前病理科工作量快速增长，诊断延迟与质
+量波动的风险也随之加剧。 WSI的逐步普及，使组
+208
+
+=== PDF_PAGE 3 ===
+中国工程科学 2026 年 第 28 卷 第 5 期
+织切片进入高分辨率数字化阶段，并以“数字切
+片”形态为数字病理的数据生态奠定基础 [16-17]。医
+疗数据天然呈孤岛化分布：病理切片等图文资料管
+理依赖图像管理系统，临床信息分散在电子健康记
+录中；这种异构性既阻碍多模态训练集构建，
+也放大了部署阶段的系统摩擦 [18]。随着医学数字成
+像 和 通 信 （DICOM） Supplement 145 与 OME-
+NGFF等标准推进，多中心病理图像的采集、存储
+与互操作性逐步统一与规范化 [19]。云计算与分布式
+存储进一步支撑超大规模全切片图像的管理、分析
+和训练，使跨机构共享与协作建模成为可能。由此
+可见， “标准+算力+平台”已成为数智病理工程化
+落地的基础底座。
+为达成在大规模病理图像上的稳定应用，开放
+共享需率先跨越隐私与合规的障碍。联邦学习
+（FL）提供可行路径：各中心在本地训练，仅交换
+参数或梯度更新，在不暴露原始敏感数据的前提下
+协同构建全局模型；在工程上，相当于把“数据不
+出域”的合规约束转化为“模型可协同”的系统能
+力。该机制可显著降低泄漏风险，促进跨机构知识
+共享与协作建模[20]。现有研究表明，FL可通过多源
+知识聚合提升模型性能与适用范围，已被用于弱监
+督 WSI分析的鲁棒性评估以及罕见病场景下的数据
+不足问题。 FL还能够缓解数据集偏移，并通过在
+更大、更多样化人群中的去中心化建模，增强 AI-
+SaMD的公平性[21]。
+（二）现代病理的AI方法体系：驱动能力跃迁
+1. 从卷积神经网络到 Transformer的架构演化
+卷积神经网络（CNN）在数智病理发展的早期
+阶段发挥了关键作用。早期计算病理研究表明，基
+于深度 CNN的端到端学习框架能够直接从局部组
+织结构中自动提取判别性特征，并在诸如细胞有丝
+分裂检测等高难度任务中显著优于依赖手工特征与
+经典分类器的方法，从方法学层面验证了深度学习
+在病理图像中进行自动表征学习的可行性与优
+势[22]。随着 AlexNet、VGG、ResNet等架构的成熟，
+CNN迅速成为医学图像分析的主导方法，在分类、
+检测、分割等任务中得到广泛应用 [23]。研究对象从
+局部图像块扩展至 WSI，病理分析面临切片尺度巨
+大、像素级标注成本高昂等现实约束。针对这一挑
+战，弱监督学习与多实例学习（ MIL）逐渐成为计
+算病理的重要技术路线。相关研究表明，基于 CNN
+的弱监督 MIL框架能够仅依赖切片级标签，在大规
+模临床级 WSI数据上实现接近临床可用的癌症检测
+性能，从而显著推动病理 AI向真实世界应用场景
+迈进[24]。在此基础上，引入注意力机制与实例级约
+束的 MIL方法进一步提升了弱监督病理模型的表达
+能力。通过在实例聚合过程中自动分配权重并聚焦
+高诊断价值区域，此类方法不仅提高了整张切片分
+类的稳定性，还能够生成与病理学认知一致的空间
+关注模式，使其在多类肿瘤亚型任务中取得较高的
+判别性能，并显著优于传统 CNN与简单 MIL 聚合
+策略[25]。然而，尽管该方法通过注意力聚合缓解了
+CNN对密集标注的依赖，使模型能够在弱监督情境
+下从关键区域中自动选择信息，但其仍将各图像块
+视为独立实例，无法显式建模跨区域的非线性关
+系，因而缺乏对组织学结构的全局上下文感知能
+力。随着对多尺度、跨区域依赖的表达需求不断增
+强，具备自注意力机制、能够捕捉长距离关联的
+Transformer由此成为进一步提升弱监督病理模型上
+下文理解能力的必然技术方向。例如，TransMIL将
+Transformer引入弱监督 WSI分类框架，通过相关注
+意力显式捕捉多实例之间的结构性关系，使模型能
+够在切片级别整合更具病理学意义的全局形态学模
+式，在三个计算病理任务上进行了大量实验，均优
+于当前主流方法，如 CAMELYON16二分类任务曲
+线下面积（ AUC）高达 93.09%；TCGA-NSCLC亚
+型分类 AUC为 96.03%；TCGA-RCC亚型分类 AUC
+为 98.82%[26]。随着 TransMIL、HIPT等模型展示了
+Transformer在弱监督 WSI分析中捕捉长程依赖与跨
+区域结构关系的独特优势， Transformer不再只是
+MIL聚合的替代方案，而逐渐成为推动计算病理走
+向全局语义理解的核心架构。 Transformer的自注意
+力机制使其能够以统一的 Token表征方式同时处理
+组织学纹理、空间拓扑及跨尺度结构，因此天然适
+用于病理领域的关键任务 [27]。因此，Transformer的
+引入不仅延续了从 CNN到 MIL的技术演进，也 使
+计算病理的模型能力从局部纹理识别迈向了全局结
+构建模，为后续病理基础模型和多模态预训练奠定
+了方法学基础。这一演进的核心是把局部纹理证据
+组织成可迁移的全局表型表示，为后续可计算表型
+的稳定提取与跨队列复现奠定基础。 Transformer的
+核心贡献在于提供“统一特征单元表征 +全局结构
+209
+
+=== PDF_PAGE 4 ===
+数智病理驱动的诊疗闭环模式创新与工程实现路径研究
+建模”的通用能力底座，它将局部图像块证据汇聚
+为可解释、可迁移的全局表型表示，为后续自监督
+预训练扩展、基础模型构建以及跨模态对齐提供可
+复用的主干能力，从而支撑DIP工程系统中“表征 ‒ 
+对齐 ‒ 决策”的关键链条。
+2. 自监督学习与生成式建模在稀缺标注数据中
+的突破
+尽管 Transformer提升了对全局组织结构的建模
+能力，但也对大量标注数据产生更强依赖，而病理
+标注稀缺且昂贵，使其在弱监督情境下面临训练瓶
+颈。一张 WSI 通常包含上百万级别的图像块，
+Transformer模型的自注意力机制在 Token数量随分
+辨率线性增长的情况下，其计算复杂度与显存开销
+呈平方级上升，使得模型训练和推理往往依赖高端
+图像处理器或分布式算力环境，在多数医院或第三
+方检测机构中难以实现常态化部署 [28]。因此，摆脱
+标注限制的自监督学习（ SSL）与生成式建模成为
+支撑病理 Transformer的关键技术路径。SSL能够在
+不依赖人工注释的情况下，直接利用来自数十万到
+百万级切片的海量未标注图像进行预训练，从而学
+习跨组织、跨器官、跨癌种的通用形态表征。从使
+用 MoCo预训练的 SRCL/CTransPath，到结合对比
+学习与掩码建模的 iBOT 与 Phikon，再到基于
+DINOv2预训练的 UNI、Virchow、Virchow2系列，
+以及 MAE与 LongNet结合的 Prov-GigaPath，均在
+数千万至数十亿 Tile的规模上训练，覆盖数十种器
+官、组织与癌种类型[29]。在多模态医学 AI领域，模
+态缺失是一个普遍且严峻的挑战，其来源涵盖“数
+据孤岛” 、系统不兼容、隐私限制以及回顾性研究
+的不完整性。很多研究直接排除含缺失模态的样
+本，会减少数据量、丧失信息和带来选择偏倚。生
+成式建模是自监督学习的重要补充路径，以变分自
+编码器（V AE）与生成对抗网络（ GAN）为代表的
+生成式模型，通过对缺失模态或组织区域进行结构
+重建，让模型在数据不完整时学习稳定且有生物学
+一致性的潜在表征，从方法上为缓解模态缺失问题
+提供可行路径[18]。在应用上，生成式建模用于多模
+态医学数据的联合表示学习，如 MAIGGT研究采用
+基于 mcV AE的深度生成式框架，构建共享潜在空
+间，增强跨模态对齐能力，提升联合建模与表达稳
+定性[30]。在临床研究中，生成式建模与 SSL结合拓
+展了多模态模型应用边界，相关研究构建多模态生
+存预测基础模型，超越传统统计模型与常规深度学
+习方法；引入生成式模块使模型具备检验反事实假
+设等能力，将多模态医学 AI推向机制探索与决策
+支持层面[31]。生成式模型虽能在多癌种场景下实现
+较高质量的病理形态重构，但性能依赖训练数据分
+布，对罕见亚型重构误差增大，对未覆盖疾病类别
+重构明显失败；其生成结果可能依赖训练数据中的
+染色与批次偏倚，在来源站点预测任务中相当比例
+的模型判别信息由单一染色相关主成分主导，常规
+染色归一化处理后仍有颜色依赖性，在解释性分析
+中引入潜在混淆[32]。
+3. 病理基础模型与视觉语言模型的融合趋势
+随着病理基础模型（PathFM）视觉表征能力的
+增强，其局限性主要表现为缺乏对临床语义的理
+解；而大语言模型（LLM）虽具备强大的语言对齐
+能力，却难以直接捕获组织学层面的微观信息。借
+鉴通用机器学习（ ML）中对比式视觉 ‒ 语言预训
+练模型（ CLIP） 、ALIGN 等视觉 ‒ 语言预训练
+（VLP）体系，基于大规模病理图文对构建的跨模
+态模型，已成为弥合视觉表征与诊断语义鸿沟的关
+键方向。从应用层面看，视觉 ‒ 语言联合建模为诊
+疗闭环提供了可检索、可解释且可迁移的语义关联
+方式。以 Prov-GigaPath为代表的研究，通过 17万
+张 WSI与真实世界病理报告的对齐预训练，实现了
+形态学模式与诊断语义在统一空间的映射。该模型
+在零样本设置下展现出显著优势：一方面，能够精
+准完成癌种亚型判别，在长尾亚型识别与跨中心辅
+助诊断中极具潜力；另一方面，可直接预测 EGFR、
+TP53等关键分子突变，在低成本分子预筛查方面
+具有优势[33]。此外，以基于图像描述对比学习的组
+织病理学模型为代表的研究基于CoCa框架，利用超
+过117万组病理图文对进行联合预训练，验证了高
+质量 PathFM与 VLP框架结合在跨模态理解上的发
+展潜力[34]。在此基础上，视觉 ‒ 语言模型进一步向具
+备交互与推理能力的多模态智能体方向演进。相关
+研究通过将病理视觉基础模型（如 UNI）与 LLM
+（如 Llama2
+-13B）进行多模态投影与对齐，并结合
+大规模病理指令数据进行指令微调，使模型能够在
+病理场景中实现跨模态理解、问答与生成能力。该
+类模型在病理问答、显微形态识别及图像引导诊断
+等任务中表现出显著优势，在部分场景下已接近或
+达到通用多模态模型的性能水平，表明病理视觉 ‒ 
+210
+
+=== PDF_PAGE 5 ===
+中国工程科学 2026 年 第 28 卷 第 5 期
+语言模型正在从静态表征学习迈入面向临床应用的
+交互式智能支持阶段。视觉 ‒ 语言模型使可计算表
+型从隐变量向量进一步走向可被语言描述与审阅的
+证据，有助于后续临床沟通与监管表达。
+从工程实现的角度看， DIP技术的演进并非单
+纯追求模型性能提升，而是围绕诊疗闭环中不同决
+策节点的需求逐步展开：从病理表型识别（诊断输
+入） 、到分子状态推断（治疗选择） 、再到疗效预测
+与反馈（闭环更新） 。不同模型范式在这一闭环中
+承担了差异化的功能角色（见表1） 。
+表1　DIP中AI模型的演化及对比：从CNN到Transformer
+模型类别
+基础卷积
+神经网络
+弱监督多实例
+学习框架
+基于图的模型
+Transformer与
+注意力机制
+代表模型
+AlexNet
+VGG
+ResNet
+max-pooling 
+CNN
+CLAM
+GCN
+GraphSAGE
+CelloType
+GIN
+Heterogeneous 
+GNNs
+TransMIL
+核心创新／机制
+引入深度卷积层、残
+差连接、并行卷积等
+结构，有效提取图像
+的局部和层次化特征
+采用基于注意力的多
+实例学习，仅使用切
+片级标签进行训练，
+并可生成可解释的
+热图
+基于归一化邻接矩阵
+的消息传递，聚合邻
+居节点特征
+采样邻居节点进行特
+征聚合，支持大规模图
+将细胞或组织区域建
+模为图中的节点，利
+用图神经网络（GNN）
+学习细胞间的空间关
+系和相互作用
+基于图同构测试的消
+息传递，表达能力更强
+支持多种节点和边类
+型，建模复杂组织异
+质性
+将 Transformer架构引
+入全切片图像分析，
+利用自注意力机制显
+式建模不同图像块之
+间的长距离依赖关系
+关键优势
+奠定了深度学习在图
+像分析中的基础；结
+构相对简单，易于训
+练和微调；在分类、
+检测任务上显著优于
+传统方法
+极大地降低对像素级
+标注的依赖；具有良
+好的可解释性；在多
+种癌症亚型分类中达
+到高精度
+结构简单，易于训
+练；能捕捉局部拓扑
+结构
+可扩展性强，适用于
+大规模WSI图
+显式建模组织微环境
+的空间结构和细胞生
+态；能捕获 CNN难
+以学习的复杂拓扑
+关系
+能区分不同拓扑结构
+的图，适用于复杂
+组织
+更贴合真实病理组织
+结构，表达力强
+能够整合全切片范围
+的上下文信息，实现
+真正的全局语义理
+解；在多项任务上性
+能超越基于 CNN的
+MIL方法
+主要局限性
+感受有限，难以建模
+长距离依赖；严重依
+赖密集标注数据；对
+图像的空间变换敏
+感；主要依赖局部
+patch标注、易产生
+噪声标签且跨中心泛
+化欠佳
+将图像块视为独立实
+例，忽略它们之间的
+空间上下文关系
+对图结构依赖强，无
+法动态调整边权
+采样策略可能丢失重
+要邻居信息
+图构建过程复杂计算
+量大；对节点（如细
+胞）的标注质量依赖
+性强
+计算复杂度高，需要
+精心设计参数
+需要多类型标注，训
+练复杂
+计算和内存开销随序
+列长度（图像块数
+量）平方级增长；对
+大规模训练数据的需
+求更高
+在癌症诊断中的
+典型应用
+组织亚型分类；
+有丝分裂检测；
+肿瘤检测与分割
+乳腺癌、肺癌等
+癌症亚型分类；
+预后预测
+癌症分级、细胞
+分类
+生存预测、肿瘤
+微环境分析
+肿 瘤 微 环 境 分
+析；细胞相互作
+用研究；空间异
+质性量化
+细胞分类、组织
+结构建模
+细胞 ‒ 组织交互
+建模、多类型癌
+症分析
+精准的癌症分类
+与分级；生存预
+后预测；生物标
+志物预测
+参考
+文献
+[23]
+[22]
+[25]
+[35]
+[36]
+[37]
+[38]
+[39]
+[26]
+211
+
+=== PDF_PAGE 6 ===
+数智病理驱动的诊疗闭环模式创新与工程实现路径研究
+三、从组织形态到可计算表型：病理证据的
+工程化转译
+（一）AI赋能诊断与分级
+在自动化病灶检测与病理分级中，AUC用于衡
+量整体判别能力。模型可解释性常依赖注意力热图
+与病理特征的一致性，如 PROGPATH的高注意力
+区域对应低分化坏死或高核浆比等不良预后结构，
+确保决策符合病理学因果逻辑。 Kaplan-Meier曲线
+用于验证模型能否生成显著的风险分层，从而体现
+多模态整合在临床预后预测中的有效性 [40-41]。此外，
+可解释性评估包括删除／插入曲线与充分性／必要
+性测试，以量化解释对模型推理的忠实度；稳定性
+分析用于检验解释结果在数据扰动下的抗干扰
+能力。
+在复杂病理场景中，多任务学习（ MTL）正成
+为构建统一分析框架的核心范式，其目标是在单一
+端到端体系内同步处理从细胞、组织到分子与临床
+层面的多尺度任务，从而实现表征空间的一致性、
+任务间的信息共享及对复杂病理生物学过程的整体
+建模。复杂病理中的 MTL依托三层统一框架：数
+据层通过多模态、多粒度对齐构建统一组织坐标
+系；模型层以共享主干（ CNN/ViT/PathFM）和多
+任务线联合学习，并以一致性约束、互信息正则化
+与动态权重平衡协调跨任务关系；解释层利用注意
+力热图与因果一致性分析确保生物学可解释性并支
+持临床反馈优化。如 CelloType明确抛弃“先分割、
+再分类”的两阶段流程，采用端到端 MTL，在统一
+网络中同时完成目标检测、实例分割和细胞类型分
+类。模型以 SwinTransformer做多尺度特征提取，结
+合 DINO进行目标检测与初步分类， MaskDINO做
+实例掩膜预测，形成“特征提取 ‒ 检测 ‒ 分割 ‒ 分
+类”一体化处理流程，适配多种高维、多通道的空
+间组学与组织图像。其在多模态组织与空间组学图
+像中均显著优于各单任务模型的叠加方案，并能同
+时处理细胞级与组织级结构，实现高精度、可扩展
+的自动注释[37]。
+（二）空间生物学与肿瘤微环境图谱构建
+传统病理分析及早期深度学习方法主要依赖局
+部图像块特征或切片级统计聚合。然而，大量生物
+学证据表明，免疫反应、肿瘤演化及治疗敏感性本
+质上是由空间组织结构所调控的动态过程，仅依赖
+局部或全局平均表征难以充分刻画其内在机制。因
+此，显式建模组织空间结构逐渐成为计算病理向机
+制理解与治疗预测演进的关键方法学需求。 GNN
+为该问题提供了天然的建模框架，其通过将细胞、
+组织区域或图像块表征为节点，并借助空间邻域关
+系对组织拓扑结构进行刻画，进而学习对空间关系
+的结构化表征。在细胞尺度上，基于 cell graph的
+GNN可学习细胞类型间互作模式，可用于探索免
+疫排斥、基质重塑等肿瘤微环境（ TME）关键结构
+特征[42]。在此基础上，GNN逐渐发展为多模态空间
+数据整合的重要载体。通过对苏木精 ‒ 伊红染色
+（H&E） 、免疫组织化学（IHC）及空间转录组等数
+据进行空间对齐与联合建模，相关方法能够在统一
+框架下同时表征细胞形态、分子状态与微环境信
+息，从而为解析 TME的功能分区与空间异质性提
+供系统性视角 [43-44]。代表性研究进一步验证了基于
+GNN的细胞图谱在预后建模中的潜在价值。例如，
+CGSignature通过多重免疫组织化学（ mIHC）数据
+构建细胞图，并在约 20 μm的空间邻域内定义加权
+边关系，结合 GIN与 TopKPooling学习细胞亚群及
+其空间组织模式。相关结果显示，该类空间图模型
+在胃癌生存风险分层中显著优于传统 TNM分期体
+系，实证表明显式建模 TME空间结构有助于捕捉
+与预后密切相关的组织学信息[45]。
+研究指出，在预测进展、生存及治疗反应时，
+空间信息的整合优于仅使用细胞类型频率。 Meta
+分析显示，多重免疫组织化学和免疫荧光在预测
+PD-1/PD-L1治疗反应方面的诊断准确性高于 PD-
+L1IHC、TMB或 bulkRNA表达[46]。进一步的特征重
+要性分析表明，从多重成像数据中提取的细胞邻域
+结构、免疫细胞富集区、细胞间距离及形态等空间
+特征构成了预测疾病进展的核心信息，其中多数关
+键变量均来源于空间维度 [47]。在具体肿瘤亚型中，
+空间建模进一步揭示了传统生物标志物难以捕捉
+的治疗响应机制。例如，在三阴性乳腺癌（TNBC）
+中，即便在 PD-L1阴性患者群体内，仍可观察到帕
+博利珠单抗的临床获益，提示单一分子标志物不
+足以全面预测免疫治疗反应。进一步的空间分析
+发现，TNBC中存在由特定免疫细胞组合构成的空
+间限定区域，对这些区域进行纵向编码可区分不
+同治疗反应亚群，并结合单细胞转录组数据揭示
+212
+
+=== PDF_PAGE 7 ===
+中国工程科学 2026 年 第 28 卷 第 5 期
+其免疫演化轨迹，从而将空间组织结构与治疗敏
+感性直接关联起来[48]。
+（三）跨模态对齐与虚拟染色技术
+随着多模态数智病理的发展，虚拟染色逐步从
+早期基于 CNN的直接映射演进为更强大的跨模态
+生成框架。初代 CycleGAN、PathGAN等方法主要
+解决无配对数据下的 H&E到 IHC转换，但在结构
+保持与语义一致性上仍受限 [49]。随后，引入注意力
+机制与病理先验的模型提升了分子特征的重建能
+力，而近期的扩散模型（如 PathLDM）以及引入病
+理语义约束的生成方法（如 PSPStain）进一步加强
+了空间结构与蛋白表达水平的保真性，使虚拟染色
+在无需真实多模态染色的情况下即可重建高质量
+IHC或 multiplex图像。近年来，虚拟染色技术在跨
+模态生成框架的推动下实现了快速演化，逐步从早
+期基于 CycleGAN/Pix2Pix的像素级风格迁移，迈向
+能够保持病理语义一致性的生成体系。在二维场景
+中，PSPStain通过引入蛋白表达量驱动的 FocalOD
+约束及跨图像原型一致性策略，使H&E到IHC的生
+成过程能够保持分子层面的表达保真，采用 IOD、
+mIOD与蛋白表达 Pearson 相关等病理相关指标评估
+虚拟 IHC 和真实 IHC 之间的一致性，并在两套
+HER2数据集上与真实分级高度相关，展示了虚拟
+染色在替代部分 IHC实验流程方面的潜在临床应用
+价值[50]；而 Virtual Multiplexer 提出“细胞 ‒ 邻域 ‒ 
+全图”三层一致性约束，在无配对条件下从单张
+H&E生成多标记 multiplex IHC；基于虚拟多模态数
+据的早期融合模型在 EMPaCT队列生存预测 F1达
+82.9%，在外部队列 Gleason分级中领先，体现临床
+可用性 [49]。最新的 3DvirtualHE将虚拟染色拓展到
+三维，通过 Holotomography获取厚组织三维折射率
+分布，使用条件 GAN实现 10~50 μm组织三维 H&E
+重建。该方法与真实 H&E的结构相似性指数平均
+约为 0.78；在核级分析中，虚拟与真实 H&E核分割
+Jaccard指数约为 0.5，核数量与面积无显著差异。
+此外，该方法首次支持腺体腔隙与细胞核三维体积
+定量分析，在跨机构、跨器官数据中验证了稳定性
+与可重复性，显示虚拟染色在三维微解剖结构表征
+中的优势[51]。整体而言，虚拟染色技术从“风格转
+换”向“多模态语义保持”再到“三维组织重建”
+逐步演化，成为连接传统 H&E染色、IHC、多重成
+像与未来三维病理的关键数字化路径。
+（四）病理‒组学融合：打通基因型 ‒ 表型桥梁
+随着 DIP与多组学测序技术的普及，如何在组
+织形态学表征与分子表型之间建立稳定、可计算的
+映射关系，已成为精准医学的重要研究方向。早期
+阶段的病理 ‒ 组学融合研究主要以具体任务为导
+向，通常将病理图像、放射影像、基因突变谱、转
+录组及临床变量作为相对独立的输入模态，通过特
+征拼接或张量级融合提升风险分层与预后预测能
+力。相关研究表明，在真实临床数据中引入“缺失
+模态”样本并与完整模态协同建模，可显著增强模
+型在异质数据环境下的鲁棒性与适用性。在一项放
+射影像、病理、基因组与人口统计信息的多中心胶
+质瘤队列研究中，同时利用完整模态与缺失模态样
+本进行训练时，多模态缺失数据学习方法（ MMD）
+将生存预测的一致性指数（C-index）从仅使用完整
+模态训练时的 0.762 4提升至 0.805 3[52]；同时，大规
+模多模态融合框架已在泛癌队列中验证了其跨癌种
+预后预测能力，并揭示了组织形态特征与关键分子
+通路活动之间的可解释关联[53]。
+在上述研究基础上，方法学重心逐步由“多模
+态特征融合”转向“跨模态对齐驱动的表征学习” 。
+新一代模型不再将组学数据视为附加输入，而是直
+接利用分子信号对病理表示空间进行约束与引导，
+使潜在嵌入能够显式编码分子状态，从而在统一表
+示空间中实现基因型与表型的对齐。在完全未参与
+训练的外部队列中，TANGLE在乳腺癌亚型分类任
+务将宏平均曲线下面积提升至 84.8%，相较基于注
+意力机制的多实例学习提升约 11%，在肺癌亚型分
+类中宏平均曲线下面积达到 91.5%，并在大鼠肝脏
+毒理数据中实现 5.9%的绝对性能增益。这 一范式
+显著提升了模型在少样本条件下的判别能力，并改
+善了跨队列、跨中心场景中的泛化性能 [54]。此外，
+基于空间转录组的 OmiCLIP构建了数百万级 H&E
+图像块 -Visiumspot对，使用类似 CLIP的跨模态对
+齐策略，将组织形态、空间位置与基因表达统一到
+单一表示空间。基于该基础模型， Loki平台实现了
+组织切片之间的空间对齐、利用 bulk RNA或标记
+基因的组织区域注释、结合同一嵌入向量空间的
+scRNA-seq进行细胞类型去卷积，以及从 H&E预
+测空间基因表达等多项功能，系统展示了跨模态
+213
+
+=== PDF_PAGE 8 ===
+数智病理驱动的诊疗闭环模式创新与工程实现路径研究
+表征在精准分型、免疫微环境解析及机制推断中的
+潜力[55]。
+总体来看，病理 ‒ 组学融合正从任务特异的多
+模态分类模型，演进为以跨模态对齐为核心的基础
+模型，通过在潜在空间中桥接组织学表型与分子谱
+系，为癌症精准分型、免疫特征推断及个体化预后
+预测提供了新的计算框架（见图 1） 。
+四、AI驱动治疗创新中的数智病理：工程价
+值落地
+（一）靶点发现与药物机制
+组织病理图像是表型驱动靶点挖掘（Phenotypic 
+Screening 2.0）的核心信息源， AI的引入正在重塑
+病理图像表型与分子机制之间的映射关系。相比依
+赖主观观察的传统表型筛选，病理 AI已能从多尺
+度组织结构中提炼可量化、可重复的机制线索，为
+靶点探索提供新的证据维度。以 TME为例，可计
+算表型主要体现为可量化的 TME空间结构、细胞
+互作模式及其与通路活性／驱动突变的可检验关
+联，用于把“形态线索”转译为“机制假设” 。空
+间异质性、免疫浸润微环境与间质重塑等表型通过
+模型系统量化，并与免疫调控、增殖信号与代谢状
+态等关键通路形成可追溯关联，从而驱动“靶点优
+先级排序”由经验判断走向数据证据 [56]。由此可
+见，病理图像表型正在成为连接靶点发现与机制验
+证的关键支撑。
+多尺度空间建模研究表明，基于组织拓扑结构
+的病理图像分析已具备从组织空间模式推断关键分
+子事件（如驱动基因突变或蛋白表达状态）的能
+力。通过显式建模切片内及切片间的空间关系，此
+类方法使模型能够学习“组织结构 ‒ 分子事件”之
+间的统计关联，从而使常规病理图像在一定程度上
+承担分子机制的替代解读功能。其核心价值在于，
+无需额外组学检测即可从常规 H&E切片中推断关
+键信号通路活动，为大规模、低成本的早期靶点筛
+查提供了可拓展路径 [57]。同时，已有针对单一分子
+标志物的多中心回顾性研究给出了更可落地的证
+据，以胃癌 HER2为例，研究者基于 H&E全切片
+（WSI）构建深度学习模型，通过对肿瘤区域进行
+像素级识别并统计 HER2高表达区域比例，实现了
+对 HER2状态的半定量估计；该模型在内部测试集
+与外部多中心测试集分别取得 0.904 3与 0.892 2的
+准确率。上述结果表明，细胞排列模式、核形态异
+质性、腺体结构等深层形态学表征不仅与分子表达
+存在稳定映射关系，而且可直接对接临床判读流程
+的量化指标，从而为后续患者筛选与治疗决策支持
+提供了可验证的工程化路径[58]。
+在病理表型向药物机制延伸的路径上，AI模型
+提供的关键能力是将“表型变化”视为靶点活性的
+功能解读 [56]。例如，免疫排除型 TME、纤维化增
+强、核分裂频率升高等均可能指向特定通路异常；
+将这些图像推断与 CRISPR/RNAi基因依赖性数据
+库或药物敏感性图谱结合，可快速筛选出可能驱动
+临床决策
+支持
+可计算
+表型输出
+风险评分
+空间表型标签
+AI赋能诊断与分级模块
+空间生物学与TME图谱构建模块
+可计算
+表型与
+应用
+病灶检测
+虚拟生物
+标记物
+分子亚型预测
+输出层
+MTL
+注意力机制
+可解释性评估
+图像块
+GNN
+Kaplan-
+Meier曲线
+核心技术
+细胞图
+空间特征
+靶点发现
+方法层
+药物机制阐明
+GNN
+空间拓扑
+免疫微环境
+输入
+病理 - 组学融合模块
+临床前安全性 /
+药效评估
+精准临床
+试验分层
+数据层
+跨模态对齐与虚拟染色模块
+跨模
+基因
+态对
+表征
+型-
+比学
+对齐
+表型
+基因表达柱状图
+习
+映射
+H&E
+IHC/multiplex
+WSI
+WSI
+转录组
+虚拟染色
+生成式AI
+跨模态重建
+IHC/多重荧光
+LLM
+临床信息与
+随访数据
+热图
+基因组
+空间转录组
+多组学数据
+图 1　病理证据的工程化转译：从多模态数据到可计算表型的AI分析框架
+214
+
+=== PDF_PAGE 9 ===
+中国工程科学 2026 年 第 28 卷 第 5 期
+疾病进展或影响药物反应的关键节点 [30]。这种“图
+像 ‒ 机制 ‒ 依赖性”的联合分析，增加了靶点发现
+的可解释性。
+然而，靶点能否进入药物研发管线，还必须经
+过可药性评估。现代 ML已能够预测蛋白靶点特征、
+结构可塑性与化学可操作性，并可通过多模态数据
+集成，将靶点与可能的药效模式、耐药机制和安全
+窗口联系起来。将病理表型推断得到的候选靶点与
+结构可药性模型结合，形成一个从影像表型 →分子
+机制→结构可药性的跨层级评价框架，使靶点筛选
+更加系统化、定量化和可解释 [59]。对于工程转化价
+值而言，该路径可减少早期无效靶点与重复实验投
+入，降低研发成本、缩短靶点确认与机制验证周
+期，并提升“靶点优先级排序 ‒ 可药性评估”决策
+的准确性。
+（二）临床前安全性与药效动力学评估
+临床前安全性与药效动力学评估正在由“单指
+标毒理实验”转向“图像表型驱动的数字化体系” 。
+多组学毒理学表明，化合物毒性常同时牵涉基
+因表达重塑、代谢通路扰动与组织结构损伤；
+DrugMatrix、OpenTG-GATEs与 LINCS 等数据库为
+跨层级毒性机制提供参照，使图像表型得以与不良
+结局路径（ AOP）建立映射关系 [8]。过去十年，高
+内涵筛选（HCS）形成高度标准化、可扩展的形态
+学表型体系，可从单细胞提取上千项形态结构与纹
+理特征，并稳定预测多类安全性评价指标。细胞染
+色技术进一步强化了体外 ‒ 体内毒性外推的可靠
+性，并融入新一代计算毒理学框架，从而推动数字
+毒理学向可重复、可规模化的工程化基础平台
+演进[60]。
+在具体药物筛选中，基于 HCS的图像表型已展
+示出从细胞到组织层级的一体化毒性评估能力。例
+如，经三级高内涵筛选，该研究从 805种天然化合
+物中筛得灵芝酸 A，并在细胞和动物模型中验证其
+抗衰老作用。这种实验级技术路线证明了 DIP/HCS
+在早期安全性评价中的应用潜力 [61]。此外，传统
+ML与深度模型已被系统应用于十大类药物毒性，
+包括肝毒性、肾毒性、线粒体毒性等，能够显著提
+高对多器官毒性、细胞健康、代谢扰动等的预测准
+确度，并借助 SHAP或注意力机制提升可解释性。
+图像表型作为高维输入模态，已成为多模态毒性预
+测模型的重要组成部分 [9]。这些技术共同构成了临
+床前“毒性 ‒ 药效一体化”评估体系的基础。早期
+ML驱动的药物发现框架强调，化合物的可药性评
+估需同时考虑毒性风险与药效作用，而以 DIP为核
+心的“HCS+多组学+AI”联合系统，正提供一种能
+够同时捕捉毒性扰动与药效响应的统一表型空
+间[59]。这种“多尺度数字毒理学”框架允许在数千
+化合物层面进行快速毒性剔除、剂量效应曲线拟
+合、MoA推断与安全窗口评估，大幅提高临床前筛
+选效率。DIP能通过更早、更高通量地识别毒性风
+险与药效响应信号，显著降低失败率与实验成本，
+压缩临床前决策周期，并提升剂量选择与安全窗口
+判断的准确性。
+（三）预测性病理：赋能临床试验与精准医疗
+预测性病理是数智病理作为“转化医学工程系
+统”最直接，也是最具临床牵引力的输出形态，其
+本质是在常规病理切片层面构建可替代或补充分子
+检测的功能表型接口，用于治疗反应预测、患者分
+层与临床试验设计。在精准医学时代，传统用于免
+疫治疗与靶向治疗分层的分子标志物，如 PD-L1、
+TMB和特定通路的 RNAsignature，在实际临床中面
+临检测成本高、组织量受限以及显著空间异质性等
+问题，使得基于 H&E构建的预测性 DIP模型成为关
+键发展方向。因此，基于常规 H&E预测性的可计
+算表型 DIP模型，正成为降低门槛、提升分层效率
+的关键路径。近期多项研究展示了 DIP在治疗反应
+预测、分子替代标志物构建以及临床试验分层中的
+重要潜力。现有研究主要从两条互补路径探索预测
+性 DIP的临床价值。一类工作通过多模态整合，将
+病理形态特征与影像、分子及临床信息协同建模，
+验证病理信息在治疗反应预测中的关键价值 [40]；另
+一类研究则进一步提出“分子替代标志物”范式，
+即直接从 H&E切片中重建具有明确生物学意义的
+分子评分或功能表型，用于预测特定治疗策略的疗
+效。相关结果表明，基于形态学重建的分子表型在
+部分场景下可达到接近组学检测的预测性能，甚至
+优于传统免疫组化指标，从而凸显了常规 H&E在
+替代分子检测方面的潜力[62]。
+从时间维度看，基于大规模临床数据的预测模
+型表明，预测医学具备向长期风险管理扩展的可行
+性。尽
+管此类方法未必直接依赖病理数据的输入，
+215
+
+=== PDF_PAGE 10 ===
+数智病理驱动的诊疗闭环模式创新与工程实现路径研究
+但为组织学证据纳入时间序列预测体系提供了重要
+启示，预测性 DIP模型有望成为此类系统的重要信
+息源[63]。与此同时，基于 H&E图像与临床数据的联
+合建模已在部分场景中实现对关键临床结局的术前
+预测，为干预策略选择与试验入组决策提供支持，
+展示了病理驱动的高风险患者前置识别能力 [64]。在
+免疫治疗预测场景中，预测性 DIP进一步拓展至对
+TME的系统建模。例如， HistoTME在 652例非小
+细胞肺癌（NSCLC）外部临床队列中，对接受一线
+ICI治疗患者的疗效预测达到受试者工作特征曲线下
+面积（AUROC）为 0.75；并在接受一线 ICI治疗的
+患者中实现显著的生存分层（ OS：HR=0.53，95% 
+CI为 0.36~0.78） ，且在PD-L1低表达（ 1~49%）和
+阴性人群中仍保持预测优势。相比单一分子或细胞
+计数指标，融合 TME交互特征的模型在免疫治疗
+反应预测中表现出更优的判读性能 [65]。总体而言，
+此类预测性病理模型正逐步将“诊断病理 ‒ 分子免
+疫表型 ‒ 治疗反应 ‒ 临床试验分层”整合为一条可
+计算、可验证的证据链，在降低检测成本的同时，
+实现更精准的患者分层与入组决策，减少无效治疗
+与试验资源浪费，并提升治疗方案选择的整体决策
+质量。该类方法使 DIP从静态诊断延伸至对分子状
+态与治疗相关风险的推断，对应诊疗闭环中由诊断
+走向治疗选择的关键过渡节点。在工程实现层面，
+预测性病理并非孤立模型，而是嵌入 Dx‒Tx‒Rx 闭
+环中的关键节点：其上游依赖病理基础模型与跨模
+态对齐所形成的稳定表型表征，其下游直接服务于
+试验入组、治疗策略选择及真实世界疗效反馈。通
+过持续接收临床结局与安全性信息，预测性病理模
+型得以在真实世界证据驱动下不断校准，实现从
+“静态预测工具”向“可演化决策模块”转变
+（见表2） 。
+五、未来范式：迈向一体化Dx ‒Tx‒Rx生态
+（一）诊疗闭环学习：驱动系统自我演进
+构建 Dx‒Tx‒Rx闭环学习，是 DIP由静态诊断
+走向动态治疗驱动的核心路径 [66]。更关键的是，闭
+环学习不是一次性规则，也不是单轮训练的技巧，
+而是一套持续校准、动态优化、自我演进的系统工
+程：以真实世界疗效与安全性反馈为牵引，不断更
+新表型表征、分层策略与决策边界。此外，闭环学
+习的更新对象包括预测模型参数，还包括可计算表
+型的定义与漂移控制，也就是用真实世界疗效反馈
+持续校准表型表征、分层标准与证据可信度。多模
+态诊断数据在真实疗效反馈下不断校准模型，是闭
+环的基础。相关研究表明，融合影像、病理与分子
+特征的多模态模型，能够在真实治疗反应反馈的驱
+动下持续提升预测性能，并在治疗早期实现对潜在
+获益人群的有效区分。这一结果提示，基线多模态
+信息并非静态输入，而是可在疗效反馈的持续作用
+下实现动态校准与表征更新 [40]。在此基础上，引入
+持续学习架构进一步强化了闭环运行的内在机制。
+通过在大规模真实世界数据上进行自监督预训练，
+并结合临床结局信息进行渐进式更新，模型能够随
+着新的治疗结果不断调整风险表征。同时，借助特
+征扰动与生成式机制，模型可在潜在表征空间中模
+拟不同分子状态下的治疗响应，形成早期“数字孪
+生”式的虚拟患者轨迹，从而为闭环系统提供补充
+性的虚拟反馈信号 [31]。与此同时，现实临床环境中
+的多模态系统在外部验证与前瞻性测试中已显示出
+稳定的预测性能，其模型关注区域、细胞组成推断
+结果与分子检测所揭示的免疫激活状态具有高度一
+致性，形成了从影像与病理特征到真实生物学反应
+的闭环验证证据 [67]。这标志着 DIP正在从“工具集
+合”走向可运行、可反馈、可治理的智慧中枢能
+力，为未来医疗体系的连续决策提供关键引擎
+（见图2） 。
+（二）挑战与治理展望
+1. 多中心泛化与多模态推理的稳定性与可解释
+性挑战
+DIP的规模化落地面临的首要挑战是数据与模
+型固有约束。以 WSI为例，其跨中心异质性显著
+（染色、扫描设备、切片厚度与尺度等） ，使模型泛
+化与稳定性成为必须跨越的工程关口 [68]。在多中心
+部署场景下， DIP模型的泛化能力不仅取决于算法
+层面的域适应与鲁棒性设计，更受到上游数据生成
+过程稳定性的影响。 WSI在不同中心之间往往存在
+显著异质性，其原因主要包括制片流程、染色方
+案、扫描仪型号及成像参数等物理层因素，这 些差
+异在工程实践中构成病理图像系统落地的首要关
+口。尽管近年来通过域适应、自监督学习等方法在
+一定程度上缓解了跨中心分布偏移问题，但仅依赖
+216
+
+=== PDF_PAGE 11 ===
+中国工程科学 2026 年 第 28 卷 第 5 期
+模型层面的技术手段，难以从根本上消除由采集流
+程不一致带来的系统性偏差。因此，在工程实现
+中，有必要将物理层面的质量控制（ QC）与算法
+设计协同考虑，通过对切片质量、染色一致性和成
+像稳定性的规范化管理，为模型泛化提供可靠的数
+据基础。从系统工程视角看，稳定可控的数据生成
+链条是实现 DIP多中心应用和规模化部署的前提条
+件，这也进一步凸显了将 DIP视为“工程系统”而
+非“单一算法”的必要性。
+此外，多模态模型普遍依赖完整输入，但真实
+临床中模态缺失频繁，外部验证仍然不足，难以满
+足高风险医疗软件所要求的稳健性 [18]。深度模型跨
+表2　DIP在药物研发（靶点发现、临床前评估、临床试验）不同阶段的具体应用对比
+药物研发阶段
+靶点发现
+临床前评估
+临床试验
+DIP应用目标
+从病理图像表型挖掘
+分子机制，筛选可药
+性靶点，建立“影像 ‒ 
+机制 ‒ 依赖性”关联
+构建影像表型驱动的
+数字化毒理与药效评
+估体系，实现毒性 ‒ 药
+效一体化筛选
+构建预测性病理模型，
+辅助治疗反应预测、
+分子替代标志物开发
+与临床试验分层
+核心能力
+① 多尺度病理表型量化
+（空间异质性、免疫
+浸润等）
+② 分子事件（突变、蛋
+白表达、通路活性）
+推断
+③ 与基因依赖性／药物
+敏感性数据联合
+分析
+④ 结构可药性预测
+① 高维形态学表型提取
+（细胞结构、纹理
+特征）
+② 多指标毒性预测（细
+胞死亡、线粒体毒
+性等）
+③ 体外 ‒ 体内毒性外推
+④ 数字药效轨迹追踪
+① 多模态数据整合（病
+理 + 影像 + 基因
+组 + 临床特征）
+② 分子替代标志物重建
+③ 治疗疗效与长期风险
+预测
+④ 患者分层与入组筛选
+模型代表
+① GNN WSI多尺度建
+模框架
+② HER2Net
+③ 结构可药性机器学
+习模型
+① HCS
+② Cell Painting
+③ 传统ML（RF、
+XGB）与深度
+模型（GNN、
+Transformer）
+④ 三级HCS流程
+① DyAM多模态模型
+② Delphi 框架
+③ METACANS
+④ HistoTME
+⑤ RNA Angioscore重
+建模型
+关键成果
+① 实现H&E切片推断
+KRAS/TP53突变、
+HER2表达等分子特征
+② 建立影像表型与免疫
+调控、增殖信号等机
+制的映射
+③ 形成“影像表型→分
+子机制→结构可药性”
+跨层级评价框架
+① 辅助预测药物性肝损
+伤、心脏毒性等十大
+类药物毒性
+② 从800多种化合物中筛
+得灵芝酸 A并验证抗
+衰老作用
+③ 纳入美国环境保护署
+下一代计算毒理框架
+① 提升PD-（L）1免疫
+治疗疗效预测性能
+② 实现抗血管生成治疗
+疗效预测（性能接近 
+RNA 测序）
+③ 预测乳腺癌腋窝淋
+巴结转移（AUC为
+0.68~0.80）
+④ 区分NSCLC 免疫亚型
+（HR≈0.5） ，ICI反应
+预测 AUROC达 0.75
+参考文献
+[30, 56-59]
+[8-9, 60-61]
+[30, 40, 62-
+65]
+注：RF为随机森林，XGB为极端梯度提升。
+治疗(Tx)
+个体化
+DIP
+治疗决策
+Dx-Tx-Rx
+三元闭环
+诊断(Dx)
+反馈(Rx)
+DIP
+DIP
+多模态
+数据
+可计算
+表型
+真实世界
+疗效反馈
+反哺校准
+图2　DIP驱动的Dx ‒ Tx ‒ Rx闭环生态系统
+217
+
+=== PDF_PAGE 12 ===
+数智病理驱动的诊疗闭环模式创新与工程实现路径研究
+模态交互机制仍缺乏可解释性，难以满足欧盟《人
+工智能法案》对透明度、可验证性及人类监督的要
+求。进一步地，在 DIP场景下，可解释性问题不仅
+体现为单一模态模型的“黑箱性” ，更集中表现为
+跨模态推理链条的不可追溯性。多模态模型在整合
+病理图像、临床文本与分子数据时，往往难以清晰
+呈现各模态在最终决策中的相对贡献及其相互作用
+机制，从而导致决策依据在跨模态融合过程中出现
+断裂或模糊化。证据链不透明等问题使模型输出难
+以被临床医生复核，也难以满足高风险医疗 AI在
+监管层面所要求的可验证性与责任可溯性[69]。
+2. DIP的监管证据体系与模型生命周期治理
+监管端的证据要求尚未被数智病理 AI满足。
+医疗器械软件（SaMD）指引强调基于功能和失效
+模式进行软件风险分类，并要求真实世界条件的数
+据可控性与临床效益验证。国家药品监督管理局的
+深度学习辅助决策审评要点则进一步明确：应量化
+假阴性／假阳性风险、涵盖多中心多设备数据、确
+保训练 ‒ 验证 ‒ 测试隔离，并对算法更新实施再评
+价机制。面向我国临床实践与产业生态，建立符合
+中国国情的数智病理 AI审评标准体系与高质量基
+准数据库／真实世界数据资源库，是当前最关键的
+短板之一；同时也将成为推动行业规范化验证、降
+低重复投入并加速规模化落地的战略机遇。监管现
+实显示这一领域尚处于早期，美国食品药品监督管
+理局已批准的数百项 AI器械主要集中于放射学，
+而迄今尚无深度学习数智病理 SaMD获批上市，反
+映出数智病理在数据标准化、风险可控性与可解释
+性方面仍需跨越关键门槛。此外， DIP在实际应用
+中往往是逐步嵌入 Dx‒Tx‒Rx的诊疗闭环，这对现
+有以静态模型为假设的审评范式提出了新的挑战。
+在闭环场景下，模型可能基于新增病例或随访结局
+进行更新与优化，若缺乏明确的更新触发条件、风
+险评估指标及再评价流程，模型性能漂移与隐性偏
+差将难以及时识别，进而放大临床风险。这也意味
+着，数智病理 AI的监管证据不仅应覆盖初始性能
+验证，还需延伸至模型更新与真实世界应用全
+过程[3]。
+具体而言，数智病理 AI审评标准体系可在现
+有医疗器械软件监管框架的基础上，围绕“数据 ‒ 
+算法 ‒ 临床 ‒ 生命周期”四个层面进行细化。在数
+据层面，结合 DIP多中心、多设备应用特征，明确
+WSI数据的采集、标注与质量控制要求，重点约束
+染色差异、扫描参数等常见问题；在算法层面，进
+一步落实以假阴性风险为核心的性能评价原则，强
+化跨中心泛化能力、不确定性评估以及跨模态推理
+过程的可解释性；在临床应用层面，依托真实世界
+数据开展分阶段验证，明确辅助诊断的适应症、使
+用边界及人机协同要求；在生命周期管理层面，参
+照软件作为医疗器械的动态监管理念，对算法更
+新、模型漂移及性能衰减实施持续监测与再评价。
+此外，高质量基准数据库与真实世界数据资源库应
+配套建设。基准数据库侧重于审评与准入环节，可
+由国家或区域级平台牵头，联合多中心病理专科机
+构，构建覆盖主要病种、不同设备与制片流程的标
+准化 WSI数据集，用于模型外部验证与性能对比；
+真实世界数据资源库则面向临床实际应用，持续汇
+集模型运行过程中的诊断结果、医生干预及随访结
+局信息，作为上市后监管与风险监测的重要证据基
+础。该路径与《真实世界数据用于医疗器械临床评
+价技术指导原则（试行）》中关于数据代表性、可
+追溯性与质量控制的要求相衔接，有助于在我国监
+管语境下形成可复用、可持续的数智病理 AI 审评
+支撑体系[3]。
+数据隐私风险则是 DIP规模化落地必须正面回
+应的第三类关键门槛。与传统信息系统不同，医疗
+大模型在训练与推理阶段都会持续处理高敏感度的
+多模态数据，如电子健康档案、医学影像、基因组
+信息等，隐私风险贯穿数据全生命周期：在数据采
+集、存储与共享环节，若脱敏强度不足或权限控制
+失效，容易发生明文暴露与越权访问；而在模型
+侧，模型在训练过程中可能无意中保留患者数据的
+关键特征，这使得一些更隐蔽的隐私攻击成为可
+能，如成员推理攻击可以推断特定患者数据是否被
+用于训练，模型反演攻击甚至可能借助模型输出重
+构输入特征，导致病史、遗传倾向等敏感信息外
+泄。更重要的是， DIP往往嵌入真实临床的连续工
+作流并伴随模型迭代更新，数据流转链条更长、调
+用频次更高，使隐私风险从单点事件演化为可跨环
+节扩散的系统性风险。因此，在推动 DIP落地时，
+需要将隐私计算、全流程审计与可追溯机制纳入基
+础能力建设，以满足高风险医疗 AI对合规性、可
+审计性与责任可追溯的要求[3,69]。
+218
+
+=== PDF_PAGE 13 ===
+中国工程科学 2026 年 第 28 卷 第 5 期
+3. 生成式病理数据的证据属性与法律责任界定
+随着生成式 AI与虚拟染色技术在数智病理中
+的应用，部分病理图像与表征不再完全来源于物理
+切片的直接扫描，而是由模型基于既有数据生成或
+重构。这类“生成数据”一旦进入临床诊断、分型
+判断或治疗决策环节，便对传统以原始医学图像为
+核心的证据体系与责任认定逻辑提出了新的挑战。
+相关研究指出，生成式 AI的引入会改变传统决策
+结构中清晰、线性的责任配置模式，使责任主体呈
+现出由开发者、使用者与算法系统共同构成的网络
+化特征，单一主体难以独立承担全部决策后果。在
+司法审判领域，已有学者注意到生成式 AI可能侵
+蚀专业人员的主体地位，并通过“算法黑箱” “责
+任让渡”等机制影响裁判公信力，进而引发责任界
+定与风险规制难题 [70]。在 DIP工程化场景中，若不
+加区分地将生成式病理数据等同于原始病理证据，
+可能在客观上弱化病理医师在临床决策中的主体责
+任，并在发生误诊或治疗偏差时造成责任归属不
+清。从工程与治理角度看，生成数据的风险并非来
+源于其“生成性”本身，而在于其在决策链条中的
+角色定位与使用边界是否清晰。因此，有必要借鉴
+生成式 AI在司法审判与公共决策领域的治理经验，
+通过制度与技术协同的方式重建生成数据的可问责
+性。一方面，应明确生成式病理数据的辅助性证据
+属性，要求其必须与原始切片、多模态检测结果及
+人工专业判断形成交叉验证关系，而不得单独作为
+最终临床决策依据；另一方面，应在系统层面对生
+成过程进行完整记录，包括模型版本、训练范围、
+推理参数与生成条件，以增强生成数据的可追溯性
+和可审计性[71]。正如生成式 AI在审判活动中被界定
+为辅助工具而非裁判主体，其法律责任最终仍由审
+判人员承担，在 DIP工程化应用中，同样需要通过
+明确生成数据的证据地位和使用层级，确立病理医
+师对临床判断的最终审核职责，并依据适用法律、
+产品缺陷及各方过错，界定医疗机构、开发者和生
+产者等主体的相应责任。通过将责任要求嵌入系统
+设计与应用流程之中，可在发挥虚拟染色与生成式
+模型效率优势的同时，有效降低其在临床应用中的
+法律与伦理风险。
+六、结语
+本文系统阐述了 DIP从数字化表达向工程化范
+式转型的演进逻辑，并重点探讨了其驱动诊疗闭环
+创新的实现路径。 DIP依托 WSI标准化、病理基础
+模型及跨模态对齐等核心技术，能够将复杂的组织
+学表型转译为可计算表型，在靶点发现、药效评估
+及临床分层等环节释放显著的转化价值。这一范式
+的变革不仅提升了病理诊断的客观性，更通过构建
+Dx‒Tx‒Rx的闭环体系，有望推动病理证据向治疗决
+策支持转化，为我国生物医药产业的源头创新与精
+准医疗体系建设提供了关键的工程化支撑。
+未来，DIP的持续演进有赖于科学研究、工程
+技术与治理机制的深度融合。后续应系统推进数
+据、模型与场景间的协同优化：一方面，强化数据
+标准与质量控制，提升模型在多中心、跨场景条件
+下的稳定性与迁移能力；另一方面，应深耕多模态
+决策的可解释性，构建支持审计与复核的推理框
+架，确保模型输出能够精准服务于临床与研发决
+策。同时，针对生成式模型与虚拟染色等新技术，
+需在工程设计中明确其应用边界与责任划分，推动
+闭环学习下的模型动态校准与持续迭代。作为转化
+医学工程的重要枢纽， DIP的规范化推广将深度契
+合国家战略需求，为精准医疗体系建设与生物医药
+产业的高质量发展提供长期支撑。
+利益冲突声明
+本文作者在此声明不存在任何利益冲突或财务冲突。
+Received date: December 20, 2025; Revised date: February 11, 2026
+Corresponding author: Wang Junpu is an associate professor from 
+Xiangya School of Basic Medicine/Xiangya Hospital, Central South 
+University. His major research fields include pathology and digital-
+intelligent pathology. E-mail: wang-jp2013@csu.edu.cn
+Funding project: Laboratory (FuRong Laboratory) Project of Depart‐
+ment of Science and Technology of Hunan Province (2024PT5111)
+参考文献
+［1］ 平轶芳， 闫红， 卞修武. 人工智能病理在肿瘤精准医疗时代的应
+用与挑战 ［J］. 生命科学，2022，34（8） ：929-940.
+Ping Y F，Yan H，Bian X W. Artificial intelligence pathology in 
+the age of oncology precision medicine ：Applications and chal ‐
+lenges［J］. Chinese Bulletin of Life Sciences ，2022，34（8）：
+929-940.
+［2］ 彭先稳， 班宁溥， 缐霂， 等. 人工智能在血液病理诊断中的应用
+进展 ［J］. 临床与实验病理学杂志，2025，41（8） ：1057-1061.
+Peng X W，Ban N P ，Xian M，et al. Progress of artificial intelli‐
+gence application in hematopathology diagnosis ［J］. Chinese 
+Journal of Clinical and Experimental Pathology ，2025，41（8）：
+1057-1061.
+219
+
+=== PDF_PAGE 14 ===
+数智病理驱动的诊疗闭环模式创新与工程实现路径研究
+［3］ 程亚林， 郭颖， 杨鑫鑫， 等. 人工智能在头颈鳞状细胞癌病理实
+践中的应用进展 ［J］. 临床与实验病理学杂志， 2025，41（4） ：
+498-503.
+Cheng Y L，Guo Y，Yang X X，et al. Advances in the application 
+of artificial intelligence in the pathological practice of head and 
+neck squamous cell carcinoma ［J］. Chinese Journal of Clinical 
+and Experimental Pathology，2025，41（4） ：498-503.
+［4］ 杨卓文， 郑智中， 李斌， 等. 人工智能系统在预测肺结节良恶性
+和病理分型中的临床应用 ［J］. 中国胸心血管外科临床杂志，
+2025，32（8） ：1086-1095.
+Yang Z W，Zheng Z Z，Li B，et al. Clinical application of an artifi‐
+cial intelligence system in predicting benign or malignant pulmonary 
+nodules and pathological subtypes［J］. Chinese Journal of Clinical 
+Thoracic and Cardiovascular Surgery，2025，32（8） ：1086-1095.
+［5］ 黄文君， 李巧巧， 敬文斌， 等. 不同 WHO肺癌病理分类下人工智
+能对肺结节良恶性的诊断效能 ［J］. 临床放射学杂志，2025，
+44（1） ：76-81.
+Huang W J，Li Q Q ，Jing W B，et al. Diagnostic performance of 
+artificial intelligence on benign and malignant pulmonary nodules 
+under different WHO pathological classifications of lung can‐
+cer［J］. Journal of Clinical Radiology，2025，44（1） ：76-81.
+［6］ Liu B J ，Polack M，Coudray N，et al. Self-supervised learning re‐
+veals clinically relevant histomorphological patterns for therapeu‐
+tic strategies in colon cancer［J］. Nature Communications，2025，
+16：2328.
+［7］ 步宏. 数字病理科和病理人工智能发展现状与展望 ［J］. 临床与
+实验病理学杂志，2023，39（7） ：769-771.
+Bu H. Current status and future perspectives of digital pathology 
+and artificial intelligence in pathology ［J］. Chinese Journal of 
+Clinical and Experimental Pathology，2023，39（7） ：769-771.
+［8］ Wang T ，Jia X L，Aleksunes L M，et al. Developmental toxicity ：
+Artificial intelligence-powered assessments［J］. Trends in Pharma‐
+cological Sciences，2025，46（6） ：486-502.
+［9］ Bai C S ，Wu L L，Li R J ，et al. Machine learning-enabled drug-
+induced toxicity prediction［J］. Advanced Science，2025，12（16） ：
+2413405.
+［10］ Ahn B ，Moon D，Kim H S ，et al. Histopathologic image-based 
+deep learning classifier for predicting platinum-based treatment re‐
+sponses in high-grade serous ovarian cancer［J］. Nature Commu‐
+nications，2024，15：4253.
+［11］ Zhang P ，Gao C F ，Zhang Z Y ，et al. Systematic inference of 
+super-resolution cell spatial profiles from histology images ［J］. 
+Nature Communications，2025，16：1838.
+［12］ Alsaedi S ，Gao X，Gojobori T. Beyond digital twins ：The role of 
+foundation models in enhancing the interpretability of multiomics 
+modalities in precision medicine ［J］. FEBS Open Bio ，2025，
+15（8） ：1192-1208.
+［13］ 陈
+晓红， 刘浏， 牛雅娟， 等. 数智病理平台构建及服务模式研
+究 ［J］. 中国工程科学，2025，27（2） ：304-314.
+Chen X H ，Liu L，Niu Y J ，et al. Digital intelligence pathology 
+platform and its service pattern ［J］. Strategic Study of CAE ，
+2025，27（2） ：304-314.
+［14］ 焦一平， 王向学， 徐军. 计算病理学应用研究进展与挑战 ［J］. 协
+和医学杂志，2022，13（4） ：535-541.
+Jiao Y P，Wang X X，Xu J. Advances and challenges in applied 
+computational pathology［J］. Medical Journal of Peking Union 
+Medical College Hospital，2022，13（4） ：535-541.
+［15］ Duggento A ，Conti A，Mauriello A，et al. Deep computational pa‐
+thology in breast cancer［J］. Seminars in Cancer Biology ，2021，
+72：226-237.
+［16］ Dang C R ，Qi Z，Xu T，et al. Deep learning‒powered whole slide 
+image analysis in cancer pathology［J］. Laboratory Investigation，
+2025，105（7） ：104186.
+［17］ Masjoodi S ，Anbardar M H，Shokripour M，et al. Whole slide im‐
+aging （WSI） in pathology ：Emerging trends and future applica‐
+tions in clinical diagnostics，medical education，and pathology［J］. 
+Iranian Journal of Pathology，2025，20（3） ：257-265.
+［18］ Schouten D ，Nicoletti G，Dille B，et al. Navigating the landscape 
+of multimodal AI in medicine：A scoping review on technical chal‐
+lenges and clinical applications ［J］. Medical Image Analysis ，
+2025，105：103621.
+［19］ Gim N ，Ferguson A N，Blazes M，et al. The March to harmonized 
+imaging standards for retinal imaging ［J］. Progress in Retinal and 
+Eye Research，2025，107：101363.
+［20］ Hanser T. Federated learning for molecular discovery［J］. Current 
+Opinion in Structural Biology，2023，79：102545.
+［21］ Chen R J ，Wang J J，Williamson D F K，et al. Algorithmic fairness 
+in artificial intelligence for medicine and healthcare ［J］. Nature 
+Biomedical Engineering，2023，7（6） ：719-742.
+［22］ Cireşan D C ，Giusti A，Gambardella L M，et al. Mitosis detection 
+in breast cancer histology images with deep neural networks［C］//
+Medical Image Computing and Computer-Assisted Intervention ‒ 
+MICCAI 2013，2013：411-418.
+［23］ Litjens G ，Kooi T，Bejnordi B E，et al. A survey on deep learning 
+in medical image analysis［J］. Medical Image Analysis，2017，42：
+60-88.
+［24］ Campanella G ，Hanna M G ，Geneslaw L ，et al. Clinical-grade 
+computational pathology using weakly supervised deep learning 
+on whole slide images［J］. Nature Medicine，2019，25（8） ：1301-
+1309
+.
+［25］ Lu M Y ，Williamson D F K ，Chen T Y，et al. Data-efficient and 
+weakly supervised computational pathology on whole-slide im‐
+ages［J］. Nature Biomedical Engineering，2021，5（6） ：555-570.
+［26］ Shao Z ，Bian H，Chen Y，et al. Transmil：Transformer based corre‐
+lated multiple instance learning for whole slide image classifica‐
+tion［PP/OL］. arXiv（2021-10-31） ［2026-02-02］.https：//arxiv.org/
+abs/2106.00908. DOI：10.48550/arXiv.2106.00908.
+［27］ Xu H M ，Xu Q，Cong F Y，et al. Vision transformers for computa‐
+tional histopathology［J］. IEEE Reviews in Biomedical Engineer‐
+ing，2024，17：63-79.
+［28］ 杨帆. 多模态医学数据融合技术及应用 ［J］. 山东大学学报 （医
+学版） ，2025，63（8） ：17-40.
+Yang F. Multimodal medical data fusion technology and its appli‐
+cation［J］. Journal of Shandong University （Health Science），
+2025，63（8） ：17-40.
+［29］ Campanella G ，Chen S J，Singh M，et al. A clinical benchmark of 
+public self-supervised pathology foundation models ［J］. Nature 
+Communications，2025，16：3640.
+220
+
+=== PDF_PAGE 15 ===
+中国工程科学 2026 年 第 28 卷 第 5 期
+［30］ Yang Z J，Guo C Y，Li J Y，et al. An explainable multimodal artifi‐
+cial intelligence model integrating histopathological microenvi ‐
+ronment and EHR phenotypes for germline genetic testing in 
+breast cancer［J］. Advanced Science，2025，12（31） ：e02833.
+［31］ Arango-Argoty G ，Kipkogei E，Stewart R，et al. Pretrained trans‐
+formers applied to clinical studies improve predictions of treat‐
+ment efficacy and associated biomarkers［J］. Nature Communica ‐
+tions，2025，16：2101.
+［32］ Howard F M ，Hieromnimon H M，Ramesh S，et al. Generative ad‐
+versarial networks accurately reconstruct pan-cancer histology 
+from pathologic ，genomic，and radiographic latent features ［J］. 
+Science Advances，2024，10（46） ：eadq0856.
+［33］ Xu H W ，Usuyama N，Bagga J，et al. A whole-slide foundation 
+model for digital pathology from real-world data ［J］. Nature ，
+2024，630（8015） ：181-188.
+［34］ Lu M Y ，Chen B W，Williamson D F K ，et al. A visual-language 
+foundation model for computational pathology［J］. Nature Medi‐
+cine，2024，30（3） ：863-874.
+［35］ Kipf T N ，Welling M. Semi-supervised classification with graph 
+convolutional networks［PP/OL］. arXiv（2016-11-03） ［2026-02-02］.
+https：//arxiv.org/abs/1609.02907. DOI：10.48550/arXiv.1609.02907.
+［36］ Hamilton W L，Ying R，Leskovec J. Inductive representation learn‐
+ing on large graphs［PP/OL］. arXiv（2017-11-08） ［2026-02-02］.
+https：//arxiv.org/abs/1706.02216. DOI：10.48550/arXiv.1706.02216.
+［37］ Pang M X ，Roy T K，Wu X D，et al. CelloType：A unified model 
+for segmentation and classification of tissue images ［J］. Nature 
+Methods，2025，22（2） ：348-357.
+［38］ Xu K ，Hu W，Leskovec J，Jegelka S. How powerful are graph neu‐
+ral networks？ ［PP/OL］. arXiv （2018-12-26） ［2026-02-02］. https：//
+arxiv.org/abs/1810.00826. DOI：10.48550/arXiv.1810.00826.
+［39］ Hou W T ，Yu L Q，Lin C X，et al. H2-MIL：Exploring hierarchical 
+representation with heterogeneous multiple instance learning for 
+whole slide image analysis［J］. Proceedings of the AAAI Confer‐
+ence on Artificial Intelligence，2022，36（1） ：933-941.
+［40］ Vanguri R S ，Luo J，Aukerman A T，et al. Multimodal integration 
+of radiology，pathology and genomics for prediction of response 
+to PD-（L）1 blockade in patients with non-small cell lung can‐
+cer［J］. Nature Cancer，2022，3（10） ：1151-1164.
+［41］ Yuan W，Chen Y J，Zhu B Y，et al. Pancancer outcome prediction 
+via a unified weakly supervised deep learning model ［J］. Signal 
+Transduction and Targeted Therapy，2025，10：285.
+［42］ Han L L ，Zhao H. Heterogeneous network representation learning 
+via multiple attention mechanisms ［J］. Knowledge-Based Sys‐
+tems，2025，330：114747.
+［43］ Brussee S ，Buzzanca G，Schrader A M R，et al. Graph neural net‐
+works in histopathology：Emerging trends and future directions［J］. 
+Medical Image Analysis，2025，101：103444.
+［44］ Ektefaie Y ，Dasoulas G，Noori A，et al. Multimodal learning with 
+graphs［J］. Nature Machine Intelligence，2023，5（4） ：340-350.
+［45］ Wang Y N，Wang Y G，Hu C Y，et al. Cell graph neural networks 
+enable the precise prediction of patient survival in gastric can‐
+cer［J］. npj Precision Oncology，2022，6：45.
+［46］ Elhanani O ，Ben-Uri R，Keren L. Spatial profiling technologies il‐
+luminate the tumor microenvironment ［J］. Cancer Cell ，2023，
+41（3） ：404-420.
+［47］ Risom T ，Glass D R ，Averbukh I，et al. Transition to invasive 
+breast cancer is associated with progressive changes in the struc‐
+ture and composition of tumor stroma ［J］. Cell，2022，185（2） ：
+299-310.e18.
+［48］ Shiao S L ，Gouin K H III，Ing N，et al. Single-cell and spatial pro‐
+filing identify three response trajectories to pembrolizumab and 
+radiation therapy in triple negative breast cancer［J］. Cancer Cell，
+2024，42（1） ：70-84.e8.
+［49］ Pati P ，Karkampouna S，Bonollo F，et al. Accelerating histopathol‐
+ogy workflows with generative AI-based virtually multiplexed 
+tumour profiling［J］. Nature Machine Intelligence ，2024，6（9） ：
+1077-1093.
+［50］ Chen F Q ，Zhang R R，Zheng B Y，et al. Pathological semantics-
+preserving learning for H&E-to-IHC virtual staining［C］//Medical 
+Image Computing and Computer Assisted Intervention ‒ MICCAI 
+2024，2024：384-394.
+［51］ Park J ，Shin S J ，Kim G，et al. Revealing 3D microanatomical 
+structures of unlabeled thick cancer tissues using holotomography 
+and virtual H&E staining ［J］. Nature Communications，2025，16：
+4781.
+［52］ Cui C ，Liu H，Liu Q，et al. Survival Prediction of Brain Cancer 
+with Incomplete Radiology，Pathology，Genomic，and Demographic 
+Data［C］//Medical Image Computing and Computer Assisted In‐
+tervention ‒ MICCAI 2022，2022：626-635.
+［53］ Chen R J ，Lu M Y，Williamson D F K，et al. Pan-cancer integra‐
+tive histology-genomic analysis via multimodal deep learning［J］. 
+Cancer Cell，2022，40（8） ：865-878.e6.
+［54］ Jaume G ，Oldenburg L，Vaidya A，et al. Transcriptomics-guided 
+slide representation learning in computational pathology［PP/OL］. 
+arXiv （2024-05-18） ［2026-02-02］.https：//arxiv.org/abs/2405.11618. 
+DOI：10.48550/arXiv.2405.11618.
+［55］ Chen W Q ，Zhang P Z，Tran T N，et al. A visual-omics foundation 
+model to bridge histopathology with spatial transcriptomics ［J］. 
+Nature Methods，2025，22（7） ：1568-1582.
+［56］ Tiwari A ，Mishra S，Kuo T R. Current AI technologies in cancer 
+diagnostics and treatment［J］. Molecular Cancer，2025，24（1） ：159.
+［57］ Ding K X ，Zhou M，Wang H，et al. Spatially aware graph neural 
+networks and cross-level molecular profile prediction in colon 
+cancer histopathology：A retrospective multi-cohort study［J］. The 
+Lancet Digital Health，2022，4（11） ：e787-e795.
+［58］ Liao Y H ，Chen X H，Hu S P，et al. Artificial intelligence for pre‐
+dicting HER2 status of gastric cancer based on whole-slide histo‐
+pathology images ：A retrospective multicenter study ［J］. Ad‐
+vanced Science，2025，12（10） ：e2408451.
+［59］ Dara S ，Dhamercherla S，Jadav S S ，et al. Machine learning in 
+drug discovery ：A review［J］. Artificial Intelligence Review ，
+2022，55（3） ：1947-1999.
+［60］ Seal S ，Trapotsi M A，Spjuth O，et al. Cell painting ：A decade of 
+discovery and innovation in cellular imaging ［J］. Nature Meth‐
+ods，2025，22（2） ：254-268.
+［61］ Chen L ，Wu B F ，Mo L，et al. High-content screening identifies 
+ganoderic acid A as a senotherapeutic to prevent cellular senes‐
+cence and extend healthspan in preclinical models ［J］. Nature 
+221
+
+=== PDF_PAGE 16 ===
+数智病理驱动的诊疗闭环模式创新与工程实现路径研究
+Communications，2025，16：2878.
+［62］ Jasti J ，Zhong H，Panwar V，et al. Histopathology based AI model 
+predicts anti-angiogenic therapy response in renal cancer clinical 
+trial［J］. Nature Communications，2025，16：2610.
+［63］ Shmatko A ，Jung A W，Gaurav K，et al. Learning the natural his‐
+tory of human disease with generative transformers ［J］. Nature，
+2025，647（8088） ：248-256.
+［64］ Park D ，Lee Y M，Eo T，et al. Multimodal AI model for preop‐
+erative prediction of axillary lymph node metastasis in breast 
+cancer using whole slide images ［J］. npj Precision Oncology ，
+2025，9：131.
+［65］ Patkar S ，Chen A，Basnet A，et al. Predicting the tumor microenvi‐
+ronment composition and immunotherapy response in non-small 
+cell lung cancer from digital histopathology images［J］. npj Preci‐
+sion Oncology，2024，8：280.
+［66］ 陈晓红， 刘晓亮， 王俊普， 等.从 AI驱动到元宇宙赋能： 病理诊
+断管理模式创新与扩展 ［J/OL］.中国管理科学， 2025-06-16.
+https：//doi-org-s-11. libdb. csu. edu. cn/10. 16381/j. cnki. issn1003-
+207x.2023.1211.
+Chen X H，Liu X L，Wang J P，et al. From AI-driven to metaverse-
+empowered：Innovation and expansion of pathological diagnosis 
+management models ［J/OL］.Chinese Journal of Management Sci‐
+ence，2025-06-16. https：//doi-org-s-11.libdb.csu.edu.cn/10.16381/
+j.cnki.issn1003-207x.2023.1211.
+［67］ Mao N ，Dai Y，Zhou H，et al. A multimodal and fully automated 
+system for prediction of pathological complete response to neoad‐
+juvant chemotherapy in breast cancer ［J］. Science Advances ，
+2025，11（18） ：eadr1576.
+［68］ Srinidhi C L ，Ciga O，Martel A L. Deep neural network models 
+for computational histopathology ：A survey［J］. Medical Image 
+Analysis，2021，67：101813.
+［69］ 刘浏， 张馨， 张琪琪， 等. 医疗领域大模型伦理风险识别、 治理及
+前瞻研究 ［J］. 中国工程科学，2025，27（6） ：54-67.
+Liu L，Zhang X，Zhang Q Q，et al. Ethical risk identification，gov‐
+ernance，and foresight of medical foundation models［J］. Strategic 
+Study of CAE，2025，27（6） ：54-67.
+［70］ 宋春龙， 卢金波. 生成式人工智能审判应用与风险规制探究 ［J］. 
+湖北师范大学学报 （哲学社会科学版） ，2025，45（5） ：10-17.
+Song C L，Lu J B. Research on the application and risk regulation 
+of generative artificial intelligence in judicial trials ［J］. Journal 
+of Hubei Normal University （Philosophy and Social Science ），
+2025，45（5） ：10-17.
+［71］ 何精华. 智能革命与治理转型： 生成式AI赋能公共决策的理论
+建构与制度创新 ［J］. 上海市社会主义学院学报，2025（3） ：16-49.
+He J H. Intelligent revolution and governance transformation ：
+Theoretical framework and institutional innovation of generative 
+AI-empowered public decision-making［J］. Journal of Shanghai 
+Institute of Socialism，2025（3） ：16-49.
+222

@@ -1,0 +1,547 @@
+=== PDF_PAGE 1 ===
+《中华骨与关节外科杂志 》 2025 年 6 月 第 18 卷 第 6 期 Chin J Bone Joint Surg , Vol.18, No.6, Jun. 2025
+脊柱外科智能化辅助系统的研究进展
+李帅1，白胶胶1，贺园2，李庆达3，雷育宽1，冯铭哲1，都金鹏1，朱雷1，黄云飞1，昌震1，赵志刚1，闫亮1，惠华1，贺宝荣1
+【摘要】 随着人工智能（AI） 、机器人技术与医学影像学技术的深度融合 ，智能化辅助系统正成为脊柱外科的重要革新力量 。该系
+统通过高精准度导航 、机器人定位等技术 ，显著提高了椎弓根螺钉置入等手术的精准性与安全性 。目前已实现术前 3D 规划、术
+中实时导航与远程操作 ，并在脊柱骨折复位 、肿瘤切除及微创内镜手术中广泛应用 ，有效降低手术并发症发生率 ，并缩短了学习
+曲线。新兴技术如骨内超声实时监测钉道 、AI 辅助决策及 3D 打印导航模板进一步拓展了应用场景 。然而，智能化辅助系统仍面
+临高成本、人机交互智能化不足及术中触觉反馈缺失等挑战 。未来，通过 AI 驱动自主规划、5G 远程手术及增强现实（AR）技术/虚
+拟现实（VR）技术的多模态融合 ，智能化辅助系统将推动脊柱外科向精准化 、微创化与普惠化发展 ，助力医疗资源均衡分配与个
+性化诊疗模式的建立 。
+【关键词】 智能化辅助系统 ；脊柱外科；导航；机器人
+【中图分类号】  R681.5
+【文献标志码】  A
+【文章编号】 2095-9958（2025）06-0558-07
+DOI:10.3969/j.issn.2095-9958.2025.06.13
+Research progress of intelligent auxiliary system in spinal surgery
+LI Shuai1, BAI Jiaojiao1, HE Yuan2, LI Qingda3, LEI Yukuan1, FENG Mingzhe 1, DU Jinpeng1, ZHU Lei1, HUANG Yunfei1, 
+CHANG Zhen1, ZHAO Zhigang 1, YAN Liang1, HUI Hua1, HE Baorong1
+1. Department of Spinal Surgery , Honghui Hospital Affiliated to Xi'an Jiaotong University , Xi'an 710054, China ; 2. Department of 
+Orthopaedics, Xi'an Fifth Hospital , Xi'an 710082, China ; 3. The Second Clinical Medical College of Lanzhou University , Lanzhou 
+730030, China
+Corresponding Author : HE Baorong
+LI Shuai and BAI Jiaojiao contributed equally to this work .
+【【Abstract】】 With the deep integration of artificial intelligence (AI), robotics , and medical imaging technologies , intelligent auxiliary 
+systems are becoming an important innovative force in spinal surgery . These systems significantly improve the accuracy and safety of 
+procedures such as pedicle screw placement through technologies like high-precision navigation and robotic guidance . At present , 
+preoperative three-dimensional planning , intraoperative real-time navigation and remote operation have been achieved , and it has been 
+widely used in spinal fracture reduction , tumor resection and minimally invasive endoscopic surgery , effectively reducing complications 
+and shortening the learning curve . Emerging technologies such as intra-bone ultrasound real-time monitoring of screw paths , AI-assisted 
+decision-making and 3D printing navigation templates have further expanded application scenarios . However , the system still faces 
+challenges such as high cost , insufficient intelligence of human-computer interaction and lack of intraoperative haptic feedback . In the 
+future, through multimodal integration of AI-driven independent planning , 5G remote surgery and augmented reality and virtual reality 
+technologies, intelligent auxiliary systems will promote the development of spinal surgery toward greater precision , minimal 
+invasiveness, and broader accessibility , and help balance medical resource allocation and support the development of personalized 
+· 综述 ·
+【基金项目】 陕西省重点研发计划项目（2023-ZDLSF-03）
+【作者单位】 1. 西安交通大学附属红会医院脊柱外科 ，西安 710054；2. 西安市第五医院骨科 ，西安 710082；3. 兰州大学第二临床医学院 ，兰州 
+730030
+【通信作者】 贺宝荣，E-mail：hebr888@163.com
+【共同第一作者】 白胶胶
+【引用格式】 李帅, 白胶胶, 贺园, 等 . 脊柱外科智能化辅助系统的研究进展 [J]. 中华骨与关节外科杂志 , 2025, 18(6): 558-564.
+558
+
+=== PDF_PAGE 2 ===
+《中华骨与关节外科杂志 》 2025 年 6 月 第 18 卷 第 6 期 Chin J Bone Joint Surg , Vol.18, No.6, Jun. 2025
+diagnosis and treatment models .
+【【Key words】】 Intelligent Auxiliary System ; Spinal Surgery; Navigation; Robot
+自 Roy-Camille 首创椎弓根螺钉内固定术后 ，椎
+弓根螺钉一跃成为使用最广泛的医疗器械之一 [1]。
+然 而 螺 钉 置 入 错 位 频 发，可 能 损 伤 神 经 或 脊 髓[2-3]。
+传统脊柱手术依赖徒手或透视引导置入螺钉 ，但徒
+手引导高度依赖术者经验 ，而二维透视图像易导致
+解剖重叠 、定位模糊 ，且多次透视增加感染风险 、辐
+射暴露及延长手术时间 [4]。研发智能化辅助系统的
+初衷之一是提高椎弓根螺钉置入的精确性 [5]。早期
+受技术限制 ，智能化辅助系统发展缓慢 ，随着医学影
+像技术升级至 3D 可视化技术 ，智能化辅助系统在脊
+柱、关节、创伤骨科等领域快速发展 。智能化辅助系
+统覆盖手术全流程并增强临床医师感知 ，提高手术
+精准度与可重复性 ，简化操作 ，同时减少创伤 、缩短
+手术时间及减少辐射暴露 [6-7]。本文对脊柱外科智能
+化辅助系统研究进展作一综述 。
+1   脊柱外科智能化辅助系统发展现状
+1.1   国外脊柱外科智能化辅助系统的发展进程
+国 外 报 道 的 多 款 智 能 化 辅 助 系 统（如 德 国
+Ortomaquet 公 司 的 Caspar、以 色 列 Mazor 公 司 的
+Renaissance、法 国 Medtech 公 司 的 Rosa Spine 、瑞 典
+Medical Robotics 公司的 Pintrace 及德国 Brainlab 公司
+的 Vectorbot）均用于辅助定位 。美国 Think Surgical
+公 司 的 Robodoc、Mako Surgical 公 司 的 Rio 及 英 国
+Acrobot 公司的 Acrobot Sculptor 均以术中灵巧操作
+见长[8]。此外，用于脊柱外科的手术机器人包括以色
+列 Mazor 公 司 的 Spine Assist/Renaissance 、法 国
+Medtech 公 司 的 Rosa Spine 、韩 国 CUREXO 公 司 的
+Spinebot 等。其中 ，Spine Assist 采用并联构造 ，工作
+空 间 较 小 但 体 积 小、定 位 精 准 度 高；而 Spinebot、
+Vectorbot 和 加 拿 大 Synaptive Medical 公 司 的
+Neuroglide 等采用串联构造 ，工作空间大但整体刚度
+较弱 ，末端定位精准度有待提高 ，且体型较为笨重 。
+Spine Assist 由以色列 Mazor 公司基于 Mars 改进并商
+业化，是目前唯一获美国食品药品监督管理局 （Food 
+and Drug Administration , FDA）及 欧 盟CE 双 认 证 的
+脊柱手术 机器人 。Spine Assist 采用 CT 与 X 线双模
+态导航，术前获取脊柱 CT 数据，术中拍摄 2 张 X 线片
+完成配准 ，固定后精准定位椎弓根螺钉置入通道 。
+研究表明 ，该系统显著提高了螺钉置入的准确性 ，减
+少 了 辐 射 暴 露，且 未 见 相 关 并 发 症 报 道[9]。 Rosa 
+Spine 集成术中 CT/MRI 引导与立体定位技术 ，精度
+达亚毫米级 ，支持实时调整及个性化手术方案 ，显著
+提高手术效率与手术稳定性[10]。韩国汉阳大学2005 年
+研发的 Spinebot 为 7 自由度自动钻孔机器人 ，融合术
+前 CT/MRI 与术中红外导航技术 ，用于椎弓根螺钉置
+入；v2 版本改为 5 自由度架构 ，采用双平面透视导航 ，
+仅完成实验阶段 [11]。Vectorbot 整合了轻型动力机器
+人与光学导航系统 ，用于防止临床医师操作偏离 ，并
+未商业化 [12]。Li 等[13]对比了 O 型臂 结合导航系统与
+天 玑 骨 科 机 器 人 治 疗 青 少 年 先 天 性 脊 柱 侧 凸 的 疗
+效，发现 O 型臂结合导航系统的矫正效果更好 ，临床
+效果更令人满意 。
+1.2   国内脊柱外科智能化辅助系统的发展进程
+国内智能化辅助系统起步较晚 ，先后有哈尔滨
+工业大学 、东南大学 、北京航空航天大学等进行相关
+研究 ，其中哈尔滨工业大学研发了一种基于固定平
+台的手术系统 ，东南大学开发了下肢骨骼手术固定
+系统[14]。天玑骨科手术机器人由北京航空航天大学
+研发、天智航公司生产 ，是我国首款自主研发的多学
+科手术机器人 ，2016 年获国家食品药品监督管理总
+局批准 。该系统集成图像导航定位 、6 自由度机械
+臂、光学跟踪及手术规划功能 ，适用于脊柱 、关节、创
+伤骨科手术 。该系统由高精准度机械臂执行路径定
+位，光学跟踪系统实时监测解剖结构与机械臂位置 ，
+导航系统通过 3D 影像重建与实时数据同步 ，确保机
+械臂沿预设轨迹精准运行 ，术者通过套管引导导针
+完成螺钉置入 。2016 年，Tian[15]成功完成了世界首例
+骨科手术机器人辅助下寰枢椎经关节突内固定术 。
+2   脊柱外科智能化辅助系统分类
+2.1   机器人系统和导航系统
+机器人系统有以下分类 ：①监督控制交互 ，临床
+医师制定手术方案 ，而机器人系统在监督下完全自
+动化执行操作 ；②远程手术交互 ，临床医师操纵控制
+器来控制机器人系统持有的手术器械 ；③共享控制
+系统 ，通过术前计划使机器人系统定位至预设的位
+置后 ，临床医师手动操作器械 [16]。此外 ，依据与人的
+559
+
+=== PDF_PAGE 3 ===
+《中华骨与关节外科杂志 》 2025 年 6 月 第 18 卷 第 6 期 Chin J Bone Joint Surg , Vol.18, No.6, Jun. 2025
+交互程度和自动化水平 ，导航系统可分为被动式 、交
+互式和全自动式 [17]。
+20 世纪 70—80 年代 ，导航系统开始应用于神经
+外 科 领 域。1979 年 ，Brown-Roberts-Wells 系 统 结 合
+CT 图像和立体定向框架 ，实现病灶精确定位 [18]。导
+航系统于 20 世纪 90 年代开始应用于脊柱外科 ，进行
+腰椎椎弓根螺钉置入 ，2000 年集成术中 CT 3D 重建
+技术。2017 年，Overley 等[19]对导航系统进行了概述 ，
+包 括 德 国Brainlab 公 司 的 Airo 移 动 术 中CT、美 国
+Stryker 公司的 SpineMask Tracker 和 SpineMap 软件 、
+美国美敦力公司的 O 型臂 CT 导航 ，以及德国 Ziehm 
+Imaging 公司的 Ziehm Vision FD Vario 3D。导航系统
+融合术中成像与计算机辅助技术 ，通过多模态影像
+可视化及实时动态追踪 （支持二维 /3D 透视及 CT） ，
+结合围手术期数据 ，辅助椎弓根螺钉安全置入 ，多于
+患者体表固定红外定位装置 [20]。研究表明 ，其椎弓根
+螺钉误置率为 2%~6%[21]。Cammarata 等[22]对 1 288 枚
+椎弓根螺钉的分析显示 ，导航系统辅助置钉较传统
+透视置钉准确性更高 ，并发症发生率更低 。随着系
+统的更新换代 ，导航系统已广泛应用于全脊柱手术 。
+机器人系统作为新型交叉领域 ，融合医学 、材料
+学、机械制造、数学分析等多学科，核心由机械、影像及
+计算机系统构成[23]。脊柱外科机器人系统旨在提高椎
+弓根螺钉置入精准度，首款产品Spine Assist 于2004 年
+获美国 FDA 批准。此后 ，Mazor X（美敦力/Mazor） 、
+Excelsius GPS （Globus Medical ）和 Rosa（Medtech 
+Surgical）等系统相继获批 ，积极推动了脊柱手术技术
+发展。机器人系统基本设计原理是采用导航定位来
+保证椎弓根螺钉置入的准确性和安全性 。与传统手
+术相比 ，机器人系统辅助手术具有多项优势 [24]：①创
+伤 小 、出 血 量 少 ，符 合 加 速 康 复 外 科（enhanced 
+recovery after surgery , ERAS）理念；②精准度和安全
+性高 ，术前规划和精准定位降低了并发症发生率 ；
+③手术稳定性高 ，避免因疲劳 、生理性震颤影响手术
+操作；④远程手术 ，可以缓解医疗资源分布不均的问
+题；⑤降低邻近小关节损伤和邻近节段疾病的发生
+率。MacLean 等[25]的研究表明 ，机器人系统辅助手术
+操作的准确性高 ，术中翻修率和再手术率低 。目前
+脊柱机器人系统自动化水平为 0~2 级，其中 2 级系统
+已实现程序自动化执行 ，未来将向涵盖手术规划 、决
+策及操作环节的全流程自动化发展 。
+2.2   骨内超声
+椎体皮质与松质结构的差异决定两者拥有不同
+的超声反射信号 。因此 ，可借助超声系统判断椎弓
+根螺钉是否突破椎弓根皮质 。目前 ，骨内超声是超
+声导航系统的新探索方向 ，其可通过将超声探头伸
+入已经制备好的椎弓根骨道来评估钉道 ，或将超声
+探头安装在开路锥前端以实现在钉道制备过程中实
+时监测钉道方向 ，但是缺乏配套的超声探头 。Li 等[26]
+提出一种基于小波变换的多频动态融合方法 ，有效
+结合高频与低频超声图像 ，生成细节更丰富 、质量更
+优 的 融 合 图 像。骨 内 超 声 较 其 他 导 航 系 统 具 有 低
+价、实时成像、无辐射等优势 ，但尚未普及 。
+2.3   人工智能（artificial intelligence , AI）
+1956 年，科学家们提出 AI 的概念，即通过模拟人
+类认知的程序和计算机复制人类智能 [27]。AI 目前集
+中应用于疾病诊断等方面 [28]，具有以下优点 ：①辅助
+手术决策 ：AI 协助临床医师制定最佳治疗方案 。AI
+可评估腰椎间盘突出的预后 ，并降低漏诊 、误诊率 ，
+同时通过深度学习提高骨质疏松性椎体骨折诊断的
+准确性 。②转变诊疗模式 ：AI 通过强化感知辅助能
+力，推动技术下沉替代专家资源 ，优化医疗模式 ，减
+轻患者负担并降低医保支出 。AI 经过近几十年的长
+足发展 ，与智能化辅助系统结合成为必然趋势 。智
+能化辅助系统面临如下问题 ：①手术规划依赖经验 ，
+缺乏标准 ；②术中匹配依赖参考架 ，手术稳定性不足
+且创伤大 ；③系统误差难校正 ；④人机交互不智能 。
+AI 技术的发展将推动这些系统更新换代 ，加快其临
+床应用与推广 。
+2.4   增强现实（augmented reality , AR）技术
+AR 技术通过将影像学图像叠加至手术视野 ，提
+升视觉反馈效果 [29]。AR 术中导航无需棘突参考架 ，
+仅需皮肤标记即可实现精准定位 ，减少创伤 ；摄像头
+通过检测多个标记维持功能 ，提供术中成像 ，可实时
+监测螺钉置入位置 ，并减少医患辐射暴露 [30]。术前
+AR 通过提高临床医师对解剖结构和手术过程的理
+解，为培训提供支持 ，如 Immersive Touch 系统为椎弓
+根螺钉置入提供触觉反馈 ，并可让临床医师远程指
+导受训者 。AR 技术通过 3D 可视化影像辅助制定手
+术方案 ，并开展患者教育 ，有效缓解医患矛盾 。近年
+来，AR 技术作为智能化辅助系统的补充用于退行性
+脊柱疾病的治疗 。尽管 AR 技术在脊柱手术中的应
+560
+
+=== PDF_PAGE 4 ===
+《中华骨与关节外科杂志 》 2025 年 6 月 第 18 卷 第 6 期 Chin J Bone Joint Surg , Vol.18, No.6, Jun. 2025
+用前景广阔 ，但仍存在一些限制 ：①头戴视物镜可能
+导致机械和视觉不适 ；②显示器可能分散注意力 ，而
+Augmedics Xvision System 通过在半透明显示器上投
+影 3D 视图，帮助临床医师集中注意力 ；③学习曲线陡
+峭；④皮肤标记可能相对于骨骼移位或变形 。Pojskić
+等[31]通过经胸卧位入路 结合术中 CT 和 AR 技术治疗
+钙化胸椎间盘突出症 ，优化了定位 ，提高了手术安全
+性。未来，AR 领域竞争加剧 、创新加速 ，将深度融合
+机器人技术 ，增强临床医师与全息影像的实时交互 ，
+并通过智能警报与反馈机制降低手术误伤风险 。
+2.5   虚拟现实（virtual reality , VR）技术
+1968 年，Ivan Sutherland 研制首套头戴式显示系
+统，采用超声/机械追踪头部位置 ，生成 3D 线框图像 ，
+开创 VR 技术先河 [32]。20 世纪 90 年代的膝关节镜模
+拟器是骨科首个 VR 技术的应用 。Zhao 等[33]的研究
+证实 ，VR 训练可提高老年人抗跌倒能力及股骨颈 、
+腰椎骨密度 ，有效降低骨质疏松患者 的受伤风险 。
+尽管 VR 技术可应用于脊柱外科手术 ，如椎体压缩性
+骨折的微创手术 ，但 VR 技术在手术室中的应用仍受
+限，主要因为其需与机器人手术模块集成 ，目前应用
+较少，主要用于临床医师培训和患者术后教育 。
+2.6   个性化导航模板
+个性化导航模板通过计算机影像处理 、逆向工
+程、3D 打印和快速成型技术制作符合患者脊柱解剖
+结构的模型 [34]。术前需获取患者的 CT 影像数据 ，在
+软件中构建相应模型 ，并设计椎弓根螺钉的钉道 ，然
+后通过 3D 打印制作实体模型用于手术 。术中需剥离
+软 组 织 以 确 保 模 板 与 脊 柱 贴 合，准 确 置 入 螺 钉[35]。
+Wang 等[36]将个性化导航模板应用于胸椎结核手术 ，
+有效减少术中出血量 ，缩短手术时间 ，增加螺钉置入
+的安全性和准确性 。然而 ，因软组织残留无法完全
+贴合，并且不耐高温 、高压，精准度不足等因素 ，个性
+化导航模板的应用受限 。
+3   脊柱外科智能化辅助系统的应用
+3.1   骨折复位
+传统骨折复位依赖于 C 型臂 X 线机，其效果受限
+于临床医师的经验 。智能化辅助系统通过提升复位
+精准度及骨折段解剖 /力线恢复效果 ，减少并发症及
+辐射暴露 ，减轻术者负担 ，并借助优化术前规划与术
+中可视化缩短学习曲线 。Abaunza-Camacho 等[37] 报
+道 了 导 航 引 导 下 经 颈 前 路 全 内 镜 齿 状 突 切 除 术 及
+C1~2 前路经关节固定术 联合后路融合术的新技术 。
+Liu 等[38]的研究表明 ，机器人辅助治疗垂直不稳定骶
+骨骨折在骶髂螺钉和椎弓根螺钉 置入方面具有较高
+精准度 ，并有效减少切口并发症的发生 。Hu 等[39]对
+比机器人辅助与徒手经皮椎弓根螺钉内固定术治疗
+胸腰椎骨折的疗效 ，证实机器人辅助系统可显著提
+升骨折复位效果 。目前 ，智能化系统在骨折复位中
+的应用仍处于起步阶段 ，临床研究较少 。
+3.2   脊柱肿瘤切除及重建
+智能化辅助系统在脊柱肿瘤中可以通过术前计
+划、改进的成像技术和 3D 建模技术提高手术精准度 。
+Molina 等[40]通过使用立体定向手术导航切除 L1 脊索
+瘤，表现出良好的精准度和安全性 。Ando 等[41]的前
+瞻性研究表明 ，O 型臂导航辅助手术可提高原发性脊
+柱肿瘤患者的手术安全性及肿瘤治疗疗效 ，其优势
+包括螺钉置入更精准 、并发症更少 。Bandiera 等[42]的
+研究表明 ，计算机导航辅助可提升脊柱肿瘤手术中
+螺钉置入 、肿瘤定位及切除的精准度 ，但需注意学习
+曲线及优化技术以规避风险 。然而 ，尽管脊柱肿瘤
+患者的外科治疗复杂且涉及多学科 ，其智能化辅助
+系统应用仍较少 。
+3.3   脊柱内镜手术（endoscopic spine surgery , ESS）
+技术
+Kambin 于 1998 年提出 ESS 技术 。该技术通过
+微创切口直达病灶 ，内镜辅助观察 。其初始应用于
+腰椎间盘切除 ，现已扩展至全脊柱手术 。尽管 ESS 有
+减少创伤 、加速康复等优势 ，但也存在手术视野较小
+和学习曲线陡峭的问题 。导航技术有助于简化 ESS，
+提高手术精准度 ，降低并发症发生率 ，并在其他手术
+如椎间盘切除术 、减压术和融合术中得到广泛应用 。
+Schmidt 等[43] 的研究也表明了这一点 。Jin 等[44] 的研
+究显示 ，机器人辅助经皮内镜腰椎间盘切除术通过
+精准规划穿刺路径 ，显著提高手术成功率 ，并降低翻
+修率。
+3.4   椎板切除术
+颈椎椎板成形术治疗后纵韧带骨化和多节段脊
+髓型颈椎病效果显著 ，既能扩大椎管 ，又能保留颈椎
+活动度 ，并保护脊髓 。然而，手术的关键在于精确开
+槽，槽位选择不当可能导致多种并发症的发生 。智
+能 化 辅 助 系 统 的 高 精 准 度 可 以 满 足 解 剖 学 要 求。
+561
+
+=== PDF_PAGE 5 ===
+《中华骨与关节外科杂志 》 2025 年 6 月 第 18 卷 第 6 期 Chin J Bone Joint Surg , Vol.18, No.6, Jun. 2025
+Wang 等[45]采用 O 型臂导航技术精准定位黄韧带骨化
+灶并辅助减压 ，显著降低定位失误率及并发症风险 ，
+全面提高手术精准度 、安全性及疗效 。Tian 等[46]的研
+究表明 ，术中 3D 导航联合超声检查可精准指导后纵
+韧带骨化后路减压内固定术 ，尤其适用于黄韧带骨
+化致胸脊髓病 ，证实其是安全可靠的术中影像手段 。
+3.5   远程医疗
+远程医疗依托计算机及通信技术 ，借助远程操
+控设备完成 诊疗及手术 ，其核心在于实时影像同步
+与精准操控 。Riew 等[47] 的研究表明 ，远程医疗使用
+率显著增长 ，尤其在北美 ，临床医师认为其适用于影
+像学检查 、初诊及随访 。Shafi 等[48]的研究显示 ，远程
+医疗可有效替代脊柱疾病传统门诊 ，患者接受度高
+且满意度良好 ，印证了其在 骨科围手术期 中的发展
+趋势。未来远程手术将从医院延伸至海上 、水下、太
+空及战场等复杂场景 。而不同场景对技术提出新要
+求：海上需抗晃动稳定控制 ，水下依赖轻量化与高智
+能设计 ，太空则需突破失重及通信延迟限制 。这将
+推动智能化辅助系统实现多维技术突破 。
+4   脊 柱 外 科 智 能 化 辅 助 系 统 的 缺 陷 及 解 决
+办法
+医 院 引 入 智 能 化 辅 助 系 统 需 综 合 考 量 设 备 购
+置、维护的直接成本及临床医师培训 、住院时间延长
+的间接成本[49]。随着手术团队熟练度提升 ，智能化辅
+助系统的培训成本可能降低 ，但该系统对初学者及
+老年外科医师不够友好 ，且需团队具备故障排除能
+力[50]。此外，智能化辅助系统体积庞大 ，调试复杂 ，多
+功能集成不足 ，仅适用于特定手术类型 [51]。智能化辅
+助系统因缺乏触觉及温度反馈易引发医源性损伤 ，
+且智能化水平有限 ，复杂操作仍依赖人工 。这些问
+题可通过以下方式解决 ：①多功能集成 ，满足多样化
+的骨科手术需求 ；②推动普及与开源以降低技术成
+本，促进资源共享及智能化辅助系统发展 ；③结合 5G
+技术，拓展远程手术应用 ，为偏远地区提供优质医疗
+服务 ；④提高手术精准度 ，减少创伤和并发症 ，促进
+患者快速恢复 ；⑤AI 通过智能规划 、导航与决策实现
+高级智能化 ，并优化与患者及临床医师的交互体验 。
+5   小结与展望
+智能化辅助系统通过提高手术精准度 、稳定性
+和安全性 ，正在重塑脊柱外科格局 。尽管面临成本
+高、学习曲线陡峭等挑战 ，但随着 AI 和 5G 等技术的
+融合应用 ，智能化辅助系统将加速普及并增强适应
+性。未来不仅可优化手术质量 ，更能通过远程协作
+打破地域医疗壁垒 ，推动个性化医疗发展 ，实现以患
+者为中心的诊疗模式 。跨学科创新与持续技术迭代
+将驱动该系统向更智能 、高效 、人性化的方向演进 ，
+助力全球医疗资源均衡配置 。
+【利益冲突】 所有作者均声明不存在利益冲突
+参 考 文 献
+[1] Fuentes JM , Benezech J , Bonnel F, et al. [Osteosynthesis of 
+the low lumbar spine and spondylolisthesis . Modification 
+of the scholner plate and pedicular screwing ] [J]. Neuro ‐
+chirurgie, 1985, 31(6): 513-518.
+[2] Neifert SN , Martini ML , Yuk F, et al . Predicting trends in 
+cervical spinal surgery in the United States from 2020 to 
+2040[J]. World Neurosurg, 2020, 141: e175-e181.
+[3] Xu YF, Zhang Q , Le XF, et al . Comparison of the one-time 
+accuracy of simulated freehand and navigation simulated 
+pedicle screw insertion [J]. World Neurosurg , 2019, 128: 
+e347-e354.
+[4] Li S, Du J , Huang Y, et al . Comparison of the efficacies of 
+TINAVI robot-assisted surgery and conventional open sur ‐
+gery for Levine-Edward type ⅡA (postreduction) hangman 
+fractures[J]. Sci Rep, 2023, 13(1): 15934.
+[5] Davidar AD , Jiang K , Weber-Levine C , et al . Advance ‐
+ments in robotic-assisted spine surgery [J]. Neurosurg Clin 
+N Am, 2024, 35(2): 263-272.
+[6] Fan X , Zhu Q , Tu P, et al . A review of advances in image-
+guided orthopedic surgery [J]. Phys Med Biol , 2023, 68(2): 
+68-73.
+[7] Lebl DR , Avrumova F , Abjornson C , et al . Cervical spine 
+navigation and enabled robotics : a new frontier in mini ‐
+mally invasive surgery [J]. HSS J, 2021, 17(3): 333-343.
+[8] Sielatycki JA, Mitchell K, Leung E, et al. State of the art re ‐
+view of new technologies in spine deformity surgery-
+robotics and navigation [J]. Spine Deform , 2022, 10(1): 
+5-17.
+[9] Mualem W, Onyedimma C , Ghaith AK , et al . R2 advances 
+in robotic-assisted spine surgery : comparative analysis of 
+options, future directions , and bibliometric analysis of the 
+literature[J]. Neurosurg Rev, 2022, 46(1): 18.
+562
+
+=== PDF_PAGE 6 ===
+《中华骨与关节外科杂志 》 2025 年 6 月 第 18 卷 第 6 期 Chin J Bone Joint Surg , Vol.18, No.6, Jun. 2025
+[10] Hsu BH , Liu HW , Lee KL , et al . Learning curve of ROSA 
+ONE spine system for transpedicular screw placement [J]. 
+Neurospine, 2022, 19(2): 367-375.
+[11] Ringel F, Villard J , Ryang YM , et al . Navigation , robotics , 
+and intraoperative imaging in spinal surgery [J]. Adv Tech 
+Stand Neurosurg, 2014, 41: 3-22.
+[12] Staartjes VE , Klukowska AM , Schroder ML . Pedicle screw 
+revision in robot-guided , navigated , and freehand thoraco ‐
+lumbar instrumentation : a systematic review and meta-
+analysis[J]. World Neurosurg, 2018, 116: 433-443.e438.
+[13] Li S, Du J , Huang Y, et al . Comparison of surgical efficacy 
+between O-arm combined with CT 3D real-time navigation 
+system and tinavi robot-assisted treatment of adolescent 
+congenital scoliosis [J]. Am J Transl Res, 2023, 15(5): 3254-
+3266.
+[14] Zhang Q , Han XG , Fan MX , et al . Robotic navigation dur ‐
+ing spine surgery : an update of literature [J]. Expert Rev 
+Med Devices, 2023, 20(6): 427-432.
+[15] Tian W. Robot-assisted posterior C 1-2 transarticular screw 
+fixation for atlantoaxial instability : a case report [J]. Spine 
+(Phila Pa 1976), 2016, 41 Suppl 19: B2-B5.
+[16] Shweikeh F , Amadio JP , Arnell M , et al . Robotics and the 
+spine: a review of current and ongoing applications [J]. Neu‐
+rosurg Focus, 2014, 36(3): E10.
+[17] Yamout T, Orosz LD , Good CR , et al . Technological ad ‐
+vances in spine surgery: navigation, robotics, and augmented 
+reality[J]. Orthop Clin North Am, 2023, 54(2): 237-246.
+[18] Khedr AS , Alaminos-Bouza AL , Brown RA . Use of the 
+brown-roberts-wells stereotactic frame in a developing 
+country[J]. Cureus, 2018, 10(1): e2126.
+[19] Overley SC , Cho SK , Mehta AI , et al . Navigation and ro ‐
+botics in spinal surgery : where are we now ? [J]. Neurosur ‐
+gery, 2017, 80(3S): S86-S99.
+[20] Kochanski RB , Lombardi JM , Laratta JL , et al . Image-
+guided navigation and robotics in spine surgery [J]. Neuro ‐
+surgery, 2019, 84(6): 1179-1189.
+[21] Baldwin KD , Kadiyala M , Talwar D, et al. Does intraopera ‐
+tive CT navigation increase the accuracy of pedicle screw 
+placement in pediatric spinal deformity surgery ? A system ‐
+atic review and meta-analysis [J]. Spine Deform , 2022, 10
+(1): 19-29.
+[22] Cammarata G , Scalia G , Costanzo R , et al . Fluoroscopy-
+assisted freehand versus 3D-navigated imaging-assisted 
+pedicle screw insertion : a multicenter study [J]. Acta Neuro ‐
+chir Suppl, 2023, 135: 425-430.
+[23] Wu J, Fan M, He D, et al. Accuracy and clinical characteris ‐
+tics of robot-assisted cervical spine surgery : a systematic re ‐
+view and meta-analysis [J]. Int Orthop , 2024, 48(7): 1903-
+1914.
+[24] Li HM , Zhang RJ , Shen CL . Accuracy of edicle screw 
+placement and clinical outcomes of robot-assisted tech ‐
+nique versus conventional freehand technique in spine sur ‐
+gery from nine randomized controlled trials : a meta-analysis
+[J]. Spine (Phila Pa 1976), 2020, 45(2): E111-E119.
+[25] MacLean L , Hersh AM , Bhimreddy M , et al . Comparison 
+of accuracy, revision , and perioperative outcomes in robot-
+assisted spine surgeries : systematic review and meta-
+analysis[J]. J Neurosurg Spine , 2024: 1-13.
+[26] Li X, Cheng X , Xu Y, et al. Multi-frequency ultrasound im ‐
+aging fusion method based on wavelet transform for guided 
+screw insertion [J]. IEEE Trans Ultrason Ferroelectr Freq 
+Control, 2024, 71(3): 395-407.
+[27] Martin-Noguerol T , Onate Miranda M , Amrhein TJ , et al .  
+The role of artificial intelligence in the assessment of the 
+spine and spinal cord [J]. Eur J Radiol, 2023, 161: 110726.
+[28] Kalanjiyam GP , Chandramohan T , Raman M , et al . Artifi‐
+cial intelligence : a new cutting-edge tool in spine surgery
+[J]. Asian Spine J, 2024, 18(3): 458-471.
+[29] Azad TD, Warman A, Tracz JA , et al . Augmented reality in 
+spine surgery-past , present, and future [J]. Spine J , 2024, 24
+(1): 1-13.
+[30] Liu Y, Lee MG , Kim JS . Spine surgery assisted by aug ‐
+mented reality : where have we been ? [J]. Yonsei Med J , 
+2022, 63(4): 305-316.
+[31] Pojskić M, Bopp MHA , Nimsky C , et al. Surgical treatment 
+of calcified thoracic herniated disc disease via the transtho ‐
+racic approach with the use of intraoperative computed to ‐
+mography (iCT) and microscope-based augmented reality 
+(AR)[J]. Medicina (Kaunas), 2024, 60(6): 887.
+[32] McCloskey K , Turlip R , Ahmad HS , et al . Virtual and aug ‐
+mented reality in spine surgery : a systematic review [J]. 
+World Neurosurg, 2023, 173: 96-107.
+[33] Zhao R , Zhao X , Guan J , et al . The effect of virtual reality 
+technology on anti-fall ability and bone mineral density of 
+the elderly with osteoporosis in an elderly care institution
+[J]. Eur J Med Res , 2023, 28(1): 204.
+[34] Lu C, Ma L, Wang X, et al. Comparison of 3D-printed navi ‐
+gation template-assisted pedicle screws versus freehand 
+screws for scoliosis in children and adolescents : a system ‐
+atic review and meta-analysis [J]. J Neurol Surg A Cent Eur 
+Neurosurg, 2023, 84(2): 188-197.
+[35] Shi W, Aierken G, Wang S, et al. Application study of three-
+563
+
+=== PDF_PAGE 7 ===
+《中华骨与关节外科杂志 》 2025 年 6 月 第 18 卷 第 6 期 Chin J Bone Joint Surg , Vol.18, No.6, Jun. 2025
+dimensional printed navigation template between tradi ‐
+tional and novel cortical bone trajectory on osteoporosis 
+lumbar spine[J]. J Clin Neurosci , 2021, 85: 41-48.
+[36] Wang Y, Shi S , Zheng Q , et al . Application of 3-dimen‐
+sional printing technology combined with guide plates for 
+thoracic spinal tuberculosis [J]. Medicine (Baltimore), 2021, 
+100(6): e24636.
+[37] Abaunza-Camacho JF , Gomez-Niebles S , Madrinan-Navia 
+H, et al . Navigated anterior full-endoscopic transcervical 
+approach odontoidectomy for traumatic posterior atlanto ‐
+axial dislocation without odontoid fracture [J]. Oper Neuro ‐
+surg (Hagerstown), 2024: 30-69.
+[38] Liu ZJ , Gu Y , Jia J . Robotic guidance for percutaneous 
+placement of triangular osteosynthesis in vertically un ‐
+stable sacrum fractures : a single-center retrospective study
+[J]. J Orthop Surg Res , 2023, 18(1): 8.
+[39] Hu XQ , Lu HG , Zhou X , et al . A comparative study of 
+robot-assisted and traditional surgeries in the treatment of 
+thoracolumbar fractures based on 1-year follow-up observa ‐
+tion[J]. Biomed Mater Eng , 2023, 34(4): 375-383.
+[40] Molina CA , Dibble CF , Lo SL , et al . Augmented reality-
+mediated stereotactic navigation for execution of en bloc 
+lumbar spondylectomy osteotomies [J]. J Neurosurg Spine , 
+2021, 34(5): 700-705.
+[41] Ando K , Kobayashi K , Machino M , et al . Computed 
+tomography-based navigation system-assisted surgery for 
+primary spine tumor [J]. J Clin Neurosci , 2019, 63: 22-26.
+[42] Bandiera S , Ghermandi R , Gasbarrini A , et al . Navigation-
+assisted surgery for tumors of the spine [J]. Eur Spine J , 
+2013, 22 Suppl 6 (Suppl 6): S919-S924.
+[43] Schmidt BT, Chen KT, Kim J, et al. Applications of naviga ‐
+tion in full-endoscopic spine surgery [J]. Eur Spine J , 2024, 
+33(2): 429-437.
+[44] Jin M, Lei L, Li F, et al. Does Robot navigation and intraop ‐
+erative computed tomography guidance help with percuta ‐
+neous endoscopic lumbar discectomy ? A match-paired 
+study[J]. World Neurosurg, 2021, 147: e459-e467.
+[45] Wang ZW, Wang Z , Fan XW , et al . Precise surgical treat ‐
+ment of thoracic ossification of ligamentum flavum assisted 
+by O-arm computer navigation : a retrospective study [J]. 
+World Neurosurg, 2020, 143: e409-e418.
+[46] Tian W, Weng C, Liu B , et al . Intraoperative 3-dimensional 
+navigation and ultrasonography during posterior decom ‐
+pression with instrumented fusion for ossification of the 
+posterior longitudinal ligament in the thoracic spine [J]. J 
+Spinal Disord Tech, 2013, 26(6): E227-E234.
+[47] Riew GJ , Lovecchio F , Samartzis D , et al . Telemedicine in 
+spine surgery : global perspectives and practices [J]. Global 
+Spine J, 2023, 13(5): 1200-1211.
+[48] Shafi K, Lovecchio F, Forston K , et al. The efficacy of tele ‐
+health for the treatment of spinal disorders : patient-reported 
+experiences during the COVID- 19 pandemic [J]. HSS J , 
+2020, 16(Suppl 1): 17-23.
+[49] Lee YC, Lee R. Image-guided pedicle screws using intraop ‐
+erative cone-beam CT and navigation . A cost-effectiveness 
+study[J]. J Clin Neurosci , 2020, 72: 68-71.
+[50] Hadgaonkar S , Gupta A , Aiyer S , et al . Learning curve 
+across 2000 thoracolumbar pedicle screw placements using 
+O-arm navigation : technical difficulties and their solutions
+[J]. Eur Spine J, 2023, 32(11): 3753-3763.
+[51] Feng W, Wang W, Chen S , et al . O-arm navigation versus 
+C-arm guidance for pedicle screw placement in spine sur ‐
+gery: a systematic review and meta-analysis [J]. Int Orthop , 
+2020, 44(5): 919-926.
+【收稿日期：2024-09-14】
+【本文编辑：曹静】
+564

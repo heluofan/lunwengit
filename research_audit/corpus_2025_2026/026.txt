@@ -1,0 +1,3185 @@
+=== PDF_PAGE 1 ===
+2025 年　 　 1 月 郑 州 大 学 学 报 ( 工 学 版 ) Jan. 　 2025
+第 46 卷　 第 1 期 Journal
+ 
+of
+ 
+Zhengzhou
+ 
+University
+ 
+( Engineering
+ 
+Science) Vol. 46　 No. 1
+收稿日期:2024-04-20;修订日期:2024-06-16
+基金项目:国家自然科学基金资助项目(62206252) ;郑州市协同创新重大专项(20XTZX06013,20XTZX05015)
+作者简介:林予松(1973— ) ,男,四川西昌人,郑州大学教授,博士,博士生导师,主要从事医学影像 与 人 工 智 能、互 联 网 新
+技术研究,E-mail:yslin@ ha. edu. cn。
+通信作者:赵哲(1983— ),女,河南周口人,郑州大学讲师,主要从事医学影像与人工智能研究,E-mail:sevenzz@ zzu. edu. cn。
+引用本文:林予松,李孟娅,李英豪,等.
+ 
+基于 GAN 和多尺度空间注意力的多模态医学图像融合[ J] .
+ 
+郑 州 大 学 学 报( 工 学
+版) ,2025,46(1) :1-8. ( LIN
+  
+Y
+ 
+S,
+ 
+LI
+  
+M
+ 
+Y,
+ 
+LI
+  
+Y
+ 
+H,et
+ 
+al.
+ 
+Multimodal
+ 
+medical
+ 
+image
+ 
+fusion
+ 
+based
+ 
+on
+ 
+GAN
+ 
+and
+ 
+mul-
+tiscale
+ 
+spatial
+ 
+attention[ J] .
+ 
+Journal
+ 
+of
+ 
+Zhengzhou
+ 
+University
+ 
+( Engineering
+ 
+Science) ,2025,46(1) :1-8. )
+　 　 文章编号:1671-6833(2025)01-0001-08
+基于 GAN 和多尺度空间注意力的多模态医学图像融合
+林予松
+1,2,3
+,
+ 
+李孟娅
+1,2
+,
+ 
+李英豪
+1,2
+,
+ 
+赵　 哲
+1,2
+(1. 郑州大学
+ 
+网络空间安全学院,河南
+ 
+郑州
+ 
+450002;2. 郑州 大 学
+ 
+互 联 网 医 疗 与 健 康 服 务 河 南 省 协 同 创 新 中 心,河
+南
+ 
+郑州
+ 
+450052;3. 郑州大学
+ 
+汉威物联网研究院,河南
+ 
+郑州
+ 
+450002)
+摘　 要:
+ 
+针对多模态医学图像融合过程中多尺度特征和纹理细节 信 息 丢 失 的 问 题,提 出 一 种 基 于 生 成 对 抗 网 络 和
+多尺度空间注意力的图像融合算法。 首先,生成器采用 自 编 码 器 结 构,分 别 利 用 编 码 器 和 解 码 器 对 输 入 图 像 进 行
+特征提取、融合和重建,生成融合图像;其次,整个对抗网络框架采用双鉴别器结构,使 得 生 成 器 生 成 的 融 合 图 像 同
+时保留多个模态图像的显著特征;最后,构建一种多尺度空间注意力作为编码器进 行 特 征 提 取 的 基 本 模 块,利 用 多
+尺度结构充分捕获并保留源图像的多尺度特征,并且引入空间注意力更好地保留 源 图 像 的 结 构 和 细 节 信 息。 全 脑
+图谱数据库上的实验结果表明:所提算法生成的融合图像 不 仅 纹 理 细 节 更 为 丰 富,有 助 于 人 类 视 觉 观 察,而 且 在 3
+种不同类型的医学图像融合任务上平均梯度、峰值信噪比、互信息、视觉信息保真度 等 客 观 评 价 指 标 的 平 均 值 分 别
+达到 0. 302
+ 
+3、20. 720
+ 
+7、1. 441
+ 
+4、0. 649
+ 
+8,与其他先进的算法相比具有一定的优势。
+关键词:图像融合;
+ 
+多模态医学图像;
+ 
+生成对抗网络;
+ 
+特征金字塔;
+ 
+注意力机制
+中图分类号:TP391　 　 　 文献标志码:A　 　 　 doi:
+ 
+10. 13705 / j. issn. 1671-6833. 2025. 01. 001
+　 　 随着医学成像 技 术 的 不 断 发 展,医 学 图 像 在 现
+代医学诊断和治疗中发挥着不可或缺的作用。 常见
+的医学图像 包 括 磁 共 振 图 像( MRI) 、计 算 机 断 层 扫
+描( CT) 图 像、正电子发射断层( PET) 图像和单光子
+发射计算机断层(SPECT) 图像等。 然而,由于成像原
+理 的 差 异,不 同 模 态 的 医 学 图 像 显 示 的 疾 病 信 息 不
+同
+[ 1]
+,例如 CT 图 像 主 要 显 示 骨 骼、血 管 和 软 组 织 钙
+化等;MRI 显示高分辨率的软组织结构信息;PET 和
+SPECT 图 像 主 要 显 示 组 织、器 官 或 病 变 的 功 能 性 信
+息。 每种成像模态都有其局限性和特点,仅凭单模态
+的图像往往无法提供全面、准确的医学信息。 医生通
+常需要整合来自同一位置的多种模态的图像来进行
+诊断。 如果仅凭医生的空间想象和推测对多种模态
+的医学图像进行分析,将耗费大量时间和精力,分析
+精度也会受到主观影响。 因此多模态医学图像融合
+技术应运而生。 将不同模态的医学图像整合成一个
+融合图像,可以弥补各模态的不足,提高图像的对比
+度、分辨率和空间定位能力,提供更全面、准确和可靠
+的医学信息,进而提高疾病诊断的效率和准确性
+[ 2]
+。
+为了 实 现 多 模 态 医 学 图 像 融 合,现 有 研 究 已 经
+提出了多种融合算 法,主 要 分 为 传 统 算 法 和 深 度 学
+习算法两大类。 传 统 算 法 中,常 用 的 方 法 包 括 空 间
+域和变换域两种:空 间 域 方 法 直 接 对 图 像 像 素 进 行
+运算,容易造成空间失真,变换域方法对图像多尺度
+分解后的系数进行处理。 因为该过程与人类视觉系
+统以多分辨率方 式 处 理 信 息 的 过 程 类 似
+[ 3]
+,所以采
+用变换域方法产生的融合图像更有助于人眼视觉观
+察
+[ 4]
+,因此受到了学者的广泛研究。 Yin 等
+[ 5]
+使用加
+权局部能量和拉普拉斯算子作为活动水平对分解后
+得到的低频图像进行融合。 Zhu 等
+[ 6]
+结 合 局 部 相 位
+一致性、局部突变度量、局部能量信息和局部拉普拉
+斯能量作为活动水平对分解后得到的多尺度图像进
+行融合。 Dogra 等
+[ 7]
+利 用 引 导 图 像 滤 波 器 和 图 像 统
+计规则对分解后得到的基层分量进行融合。 尽管上
+述方法通过多尺度分解提高了融合图像的视觉效果,
+但复杂的特征提取和融合规则都需要人工设计。
+基于深度学习的方法可以从大量的数据中自主
+学习特征表示和融 合 规 则,具 有 更 强 的 泛 化 能 力 和
+
+=== PDF_PAGE 2 ===
+2　　　　 郑
+ 
+州
+ 
+大
+ 
+学
+ 
+学
+ 
+报
+ 
+( 工
+ 
+学
+ 
+版) 2025 年
+适应性,同时也能解 决 因 人 为 主 观 判 断 错 误 导 致 的
+特征提取不准确和 不 完 整 问 题,被 广 泛 应 用 于 图 像
+融合领 域。 Zhang 等
+[ 8]
+提 出 了 一 种 端 到 端 的 模 型
+IFCNN,不需要任 何 后 期 处 理。 Li 等
+[ 9]
+利 用 卷 积 层
+和密集块组成的编码器对源图像的显著特征进行提
+取。 Fu 等
+[ 10]
+结合残差 注 意 力 和 特 征 金 字 塔 注 意 力
+的优势,提出 了 MSRPAN 网 络, 能 够 更 好 地 捕 获 源
+图像的深层特征。 然 而,由 于 医 学 图 像 融 合 缺 乏 金
+标准,因此无法对融合结果进行有效约束。
+生成对抗 网 络 ( GAN) 通 过 生 成 器 和 鉴 别 器 之
+间的对抗博弈最小化融合图像与真实图像的概率分
+布差异
+[ 11]
+,从 而 对 融 合 过 程 进 行 约 束。 近 些 年, 该
+方法在图像融合领域取得了巨大进步。 Ma 等
+[ 12]
+提
+出了 FusionGAN 模型,尽 可 能 地 保 留 具 有 高 分 辨 率
+的源图像的 信 息。 Zhao 等
+[ 13]
+结 合 密 集 块 和 编 码 器
+提出了 DCGAN 模 型, 进 一 步 加 强 生 成 器 网 络 的 特
+征提取能力。 上述模型均使用一个生成器和一个鉴
+别器进行对抗训练,导 致 在 融 合 过 程 中 损 失 了 另 一
+源图像的信 息。 为 了 解 决 该 问 题,Ma 等
+[ 14]
+提 出 了
+DDcGAN 模型,引入 两 个 鉴 别 器 分 别 和 一 个 生 成 器
+进行对抗,同时保留了两个源图像的显著信息。
+虽然上述模型通过生成器和鉴别器之间的对抗
+博弈取得了较好的 融 合 效 果,但 在 图 像 特 征 提 取 过
+程中没有考虑到人 类 视 觉 系 统 的 特 点,而 是 采 用 单
+一尺度卷积层提取 图 像 的 特 征,导 致 在 融 合 过 程 中
+丢失了源图像的多尺度信息,不利于人类视觉观察。
+为了解决上述问题,本 文 提 出 一 种 基 于 生 成 对 抗 网
+络和多尺度空间注意力的多模态医学图像融合方法
+( multiscale
+ 
+spatial
+ 
+attention
+ 
+GAN, MSAGAN) 。 本 文
+主要贡献和创新点如下。
+(1) 为了确保在训 练 过 程 中 不 丢 失 任 何 一 种 模
+态图像的信息,整个 算 法 框 架 采 用 两 个 鉴 别 器 和 一
+个生成器进行对抗 训 练,使 生 成 器 生 成 的 融 合 图 像
+同时保留两种源图像的显著特征。
+(2) 为 了 捕 获 源 图 像 的 多 尺 度 特 征 和 细 节 信
+息, 本 文 构 建 一 个 多 尺 度 空 间 注 意 力 ( multiscale
+ 
+spatial
+ 
+attention,MSA) 模 块 作 为 编 码 器 进 行 特 征 提
+取的基本模块。 该模块采用多尺度结构捕获医学图
+像的多尺度特征,并 利 用 注 意 力 机 制 更 全 面 地 保 留
+图像的细节信息。
+1　 理论基础
+1. 1　 生成对抗网络
+GAN 是一种无监督的 图 像 生 成 模 型,由 生 成 器
+( G) 和 鉴 别 器 ( D) 两 部 分 组 成
+[ 15]
+。 通 过 它 们 之 间
+的对抗训练,GAN 可以估计 样 本 的 概 率 分 布 并 生 成
+新的数据。 生成器的目标是根据输入的噪声 z 生成
+与训练集特征相 似 的 数 据 G( z) 。 鉴 别 器 的 目 标 是
+尽可能区 分 G( z) 和 真 实 数 据。 在 训 练 过 程 中, 生
+成器和鉴别器交替 进 行 训 练,生 成 器 根 据 鉴 别 器 的
+判别结果不断更 新 参 数,提 高 生 成 能 力。 鉴 别 器 则
+跟随生成器的优化 不 断 更 新 网 络 参 数,以 提 高 自 身
+的判别能 力。 生 成 器 和 鉴 别 器 通 过 不 断 地 对 抗 博
+弈,最终可以 达 到 纳 什 均 衡 状 态
+[ 16]
+,即 无 论 生 成 器
+和鉴别器的网络参 数 如 何 调 整,鉴 别 器 都 无 法 区 分
+真实数据和生成数据。 G 和 D 的对抗过程为
+min
+G
+max
+D
+ 
+V GAN( G,D) = E x ~ P data( x) [ log
+ 
+D( x) ] +
+E z ~ P z( z) log(1 - D( G( z) ) )[ ] 。 (1)
+式中: E 为 数 据 的 期 望; x 为 输 入 样 本; P data( x) 和
+P z( z) 分别为真实数据和噪声的分布; D( x) 为鉴别
+器判断真实数据是否真实的概率; D( G( z) ) 为鉴别
+器判断生成数据是否真实的概率。
+1. 2　 特征金字塔注意力
+Li 等
+[ 17]
+提出了特 征 金 字 塔 注 意 力( feature
+ 
+pyr-
+amid
+ 
+attention,
+ 
+FPA) 模 块 用 于 图 像 分 割, 该 模 块 结
+合注意力机制和金 字 塔 结 构 的 优 势,提 取 图 像 不 同
+尺度的特 征 并 增 强 获 取 图 像 语 义 上 下 文 信 息 的 能
+力,原理如图 1 所 示。 FPA 模 块 利 用 金 字 塔 结 构 融
+合不同尺度的信息,从 而 更 精 确 地 整 合 相 邻 尺 度 上
+下文特征。 将 卷 积 神 经 网 络 提 取 的 原 始 特 征 经 过
+1×1 卷积后与 金 字 塔 特 征 逐 像 素 相 乘,并 且 通 过 引
+入全 局 平 均 池 化 分 支, 进 一 步 提 升 FPA 模 块 的 性
+能。 该模块的计算过程可表示为
+H( x) = 1 + P 1( P 2( P 3( x) ) )( )·V( x) 。 (2)
+式中: H( x) 为输出特征; V (·) 为卷积操作; P 1 、P 2
+和 P 3 分别为金字塔网络的 3 层卷积操作。
+图 1　 特征金字塔注意力模块
+Figure
+ 
+1　 Feature
+ 
+pyramid
+ 
+attention
+ 
+module
+2　 MSAGAN 算法
+2. 1　 算法整体框架
+本文将多模态医学图像融合问题转化为一个条
+
+=== PDF_PAGE 3 ===
+　 第 1 期 林予松,等:基于 GAN 和多尺度空间注意力的多模态医学图像融合
+ 
+3　　　　
+件生成对抗模型训 练 问 题,构 建 一 个 拥 有 双 鉴 别 器
+的生成对抗网络 MSAGAN,实 现 多 模 态 医 学 图 像 融
+合。 整个模型的框架如图 2 所示。
+图 2　 MSAGAN 整体框架图
+Figure
+ 
+2　 Overall
+ 
+framework
+ 
+of
+ 
+MSAGAN
+在给 定 多 模 态 医 学 图 像 的 情 况 下,该 模 型 的 最
+终目标是训练生 成 器 G,使 其 能 够 生 成 一 个 融 合 图
+像,该图像 同 时 包 含 输 入 的 两 种 模 态 图 像 的 特 征。
+生成器的主要任务 是 对 输 入 的 图 像 进 行 特 征 提 取、
+融合和重建,生成 融 合 图 像。 鉴 别 器 由 D 1 和 D 2 两
+部分组成,每个鉴别 器 都 用 于 判 别 生 成 器 生 成 的 融
+合图像和其中之一 的 真 实 参 考 图 像,并 将 结 果 反 馈
+给生成器以更新网络参数。 通过两个鉴别器与生成
+器之间的对抗训练,确 保 生 成 器 生 成 的 融 合 图 像 能
+够同时保留输入的两种模态图像的显著特征。 G 和
+D 的对抗关系为
+min
+G
+max
+D 1,D 2
+{ E[ log
+ 
+D 1( x1 ) ] + E[ log(1 -
+D 1( G( x1,x2) ) ) ] + E[ log
+ 
+D 2( x2 ) ] +
+E[ log(1 - D 2( G( x1 ,x2 ) ) ) ] } 。 (3)
+　 　 生成器和鉴别器交替进行训练。 通过生成器和
+两个鉴别器之间的 对 抗 过 程,生 成 器 所 生 成 的 融 合
+图像 G( x1,x2) 的概率分布与两个真实图像 x1 、x2 的
+概率分布越来越相 似,从 而 使 生 成 的 融 合 图 像 能 够
+同时保留输入的多模态医学图像的特征信息。 模型
+整体的训练流程如下所示。
+算法 1　 MSAGAN 训练流程。
+参数描述:生成器 G、鉴别器 D 1 和 D 2 的训练次
+数分别为 I G 、I D 1 和 I D 2; Imax 为 网 络 迭 代 训 练 的 最 大
+次数; L max 和 L min 分 别 为 生 成 器 和 鉴 别 器 对 抗 损 失
+的最大和最小值; L G max 为生成器的总损失。
+步骤 1　 初始化网络参数。
+步骤 2　 采样 m 对 多 模 态 医 学 图 像 { I
+1
+1,I
+2
+1 ,…,
+I
+m
+1 } 和 { I
+1
+2,I
+2
+2,…,I
+m
+2 } 。
+获得生成的融合图 像 { G( I
+1
+1 ,I
+1
+2) ,G( I
+2
+1,I
+2
+2 ) ,…,
+G( I
+m
+1 ,I
+m
+2 ) } 。
+使用优化器更新鉴别器 D 1 的网络参数,用最小
+化鉴别器对抗损失函数。
+步骤 3　 使 用 优 化 器 更 新 鉴 别 器 D 2 的 网 络 参
+数,用最小化鉴别器对抗损失函数。
+若 L D 1 > L max 且 I D 1 < Imax ,重 复 步 骤 2, I D 1 +
+1 → I D 1。
+若 L D 2 > L max 且 I D 2 < Imax ,重 复 步 骤 3, I D 2 +
+1 → I D 2。
+步骤 4　 采样 m 对 多 模 态 医 学 图 像 { I
+1
+1,I
+2
+1 ,…,
+I
+m
+1 } 和 { I
+1
+2,I
+2
+2 ,…,I
+m
+2 } 。
+获得生成的融合图 像 { G( I
+1
+1 ,I
+1
+2) ,G( I
+2
+1 ,I
+2
+2) ,…,
+G( I
+m
+1 ,I
+m
+2 ) } 。
+使用优化器更新 生 成 器 G 的 网 络 参 数,以 最 小
+化生成器损失函数。
+若 L D 1 < L min 或 L D 2 < L min, 并且 I G < Imax ,更新
+生成器网 络 参 数, 用 最 小 化 生 成 器 对 抗 损 失 函 数,
+I G +1→I G 。
+若 L G > L G max 且 I G < Imax ,重复步骤 4, I G + 1 →
+I G 。
+2. 2　 生成器和鉴别器
+生成器 G 由一 个 编 码 器 ( Encoder) 和 一 个 解 码
+器( Decoder) 组成,其 网 络 结 构 如 图 3 所 示。 首 先,
+将两种模态图像在通道维度上连接的结果作为编码
+器的输入;其次,通 过 编 码 器 进 行 特 征 提 取,输 出 融
+合特征图;最后,融 合 特 征 图 输 入 解 码 器 进 行 重 建,
+生成同时包含两种模态图像特征的融合图像。 编码
+器由 5 个 MSA 模块( 如图 4 所示) 组成,每个模块通
+过整合不同尺 度 的 特 征 获 得 48 个 特 征 图。 为 了 避
+免丢失中间模块的特征,实现特征重用,编码器采用
+DenseNet,使每个模块与后续 所 有 模 块 相 连,尽 可 能
+保留图像的深层特征。 解码器采用 5 层 CNN 结构。
+为了减少源图像信 息 损 失,所 有 卷 积 层 步 长 都 设 为
+1,并且采用批 归 一 化 和 Relu 激 活 函 数 加 快 训 练 速
+度,最 后 一 层 使 用 tanh 作 为 激 活 函 数, 输 出 融 合
+图像。
+图 3　 生成器结构图
+Figure
+ 
+3　 Generator
+ 
+structure
+ 
+diagram
+受 FPA 模块在图像分割应用中的启 发,为 解 决
+医学图像融合过程中单一尺度卷积层特征提取不充
+
+=== PDF_PAGE 4 ===
+4　　　　 郑
+ 
+州
+ 
+大
+ 
+学
+ 
+学
+ 
+报
+ 
+( 工
+ 
+学
+ 
+版) 2025 年
+分的问题,本文构 建 了 多 尺 度 空 间 注 意 力( MSA) 模
+块,并把该模块作为 编 码 器 进 行 特 征 提 取 的 基 本 模
+块,更好地保留 图 像 的 多 尺 度 特 征 和 细 节 信 息。 该
+模块由多尺度结构和空间注 意 力 模 块( spatial
+ 
+atten-
+tion
+ 
+module,
+ 
+SAM)
+[ 18]
+两部分组成。
+图 4　 MSA 结构图
+Figure
+ 
+4　 MSA
+ 
+structure
+ 
+diagram
+(1) 多尺度结构。 本 文 采 用 3 种 卷 积 尺 度 获 取
+图像的多 尺 度 特 征。 模 块 输 入 的 特 征 图 分 别 经 过
+3×3、5×5 和 7×7 的 滤 波 器,这 种 多 尺 度 结 构 可 以 帮
+助网络从不同的尺 度 提 取 特 征,以 获 得 更 全 面 的 信
+息表示。
+(2) SAM。 本文利用 空 间 注 意 力 获 取 图 像 全 局
+信息的相关性和依 赖 关 系,提 高 网 络 对 关 键 信 息 的
+表达能力,全面捕获 医 学 图 像 的 细 节 信 息。 SAM 由
+两个 3×3 卷 积 层 组 成, 输 出 一 个 单 通 道 掩 膜, 用 于
+强调空间中信息量更大的特征。
+最后,将 多 尺 度 结 构 整 合 后 的 多 尺 度 特 征 和
+SAM 得到的 掩 膜 进 行 逐 像 素 相 乘, 以 获 得 MSA 模
+块最终输出的特征。
+两个鉴别器 D 1 和 D 2 网 络 结 构 相 同,如 图 5 所
+示。 每个鉴别器包 含 4 层 网 络 模 型,前 3 层 网 络 由
+卷积 核 大 小 为 3 × 3 的 网 络 组 成, 为 了 和 生 成 器 对
+应,第一层网络 仅 使 用 Relu 激 活 函 数,其 他 两 层 采
+用批归一 化 和 Relu 激 活 函 数; 最 后 一 层 为 全 连 接
+层,使用 tanh 激 活 函 数 生 成 一 个 标 量, 用 于 估 计 输
+入图 像 来 自 真 实 图 像 而 不 是 生 成 器 生 成 图 像 的
+概率。
+图 5　 鉴别器结构图
+Figure
+ 
+5　 Discriminator
+ 
+structure
+ 
+diagram
+2. 3　 损失函数设计
+本文所提 MSAGAN 网 络 的 损 失 函 数 由 生 成 器
+损失函数和鉴别器损失函数组成:
+L = L G + L D 1 + L D 2。 (4)
+式中: L G 为生成器损失函数; L D 1 和 L D 2 分别为两个
+鉴别器的损失函数。
+对生成器 G 而言,除 了 根 据 鉴 别 器 的 结 果 对 其
+进行对抗训练,还引 入 内 容 损 失 约 束 生 成 图 像 和 真
+实图 像 之 间 的 相 似 性, 解 决 GAN 训 练 不 稳 定 的 问
+题。 因此 G 的 损 失 函 数 由 对 抗 损 失 和 内 容 损 失 两
+部分组成:
+L G = L advG + λL con ; (5)
+L
+adv
+G = E[ log(1 - D 1( G( x1 ,x2 ) ) ) ] +
+E[ log(1 - D 2( G( x1 ,x2 ) ) ) ] ; (6)
+L con = E[ ‖G( x1,x2) - x1 ‖ 2F +
+φ‖G( x1,x2) - x2‖ TV ] 。 (7)
+式中: L
+adv
+G 为生成器的对抗损失函数; L con 为内容损
+失函数; λ 和 φ 用 于 平 衡 不 同 的 损 失 函 数, 分 别 取
+0. 6 和 1. 2; x1 表示 PET、CT 或 SPECT 图像,这些影
+像中病变的亮度信 息 主 要 通 过 像 素 强 度 进 行 表 示;
+x2 表示 MRI 图 像, 主 要 显 示 病 灶 的 纹 理 细 节 等 信
+息。 本文根据不 同 模 态 图 像 的 特 点,分 别 采 用 Fro-
+benius 范数和 TV 范数表示内容损失,使生成器生成
+的融 合 图 像 同 时 保 留 不 同 模 态 医 学 图 像 的 显 著
+特征。
+两个鉴别器 D 1 和 D 2 的损失函数由具有代表性
+的对抗损失表示,分别为
+　 　 　 L D 1 = E[ - log
+ 
+D 1( x1) ] +
+E[ - log(1 - D 1( G( x1,x2) ) ) ] ; (8)
+　 　 　 L D 2 = E[ - log
+ 
+D 2( x2) ] +
+E[ - log(1 - D 2( G( x1,x2) ) ) ] 。 (9)
+3　 实验结果与分析
+3. 1　 数据集及实验设置
+本文所用实验数据来自哈佛大学全脑图谱数据
+库
+[ 19]
+。 为了验证本 文 所 提 算 法 MSAGAN 对 不 同 类
+型融合 任 务 的 有 效 性, 从 该 数 据 库 中 分 别 选 取 了
+124 对 CT-MRI、145 对 PET-MRI 和 117 对 SPECT-
+MRI 这 3 种类型的多模态医学图像融合任务进行实
+验,分别 将 其 中 的 104 对、125 对 和 97 对 图 像 作 为
+训练集,剩余的 20 对图像作为测试集。 所有源图像
+大小均为 256×256 像 素,且 每 对 图 像 都 经 过 了 精 确
+配准。 为了扩充 训 练 集,将 训 练 集 图 像 裁 剪 为 84 ×
+84 像 素 大 小 的 图 像 块。 在 训 练 过 程 中, 网 络 使 用
+Adam 优 化 器, 初 始 学 习 率 为 0. 000
+ 
+2, 衰 减 系 数 为
+0. 9, 批 量 大 小 为 24。 网 络 模 型 基 于 Tensor-
+Flow1. 14. 0,编程语言为 Python3. 7,实验环境为 64 位
+Windows10 操作系统的台式电脑,硬件处理器为 Intel
+ 
+
+=== PDF_PAGE 5 ===
+　 第 1 期 林予松,等:基于 GAN 和多尺度空间注意力的多模态医学图像融合
+ 
+5　　　　
+Core
+ 
+i5-8500
+ 
+CPU@ 3. 00
+ 
+GHz,RAM 为 16
+ 
+GB。
+3. 2　 实验结果分析
+为了验证 MSAGAN 的 融 合 效 果,从 主 观 和 客 观
+两个方面对实验结果进行评价。 将 MSAGAN 与医学
+图像融合领域较为经典和先进的 7 种算法进行对比,
+这 些 算 法 包 括 PA-PCNN
+[ 5]
+、 LRD
+[ 20]
+、 U2Fusion
+[ 21]
+、
+MSRPAN
+[ 10]
+、EMFusion
+[ 22]
+、DDcGAN
+[ 14]
+、GeSeNet
+[ 23]
+。
+3. 2. 1　 主观评价
+从每种类型的医学图像融合任务中选取两对具
+有代 表 性 的 融 合 结 果 进 行 展 示,图 6 为 CT 和 MRI
+图像融 合 结 果。 可 以 明 显 看 出, 基 于 U2Fusion 和
+DDcGAN 的融合图像损 失 了 CT 图 像 部 分 的 能 量 信
+息,导 致 图 像 对 比 度 下 降, 不 利 于 人 眼 观 察。 基 于
+LRD 和 MSRPAN 的融合图像虽然视觉对比度较好,
+但都在一定程度上损失了源图像的边缘纹理等细节
+信息,并 且 存 在 伪 影。 进 一 步 观 察 PA-PCNN 融 合
+图像的骨骼区域,可以看到有边缘信息丢失的现象。
+与 EMFusion 相 比, 基 于 GeSeNet 和 MSAGAN 的 融
+合图像不仅具有更 高 的 全 局 对 比 度 和 亮 度,而 且 在
+保留 MRI 图像 结 构 纹 理 等 特 征 的 基 础 上 更 好 地 保
+留了 CT 图像的能量信息。
+图 6　 CT-MRI 融合结果
+Figure
+ 
+6　 CT-MRI
+ 
+fusion
+ 
+results
+图 7 和图 8 分别为 PET-MRI 和 SPECT-MRI 的
+融合结果,两者均表示功能图像和结构图像的融合。
+功能信息主要包 含 在 PET 或 SPECT 图 像 中。 从 图
+7 和图 8 可以看出,除了 LRD 方法,其他方法都较好
+地保留了功能图 像 的 颜 色 信 息,主 要 区 别 在 于 MRI
+纹理细 节 信 息 的 保 留 情 况。 观 察 发 现, 基 于 MSR-
+PAN 方 法 的 融 合 图 像 较 为 模 糊; 基 于 PA-PCNN 和
+GeSeNet 的 融 合 图 像 均 有 不 同 程 度 的 细 节 损 失。
+U2Fusion 和 EMFusion 方法引入了噪声,导致图像原
+始结构信息被破坏,基 于 DDcGAN 方 法 获 得 的 融 合
+图像亮度较低。 相比之下,基于 MSAGAN 获得的融
+合图像在纹理等梯 度 特 征 上 更 加 明 显,更 利 于 人 眼
+观察。
+图 7　 PET-MRI 融合结果
+Figure
+ 
+7　 PET-MRI
+ 
+fusion
+ 
+results
+图 8　 SPECT-MRI 融合结果
+Figure
+ 
+8　 SPECT-MRI
+ 
+fusion
+ 
+results
+3. 2. 2　 客观评价
+本文选取 6 种常见的图像融合评价指标
+[ 2,24]
+,从
+多个角度对不同算法的融合效果进行客观评价。 这
+些指标包括平 均 梯 度( AG)、相 关 系 数( CC)、信 息 熵
+( EN)、互信息( MI)、峰 值 信 噪 比( PSNR)、视 觉 信 息
+保真度( VIF)。 在 3 种类型医学图像融合任务中,信
+息使用每个方法在测试集上的平均值进行评估,指标
+的值越高,表示融合效果越好。 此外,本文还引入运
+
+=== PDF_PAGE 6 ===
+6　　　　 郑
+ 
+州
+ 
+大
+ 
+学
+ 
+学
+ 
+报
+ 
+( 工
+ 
+学
+ 
+版) 2025 年
+行时间评估不同算法的效率,时间单位为 s,运行时间
+越少,表示算法性能越好。 评价结果如表 1 所示。
+由表 1 可 知,本 文 算 法 MSAGAN 在 AG、PSNR、
+VIF 和 MI 这 4 项指标整体上取得了最优,在 3 种融
+合任务上 AG 和 VIF 的 平 均 值 分 别 达 到 0. 302
+ 
+3 和
+0. 649
+ 
+8。 较高的 AG 和 VIF 表明融合图像不仅具有
+更强的细节表达能力,而且有助于人眼观察,这是由
+于本文所提算法采用多尺度结构进行图像特征的提
+取,符合人眼视觉 感 知 的 特 点。 本 文 算 法 在 3 种 融
+合任务上 MI 和 PSNR 的 平 均 值 分 别 达 到 1. 441
+ 
+4
+和 20. 720
+ 
+7。 较高的 MI 和 PSNR 值 表 示 在 融 合 过
+程中引入的噪声较 少,融 合 图 像 与 原 始 图 像 之 间 的
+失真较小,意味着融 合 图 像 在 保 持 原 始 图 像 的 整 体
+结构和像素方面表 现 良 好,这 是 由 于 本 文 采 用 空 间
+注意力能够更全面地保留医学图像的结构和细节信
+息。 整体 而 言, 客 观 评 价 指 标 表 明, MSAGAN 算 法
+能够提供更高质量的融合结果。
+在医 学 领 域,图 像 的 细 节 信 息 对 于 精 确 诊 断 和
+治疗至关重要。 在 这 个 问 题 上,MSAGAN 算 法 表 现
+出较好的融合效果。 尽管运行时间与其他深度学习
+方法相比略有增加,但考虑到其能够提供更清晰、更
+细致的融合图像,为 医 生 提 供 更 准 确 和 全 面 的 诊 断
+信息,这个额外的时间成本是完全可以接受的。
+3. 2. 3　 消融实验
+为了验证所提出的 MSAGAN 方法的有效性,本
+文分别针对其 中 的 多 尺 度 结 构 和 SAM 开 展 消 融 实
+验。 以 CT-MRI 数 据 集 为 例, 消 融 实 验 结 果 如 表 2
+所示。
+表 1　 融合图像客观评价指标平均值
+Table
+ 
+1　 Average
+ 
+objective
+ 
+evaluation
+ 
+metrics
+ 
+for
+ 
+fused
+ 
+images
+数据集 方法 AG CC EN MI PSNR VIF 运行时间 / s
+CT-MRI
+PET-MRI
+SPECT-MRI
+PA-PCNN 0. 253
+ 
+0 0. 753
+ 
+5 5. 081
+ 
+6 0. 889
+ 
+0 21. 456
+ 
+6 0. 588
+ 
+6 3. 47
+LRD 0. 224
+ 
+6 0. 757
+ 
+6 4. 895
+ 
+4 0. 897
+ 
+2 21. 194
+ 
+2 0. 585
+ 
+1 200. 98
+U2Fusion 0. 194
+ 
+2 0. 778
+ 
+1 4. 991
+ 
+5 0. 924
+ 
+7 15. 714
+ 
+0 0. 259
+ 
+5 0. 57
+MSRPAN 0. 208
+ 
+9 0. 746
+ 
+0 4. 164
+ 
+7 1. 171
+ 
+5 22. 097
+ 
+8 0. 572
+ 
+8 0. 30
+EMFusion 0. 204
+ 
+7 0. 776
+ 
+1 4. 905
+ 
+4 1. 150
+ 
+4 21. 679
+ 
+7 0. 425
+ 
+3 0. 20
+DDcGAN 0. 210
+ 
+5 0. 773
+ 
+1 5. 335
+ 
+5 0. 997
+ 
+7 21. 288
+ 
+0 0. 298
+ 
+9 0. 52
+GeSeNet 0. 263
+ 
+6 0. 795
+ 
+1 5. 386
+ 
+3 1. 101
+ 
+7 23. 902
+ 
+4 0. 572
+ 
+5 0. 02
+MSAGAN 0. 274
+ 
+5 0. 784
+ 
+4 5. 345
+ 
+5 1. 192
+ 
+8 24. 066
+ 
+1 0. 593
+ 
+6 0. 53
+PA-PCNN 0. 264
+ 
+4 0. 738
+ 
+7 4. 323
+ 
+5 1. 663
+ 
+9 15. 878
+ 
+4 0. 688
+ 
+2 3. 50
+LRD 0. 211
+ 
+0 0. 747
+ 
+0 5. 044
+ 
+7 1. 313
+ 
+9 18. 008
+ 
+3 0. 638
+ 
+3 197. 13
+U2Fusion 0. 090
+ 
+2 0. 831
+ 
+5 4. 045
+ 
+8 1. 165
+ 
+6 19. 089
+ 
+5 0. 117
+ 
+7 0. 59
+MSRPAN 0. 239
+ 
+0 0. 734
+ 
+1 3. 846
+ 
+0 1. 632
+ 
+9 15. 591
+ 
+6 0. 595
+ 
+9 0. 31
+EMFusion 0. 242
+ 
+4 0. 747
+ 
+8 4. 555
+ 
+7 1. 491
+ 
+1 13. 729
+ 
+2 0. 530
+ 
+5 0. 17
+DDcGAN 0. 284
+ 
+1 0. 714
+ 
+7 4. 991
+ 
+7 1. 375
+ 
+1 15. 848
+ 
+6 0. 296
+ 
+8 0. 51
+GeSeNet 0. 264
+ 
+3 0. 754
+ 
+0 5. 132
+ 
+0 1. 433
+ 
+9 16. 181
+ 
+5 0. 679
+ 
+5 0. 02
+MSAGAN 0. 342
+ 
+5 0. 794
+ 
+1 4. 927
+ 
+9 1. 679
+ 
+7 19. 899
+ 
+8 0. 635
+ 
+3 0. 52
+PA-PCNN 0. 159
+ 
+2 0. 851
+ 
+4 5. 450
+ 
+4 1. 600
+ 
+8 14. 385
+ 
+5 0. 642
+ 
+8 3. 63
+LRD 0. 142
+ 
+3 0. 852
+ 
+0 5. 963
+ 
+5 1. 390
+ 
+2 14. 733
+ 
+1 0. 616
+ 
+8 201. 69
+U2Fusion 0. 080
+ 
+7 0. 863
+ 
+9 4. 678
+ 
+5 1. 141
+ 
+5 14. 283
+ 
+7 0. 242
+ 
+3 0. 57
+MSRPAN 0. 124
+ 
+1 0. 845
+ 
+2 4. 850
+ 
+9 1. 715
+ 
+1 14. 133
+ 
+1 0. 481
+ 
+4 0. 31
+EMFusion 0. 142
+ 
+0 0. 850
+ 
+4 5. 301
+ 
+6 1. 583
+ 
+1 13. 331
+ 
+0 0. 539
+ 
+9 0. 17
+DDcGAN 0. 280
+ 
+8 0. 642
+ 
+1 5. 524
+ 
+6 1. 362
+ 
+9 16. 615
+ 
+1 0. 518
+ 
+5 0. 52
+GeSeNet 0. 163
+ 
+3 0. 856
+ 
+0 5. 903
+ 
+1 1. 582
+ 
+6 14. 347
+ 
+2 0. 649
+ 
+8 0. 02
+MSAGAN 0. 289
+ 
+9 0. 857
+ 
+5 5. 355
+ 
+2 1. 451
+ 
+7 18. 196
+ 
+2 0. 720
+ 
+4 0. 54
+表 2　 CT-MRI 数据集上的消融实验结果
+Table
+ 
+2　 Results
+ 
+of
+ 
+ablation
+ 
+experiments
+ 
+on
+ 
+the
+ 
+CT-MRI
+ 
+dataset
+多尺度 SAM AG CC EN MI PSNR VIF
+0. 210
+ 
+5 0. 773
+ 
+1 5. 335
+ 
+5 0. 997
+ 
+7 21. 288
+ 
+0 0. 298
+ 
+9
+√ 0. 242
+ 
+6 0. 782
+ 
+1 5. 338
+ 
+9 1. 094
+ 
+8 23. 146
+ 
+1 0. 497
+ 
+2
+√ 0. 247
+ 
+3 0. 779
+ 
+4 5. 342
+ 
+3 1. 128
+ 
+4 23. 154
+ 
+0 0. 485
+ 
+6
+√ √ 0. 274
+ 
+5 0. 784
+ 
+4 5. 345
+ 
+5 1. 192
+ 
+8 24. 066
+ 
+1 0. 593
+ 
+6
+
+=== PDF_PAGE 7 ===
+　 第 1 期 林予松,等:基于 GAN 和多尺度空间注意力的多模态医学图像融合
+ 
+7　　　　
+　 　 表 2 结果显示,加 入 多 尺 度 结 构 可 以 帮 助 网 络
+更好地捕捉全局和 局 部 特 征,提 高 对 图 像 的 理 解 能
+力和表达能力;此 外,引 入 SAM 可 以 自 适 应 地 调 整
+不同病变区域的权 重,提 高 融 合 结 果 对 关 注 区 域 的
+准确性和清晰度,进 一 步 提 升 融 合 图 像 质 量。 本 文
+提出的 MSAGAN 方法同时引入多尺度结构和 SAM,
+在 6 种评价指标上 都 表 现 出 了 较 好 的 效 果,验 证 了
+MSAGAN 方法的有效性。
+4　 结论
+本文提出一种 基 于 GAN 和 多 尺 度 空 间 注 意 力
+的多模态医学图像 融 合 算 法 MSAGAN,整 个 网 络 框
+架包含一个生成器 和 两 个 鉴 别 器,通 过 它 们 之 间 的
+对抗博弈,融合图像 能 够 同 时 保 留 两 个 输 入 图 像 的
+显著特征。 为了更好地捕捉源图像的多尺度特征和
+细节信息,本文构建一个 MSA 模块作为编码器的基
+本模块。 该模块采 用 多 尺 度 结 构,能 更 有 效 地 捕 捉
+图像的多尺 度 特 征; 此 外, 该 模 块 还 引 入 空 间 注 意
+力,能更好地保 持 原 始 图 像 的 结 构 和 细 节 信 息。 实
+验结果表明:基于 MSAGAN 方法生成的融合图像边
+缘纹理更加清晰,在 3 种 不 同 类 型 的 医 学 图 像 融 合
+任务 上,AG、PSNR、MI、VIF 这 些 客 观 评 价 指 标 的 平
+均值分别达到 0. 302
+ 
+3、20. 720
+ 
+7、1. 441
+ 
+4、0. 649
+ 
+8,
+融合图像的质量更高。 现有的多模态医学图像融合
+数据集较少,后续研 究 将 考 虑 利 用 迁 移 学 习 的 思 想
+扩充数据集,更好地训练网络。
+参考文献:
+[1] 　 HUANG
+ 
+B,
+ 
+YANG
+ 
+F,
+ 
+YIN
+ 
+M
+ 
+X,
+ 
+et
+ 
+al.
+ 
+A
+ 
+review
+ 
+of
+ 
+mul-
+timodal
+ 
+medical
+ 
+image
+ 
+fusion
+ 
+techniques [ J] .
+ 
+Computa-
+tional
+ 
+and
+ 
+Mathematical
+ 
+Methods
+ 
+in
+ 
+Medicine,
+ 
+2020,
+ 
+2020:
+ 
+8279342.
+[2] 　 AZAM
+ 
+M
+ 
+A,
+ 
+KHAN
+ 
+K
+ 
+B,
+ 
+SALAHUDDIN
+ 
+S,
+ 
+et
+ 
+al.
+ 
+A
+ 
+re-
+view
+ 
+on
+ 
+multimodal
+ 
+medical
+ 
+image
+ 
+fusion:
+ 
+compendious
+ 
+analysis
+ 
+of
+ 
+medical
+ 
+modalities,
+ 
+multimodal
+ 
+databases,
+ 
+fu-
+sion
+ 
+techniques
+ 
+and
+ 
+quality
+ 
+metrics[ J] .
+ 
+Computers
+ 
+in
+ 
+Bi-
+ology
+ 
+and
+ 
+Medicine,
+ 
+2022,
+ 
+144:
+ 
+105253.
+[3] 　 PIELLA
+ 
+G.
+ 
+A
+ 
+general
+ 
+framework
+ 
+for
+ 
+multiresolution
+ 
+im-
+age
+ 
+fusion:
+ 
+from
+ 
+pixels
+ 
+to
+ 
+regions [ J] .
+ 
+Information
+ 
+Fu-
+sion,
+ 
+2003,
+ 
+4(4) :
+ 
+259-280.
+[4] 　 GUO
+ 
+P,
+ 
+XIE
+ 
+G
+ 
+Q,
+ 
+LI
+ 
+R
+ 
+F,
+ 
+et
+ 
+al.
+ 
+Multimodal
+ 
+medical
+ 
+im-
+age
+ 
+fusion
+ 
+with
+ 
+convolution
+ 
+sparse
+ 
+representation
+ 
+and
+ 
+mutu-
+al
+ 
+information
+ 
+correlation
+ 
+in
+ 
+NSST
+ 
+domain[J].
+ 
+Complex
+ 
+&
+ 
+Intelligent
+ 
+Systems,
+ 
+2023,
+ 
+9(1):
+ 
+317-328.
+[5] 　 YIN
+ 
+M,
+ 
+LIU
+ 
+X
+ 
+N,
+ 
+LIU
+ 
+Y,
+ 
+et
+ 
+al.
+ 
+Medical
+ 
+image
+ 
+fusion
+ 
+with
+ 
+parameter-adaptive
+ 
+pulse
+ 
+coupled
+ 
+neural
+ 
+network
+ 
+in
+ 
+nonsubsampled
+ 
+shearlet
+ 
+transform
+ 
+domain [ J ] .
+ 
+IEEE
+ 
+Transactions
+ 
+on
+ 
+Instrumentation
+ 
+and
+ 
+Measurement,
+ 
+2019,
+ 
+68(1) :
+ 
+49-64.
+[6] 　 ZHU
+ 
+Z
+ 
+Q,
+ 
+ZHENG
+ 
+M
+ 
+Y,
+ 
+QI
+ 
+G
+ 
+Q,
+ 
+et
+ 
+al.
+ 
+A
+ 
+phase
+ 
+con-
+gruency
+ 
+and
+ 
+local
+ 
+Laplacian
+ 
+energy
+ 
+based
+ 
+multi-modality
+ 
+medical
+ 
+image
+ 
+fusion
+ 
+method
+ 
+in
+ 
+NSCT
+ 
+domain[ J] .
+ 
+IEEE
+ 
+Access,
+ 
+2019,
+ 
+7:
+ 
+20811-20824.
+[7] 　 DOGRA
+ 
+A,
+ 
+KUMAR
+ 
+S.
+ 
+Multi-modality
+ 
+medical
+ 
+image
+ 
+fu-
+sion
+ 
+based
+ 
+on
+ 
+guided
+ 
+filter
+ 
+and
+ 
+image
+ 
+statistics
+ 
+in
+ 
+multidi-
+rectional
+ 
+shearlet
+ 
+transform
+ 
+domain[ J] .
+ 
+Journal
+ 
+of
+ 
+Ambi-
+ent
+ 
+Intelligence
+ 
+and
+ 
+Humanized
+ 
+Computing,
+ 
+2023,
+ 
+14
+(9) :
+ 
+12191-12205.
+[8] ZHANG
+ 
+Y,
+ 
+LIU
+ 
+Y,
+ 
+SUN
+ 
+P,
+ 
+et
+ 
+al.
+ 
+IFCNN:
+ 
+a
+ 
+general
+ 
+im-
+age
+ 
+fusion
+ 
+framework
+ 
+based
+ 
+on
+ 
+convolutional
+ 
+neural
+ 
+network
+[ J] .
+ 
+Information
+ 
+Fusion,
+ 
+2020,
+ 
+54:
+ 
+99-118.
+[9] LI
+ 
+H,
+ 
+WU
+ 
+X
+ 
+J.
+ 
+DenseFuse:
+ 
+a
+ 
+fusion
+ 
+approach
+ 
+to
+ 
+infrared
+ 
+and
+ 
+visible
+ 
+images[ J] .
+ 
+IEEE
+ 
+Transactions
+ 
+on
+ 
+Image
+ 
+Pro-
+cessing,
+ 
+2019,
+ 
+28(5) :
+ 
+2614-2623.
+[10] FU
+ 
+J,
+ 
+LI
+ 
+W
+ 
+S,
+ 
+DU
+ 
+J,
+ 
+et
+ 
+al.
+ 
+A
+ 
+multiscale
+ 
+residual
+ 
+pyramid
+ 
+attention
+ 
+network
+ 
+for
+ 
+medical
+ 
+image
+ 
+fusion[J].
+ 
+Biomedical
+ 
+Signal
+ 
+Processing
+ 
+and
+ 
+Control,
+ 
+2021,
+ 
+66:
+ 
+102488.
+[11] 许光 宇,
+ 
+陈 浩 宇,
+ 
+张 杰.
+ 
+双 路 径 双 鉴 别 器 生 成 对 抗 网
+络的红外与可 见 光 图 像 融 合 [ J / OL] .
+ 
+计 算 机 辅 助 设
+计与图形学学报,1-14(2024-02-06) [ 2024- 04- 07] .
+http: ∥ kns. cnki. net / kcms / detail / 11. 2925. TP.
+20240204. 1728. 061. html.
+XU
+ 
+G
+ 
+Y,
+ 
+CHEN
+ 
+H
+ 
+Y,
+ 
+ZHANG
+ 
+J.
+ 
+Infrared
+ 
+and
+ 
+visible
+ 
+image
+ 
+fusion
+ 
+based
+ 
+on
+ 
+dual-path
+ 
+and
+ 
+dual-discriminator
+ 
+generation
+ 
+adversarial
+ 
+network
+ 
+[ J / OL] .
+ 
+Journal
+ 
+of
+ 
+Com-
+puter-Aided
+ 
+Design
+ 
+&
+ 
+Computer
+ 
+Graphics,1 - 14 ( 2024 -
+02-06) [ 2024- 04- 07] . http:∥kns. cnki. net / kcms / de-
+tail / 11. 2925. TP. 20240204. 1728. 061. html.
+[12] MA
+ 
+J
+ 
+Y,
+ 
+YU
+ 
+W,
+ 
+LIANG
+ 
+P
+ 
+W,
+ 
+et
+ 
+al.
+ 
+FusionGAN:
+ 
+a
+ 
+generative
+ 
+adversarial
+ 
+network
+ 
+for
+ 
+infrared
+ 
+and
+ 
+visible
+ 
+im-
+age
+ 
+fusion[ J] .
+ 
+Information
+ 
+Fusion,
+ 
+2019,
+ 
+48:
+ 
+11-26.
+[13] ZHAO
+ 
+C,
+ 
+WANG
+ 
+T
+ 
+F,
+ 
+LEI
+ 
+B
+ 
+Y.
+ 
+Medical
+ 
+image
+ 
+fusion
+ 
+method
+ 
+based
+ 
+on
+ 
+dense
+ 
+block
+ 
+and
+ 
+deep
+ 
+convolutional
+ 
+gen-
+erative
+ 
+adversarial
+ 
+network [ J ] .
+ 
+Neural
+ 
+Computing
+ 
+and
+ 
+Applications,
+ 
+2021,
+ 
+33(12) :
+ 
+6595-6610.
+[14] MA
+ 
+J
+ 
+Y,
+ 
+XU
+ 
+H,
+ 
+JIANG
+ 
+J
+ 
+J,
+ 
+et
+ 
+al.
+ 
+DDcGAN:
+ 
+a
+ 
+dual-dis-
+criminator
+ 
+conditional
+ 
+generative
+ 
+adversarial
+ 
+network
+ 
+for
+ 
+multi-resolution
+ 
+image
+ 
+fusion [ J] .
+ 
+IEEE
+ 
+Transactions
+ 
+on
+ 
+Image
+ 
+Processing,
+ 
+2020,
+ 
+29:
+ 
+4980-4995.
+[15] ZHOU
+ 
+T,
+ 
+LI
+ 
+Q,
+ 
+LU
+ 
+H
+ 
+L,
+ 
+et
+ 
+al.
+ 
+GAN
+ 
+review:
+ 
+models
+ 
+and
+ 
+medical
+ 
+image
+ 
+fusion
+ 
+applications [ J ] .
+ 
+Information
+ 
+Fusion,
+ 
+2023,
+ 
+91:
+ 
+134-148.
+[16] 肖儿 良,
+ 
+林 化 溪,
+ 
+简 献 忠.
+ 
+基 于 生 成 对 抗 网 络 探 索 潜
+在空间的医学图像融合 算 法[ J] .
+ 
+信 息 与 控 制,
+ 
+2021,
+50(5) :
+ 
+538-549.
+XIAO
+ 
+E
+ 
+L,
+ 
+LIN
+ 
+H
+ 
+X,
+ 
+JIAN
+ 
+X
+ 
+Z.
+ 
+Medical
+ 
+image
+ 
+fusion
+ 
+
+=== PDF_PAGE 8 ===
+8　　　　 郑
+ 
+州
+ 
+大
+ 
+学
+ 
+学
+ 
+报
+ 
+( 工
+ 
+学
+ 
+版) 2025 年
+algorithm
+ 
+adopting
+ 
+generative
+ 
+adversarial
+ 
+network
+ 
+to
+ 
+ex-
+plore
+ 
+latent
+ 
+space[ J] .
+ 
+Information
+ 
+and
+ 
+Control,
+ 
+2021,
+ 
+50
+(5) :
+ 
+538-549.
+[17] LI
+ 
+H
+ 
+C,
+ 
+XIONG
+ 
+P
+ 
+F,
+ 
+AN
+ 
+J,
+ 
+et
+ 
+al.
+ 
+Pyramid
+ 
+attention
+ 
+net-
+work
+ 
+for
+ 
+semantic
+ 
+segmentation[EB / OL].
+ 
+(2018-11-25)
+[2024-04-07]. https:∥arxiv. org / abs / 1805. 10180.
+[18] LIU
+ 
+Y,
+ 
+WANG
+ 
+L,
+ 
+LI
+ 
+H
+ 
+F,
+ 
+et
+ 
+al.
+ 
+Multi-focus
+ 
+image
+ 
+fu-
+sion
+ 
+with
+ 
+deep
+ 
+residual
+ 
+learning
+ 
+and
+ 
+focus
+ 
+property
+ 
+detec-
+tion[ J] .
+ 
+Information
+ 
+Fusion,
+ 
+2022,
+ 
+86:
+ 
+1-16.
+[19] 尹海涛,
+ 
+岳勇赢.
+ 
+基于半监督 学 习 和 生 成 对 抗 网 络 的
+医学图像融合算法[ J] .
+ 
+激 光 与 光 电 子 学 进 展,
+ 
+2022,
+ 
+59(22) :
+ 
+245-254.
+YIN
+ 
+H
+ 
+T,
+ 
+YUE
+ 
+Y
+ 
+Y.
+ 
+Medical
+ 
+image
+ 
+fusion
+ 
+based
+ 
+on
+ 
+semisupervised
+ 
+learning
+ 
+and
+ 
+generative
+ 
+adversarial
+ 
+net-
+work[ J] .
+ 
+Laser
+ 
+&
+ 
+Optoelectronics
+ 
+Progress,
+ 
+2022,
+ 
+59
+(22) :
+ 
+245-254.
+[20] LI
+ 
+X
+ 
+X,
+ 
+GUO
+ 
+X
+ 
+P,
+ 
+HAN
+ 
+P
+ 
+F,
+ 
+et
+ 
+al.
+ 
+Laplacian
+ 
+redecom-
+position
+ 
+for
+ 
+multimodal
+ 
+medical
+ 
+image
+ 
+fusion [ J] .
+ 
+IEEE
+ 
+Transactions
+ 
+on
+ 
+Instrumentation
+ 
+and
+ 
+Measurement,
+ 
+2020,
+ 
+69(9) :
+ 
+6880-6890.
+[21] XU
+ 
+H,
+ 
+MA
+ 
+J
+ 
+Y,
+ 
+JIANG
+ 
+J
+ 
+J,
+ 
+et
+ 
+al.
+ 
+U2Fusion:
+ 
+a
+ 
+unified
+ 
+unsupervised
+ 
+image
+ 
+fusion
+ 
+network [ J ] .
+ 
+IEEE
+ 
+Transac-
+tions
+ 
+on
+ 
+Pattern
+ 
+Analysis
+ 
+and
+ 
+Machine
+ 
+Intelligence,
+ 
+2022,
+ 
+44(1) :
+ 
+502-518.
+[22] XU
+ 
+H,
+ 
+MA
+ 
+J
+ 
+Y.
+ 
+EMFusion:
+ 
+an
+ 
+unsupervised
+ 
+enhanced
+ 
+medical
+ 
+image
+ 
+fusion
+ 
+network [ J] .
+ 
+Information
+ 
+Fusion,
+ 
+2021,
+ 
+76:
+ 
+177-186.
+[23] LI
+ 
+J
+ 
+W,
+ 
+LIU
+ 
+J
+ 
+Y,
+ 
+ZHOU
+ 
+S
+ 
+H,
+ 
+et
+ 
+al.
+ 
+GeSeNet:
+ 
+a
+ 
+general
+ 
+semantic-guided
+ 
+network
+ 
+with
+ 
+couple
+ 
+mask
+ 
+ensemble
+ 
+for
+ 
+medical
+ 
+image
+ 
+fusion [ J] .
+ 
+IEEE
+ 
+Transactions
+ 
+on
+ 
+Neural
+ 
+Networks
+ 
+and
+ 
+Learning
+ 
+Systems,
+ 
+2023,1:
+ 
+14.
+[24] 刘帅奇,
+ 
+王洁,
+ 
+安 彦 玲,
+ 
+等.
+ 
+基 于 CNN 的 非 下 采 样 剪
+切波 域 多 聚 焦 图 像 融 合 [ J] .
+ 
+郑 州 大 学 学 报 ( 工 学
+版) ,
+ 
+2019,
+ 
+40(4) :
+ 
+36-41.
+LIU
+ 
+S
+ 
+Q,
+ 
+WANG
+ 
+J,
+ 
+AN
+ 
+Y
+ 
+L,
+ 
+et
+ 
+al.
+ 
+Multi-focus
+ 
+image
+ 
+fusion
+ 
+based
+ 
+on
+ 
+CNN
+ 
+in
+ 
+non-sampled
+ 
+shearlet
+ 
+domain
+[ J] .
+ 
+Journal
+ 
+of
+ 
+Zhengzhou
+ 
+University
+ 
+( Engineering
+ 
+Sci-
+ence) ,
+ 
+2019,
+ 
+40(4) :
+ 
+36-41.
+Multimodal
+ 
+Medical
+ 
+Image
+ 
+Fusion
+ 
+Based
+ 
+on
+ 
+GAN
+ 
+and
+ 
+Multiscale
+ 
+Spatial
+ 
+Attention
+LIN
+  
+Yusong
+1,
+ 
+2,
+ 
+3
+,
+ 
+LI
+  
+Mengya
+1,
+ 
+2
+,
+ 
+LI
+  
+Yinghao
+1,
+ 
+2
+,
+ 
+ZHAO
+  
+Zhe
+1,
+ 
+2
+ 
+(1. School
+ 
+of
+ 
+Cyber
+ 
+Science
+ 
+and
+ 
+Engineering,
+ 
+Zhengzhou
+ 
+University,
+ 
+Zhengzhou
+ 
+450002,
+ 
+China;
+ 
+2. Henan
+ 
+Provincial
+ 
+Collaborative
+ 
+Innovation
+ 
+Center
+ 
+for
+ 
+Internet
+ 
+Medical
+ 
+and
+ 
+Health
+ 
+Services,
+ 
+Zhengzhou
+ 
+University,
+ 
+Zhengzhou
+ 
+450052,
+ 
+China;
+ 
+3. Hanwei
+ 
+IoT
+ 
+Institute,
+ 
+Zhengzhou
+ 
+University,
+ 
+Zhengzhou
+ 
+450002,
+ 
+China)
+Abstract:
+   
+Aiming
+ 
+to
+ 
+address
+ 
+the
+ 
+problem
+ 
+of
+ 
+multi-scale
+ 
+feature
+ 
+and
+ 
+texture
+ 
+detail
+ 
+information
+ 
+loss
+ 
+in
+ 
+the
+ 
+process
+ 
+of
+ 
+multimodal
+ 
+medical
+ 
+image
+ 
+fusion,
+ 
+a
+ 
+novel
+ 
+image
+ 
+fusion
+ 
+algorithm
+ 
+based
+ 
+on
+ 
+generative
+ 
+adversarial
+ 
+network
+ 
+( GAN)
+ 
+and
+ 
+multi-scale
+ 
+spatial
+ 
+attention
+ 
+mechanism
+ 
+was
+ 
+proposed.
+ 
+Firstly,
+ 
+the
+ 
+generator
+ 
+adopted
+ 
+an
+ 
+autoencoder
+ 
+structure
+ 
+to
+ 
+extract,
+ 
+fuse,
+ 
+and
+ 
+reconstructed
+ 
+the
+ 
+input
+ 
+images
+ 
+using
+ 
+an
+ 
+encoder
+ 
+and
+ 
+a
+ 
+decoder,
+ 
+generating
+ 
+the
+ 
+fused
+ 
+image.
+ 
+Secondly,
+ 
+the
+ 
+entire
+ 
+GAN
+ 
+framework
+ 
+employed
+ 
+a
+ 
+dual
+ 
+discriminator
+ 
+structure,
+ 
+enabling
+ 
+the
+ 
+generator
+ 
+to
+ 
+preserve
+ 
+salient
+ 
+features
+ 
+from
+ 
+multiple
+ 
+modal
+ 
+images
+ 
+in
+ 
+the
+ 
+fused
+ 
+image.
+ 
+Finally,
+ 
+a
+ 
+multi-scale
+ 
+spatial
+ 
+attention
+ 
+mechanism
+ 
+was
+ 
+constructed
+ 
+as
+ 
+a
+ 
+fundamental
+ 
+module
+ 
+for
+ 
+feature
+ 
+extraction
+ 
+in
+ 
+the
+ 
+encoder.
+ 
+It
+ 
+could
+ 
+effectively
+ 
+capture
+ 
+and
+ 
+re-
+tain
+ 
+multi-scale
+ 
+features
+ 
+from
+ 
+the
+ 
+source
+ 
+images,
+ 
+and
+ 
+incorporate
+ 
+spatial
+ 
+attention
+ 
+mechanism
+ 
+to
+ 
+better
+ 
+preserve
+ 
+the
+ 
+structures
+ 
+and
+ 
+details
+ 
+of
+ 
+the
+ 
+source
+ 
+images.
+ 
+Experimental
+ 
+results
+ 
+on
+ 
+the
+ 
+Whole
+ 
+Brain
+ 
+Atlas
+ 
+database
+ 
+demonstrated
+ 
+that
+ 
+the
+ 
+fused
+ 
+images
+ 
+generated
+ 
+by
+ 
+the
+ 
+proposed
+ 
+algorithm
+ 
+could
+ 
+exhibit
+ 
+richer
+ 
+texture
+ 
+details,
+ 
+enhancing
+ 
+human
+ 
+visual
+ 
+observation.
+ 
+Furthermore,
+ 
+the
+ 
+algorithm
+ 
+outperformed
+ 
+other
+ 
+advanced
+ 
+algorithms
+ 
+in
+ 
+such
+ 
+objective
+ 
+evaluation
+ 
+metrics
+ 
+as
+ 
+average
+ 
+gradient,
+ 
+peak
+ 
+signal-to-noise
+ 
+ratio,
+ 
+mutual
+ 
+information,
+ 
+and
+ 
+visual
+ 
+information
+ 
+fidelity
+ 
+for
+ 
+three
+ 
+different
+ 
+types
+ 
+of
+ 
+medical
+ 
+image
+ 
+fusion
+ 
+tasks,
+ 
+with
+ 
+average
+ 
+values
+ 
+of
+ 
+0. 302
+ 
+3,
+ 
+20. 720
+ 
+7,
+ 
+1. 441
+ 
+4,
+ 
+and
+ 
+0. 649
+ 
+8,
+ 
+respectively.
+ 
+Thus,
+ 
+the
+ 
+proposed
+ 
+algorithm
+ 
+demonstrated
+ 
+a
+ 
+certain
+ 
+advantage
+ 
+over
+ 
+other
+ 
+advanced
+ 
+algorithms.
+Keywords:
+ 
+image
+ 
+fusion;
+ 
+multimodal
+ 
+medical
+ 
+images;
+ 
+generative
+ 
+adversarial
+ 
+network;
+ 
+feature
+ 
+pyramid;
+ 
+attention
+ 
+mechanism

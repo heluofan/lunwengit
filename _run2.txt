@@ -1,0 +1,3 @@
+﻿NO SPEEDFILE
+exit=0
+DONE

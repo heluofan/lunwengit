@@ -1,0 +1,41 @@
+===== 通道顺序验证（数值域比对）=====
+nnUNet ch0  shape=(31, 640, 640)  min=0.0 max=1708.0 mean=332.3
+nnUNet ch1  shape=(31, 640, 640)  min=0.0 max=3955.0 mean=552.4
+nnUNet ch2  shape=(31, 640, 640)  min=0.0 max=868.0 mean=37.7
+--- 原始 mha ---
+t2w         shape=(31, 640, 640)  min=0.0 max=1708.0 mean=332.3
+adc         shape=(31, 114, 116)  min=0.0 max=4095.0 mean=508.1
+hbv         shape=(31, 114, 116)  min=0.0 max=800.0 mean=35.5
+===== splits.json =====
+folds 5
+ fold 0 train 1200 val 300
+ fold 1 train 1202 val 298
+ fold 2 train 1198 val 302
+ fold 3 train 1196 val 304
+ fold 4 train 1204 val 296
+val/train 患者交集总数 = 0
+===== plan 进程/日志 =====
+procs=0
+
+Please cite the following paper when using nnUNet:
+
+Isensee, F., Jaeger, P.F., Kohl, S.A.A. et al. "nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation." Nat Methods (2020). https://doi.org/10.1038/s41592-020-01008-z
+
+
+If you have questions or suggestions, feel free to open an issue at https://github.com/MIC-DKFZ/nnUNet
+
+Traceback (most recent call last):
+  File "/data/heluofan/picai/venv_v1/bin/nnUNet_plan_and_preprocess", line 33, in <module>
+    sys.exit(load_entry_point('nnunet', 'console_scripts', 'nnUNet_plan_and_preprocess')())
+  File "/data/heluofan/picai/repos/nnUNet_v1/nnUNet-1.7.0/nnunet/experiment_planning/nnUNet_plan_and_preprocess.py", line 102, in main
+    task_name = convert_id_to_task_name(i)
+  File "/data/heluofan/picai/repos/nnUNet_v1/nnUNet-1.7.0/nnunet/utilities/task_name_id_conversion.py", line 51, in convert_id_to_task_name
+    raise RuntimeError("Could not find a task with the ID %d. Make sure the requested task ID exists and that "
+RuntimeError: Could not find a task with the ID 2201. Make sure the requested task ID exists and that nnU-Net knows where raw and preprocessed data are located (see Documentation - Installation). Here are your currently defined folders:
+nnUNet_preprocessed=/data/heluofan/picai/workdir/nnUNet_preprocessed
+RESULTS_FOLDER=/data/heluofan/picai/workdir/results
+nnUNet_raw_data_base=/data/heluofan/picai/workdir/nnUNet_raw_data
+If something is not right, adapt your environemnt variables.
+===== 磁盘 =====
+27G	/data/heluofan/picai/workdir
+/dev/nvme0n1    7.0T  1.8T  4.9T  26% /data

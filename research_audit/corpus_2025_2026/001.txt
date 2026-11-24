@@ -1,0 +1,1851 @@
+=== PDF_PAGE 1 ===
+2026，62（18）
+在医学人工智能快速发展的环境下 ，医学图像作为
+临床决策中最为直观的数据形态 ，其在疾病检测 、分型、
+预后评估等多个方面发挥着不可替代的作用
+[1-2]
+。随着
+医学成像技术的持续进步 ，X-ray、CT、MRI、超声及全切
+片扫描（whole slide imaging ，WSI）等多模态影像数据
+在空间分辨率 、结构复杂度及语义表达粒度等方面均实
+现显著提升 。但是，医学图像在模态构成上具有高度异
+质性 ，语义表达往往隐含于复杂组织结构之中 。此外 ，
+高质量标签的获取成本较高且依赖专家经验
+[3]
+。在此背
+景 下 ，深 度 学 习 中 传 统 卷 积 神 经 网 络（convolutional
+neural network ，CNN）已被广泛应用于医学图像分类 、
+诊断与辅助分析任务 ，在多类疾病的影像识别中表现出
+良好的鲁棒性与泛化能力 ，但在处理弱监督标注 、跨模
+态 适 应 与 复 杂 语 义 表 达 方 面 仍 存 在 局 限
+[4- 6]
+。 为 弥 补
+CLIP 在医学图像多模态分析中的研究进展
+申明坤
+1
+，宋天一
+2+
+，乔紫萱
+1
+1. 山东中医药大学 医学信息工程学院 ，济南 250355
+2. 中国人民解放军联勤保障部队第九六 〇医院 医学工程科 ，济南 250031
++ 通信作者 E-mail ：14739612@qq.com
+摘 要：医学图像在临床诊断中具有重要应用价值 ，但其智能分析方法仍面临标注不足 、跨模态差异及模型泛化能
+力有限等挑战 。近年来 ，对比语言 -图像预训练（contrastive language-image pre-training ，CLIP）在跨模态语义对齐 、
+低标注学习和任务迁移方面展现出一定潜力 。系统梳理了常用医学图文数据集 ，解析了 CLIP 模型结构与跨模态特
+性，总结了其在医学图像分类 、检索 、分割及医学视觉问答等任务中的应用进展 ；结合工程适配与临床部署需求 ，评
+估了不同方法在跨中心泛化 、语义对齐精度和推理效率方面的优势与不足 。最后 ，探讨了动态提示构建 、结构化信
+息建模和模型轻量化等未来研究方向 ，为多模态医学人工智能模型的临床部署提供参考 。
+关键词：对比语言-图像预训练（CLIP） ；医学影像 ；跨模态对齐 ；医学图像分析
+文献标志码：A 中图分类号：TP391 doi：10.3778/j.issn.1002-8331.2509-0014
+Survey of CLIP for Multimodal Medical Image Analysis
+SHEN Mingkun
+1
+, SONG Tianyi
+2+
+, QIAO Zixuan
+1
+1.College of Intelligence and Information Engineering, Shandong University of Traditional Chinese Medicine, Jinan
+250355, China
+2.College of Medical Engineering, 960th Hospital of the People ’s Liberation Army Joint Logistics Support Force, Jinan
+250031, China
+Abstract：Medical images have important clinical value, but their intelligent analysis methods still face challenges such
+as label scarcity, cross-modal disparity, and limited model generalization. In recent years, contrastive language-image pre-
+training (CLIP) shows potential for cross-modal alignment, label-efficient learning, and task transfer. This paper surveys
+commonly used medical image-text datasets, analyzes CLIP architectures and cross-modal properties, and summarizes
+applications in image classification, retrieval, segmentation, and medical visual question answering. In combination with
+engineering adaptability and clinical deployment constraints, the advantages and disadvantages of different methods in
+terms of cross- center generalization, semantic alignment accuracy, and inference efficiency are evaluated. Finally, the
+future research directions such as dynamic prompt construction, structured information modeling, and model lightweighting
+are discussed, providing references for the clinical deployment of multimodal medical artificial intelligence models.
+Key words ：contrastive language-image pre-training (CLIP); medical image; cross-modal alignment; medical image analysis
+基金项目：山东第二医科大学附属医院科技发展项目（2023FYZ008） 。
+作者简介 ：申明坤（2002—） ，男，硕士研究生 ，CCF 会员，研究方向为医学图像处理 ；宋天一（1980—） ，男，博士，副主任技师 ，副教
+授，研究方向为生物医学信息检测与智能分析；乔紫萱（2002—） ，女，硕士研究生，研究方向为生物医学信息检测与处理。
+收稿日期：2025-09-02 修回日期：2026-03-10 文章编号：1002-8331（2026）18-0033-14
+Computer Engineering and Applications 计算机工程与应用 33
+
+=== PDF_PAGE 2 ===
+Computer Engineering and Applications 计算机工程与应用2026，62（18）
+CNN 在建模长程依赖和全局上下文中的不足 ，Trans-
+former 架构逐渐被引入医学图像分析任务 ，并在提升分
+割精度与跨模态理解方面展现出显著优势 ，但是 Trans-
+former 对大规模标注数据的依赖性强 、训练成本高 、临
+床泛化能力尚不稳定
+[7-10]
+。现有主流架构在应对医学图
+像诊断中高异质性
+[11]
+、低标注
+[12]
+和任务复杂性
+[13]
+等现实
+挑战时仍然有一定的不足 。
+近年来 ，视觉基础模型（visual foundation models ，
+VFM）的快速发展 ，有效缓解了图像与文本间长期存在
+的模态鸿沟 ，提升了模型的跨模态理解与泛化能力
+[14-16]
+。
+作为其中具有代表性的多模态预训练框架 CLIP 基于大
+规模图文对进行对比学习 ，使模型具备了图文双向检
+索、语义匹配与零样本识别能力
+[17-18]
+。该模型采用“双流
+编码 +对比损失 ”策略 ，双流编码与对比学习机制的结
+合，使模型在不依赖明确标签结构的前提下 ，仍能实现
+跨模态语义对齐与开放式推理 ，从而在医学图像任务中
+表现出优越的泛化能力与适配弹性 ，尤其对高不确定性
+与弱监督任务表现出良好的鲁棒性
+[19-21]
+。随着以 CLIP
+为代表的视觉 -语言模型在通用领域取得成功 ，其跨模
+态表征能力与弱监督学习机制逐渐被引入医学影像分
+析领域。相关研究已将其应用于辅助诊断 、病例检索及
+视觉问答等任务 ，以应对医学场景中标注成本高与样本
+异质性强等挑战 。
+为验证领域整体趋势与纳入研究的一致性 ，本文对
+引用的参考文献按发表年份进行统计分析 ，如图 1 所
+示。结果显示 ，文献数量在 2023 年后显著增加 ，与基于
+Google Scholar 的总体发展趋势相吻合 ，表明医学影像
+多模态分析研究已进入快速发展阶段 。本文参考文献
+主 要 来 源 于Web of Science 、PubMed、IEEE Xplore 及
+Google Scholar 等数据库 ，优先选取发表于 SCI 期刊或
+国际主流会议等具有代表性的研究成果 ，同时适当补充
+近年来具有较高学术影响力的前沿研究 ，以保证综述内
+容的系统性与代表性 。
+近年来 ，围绕医学视觉 -语言模型与多模态医学影
+像分析的综述不断增多 ，研究方向逐渐从模型框架扩展
+到临床任务与大模型应用层面 。Ryu 等
+[22]
+以医学视觉 -
+语言模型为研究主线 ，梳理了视觉 -语言框架向医学影
+像领域迁移的整体发展路径 ，重点关注模型规模扩展与
+跨任务迁移能力 ，但对具体模型结构优化与技术演进讨
+论相对有限 。Lu 等
+[23]
+从语义认知与推理机制角度探讨
+语言信息在医学视觉理解中的引导作用 ，强调视觉 -语
+言协同在复杂诊断推理中的价值 ，但对模型训练策略及
+工程适配涉及较少 。Sun 等
+[24]
+系统梳理了多模态学习方
+法，对融合策略与任务模型进行了分类总结 ，侧重方法
+体系构建与应用层面分析 。然而 ，其对视觉 -语言预训
+练模型内部表示学习机制的讨论相对概括 。Yi 等
+[25]
+则
+以放射学应用为背景 ，总结多模态大语言模型在报告生
+成与医学问答中的研究进展 ，重点关注临床推理能力与
+应用风险 ，但对基础模型结构演进与跨任务泛化能力涉
+及相对有限 。这些综述多从宏观模型结构或任务应用
+角度展开 ，对医学视觉 -语言技术的整体趋势进行了较
+为全面的总结 。然而 ，对于以 CLIP 为代表的基于对比
+学习的双编码器框架在医学影像场景中的结构适配方
+式、提示构造策略 、参数高效调优路径以及跨中心泛化
+表现，尚缺乏以模型结构为主线的系统梳理与技术路径
+层面的对比分析。因此，本文以 CLIP 及其衍生模型为核
+心，围绕数据资源 、结构机制与泛化特性展开分析 ，重点
+讨论其在不同医学任务中的技术演进与工程适配思路 ，
+以期补充现有综述在模型层面深度归纳方面的不足 。
+1 数据集
+医学影像多模态研究依赖于包含影像与文本 （如描
+述、报告或问答对）的数据集 ，这些数据直接支撑跨模态
+对齐与生成任务 。统一定义此类数据有助于清晰梳理
+不同研究在数据基础与方法上的差异 。
+1.1 MedICaT 数据集
+MedICaT
+[26]
+是一种大规模医学图文多模态数据集 ，
+包含医学影像及其标题 、图注与正文上下文信息 ，覆盖
+多种影像模态 。该数据集图文配对关系明确 ，文本表达
+规 范 且 语 义 一 致 性 较 高。 在 CLIP 模 型 训 练 体 系 中，
+MedICaT 在跨模态预训练阶段具有明显优势 ，有助于模
+型学习通用视觉 -语言表征能力 ；同时，其结构规范的图
+文配对数据在图文检索与零样本识别任务中具有良好
+的评估价值 。但是 ，该数据集主要来源于学术文献图
+像，其语义表达更偏向学术传播场景 ，因此，在临床任务
+微调中仍存在一定局限 。
+1.2 ROCOv2 数据集
+ROCOv2
+[27]
+是面向医学图文对齐与跨模态理解任务
+构建的大规模多模态数据集 ，涵盖多种影像模态 ，文本
+主要由图注与正文片段构成 。该数据集通过语料优化
+图 1 本文参考文献发表年份分布（n=94）
+Fig.1 Publication year distribution of references
+in this paper （n=94）
+20132014201520172019202020212022202320242025
+30
+25
+20
+15
+10
+5
+0
+文献数量
+1 1 1 1 2
+5
+8
+10
+16
+27
+22
+年份
+34
+
+=== PDF_PAGE 3 ===
+2026，62（18）
+提高图文语义一致性 ，使视觉信息与文本描述之间具有
+较稳定对应关系 ，在 CLIP 模型训练中更有利于提升跨
+模态匹配稳定性及语义对齐精度 。ROCOv2 在模型跨
+模态预训练阶段具有较高应用价值 ，并在图文检索与匹
+配类任务评估中表现出良好适用性 。但该数据集文本
+表达主要来源于学术文献 ，临床语义复杂度与真实诊疗
+表达覆盖有限 ，在面向临床场景的模型微调研究中仍存
+在一定局限 。
+1.3 SLAKE 数据集
+SLAKE
+[28]
+是一个面向医学视觉问答（medical visual
+question answering ，Med-VQA）任务构建的多模态数据
+集，基于真实临床图像设计 ，涵盖 CT 与 X-ray 影像模态，
+并配套由医学专家构建的标准化问答对 ，内容涉及病灶
+识别、器官定位及异常检测等临床语义信息 。每个样本
+由图像 、问题与答案三元组构成 ，具有较高结构化程度
+与语义明确性 。在 CLIP 模型研究中 ，SLAKE 更适用于
+模型能力评估阶段 ，能够有效检验模型跨模态推理与
+语言引导诊断能力 。但由于其数据规模及任务场景相
+对集中 ，在大规模跨模态预训练阶段的支持能力相对
+有限。
+1.4 MIMIC-CXR 数据集
+MIMIC-CXR
+[29]
+是目前医学影像领域应用最广泛的
+放射学报告生成多模态数据集之一 ，由真实临床环境采
+集的胸部 X-ray 及其对应放射学报告构建而成 。数据集
+包含大量成对的医学影像与自由文本诊断报告 ，文本内
+容涵盖影像所见 、异常描述及临床结论 ，具有较高专业
+性与语义复杂度 。在 CLIP 模型研究中 ，MIMIC-CXR 在
+临床任务微调阶段具有显著优势 ，有助于提升模型在真
+实医学语境中的语义理解能力与诊断推理能力 ，并在放
+射 学 报 告 生 成 与 跨 模 态 语 义 评 估 任 务 中 具 有 重 要 价
+值。但由于其文本表达形式自由度较高 ，图文语义对应
+关系相对松散 ，在大规模跨模态预训练阶段可能增加语
+义对齐难度 。
+1.5 CHAOS 数据集
+CHAOS
+[30]
+是医学图像分割领域常用的数据集之一 ，
+主要用于腹部多器官分割任务 ，包含 CT 与 MRI 等多模
+态医学影像 ，并提供肝脏 、脾脏及肾脏等器官的精细分
+割标注 ，数据结构规范且标注质量较高 。在 CLIP 模型
+研究中，CHAOS 虽缺乏直接图文配对信息 ，在跨模态预
+训练阶段应用价值相对有限 ，但其高精度结构标注为模
+型在医学图像分割及弱监督定位任务中的微调研究提
+供了重要支持 。同时 ，该数据集常用于评估视觉 -语言
+模型在空间语义理解与跨任务迁移能力方面的表现 ，为
+探索 CLIP 向像素级医学任务扩展提供重要验证基础 。
+1.6 BraTS 数据集
+BraTS
+[31]
+是医学影像分析领域广泛使用的脑肿瘤数
+据集，主要用于脑部肿瘤分割与异常检测研究 。该数据
+集包含多模态脑部 MRI 图像，并提供不同肿瘤区域的精
+细分区标注 ，具有较高临床代表性与结构语义层级 。在
+CLIP 模型研究中 ，BraTS 虽缺乏直接图文配对信息 ，在
+跨模态预训练阶段应用价值有限 ，但其精细病灶标注为
+模型在异常识别与结构语义迁移任务中的微调研究提
+供重要支持 。同时 ，该数据集常用于评估视觉 -语言模
+型在异常区域定位与跨任务泛化能力方面的表现 ，为探
+索 CLIP 向病灶级医学影像任务扩展提供验证基础 。
+1.7 小结
+MedICaT 与 ROCOv2 数据集在 CLIP 模型研究中主
+要支撑跨模态预训练阶段 ，强调图文语义对齐的稳定
+性；MIMIC-CXR 则依托真实临床报告数据 ，在模型微调
+中 更 有 助 于 强 化 医 学 语 境 理 解 与 诊 断 推 理 能 力；
+SLAKE 主要用于验证模型跨模态推理表现 ，而 CHAOS
+与 BraTS 结构标注数据集则为模型向空间结构理解与
+异常检测任务迁移提供实验基础 。单一数据来源难以
+覆盖医学视觉 -语言模型的完整训练需求 ，如何整合不
+同类型数据以提升模型泛化能力与临床适应性 ，仍是当
+前研究的重要方向 。表 1 对上述常用医学图文数据集
+进行了归纳与比较 。
+表 1 常用数据集总结与比较
+Table 1 Summary and comparison of commonly used datasets
+数据集
+MedICaT
+[26]
+ROCOv2
+[27]
+SLAKE
+[28]
+MIMIC-CXR
+[29]
+CHAOS
+[30]
+BraTS
+[31]
+数据规模/年份
+大规模/2020
+81 000 图对/2018
+大规模临床图像+
+问答对/2021
+临床 X-ray+ 报告/
+2019
+腹部多器官分割 /
+2019
+多 模 态 脑 MRI/
+2012
+图像模态
+CT、MRI
+CT、MRI、
+X-ray
+CT、X-ray
+X-ray
+CT、MRI
+MRI
+任务方向
+图文检索 、
+描述生成
+图文匹配 、
+检索
+医 学 视 觉
+问答
+报告生成 、
+语义对齐
+器官分割
+病灶分割 、
+异常检测
+语义构建
+层级
+图注-段落级
+文本语义
+图注级文本
+语义
+问答级推理
+语义
+报告级临床
+语义
+器官级空间
+语义
+病灶级异常
+语义
+CLIP 训练
+阶段重心
+跨模态预训练核
+心数据
+预训练与检索任
+务评估
+推理能力评估与
+任务导向微调
+临床微调与语义
+评估
+结构迁移与分割
+验证
+异常检测与迁移
+研究
+图文对齐
+显式程度
+显式图文对应（图注
+直接描述图像）
+显式对应但语义粒
+度较简化
+任务驱动型显式对
+齐（问题限定语义）
+间接对齐（报告包含
+整体诊断信息）
+无直接图文对齐（结
+构标注替代文本）
+无图文对齐（仅结构
+语义提示）
+获取方式
+https://github.com/allenai/
+medicat
+https://zenodo.org/reco-
+rds/833364
+http://www.med-vqa.com/
+slake
+https://physionet.org/con-
+tent/mimic-cxr/2.0.0/
+https://chaos.grand-chal -
+lenge.org/
+https://braintumorseg -
+mentation.org/
+申明坤，等：CLIP 在医学图像多模态分析中的研究进展 35
+
+=== PDF_PAGE 4 ===
+Computer Engineering and Applications 计算机工程与应用2026，62（18）
+2 CLIP 模型结构与特性
+CLIP 构建于“双流编码 +对比学习 ”的视觉 -语言预
+训练框架之上 ，采用视觉编码器与文本编码器分别对医
+学影像与自然语言进行表征学习 ，并将二者映射至统一
+语义空间中实现跨模态对齐
+[32]
+。该框架通过图文配对
+数据进行联合优化 ，不依赖于预定义的类别体系 ，从而
+具备开放词汇建模与零样本迁移能力 。整体结构由图
+像编码器 、文本编码器及对比学习目标三部分构成 ，各
+模块协同完成跨模态语义对齐与表示学习任务 。其模
+型结构如图 2 所示。
+下面对 CLIP 的模型结构特性进行简要概述 。
+2.1 CLIP 的模型结构
+CLIP 模型采用双编码器架构对视觉与语言信息分
+别建模，并通过对比学习目标在共享语义空间中实现跨
+模态对齐 。相较于通用视觉领域
+[33]
+（如 ImageNet）所具
+备的统一且细粒度的类别体系 ，医学图像往往缺乏此类
+标准，而对应的放射学报告等文本信息则蕴含丰富的语
+义先验 。通过将高维医学影像数据与自然语言映射至
+统一的语义空间 ，CLIP 能够在不依赖严格类别标注的
+情况下有效学习跨模态语义关联 ，从而显著缓解医学场
+景中标注成本高昂及样本异质性强的问题 ，为弱监督学
+习提供了可扩展的基础结构
+[34]
+。
+CLIP 不限定视觉主干结构 ，图像编码器可基于卷
+积网络或 Transformer 架构构建 。卷积神经网络作为医
+学影像中常用的特征提取框架 ，在强调局部细节与边界
+信息的任务中仍被广泛应用 。Huang 等
+[35]
+提出的 DRA-
+Net 基于 CNN 主干构建 ，针对医学影像的局部结构和边
+缘信息进行了特征增强 ，并在多个分割任务上开展了实
+验验证。实验围绕病灶边界识别与局部细节分割展开 ，
+结果表明 ，在需要精细边界定位或局部结构提取的医学
+任务中，基于卷积主干的模型在特征组织与训练稳定性
+方面仍具有一定适配性 。与上述方法相比 ，视觉 Trans-
+former 通过自注意力机制在全局范围内建立特征关联 ，
+使每个位置的表示能够整合整幅图像的上下 文信息 。
+Chen 等
+[36]
+提出的 TransUNet 模型将 ViT 引入医学图像分
+割框架，并在多器官分割任务中验证了其对全局结构建
+模的有效性 。与仅依赖局部卷积特征的结构相比 ，该模
+型在器官整体轮廓保持与跨区域结构一致性方面表现
+更为稳定 ，显示出 Transformer 主干在器官级结构分析
+场景中的适用性 。
+CLIP 的文本编码器通过大规模图文数据的预训练
+构建语言表示 ，并在共享嵌入空间中与视觉特征进行对
+齐
+[37]
+。在这一结构下 ，文本输入不仅提供描述信息 ，还
+通过提示形式参与跨模态匹配过程
+[38]
+。在医学应用中 ，
+放射学报告或疾病名称等文本信息作为语义输入 ，与影
+像特征共同建模 ，为零样本或小样本任务中的跨模态匹
+配提供条件 。
+2.2 跨模态泛化特性分析
+传统的跨模态
+[39]
+方法虽尝试了视觉至语义的投射 ，
+但受限于单向映射与固定标签体系 ，难以适应开放场
+景。Radford 等
+[40]
+提出的 CLIP 通过双编码器与对比学
+习，构建了共享潜空间与语义流形 ，确立了零样本迁移
+的理论基础 。在此基础上 ，Eslami 等
+[41]
+与 Jiang 等
+[42]
+分别
+从潜空间拓扑平滑性与语义结构层次化角度进行建模
+优化 ，进一步增强了跨模态对齐的鲁棒性与可解释性 。
+提示学习（prompt learning ）为模型提供了动态调控路
+径，从 Ma 等
+[43]
+的可学习提示参数化 ，到 Cao 等
+[44]
+的混合
+策略及 Zhou 等
+[45]
+的对象无关约束 ，逐步解耦了任务先
+验，显著强化了泛化能力 。总体而言 ，对比学习 、结构建
+模与提示机制的协同作用 ，共同构建了 CLIP 稳定且连
+续的语义表示体系 ，为解决医学影像的高异质性问题奠
+定了坚实基础 。
+3 CLIP 在医学图像诊断中的应用
+针对医学图像诊断中存在的语义差异 、标注有限及
+跨模态对齐精度等问题 ，现有研究围绕 CLIP 在图像识
+别、跨模态检索 、结构定位与语义问答等任务中展开了
+广泛探索 ，推动了多模态建模方法在医学领域的适应性
+与性能提升 。
+3.1 面向疾病识别的多模态图像分类方法
+医学图像识别模型常因标注稀缺及跨机构数据异
+质性 ，面临临床泛化能力不足的挑战 。为缓解参数规
+模与泛化能力之间的矛盾 ，参数高效微调
+[46]
+（parameter-
+efficient fine-tuning ，PEFT）通过冻结预训练权重并引入
+轻量适配模块 ，研究显示其仅需约 0.25%~1%的可训练
+参数即可获得接近甚至优于全量微调的性能 ，在低数
+据场景中可带来最高约 22%的性能增益 。但该类方法
+受限于单中心设计 ，导致多中心泛化不足 。针对这一问
+题，Wu 等
+[47]
+构建了（federated adaptive CLIP model for
+medical image classification ，FacMIC）框 架，提 出 了一
+种“联邦自适应 ”机制 ，在保持 CLIP 预训练知识冻结的
+同时，引入轻量级局部适配器来捕获特定中心的特征分
+布。FacMIC 模型结构如图 3 所示 ，在 ISIC 和 NIH-CXR
+图 2 CLIP 模型结构
+Fig.2 Architecture of CLIP model
+图片1 
+文本1
+图像
+编码器
+文本
+编码器
+相似č1Ď 相似č1Ď
+图像嵌入特征
+文本嵌入特征
+预测结果 真实标签
+CLIP
+图像与文本嵌入
+čEmbeddingĎ
+嵌入特征相似度计算
+čSimilarityĎ
+模型参数更新
+čModel updateĎ
+不相似č0Ď不相似č0Ď
+36
+
+=== PDF_PAGE 5 ===
+2026，62（18）
+数据集上AUC 提升约 3%~5%，其性能接近集中式训练的
+上限。这一提升证明，在隐私受限场景下，通过解耦局部
+特征与全局知识，可以有效释放多模态模型的泛化潜力。
+在特定疾病精细化识别中 ，单视图难以刻画多视角
+空间关联 ，成为通用 CLIP 的重要改进靶点 。Sun 等
+[48]
+提
+出 TransMM，通过注意力驱动的多视图编码联合整合乳
+腺 X-ray 不同体位信息实现跨视角特征建模 。现有研究
+在 CBIS-DDSM 等数据集上 ，多视图策略获得 AUC 约为
+0.85~0.93，验证了其对细粒度识别稳定性的提升 。但性
+能提升并未同步缓解模型“黑箱”问题，使可解释性成为
+进一步优化方向 。为此 ，Lucieri 等
+[49]
+提出 ExAID 框架 ，
+通过融合视觉注意力图与文本依据构建多模态解释机
+制，使模型能够显式呈现与诊断相关的病灶区域 。在效
+果验证上 ，该方法在 ISIC 皮肤镜数据集上 AUC 为 0.90，
+同时在解释一致性与病灶定位评价中取得更优结果 ，并
+通过用户研究证实其能够提升医生对 AI 诊断的信任
+度，从而增强人机协作可行性 。
+相比之下 ，Shu 等
+[50]
+提出的 MITER 框架通过多层次
+对比学习强化了图像局部特征与文本关键词之间的语
+义一致性 ，解决了细粒度特征对齐不准的问题 。该策略
+在 ChestX-ray 14 与 MIMIC-CXR 检索任务中的 Recall@1
+提升了约 6%，在分类任务上的 AUC 较 ResNet50-CLIP
+基线提升约 3%，证实了细粒度语义对齐在多任务泛化
+中的关键作用 。
+标注的临床长尾场景 ，如何激发 CLIP 的少样本与
+零样本潜力成为研究热点 。Wu 等
+[51]
+提出了一种“Self-
+prompting”（自提示）策略，通过自动生成提示引导模型
+学习关键视觉语义 ，减少对人工标注的依赖 。在效果验
+证上，该方法在 ISIC2018 任务中较仅微调 Mask decoder
+实现超过 15%的性能提升 ，表明自提示机制能够有效缓
+解低标注场景下的识别性能退化 。在此基础上 ，研究进
+一 步 将 改 进 重 点 从 提 示 学 习 扩 展 至 模 型 结 构 适 配。
+Zhang 等
+[52]
+提出的 MediCLIP 通过引入可学习的异常感
+知适配器 ，使得模型在 Few-shot 场景下 F1 值分别达到
+0.871 和 0.842，突破了通用 CLIP 难以识别细微病理异
+常 的 瓶 颈。针 对 完 全 无 标 注 条 件 下 的 泛 化 问 题，V an
+Uden 等
+[53]
+引入了 Patchmontages 与领域自适应预训练机
+制，在 无 标 注 条 件 下 细 粒 度 异 常 类 别 分 类AUROC 达
+0.893，有效解决了原始 CLIP 输入分辨率限制导致的特
+征丢失问题 。此外，针对临床报告中常见的标签噪声与
+描述模糊问题 ，Jang 等
+[54]
+基于 CLIP 提出损失松弛（loss
+relaxation）与随机句子抽样策略 。通过放宽图文对齐约
+束提升模型对不完美配对数据的适应能力 。效果验证
+了，在四个胸部 X-ray 数据集上实现了零样本分类平均
+Macro AUROC 提升约 5.77%，并在 CheXpert 五类病症
+识别上达到了接近放射科专家的水平 ，显著增强了模型
+在真实临床噪声环境下的鲁棒性 。
+为进一步梳理多模态分类不同模型的优势与局限 ，
+表 2 对代表性方法进行了系统归纳。PEFT 在单中心环境
+下具有效率优势 ，但跨机构泛化不足 ；FacMIC、Mammo-
+CLIP 等方法增强了多中心与跨模态对齐能力 ，却带来
+通信与部署成本 ；MedGrad E-CLIP 、MITER、MediCLIP
+进一步改善了可解释性与弱标注表现 ，但在细粒度类别
+与多任务场景中稳定性仍有限 。未来研究需要在模型
+效率、跨域鲁棒性与语义对齐精度之间取得更好平衡 ，
+以实现更稳健的医学图像识别 。
+文本编
+码器
+提示语čPromptĎ
+一张{胶质瘤}的
+医学影像
+  
+图像编
+码器
+客户端1
+T
+对比损失
+Lcontr
+I
+本地注意
+力模块
+图像编
+码器
+客户端N
+TI
+全局
+服务器
+领域自适应
+损失LDA
+特征聚合模块
+×
+广播
+上传
+聚合
+Torch.mul
+冻结参数
+可训练参数
+本地注意
+力模块
+提示语čPromptĎ
+一张{胶质瘤} 的 
+医学影像
+全局注意力
+模块
+对比损失
+Lcontr
+领域自适应
+损失LDA
+aglobal
+文本编
+码器
+aNa1×
+×
+l
+I I 
+图 3 FacMIC 模型结构
+Fig.3 Architecture of FacMIC model
+申明坤，等：CLIP 在医学图像多模态分析中的研究进展 37
+
+=== PDF_PAGE 6 ===
+Computer Engineering and Applications 计算机工程与应用2026，62（18）
+3.2 医学图文检索与跨模态对齐机制
+在医学图文检索场景中 ，单一模型难以同时适应不
+同器官与任务的差异化语义需求 ，成为跨任务泛化的重
+要改进靶点 。为此 ，Chen 等
+[55]
+提出 MedPrompt 框架 ，通
+过构建多任务语义共享空间并以提示 （Prompt）作为“语
+义锚点 ”引导知识迁移 。在效果验证上 ，该机制使多器
+官检索准确率提升约 6%~9%，表明提示驱动的语义对
+齐能够增强跨任务检索能力 ，但其对固定提示模板的依
+赖仍限制了未见场景下的泛化边界 。针对这一问题 ，
+Boecking 等
+[56]
+提出 PMC-CLIP ，从知识注入角度强化跨
+模态语义对齐。该方法通过引入生物医学本体（Ontology）
+增强与语义权重调整机制 ，引导模型聚焦具有临床诊断
+价值的关键实体而非背景噪声 。在效果验证上 ，该策略
+在 ChestX-ray 14 数据集上使 Recall@10 提升 4.7%，并在
+VQA-RAD 任务中实现平均倒数排名提升约 6%，表明
+基 于 知 识 的 强 对 齐 能 够 缓 解 固 定 提 示 策 略 的 泛 化 局
+限。针对单个病例信息孤立限制跨模态理解的改进靶
+点，V an Sonsbeek 等
+[57]
+提出 X-TRA 系统 ，通过检索增强
+策略在推理阶段动态引入相似病例图像与文本作为外
+部上下文 ，实现跨病例语义补全 。在效果验证上 ，该机
+制在 CheXpert 分类任务中 AUC 达到 0.921，并使图文匹
+配 Recall@5 提升约 7%，说明检索增强能够提升跨模态
+检索的针对性与判别稳定性 ，但同时带来显存占用与推
+理延迟增加的部署成本 。
+医学图文对齐任务面临高质量配对数据匮乏这一
+关键挑战 。为扩展数据广度 ，Zhang 等
+[58]
+构建覆盖二十
+余 种 影 像 模 态 的 大 规 模 数 据 集，使 Recall@1 提 升 约
+5%，但受原始文本噪声影响 ，细粒度语义对齐仍有限 。
+针对数据质量不足的问题 ，You等
+[59]
+提出 CXR-CLIP（结
+构如图 4 所示） ，通过将离散诊断标签重组为连续自然
+语言描述实现数据增强 。该模型首先基于多数据集标
+签与影像所见构建提示模板 ，将结构化诊断信息转化为
+可扩展语料 ；随后经图像与文本编码器提取跨模态特
+征，并通过多层相似度矩阵强化语义对齐 。效果验证显
+示，该策略在零样本检索任务中 Recall@1 达到 15.2%，
+结果证明 ，以规则化提示驱动的数据重构能够缓解医学
+预训练数据瓶颈并提升跨模态对齐能力 。
+从表 3 可以看出医学图文检索正从简单的特征匹
+配向深度语义对齐转变 。MedPrompt 与 PMC-CLIP 通
+过提示工程与本体知识解决了“语义一致性 ”问题，但在
+面对复杂临床场景时仍受限于模板完备性 ；X-TRA 验
+证了“上下文增强 ”的有效性 ，却面临工程落地中的效率
+表 2 CLIP 医学图像分类模型总结
+Table 2 Summary of CLIP medical image classification models
+模型
+FacMIC
+[47]
+TransMM
+[48]
+ExAID
+[49]
+MITER
+[50]
+MediCLIP
+[52]
+Patchmontages
+[53]
+核心改进方法
+联 邦 自 适 应 机 制+ 全 局
+域对齐
+CC-MLO 多视图注意力
+建模
+视觉-文本可解释建模
+多 层 次 对 比 学 习（multi-
+level CL ）
+异常感知适配器（anomaly
+adapter）
+Patchmontages + 领 域 自
+适应预训练
+优点
+缓 解 数 据 孤 岛 与Non- IID 隐
+私保护下接近集中式性能
+弥补单视图视野不足 ，显著提
+升分类性能
+提升模型透明度与临床可接
+受性
+强化细粒度语义一致性 ，平衡
+检索与分类性能
+突破通用 CLIP 在细微病理异
+常上的瓶颈 ，少样本性能强
+无标注下实现高精度 ，缓解分
+辨率受限特征丢失
+局限性
+隐私约束下跨机构
+标注利用不足
+多视图预测难定位
+关键病灶
+注意力热图解释下
+复杂病灶定位不稳
+细粒度标注依赖下
+弱标注迁移下降
+异常适配器下 few-
+shot 预测波动
+高分辨率拼接下无
+标注跨域下降
+性能提升情况
+AUC↑≈3%~5%
+AUC≈0.85~0.93
+AUC=0.90
+Recall@1↑≈6%
+分类 AUC↑≈3%
+F1=0.871/0.842
+AUROC=0.893
+代码链接
+https://github.com/AIPM-
+Lab/FACMIC
+未公开
+未公开
+https://github.com/Zhu-
+Yi98/MITER
+https://github.com/cnulab/
+MediCLIP
+未公开
+表 3 CLIP 在医学图文检索中的模型性能总结
+Table 3 Summary of CLIP model performance in medical image-text retrieval
+模型
+MedPrompt
+[55]
+PMC-CLIP
+[56]
+X-TRA
+[57]
+CXR-CLIP
+[59]
+核心改进方法
+跨 模 态 提 示 机 制，引
+入多任务语义共享
+生 物 医 学 本 体 增 强+
+语义权重调整机制
+上下文引入相关病例
+图 像 和 文 本，增 强 针
+对性
+提 示 模 板+多 视 角 监
+督+图像/文本对比损失
+优点
+支持跨任务知识迁移 ，
+检索精度显著提升
+聚焦关键诊断实体 ，抗
+背景噪声干扰
+补充病例上下文信息 ，
+分类与检索双优
+低成本打破数据瓶颈 ，
+零样本泛化性能强
+局限性
+固定提示下跨医院影
+像新场景预测偏移
+知识依赖下罕见疾病
+识别不稳
+检索增强在临床实时
+推理中的时延与资源
+开销增加
+规则化提示在跨设备
+与跨中心数据中预测
+偏移
+性能提升情况
+Recall@k↑≈6%~9%
+Recall@10↑=4.7%
+AUC=0.921
+Recall@5↑≈7%
+Recall@1=15.2%
+代码链接
+未公开
+https://github.com/WeixiongLin/
+PMC-CLIP
+未公开
+https://github.com/Soombit-ai/
+cxr-clip
+38
+
+=== PDF_PAGE 7 ===
+2026，62（18）
+挑战；而 CXR-CLIP 进一步验证了大规模合成数据在零
+样本泛化上的巨大潜力 。未来的研究重心应集中在自
+动化提示生成与轻量化检索增强这两个关键方向 ，以构
+建兼具临床精度与部署可行性的下一代检索系统 。
+3.3 弱监督语义引导的病灶定位与结构提取
+为解决 CLIP 在医学分割中图像级特征与像素级任
+务的粒度失配的问题 。早期的尝试主要采用“级联式 ”
+策略 ，即利用 CLIP 作为提示生成器来驱动通用分割模
+型 。 Aleem 等
+[60]
+提 出 的 SaLIP 框 架 将 SAM（segment
+anything model ）与 CLIP 级联，利用 CLIP 的语义理解能
+力为 SAM 提供初始提示 。这种组合策略在 ISIC 皮肤病
+灶与胸片异常区域分割中分别带来了 4.8%和 5.3%的性
+能提升 ，但由于两者特征空间并未深度融合 ，在高分辨
+率推理时面临显著的延迟瓶颈 。为从根本上提升像素
+级对齐的稳定性 ，Chen 等
+[61]
+提出 CausalCLIPSeg ，将因果
+推理机制引入 CLIP 解码器（结构如图 5 所示） ，通过因
+果干预切断背景与病灶间的虚假关联 ，并结合动态卷积
+解码器将文本特征转化为分割核 。这种对齐机制有效
+实现了从模糊语义到精确结构的跨越 ，显著增强了复杂
+背景下的定位能力 。实验表明 ，该方法在 REFUGE 与
+DRIVE 数据集上的 Dice 系数均提升约 5%。
+在降低标注成本方面 ，Anand 等
+[62]
+验证了 CLIP 在
+One-shot 场景下的泛化潜力 ，仅依靠一张标注图像即可
+在不同器官任务中实现 62%~90%的 Dice 系数，在多数任
+务上显著优于传统的 Few-shot 基线（47%~80%） 。然而，
+静态图像的迁移策略难以直接应用于动态医学影像 。针
+对这一缺陷 ，Y uan等
+[63]
+提出 Text-promptable propagation
+框架 ，通过引入文本 提示作为恒定语义锚点 ，构建“语
+义-时序 ”双重约束以稳 定分割传播过程 。在效果验证
+上，该机制在超声心动图分割任务中使 Dice 提升约 6%，
+图 4 CXR-CLIP 模型结构
+Fig.4 Architecture of CXR-CLIP model
+图文配对数据集 图像-标签数据集
+图像
+编码器
+文本
+编码器
+…
+样本1
+(MIMIC-CXR) 
+样本K−1 
+(MIMIC-CXR)
+Aug.
+   ：影像所见
+：影像印象
+   ：影像所见
+样本k
+	chexpert
+样本n 
+	chest 14
+阳性
+阴性
+不确定
+无/未标注
+阳性
+提示
+构造
+提示
+构造
+对比学习čICLĎ
+对比学习čICLĎ
+对比学习（ICL）
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+……
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+…
+… …
+…
+t 1k ~Concat({p(y)}y ∈k)
+t 2k ~Concat({p(y)}y ∈k)
+t 1n ~Concat({p(y)}y ∈n)
+t 2n ~Concat({p(y)}y ∈n)
+V 11
+C1 C2 …Ct
+C1 C2 …Ct
+x1k x2k
+x1n x2n
+x11 x21
+x1K - 1 x2K - 1
+Ai (x1K - 1)
+t 1K - 1
+t 1K - 2 =Ai (x1K - 1)
+t 21
+t 11
+x11
+x1n
+x21
+x2n
+t 11
+t 1n
+t 21
+t 2n
+V 12
+V 1n
+V 21 V 22 V 2n
+V 21 V 22 V 2n
+U 11
+U 12
+U 1n
+U 21
+U 22
+U 2n
+U 21 U 22 U 2n
+U 11
+U 12
+U 1n
+V 11 V 12 V 1n
+申明坤，等：CLIP 在医学图像多模态分析中的研究进展 39
+
+=== PDF_PAGE 8 ===
+Computer Engineering and Applications 计算机工程与应用2026，62（18）
+说明文本驱动的时序一致性建模能够有效抑制误差累
+积并拓展 CLIP 在动态医学影像中的应用能力 。
+面对医学影像多模态 、多维度的复杂性 ，单纯的微
+调往往难以兼顾泛化性 。Wu 等
+[64]
+提出的 Medical SAM
+adapter 采用了一种参数高效的适配器策略 ，将医学领域
+的先验知识注入冻结的 SAM 与 CLIP 参数中 。这种轻
+量级注入使得模型在 BTCV 数据集上获得了 89.8%的
+Dice，较 Swin-UNet 提升约 2.9%，较原始 SAM 更是实现
+了 34.8%的提升 ，证明了适配器机制在多模态医学数据
+上的高效性 。在 3D 医学影像任务中 ，2D 预训练模型向
+实体数据迁移通常面临维度不匹配与语义表达退化等
+关键挑战 。为此 ，Lai 等
+[65]
+提出 Bridged semantic align -
+ment 框架，通过构建跨维度语义桥接层实现 2D 视觉语
+义向 3D 空间的映射 ，使弱监督分割能够扩展至零样本
+3D 诊断场景 。在效果验证上 ，该策略使病灶识别准确
+率较通用 CLIP 提升约 5%~7%，结果显示跨维度语义对
+齐能够缓解特征坍塌并提升三维弱监督语义引导能力 。
+表 4 归纳了上述代表性方法的演进路径 。总体而
+言，从 SaLIP 的简单级联到 CausalCLIPSeg 的因果重构 ，
+表明了研究内容从基本的 CLIP 到改进 CLIP 的转变 ；从
+One-shot 到 Text-promptable propagation ，体现了语义引
+导在时空维度的延伸 ；Medical SAM adapter 与 Bridged
+semantic alignment 展示了通过适配器与维度桥接实现
+通用化部署的潜力 。未来的研究将在跨模态语义的精
+细度、动态时序的鲁棒性以及三维空间的泛化能力之间
+寻求更优的平衡 。
+3.4 跨模态医学问答中的语义与推理机制
+在跨模态医学问答（Med-VQA）任务中 ，CLIP 基于
+全局特征聚合构建统一语义空间 ，但其对局部细节的刻
+画能力有限 ，且在复杂临床推理建模方面仍存在不足 。
+图 5 CausalCLIPSeg 模型结构
+Fig.5 Architecture of CausalCLIPSeg model
+视觉编
+码器
+注意力
+模块
+čA.M.Ď
+dndn
+掩膜生成模块
+因果区域     混杂区域
+双肺感染，累及左
+右肺，共发现两处
+感染区域。
+文本
+文本编
+码器
+因果特征
+混杂特征
+Sigmoid
+激活 
+卷积映射坐标卷积
+M Mˉ
+-λLc
+Lc
+模型
+SaLIP
+[60]
+CausalCLIPSeg
+[61]
+CLIP One-shot
+[62]
+Text-promptable
+propagation
+[63]
+Medical SAM
+adapter
+[64]
+Bridged semantic
+alignment
+[65]
+核心改进方法
+Segm ent anything+
+CLIP 级联
+因果干预模块 +动态卷
+积解码器+对抗训练
+单张标注图像 +预训练
+视觉-语言模型
+文 本 提 示+ 时 序 传 播
+机制
+Segment anything + 提
+示调优+医学适配
+弱监督 +零样本 3D 分
+割框架
+优点
+利 用 SAM 强 大 的 零 样
+本 分 割 先 验，提 升 特 定
+任务分割精度
+切断背景噪声与病灶的
+虚 假 关 联，实 现 从 模 糊
+语义到精确结构的对齐
+极 大 降 低 标 注 成 本（仅
+需单张） ，优于传统 Few-
+shot 基线方法
+抑制动态影像中的误差
+累 积；将 语 义 引 导 扩 展
+至动态时空
+保护预训练知识且参数
+调 整 量 小，显 著 提 升 多
+模态数据的泛化性
+解决 2D 模型向 3D 迁移
+的维度鸿沟 ，支持 3D 场
+景下的零样本诊断
+局限性
+特 征 融 合 不 足 致
+WSI 推理时延增加
+因果干预下跨数据
+集指标波动
+静态迁移在超声与
+内镜视频表现下降
+文本提示在时序任
+务预测偏移
+适配器注入跨任务
+迁移不稳
+2D 桥接下 3D 分割
+一致性下降
+性能提升情况
+Dice↑=4.8%/5.3%
+Dice↑≈5%
+Dice=62%~90%
+Dice↑≈6%
+Dice↑≈2.9%
+Acc↑≈5%~7%
+代码链接
+https://github.com/aleemsidra/
+SaLIP
+https://github.com/WUTCM-
+Lab/CausalCLIPSeg
+https://github.com/cyclomon/
+OneshotCLIP
+https://github.com/OpenGV -
+Lab/ TPP
+https://github.com/ImprintLab/
+Medical-SAM-Adapter
+未公开
+表 4 CLIP 在弱监督引导病灶定位中的模型性能总结
+Table 4 Summary of CLIP model performance in weakly supervised lesion localization
+40
+
+=== PDF_PAGE 9 ===
+2026，62（18）
+为此，Chen 等
+[66]
+提出 R-LLaV A框架，通过对病灶区域进
+行 ROI（region of interest ）编码并与 CLIP 全局特征并行
+输入 LLaV A，构建显式的局部 -全局双通道推理结构（结
+构如图 6 所示） 。效果验证显示 ，协同机制使 SLAKE 与
+VQA-RAD 答案准确率提升约 4.5%，验证了细粒度视觉
+交互对减少病灶相关问答语义偏移的作用 。在此基础
+上，针对单层对齐难以支撑复杂诊断逻辑的问题 ，Zhang
+等
+[67]
+提出分层建模与跨注意力融合机制 ，通过多语义层
+逐步对齐视觉与文本特征 ，在 VQA-RAD 上达到 84.2%
+的准确率 ，进一步强化了模型对结构化临床流程的理解
+能 力。 两 类 方 法 共 同 证 明，细 粒 度 特 征 交 互 是 弥 补
+CLIP 粗粒度视觉感知的重要路径 。
+与此同时 ，领域知识建模不足成为限制 Med-VQA
+性能提升的另一关键因素 。Eslami 等
+[68]
+提出 PubMed-
+CLIP，通过将 PubMed 文本与医学影像对齐 ，将专业医学
+概念注入文本编码器 ，在 Med-VQA 整体准确率上较无
+预训练基线提升约 7.3%，验证了知识注入对长文本与专
+业术语理解的促进作用 。进一步地 ，Zhou 等
+[69]
+提出动态
+提示与知识融合策略 ，通过随问题内容自适应调整提示
+并结合外部知识库辅助推理 ，使 PathVQA 与 VQA-RAD
+准确率进一步提升约 5%~6%，反映出动态知识调度能
+够缓解静态提示在复杂逻辑问题中的局限 。
+此外 ，在医学图文配对数据稀缺背景下 ，严格配对
+依赖成为跨模态训练的重要瓶颈 。Wang等
+[70]
+提出 Med-
+CLIP 通过解耦式对比学习实现无配对数据训练 ，降低
+对严格图文对齐的依赖 。在效果验证上 ，该方法在低标
+注条件下表现出优于传统有监督方法的泛化能力 ，说明
+解耦式语义映射为 Med-VQA 提供了可扩展的数据利用
+路径。
+表 5 总结了上述方法的演进特征 。R-LLaV A与分
+层 建 模 解 决 了 对 局 部 病 灶 感 知 不 足 的 问 题；PubMed-
+CLIP 与动态提示策略通过引入专业知识弥补了医学逻
+辑推理的短板 ；而 MedCLIP 则侧重于降低数据门槛 ，缓
+解了对高质量标注数据的依赖 。未来的研究重心在于
+如何让模型的推理过程更稳定 、更智能 ，以满足临床实
+际应用的需求 。
+4 医学领域中 CLIP 的适配与工程路径
+4.1 提示学习与上下文优化
+医学影像与通用自然语言之间存在显著语义差距 ，
+使通用提示模板难以直接适配医学任务 。Yao等
+[71]
+通过
+引入医学本体与诊断先验优化提示设计以强化影像—
+概念对齐 ，但该策略依赖标准化术语体系 （如 RadLex、
+SNOMED CT ） 。在多中心数据中 ，由于标注命名与粒
+度差异 ，提示映射往往需重新校准 ，增加跨域迁移维护
+成本并限制工程推广稳定性 。为解决跨域适应问题 ，
+Y an等
+[72]
+提出“Prompt-driven latent domain generalization ”
+框架，通过无监督聚类生成伪域标签并结合域提示实现
+多源数据稳定训练 。但该方法依赖稳定特征分布进行
+域划分，多中心设备与采集差异易导致伪域边界偏移与
+域提示失配 ，同时域提示的持续更新使部署由静态推理
+转向动态适配并增加工程复杂度 。Aror 等
+[73]
+在 MedFo-
+cusCLIP 中通过分割掩码引导像素级注意力 ，使少样本
+分类更聚焦病灶区域并减少背景捷径学习 。但临床落
+地需要额外分割标注或分割模型支撑 ，推理链路延长且
+误差级联风险上升 ，在多中心质量波动与实时推理约束
+下运维成本显著增加 。Zhou 等
+[74]
+与 Cao 等
+[75]
+的研究证
+明可学习与域可 控提示能在不改动模型主体的 情况下
+提升跨任务与跨域适配能力 。然而，在多中心部署场景
+中，提示设计往往需要随设备类型 、标注规范及病例谱
+CLIP
+归一化与多层
+感知机
+čLN & MLPĎ
+分词器
+čTokenizerĎ
+LLaVA多 
+模态语言
+模型
+该医学影像采用
+何种成像模态？
+CLIP
+归一化与多层
+感知机
+čLN & MLPĎ
+分词器
+čTokenizerĎ
+LLaVA多 
+模态语言
+模型
+请给出该区域的边界框坐标。
+该文本描述的器官为：肝脏。
+[115,163]
+[243,268]
+（a）阶段 I：多模态连接模块预训练 （b）阶段 II：结合视觉区域注意力的指令微调
+图 6 R-LLaV A模型结构
+Fig.6 Architecture of R-LLaV A model
+表 5 CLIP 在跨模态医学问答中的模型总结
+Table 5 Summary of CLIP models in cross-modal medical question answering
+模型
+R-LLaV A
+[66]
+PubMedCLIP
+[68]
+MedCLIP
+[70]
+改进方法
+ROI 特 征 编 码 器、
+局部特征通道
+大规模 PubMed 文
+本-图像预训练
+无 配 对 图 文 对 比
+学习+语义映射
+优点
+通过 ROI 通道有效捕捉微
+小病灶，减少语义偏移
+有效整合长文本与专业术语，
+泛化能力强于通用 CLIP
+无需严格配对数据即可训
+练，降低了数据标注门槛
+局限性
+依赖 ROI 标注致细
+粒度问答迁移不稳
+文献知识依赖下术
+语识别偏移
+弱配对学习下噪声
+驱动预测波动
+性能提升情况
+Acc↑≈4.5%
+Acc↑≈7.3%
+Acc↑≈10%（vs.baseline）
+代码链接
+未公开
+https://github.com/sarahESL/
+PubMedCLIP
+https://github.com/RyanWangZf/
+MedCLIP
+申明坤，等：CLIP 在医学图像多模态分析中的研究进展 41
+
+=== PDF_PAGE 10 ===
+Computer Engineering and Applications 计算机工程与应用2026，62（18）
+结构的变化进行持续调整与再验证 ，从而由一次性训练
+参数演变为需长期维护的中心级配置 ，进而增加版本管
+理与运维成本 。
+整体来看 ，提示学习虽能提升语义对齐与跨域适配
+能力 ，但在多中心医疗场景中仍受知识维护 、算力开销
+与流程耦合限制 ，工程标准化与规模化部署能力有待
+提升。
+4.2 参数高效调优与鲁棒性增强
+医学影像数据规模有限 ，全面微调大模型易引发过
+拟合并带来计算资源压力 ，Gao 等
+[76]
+提出 CLIP-adapter ，
+通过在编码器末端引入轻量特征适配器并以残差方式
+融合预训练与任务特征 ，实验表明该改进能够在少样本
+医学任务中提升模型迁移性能与任务适配稳定性 。适
+配器虽降低了整体微调成本 ，但在多任务与多中心环
+境中仍需分别训练与管理参数版本 ，增加了模型维护
+复杂度
+[77]
+，并对持续更新与跨院一致性提出额外要求 。
+Shamshad 等
+[78]
+通过参数高效鲁棒适配提升模型在图像
+噪声与扰动条件下的预测稳定性 ，增强急诊筛查等高风
+险场景中的可靠性 。但鲁棒参数需随任务与数据变化
+持续校准 ，使部署由静态推理转为周期性适配并增加
+运维复杂度 。为提升模型在多任务场景下的适应性 ，
+Koleilat 等
+[79]
+构建 BiomedCoop 框架通过协作提示学习
+在多任务间共享语义表示 ，实验证明 ，此改进能够提升
+跨任务泛化能力并减轻小样本场景中的性能波动 。但
+是，多中心持续更新中提示与适配参数逐步累积并保留
+旧任务知识 ，长期运行会增加参数协调与版本管理复杂
+度。Y u等
+[80]
+进一步提出基于专家混合适配器的参数高
+效持续学习框架 ，通过按任务动态扩展适配器缓解知识
+遗忘，实验显示该策略可维持多任务长期稳定性能 。在
+实际部署中 ，任务增加会持续引入新的适配器结构 ，使
+模型规模与资源调度需求同步增长 ，并对算力配置与版
+本运维提出更高要求 。
+总体来看 ，参数高效适配与持续学习在少样本和多
+任务医学场景中缓解了全面微调的计算压力 。但多中
+心持续更新中适配与提示参数逐步累积 ，使模型转向长
+期参数管理 ，增加版本协调与资源调度复杂度 ，未来需
+探索可压缩与统一的持续适配机制以支撑稳定部署 。
+4.3 多模态协作与工程应用
+医学影像任务常需整合多模态信息以支持跨模态
+协同建模 。Khattak 等
+[81]
+提出 UniMed-CLIP 通过统一预
+训练实现 X-ray、MRI 与 CT 等多模态联合学习 ，实验表
+明该框架在跨任务迁移中具有较好适应性 ，但该方法主
+要围绕影像模态融合展开 ，对临床文本与结构化病历的
+利用仍相对有限 。Guo 等
+[82]
+与 Wang 等
+[83]
+通过多模态提
+示协同强化影像与报告语义一致性 ，实验显示在少样本
+条件下跨模态理解能力得到改善 ，随着多模态交互加
+深，模型推理链条延长并提高系统集成复杂度 。Fang
+等
+[84]
+通过引入大语言模型的外部知识以缓解标注数据
+稀缺问题 。实验结果表明 ，在弱监督场景下模型的语义
+理解与任务性能均得到提升 。然而，外部模型参与推理
+过程引入数据流转与访问控制需求 ，使隐私治理与合规
+管 理 成 为 实 际 部 署 中 的 重 要 考 量 因 素。 Li 等
+[85]
+提 出
+MulModSeg 在多源异质数据条件下提升跨模态分割性
+能，实验显示三维结构一致性得到改善 ，但三维训练与
+推理对算力与数据规模的依赖使床旁与实时应用场景
+面临工程压力 。因此未来研究需要在保持多模态协同
+能力的同时发展轻量化三维建模与可控知识融合策略 ，
+以支撑实时与持续部署场景 。
+整体来看 ，多模态模型在跨模态理解 、弱监督学习
+与异质数据融合方面持续发展 ，同时也暴露出推理链条
+延长 、隐私治理复杂与三维计算成本较高等系统性瓶
+颈。未来研究需围绕轻量化多模态协同 、可控知识注入
+以及面向实时场景的三维优化路径 ，推动模型向稳定 、
+可扩展的临床部署演进 。
+4.4 大语言模型与 CLIP 融合机制
+随 着 大 语 言 模 型（large language model ，LLM）在
+医学影像领域的兴起 ，将 CLIP 的跨模态表征与 LLM 的
+推理能力深度融合正成为智能诊断系统的发展方向 。
+但 其 在 医 学 特 殊 场 景 中 的 应 用 同 时 放 大 了 系 统 级 约
+束。Nam 等
+[86]
+基于 CLIP+LLM 多视图诊断框架指出 ，在
+胸片多视角输入场景中 ，大模型显存占用与推理时延显
+著增加，使其难以部署于床旁工作站等实时辅助诊断环
+境，同时生成式“幻觉”要求医生在问答与报告生成环节
+进行额外审核 ，延长了临床工作流 。D’Antonoli 等
+[87]
+基
+于 MIMIC-CXR 等影像-报告数据指出 ，多模态基础模型
+依赖长序列注意力与跨模态通信 ，在多中心放射信息系
+统集成中显著增加计算与接口负担 ，影响远程会诊与实
+时决策响应 ；同时决策过程不透明使模型在临床备案与
+监管审计场景中的合规压力进一步上升 。Urooj 等
+[88]
+指
+出医学图文数据规模有限且跨机构分布异构 ，X-Stage
+调优策略虽能改善少样本与多中心场景下的迁移性能 ，
+但多阶段训练与数据协调延长了更新周期并增加数据
+治理难度 。此外，隐私保护与公平性需求使跨机构协作
+面临额外挑战 ，影响模型稳定部署 。在隐私与公平性层
+面，Kaissis 等
+[89]
+基于多中心 MRI 与胸片差分隐私研究表
+明，隐私保护有助于跨机构数据协作 ，但伴随着性能下
+降与人群子集稳定性差异 ，因此未来需发展可调隐私学
+习与公平性感知优化策略 ，以在筛查与公共卫生场景中
+实现诊断准确性与数据安全的协同平衡 。
+随着 CLIP 与大语言模型融合 ，多模态诊断能力提
+升，同时带来算力负担 、系统集成复杂与合规压力 ，多阶
+段训练与跨机构协作延长更新周期 ，隐私保护也影响性
+能稳定。未来研究需推进轻量化跨模态推理 、可审计生
+成机制及可调隐私与公平优化，以支撑多中心稳定部署。
+42
+
+=== PDF_PAGE 11 ===
+2026，62（18）
+5 总结与展望
+本文 对数据集与 CLIP 机制和应用进行了整理 ，总
+结了在不同任务中的代表性进展 。尽管 CLIP 展现出跨
+模态适应潜力 ，但在提示设计 、结构效率与推理稳定性
+方面仍存在不足 ，未来研究需聚焦于以下几个方向的
+突破：
+（1）提升提示构建的适应性与表达能力
+为突破静态模板限制 ，未来建议引入检索增强生成
+（retrieval-augmented generation ，RAG）技术实现提示的
+动 态 生 成，并 结 合 图 神 经 网 络（graph neural network ，
+GNN）与知识图谱（knowledge graph ，KG）显式建模多
+维医学语义关联 ，以增强模型在异构场景中的语义适配
+能力 。在此基础上 ，多模态对齐提示学习 （multi-modal
+alignment prompt ，MmAP）
+[90]
+通过跨模态对齐提示与参
+数高效微调增强小样本与跨域鲁棒性 ，为多中心影像决
+策支持与自动报告生成提供更具可实施性的提示优化
+路径。
+（2）增强结构信息的建模能力与语义对齐精度
+现有视觉 -语言模型在结构语义建模中仍偏重全局
+表征 ，易忽视解剖层级与时空依赖 ，导致复杂病灶定位
+与跨机构迁移稳定性不足 。未来可通过分层语义建模
+与 GNN 引入多粒度解剖先验 ，在三维动态影像中结合
+时空 Transformer 与因果推理刻画病灶演化并减少伪相
+关
+[91]
+；同时采用对抗域适配与一致性正则化应对不同设
+备与扫描协议的差异 ，从而提升多中心分期评估 、疗效
+随访与报告生成任务中的语义对齐精度与泛化稳定性 。
+（3）优化模型的推理效率与部署友好性
+在临床应用中 ，跨模态模型需在床旁终端 、移动超
+声及区域医疗平台等算力受限环境下实现实时推理 ，而
+现有 CLIP+LLM 架构规模较大 ，难以直接部署 。针对这
+一瓶颈 ，未来可通过模型蒸馏 （model distillation ）与结
+构化剪枝（structured pruning ）将大型模型压缩为轻量版
+本，用于急诊辅助判读与基层筛查场景 。TinyCLIP
+[92]
+的
+研究通过蒸馏与权重继承 ，ViT-B/32 参数量可减少约
+50%，TinyCLIP-ViT-8M/16 仅保留约 8.9%的参数就能实
+现 1.4~7.8 倍训练加速，为边缘设备推理提供了可行路径。
+在多中心协作场景中 ，联邦学习
+[93]
+（federated learning ）
+与差分隐私
+[94]
+（differential privacy ）可支持影像与报告
+数据在“数据不出院 ”条件下进行模型更新 ，适用于区域
+筛查网络与远程会诊系统 ，但同时需要在性能 、通信开
+销与隐私强度之间进行工程权衡 。
+从整体研究进展来看 ，LLM 与多模态医学模型的
+结合正在成为值得关注的研究方向 。CLIP 作为多模态
+预训练框架在医学领域展现出广阔应用潜力 ，但仍需在
+结构优化与可解释性上持续探索 。
+参考文献：
+[1] NAJJAR R.Redefining radiology ：a review of artificial intelli -
+gence integration in medical imaging[J].Diagnostics ，2023，
+13（17） ：2760.
+[2] LITJENS G ，KOOI T ，BEJNORDI B E ，et al.A survey on
+deep learning in medical image analysis[J].Medical Image
+Analysis，2017，42：60-88.
+[3] TAJBAKHSH N ，JEYASEELAN L ，LI Q ，et al.Embracing
+imperfect datasets ：a review of deep learning solutions for
+medical image segmentation[J].Medical Image Analysis，2020，
+63：101693.
+[4] CHEN C ，MA T ISA N A ，LIU X.A review of convolutional
+neural network based methods for medical image classification
+[J].Computers in Biology and Medicine ，2025，185：109507.
+[5] SUGANY ADEVI S，SEETHALAKSHMI V，BALASAMY K.
+A review on deep learning in medical image analysis[J].Inter -
+national Journal of Multimedia Information Retrieval ，2022，
+11（1） ：19-38.
+[6] CHEN X ，LIAN C F ，WANG L ，et al.Anatomy- regularized
+representation learning for cross- modality medical image
+segmentation[J].IEEE Transactions on Medical Imaging，2021，
+40（1） ：274-285.
+[7] PU Q M ，XI Z X ，YIN S ，et al.Advantages of transformer
+and its application for medical image segmentation ：a survey
+[J].BioMedical Engineering OnLine ，2024，23（1） ：14.
+[8] SHAMSHAD F ，KHAN S ，ZAMIR S W ，et al.Transformers
+in medical imaging ：a survey[J].Medical Image Analysis ，
+2023，88：102802.
+[9] LI G Y ，CHEN J Y ，JANG S I ，et al.SwinCross ：cross-modal
+Swin transformer for head- and- neck tumor segmentation in
+PET/CT images[J].Medical Physics ，2024，51（3） ：2096-2107.
+[10] LI J ，CHEN J Y ，TANG Y C ，et al.Transforming medical
+imaging with Transformers? A comparative review of key
+properties，current progresses ，and future perspectives[J].
+Medical Image Analysis ，2023，85：102762.
+[11] WHITE S J ，PHUA Q S ，LU L ，et al.Heterogeneity in sys -
+tematic reviews of medical imaging diagnostic test accuracy
+studies：a systematic review[J].JAMA Network Open ，2024，
+7（2） ：e240649.
+[12] LI M F ，JIANG Y Y ，ZHANG Y Z ，et al.Medical image
+analysis using deep learning algorithms[J].Frontiers in
+Public Health ，2023，11：1273253.
+[13] THAKUR G K ，THAKUR A ，KULKARNI S ，et al.Deep
+learning approaches for medical image analysis and diagnosis
+[J].Cureus，2024：16（5） ：e59507.
+[14] SHI D L ，ZHANG W Y ，YANG J C ，et al.A multimodal
+visual-language foundation model for computational oph -
+thalmology[J].NPJ Digital Medicine ，2025，8：381.
+[15] BAI X Y ，BAI F，HUO X F ，et al.UAE：universal anatomical
+embedding on multi -modality medical images[J].Medical
+Image Analysis ，2025，103：103562.
+[16] GAN Z ，LI L J ，LI C Y ，et al.Vision-language pre-training ：
+basics，recent advances，and future trends[J].Foundations and
+申明坤，等：CLIP 在医学图像多模态分析中的研究进展 43
+
+=== PDF_PAGE 12 ===
+Computer Engineering and Applications 计算机工程与应用2026，62（18）
+Trends® in Computer Graphics and Vision ，2022，14（3/4） ：
+163-352.
+[17] LIN W X ，ZHAO Z H ，ZHANG X M ，et al.PMC-CLIP ：con-
+trastive language-image pre-training using biomedical docu -
+ments[C]//Proceedings of the 26th International Conference
+on Medical Image Computing and Computer Assisted Inter -
+vention.Cham ：Springer，2023：525-536.
+[18] TIU E ，TALIUS E ，PA TEL P，et al.Expert-level detection of
+pathologies from unannotated chest X- ray images via self-
+supervised learning[J].Nature Biomedical Engineering，2022，
+6（12） ：1399-1406.
+[19] ZHANG Y H，JIANG H，MIURA Y，et al.Contrastive learning
+of medical visual representations from paired images and
+text[C]//Proceedings of the Machine Learning for Healthcare
+Conference，2022：2-25.
+[20] HUANG S C ，SHEN L Y ，LUNGREN M P ，et al.GLoRIA ：
+a multimodal global-local representation learning framework
+for label-efficient medical image recognition[C]//Proceedings
+of the 2021 IEEE/CVF International Conference on Com -
+puter Vision.Piscataway ：IEEE，2022：3922-3931.
+[21] 杜鹏飞 ，李小勇 ，高雅丽 . 多模态视觉语言表征学习研究
+综述[J]. 软件学报，2021，32（2） ：327-348.
+DU P F ，LI X Y ，GAO Y L.Survey on multimodal visual
+language representation learning[J].Journal of Software ，
+2021，32（2） ：327-348.
+[22] RYU J S ，KANG H ，CHU Y ，et al.Vision-language founda -
+tion models for medical imaging ：a review of current prac -
+tices and innovations[J].Biomedical Engineering Letters ，
+2025，15（5） ：809-830.
+[23] LU Y B，W ANG A L.Integrating language into medical visual
+recognition and reasoning ：a survey[J].Medical Image
+Analysis，2025，102：103514.
+[24] SUN Y B ，CHEN W T ，SUN Z.Multi- modal learning
+methods in medical imaging area ：a survey[J].Digital Signal
+Processing，2025，167：105441.
+[25] YI Z R ，XIAO T ，ALBERT M V .A survey on multimodal
+large language models in radiology for report generation and
+visual question answering[J].Information ，2025，16（2） ：136.
+[26] SUBRAMANIAN S，W ANG L L，BOGIN B，et al.MedICaT：
+a dataset of medical images ，captions，and textual references
+[C]//Findings of the Association for Computational Linguis -
+tics：EMNLP 2020.Stroudsburg：ACL，2020：2112-2120.
+[27] RÜCKERT J ，BLOCH L ，BRÜNGEL R ，et al.ROCOv 2：
+radiology objects in context version 2，an updated multi -
+modal image dataset[J].Scientific Data ，2024，11：688.
+[28] LIU B ，ZHAN L M ，XU L ，et al.SLAKE ：a semantically-
+labeled knowledge -enhanced dataset for medical visual
+question answering[C]//Proceedings of the 2021 IEEE 18th
+International Symposium on Biomedical Imaging.Piscataway：
+IEEE，2021：1650-1654.
+[29] JOHNSON A E W ，POLLARD T J ，BERKOWITZ S J ，et al.
+MIMIC-CXR ，a de-identified publicly available database of
+chest radiographs with free-text reports[J].Scientific Data ，
+2019，6：317.
+[30] KA VUR A E ，GEZER N S ，BARIS M ，et al.CHAOS chal -
+lenge- combined（CT- MR）healthy abdominal organ seg -
+mentation[J].Medical Image Analysis ，2021，69：101950.
+[31] MENZE B H ，JAKAB A ，BAUER S ，et al.The multimodal
+brain tumor image segmentation benchmark （BraTS）[J].
+IEEE Transactions on Medical Imaging ，2015，34（10） ：1993-
+2024.
+[32] HAFNER M ，KA TSANTONI M，KÖSTER T ，et al.CLIP
+and complementary methods[J].Nature Reviews Methods
+Primers，2021，1：20.
+[33] RUSSAKOVSKY O ，DENG J ，SU H ，et al.ImageNet large
+scale visual recognition challenge[J].International Journal
+of Computer Vision ，2015，115（3） ：211-252.
+[34] ZHENG F D ，CAO J D ，YU W J ，et al.Exploring low-
+resource medical image classification with weakly super -
+vised prompt learning[J].Pattern Recognition ，2024 ，149：
+110250.
+[35] HUANG Z M ，WANG L J ，XU L H.DRA-Net ：medical
+image segmentation based on adaptive feature extraction
+and region- level information fusion[J].Scientific Reports ，
+2024，14：9714.
+[36] CHEN J N ，LU Y Y ，YU Q H ，et al.TransUNet：transformers
+make strong encoders for medical image segmentation
+[EB/OL].[2025-07-13].https：//arxiv.org/abs/2102.04306.
+[37] RADFORD A ，WU J ，CHILD R ，et al.Language models are
+unsupervised multitask learners[EB/OL].[2025-07-13].https：//
+cdn.openai.com/better-language-models/language_models_
+are_unsupervised_multitask_learners.pdf.
+[38] SHTEDRITSKI A，RUPPRECHT C，VEDALDI A.What does
+CLIP know about a red circle? Visual prompt engineering
+for VLMs[C]//Proceedings of the 2023 IEEE/CVF Interna -
+tional Conference on Computer Vision.Piscataway ：IEEE，
+2024：11953-11963.
+[39] FROME A ，CORRADO G S ，SHLENS J ，et al.DeViSE ：a
+deep visual -semantic embedding model[C]//Advances in
+Neural Information Processing Systems 26，2013 ：2121 -
+2129.
+[40] RADFORD A ，KIM J W ，HALLACY C ，et al.Learning
+transferable visual models from natural language supervi -
+sion[C]//Proceedings of the 38th International Conference
+on Machine Learning ，2021：8784-8763.
+[41] ESLAMI S ，DE MELO G.Mitigate the gap ：improving cross-
+modal alignment in CLIP[C]//Proceedings of the 13th Inter -
+national Conference on Learning Representations ，2025.
+[42] JIANG D ，YE M.Cross-modal implicit relation reasoning
+and aligning for text- to- image person retrieval[C]//Pro -
+ceedings of the 2023 IEEE/CVF Conference on Computer
+Vision and Pattern Recognition.Piscataway ：IEEE，2023：
+2787-2797.
+[43] MA W X ，ZHANG X ，Y AO Q S，et al.AA-CLIP ：enhancing
+zero- shot anomaly detection via anomaly- aware CLIP[C]//
+Proceedings of the 2025 IEEE/CVF Conference on Com -
+puter Vision and Pattern Recognition.Piscataway ：IEEE，
+2025：4744-4754.
+44
+
+=== PDF_PAGE 13 ===
+2026，62（18）
+[44] CAO Y K ，ZHANG J N ，FRITTOLI L ，et al.AdaCLIP ：
+adapting CLIP with hybrid learnable prompts for zero- shot
+anomaly detection[C]//Proceedings of the 18th European
+Conference on Computer Vision.Cham ：Springer ，2025 ：
+55-72.
+[45] ZHOU Q H ，PANG G S ，TIAN Y ，et al.AnomalyCLIP ：
+ob ject- agnostic prompt learning for zero- shot anomaly
+detection[EB/OL].[ 2025-07-19].https ：//arxiv.org/abs/ 2310.
+18961.
+[46] VEASEY B P ，AMINI A A.Parameter- efficient fine- tuning
+of DINOv 2 vision transformers for lung nodule classifica -
+tion[C]//Proceedings of the 2024 IEEE International Sym -
+posium on Biomedical Imaging.Piscataway ：IEEE，2024：1-5.
+[47] WU Y H ，DESROSIERS C ，CHADDAD A.FacMIC ：feder-
+ated adaptative CLIP model for medical image classification
+[C]//Proceedings of the 27th International Conference on
+Medical Image Computing and Computer Assisted Interven -
+tion.Cham：Springer，2024：531-541.
+[48] SUN Z Z ，JIANG H Q ，MA L，et al.Transformer based multi-
+view network for mammographic image classification[C]//
+Proceedings of the 25th International Conference on Medi -
+cal Image Computing and Computer Assisted Intervention.
+Cham：Springer，2022：46-54.
+[49] LUCIERI A ，BAJWA M N ，BRAUN S A ，et al.ExAID ：a
+multimodal explanation framework for computer -aided
+diagnosis of skin lesions[J].Computer Methods and Pro -
+grams in Biomedicine ，2022，215：106620.
+[50] SHU C ，ZHU Y ，TANG X C ，et al.MITER ：medical image-
+text joint adaptive pretraining with multi- level contrastive
+learning[J].Expert Systems with Applications ，2024，238：
+121526.
+[51] WU Q ，ZHANG Y Y ，ELBA TEL M.Self- prompting large
+vision models for few-shot medical image segmentation [C]//
+Proceedings of the 5th Workshop on Domain Adaptation
+and Representation Transfer.Cham ：Springer，2024：156-167.
+[52] ZHANG X M ，XU M ，QIU D H ，et al.MediCLIP ：adapting
+CLIP for few-shot medical image anomaly detection[C]//
+Proceedings of the 27th International Conference on Medi -
+cal Image Computing and Computer Assisted Intervention.
+Cham：Springer，2024：458-468.
+[53] V AN UDEN C，BLUETHGEN C，A TTIAS M，et al.Exploring
+the versatility of zero-shot CLIP for interstitial lung disease
+classification[EB/OL].[ 2025 -07-22].https ：//arxiv.org/abs/
+2306.01111.
+[54] JANG J ，KYUNG D ，KIM S H ，et al.Significantly improving
+zero-shot X-ray pathology classification via fine-tuning pre-
+trained image-text encoders[J].Scientific Reports ，2024，14：
+23199.
+[55] CHEN X H ，LUO S H ，PUN C M ，et al.MedPrompt ：cross-
+modal prompting for multi- task medical image translation
+[C]//Proceedings of the 7th Chinese Conference on Pattern
+Recognition and Computer Vision.Cham ：Springer ，2025 ：
+61-75.
+[56] BOECKING B ，USUY AMA N，BANNUR S ，et al.Making
+the most of text semantics to improve biomedical vision-
+language processing[C]//Proceedings of the 17th European
+Conference on Computer Vision.Cham ：Springer，2022：1-21.
+[57] V AN SONSBEEK T，WORRING M.X-TRA：improving chest
+X-ray tasks with cross-modal retrieval augmentation[C]//
+Proceedings of the 28th International Conference on Infor -
+mation Processing in Medical Imaging.Cham ：Springer ，
+2023：471-482.
+[58] ZHANG X M ，WU C Y ，ZHAO Z H ，et al.Development of
+a large-scale medical visual question- answering dataset[J].
+Communications Medicine ，2024，4：277.
+[59] YOU K ，GU J ，HAM J ，et al.CXR-CLIP ：toward large scale
+chest X-ray language-image pre-training[C]//Proceedings
+of the 26th International Conference on Medical Image
+Computing and Computer Assisted Intervention.Cham ：
+Springer，2023：101-111.
+[60] ALEEM S ，WANG F，MANIPARAMBIL M ，et al.Test-time
+adaptation with SaLIP ：a cascade of SAM and CLIP for
+zero- shot medical image segmentation[C]//Proceedings of
+the 2024 IEEE/CVF Conference on Computer Vision and
+Pattern Recognition Workshops.Piscataway ：IEEE，2024：
+5184-5193.
+[61] CHEN Y X ，WEI M H ，ZHENG Z X ，et al.CausalCLIPSeg ：
+unlocking CLIP ’s potential in referring medical image seg -
+mentation with causal intervention[C]//Proceedings of the
+27th International Conference on Medical Image Computing
+and Computer Assisted Intervention.Cham ：Springer，2024：
+77-87.
+[62] ANAND D ，SINGHAL V ，SHANBHAG D D ，et al.One-
+shot localization and segmentation of medical images with
+foundation models[EB/OL].[ 2025-07-26].https：//arxiv.org/
+abs/2310.18642.
+[63] YUAN R T ，CHEN M H ，XU J L ，et al.Text- promptable
+propagation for referring medical image sequence segmen -
+tation[EB/OL].[2025-07-26].https：//arxiv.org/abs/2502.11093.
+[64] WU J D ，WANG Z Y ，HONG M X ，et al.Medical SAM
+adapter ：adapting segment anything model for medical
+image segmentation[J].Medical Image Analysis ，2025，102：
+103547.
+[65] LAI H R ，JIANG Z H ，YAO Q S ，et al.Bridged semantic
+alignment for zero- shot 3D medical image diagnosis[EB/
+OL].[2025-07-26].https：//arxiv.org/abs/2501.03565.
+[66] CHEN X P ，LAI Z X ，RUAN K R ，et al.R-LLaV A：improving
+med- VQA understanding through visual region of interest
+[EB/OL].[2025-07-26].https：//arxiv.org/abs/2410.20327.
+[67] ZHANG J K ，LI B ，ZHOU S J.Hierarchical modeling for
+medical visual question answering with cross- attention
+fusion[J].Applied Sciences ，2025，15（9） ：4712.
+[68] ESLAMI S ，MEINEL C ，DE MELO G.PubMedCLIP ：how
+much does CLIP benefit visual question answering in the
+medical domain?[C]//Findings of the Association for Com -
+putational Linguistics：EACL 2023.Stroudsburg：ACL，2023：
+1181-1193.
+[69] ZHOU Z J，HUANG Y F，W ANG X L，et al.Effective medical
+申明坤，等：CLIP 在医学图像多模态分析中的研究进展 45
+
+=== PDF_PAGE 14 ===
+Computer Engineering and Applications 计算机工程与应用2026，62（18）
+visual question answering using dynamic prompting and
+decoding knowledge editing[J].Data Science and Engineering，
+2025，10（4） ：681-691.
+[70] WANG Z F ，WU Z B ，AGARWAL D，et al.MedCLIP ：con-
+trastive learning from unpaired medical images and text[C]//
+Proceedings of the 2022 Conference on Empirical Methods
+in Natural Language Processing.Stroudsburg ：ACL，2022：
+3876-3887.
+[71] YAO H T ，ZHANG R ，XU C S.Visual-language prompt
+tuning with knowledge-guided context optimization[C]//
+Proceedings of the 2023 IEEE/CVF Conference on Computer
+Vision and Pattern Recognition.Piscataway ：IEEE，2023：
+6757-6767.
+[72] Y AN S Y，YU Z ，LIU C ，et al.Prompt-driven latent domain
+generalization for medical image classification[J].IEEE
+Transactions on Medical Imaging ，2025，44（1） ：348-360.
+[73] ARORA A ，NAMBOODIRI V .MedFocusCLIP ：improving
+few shot classification in medical datasets using pixel wise
+attention[C]//Proceedings of the 2025 IEEE International
+Conference on Acoustics ，Speech and Signal Processing.Pis -
+cataway：IEEE，2025：1-5.
+[74] ZHOU K Y ，Y ANG J K，LOY C C ，et al.Learning to prompt
+for vision-language models[J].International Journal of Com -
+puter Vision，2022，130（9） ：2337-2348.
+[75] CAO Q L ，XU Z Q ，CHEN Y T ，et al.Domain- controlled
+prompt learning[C]//Proceedings of the 38th AAAI Confer -
+ence on Artificial Intelligence.Palo Alto ：AAAI ，2024 ：
+936-944.
+[76] GAO P ，GENG S J ，ZHANG R R ，et al.CLIP-adapter ：better
+vision-language models with feature adapters[J].International
+Journal of Computer Vision ，2024，132（2） ：581-595.
+[77] XIN Y ，Y ANG J J，LUO S Q ，et al.Parameter-efficient fine-
+tuning for pre- trained vision models ：a survey and bench -
+mark[EB/OL].[2025-07-29].https：//arxiv.org/abs/2402.02242.
+[78] SHAMSHAD F，HUSSEIN N，NANDAKUMAR K.Parameter-
+efficient multimodal adaptation for certified robustness of
+medical vision-language models[C]//Proceedings of the 29th
+Annual Conference on Medical Image Understanding and
+Analysis.Cham ：Springer，2026：300-315.
+[79] KOLEILA T T，ASGARIANDEHKORDI H ，RIV AZ H，et al.
+BiomedCoop ：learning to prompt for biomedical vision-
+language models[C]//Proceedings of the 2025 IEEE/CVF
+Conference on Computer Vision and Pattern Recognition.
+Piscataway：IEEE，2025：14766-14776.
+[80] YU J Z ，ZHUGE Y Z ，ZHANG L ，et al.Boosting continual
+learning of vision- language models via mixture- of- experts
+adapters[C]//Proceedings of the 2024 IEEE/CVF Conference
+on Computer Vision and Pattern Recognition.Piscataway ：
+IEEE，2024：23219-23230.
+[81] KHA TTAK M U，KUNHIMON S，NASEER M，et al.UniMed-
+CLIP：towards a unified image- text pretraining paradigm
+for diverse medical imaging modalities[EB/OL].[ 2025- 07-
+31].https：//arxiv.org/abs/2412.10372.
+[82] GUO Y B ，LI S Z ，LIU Z L ，et al.A parameter-efficient and
+fine- grained prompt learning for vision- language models
+[C]//Proceedings of the 63rd Annual Meeting of the Associ -
+ation for Computational Linguistics.Stroudsburg：ACL，2025：
+31346-31359.
+[83] WANG P Y，ZHANG H Q ，YUAN Y X.MCPL ：multi-modal
+collaborative prompt learning for medical vision- language
+model[J].IEEE Transactions on Medical Imaging ，2024 ，
+43（12） ：4224-4235.
+[84] FANG X，LIN Y，ZHANG D ，et al.Aligning medical images
+with general knowledge from large language models[C]//
+Proceedings of the 27th International Conference on Medical
+Image Computing and Computer Assisted Intervention.
+Cham：Springer，2024：57-67.
+[85] LI C Y ，ZHU H ，SULTAN R I，et al.MulModSeg ：enhancing
+unpaired multi-modal medical image segmentation with
+modality-conditioned text embedding and alternating training
+[C]//Proceedings of the 2025 IEEE/CVF Winter Conference
+on Applications of Computer Vision.Piscataway ：IEEE，
+2025：3581-3591.
+[86] NAM Y ，KIM D Y ，KYUNG S ，et al.Multimodal large lan -
+guage models in medical imaging ：current state and future
+directions[J].Korean Journal of Radiology ，2025 ，26（10） ：
+900.
+[87] D’ANTONOLI T A ，BLUETHGEN C ，CUOCOLO R ，et al.
+Foundation models for radiology ：fundamentals ，applica -
+tions ，opportunities ，challenges ，risks ，and prospects[J].
+Diagnostic and Interventional Radiology ，2025 ，31（3） ：
+155-165.
+[88] UROOJ B ，FAY AZ M，ALI S ，et al.Large language models
+in medical image analysis ：a systematic survey and future
+directions[J].Bioengineering ，2025，12（8） ：818.
+[89] KAISSIS G ，ZILLER A ，PASSERA T-PALMBACH J，et al.
+End-to-end privacy preserving deep learning on multi-
+institutional medical imaging[J].Nature Machine Intelligence，
+2021，3（6） ：473-484.
+[90] XIN Y ，DU J L ，WANG Q，et al.MmAP ：multi-modal align -
+ment prompt for cross- domain multi- task learning[C]//Pro -
+ceedings of the 38th AAAI Conference on Artificial Intelli -
+gence.Palo Alto ：AAAI，2024：16076-16084.
+[91] CASTRO D C ，WALKER I ，GLOCKER B.Causality mat -
+ters in medical imaging[J].Nature Communications ，2020，
+11：3673.
+[92] WU K ，PENG H W ，ZHOU Z H ，et al.TinyCLIP ：CLIP dis -
+tillation via affinity mimicking and weight inheritance[C]//
+Proceedings of the 2023 IEEE/CVF International Confer -
+ence on Computer Vision.Piscataway ：IEEE，2024：21913-
+21923.
+[93] KAISSIS G A ，MAKOWSKI M R ，RÜCKERT D ，et al.
+Secure，privacy- preserving and federated machine learning
+in medical imaging[J].Nature Machine Intelligence ，2020，
+2（6） ：305-311.
+[94] PA TI S ，BAID U ，EDWARDS B ，et al.Federated learning
+enables big data for rare cancer boundary detection[J].
+Nature Communications ，2022，13：7346.
+46

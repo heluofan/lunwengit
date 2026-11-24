@@ -1,0 +1,25 @@
+==== gpu
+0, NVIDIA GeForce RTX 5090, 32607 MiB
+1, NVIDIA GeForce RTX 5090, 32607 MiB
+2, NVIDIA GeForce RTX 5090, 32607 MiB
+3, NVIDIA GeForce RTX 5090, 32607 MiB
+4, NVIDIA GeForce RTX 5090, 32607 MiB
+5, NVIDIA GeForce RTX 5090, 32607 MiB
+6, NVIDIA GeForce RTX 5090, 32607 MiB
+7, NVIDIA GeForce RTX 5090, 32607 MiB
+
+==== dl
+[  496s]   1.21/25.02 GB   4.8%  inst=1.60 avg=2.49 MB/s ETA=163 min
+[  511s]   1.24/25.02 GB   4.9%  inst=1.94 avg=2.48 MB/s ETA=164 min
+[  526s]   1.26/25.02 GB   5.0%  inst=1.60 avg=2.45 MB/s ETA=165 min
+--- nnunet ---
+NNUNET_V1 tag=v1.7.0 bytes=560521
+DONE_NNUNET
+
+==== envs
+/data/heluofan/envs/chitu
+/data/heluofan/envs/ms
+
+==== torch
+/data/heluofan/envs/chitu/bin/python : 2.9.1+cu128 12.8 (12, 0)
+/data/heluofan/envs/ms/bin/python : 2.9.1+cu128 12.8 (12, 0)

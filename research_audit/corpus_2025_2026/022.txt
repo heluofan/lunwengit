@@ -1,0 +1,2231 @@
+=== PDF_PAGE 1 ===
+计算机科学与探索
+Journal of Frontiers of Computer Science and Technology
+1673-9418/2025/19(07)-1729-18
+doi: 10.3778/j.issn.1673-9418.2411008
+医学领域多模态知识图谱融合技术发展现状研究
+时振普
+1
+，吕 潇
+2
+，董彦如
+1
+，刘 静
+1
+，王晓燕
+1+
+1. 山东中医药大学 医学信息工程学院，济南 250355
+2. 山东省中医院 信息科，济南 250014
++ 通信作者 E-mail: sdnuwxy@126.com
+摘 要：多模态知识图谱利用文本 、视觉等多模态数据对实体 、关系及事件进行建模 ，展现出强大的数据处理能力 ，
+为人工智能领域提供更丰富、深入的理解，也因此备受医学领域瞩目，其在医学数据处理、潜在价值挖掘等多类研究
+中均取得显著成效 。为更好地厘清多模态知识图谱在医学领域的研究现状 ，阐述多模态知识图谱基本知识及医学
+领域多模态知识图谱构建难点与相关数据集 ；从传统方法及深度学习方法两个角度分析多模态知识图谱融合涉及
+的多模态实体对齐与多模态实体链接等关键技术 ，重点分析文本、图像、音频三个模态的特征提取及融合方法 ，总结
+各多模态融合方法优缺点并阐述多模态大语言模型在多模态融合中的应用 ；详细梳理多模态知识图谱在医学视觉
+问答、药物研发、影像辅助诊断等领域的研究进展 。在此基础上，分析归纳医学领域多模态知识图谱在多模态融合
+与数据集方面的局限性及面临的挑战，并对未来研究方向进行展望。
+关键词：多模态知识图谱；知识图谱融合；多模态大语言模型；智能医疗
+文献标志码：A 中图分类号：TP391
+Research on Development Status of Multimodal Knowledge Graph Fusion Tech -
+nology in Medical Field
+SHI Zhenpu
+1
+, L YU Xiao
+2
+, DONG Y anru
+1
+, LIU Jing
+1
+, W ANG Xiaoyan
+1+
+1. School of Medical Information Engineering, Shandong University of Traditional Chinese Medicine, Jinan 250355,
+China
+2. Information Department of Shandong Provincial Hospital of Traditional Chinese Medicine, Jinan 250014, China
+Abstract: Multimodal knowledge graph utilize s text, visua l and other multimodal data to model entities, relationships and
+events, demonstrating powerful data processing capabilities and providing richer and deeper understanding for the field of
+artificial intelligence. Therefore, it has attracted attention in the medical field and has achieved significant results in various
+research areas such as medical data processing and potential value mining. To better clarify the research status of multi -
+modal knowledge graph in the medical field, firstly, this paper elaborates on the basic knowledge of multimodal knowl -
+edge graph and the difficulties and related datasets in constructing multimodal knowledge graph in the medical field. Sec -
+ondly, this paper analyzes the key technologies involved in multimodal knowledge graph fusion, such as multimodal entity
+alignment and multimodal entity linking, from the perspectives of traditional methods and deep learning methods.
+The focus is on the feature extraction and fusion methods of text, image, a nd audio modalities. This paper summarizes the
+advantages and disadvantages of each multimodal fusion method, and elaborates on the application of multimodal large
+基金项目：国家自然科学基金（82174528） ；山东省中医药科技项目（2021M146） ；山东中医药大学科学研究基金（KYZK2024M13） 。
+This work was supported by the National Natural Science Foundation of China ( 82174528), the Traditional Chinese Medicine Science
+and Technology Project of Shandong Province ( 2021M146), and the Scientific Research Fund of Shandong University of Traditional
+Chinese Medicine (KYZK2024M13).
+收稿日期：2024-11-04 修回日期：2025-03-26
+
+=== PDF_PAGE 2 ===
+Journal of Frontiers of Computer Science and Technology 计算机科学与探索 2025, 19(7)
+模态在不 同学科领域有不同含义与应用 ，计算机
+领域中特指文本 、图像、音频等不同信息形式 。随着互
+联网的高速发展 ，如何有效处理与利用包罗文本 、图
+像、音频等多模态海量信息 ，已成为人工智能领域的关
+注重点 。2012 年，Google 提出一种有向图结构的关联
+网络——知识图谱
+[1]
+，可通过实体 、关系、属性等要素将
+现实事物及联系以图结构进行存储表示 。知识图谱最
+初仅限文本研究，但目前文本单模态知识图谱已无法应
+对海量多模态数据挖掘，融合文本、图像、音频等多模态
+数据的多模态知识图谱应运而生。
+在医疗信息化发展中 ，医院信息管理 、临床信息 、
+医学影像存储与传输等系统产生了海量数据信息 ，有
+效挖掘医疗大数据信息 ，对推进医疗信息化发展意义
+重大 。知识图谱特别是多模态知识图谱 ，可将医学领
+域知识进行结构化整理 ，将其中的文本 、图像、音频等
+多模态数据 ，通过特征融合 、实体对齐 、实体链接等技
+术进行整合 ，提高数据质量 ，挖掘数据潜在价值 ，不仅
+是医疗大数据管理的有效手段 ，也是医疗智能化的重
+要工具。要对医疗数据进行有效融合需克服其固有的
+多源性与异构性 ，因此，多模态知识融合成为医疗领域
+多模态知识图谱构建的核心环节 ，需要整合多源异构
+数据 ，解决知识冗余等问题 。目前多模态知识图谱融
+合研究进展迅速 ，Y ang等
+[2]
+与陈囿任等
+[3]
+分别从融合模
+型与融合方法的角度分析多模态知识图谱融合相关技
+术及其应用进展 ，但少有在医学领域的应用研究 。Ku-
+mar 等
+[4]
+从医学诊断角度梳理多模态知识融合方法及其
+应用与挑战 ，但未对融合方法进行详细分析 ；Shaik 等
+[5]
+阐述了在智能医疗中的多模态知识融合算法 ，但未对
+比与梳理各方法的最新进展 。鉴于此 ，本文在介绍多
+模态知识图谱及医学多模态知识图谱基本知识的基础
+上，详细分析医学多模态知识融合中多模态实体对齐
+与链接、特征提取与融合等核心技术及其最新进展 ，并
+阐述多模态知识图谱在智能医疗领域的应用 ，文章结
+构如图 1 所示。
+1 多模态知识图谱
+1.1 多模态知识图谱概念
+知识图谱是一种知识存储关联网络，由节点（实体）
+与边（关系）组成 ，可定 义为一个有向图 G ={E,R,A,V,
+TR,TA} ，其中 E、R、A、V 分别是实体 、关系、属性与属
+性值集合 ，TR 是关系三元组集合 ，TA 是属性三元组集
+合，其中节点表示实体 （实物或抽象概念 ） ，节点间的
+边表示两实体间语义关系
+[6]
+。多模态知识图谱则是在
+传统文本单模态知识图谱基础上增加了图像 、音频等
+不同模态的数据 。Zhu 等
+[7]
+认为多模态知识图谱中实
+体与属性等知识符号是多模态化的 ，Chen 等
+[8]
+则将多
+模态知识图谱看作实体与文本外其他模态关联的知
+识图谱 。目前多模态知识图谱主要研究文本与图像
+两种模态 ，常采用两种方式表示多模态信息 ，一是将
+多模态数据表示为实体特定属性值 ，二是将多模态数
+据作为实体 ，通过关系与相应概念关联 。多模态知识
+图谱通过融合不同模态信息 ，增强对复杂现实世界的
+理解与表达能力 ，支持更丰富的知识表达 。多模态知
+识图谱在通用开放性领域取得了显著进 展，并逐步向
+医疗 、教育等垂直领域延伸 。现有部分通用多模态知
+language model in multimodal fusion. Finally, this paper reviews the research progress of multimodal knowledge graphs
+in fields such as medical visual Q&A, drug development, and medical imaging diagnosis. On this basis, this paper analyzesthe
+limitations and challenges faced by multimodal knowledge graphs in the field of medical multimodal fusion and datasets,
+and provides future research directions.
+Key words: multimodal knowledge graph; knowledge graph fusion; multimodal large language model; intelligent healthcare
+图 1 综述结构图
+Fig.1 Structure of overview
+1730
+
+=== PDF_PAGE 3 ===
+时振普 等：医学领域多模态知识图谱融合技术发展现状研究
+识图谱如表 1 所示。
+1.2 多模态数据集
+多模态数据集是构建多模态知识图谱的基础 ，实
+体、属性与关系通常从多模态数据集中抽取。多模态知
+识图谱为数据集提供结构化语义增强，通过融合不同模
+态实体，赋予数据集更深层次语义 ，并为多模态模型提
+供先验知识 ，提升模型在数据集上的表现 ，二者协同驱
+动，形成更结构化 、语义丰富的知识表示 。部分常用的
+通用多模态数据集如表 2 所示。
+1.3 医学多模态知识图谱
+医学场景对知识图谱准确性、可解释性及安全性有
+着更高要求，通用多模态知识图谱融合机制难以直接应
+对医学领域特有的复杂本体关系与隐私敏感性问题 。
+通用多模态知识图谱在开放域场景中的出色表现推动
+了基于医学多模态数据集的医学多模态知识图谱构建 ，
+使得如影像辅助诊断 、智能临床 决策等成为可能 ，推动
+智能医疗发展 。但目前相关数据集相对较少且规模不
+大，其中较常用的部分数据集属性如表 3 所示。
+表 1 通用多模态知识图谱
+Table 1 General multimodal knowledge graph
+图谱名称
+MMKG
+[9]
+DBpedia
+[10]
+IMGpedia
+[11]
+ImageGraph
+[12]
+Richpedia
+[13]
+GAIA
+[14]
+Visual Genome
+[15]
+MarKG
+[16]
+特点
+包含实体所有数值特征与图像信息 ，以传统知识图谱 Freebase15 为基
+础构建 ，并创建 DBpedia15K 与 YOGO15K 两个新知识图谱 ，均通过
+SameAs 链接实体对齐
+从维基百科中抽取结构化数据，是一个超大规模、多语言的知识库
+DBpedia 数据集与维基共享资源数据集视觉信息链接 ，利用视觉描述
+符与视觉相似性进行图像相似度计算
+用于回答视觉关系查询，引入图像信息与实体关联提高查询效率
+将视觉信息嵌入知识图谱 ，引入多样化视觉信息关联 Wikidata 的文本
+进行多模态知识表示
+多模态知识图谱系统，融合文本知识抽取与视觉知识抽取结果构建而得
+基于多区域图像标注，使用大量人工密集注释，将视觉概念落实到语义
+层面
+用于多模态类比推理的多模态知识图谱
+规模
+15 000多个实体、1 300多种关系与13 000多张图像
+458 万个实体、30 亿条信息
+1 500 万张图像与 4.5 亿个数据相似性关系
+1 330 种关系、14 870 个实体与 829 931 张图像
+300 万个实体、280 万张图像与 1.19 亿个三元组
+457 000个实体、67 000个三元组与38 000个事件信息
+108 077 张图像、540 万个区域描述、280 万个属性与
+230 万个关系
+11 292 个实体、192 个关系与 76 424 张图像
+表 2 通用多模态数据集
+Table 2 General multimodal datasets
+数据集
+COCO
+[17]
+VQA2.0
+[18]
+Flickr30k
+[19]
+Nocaps
+[20]
+WikiDiverse
+[21]
+数据用途
+图像 -文本匹配 、图像字幕生成 、目
+标检测、实例分割、语义分割等
+视觉问答
+图像 -文本检索 、图像字幕生成 、视
+觉问答等
+图像描述生成 、图像 -文本匹配 、新
+颖物体推理等
+多模态实体链接
+数据规模
+33 万张图像 ，其中超过 20 万有标注 ，涵盖 80 种
+常见物体类别
+26 万张图像，每张图像涉及平均 5.4 个问题
+31 783 张图像，158 915 个标注
+约 20 000 张图像，每张图像有 5 个文本描述
+7 824 个句子级实例，共包含 16 327 个提及
+数据特点
+文本+图像，每张图像带有边界框、分割
+掩码、文本描述等多种标注类型
+图像+问题+答案，人工标注
+图像 +文本 ，每张图像有 5 条不同的文
+本标注，描述图像多个方面
+图像+文本，引入大量新颖物体类别
+文本+图像，涵盖多样化上下文主题和
+实体类型
+表 3 部分医学多模态数据集
+Table 3 Partial medical multimodal fusion datasets
+数据集
+Medical-CXR-
+VQA
+[22]
+MedICaT
+[23]
+CheXpert
+[24]
+IU-Xray
+[25]
+MIMIC-CXR
+[26]
+VQA-RAD
+[27]
+数据描述
+大型X光胸片数据集，用于视觉问答等
+医学影像数据集 ，用于医学影像分析 、
+报告生成
+胸部 X 光图像数据集 ，用于胸部疾病
+诊断与影像分析
+胸部 X 光影像数据集 ，用于肺结核检
+测与肺癌诊断
+大型胸部 X 光影像数据集 ，用于胸部
+疾病检测、分割、分类与报告生成
+医学视觉问答数据集 ，用于智能就医
+咨询、辅助诊断
+数据规模
+215 574 张胸部 X 光片与 780 014 个问题对
+约 217 000 张医学影像，超过 4 500 万条文本
+描述，涉及肺癌、乳腺癌、肝癌等多种癌症类型
+超过 20 万张胸部 X 光图像，诊断标签 、放射
+学报告等临床信息
+8 121 张胸部 X 光影像，附带 3 955 份放射学
+报告
+约 377 110 张 X 光影像，约 227 835 份放射学
+报告
+467 张医学影像及 3 515 组问答对 ，设计 X-
+ray、CT、MRI、超声等多模态影像数据
+数据特点
+大规模 ，涵盖位置 、异常、类型等 7 种问
+题类型，提供丰富的知识表示
+提供丰富的子图 -子注释信息与文本内
+引用信息，助于理解与检索医学图像
+涵盖 14 种疾病类别 ，每张图像附有一个
+放射学报告，基于放射科医生标注
+每份放射学报告由专业放射科医生撰
+写，影像质量高
+涵盖肺炎 、肺不张、气胸、心脏肥大等 14
+种病理标签，正位与侧位多视角影像
+分为开放性问题与封闭性问题 ，具有单
+词级、短语级与句子级三种答案类别
+1731
+
+=== PDF_PAGE 4 ===
+Journal of Frontiers of Computer Science and Technology 计算机科学与探索 2025, 19(7)
+医学临床数据关联个人身份与健康状况，数据敏感
+性高；数据使用需实现伦理合规 ，保证数据所有权归属
+与患者知情同意，同时应遵从医疗法规 ，通过医疗 AI 审
+批。医学多模态知识图谱需在保证隐私合规的前提下 ，
+实现影像-文本跨模态对齐、动态时序数据融合，以及小
+样本条件下的本体扩展 。医学领域多模态知识图谱通
+常涉及高维度 、大规模数据 ，且结构化与非结构化数据
+互相掺杂 ，不仅来源多样 ，数据的专业性与复杂性也给
+医学多模态知识图谱构建带来更多挑战，其中异构鸿沟
+与语义鸿沟是首当其冲的两大问题
+[28]
+。前者指多模态
+数据具有数据异构性，在结构、格式、维度等方面存在差
+异，如文本数据多为离散序列，图像数据多为矩阵，异构
+性会增加多模态数据融合难度；后者指多模态数据表达
+同一概念实体时可能存在语义差异，如同一疾病往往需
+要不同成像（如 CT、MRI 等）的图像来综合判断，但彼此
+间存在语义差异，影响多模态知识图谱构建效率与准确
+性。知识融合是解决数据异构性与语义差异的有效手
+段，因此，将医学多模态数据进行有效融合是构建医学
+多模态知识图谱的重点。
+2 医学多模态知识融合
+目前，人工智能技术广泛应用于医学领域 ，但多局
+限于单一模态数据 ，无法提供全面多方位信息 ，而多模
+态数据可为医学诊断提供更全面的分析，精确解决医疗
+问题。医学多模态数据包含如临床记录、电子病历等临
+床文本与 X 光、CT、MRI 等医学影像数据 ，医学多模态
+知识融合整合不同模态数据 ，以构建反映医学知识 、患
+者健康状况 、治疗方案等多方面信息的知识图谱 ，以期
+辅助医疗诊断、提高临床效率。多模态知识融合方法可
+分为两类 ：一是基于知识图谱的融合方法 ，更多关注知
+识图谱与多模态数据间交互 ，通过多模态实体对齐 、多
+模态实体链接等技术将多模态数据整合到知识图谱中 ；
+二是基于多模态数据的融合方法，更多关注多模态数据
+本身，对多模态数据特征提取后通过多模态特征融合将
+不同模态数据融合成多模态知识图谱 。本文重点对上
+述两种融合方法进行分析阐述。
+2.1 基于知识图谱的融合方法
+该方法基于知识图谱与多模态数据交互，融合其他
+模态实体信息 ，利用多模态实体对齐 、多模态实体链接
+等技术构建多模态知识图谱 。本节重点对上述两种技
+术阐述分析。
+2.1.1 多模态实体对齐
+多模态实体对齐将不同模态中表示相同实体的信
+息匹配与对齐，如将医学影像中的病变区域与电子病历
+中提到的相关疾病匹配 ，确保多模态数据一致性 ，实现
+多模态数据融合 。多模态实体对齐可分为传统方法与
+基于深度学习方法。
+传统多模态实体对齐方法如基于规则 、基于统计 、
+基于机器学习的方法等 。早期使用基于规则的方法实
+现多模态实体对齐，依赖人工定义的规则与词典对齐不
+同模态实体 ，方法易实现但对齐结果易受噪声影响 ，且
+规则依赖性较高，难以处理复杂的异构数据与模糊的匹
+配问题，导致泛化性差 ；基于统计的方法通过计算不同
+模态间相似性实现多模态实体对齐，如建立向量空间模
+型，将不同模态数据表示为向量，计算向量间相似性（如
+余弦相似度 、Jaccard 相似度等）实现对齐 ，但只能捕捉
+显式相似性 ，无法处理深层语义关系 ；基于机器学习的
+方法如分类 、聚类算法等 ，如将医学影像中病变区域与
+临床文本中的疾病归为一类进而实现对齐，可处理较复
+杂的对齐任务，但对数据标注要求较高。
+随着深度学习的发展，多模态实体对齐多使用深度
+学习方法 ，如图神经网络（graph neural network ，GNN） 、
+注意力机制 、多模态预训练模型等 。与传统方法相比 ，
+深度学习方法可适应更复杂的数据模式 ，具有更准确 、
+灵活的实体对齐能力，对于高度异构性的医学数据整合
+效果显著。GNN 模型通过构建模态特征图进行信息传
+递与融合 ，可有效提高多模态实体对齐准确性 。Gong
+等
+[29]
+提出一种用于多模态命名实体识别的图神经网络
+方法（graph neural network approach for multimodal named
+entity recognition ，GNN- MNER） ，利 用 图 卷 积 网 络
+（graph convolutional network ，GCN）增强文本与视觉表
+示，促进多模态细粒度对齐与交互 ，可减少文本短小带
+来的语义歧义问题 ，采用 GCN 增强文本与图像特征表
+示，采用图注意力网络进行细粒度跨模态交互 ，有效减
+少 视 觉 噪 声 影 响。 鉴 于 医 学 影 像 的 复 杂 性，可 使 用
+Swin Transformer
+[30]
+、DenseNet
+[31]
+代替模型图像编码器提
+高图像特征提取能力，使用异质图建模不同类型的医学
+实体。注意力机制常用于多模态实体对齐，通过为不同
+模态数据分配权重 ，计算模态间相似度 ，提高多模态实
+体对齐准确性 。在医学文本 -图像联合学习中 ，许多方
+法仅依赖于局部监督，忽略了疾病级别的语义对应。为
+此，Wang等
+[32]
+提出一种多层次跨模态对齐框架 （multi-
+granularity cross-modal alignment ，MGCA） ，用于医学视
+觉表示学习 ，通过实例对齐模块最大化图像 -放射学报
+告对间的匹配，实现病理区域级别对齐。结合双向交叉
+注意力机制学习视觉与文本标记间的匹配度实现实体
+对齐。该模型通过实例级、病变区域级与疾病级三个不
+同层次进行跨模态对齐，可充分利用医学影像和放射报
+1732
+
+=== PDF_PAGE 5 ===
+时振普 等：医学领域多模态知识图谱融合技术发展现状研究
+告的语义对应关系，在图像分类任务中取得优异表现。
+多模态预训练模型如基于对比学习的 CLIP（con-
+trastive language-image pre-training）
+[33]
+、BLIP（bootstrapped
+language-image pretraining）
+[34]
+、FILIP（fine-grained inter -
+active language-image pre-training ）
+[35]
+等，具有强大的特
+征提取与表示学习能力 。MedCLIP
+[36]
+基于 CLIP 通过对
+比学习将医学图像 -文本联合表示 ，ConVIRT（contras-
+tive visual representation learning from text ）
+[37]
+利用自然
+配对的医学图像与文本进行无监督对比学习 ，MedViLL
+（medical vision language learner）
+[38]
+在大规模医学数据集
+上预训练，皆用于处理医学图像与文本数据。Xiang 等
+[39]
+提出医学视觉-语言模型 MUSK，基于共享自注意力层 ，
+在大规模未配对的 5 000 万病理图像与 10 亿文本标记
+上预训练，并利用 100 万图像-文本对进行对比学习以对
+齐模态，显著提升癌症预后预测 、免疫治疗响应预测等
+任务的准确性。Ma 等
+[40]
+提出眼动引导的多模态对齐框
+架 EGMA（eye-gaze guided multi-modal alignment） ，整合
+放射科医生在诊断过程中的眼动数据 、图像和文本转
+录，利用眼动数据生成注意力热图 ，以映射诊断期间对
+图像特定区域的关注 。该模型基于 FILIP 模型思想计
+算文本 -图像相似度矩阵 ，通过多标签交叉熵损失与对
+比损失优化视觉-文本细粒度对齐。该方法引入放射科
+医生诊断的眼动数据 ，通过眼动数据进行隐式对齐 ，有
+效提高模型表征能力 ，提升医学图像诊断的准确性和
+效率。
+近年来 ，多模态大语言模型因其卓越的数据处理
+能力备受关注 ，在单任务性能方面超越了传统深度学
+习模型 ，可显著提高多模态实体对齐准确率 。但因医
+学数据固有的异构性与专业性 ，通用多模态大语言模
+型在医学领域应用表现欠佳 。为此 ，研究者们提出医
+学多模态大语言模型 ，在多项医学任务上实现超越 ，展
+示在多模态、多任务医疗环境中的潜力 。Li 等
+[41]
+基于大
+模型提出一 种 ZALM3（zero-shot enhancement of vision-
+language alignment in multi-turn multimodal medical dia -
+logue）模型，用于多模态医学对话中的视觉语言对齐 。
+采用零样本策略，从前置对话上下文中总结关键字推测
+感兴趣区域并消除噪声 ，并结合视觉定位方法 ，自动裁
+剪患者上传的低质量图像 ，使模型更聚焦于病灶区域 ，
+提高视觉-语言对齐质量，实现高效视觉语言对齐 ，在皮
+肤科、眼科、中医科实验中均取得显著统计学提升 。虽
+然多模态大语言模型在医学领域取得显著进展，但模型
+易出现事实幻觉，从而导致错误判断。为此，Xia 等
+[42]
+提
+出一种多模态检索增强生成模型 MMed-RAG（multi-
+modal medical- retrieval- augmented generation） ，引 入 领
+域感知检索机制 ，适应性检索上下文减少噪声干扰 ，确
+保模型更具针对性，采用检索增强生成偏好微调策略进
+一步改善多模态数据对齐 ，优化模型生成事实准确性 ，
+通过检索增强生成策略 ，引入外部知识 ，提高模型的事
+实对齐度。针对医学数据，可采用领域感知检索针对不
+同医学影像类型（放射学、眼科、病理学）选择最优检索
+模型，提高模型适用性 。Zhu 等
+[43]
+提出多模态医疗偏好
+优 化 方 法（multimodal medical preference optimization ，
+MMedPO） ，模拟模型可能生成的错误答案，帮助模型识
+别与避免这些幻觉，通过局部病变噪声扰乱模型对图像
+关键区域理解 ，迫使模型聚焦于图像整体信息 ，根据多
+种医学大语言模型对每个偏好样本的临床相关性进行
+评分，作为权重整合到偏好优化过程中 ，提高模型对医
+学事实的准确性与对齐效果。
+2.1.2 多模态实体链接
+多模态实体对齐将不同模态中描述的同一实体进
+行匹配，解决跨模态数据异构性 ，建立不同模态间实体
+关联关系，实现多模态数据融合。而多模态实体链接是
+将不同模态数据链接到标准知识库的过程，偏向于多模
+态知识图谱构建 ，进而促进多模态数据融合 ，如将医学
+影像中的病变与疾病本体中的标准化疾病进行链接 。
+多模态实体链接可分为候选实体生成与实体消歧两步 ，
+从医学数据中识别出相关医学实体，找到实体可能对应
+的候选实体集合 ，利用多模态上下文信息消除歧义 ，从
+而更精确地链接到相应实体。
+候选实体生成旨在从大规模知识库中筛选出与文本
+或 图 像 中 实 体 指 称 相 关 的 候 选 实 体 集 合，可 使 用 如
+CLIP、BLIP 等多模态预训练模型将文本 、图像等模态数
+据映射到统一向量空间，计算实体间相似度生成候选实
+体列表，计算提及目标与候选实体在共享空间中的相似
+度排序。此外，可在初始基于文本的候选上进行基于视
+觉特征的进一步筛选，将与图像明显不匹配的实体过滤
+掉；还可基于多模态表征学习 ，将文本与图像融合编码
+得到多模态向量表示 ，对知识库中实体也进行融合编
+码，在统一向量空间中 ，通过最近邻检索查找与多模态
+向量最相近的实体向量，得到候选实体列表。由于医学
+多模态数据的专业性与多样性，且医学知识库本体结构
+复杂，链接过程中易出现歧义或大量候选 ，增加实体链
+接难度。针对医学数据，可先利用医学本体的别名词典
+与文本检索做大规模候选，然后结合医学影像标签或图
+像特征过滤，再进行多模态向量检索做精细筛选。
+医学文本术语具有高度专业性或不同的拼写变
+体、别名，相似症状 、同源疾病在影像上可能呈现类似
+特征，易带来歧义 ，需结合临床上下文去区分 。实体消
+1733
+
+=== PDF_PAGE 6 ===
+Journal of Frontiers of Computer Science and Technology 计算机科学与探索 2025, 19(7)
+歧旨在将多模态数据中的实体指称准确映射到知识库
+或知识图谱中的唯一实体 ，避免歧义 ，常基于实体上下
+文信息进行全局或局部建模 ，通过 BERT（bidirectional
+encoder representations from transformers ） 、ViT（vision
+transformer）
+[44]
+等深度学习模型提取多模态特征，将特征
+融合后的实体嵌入与候选实体进行相似度度量，选择与
+实体嵌入最相关的候选实体实现实体消歧。
+基于大语言模型的多模态实体链接结合大语言模
+型强大的理解与生成能力，可将多模态数据中的实体提
+及与知识库中的实体进行准确关联 。Shi 等
+[45]
+提出一种
+基于大语言模型的多模态实体链接框架 GEMEL（gen-
+erative multimodal entity linking ） ，直接生成目标实体 ，
+充分利用大语言模型的上下文学习能力，通过冻结视觉
+与语言模型 ，仅训练一个特征映射器实现模态间交互 ，
+显著降低计算成本。通过视觉增强，可解决医学术语歧
+义，更好识别低频医学实体 ，提高罕见病与药物识别能
+力。针对医学数据专业性，需要进一步微调与优化以适
+配医学知识库 ，从而提高实体链接准确性 。Liu 等
+[46]
+提
+出 基 于 大 语 言 模 型 的UniMEL（unified framework for
+multimodal entity linking）框架，使用大语言模型充分融
+合多模态实体提及的图像与上下文，集成文本与视觉信
+息细化文本表示，对实体与实体提及的嵌入表示进行相
+似度计算 ，有效缩小候选实体范围 ，并通过大模型进行
+精确多选匹配 ，增强文本与视觉特征结合 ，在检索增强
+阶段，可增加基于医学共现模式的匹配方法代替实体嵌
+入，提高医学多模态实体链接准确性。
+2.2 基于多模态数据的融合方法
+基于多模态数据的融合方法旨在从不同模态数据
+中提取代表性特征后，将不同模态数据转化成统一的特
+征表示，通过特征融合构建多模态知识图谱。
+2.2.1 文本特征提取
+医学文本数据包括电子病历 、临床记录 、诊断报告
+等，文本特征提取旨在提取文本数据的代表性特征。传
+统文本特征提取方法有词袋模型 、词嵌入方法等 ，此类
+方法易实现 ，但医学文本专业程度较高 ，提取表现欠
+佳。基于深度学习的文本特征提取方法通过构建神经
+网络模型从训练数据中获取有效特征表示，早期使用基
+于循环神经网络（recurrent neural network ，RNN）的长短
+时记忆网络（long short-term memory network ，LSTM）及
+其变体
+[47]
+，易处理长序列文本数据 。虽然 LSTM 在一定
+程度上解决梯度消失与爆炸问题，但无法完全杜绝。随
+着自然语言处理（natural language processing，NLP）的发
+展，文本预训练模型如基于自注意力机制的Transformer
+[48]
+及其变体 BERT
+[49]
+模型 、GPT
+[50]
+系列模型等陆续被用于
+文本特征提取 ，其中基于 Transformer 双向编码器表示
+并使用双向注意力机制的 BERT备受瞩目，可有效提取
+文本语义与上下文信息，擅长处理长序列文本。专为生
+物医学领域设计的 BioBERT
+[51]
+模型与医学临床数据设
+计的 ClinicalBERT
+[52]
+模型 、用于电子健康记录的 Med-
+BERT
+[53]
+模型等，皆基于 BERT使用生物医学语料库进行
+预训练，可更好理解与处理医学文本中的专业术语与上
+下文。此外，针对医学文本术语的复杂性 ，还可使用层
+次化特征提取架构 ，如 BioBERT模型结合条件随机场 、
+自注意力机制、医学知识库嵌入等方法优化医学文本特
+征提取。
+医学领域是 NLP 应用最重要的专业领域之一 ，常
+以医学结构化数据为代表的电子病历作为数据集构建
+医学知识图谱
+[54]
+。Transformer 架构的引入使 NLP 实现
+创新性转折 ，促进大型语言模型发展 ，大语言模型可有
+效捕获文本中复杂模式与细微差别 ，如 GPT-4o、Llama3
+等，在医疗服务与研究中具有巨大潜力。研究者们融合
+专业医学知识在各种大语言模型基础上进行预训练与
+微调，实现高效医学文本特征提取能力 。2024 年，梅斯
+医学科研平台搭建私有 Llama3-8B 模型，针对不同文本
+特征，构建专属解析模板 ，与特征规则相结合实现医学
+文本特征高效提取 。张云秋等
+[55]
+提出基于大语言模型
+Llama3-8B 的中文电子病历命名实体识别方法 ，基于探
+索性数据分析增强数据集 ，使用 Low-Rank Adaptation
+技术对模型微调 ，缓解标注数据稀缺问题 ，结果表明在
+文本特征提取方面相比传统深度学习模型，大语言模型
+具有更强的适应性与泛化性，在处理具有大量噪声与不
+完整信息的医疗文本时优势明显，但无法避免实体重叠
+现象，且各实体类别的识别精确度存在一定差距。对于
+非结构化医学文本数据，Goel 等
+[56]
+提出大语言模型与人
+类知识相结合的方法，旨在提供一种高效生成医学文本
+注释标签的方式 ，提高数据标注效率 ，解决非结构化医
+学文本提取困难的问题 ，但可能缺乏特定领域知识 ，易
+产生事实幻觉。为此，Li 等
+[57]
+提出基于大语言模型的用
+于自动提取医学临床文本数据框架，采用上下文学习将
+模型生成的内部知识与外部知识对齐，并通过检索校准
+机制提高生成内容的准确性。
+2.2.2 图像特征提取
+医学图像包括 CT、X 光、MRI、超声等产生的影像数
+据，图像特征通过图像局部区域间的像素灰度值差异与
+相似性进行提取，传统提取方法包括灰度直方图、尺度不
+变特征变换、加速特征稳健、方向梯度直方图等。然而，
+此类特征表示依赖人工设计，且通常基于特定问题，几乎
+不可重用 。目前多用基于深度学习的图像特征提取方
+1734
+
+=== PDF_PAGE 7 ===
+时振普 等：医学领域多模态知识图谱融合技术发展现状研究
+法，通过多个隐藏层的神经网络模型，学习视觉信息的特
+征表示，通过逐层神经网络结构学习高级语义特征。
+卷积神经网络（convolutional neural network ，CNN）
+是图像特征提取中常用的深度学习基础模型 ，通过卷
+积层 、池化层与全连接层实现图像特征自动提取与分
+类 。 目 前 ResNet
+[58]
+、AlexNet
+[59]
+、VGG
+[60]
+、DenseNet 等 更
+复杂、高效的神经网络也被用于图像特征提取。VGG16/
+VGG19 等模型能提取更细粒度的图像特征
+[61]
+，ResNet50/
+ResNet101 等通过残差连接提取更丰富的图 像特征
+[62]
+。
+生成对抗网络通过对抗训练 ，在图像生成过程中图像
+判别器也可用作特征提取器 ，以更有效提取图像关键
+特征
+[63]
+。基于注意力机制的 Transformer，凭其强大的特
+征提取能力 ，逐渐在图像处理领域占得一席之地 。但
+Transformer基于序列数据，需将二维图像数据转换为序
+列数据 ，为此 ，研究者提出 ViT、Swin Transformer 等改
+进模型 。ViT 模型将 Transformer 从自然语言处理领域
+扩展到了计算机视觉领域，将图像输入裁剪为固定尺寸
+的图像块 ，通过线性变换映射到高维空间 ，加入位置编
+码输出到编码器得到图像特征表示 。Swin-Transformer
+相比 ViT，特征提取能力更强且复杂度较低 ，通过从小
+尺寸图像块嵌入开始并逐渐融合更深 Transformer 层的
+相邻嵌入，提高图像特征提取能力。Transformer还可与
+CNN、GNN 等结合 ，发挥各自优势提高模型性能 ，如
+CNN+Transformer 有效结合 CNN 擅长局部特征提取与
+Transformer能够全局特征提取的优势，提高图像特征提
+取能力。
+由于医学图像固有的专业性与复杂性，在医学图像
+处理中可能存在诸多问题。针对“软边界”和共现现象，
+中国地质大学与百度提出的 ConDSeg
+[64]
+框架，通过输入
+原始图像与增强图像最大化预测掩码的一致性，提升编
+码器在不同对比度挑战下的鲁棒性，通过语义信息解耦
+减少图像不确定性区域，提高前景与背景的分离能力，通
+过对比驱动特征聚合模块 ，增强前景与背景的对比特
+征，通过大小感知解码器 ，有效避免共现特性导致的错
+误学习，进而提取高质量医学图像特征；针对医学病灶大
+小差异大的问题，可融合不同层次特征，兼顾局部细节与
+全局语义，如空洞卷积、特征金字塔等；针对医学图像中
+微小病灶的定位问题，可结合注意力机制，通过注意力门
+抑制无关背景 ，如空间注意力与通道注意力机制等 ；此
+外，针对三维结构医学图像，可在传统CNN 基础上，通过
+3D 卷积核提取空间上下文特征，如 3D ResNet 等。
+2.2.3 音频特征提取
+医学音频模态数据以心音、呼吸音等病理音频与肌
+电图、脑电图等生理音频为代表，以信号形式为载体，通
+过分析患者音频数据诊断如肺炎、哮喘、心脏病等疾病。
+常见音频特征包括梅尔频率倒谱系数 、Chroma 特征等，
+音频特征提取方法如傅里叶变换将时域信号转换为频域
+信号，揭示音频数据的频率特征，小波变换捕捉音频瞬时
+变化特征等。CNN、RNN、LSTM 等深度学习模型皆可用
+于音频特征提取，Wav2V ec2
+[65]
+是基于自监督学习的音频
+特征提取模型，可从原始音频信号中学习有意义的特征
+表示 ，适用于语音识别 、音频分类等任务 ，性能优异 。
+V ALL- E（voice allocation language and expression ）
+[66]
+是
+实现文本到语音合成任务的模型，并不直接用于特征提
+取，而是基于语音解编码技术 ，实现文本到语音的高效
+转换，实现音频特征提取。Rajasekar 等
+[67]
+提出基于胶囊
+网络的深度学习方法，利用咳嗽音检测结核病，将音频转
+换为频谱图像提取方向梯度直方图特征，分析对比胶囊
+网络结合 FCNN（fully connected neural network ）模型 、
+CNN、VGG16 与 ResNet50 等在检测结核病的性能，结果
+表明胶囊网络可学习频谱图像中的复杂特征，相比传统
+CNN 模型，胶囊网络有效捕获数据的时间与空间层次特
+征，对于识别医学音频特征中的复杂模式至关重要。
+2.2.4 多模态融合技术
+多模态数据特征提取后，将多模态特征融合是构建
+多模态知识图谱的核心环节。
+根据融合层次可分为特征级融合 、决策级融合 、混
+合级融合与模型级融合 4 种。特征级融合也称早期融
+合，将多个模态向量直接在特征层面上融合成统一表
+示，如对特征进行加权 、拼接降维 、多模态池化操作 ，融
+合不同模态信息特征。特征级融合简单直观，可充分利
+用多模态信息 ，但不同模态特征拼接后 ，易导致维度过
+高，提高计算复杂度与过拟合风险。决策级融合也称晚
+期融合，对每种模态数据独立处理得到各自的输出或预
+测，将预测结果整合得到最终融合结果 ，如对模态预测
+结果使用加权平均 、投票法、堆叠法、最大值法等实现 。
+决策级融合可针对不同模态使用不同的模型处理 ，不受
+其他模态影响，独立性强，但易忽略模态间交互，难以充
+分利用多模态信息。相较特征级融合，决策级融合灵活
+性高，当模态间相关性较大时特征级融合优于决策级融
+合，当模态间相关性较小时决策级融合则更合适。混合
+级融合又称中期融合 ，是前两者的结合 ，不局限于特定
+融合层次 ，可在模型不同阶段根据需求进行多次融合 。
+相较特征级与决策级融合，混合级融合可捕捉深层次模
+态间互补性 。模型级融合旨在获取跨模态的联合特征
+表示，捕捉不同模态间关联，集成不同深度学习模型，形
+成能处理多模态数据的综合模型，通过整合不同模型优
+势，实现多模态数据高效融合 ，如 LSTM 与 Transformer
+1735
+
+=== PDF_PAGE 8 ===
+Journal of Frontiers of Computer Science and Technology 计算机科学与探索 2025, 19(7)
+的结合，前者擅长处理序列数据中的长期依赖 ，而后者
+擅长处理长距离依赖关系
+[68]
+。在基于深度学习的多模
+态融合方法中，常用 CNN 提取图像特征、RNN 提取文本
+特征，采用多模态融合方法进行交互融合。
+根据融合方法可分为多模态双线性池化与基于注
+意力机制两种，如表 4 所示。
+双线性池化利用双线性模型将不同模态数据融合 ，
+捕捉模态间高阶交互信息，其又可分为多模态紧凑双线
+性池化（multimodal compact bilinear，MCB）
+[69]
+、多模态低
+秩双线性池化 （multimodal low-rank bilinear ，MLB）
+[70]
+、
+多模态分解双线性池化（multimodal factorized bilinear ，
+MFB）
+[71]
+、多 模 态 分 解 高 阶 池 化（multimodal factorized
+high-order，MFH）
+[72]
+等。传统双线性池化将两个模态的
+特征进行外积运算，但计算复杂度较高且融合特征维度
+较大，为此，MCB 通过紧凑双线性表示技术计算外积 ，
+采用低维紧凑表示（如随机投影）减少计算量 ；MLB 引
+入低秩约束，通过矩阵分解或其他低秩近似方法减少计
+算与存储开销 ；MFB 引入分解技术 ，将外积操作分解成
+多个可训练的低秩矩阵 ，减少计算与存储开销 ；MFH 通
+过高阶池化与因子分解技术捕捉多模态高阶交互信息 ，
+同时通过因子分解降低计算复杂度，提升效率。
+基于注意力的融合方法可分为协同注意力机制 、堆
+叠注意力机制、交叉注意力机制等。协同注意力机制通
+过模态间互信息建模与互注意力计算多模态数据间联
+合表示；堆叠注意力机制通过多层注意力层次化捕捉模
+态间细粒度交互信息 ，逐步处理与融合多模态数据 ；交
+叉注意力机制通过将一个模态的表示作为查询（query） ，
+将另一个模态表示作为键（key）与值（value） ，实现模态
+间信息交互与融合，交叉注意力机制在多模态融合中发
+挥重要作用 ，可更好捕捉图像与文本间依赖关系 ，提升
+理解生成能力。
+多模态预训练模型是一种结合视觉与文本数据处
+理的深度学习模型，将不同模态数据映射到公共嵌入空
+间，通过跨模态注意力机制动态选择信息 ，捕捉不同模
+态间依赖关系从而加强模态间融合效果 。多数多模态
+预训练模型基于 Transformer 架构，其中又分为单流与
+双流架构。单流 Transformer 将不同模态数据由单个编
+码器或多个堆叠编码器联合处理 ，双流 Transformer 将
+不同模态数据由特定模态编码器分别编码进行联合建
+模。单流模型如 VL-BERT（visual linguistic-BERT）
+[73]
+、
+VisualBERT
+[74]
+、ImageBERT
+[75]
+、UNITER（universal image-
+text representation learning）
+[76]
+、ViL T（vision- and- language
+transformer）
+[77]
+等文本-图像预训练模型与 VideoBERT
+[78]
+、
+HERO（hierarchical encoder for video + language omni-
+representation pre-training）
+[79]
+等文本 -音频预训练模型 ；
+双 流 模 型 如ViLBERT（vision and language BERT ）
+[80]
+、
+LXMERT（learning cross- modality encoder representations
+from transformers）
+[81]
+等文本 -图像预训练模型与 UniVL
+（unified video and language pre- training model ）
+[82 ]
+、
+ActBERT
+[83]
+等文本-音频预训练模型 。多模态预训练模
+型在多模态融合任务中效果显著，可显著提升跨模态理
+解与推理等复杂任务的性能。
+医学多模态数据获取常面临模态缺失 问题，为此，
+Kim 等
+[84]
+提出一种缺失模态预测方法 ，利用参数高效微
+调最小化单模态编码器 ，采用方差-不变-协方差正则化
+提高不同模态间嵌入的缺失模态的可预测性，通过基于
+表 4 多模态融合方法
+Table 4 Multimodal fusion methods
+分类
+基 于 多 模
+态池化
+基 于 注 意
+力机制
+子分类
+双 线 性
+池化
+紧凑双线
+性池化
+低秩双线
+性池化
+分解双线
+性池化
+分解高阶
+池化
+协同注意
+力机制
+堆叠注意
+力机制
+交叉注意
+力机制
+原理
+计算跨模态特征外积 ，对外积后特征进行最大池化或
+平均池化操作，得到最终融合特征表示
+使用紧凑表示将原始特征压缩再进行池化
+通过低秩近似（如矩阵分解、主成分分析、卷积映射等）
+减少外积维度
+通过将高维特征表示分解为多个低秩矩阵的乘积来代
+替传统外积计算
+通过高阶池化生成高阶交互矩阵 ，使用因子分解映射
+到低维度空间
+对多模态数据构建互信息模型 ，进行互注意力计算，让
+一个模态的特征影响另一个模态特征来实现信息协同
+将多个注意力模块堆叠在一起 ，每一层注意力机制关
+注不同层次特征，逐层融合
+图像与文本特征分别作为查询 、键和值进行交互，通过
+加权将另一个模态信息融合到当前模态表示 ，通过模
+态间关系来加权聚合实现模态融合
+优势
+通过双线性运算 ，生成的特征向
+量包含更多模态间交互信息
+计算复杂度降低 、适应性强 、灵活
+性强
+减少计算与存储开销
+仍能保留模态间的高阶交互信息
+不仅捕捉到模态间的低阶信息 ，
+还能够提取模态间的高阶交互
+使图像与文本信息相互调节 、彼
+此影响，更好理解两者联合特征
+多层次建模可更精细地建模模态
+之间复杂关系 ，从低级特征到高
+级语义逐步捕捉信息
+适用需要跨模态信息理解和配对
+的任务
+不足
+会产生高维特征，计算成本高
+外积近似可能会引入误差
+参数选择复杂
+模型复杂度较高
+模型调优困难
+动态权重分配使得模型解释
+性差，且计算资源需求高
+多层次使得模型复杂度增加，
+可能面临梯度消失或梯度爆
+炸的问题
+可能会引入不必要的计算，或
+者导致模态间的“噪声”交互
+1736
+
+=== PDF_PAGE 9 ===
+时振普 等：医学领域多模态知识图谱融合技术发展现状研究
+提示的方法预测缺失模态特征向量，使模型在推理过程
+中预测表示空间中缺失模态的嵌入 。针对医学影像数
+据，可用 3D CNN 模型代替 2D 编码器，提高预测缺失模
+态准确率。当前多模态融合方法常基于静态数据假设，
+医学多模态数据往往是动态变化的 。多数多模态融合
+方法依赖于传统神经网络 ，不足以捕捉跨模态动态交
+互。为此，Li 等
+[85]
+提出基于 Mamba
+[86]
+的耦合状态空间模
+型，模型架构如图 2 所示。通过状态演变实现模态间融
+合，设计一种模态间隐藏状态转换方案 ，模型由 N 层组
+合，每层都有 M 个耦合 Mamba 块，其中 M 为模态数
+量。每个耦合 Mamba 块接收多种模态序列数据作为输
+入，聚合多种模态状态，转换到每个单独模态的下一次状
+态，通过耦合多个模态的状态链，同时保持内部模态状态
+过程独立性。该模型基于多模态情感分析任务研究，结
+果表明，状态耦合机制可高效处理多模态数据联合分析
+与时序数据间的交互建模，增强多模态融合效果。
+Wang 等
+[87]
+提 出 医 学 图 像- 文 本 生 成 模 型MINIM
+（medical image and numerical data integration model ） ，将
+多模态医学图像与对应文本报告成对输入模型，基于跨
+模态注意力机制融合不同模态图像与文本信息，建立跨
+模态共同表征，实现文本描述生成多器官、多成像模态的
+医学图像并通过强化学习接受临床医生反馈，不断提升
+图像质量与临床可用性，用于癌变预测与医学影像分类，
+结果表明 ，可显著提高肺癌 、乳腺癌突变分类准确性 。
+Shao 等
+[88]
+提出多模态融合模型（multimodal integration ，
+MMI） ，采用早期、中期、晚期三种融合策略结合交叉注
+意力机制，利用临床文本、影像图像、检验指标等多维度
+信息，实现肺部感染性疾病及病原类型精准预测 ，实验
+结果表明 ，中期融合策略的 AUC 分数比早期融合与晚
+期融合略优。Niu 等
+[89]
+提出一种零样本多模态多领域多
+语言临床诊断模型 M3FM（medical multimodal-multitask
+foundation model） ，使用 4 个权威医学数据来源 NLST、
+MIDRC、WFUSM、MGH，通过多模态融合与多任务学
+习，针对 17 项目肺癌筛查相关任务及心血管疾病诊断 ，
+显著提升肺癌筛查的效率与准确性，结果表明模型在肺
+癌风险预测 、心血管诊断和肺部异常检测等任务上 ，准
+确率均优于当前最先进模型 ，提升 2~20 个百分点 。医
+学影像与临床数据的深度融合，通过人工智能技术将分
+散的多模态数据转化为高质量的科研资产，并构建疾病
+知识图谱，开发诊断、治疗和风险预测模型，这种多模态
+数据的整合可精准理解疾病复杂性，为个性化医疗提供
+基础。
+大型语言模型在医学领域取得显著进展，但多数大
+型语言模型局限于处理文本单模态数据，医学多模态数
+据如医学影像、生理音频等进行分析处理的过程超出了
+单模态大模型的能力。为此，研究者们提出针对医学领
+域的多模态大语言模型 。现有医学多模态大语言模型
+如 Med- Gemini
+[90]
+、LLaV A- Med（large language- and- vision
+assistant for biomedicine）
+[91]
+、PMC-LLaMA（large language
+model made available on medical papers）
+[92]
+、BioMedGPT
+[93]
+等，具有强大的跨模态交互能力 ，融合过程整合深层医
+学领域知识 ，增强对医学数据的理解与整合 ，可对复杂
+医疗状况全面分析 。瑞金医院携手华为共同发布多模
+态病理大模型 RuiPath，可处理图像 、文本等多模态信
+息，助力医院实现多模态融合 ，涵盖临床 、影像、病理等
+多领域，覆盖中国每年 90%癌症发病人群罹患的癌种 ，
+可精准识别病灶区域 ，单切片诊断时间仅需数秒 ，显著
+提升诊断效率；复旦大学附属中山医院联合上海科学智
+能研究院共同研发的心血管专科多模态大模型 Cardio-
+Mind 发布，精准聚焦冠心病 、心律失常 、心力衰竭等心
+血管疾病 ，实现心电图 、超声影像等多模态数据的深度
+推理，进行智能辅助诊断 ；华中科技大学提出针对胰腺
+肿瘤诊断的多模态模型 Joint-AI
+[94]
+，基于患者临床信息
+与 超 声 内 镜 图 片 对 胰 腺 占 位 作 出 诊 断，准 确 率 达 到
+98%。中山大学附属第六医院提出桥接多模态融合模
+型 Brim
+[95]
+，整合病理切片图像与基因组分子特征 ，通过
+构建桥接网络 ，实现跨模态信息深度融合 ，全面刻画肿
+瘤特征，无需患者的基因组数据 ，仅分析常规病理切片
+图像，即可实现高精度生存风险预测。
+2.3 融合方法分析与比较
+综上所述，医学多模态知识融合技术近年来取得显
+著发展，为深入了解各融合方法的性能与优缺点 ，对各
+类融合方法进行总结分析，如表 5 所示。
+图 2 耦合 Mamba 模型架构
+Fig.2 Coupled Mamba architecture
+1737
+
+=== PDF_PAGE 10 ===
+Journal of Frontiers of Computer Science and Technology 计算机科学与探索 2025, 19(7)
+表 5 各融合方法总结
+Table 5 Summary of various fusion methods
+多模态
+预训练
+模型
+多模态
+实体
+对齐
+CLIP
+[33]
+BLIP
+[34]
+FILIP
+[35]
+MedCLIP
+[36]
+ConVIRT
+[37]
+MedViLL
+[38]
+GNN-
+MNER
+[29]
+MGCA
+[32]
+MUSK
+[39]
+EGMA
+[40]
+MMed-
+RAG
+[42]
+MMedPO
+[43]
+零样本学习能力、
+鲁棒性强
+利用噪声数据的
+能力强
+细粒度语义对齐
+能力强
+结合医学知识库，
+对齐精度高
+少量标注数据下
+仍有高性能
+具有多任务能力，
+可同时完成不同训
+练任务
+减少文本歧义影响
+与视觉噪声干扰
+有限资源下影像
+表征学习效果强
+可用大规模无配对
+数据，泛化性强
+减少对手工标注数
+据依赖 ，可解释性
+强
+减少对检索信息的
+过度依赖与低质量
+信息干扰
+提高临床相关性 ，
+减少对文本知识的
+依赖
+复杂任务泛化能力
+有限，计算成本高
+受限于视觉数据质
+量，计算成本高
+处理长文本或复杂视
+觉场景能力有限
+受限于prompt 质量，
+数据需求量大
+依赖影像 -文本对数
+据，计算成本高
+计算成本高
+未考虑节点异质性，
+计算成本较高
+依赖放射学报告质
+量，计算复杂度较高
+计算资源需求大
+依赖辅助数据质量，
+计算复杂度较高
+依赖检索库质量，计
+算成本较高
+受数据质量影响，计
+算成本较高
+零样本图
+像分类
+图文检索
+视觉问答
+零样本图
+像分类
+图文检索
+医学影像
+分类
+医学图文
+检索
+医学影像
+分类
+医学图文
+检索
+医学影像
+分类
+医学图文
+检索
+医学视觉
+问答
+实体对齐
+实体对齐
+医学视觉
+问答
+医学影像
+分类
+医学图文
+检索
+医学视觉
+问答
+医学报告
+生成
+医学视觉
+问答
+医学报告
+生成
+96.20
+—
+—
+78.32
+—
+—
+59.42
+—
+—
+—
+—
+84.10
+77.70
+—
+—
+75.20
+61.30
+—
+83.57
+89.54
+—
+—
+73.08
+66.54
+—
+—
+76.20
+—
+—
+—
+77.10
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+82.44
+87.60
+—
+—
+95.40
+—
+—
+—
+—
+—
+55.90
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+83.90
+—
+—
+86.98
+—
+—
+60.38
+—
+88.49
+80.72
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+87.30
+—
+98.00
+—
+—
+—
+89.70
+—
+—
+—
+85.08
+87.13
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+50.00
+—
+57.50
+—
+—
+—
+86.58
+—
+—
+—
+69.50
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+23.25/12.34/
+20.47
+31.38/25.59/
+32.43
+—
+—
+3.52/11.13/
+10.03
+11.96/29.52/
+34.16
+ImageNet
+COCO
+Flickr30K
+VQA2.0
+ImageNet
+Flickr30K
+CheXpert
+CheXpert
+CheXpert
+CheXpert
+MIMIC-CXR
+MIMIC-CXR
+VQA-RAD
+Twitter-2017
+CheXpert
+PathVQA
+CheXpert-5x200
+CheXpert-5x200
+MIMIC-CXR
+IU-Xray
+MIMIC-CXR
+IU-Xray
+SLAKE
+VQA-RAD
+MIMIC-CXR
+IU-Xray
+分类 方法 优点 缺点 应用
+实验结果（最优性能）/%
+ACC Top1 Recall F1-score AUC Prec BLEU/ROUGE-L/METEOR 数据集
+1738
+
+=== PDF_PAGE 11 ===
+时振普 等：医学领域多模态知识图谱融合技术发展现状研究
+由表 5 可知：
+（1）在通用开放性场景中 ，CLIP、BLIP、FILIP 等多
+模态预训练模型以对比学习思想与零样本学习能力在
+多模态数据交互中效果优异，对比学习策略结合交叉注
+意力机制使得更细粒度多模态语义交互，但通用模型直
+接应用于医学领域效果欠佳，需对模型向医学领域适配
+改进，以有效融合医学多模态数据。
+（2）针对医学多模态数据专业性 ，研究者们在通用
+模型基础上 ，结合医学知识库 ，使用海量医学影像与文
+本数据进行预训练 ，如 MedCLIP、ConVIRT、MedViLL
+多模态
+实体
+链接
+多模态
+数据
+融合
+GEMEL
+[45]
+UniMEL
+[46]
+Coupled-
+Mamba
+[85]
+MINIM
+[87]
+MMI
+[88]
+M3FM
+[89]
+高效参数微调 ，低
+频实体识别能力强
+微调参数少，不依赖
+文本数据
+适用于长序列和大
+规模数据处理 ，适
+用未对齐数据
+减少活检依赖，自学
+习能力强
+高精度 ，广泛适用
+性强
+多任务学习效率高，
+数据标注成本低
+无法处理复杂视觉
+场景
+依赖高质量图像，计
+算成本较高
+对模型状态大小要
+求高，存储需求较大
+临床相关性仍需进
+一步验证
+临床集成 难度较高
+计算成本较高
+实体链接
+实体链接
+多模态情
+感分析
+肺癌突变
+分类
+乳腺癌突
+变检测
+OCT 影像
+分类
+眼底影像
+分类
+胸 部 CT
+影像分类
+胸部 X 光
+影像分类
+肺部影像
+分 类（早
+期 融 合）
+肺部影像
+分 类（中
+期融合）
+肺部影像
+分 类（晚
+期融合）
+肺癌风险
+预测
+心血管疾
+病预测
+肺结节
+预测
+—
+—
+85.70
+81.80
+83.40
+95.40
+94.00
+93.00
+95.00
+79.00
+86.00
+84.80
+87.00
+85.90
+—
+—
+—
+86.30
+92.90
+—
+—
+—
+—
+—
+79.70
+86.00
+78.00
+76.10
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+95.50
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+85.60
+81.30
+83.50
+—
+95.90
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+96.50
+—
+—
+—
+—
+—
+91.00
+92.30
+91.70
+94.00
+92.84
+98.58
+—
+—
+—
+—
+—
+—
+96.20
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+WikiDiverse
+Wikidiverse
+CMU-
+MOSEI
+CH-SIMS
+CH-
+SIMSV2
+自建
+数据集
+自建
+数据集
+NLST、
+MIDRC、
+WFUSM、MGH
+分类 方法 优点 缺点 应用
+实验结果（最优性能）/%
+ACC Top1 Recall F1-score AUC Prec BLEU/ROUGE-L/METEOR 数据集
+注：实验结果中 ACC 为准确率，表示正确分类样本数占总样本数的比例 ；Top1 表示模型预测的 概率最高的类别 是否与真实标签一
+致，正确预测的样本数占总样本数的比例 ；Recall 为召回率，表示实际为正类的样本中被正确预测的比例 ；F1-score 表示精确率和召回率
+的调和平均数；AUC 反映模型对正负样本的区分能力，分值越高性能越好；Prec 为精确率，表示预测为正类的样本中实际为正类的比例 ；
+BLEU、ROUGE-L、METEOR 3 个指标用于评估模型进行医学报告生成的性能 ，分别代表衡量文本的 n-gram 匹配程度、衡量生成报告与
+参考报告的相似度、综合评估单词匹配和词序等，分值越高代表性能越好；结果中“—”表示当前无结果。
+表 5（续）
+1739
+
+=== PDF_PAGE 12 ===
+Journal of Frontiers of Computer Science and Technology 计算机科学与探索 2025, 19(7)
+模型等，提高医学数据整合能力 ，用于影像分类 、图像-
+文本匹配 、医学视觉问答 、医学报告生成等研究 。多尺
+度、层次化特征提取与跨模态注意力模块等方法 ，可显
+著提升医学数据处理能力 ，如 Wang等
+[32]
+提出的 MGCA
+采用实例级、病变区域级与疾病级多种不同层次实现多
+模态对齐 ，AUC 值达到 89.7%；结合真实医师诊断数据
+辅助多模态对齐，增强模型泛化性与鲁棒性，如 Ma 等
+[40]
+提出的 EGMA 基于眼动数据引导跨模态对齐与映射 ，
+在低数据量（1%训练集）情况下仍能取得高性能。
+（3）在真实医疗场景中，基于BERT、Swin-Transformer
+等模型，结合跨模态注意力机制 、强化学习等技术处理
+真实临床数据，通过多模态融合，挖掘医学数据关联，旨
+在实现精准的疾病预测与识别，从而辅助临床诊断。如
+Shao 等
+[88]
+提出的 MMI 采用早期 、中期、晚期 3 种不同融
+合策略实现多模态融合，实现高效肺部感染病原体识别，
+AUC 值都达到 90%以上；Niu 等提出的 M3FM 基于多任
+务集成实现对肺部疾病、心血管疾病的风险预测与识别，
+尤其在肺结节检测方面AUC 值达到了极佳的98.58%。
+近年来，多模态融合在医学领域的应用突飞猛进 ，
+基于人工智能技术辅助医生进行临床诊断与预后 ，取得
+了优异效果 ，尤其多模态大模型的提出 ，更让医疗行业
+有了突破性进展。
+3 多模态知识图谱在医学领域的应用
+多模态知识图谱以优秀的多元知识整合与分析能
+力在医学领域备受瞩目 ，是提升医疗自动化 、智能化水
+平的重要工具。近年来，医学多模态知识图谱在技术构
+建、临床应用及多模态融合等方面取得显著进展。多模
+态大模型通过整合文本、图像、音视频等多模态数据，在
+跨模态理解、生成与推理任务中亦展现出前所未有的潜
+力，促进多模态知识图谱构建 。二者相辅相成 ，多模态
+知识图谱提供结构化语义网络，增强多模态大模型的可
+解释性与推理能力 ，而多模态大模型处理多模态数据 ，
+帮助抽取和更新多模态知识图谱中实体与关系 。2024
+年 11 月，国家卫健委 、国家中医药局 、国家疾控局联合
+发布《卫生健康行业人工智能应用场景参考指引》 ，列出
+智能就医咨询 、智能药物研发 、医学影像智能辅助诊断
+等 84 种应用场景 ，可利用多模态大模型与医学多模态
+知识图谱等技术促进上述智能医学领域发展，目前在医
+学视觉问答 、药物研发 、影像辅助诊断等领域中已取得
+重要进展。
+3.1 医学视觉问答
+医学视觉问答 （medical visual question answering ，
+MedVQA）是视觉问答技术在医疗领域的应用延伸 ，它
+将自然语言处理与计算机视觉技术结合，对医学影像数
+据（如 CT、MRI 图像等）进行挖掘分析，综合利用文本与
+视觉信息提供多维度 、高精准的解答 ，为用户提供个性
+化的医学建议与决策支持。
+研究者已提出多种基于深度学习的MedVQA 模型，
+大都需要大规模多模态数据集进行训练 ，如 Medical-
+CXR-VQA（medical chest X-ray visual question answering） 、
+PMC-VQA（visual question answering on medical papers）
+[96]
+等。目前多数 MedVQA 模型结合视觉 、语言特征与医
+学知识图谱等信息对临床问题进行回答 ，如张殿元等
+[97]
+提出一种基于知识增强与多模态融合的 MedVQA 模
+型，可在复杂环境中更好地分析临床问题 ；刘亚
+[98]
+提出
+一种基于 BioBERT 与语言特征增强的 MedVQA 模型，
+利用语言增强模块丰富医疗问题上下文表示，增强理解
+能力 。MedVQA 已被广泛应用于医疗领域下游应用 ，
+但现有 MedVQA 数据集较少 ，缺乏语义推理与临床知
+识，使得传统深度学习模型泛化能力有限。多模态大语
+言模型的提出 ，以其强大的跨模态交互与推理生成能
+力，可准确理解问题并从图像中提取与问题相关的特
+征，进行图像内容自动定位与推理，进而提供合理回答，
+使 MedVQA 取得显著发展 。剑桥大学语言技术实验室
+推出轻量级多模态医学大模型 Visual Med-Alpaca 用于
+医学视觉问答，涵盖阅读 X 光片能力、提供用药建议等，
+其基于提示增强方法融合文本与视觉信息，将视觉信息
+转换为中间文本表示用于提示预训练的大模型，用于后
+续推理，轻松实现从解释放射图像到解决复杂临床问题
+的过程 。Liang 等
+[99]
+提出药物研发 DrugChat 框架，基于
+GNN 与大模型结合，根据化合物分子图进行多轮交互性
+回答，GNN 负责从化合物分子图中学习表示 ，然后通过
+适配器转换为大模型可接受的形式 ，进一步生成答案 ，
+从而在早期阶段发现潜在有效的药物，加速药物发现。
+3.2 药物研发
+通过与多模态数据结合 ，可加快药物研发过程 ，提
+高药物研发效率，目前结合多模态数据的药物研发已经
+是生物医药领域的研究热点之一 。医疗临床数据与生
+物学信息等多模态数据在疾病治疗机制理解、药物靶点
+预测等方面已取得显著进展。
+药物研发涉及蛋白质结构、分子结构、基因组学、病
+理学图像等 ，当模型仅依赖单一模态时 ，难以全面理解
+分子与蛋白质结构特征 。多模态大模型将不同模态数
+据映射到统一表示空间 ，可更好利用立体结构 、相互作
+用信息以及分子理化性质等特征，提升对药物与靶点交
+互过程的理解 ，实现药物研发“降本增效” 。2024 年，基
+于海量中医药数据预训练的“数智本草 ”中药研发大模
+1740
+
+=== PDF_PAGE 13 ===
+时振普 等：医学领域多模态知识图谱融合技术发展现状研究
+型发布，充分利用中医药领域的海量文献、典籍、药理研
+究等多源数据 ，提升中药研发智能化水平 ，用于中药成
+分筛选、配伍与处方优化及中医药领域智能问答、生成、
+计算等多过程 。2023 年，水木分子发布新一代药物研
+发助手 ChatDD 与全球首个千亿级参数多模态生物医药
+大模型 ChatDD-FM100B，可学习复杂的蛋白 -配体相互
+作用、化合物性质、疾病病理机制等，其涵盖药物研发全
+流程，包括立项调研 、靶点挖掘 、早期药物发现 、临床前
+研究、生物标记物发现等场景。多模态大模型 DeepSeek
+以其强大的推理能力 ，给生物医药领域带来升级新机
+遇。传统药物研发需海量实验数据 ，而 DeepSeek 仅需
+30 个活性分子即可构建靶点图谱 ，成本降低 90%，加速
+药物研发进程。2025 年，水木分子将 DeepSeek-R1
+[100]
+运
+用到 ChatDD 中，大幅提升推理能力，赋能更强的研发能
+力、更高的研发效率和更低的研发成本；中国医学科学院
+药物研究所本地化部署 DeepSeek-R1 模型，应用于高精
+度药物靶点预测、大规模分子库筛选及实验室日常数据
+分析等领域，为新药研发提供强有力的技术支持；清华大
+学人工智能产业研究院与水木分子联合用DeepSeek-R1
+蒸馏版本模型更新 BioMedGPT 中的文本基座模型 ，推
+出升级多模态大模型 BioMedGPT-R1，涵盖从药物分子
+结构解析、潜在靶点预测到药物研发全过程。
+3.3 影像辅助诊断
+医学影像数据来源广泛 ，包括 CT、MRI、X-ray、超
+声、PET 等，同时还涉及电子病历 、基因组数据 、实验室
+检查结果等非影像数据 ，且以大规模 、多模态形式存储
+于医疗数据库中 ，传统的单模态医学影像分析依赖于
+CNN 或 Transformer，而多模态大模型可综合利用文本
+与图像等信息，提高影像辅助诊断的准确性和可靠性。
+微软提出的轻量化多模态大模型 LLaV A-Med针对
+胸部X 光成像，通过适配器机制，将图像等非文本模态嵌
+入到文本嵌入空间中，遵循开放式指令，协助分析影像数
+据，生成临床放射学报告，辅助医生诊断。全球首个面向
+糖尿病诊疗的多模态大模型集成系统DeepDR-LLM
+[101]
+，
+基于 37.2 万条基层慢病诊疗与慢病管理数据进行训练，
+根据患者临床信息生成糖尿病管理意见，精准实现眼底
+影像质量检测 、病变分割与糖尿病视网膜病变（diabetic
+retinopathy，DR）诊断分级，研究显示，对 DR 诊断能力达
+到专业眼科医生水平 。2025 年来，全国多家医院和医
+疗机构与企业部署 DeepSeek 模型用于智能医疗服务 。
+南方医科大学珠江医院基于 DeepSeek 辅助双电极六靶
+点精准调控手术治疗帕金森病，通过融合患者影像学特
+征及电生理信号等临床数据，精准定位患者个体化调控
+靶点；鹰瞳万语医疗大模型接入 DeepSeek 推动 AI 在视
+网膜影像领域的应用 ，通过精准追踪眼轴变化 、生成结
+构化视觉健康报告，提供个性化干预建议。
+4 总结与展望
+多模态知识图谱作为多元数据管理的有效技术 ，可
+对海量医学知识进行高效整合 ，推动医学智能化发展 。
+深度学习、多模态大模型等已被广泛应用于医学多模态
+知识图谱构建 ，促进多模态知识融合 ，推动医学领域多
+模态知识图谱发展，但以下方面仍亟待改善：
+（1）医学数据处理与隐私保护。医学数据具有高度
+异构性与专业性，如医学文本包含大量专业术语、缩写，
+并多以电子病历、影像报告等结构化与非结构化形式存
+在；医学影像具有多模态 、多维性 ，如 X-ray、CT、超声
+等，涉及空间与时间变化，且依赖精确标注；医学音频数
+据易受噪声影响，需对其进行降噪。同时医学数据具有
+高度隐私性 ，涉及患者的个人信息 ，泄露可能导致身份
+盗用、歧视等后果 ，需要严格的法律法规与技术措施进
+行保护。
+（2）多模态数据对齐精度待提升。数据对齐是多模
+态数据融合的核心 ，由于医学多模态数据的异构性 、数
+据维度不匹配等问题 ，如影像数据具有 2D、3D 多种模
+态，且需像素精度的对齐，而文本数据在语义级别对齐，
+且医学数据易模态缺失 ，导致数据无法完全匹配 ，影响
+多模态融合效果 ，如何提升多模态对齐精度 ，是医学智
+能化发展关键所在。
+（3）大模型透明性与可解释性较差。多模态大语言
+模型在医学领域取得显著突破 ，但目前大模型呈现出
+“黑箱”特性，使用自监督学习或强化学习，但训练策略、
+损失函数 、超参数调优往往不透明 。模型内部决策过
+程、特征提取与融合方式难以理解或追踪 ，难以提供可
+理解依据，导致透明性与可解释性低。医学作为一门严
+谨的科学学科 ，具有高风险性 ，对透明性与可解释性需
+求高。
+针对以上方面难点，对未来多模态融合研究方向展
+望如下：
+（1）解决医学异构性数据问题 。针对临床文本数
+据，采用深度学习模型结合医学知识库 ，提升医学术语
+理解能力 ；结合规则 、词典等传统方法与深度学习模型
+互补，如构建医学文本专属解析模板 ，结合深度学习模
+型提高文本特征提取能力。针对医学影像数据，可采用
+迁移学习将训练的模型特征用于医学影像分析；基于生
+成对抗网络合成高质量图像引导医学图像特征处理 。
+针对医学音频数据 ，可使用小波变换 、自适应滤波器等
+减少噪声影响。
+1741
+
+=== PDF_PAGE 14 ===
+Journal of Frontiers of Computer Science and Technology 计算机科学与探索 2025, 19(7)
+（2）解决医学数据隐私保护问题。可使用能实现隐
+私保护、安全加密的联邦学习技术 ，允许多个机构在本
+地训练模型 ，仅交换模型参数或梯度 ，而不交换原始数
+据，大幅降低数据泄露风险 ，有效解决数据隐私问题 。
+分布式计算还可充分利用参与方的计算资源，提高计算
+效率，促进不同机构间数据合作与知识共享。采用隐私
+增强技术，如差分隐私、同态加密、安全多方计算等提升
+安全性。
+（3）解决多模态数据对齐精度不足问题。可使用多
+模态大模型提高多模态数据对齐精度，具有强大的多模
+态数据处理能力，其基于 Transformer、对比学习、跨模态
+注意力机制等技术 ，可有效融合不同模态数据 ，提高数
+据对齐精度。如基于跨模态共享表征学习，将不同模态
+数据映射到共享高维特征空间 ，增强匹配一致性 ；对比
+学习通过最大化正样本与最小化负样本相似性，确保模
+型学习模态不变特征；跨模态注意力机制联合分析不同
+医学模态数据 ，适应地调整模态融合权重 ，学习多模态
+数据的全局关系。
+（4）解决大模型透明性与可解释性较差问题。因果
+推理是提升大模型透明性与可解释性的有效方法 。通
+过建立变量间因果关系图明确不同医学特征间的影响
+路径，减少伪相关性，如使用贝叶斯网络、结构方程建模
+等方法；基于因果效应估计量化医学干预（药物、治疗方
+式等）对患者健康状况的因果影响 ，避免仅凭相关性作
+出错误推断 ，如使用倾向评分匹配 、逆概率加权等 。此
+外，还可基于反事实推理提高模型的因果解释能力 ，基
+于因果发现自动学习因果结构，帮助模型理解变量间因
+果关系，确保模型决策合理性与可靠性。
+参考文献：
+[1] SINGHAL A. Introducing the knowledge graph: things, not
+strings[J]. Official Google Blog, 2012, 5(16): 3.
+[2] Y ANG F, NING B, LI H Q. An overview of multimodal fu -
+sion learning[C]//Proceedings of the 2022 International
+Conference on Mobile Computing, Applications, and Ser -
+vices. Cham: Springer, 2022: 259-268.
+[3] 陈囿任, 李勇, 温明, 等. 多模态知识图谱融合技术研究综
+述[J]. 计算机工程与应用, 2024, 60(13): 36-50.
+CHEN Y R, LI Y , WEN M, et al. Research and comprehen -
+sive review on multi- modal knowledge graph fusion tech -
+niques[J]. Computer Engineering and Applications, 2024,
+60(13): 36-50.
+[4] KUMAR S, RANI S, SHARMA S, et al. Multimodality fu -
+sion aspects of medical diagnosis: a comprehensive review
+[J]. Bioengineering, 2024, 11(12): 1233.
+[5] SHAIK T, TAO X H, LI L, et al. A survey of multimodal in -
+formation fusion for smart healthcare: mapping the journey
+from data to wisdom[J]. Information Fusion, 2024, 102:
+102040.
+[6] PENG C Y , XIA F, NASERIPARSA M, et al. Knowledge
+graphs: opportunities and challenges[J]. Artificial Intelli -
+gence Review, 2023, 56(11): 13071-13102.
+[7] ZHU X R, LI Z X, W ANG X D, et al. Multi-modal knowl -
+edge graph construction and application: a survey[J]. IEEE
+Transactions on Knowledge and Data Engineering, 2024, 36
+(2): 715-735.
+[8] CHEN Y , GE X K, Y ANG S L, et al. A survey on multimodal
+knowledge graphs: construction, completion and applica -
+tions[J]. Mathematics, 2023, 11(8): 1815.
+[9] LIU Y , LI H, GARCIA-DURAN A, et al. MMKG: multi-
+modal knowledge graphs[C]//Proceedings of the 16th Inter -
+national Conference on the Semantic Web. Cham: Springer ,
+2019: 459-474.
+[10] LEHMANN J, ISELE R, JAKOB M, et al. DBpedia - a large-
+scale, multilingual knowledge base extracted from Wikipe -
+dia[J]. Semantic Web, 2015, 6(2): 167-195.
+[11] FERRADA S, BUSTOS B, HOGAN A. IMGpedia: a linked
+dataset with content- based analysis of Wikimedia images
+[C]//Proceedings of the 2017 International Semantic Web
+Conference. Cham: Springer, 2017: 84-93.
+[12] OÑORO-RUBIO D, NIEPERT M, GARCÍA-DURÁN A, et al.
+Answering visual- relational queries in web- extracted knowl-
+edge graphs[EB/OL].[2024-09-16]. https://arxiv.org/abs/1709.
+02314.
+[13] W ANG M, QI G L, W ANG H F, et al. Richpedia: a compre -
+hensive multi-modal knowledge graph[C]//Proceedings of the
+9th Joint International Conference on Semantic Technology.
+Cham: Springer, 2020: 130-145.
+[14] LI M L, ZAREIAN A, LIN Y , et al. GAIA: a fine- grained
+multimedia knowledge extraction system[C]//Proceedings
+of the 58th Annual Meeting of the Association for Computa -
+tional Linguistics: System Demonstrations. Stroudsburg: ACL,
+2020: 77-86.
+[15] KRISHNA R, ZHU Y K, GROTH O, et al. Visual genome:
+connecting language and vision using crowdsourced dense
+image annotations[J]. International Journal of Computer Vi -
+sion, 2017, 123(1): 32-73.
+[16] ZHANG N, LI L, CHEN X, et al. Multimodal analogical
+reasoning over knowledge graphs[C]//Proceedings of the
+11th International Conference on Learning Representations,
+2023.
+[17] LIN T Y , MAIRE M, BELONGIE S, et al. Microsoft COCO:
+1742
+
+=== PDF_PAGE 15 ===
+时振普 等：医学领域多模态知识图谱融合技术发展现状研究
+common objects in context[C]//Proceedings of the 13th Eu -
+ropean Conference on Computer Vision. Cham: Springer,
+2014: 740-755.
+[18] GOY AL Y , KHOT T, SUMMERS- STAY D, et al. Making
+the V in VQA matter: elevating the role of image under -
+standing in visual question answering[C]//Proceedings of
+the 2017 IEEE Conference on Computer Vision and Pattern
+Recognition. Piscataway: IEEE, 2017: 6325-6334.
+[19] PLUMMER B A, W ANG L W, CERV ANTES C M, et al.
+Flickr30k entities: collecting region-to-phrase correspondences
+for richer image-to-sentence models[C]//Proceedings of the
+2015 IEEE International Conference on Computer Vision.
+Piscataway: IEEE, 2015: 2641-2649.
+[20] AGRA W AL H, DESAI K R, W ANG Y F , et al. Nocaps: novel
+object captioning at scale[C]//Proceedings of the 2019 IEEE/
+CVF International Conference on Computer Vision. Piscat -
+away: IEEE, 2019: 8947-8956.
+[21] W ANG X W, TIAN J F, GUI M, et al. WikiDiverse: a multi -
+modal entity linking dataset with diversified contextual top -
+ics and entity types[EB/OL]. [ 2024-09-16]. https://arxiv.org/
+abs/2204.06347.
+[22] HU X Y , GU L, KOBA Y ASHI K, et al. Interpretable medical
+image visual question answering via multi- modal relation -
+ship graph learning[J]. Medical Image Analysis, 2024, 97:
+103279.
+[23] SUBRAMANIAN S, W ANG L L, MEHT A S, et al. MedICaT:
+a dataset of medical images, captions, and textual references
+[EB/OL]. [2024-09-16]. https://arxiv.org/abs/2010.06000.
+[24] IRVIN J, RAJPURKAR P , KO M, et al. CheXpert: a large
+chest radiograph dataset with uncertainty labels and expert
+comparison[J]. Proceedings of the AAAI Conference on Ar -
+tificial Intelligence, 2019, 33(1): 590-597.
+[25] P A VLOPOULOS J, KOUGIA V , ANDROUTSOPOULOS I.
+A survey on biomedical image captioning[C]//Proceedings
+of the 2nd Workshop on Shortcomings in Vision and Lan -
+guage. Stroudsburg: ACL, 2019: 26-36.
+[26] JOHNSON A E W , POLLARD T J, BERKOWITZ S J, et al.
+MIMIC-CXR, a de-identified publicly available database of
+chest radiographs with free- text reports[J]. Scientific Data,
+2019, 6: 317.
+[27] LAU J J, GAYEN S, BEN ABACHA A, et al. A dataset of
+clinically generated visual questions and answers about ra -
+diology images[J]. Scientific Data, 2018, 5: 180251.
+[28] 陈烨, 周刚, 卢记仓. 多模态知识图谱构建与应用研究综
+述[J]. 计算机应用研究, 2021, 38(12): 3535-3543.
+CHEN Y , ZHOU G, LU J C. Survey on construction and
+application research for multi- modal knowledge graphs[J].
+Application Research of Computers, 2021, 38(12): 3535-
+3543.
+[29] GONG Y C, LV X Q, YUAN Z, et al. GNN- based multi -
+modal named entity recognition[J]. The Computer Journal,
+2024, 67(8): 2622-2632.
+[30] LIU Z, LIN Y T, CAO Y , et al. Swin transformer: hierarchi -
+cal vision transformer using shifted windows[C]//Proceed -
+ings of the 2021 IEEE/CVF International Conference on
+Computer Vision. Piscataway: IEEE, 2021: 9992-10002.
+[31] HUANG G, LIU Z, V AN DER MAA TEN L, et al. Densely
+connected convolutional networks[C]//Proceedings of the
+2017 IEEE Conference on Computer Vision and Pattern
+Recognition. Piscataway: IEEE, 2017: 2261-2269.
+[32] WANG F, ZHOU Y , WANG S, et al. Multi- granularity
+cross-modal alignment for generalized medical visual repre -
+sentation learning[C]//Advances in Neural Information Pro -
+cessing Systems 35, 2022: 33536-33549.
+[33] RADFORD A, KIN J W, HALLACY C, et al. Learning
+transferable visual models from natural language supervi -
+sion[C]//Proceedings of the 38th International Conference
+on Machine Learning, 2021: 8748-8763.
+[34] LI J, LI D, XIONG C, et al. Blip: bootstrapping language-
+image pre-training for unified vision-language understanding
+and generation[C]//Proceedings of the 39th International
+Conference on Machine Learning, 2022: 12888-12900.
+[35] Y AO L W, HUANG R H, HOU L, et al. FILIP: fine grained
+interactive language- image pre- training[C]//Proceedings of
+the 10th International Conference on Learning Representa -
+tions, 2022.
+[36] W ANG Z F, WU Z B, AGARW AL D, et al. MedCLIP: con -
+trastive learning from unpaired medical images and text
+[EB/OL]. [2024-09-19]. https://arxiv.org/abs/2210.10163.
+[37] ZHANG Y , JIANG H, MIURA Y , et al. Contrastive learning
+of medical visual representations from paired images and
+text[C]//Proceedings of the Machine Learning for Health -
+care Conference, 2022: 2-25.
+[38] MOON J H, LEE H, SHIN W, et al. Multi- modal under -
+standing and generation for medical images and text via
+vision- language pre- training[J]. IEEE Journal of Biomedical
+and Health Informatics, 2022, 26(12): 6070-6080.
+[39] XIANG J X, WANG X Y , ZHANG X M, et al. A vision-
+language foundation model for precision oncology[J]. Na -
+ture, 2025, 638(8051): 769-778.
+[40] MA C, JIANG H, CHEN W, et al. Eye-gaze guided multi-
+modal alignment for medical representation learning[C]//
+Advances in Neural Information Processing Systems 37,
+2024: 6126-6153.
+1743
+
+=== PDF_PAGE 16 ===
+Journal of Frontiers of Computer Science and Technology 计算机科学与探索 2025, 19(7)
+[41] LI Z P , ZOU C H, MA S X, et al. ZALM 3: zero- shot en -
+hancement of vision- language alignment via in- context in -
+formation in multi- turn multimodal medical dialogue[EB/
+OL]. [2024-10-14]. https://arxiv.org/abs/2409.17610.
+[42] XIA P , ZHU K Y , LI H R, et al. MMed-RAG: versatile multi-
+modal RAG system for medical vision language models
+[EB/OL]. [2024-10-30]. https://arxiv.org/abs/2410.13085.
+[43] ZHU K Y , XIA P, LI Y , et al. MMedPO: aligning medical
+vision-language models with clinical-aware multimodal prefer-
+ence optimization[EB/OL]. [2024-12-15]. https://arxiv.org/abs/
+2412.06141.
+[44] DOSOVITSKIY A. An image is worth 16×16 words: trans-
+formers for image recognition at scale[EB/OL]. [ 2024- 09-
+16]. https://arxiv.org/abs/2010.11929.
+[45] SHI S B, XU Z R, HU B T , et al. Generative multimodal entity
+linking[EB/OL]. [2024-09-16]. https://arxiv .org/abs/2306.12725.
+[46] LIU Q, HE Y Y , XU T, et al. UniMEL: a unified framework
+for multimodal entity linking with large language models
+[C]//Proceedings of the 33rd ACM International Confer -
+ence on Information and Knowledge Management. New
+Y ork: ACM,2024: 1909-1919.
+[47] SHERSTINSKY A. Fundamentals of recurrent neural net -
+work (RNN) and long short-term memory (LSTM) network
+[J]. Physica D: Nonlinear Phenomena, 2020, 404: 132306.
+[48] HAN K, W ANG Y H, CHEN H T, et al. A survey on vision
+transformer[J]. IEEE Transactions on Pattern Analysis and
+Machine Intelligence, 2023, 45(1): 87-110.
+[49] KOROTEEV M V . BERT: a review of applications in natu -
+ral language processing and understanding[EB/OL]. [ 2024-
+09-16]. https://arxiv.org/abs/2103.11943.
+[50] ACHIAM J, ADLER S, AGARW AL S, et al. GPT -4 technical
+report[EB/OL]. [2024-09-16]. https://arxiv.org/abs/2303.08774.
+[51] LEE J, YOON W, KIM S, et al. BioBERT: a pre-trained bio -
+medical language representation model for biomedical text
+mining[J]. Bioinformatics, 2020, 36(4): 1234-1240.
+[52] HUANG K X, AL TOSAAR J, RANGANA TH R. Clinical-
+BERT: modeling clinical notes and predicting hospital readmis-
+sion[EB/OL]. [2024-09-19]. https://arxiv.org/abs/1904.05342.
+[53] LIU N, HU Q, XU H Y , et al. Med- BERT: a pretraining
+framework for medical records named entity recognition[J].
+IEEE Transactions on Industrial Informatics, 2022, 18(8):
+5600-5608.
+[54] 胡嘉元, 邱瑞瑾, 孙杨, 等. 自然语言处理及其在医学领域
+的应用[J]. 中国循证医学杂志, 2024, 24(10): 1205-1211.
+HU J Y , QIU R J, SUN Y , et al. Natural language process -
+ing and its application in the medical field[J]. Chinese Jour -
+nal of Evidence-Based Medicine, 2024, 24(10): 1205-1211.
+[55] 张云秋, 殷策. 基于大模型的中文电子病历实体自动识 别
+研究[J/OL].数据分析与知识发现 [2024-11-19]. https://kns.
+cnki.net/KCMS/detail/detail.aspx?filename= 41115001&db-
+name=CJFD&dbcode=CJFQ.
+ZHANG Y Q, YIN C. Research on entity automatic recog -
+nition of Chinese electronic medical records based on large
+model[J/OL]. Data Analysis and Knowledge Discovery [2024-
+11-19]. https://kns.cnki.net/KCMS/detail/detail.aspx?filename=
+XDTQ20241115001&dbname=CJFD&dbcode=CJFQ.
+[56] GOEL A, GUETA A, GILON O, et al. LLMs accelerate an -
+notation for medical information extraction[C]//Machine
+Learning for Health, ML 4H@NeurIPS 2023, 2023: 82-100.
+[57] LI D Y , KADA V A, GAO A J, et al. Automated clinical data
+extraction with knowledge conditioned LLMs[EB/OL]. [2024-
+09-19]. https://arxiv.org/abs/2406.18027.
+[58] WU Z F, SHEN C H, V AN DEN HENGEL A. Wider or
+deeper: revisiting the ResNet model for visual recognition
+[J]. Pattern Recognition, 2019, 90: 119-133.
+[59] YUAN Z W, ZHANG J. Feature extraction and image re -
+trieval based on AlexNet[C]//Proceedings of the 8th Interna-
+tional Conference on Digital Image Processing,2016: 65-69.
+[60] YU W, Y ANG K, BAI Y , et al. Visualizing and comparing
+AlexNet and VGG using deconvolutional layers[C]//Pro -
+ceedings of the 33rd International Conference on Machine
+Learning, 2016.
+[61] TAMMINA S. Transfer learning using VGG- 16 with deep
+convolutional neural network for classifying images[J]. Inter-
+national Journal of Scientific and Research Publications,
+2019, 9(10): 143-150.
+[62] LIANG J Z. Image classification based on RESNET[J].
+Journal of Physics: Conference Series,2020, 1634(1): 012110.
+[63] GOODFELLOW I, POUGET-ABADIE J, MIRZA M, et al.
+Generative adversarial networks[J]. Communications of the
+ACM, 2020, 63(11): 139-144.
+[64] LEI M Q, WU H C, LV X H, et al. ConDSeg: a general
+medical image segmentation framework via contrast-driven
+feature enhancement[EB/OL]. [2024-12-15]. https://arxiv.org/
+abs/2412.08345.
+[65] V AESSEN N, V AN LEEUWEN D A. Fine-tuning W av2V ec2
+for speaker recognition[C]//Proceedings of the 2022 IEEE
+International Conference on Acoustics, Speech and Signal
+Processing. Piscataway: IEEE, 2022: 7967-7971.
+[66] CHEN S Y , LIU S J, ZHOU L, et al. V ALL-E2: neural codec
+language models are human parity zero-shot text to speech
+synthesizers[EB/OL]. [2024-09-19]. https://arxiv.org/abs/2406.
+05370.
+[67] RAJASEKAR S J S, BALARAMAN A R, BALARAMAN
+1744
+
+=== PDF_PAGE 17 ===
+时振普 等：医学领域多模态知识图谱融合技术发展现状研究
+D V , et al. Detection of tuberculosis using cough audio anal -
+ysis: a deep learning approach with capsule networks[J].
+Discover Artificial Intelligence, 2024, 4(1): 77.
+[68] 王慧, 张玭, 金丰护, 等. 基于卷积神经网络和长短时记忆
+网络的心理疲劳状态识别方法 [J]. 生物医学工程学杂志 ,
+2024, 41(1): 34-40.
+W ANG H, ZHANG P , JIN F H, et al. Mental fatigue state
+recognition method based on convolution neural network
+and long short-term memory[J]. Journal of Biomedical En -
+gineering, 2024, 41(1): 34-40.
+[69] FUKUI A, PARK D H, Y ANG D, et al. Multimodal com -
+pact bilinear pooling for visual question answering and vi -
+sual grounding[EB/OL]. [ 2024-09-19]. https://arxiv.org/abs/
+1606.01847.
+[70] KIM J H, ON K W, LIM W, et al. Hadamard product for
+low-rank bilinear pooling[EB/OL]. [2024-09-19]. https://arxiv.
+org/abs/1610.04325.
+[71] YU Z, YU J, FAN J P , et al. Multi-modal factorized bilinear
+pooling with co- attention learning for visual question an -
+swering[C]//Proceedings of the 2017 IEEE International
+Conference on Computer Vision. Piscataway: IEEE, 2017:
+1839-1848.
+[72] YU Z, YU J, XIANG C C, et al. Beyond bilinear: general -
+ized multimodal factorized high -order pooling for visual
+question answering[J]. IEEE Transactions on Neural Net -
+works and Learning Systems, 2018, 29(12): 5947-5959.
+[73] SU W J, ZHU X Z, CAO Y , et al. VL-BERT: pre-training of
+generic visual-linguistic representations[EB/OL]. [ 2024-09-
+19]. https://arxiv.org/abs/1908.08530.
+[74] LI L H, Y A TSKAR M, YIN D, et al. VisualBERT: a simple
+and performant baseline for vision and language[EB/OL].
+[2024-09-19]. https://arxiv.org/abs/1908.03557.
+[75] QI D, SU L, SONG J, et al. ImageBERT: cross-modal pre-
+training with large- scale weak- supervised image- text data
+[EB/OL]. [2024-09-19]. https://arxiv.org/abs/2001.07966.
+[76] CHEN Y C, LI L J, YU L C, et al. UNITER: universal image-
+text representation learning[C]//Proceedings of the 16th Eu-
+ropean Conference on Computer Vision. Cham: Springer,
+2020: 104-120.
+[77] KIM W, SON B, KIM I. ViLT: vision- and- language trans -
+former without convolution or region supervision[C]//Pro -
+ceedings of the 38th International Conference on Machine
+Learning, 2021: 5583-5594.
+[78] SUN C, MYERS A, VONDRICK C, et al. VideoBERT: a joint
+model for video and language representation learning[C]//
+Proceedings of the 2019 IEEE/CVF International Conference
+on Computer Vision. Piscataway: IEEE,2019: 7463-7472.
+[79] LI L J, CHEN Y C, CHENG Y , et al. HERO: hierarchical
+encoder for video+language omni-representation pre-training
+[EB/OL]. [2024-09-19]. https://arxiv.org/abs/2005.00200.
+[80] LU J S, BA TRA D, PARIKH D, et al. ViLBERT: pretrain -
+ing task- agnostic visiolinguistic representations for vision-
+and-language tasks[EB/OL]. [ 2024-09-19]. https://arxiv.org/
+abs/1908.02265.
+[81] TAN H, BANSAL M. LXMERT: learning cross- modality
+encoder representations from transformers[EB/OL]. [ 2024-
+09-19]. https://arxiv.org/abs/1908.07490.
+[82] LUO H S, JI L, SHI B T, et al. UniVL: a unified video and
+language pre- training model for multimodal understanding
+and generation[EB/OL]. [ 2024-09-19]. https://arxiv.org/abs/
+2002.06353.
+[83] ZHU L C, Y ANG Y . ActBERT: learning global-local video-
+text representations[C]//Proceedings of the 2020 IEEE/CVF
+Conference on Computer Vision and Pattern Recognition.
+Piscataway: IEEE, 2020: 8743-8752.
+[84] KIM D, KIM T. Missing modality prediction for unpaired
+multimodal learning via joint embedding of unimodal models
+[C]//Proceedings of the 18th European Conference on Com -
+puter Vision. Cham: Springer, 2024: 171-187.
+[85] LI W B, ZHOU H, YU J Q, et al. Coupled mamba: en -
+hanced multi-modal fusion with coupled state space model
+[EB/OL]. [2024-10-14]. https://arxiv.org/abs/2405.18014.
+[86] GU A, DAO T. Mamba: linear-time sequence modeling with
+selective state spaces[EB/OL]. [2024-10-14]. https://arxiv.org/
+abs/2312.00752.
+[87] W ANG J Z, W ANG K, YU Y F, et al. Self-improving gener-
+ative foundation model for synthetic medical image genera -
+tion and clinical applications[J]. Nature Medicine, 2024, 31
+(2): 609-617.
+[88] SHAO J, MA J C, YU Y Z, et al. A multimodal integration
+pipeline for accurate diagnosis, pathogen identification, and
+prognosis prediction of pulmonary infections[J]. The Inno -
+vation, 2024, 5(4): 100648.
+[89] NIU C, L YU Q, CAROTHERS C D, et al. Medical multi -
+modal multitask foundation model for lung cancer screening
+[J]. Nature Communications, 2025, 16: 1523.
+[90] SAAB K, TU T, WENG W H, et al. Capabilities of gemini
+models in medicine[EB/OL]. [ 2024-10-14]. https://arxiv.org/
+abs/2404.18416.
+[91] LI C, WONG C, ZHANG S, et al. LLaV A-Med: training a
+large language- and- vision assistant for biomedicine in one
+day[C]//Advances in Neural Information Processing Sys -
+tems 36, 2023.
+[92] WU C Y , LIN W X, ZHANG X M, et al. PMC- LLaMA:
+1745
+
+=== PDF_PAGE 18 ===
+Journal of Frontiers of Computer Science and Technology 计算机科学与探索 2025, 19(7)
+toward building op en-source language models for medicine
+[J]. Journal of the American Medical Informatics Associa -
+tion, 2024, 31(9): 1833-1843.
+[93] ZHANG K, ZHOU R, ADHIKARLA E, et al. A generalist
+vision-language foundation model for diverse biomedical
+tasks[J]. Nature Medicine, 2024, 30(11): 3129-3141.
+[94] CUI H C, ZHAO Y C, XIONG S, et al. Diagnosing solid
+lesions in the pancreas with multimodal artificial intelligence:
+a randomized crossover trial[J]. JAMA Network Open,
+2024, 7(7): e2422454.
+[95] GAO F , DING J X, GAI B W , et al. Interpretable multimodal
+fusion model for bridged histology and genomics survival
+prediction in pan-cancer[J]. Advanced Science,2025: 2407060.
+[96] ZHANG X M, WU C Y , ZHAO Z H, et al. PMC-VQA: visual
+instruction tuning for medical visual question answer ing
+[EB/OL]. [2024-10-14]. https://arxiv.org/abs/2305.10415.
+[97] 张殿元, 余传明. 基于知识增强与多模态融合的医疗视觉
+问答模型[J]. 数据分析与知识发现, 2024, 8(S1): 226-239.
+ZHANG D Y , YU C M. Medical visual question answering
+model based on knowledge enhancement and multimodal
+fusion[J]. Data Analysis and Knowledge Discovery, 2024, 8
+(S1): 226-239.
+[98] 刘亚. 基于深度学习的医疗领域多模态视觉问答研究 [D].
+临沂: 临沂大学, 2024.
+LIU Y . Research on multimodal visual question answering
+in medical field based on deep learning[D]. Linyi: Linyi
+University, 2024.
+[99] LIANG Y W, ZHANG R Y , ZHANG L, et al. DrugChat:
+towards enabling ChatGPT -like capabilities on drug molecule
+graphs[EB/OL]. [2024-10-14]. https://arxiv.org/abs/2309.03907.
+[100] DEEPSEEK- AI, GUO D Y , Y ANG D J, et al. DeepSeek-
+R1: incentivizing reasoning capability in LLMs via rein -
+forcement learning[EB/OL]. [2025- 01- 25]. https://arxiv.org/
+abs/2501.12948.
+[101] LI J, GUAN Z, W ANG J, et al. Integrated image- based
+deep learning and language models for primary diabetes
+care[J]. Nature Medicine, 2024, 30(10): 2886-2896.
+时振普（1999—） ，男，山东郓城人 ，硕士研究
+生，CCF 学生会员 ，主要研究方向为健康医疗
+大数据。
+SHI Zhenpu, born in 1999, M.S. candidate, CCF
+student member. His research interest is health
+and medical big data.
+吕潇（1986—） ，女，山东济南人 ，高级工程师 ，
+主要研究方向为信息系统项目管理。
+LYU Xiao , born in 1986, senior engineer. Her
+research interest is information system project
+management.
+董彦如（1995—） ，女，山东临沂人，硕士，讲师，
+主要研究方向为人工智能 、自然语言处理 、数
+据分析与挖掘等。
+DONG Y anru, born in 1995, M.S., lecturer. Her
+research interests include artificial intelligence,
+natural language processing, data analysis and
+mining, etc.
+刘静（1979—） ，女，山东济南人，硕士，教授，主
+要研究方向为中医药智能化、健康医疗大数据。
+LIU Jing , born in 1979, M.S., professor. Her
+research interests include the intelligence of tra -
+ditional Chinese medicine, health and medical
+big data.
+王晓燕（1979—） ，女，山东诸城人 ，博士，副教
+授，硕士生导师 ，主要研究方向为中医药智能
+化、健康医疗大数据。
+W ANG Xiaoyan, born in 1979, Ph.D., associate
+professor, M.S. supervisor. Her research interests
+include the intelligence of traditional Chinese
+medicine, health and medical big data.
+1746

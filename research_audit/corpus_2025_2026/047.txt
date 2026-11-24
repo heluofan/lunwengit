@@ -1,0 +1,1288 @@
+=== PDF_PAGE 1 ===
+0810001 -1
+研究论文第 45 卷 第 8 期/2025  年 4 月/光学学报
+基于局部与全局信息协同的双分支多模态
+医学图像融合
+沈瑜
+1
+， 刘佳英
+1*
+， 闫佳荣
+1
+， 王若暄
+1
+， 马煜堃
+1
+， 李江柽
+1
+， 白珊
+1
+， 魏子易
+1，2
+， 李阳阳
+1
+， 强振凯
+1
+1
+兰州交通大学电子与信息工程学院 ，甘肃  兰州  730070 ；
+2
+甘肃萃英信息科技有限公司 ，甘肃  兰州  730030
+摘要  针对现有融合方法中存在病灶轮廓模糊 、细节信息丢失以及正常组织结构与病灶纹理区域相似度高的问题 ，提出
+了基于局部与全局信息协同的双分支多模态医学图像融合方法 。首先 ，利用多尺度深度可分离卷积捕获多层次特征 ；然
+后 ，在 双 分 支 架 构 中 利 用 深 度 局 部 特 征 强 化 模 块（DLEM）完 整 地 提 取 局 部 信 息；接 着 ，提 出 多 维 联 合 局 部 融 合 单 元
+（MLFU） ，通过多维注意力机制提高局部细节信息融合效率 ；最后 ，通过设计交叉协同全局融合单元 （CGFU） ，有效整合
+全局轮廓结构信息 。实验结果表明 ，所提模型在 Harvard 公开医学图像数据集融合结果中的熵 （EN） 、标准差（SD） 、空间
+频 率（SF） 、平 均 梯 度（AG） 、相 关 系 数（CC）较 其 他9 种 次 优 方 法 分 别 提 升 了3.14%、0.95%、13.66%、16.81% 和 1.12%。
+本文方法能够生成结构清晰 、纹理丰富 、病灶突出的高质量融合图像 。
+关键词  多模态医学图像融合 ；局部与全局信息 ；注意力机制 ；双分支架构
+中图分类号  TP391.4   文献标志码  A DOI ： 10.3788 /AOS 250443
+1　引　　言
+医 学 图 像 是 指 通 过 成 像 技 术 获 得 用 于 医 学 诊 断、
+治疗和研究的图像数据 。单模态的图像虽然能够提供
+特定成像模式下的关键信息 ，但由于其信息单一 ，难以
+同时展现病灶的解剖结构 、功能代谢特征 ，影响了医生
+的 精 准 诊 断。 因 此，在 临 床 上 通 过 医 学 图 像 融 合 技 术
+整 合 多 幅 原 始 图 像 中 的 互 补 特 征，可 获 得 更 全 面 的 病
+灶 信 息，有 助 于 提 高 诊 断 的 精 确 度 和 临 床 决 策 的 可 靠
+性
+［1］
+，该办法在肿瘤定位
+［2］
+、疾病诊断
+［3］
+和手术规划
+［4］
+等
+方面表现出显著优势 。
+目 前，医 学 图 像 融 合 方 法 主 要 分 为 传 统 方 法 和 深
+度 学 习 方 法。 传 统 方 法 可 分 为 像 素 级 融 合、特 征 级 融
+合 和 决 策 级 融 合，常 见 方 法 包 括 最 小/最 大 值 法
+［5］
+、小
+波 变 换
+［6］
+和 金 字 塔 变 换
+［7］
+等 。 然 而，以 上 方 法 通 常 需
+要 手 动 设 计 融 合 规 则，耗 时 较 长，且 在 处 理 复 杂 图 像
+时 存 在 细 节 信 息 丢 失、噪 声 处 理 不 足 、泛 化 性 低 等
+问 题。
+深度学习在计算机视觉领域的快速发展也带动了
+医学图像融合技术的进步 ，显著提升了融合效率 ，有效
+克服了传统方法的不足 。现有的深度学习方法主要分
+为 基 于 卷 积 神 经 网 络（CNN）和 基 于Transformer 的 融
+合 方 法。 基 于 CNN 的 方 法 通 过 卷 积 层 自 动 地 学 习 图
+像中的特征 ，具有较好的融合性能 。Zhang 等
+［8］
+提出了
+一 种 基 于CNN 的 通 用 融 合 框 架IFCNN ，该 框 架 通 过
+卷 积 层 提 取 病 灶 区 域 特 征，实 现 了 端 到 端 的 全 卷 积 重
+构，简化了处理流程 。然而 ，该方法仅采用 4 层卷积网
+络，未能充分捕获深层特征 ，导致融合图像中病灶纹理
+信 息 有 所 丢 失；为 改 善 这 一 问 题，Zhang 等
+［9］
+提 出 了 基
+于 挤 压 分 解 的 密 集 连 接 网 络SDNet ，该 网 络 能 更 深 入
+地 捕 获 纹 理 细 节，但 其 感 受 野 的 局 限 导 致 融 合 图 像 结
+果模糊 ；为了使得融合结果更加清晰 ，Bhutto 等
+［10］
+在使
+用 CNN 的 同 时，使 用 噪 声 去 除 和 对 比 增 强 的 方 案，获
+得 了 相 对 较 清 晰 的 融 合 结 果，但 该 研 究 缺 乏 全 局 信 息
+的有效整合 ，在泛化性方面表现较差 。CNN 在特征提
+取和图像融合方面表现出色 ，但其过度关注局部信息 ，
+导致融合图像在结构完整性上仍存在不足 。
+Transformer 模 型 凭 借 自 注 意 力 机 制 在 捕 获 全 局
+特征和长程依赖性方面表现出极大优势 ，弥补了 CNN
+的短板 ，引发了研究者的广泛关注
+［11］
+。Tang 等
+［12］
+提出
+的 多 尺 度 自 适 应 融 合（MATR）方 法 能 够 有 效 提 取 医
+学 图 像 全 局 上 下 文 信 息，但 在 提 取 局 部 细 节 信 息 方 面
+收稿日期 ：2025 -01-06；修回日期 ：2025 -02-02；录用日期 ：2025 -02-18；网络首发日期 ：2025 -02-25
+基 金 项 目： 国 家 自 然 科 学 基 金（62241106 ， 61861025 ） 、 甘 肃 省 重 点 研 发 计 划（甘 科 计［2024］10 号 -24YFGA 037） 、 “ 智 慧 天 路”
+建设重大专项 -QZzhtlzx（2023 QZzhtl 1102） 、 兰州局集团公司科技研究开发计划 （LZJKY 2024079 -1） 、 中国国家铁路集团有限公司重
+点课题（N2023 X050） 、 兰州交通大学重点研发项目 （LZJTU -ZDYF 2305）
+通信作者 ：
+*
+1640264144 @qq .com
+
+=== PDF_PAGE 2 ===
+0810001 -2
+研究论文 第 45 卷 第 8 期/2025  年 4 月/光学学报
+表现不足 ，导致微小的关键病灶细节无法完全保留 ；尹
+海 涛 等
+［13］
+提 出 基 于 交 叉 融 合Transformer 的 图 像 融 合
+方法 ，该方法能够平衡图像中的特有结构和相似结构 ，
+但 未 考 虑 到 各 模 态 独 特 信 息 的 表 述，导 致 医 学 图 像 在
+不同场景中的融合表现不佳 ；Tang 等
+［14］
+提出了一种功
+能 解 剖 网 络（FATFusion ） ，该 网 络 通 过 提 取 每 种 模 态
+的特定特征并聚合互补信息 ，提升融合效果 ，但在融合
+核 磁 共 振（MRI -CT）图 像 时 忽 略 了 结 构 信 息 表 现，导
+致 融 合 图 像 中 的 色 彩 信 息 对 比 度 过 高，覆 盖 了 纹 理 信
+息，视 觉 效 果 不 佳。Transformer 模 型 的 全 局 特 征 提 取
+能力使得融合图像在结构完整性和全局一致性上得到
+了显著提升 ，但在全局建模中会忽略局部信息 ，导致模
+型对细微边缘和纹理特征的捕获能力不足 。
+根 据 上 述 的 文 献 和 医 学 图 像 融 合 的 特 点，目 前 融
+合模型仍存在一些局限性 ：从融合结果表现上看 ，融合
+图像存在病灶区域边缘模糊不清 、细节不足 、纹理丢失
+等 问 题；从 融 合 方 法 角 度 来 看，现 有 的CNN 往 往 忽 略
+了 全 局 与 局 部 特 征 之 间 的 有 效 交 互，过 度 关 注 局 部 信
+息，导致不同感受野的特征未能被充分利用 。为此 ，本
+文从融合结果和融合方法两个角度出发 ，结合 CNN 和
+Transformer 的 优 势，提 出 了 一 种 基 于 局 部 与 全 局 信 息
+协同的双分支多模态医学图像融合方法 。本文的主要
+贡献包括 ：
+1） 采 用 局 部-全 局 双 分 支 提 取 网 络 架 构，提 出 深
+度局部特征强化模块 （DLEM）用于全面提取源图像局
+部特征 ；
+2） 设 计 多 维 联 合 局 部 融 合 单 元（MLFU） ，实 现 不
+同模态局部特征的高效协同融合 ；
+3） 提 出 交 叉 协 同 全 局 融 合 单 元（CGFU） ，利 用 交
+叉协同方式对全局信息进行深度交互与融合 ；
+4） 通 过 在 哈 佛 医 学 库 公 开 的 多 模 态 医 学 数 据 集
+上 的 实 验 验 证，发 现 构 建 的 双 分 支 融 合 网 络 能 够 有 效
+提 取 源 图 像 的 局 部 与 全 局 信 息，在 定 性 和 定 量 评 估 中
+优于其他方法 。
+2　本文方法
+2.1　网络总体框架
+为了解决医学图像融合中病灶区域信息模糊辨识
+度低 、纹理与细节保留不足的问题 ，本文提出了一种基
+于局部与全局信息协同的双分支多模态医学图像融合
+模 型，如 图 1 所 示，图 中 φk 表 示 可 逆 网 络 中 第k 层 的 输
+入 特 征，If 表 示 融 合 图 像。 首 先，利 用 多 尺 度 深 度 可 分
+离 卷 积 网 络 提 取 输 入 图 像 在 不 同 感 受 野 下 的 特 征 信
+息；接着 ，将特征输入到双分支结构的深度局部特征强
+化 模 块 与 全 局 信 息 提 取 模 块，以 增 强 不 同 模 态 的 局 部
+特征与全局特征的表达能力 ；随后 ，为了实现更有效地
+特 征 整 合，设 计 了 多 维 联 合 局 部 融 合 单 元（MLFU）和
+交 叉 协 同 全 局 融 合 单 元（CGFU） ，对 双 分 支 模 块 中 提
+取的特定特征进行深度融合 ；最后 ，采用卷积对融合后
+的特征进行调整与重构 ，输出最终融合的医学图像 。
+2.2　多尺度深度可分离特征提取模块
+在 特 征 提 取 过 程 中，单 一 感 受 野 难 以 有 效 捕 获 不
+同 尺 度 的 信 息。 为 减 少 信 息 丢 失，本 文 采 用 多 尺 度 深
+度可分离特征提取模块来捕获当前像素所在区域的多
+尺度信息 ，如图 2 所示 。具体而言 ，首先将输入图像进
+行 分 块 操 作，对 每 块 特 征 分 别 使 用3×3、5×5 和 7×7 
+3 种 不 同 尺 度 的 卷 积 核 进 行 多 尺 度 特 征 提 取。 相 比 传
+统 CNN ，深度可分离卷积通过对每个通道独立执行深
+图 1　模型整体框架
+Fig. 1　Overall framework of this model
+
+=== PDF_PAGE 3 ===
+0810001 -3
+研究论文 第 45 卷 第 8 期/2025  年 4 月/光学学报
+度 卷 积，并 在 输 出 阶 段 使 用1×1 卷 积 聚 合 所 有 通 道 特
+征 ，不 仅 能 够 有 效 提 取 特 征，还 显 著 减 少 了 计 算 量，从
+而提升了计算效率 。
+2.3　双分支特征提取模块
+为 了 增 强 病 灶 区 域 的 显 著 性，本 文 采 用 了 双 分 支
+特 征 提 取 架 构，其 中：对 于 局 部 特 征，设 计 了 DLEM ；
+对于全局特征 ，使用 Transformer 编码器进行提取 。双
+分 支 架 构 结 合 局 部 和 全 局 特 征，在 减 少 信 息 损 失 的 同
+时，能够更好地识别病灶与正常组织区域的差异 。
+2.3.1　深度局部特征强化模块
+为了有效捕获病灶边缘 、纹理 、形状等局部细微特
+征 ，本 文 设 计 了DLEM ，如 图 3 所示 。
+该模块基于可逆卷积 （INN）的思想 ，通过输入与输
+出特征之间的相互生成 ，能够更好地保留局部信息
+［15］
+。
+首 先 ，将 输 入 的 特 征 在 通 道 维 度 上 拆 分 为 [ 1：c ] 和
+[ c + 1：C ]，其中 ：C 表示输入特征的总通道数 ；c 的值取
+决于 C，具体为 c = 12 C。然后将拆分的两个特征分别经
+过 1×1 的卷积和归一化处理 ；为进一步增强局部特征 ，
+在每个可逆层中设计了细粒度边缘感知 （GEP）模 块 ；将
+[1：c ] 通 道 的 特 征 经 过GEP 模 块 之 后 与[ c + 1，C ]通
+道 特 征 相 加，以 增 强[ c + 1，C ] 通 道 的 表 达；将 增 强 的
+[ c + 1，C ] 通道特征再经过 GEP 模块与 [1：c ] 通道特征
+相 乘 ，从 而 增 强 [1：c ] 通 道 的 重 要 特 征，再 将 增 强 的
+[ c + 1，C ] 通道特征通过 GEP 后加入到增强的 [1：c ] 通
+道中 ，进一步增强特征的细节表达 ；通过可逆层和多个
+GEP 块 的 特 征 提 取，不 断 细 化 输 入 特 征 中 的 边 缘、纹
+理 等 信 息，每 层[1：c ] 和 [ c + 1，C ] 通 道 的 特 征 都 会 相
+互影响与强化 ，从而获得更具表达力的细节特征 。
+深度局部特征强化模块的计算过程为
+φ( )Sk + 1[ c + 1：C ] = Conv1 × 1{Conv1 × 1{φ( )Sk [ c + 1：C ] }+ GEP1{Conv1 × 1{φ( )Sk [1：c ] }}}
+φ( )Sk + 1[1：c ] = Conv1 × 1{Conv1 × 1{φ( )Sk [1：c ] }⊗ GEP2{φ( )Sk + 1[ c + 1：C ] }+ GEP3{φ( )Sk + 1[ c + 1：C ] }}
+φ( )Sk + 1 = CAT{ }φ( )Sk + 1[ ]1：c ，φ( )Sk + 1[ ]c + 1：C （1）
+式 中：⊗ 表 示 逐 元 素 相 乘；φ( )Sk [1：c ] 是 第 k 个 可 逆 层 中
+1 到 c 通 道 的 特 征；CAT 表 示 在 通 道 维 度 上 进 行 拼 接。
+GEP 可表示为
+图 2　多尺度特征提取模块
+Fig. 2　Multi -scale feature extraction module
+图 3　深度局部特征强化模块
+Fig. 3　Deep local feature enhancement module
+
+=== PDF_PAGE 4 ===
+0810001 -4
+研究论文 第 45 卷 第 8 期/2025  年 4 月/光学学报
+F
+OUT
+GEP = Conv1 × 1{ReLU {Sobel [Conv3 × 3 ( X ) ] }}+ X
+（2）
+式 中 ：X 表 示 输 入 特 征 ；Sobel 表 示 边 缘 检 测 算 子 ；
+ReLU 表 示 激 活 函 数。 每 个 GEP 块 采 用 3×3 卷 积 捕
+捉 局 部 空 间 信 息，提 取 边 缘 与 纹 理 浅 层 特 征；随 后，使
+用 边 缘 感 知 池 化 进 一 步 细 化 深 度 细 节 特 征，增 强 其 细
+粒 度 表 达；最 后，使 用1×1 卷 积 层 恢 复 通 道 维 度，从 而
+逐步提取和增强细节特征 。
+2.3.2　全局特征提取单元
+为 了 捕 获 特 征 之 间 的 长 距 离 依 赖 关 系，本 文 采 用
+了 基 于Transformer 的 编 码 器 来 提 取 全 局 特 征。 该 模
+块 通 过 其 独 特 的 注 意 力 机 制，能 够 有 效 地 动 态 捕 捉 图
+像 中 的 整 体 空 间 上 下 文 信 息。 考 虑 到 计 算 效 率，使 用
+局 部 转 化 器（LT）作 为 Transformer 的 基 本 单 元，简 化
+了 前 馈 神 经 网 络 结 构 的 方 式，在 减 少 了 参 数 量 的 同 时
+保留了图像中的全局结构和关键信息
+［16］
+。
+2.4　融合模块
+考虑到局部与全局特征融合过程中存在的感应偏
+差 ，本 文 提 出 多 维 联 合 局 部 融 合 单 元 用 于 融 合 局 部 特
+征，并设计交叉协同全局融合单元用于融合全局特征 ，
+以获得纹理更清晰 、对比度更高的融合结果 。
+2.4.1　多维联合局部融合单元
+为 了 更 好 地 融 合 局 部 特 征 中 的 纹 理 和 边 缘 信 息，
+本 文 设 计 了 多 维 联 合 局 部 融 合 单 位（MLFU） ，如 图 4
+所示 。
+首先 ，将提取的不同模态的局部特征经过平均池化
+之后进行逐点卷积 ，然后使用 Sigmoid 函数生成对应权
+重，对有用的通道特征给予更高的关注 ；最后 ，将增强后
+的 局 部 特 征 进 行 拼 接，结 合 并 行 空 间 和 通 道 注 意 力 机
+制，实现对多维度局部信息的综合理解 。通过调整权重
+来强化更重要的局部信息 ，其特征强化的过程如下 ：
+L( )ipet = Lpet ⊕ { Lpet ⊗ δ {Pw - Conv [GAP ( )Lpet ]，GAP ( )Lmri }}
+L( )imri = Lmri ⊕ { }Lmri ⊗ δ { }Pw - Conv ■■GAP ( )Lmri ]，GAP ( )Lpet （3）
+式 中：L( )ipet、L( )imri 分 别 表 示 增 强 后 的PET 和 MRI 图 像 的 特 征；Lpet、Lmri 分 别 表 示 提 取 的PET 和 MRI 图 像 的 特 征；
+⊗ 表 示 逐 元 素 相 乘；⊕ 表 示 逐 元 素 相 加；δ 表 示 Sigmoid 函 数；GAP 表 示 全 局 平 均 池 化 操 作；Pw -Conv 表 示 逐 点
+卷积 。多维联合注意力融合模块以及融合过程可以表示为
+A( )ic = Pw‐Conv{Pw‐Conv [Concat ( Lmri，Lpet ) ] }
+A( )is = Pw‐Conv{GAP{Pw‐Conv [Concat ( Lmri，Lpet ) ] }}
+w( )i = δ [ A( )ic ⊗ A( )is ]
+L( )ifu = ( )w( )i ⊗ L( )ipet ⊕ [ ]( )1 - w( )i ⊗ L( )imri （4）
+式 中：Concat 表 示 通 道 维 度 拼 接；A( )ic 表 示 通 道 维 度 的
+特 征 信 息；A( )is 表 示 空 间 维 度 的 特 征 信 息；w( )i 表 示 多
+维注意力权重 ；L( )ifu 表示局部信息融合特征 。通过多维
+联 合 注 意 力 生 成 联 合 权 重，最 终 利 用 源 图 像 特 征 的 互
+图 4　多维联合局部融合单元
+Fig. 4　Multi -dimensional joint local fusion unit
+
+=== PDF_PAGE 5 ===
+0810001 -5
+研究论文 第 45 卷 第 8 期/2025  年 4 月/光学学报
+补性 ，生成融合后的局部特征 。
+2.4.2　交叉协同全局融合单元
+本 文 提 出CGFU 来 更 好 地 保 留 各 模 态 中 的 全 局
+信 息，如 图 5 所 示，图 中 Gpet 为 PET 图 像 的 全 局 特 征，
+Gmri 为 MRI 图像的全局特征 ，Vpet 为 PET 图像的值 ，Vmri
+为 MRI 图 像 的 值，Kpet 为 PET 图 像 的 键，Kmri 为 MRI 图
+像的键 ，Gf 为全局信息融合特征 。
+CGFU 首先使用密集连接来增强提取的全局特征 ，
+再将增强的特征通过映射转化为键和值 ，同时将不同模态
+的全局特征在通道维度拼接之后 ，映射成交叉查询向量 ：
+K ( )ix = Reshape [Conv ( F ( )ix ) ]
+V ( )ix = Reshape [Conv ( F ( )ix ) ]
+Q( )i = Reshape{ }Conv [ ]Concat ( )F ( )imri，F ( )ipet （5）
+式 中：x 表 示 模 态；Q( )i 、K ( )ix 、V ( )ix 分 别 表 示 交 叉 模 态 的
+查 询 矩 阵、该 模 态 的 键、该 模 态 的 值；Reshape 表 示 映
+射。将该模态乘以交叉注意力权重来获得具有上下文
+的 整 体 特 征，再 将 全 局 特 征 添 加 到 另 一 个 分 支 的 输 入
+特征中 ，并沿通道维度连接生成整体特征融合图像 ，该
+过程可以表示为
+A( )ix = Softmax (Q( )i K ( )iTx ) （6）
+G ( )ifu = Conv{Concat{F ( )imri ⊕Reshape ( A( )ipetV ( )ipet )，F ( )ipet ⊕Reshape ( A( )imriV ( )imri ) }} （7）
+式中 ：A( )ix 表示特定模块的注意力图 ；T 表示转置 。
+2.5　损失函数
+本 文 模 型 从 局 部 和 全 局 特 征 提 取 角 度 出 发，分 别
+从 局 部 和 全 局 角 度 设 计 损 失 函 数 来 训 练 网 络，总 损 失
+函数定义如下 ：
+Ltotal = Llocal + Lglobal （8）
+针 对 局 部 约 束，本 文 使 用Llocal 来 保 证 融 合 图 像 的
+边 缘、纹 理 和 细 节 信 息，将 SSIM 用 于 细 节 损 失 计 算 的
+设计如下 ：
+Llocal = 1 - SSIM ( I
+Y
+F ，I
+Y
+SPE ) + α [1 - SSIM ( I
+Y
+F ，IMRI ) ]
+（9）
+式中 ：I
+Y
+SPE 为源 SPECT 图像的 Y 通道 ；IMRI 为源 MRI 图
+像 ；α 是 控 制 两 项 的 平 衡 因 子；I
+Y
+F 表 示 融 合 结 果，SSIM
+表示如下 ：
+SSIM ( S，I
+Y
+F ) = ( )2μS μI YF + N1 ( )2σSI YF + N2
+( )μ
+2
+S + μ
+2
+I YF + N1 ( )σ 2S + σ 2I YF + N2
+ （10）
+式 中：S 表 示 源 图 像；μS 和 μI YF 分 别 表 示 源 图 像 和 融 合
+图 像 的 平 均 强 度；N1 和 N2 代 表 常 数，用 来 解 决 不 稳 定
+性；σ
+2
+S 和 σ
+2
+I YF 代 表 源 图 像 和 融 合 图 像 的 方 差；σSI YF 表 示 源
+图像和融合图像的协方差 。
+为 了 进 一 步 保 证 融 合 结 果 具 有 准 确 的 信 息，从 全
+局限制的角度出发 ，使用互信息来设置全局损失 ，全局
+损失设计如下 ：
+Lglobal = βMI ( I
+Y
+F ，I
+Y
+SPE ) + γMI ( I
+Y
+F ，IMRI ) （11）
+式中 ：β 和 γ 是用于平衡两项影响程度的超参数 ，MI 定
+义如下 ：
+MI ( S，I
+Y
+F ) =
+λlce ( S，I
+Y
+F ) + (1 - λ) 1B ∑b = 1B [ ]- I ( )bl ( )S；I YF （12）
+式 中：λ∈[ 0，1] 是 权 重 参 数；lce 表 示 S 和 I
+Y
+F 之 间 的 正 常
+交 叉 熵 损 失；B 表 示 批 量 大 小；I ( )bl ( )S；I YF 表 示 互 信 息
+的下限 。
+图 5　基于交叉注意力机制的全局融合模块
+Fig. 5　Global fusion module based on cross -attention mechanism
+
+=== PDF_PAGE 6 ===
+0810001 -6
+研究论文 第 45 卷 第 8 期/2025  年 4 月/光学学报
+3　实验与分析
+3.1　数据集
+Harvard 数 据 集 专 注 大 脑 图 像 ，包 含 了 大 量 的
+MRI -CT、MRI -PET 、MRI -SPECT 的 配 准 图 像 对，广
+泛应用于医学图像融合模型的训练和评估
+［17］
+。本模型
+从中选取了 319 对图像 ，采用固定大小裁剪的方式进行
+数据增强 。将每张图像裁剪 20 次，裁剪后的图像大小
+为 120×120 ，从 而 生 成13000 张 图 像 补 丁 用 于 模 型 训
+练。在测试阶段采用 3 种病例进行实验 ，分别为“轻度
+阿尔茨海默病 ”MRI -PET 融合 、 “高血压脑病 ”MRI -CT
+融合 、 “正常老化 ”MRI -SPECT 融合 。 “轻度阿尔茨海默
+病”MRI -PET 融合图像能够显示海马体和颞叶区域的
+结构性萎缩 ； “高血压脑病 ”MRI -CT 融合图像能反映脑
+血管病变和白质损伤 ； “正常老化 ”MRI -SPECT 融合图
+像能够展示轻微的结构萎缩与代谢降低情况 。
+3.2　实验设置与环境
+本 文 的 模 型 训 练 和 测 试 均 在Windows 11 操 作 系
+统上进行 ，代码基于 PyTorch 框架实现 ，具体实验环境
+如表 1 所示 。
+模 型 训 练 过 程 中，采 用 Adam 优 化 器 以 加 速 收 敛，
+初 始 学 习 率 设 置 为0.001 ，批 量 大 小 设 定 为16。 训 练
+过 程 持 续50 个 epoch ，经 过 重 复 实 验，损 失 函 数 中 的 超
+参 数 设 置 为α = 1，β = 1，γ = 2.5，确 保 模 型 充 分 学 习
+训练数据中的特征 。同时 ，通过验证集评估模型性能 ，
+以调节训练参数并防止过拟合 。
+3.3　实验结果分析
+3.3.1　客观评价指标
+本 文 选 取 互 信 息 量（MI）
+［18］
+、熵（EN）
+［19］
+、标 准 差
+（SD）
+［20］
+、空 间 频 率（SF）
+［21］
+、平 均 梯 度（AG）
+［22］
+、结 构 相
+似度（SSIM）
+［23］
+、相关系数（CC）
+［24］
+7 种客观指标对融合
+结 果 进 行 评 价。MI 反 映 融 合 图 像 与 源 图 像 之 间 的 信
+息 共 享 程 度，值 越 大 表 示 融 合 图 像 保 留 源 图 像 信 息 的
+能 力 越 强；EN 描 述 图 像 的 整 体 信 息 量，值 越 大 说 明 融
+合 图 像 包 含 的 细 节 越 多，图 像 的 复 杂 性 越 高；SD 衡 量
+像 素 值 的 分 布 离 散 程 度，能 够 反 映 图 像 的 对 比 度 和 细
+节 变 化 情 况；SF 表 示 图 像 的 纹 理 细 节 变 化 频 率，数 值
+越 大 说 明 融 合 图 像 的 纹 理 丰 富 度 越 高；AG 用 于 表 征
+图 像 灰 度 梯 度 变 化 的 平 均 水 平，值 越 大 表 明 图 像 的 边
+缘 和 细 节 信 息 越 清 晰；SSIM 通 过 比 较 图 像 的 亮 度、对
+比度和结构来评估融合图像的相似性 ；CC 衡量融合图
+像 与 源 图 像 的 线 性 相 关 性，反 映 融 合 图 像 对 源 图 像 信
+息的还原程度 。
+为 了 验 证 本 文 方 法 的 有 效 性，选 择 了 IFCNN
+［8］
+、
+MATR
+［12］
+、FATFusion
+［14］
+、EMFusion
+［25］
+、CNP
+［26］
+、INet
+［27］
+、
+NSST
+［28］
+、EMMA
+［29］
+、PIAFusion
+［30］
+9 种 算 法 进 行 对 比
+实验 ，实验结果详见表 2~4，其中加粗为最优值 。
+表 2 展 示 了 本 文 方 法 与 其 他 方 法 在“ 轻 度 阿 尔 茨
+海 默 病”MRI -PET 图 像 融 合 任 务 中 的 客 观 对 比 结 果。
+从 实 验 结 果 可 以 看 出，本 文 方 法 在EN 、AG 和 CC 3 个
+评 价 指 标 上 均 取 得 了 最 佳 性 能，相 较 于 表 现 次 优 的 方
+法 ，分 别 提 升 了1.62%、0.50% 和 1.01%。 EN 的 提 升
+表 明 融 合 图 像 包 含 更 多 信 息 量，AG 的 提 升 表 明 细 节
+和 边 缘 更 为 突 出，CC 的 提 升 表 明 图 像 结 构 相 似 性 更
+高。但 本 文 方 法 在SF 和 SSIM 指 标 上 表 现 稍 差，这 是
+因 为：INet 方 法 通 过 小 波 变 换 进 行 图 像 分 解，虽 然 其
+SF 值 很 高 ，但 在 对 比 度 和 亮 度 方 面 损 失 较 大 ；
+EMFusion 方 法 侧 重 于 图 像 的 结 构 性，通 过 弱 化 细 节
+换 取 了 图 像 的 整 体 结 构 。 表 3 展 示 了“ 正 常 老 化 ”
+表 1　实验环境参数
+Table 1　Experimental environment parameters
+Environment
+GPU
+CPU
+Memory
+Software environment
+Configuration
+NVIDIA RTX 3090
+Intel Core i 5-13600 KF
+32 GB
+Python 3.8.10
+PyTorch 1.8.1
+CUDA 11.1.0
+OpenCV 4.5.3
+表 2　“轻度阿尔茨海默病 ”MRI -PET 图像融合客观评价结果
+Table 2　Objective evaluation results of MRI -PET image fusion for “mild Alzheimer disease ”
+Method
+EMFusion
+FATFusion
+IFCNN
+MATR
+CNP
+INet
+NSST
+EMMA
+PIAFusion
+Ours
+MI
+1.7858
+2.0454
+1.7228
+1.0662
+1.1133
+1.3268
+1.1269
+1.3723
+1.8294
+1.9027
+EN
+4.0717
+3.9580
+3.8596
+4.5450
+4.7050
+3.9172
+4.3519
+4.6679
+3.5998
+4.7812
+SD
+53.7109
+62.2424
+63.0723
+45.5352
+60.0441
+64.4687
+61.2523
+62.3648
+51.3519
+63.1788
+SF
+26.4749
+32.7547
+29.7692
+23.9305
+28.7216
+32.9132
+28.8855
+21.5018
+23.2344
+26.4095
+AG
+6.7840
+6.6212
+7.0504
+6.2782
+7.1127
+6.3871
+7.1549
+7.1899
+6.2212
+7.2259
+SSIM
+0.7586
+0.7484
+0.7539
+0.0506
+0.4563
+0.4533
+0.4885
+0.6559
+0.7319
+0.2531
+CC
+0.7679
+0.7034
+0.7932
+0.3462
+0.4276
+0.5877
+0.4302
+0.6654
+0.6783
+0.8012
+
+=== PDF_PAGE 7 ===
+0810001 -7
+研究论文 第 45 卷 第 8 期/2025  年 4 月/光学学报
+MRI -SPECT 融 合 任 务 中 的 客 观 评 价 指 标：INet 方 法
+的 SF 较高 ，但 MI 和 EN 却低于本文方法 ，说明 INet 方
+法 的 信 息 提 取 较 弱；EMFusion 方 法 的 SSIM 较 高，但
+AG 和 CC 低 于 本 文 方 法，说 明 EMFusion 方 法 在 细 节
+边 缘 保 留 方 面 较 差。表 4 展 示 了 本 文 方 法 与 其 他 方 法
+在“高血压脑病 ”MRI -CT 图像融合任务中的客观实验
+结果 。实验数据显示 ，本文方法在 EN 、SD 、SF 、AG 和
+CC 指标上均取得了最优性能 ，相较于表现次优的其他
+方 法，分 别 提 升 了3.14%、0.95%、13.66%、16.81% 和
+1.12%。SD 和 SF 的 增 加 表 明 对 比 度 和 频 率 分 布 得 到
+改 善，AG 和 CC 的 提 升 说 明 图 像 的 边 缘 更 加 锐 利，结
+构 保 持 性 更 好。 因 此，本 文 通 过 局 部 与 全 局 双 分 支 特
+征提取和融合 ，有效保留了源图像中的关键细节信息 ，
+减 少 了 融 合 过 程 中 可 能 出 现 的 信 息 丢 失，同 时 提 高 了
+图像的清晰度和组织边缘的可辨识度 。
+3.3.2　主观评价指标
+图 6 展示了 9 种经典算法与本文所提算法在 “轻度
+阿尔茨海默病 ”MRI -PET 图像融合任务中的可视化效
+果。从结果中可以看出 ：算法 EMFusion 、FATFusion 、
+IFCNN 、INet 、PIAFusion 在 融 合 过 程 中 未 能 有 效 保 留
+PET 图 像 中 的 功 能 信 息，导 致 融 合 结 果 中 色 彩 失 真；
+算 法 NSST 出 现 了 明 显 的 纹 理 信 息 丢 失，影 响 了 图 像
+细 节 的 呈 现；算 法 EMMA 融 合 后 的 图 像 纹 理 模 糊；而
+算 法 MATR 、CNP 在 融 合 过 程 中 生 成 了 伪 影，可 能 会
+干 扰 医 生 对 病 灶 区 域 的 准 确 解 读 与 判 断。 与 之 相 比，
+本 文 提 出 的 算 法 通 过 充 分 利 用MRI 和 PET 图 像 的 功
+能 性 与 结 构 性 优 势，实 现 了 功 能 与 结 构 信 息 的 高 度 协
+同融合 ，其融合结果在纹理表现上更加丰富 ，色彩对比
+更为自 然。
+图 7 展示了本文方法与其他对比算法在 “高血压脑
+病”MRI -CT 图像融合任务中的可视化结果 。从结果分
+析可见 ：算法 EMFusion 、FATFusion 未能有效保留 CT
+图像中的亮度信息 ，导致融合图像的亮度与原 CT 图像
+产生明显偏差 ，影响了其在亮度上表现的准确性 ；算法
+IFCNN 、MATR 的 融 合 结 果 中 存 在 伪 影，影 响 了 图 像
+的 真 实 性 和 诊 断 可 靠 性；算 法 INet 的 融 合 结 果 中 软 组
+织 区 域 存 在 绿 色 块，难 以 观 察 病 灶 区 域；算 法 NSST 、
+PIAFusion 在细节处理方面存在不足 ，导致纹理特征的
+不 明 显，降 低 了 图 像 细 节 的 表 达 能 力；算 法 MATR 、
+EMMA 虽然较好地融合了 CT 与 MRI 图像 ，但融合结
+果 中 的 纹 理 信 息 较 为 粗 糙，未 能 全 面 呈 现 局 部 细 节。
+与 之 相 比，本 文 提 出 的 模 型 在MRI -CT 图 像 融 合 中 能
+够更好地平衡全局结构信息与局部细节 ，既保留了 CT
+图像的亮度特征 ，又综合了 MRI 的软组织信息 。
+表 4　“高血压脑病 ”MRI -CT 图像融合客观评价结果
+Table 4　Objective evaluation results of MRI -CT image fusion for “hypertensive encephalopathy ”
+Method
+EMFusion
+FATFusion
+IFCNN
+MATR
+CNP
+INet
+NSST
+EMMA
+PIAFusion
+Ours
+MI
+1.8597
+1.9936
+1.8846
+1.2964
+1.3589
+1.7164
+1.1256
+1.9189
+1.0623
+1.9772
+EN
+4.4151
+4.0638
+4.2838
+4.5684
+4.8271
+4.5329
+4.5986
+5.0355
+4.1673
+5.1936
+SD
+69.0818
+63.9348
+66.3629
+53.1799
+68.4294
+69.1639
+62.3751
+68.9264
+65.4364
+69.8199
+SF
+19.1594
+35.3119
+34.3465
+24.1068
+25.7264
+32.2253
+22.6423
+24.1773
+26.1795
+40.1359
+AG
+4.7643
+7.9483
+7.5565
+6.3515
+6.9264
+7.5746
+5.6436
+6.5785
+5.3261
+9.2841
+SSIM
+0.7610
+0.6749
+0.7692
+0.0848
+0.3985
+0.5516
+0.4617
+0.3473
+0.7263
+0.2891
+CC
+0.8143
+0.8055
+0.8132
+0.5648
+0.6538
+0.7810
+0.6864
+0.8246
+0.7458
+0.8338
+表 3　“正常老化 ”MRI -SPECT 图像融合客观评价结果
+Table 3　Objective evaluation results of “normal aging ” MRI -SPECT image fusion
+Method
+EMFusion
+FATFusion
+IFCNN
+MATR
+CNP
+INet
+NSST
+EMMA
+PIAFusion
+Ours
+MI
+1.7714
+2.2462
+1.6768
+1.0738
+1.4367
+1.8088
+1.1194
+1.7353
+1.1812
+1.8148
+EN
+3.6356
+3.6505
+3.5720
+3.9442
+4.3278
+3.6538
+4.1914
+4.2562
+3.6568
+4.5307
+SD
+43.8150
+52.8167
+47.7393
+37.9646
+49.5901
+56.8042
+58.1983
+56.3693
+60.3922
+47.1277
+SF
+18.0332
+20.1658
+17.9503
+14.7156
+15.4326
+21.0979
+19.1234
+14.1688
+15.0866
+16.9121
+AG
+4.5276
+5.1922
+4.5780
+3.8456
+4.1579
+4.9088
+4.9284
+3.6723
+3.7159
+5.2320
+SSIM
+0.8078
+0.7957
+0.8137
+0.0699
+0.3280
+0.4587
+0.5137
+0.5963
+0.5511
+0.2516
+CC
+0.8821
+0.8729
+0.9136
+0.6927
+0.8656
+0.9137
+0.6812
+0.9125
+0.7191
+0.9182
+
+=== PDF_PAGE 8 ===
+0810001 -8
+研究论文 第 45 卷 第 8 期/2025  年 4 月/光学学报
+图 7　“高血压脑病 ”MRI -CT 可视化融合结果对比 。 （a）CT； （b）MRI ； （c）EMFusion ； （d）FATFusion ； （e）IFCNN ； （f）MATR ； （g）CNP ；
+（h）INet ； （i）NSST ； （j）EMMA ； （k）PIAFusion ； （l）本文方法
+Fig. 7　Comparison of MRI -CT visualization fusion results of “ hypertensive encephalopathy ”. (a) CT ; (b) MRI ; (c) EMFusion ; 
+(d) FATFusion ; (e) IFCNN ; (f) MATR ; (g) CNP ; (h) INet ; (i) NSST ; (j) EMMA ; (k) PIAFusion ; (l) ours
+图 6　“轻度阿尔茨海默病 ”MRI -PET 可视化融合结果对比 。 （a）MRI ； （b）PET ； （c）EMFusion ； （d）FATFusion ； （e）IFCNN ； （f）MATR ；
+（g）CNP ； （h）INet ； （i）NSST ； （j）EMMA ； （k）PIAFusion ； （l）本文方法
+Fig. 6　Comparison of MRI -PET visualization fusion results of “ mild Alzheimer disease ”. (a) MRI ; (b) PET ; (c) EMFusion ; 
+(d) FATFusion ; (e) IFCNN ; (f) MATR ; (g) CNP ; (h) INet ; (i) NSST ; (j) EMMA ; (k) PIAFusion ; (l) ours
+
+=== PDF_PAGE 9 ===
+0810001 -9
+研究论文 第 45 卷 第 8 期/2025  年 4 月/光学学报
+图 8 展 示 了 本 文 方 法 与 其 他 算 法 在“高 血 压 脑 病”
+MRI -SPECT 图 像 融 合 中 的 可 视 化 结 果 。 算 法
+FATFusion 的 融 合 结 果 粗 糙，影 响 MRI 细 节 信 息 展
+示 ；算 法 EMFusion 、IFCNN 、NSST 和 PIAFusion 在
+色彩展示上表现不佳 ，融合结果整体偏暗 ，未能有效保
+留 SPECT 图 像 的 代 谢 功 能 特 征；算 法CNP 和 EMMA
+的 融 合 结 果 中 边 缘 区 域 表 现 模 糊，未 能 充 分 展 现 细 节
+区 域 的 软 组 织 信 息；相 比 之 下，算 法 INet 和 本 文 方 法
+在 纹 理 显 示 上 均 表 现 出 较 高 的 清 晰 度，但 本 文 方 法 的
+融合结果更为自然流畅 ，细节和结构信息更为突出 。
+3.4　损失函数与参数设置
+1） 损失函数分析
+损失函数在融合结果的质量优化中起着关键作用 。
+为提升网络模型的训练效果 ，本文设计了全局损失和局
+部 损 失。 为 了 评 估 这 两 种 损 失 对 融 合 结 果 的 影 响，在
+验证集上进行了对比实验 ，分别定义损失函数如下 ：
+Ltotal1 = Llocal （13）
+Ltotal2 = Lglobal （14）
+本文损失和不同损失函数的定性对比如图 9 所示 。
+Ltotal1 和 Ltotal2 的融合结果都存在部分失真情况 。具体而
+言 ：Ltotal1 会 丢 失 大 量 的 全 局 信 息 且 对 比 度 过 高；Ltotal2
+会导致纹理细节丢失并生成模糊的融合结果 。相比之
+下，本文方法结合了全局损失和局部损失的优势 ，能够
+实 现 更 准 确 且 自 然 的 融 合 效 果。 因 此，全 局 损 失 和 局
+部损失对于本文模型的训练过程至关重要 。
+2） 参数设置分析
+本 文 将 对 两 种 关 键 参 数 进 行 实 验 分 析，分 别 为 损
+失函数中的超参数设置以及深度局部特征强化模块中
+通道划分的策略 。
+为 了 确 定 损 失 函 数 中 的 超 参 数 即α、β 和 γ 的 值，
+本 文 在 验 证 集 进 行 了 实 验 分 析。由 于 这3 个 超 参 数 的
+组 合 较 多，无 法 一 一 列 举，本 文 仅 展 示 了 一 组 实 验 结
+果 ，如 图 10（a）~（c）所 示。 为 更 准 确 地 分 析 每 个 超 参
+数对融合性能的影响 ，实验采用了控制变量法 ，即在每
+次 调 整 一 个 超 参 数 时，将 其 他 两 个 超 参 数 固 定 为 默 认
+值 。 在 每 一 轮 实 验 中，所 有 验 证 集 样 本 的 评 估 结 果 会
+被 综 合 计 算，并 显 示 其 平 均 得 分。 α 用 于 约 束 局 部 信
+息 ，适 当 增 大α 可 提 升 局 部 结 构 细 节，使 SD 、SF 上 升；
+但 当 α > 1 时 ，过 度 约 束 会 削 弱 细 节，导 致 AG 、MI 、
+CC 、SD 下降 ，降低对比度 。β 和 γ 用于约束全局信息 ，
+β 控 制 功 能 信 息 权 重，适 量 增 大β 可 提 高 对 比 度，提 升
+各 项 指 标，但 β > 1 时 会 削 弱 局 部 细 节，导 致 性 能 下
+降 。 γ 影 响 全 局 亮 度 和 对 比 度，适 当 增 大 可 增 强 信 息
+量，提高 CC 、EN ，但当 γ > 2.5 时，对比度过高 ，使得整
+体 指 标 下 降。 基 于 实 验 结 果，本 文 将 α、β 和 γ 的 默 认
+值分别设定为 1、1 和 2.5，作为实验的标准配置 。
+图 8　“高血压脑病 ”MRI -SPECT 可视化融合结果对比 。 （a）MRI ； （b）SPECT ； （c）EMFusion ； （d）FATFusion ； （e）IFCNN ； （f）MATR ；
+（g）CNP ； （h）INet ； （i）NSST ； （j）EMMA ； （k）PIAFusion ； （l）本文方法
+Fig. 8　Comparison of MRI -SPECT visualization fusion results of “hypertensive encephalopathy ”. (a) MRI ; (b) SPECT ; (c) EMFusion ; 
+(d) FATFusion ; (e) IFCNN ; (f) MATR ; (g) CNP ; (h) INet ; (i) NSST ; (j) EMMA ; (k) PIAFusion ; (l) ours
+
+=== PDF_PAGE 10 ===
+0810001 -10
+研究论文 第 45 卷 第 8 期/2025  年 4 月/光学学报
+图 9　不同损失函数下 “MRI -SPECT ”图像融合结果
+Fig. 9　Fusion results of “MRI -SPECT ” images with different loss functions
+图 10　参数的定量分析 。 （a）损失参数 α； （b）损失参数 β； （c）损失参数 γ； （d）通道划分参数 c；
+Fig. 10　Quantitative analysis of parameters . (a) Loss parameter  α; (b) loss parameter β; (c) loss parameters γ; (d) channel partitioning 
+parameter c
+
+=== PDF_PAGE 11 ===
+0810001 -11
+研究论文 第 45 卷 第 8 期/2025  年 4 月/光学学报
+在本文中 ，基于实验结果和网络结构设计考虑 ，通
+道 数 c 采 用 对 称 划 分 方 式（即 c=C/2） ，以 确 保 每 一 部
+分特征得到均衡处理和变换 。为了验证这种划分方式
+的 有 效 性，本 文 设 计 了1∶4、1∶3、1∶2 方 式 的 通 道 划 分
+和 无 通 道 划 分 的 对 比 实 验。 图 10（d）所 示 的 实 验 结 果
+表明 ，虽然 1∶2 的划分方式在 SSIM 指标上略低于不对
+称 划 分，但 在 EN 、AG 、CC 等 其 他 评 价 指 标 上 表 现 优
+越。在不对称划分方式中 ，由于通道不均衡 ，模型过度
+关注结构信息的保留 ，导致细节信息的丢失 ，进而影响
+融 合 效 果。 相 比 之 下，对 称 划 分 方 式 在 结 构 和 细 节 保
+留 方 面 实 现 了 较 好 的 平 衡，虽 然 SSIM 略 有 下 降，但 综
+合 性 能 明 显 提 升，验 证 了 对 称 划 分 在 细 节 保 留 和 融 合
+效果提升上的优势 。
+3.4　消融实验
+为 了 验 证 本 模 型 中DLEM 、多 维 联 合 细 节 融 合 单
+元（MDFU） 、CGFU 的有效性 ，本文设计了 5 组消融实
+验 进 行 对 比。 实 验 1 在 网 络 框 架 中 使 用 普 通 的3 层 卷
+积来代替 DLEM ，来证明本文提出的 DLEM 对细节特
+征 提 取 能 力 的 影 响 。 实 验 2 去 除 网 络 框 架 中 的
+MDFU ，直 接 在 通 道 维 度 进 行 拼 接 融 合 ，以 验 证
+MDFU 对细节特征融合的能力 。实验 3 在融合模块仅
+保 留 了 MDFU ，来 证 明 CGFU 对 整 体 信 息 的 融 合 性
+能。实 验4 在 整 个 网 络 中 去 除 所 有 本 文 提 出 的 创 新 模
+块 ，来 证 明 本 文 模 型 的 性 能。 实 验 5 是 添 加 了 各 创 新
+模块的网络模型 。
+实 验 结 果 如 表5 所 示，其 中“ √ ”表 示 在 网 络 框 架
+中 添 加 了 相 应 的 模 块， “× ”表 示 未 添 加 该 模 块。 为 了
+评 估 各 创 新 模 块 的 贡 献，选 取 了 两 组 数 据 进 行 了 消 融
+实验 。表 5 展示了各项客观评价指标 ，图 11 和图 12 展
+示 了 各 消 融 实 验 的 定 性 对 比 效 果。 在 实 验1 中 ，融 合
+结 果 展 现 出 较 高 的 信 息 丰 富 度，但 全 局 一 致 性 较 差。
+出 现 该 现 象 的 主 要 原 因 是：3×3 卷 积 层 主 导 了 特 征 提
+取 ，导 致 低 频 特 征 被 忽 视，从 而 在 局 部 区 域 产 生 了 冲
+突 。 在 定 性 对 比 中，发 现 融 合 结 果 明 显 存 在 伪 影 和 细
+节 丢 失 现 象，进 一 步 验 证 了 该 设 置 的 局 限 性。 实 验 2
+的 各 项 评 价 指 标 普 遍 低 于 实 验1，且 融 合 结 果 表 现 出
+明 显 的 边 缘 和 纹 理 信 息 丢 失，表 明 在 细 节 信 息 的 保 留
+和融合上存在不足 ，证明了 MDFU 模块在细节信息的
+保存和融合方面具有重要作用 。实验 3 相比实验 2，细
+节信息更加清晰 ，但整体结果出现了对比过度的问题 ，
+且整体信息的呈现不足 ，未能全面反映源图像的特征 。
+这 表 明 尽 管 细 节 融 合 有 所 改 善，但 全 局 信 息 的 平 衡 仍
+需 要 优 化。 实 验 4 的 各 项 指 标 普 遍 低 于 其 他 实 验，且
+视觉效果较差 ，存在明显的信息丢失 ，进一步说明该模
+型 在 融 合 效 果 上 存 在 明 显 缺 陷。实 验5 中 各 项 评 价 指
+标 均 优 于 其 他 实 验，相 较 于 实 验4，在 各 项 评 价 指 标 上
+分 别 平 均 提 升 了46.19%、26.40%、63.07%、60.83%、
+23.64% 和 18.40%；融 合 结 果 清 晰、信 息 丰 富、对 比 良
+好，视觉效果远优于其他融合结果 。
+图 13 展 示 了 两 种 数 据 集 上 的 消 融 实 验 结 果 雷 达
+图 ，进 一 步 验 证 了DLEM 、MDFU 和 CGFU 相 结 合 的
+方法在细节与整体信息提取与保留方面的优势 。实验
+结 果 表 明，双 分 支 特 征 提 取 方 法 在 多 模 态 医 学 图 像 融
+合 中 表 现 出 显 著 的 效 果，尤 其 是 在 增 强 图 像 的 细 节 表
+现 、结 构 一 致 性 和 功 能 信 息 保 留 方 面 具 有 明 显 改 进。
+这 些 改 进 有 效 提 高 了 图 像 融 合 质 量，使 得 融 合 图 像 在
+视觉上更加清晰 、细节丰富 ，能够更好地支持医学图像
+分析和诊断 。
+表 5　消融实验客观评价指标
+Table 5　Objective evaluation indexes of ablation experiments
+Image
+MRI -PET
+MRI -CT
+Experiment
+1
+2
+3
+4
+5
+1
+2
+3
+4
+5
+DLEM
+×
+√
+√
+×
+√
+×
+√
+√
+×
+√
+MDFU
+√
+×
+√
+×
+√
+√
+×
+√
+×
+√
+CGFU
+√
+√
+×
+×
+√
+√
+√
+×
+×
+√
+EN
+4.7812
+4.0491
+4.0231
+3.0212
+4.9056
+4.9145
+4.9673
+4.2617
+3.9987
+5.1993
+SD
+66.9532
+50.3156
+63.1788
+68.6801
+81.2723
+90.8375
+80.8984
+80.8184
+78.4064
+105 .435
+SF
+26.4100
+17.2170
+24.4974
+17.3869
+26.7498
+30.8827
+36.8878
+27.7892
+23.0492
+39.7107
+AG
+6.9028
+4.9400
+6.2108
+3.9577
+8.0386
+6.9028
+5.7580
+5.1425
+7.2756
+8.6243
+MI
+1.3784
+1.2310
+1.3602
+1.3315
+1.9027
+1.6911
+1.6910
+1.6740
+1.6329
+1.7043
+CC
+0.6474
+0.6251
+0.6873
+0.6517
+0.7974
+0.5779
+0.6388
+0.6531
+0.7154
+0.8187
+
+=== PDF_PAGE 12 ===
+0810001 -12
+研究论文 第 45 卷 第 8 期/2025  年 4 月/光学学报
+图 11　MRI -CT 消融实验定性比较
+Fig. 11　Qualitative comparison of MRI -CT ablation experiments
+图 12　MRI -PET 消融实验定性比较
+Fig. 12　Qualitative comparison of MRI -PET ablation experiments
+
+=== PDF_PAGE 13 ===
+0810001 -13
+研究论文 第 45 卷 第 8 期/2025  年 4 月/光学学报
+4　结　　论
+为 了 在 医 学 图 像 融 合 中 有 效 突 出 病 灶 区 域，提 高
+诊 断 效 率，本 文 提 出 了 一 种 结 合 局 部 与 全 局 信 息 协 同
+的 双 分 支 多 模 态 医 学 图 像 融 合 方 法。 首 先，设 计 了 双
+分 支 特 征 提 取 网 络，用 于 保 留 源 图 像 中 的 局 部 和 全 局
+信 息；其 次，针 对 提 取 的 局 部 特 征，采 用 多 维 联 合 局 部
+融 合 方 法，通 过 基 于 交 叉 注 意 力 机 制 的 全 局 融 合 模 块
+对 全 局 信 息 进 行 处 理，实 现 了 不 同 维 度 信 息 的 全 面 提
+取 与 融 合，更 好 地 保 留 病 灶 区 域 的 重 点 信 息。 实 验 结
+果 表 明，本 模 型 在Harvard 公 开 医 学 图 像 数 据 集 融 合
+结果中的 EN 、SD 、SF 、AG 和 CC 等客观评价指标上较
+其 他 9 种 方 法 中 最 优 的 方 法 分 别 提 升 了 3.14%、
+0.95%、13.66%、16.81% 和 1.12%。 通 过 对 比 实 验 和
+消 融 实 验 验 证，发 现 本 文 算 法 能 够 兼 顾 局 部 与 全 局 信
+息，融合结果既能有效结合正常组织结构 ，又能突出异
+常 病 灶 区 域，呈 现 出 丰 富 的 纹 理 细 节 和 清 晰 的 图 像 结
+构 。 然 而，当 前 方 法 对 未 对 齐 图 像 的 融 合 效 果 存 在 一
+定的限制 。未来的研究将进一步探索非对齐医学图像
+的 融 合 方 法，以 更 好 地 辅 助 医 生 进 行 诊 断 并 提 升 实 际
+应用价值 。
+参 考 文 献
+[1] 陈 伟, 孙 康 康, 李 奇 轩, 等 . 多 模 态 医 学 图 像 融 合 方 法 的 研 究
+进展 [J]. 中国辐射卫生 , 2023 , 32(5): 580 -585.
+Chen W , Sun K K , Li Q X , et al . Research progress of 
+multimodal medical image fusion methods [J]. Chinese Journal of 
+Radiological Health , 2023 , 32(5): 580 -585.
+[2] 陆晓骞 , 宗凌燕 , 沈琪 . 正电子发射断层扫描 /计算机断层扫描
+(PET/CT )成 像 在 肿 瘤 筛 查 中 的 应 用 进 展[J]. 中 国 辐 射 卫 生, 
+2023 , 32(1): 66-69, 74.
+Lu X Q , Zong L Y , Shen Q . Progress in application of positron 
+emission tomography/computed tomography (PET/CT ) 
+imaging in tumor screening [J]. Chinese Journal of Radiological 
+Health , 2023 , 32(1): 66-69, 74.
+[3] 李 文 昕, 郎 小 娥, 兰 宇, 等 . 功 能 性 近 红 外 光 学 成 像 技 术 在 多
+种 精 神 疾 病 诊 断 中 应 用 的 研 究 进 展[J]. 护 理 研 究, 2024 , 38
+(23): 4289 -4294 .
+Li W X , Lang X E , Lan Y , et al . Research progress on the 
+application of functional near infrared spectroscopy in the 
+diagnosis of various mental illnesses [J]. Chinese Nursing 
+Research , 2024 , 38(23): 4289 -4294 .
+[4] 陈 禹 蒙, 汪 毅, 刘 泽 远, 等 . 手 术 显 微 镜 双 光 路 非 对 称 结 构 改
+进 方 法 与 图 像 融 合[J]. 激 光 与 光 电 子 学 进 展, 2024 , 61(14): 
+1437012 .
+Chen Y M , Wang Y , Liu Z Y , et al . Improvement in 
+asymmetric structure with dual optical path of surgical 
+microscopes and image fusion [J]. Laser & Optoelectronics 
+Progress , 2024 , 61(14): 1437012 .
+[5] Li Y Y , Sun Y J , Huang X H , et al . An image fusion method 
+based on sparse representation and sum modified -Laplacian in 
+NSCT domain [J]. Entropy , 2018 , 20(7): 522.
+[6] Chao Z , Duan X G , Jia S F , et al . Medical image fusion via 
+discrete stationary wavelet transform and an enhanced radial 
+basis function neural network [J]. Applied Soft Computing , 
+2022 , 118: 108542 .
+[7] Singh S , Mittal N , Singh H . Multifocus image fusion based on 
+multiresolution pyramid and bilateral filter [J]. IETE Journal of 
+Research , 2022 , 68(4): 2476 -2487 .
+[8] Zhang Y , Liu Y , Sun P , et al . IFCNN : a general image fusion 
+framework based on convolutional neural network [J]. 
+Information Fusion , 2020 , 54: 99-118.
+[9] Zhang H , Ma J Y . SDNet : a versatile squeeze -and -
+decomposition network for real -time image fusion [J]. 
+International Journal of Computer Vision , 2021 , 129(10): 2761 -
+2785 .
+[10] Bhutto J A , Tian L F , Du Q L , et al . CT and MRI medical 
+image fusion using noise -removal and contrast enhancement 
+scheme with convolutional neural network [J]. Entropy , 2022 , 24
+(3): 393.
+[11] Li J , Chen J Y , Tang Y C , et al . Transforming medical imaging 
+with Transformers ? A comparative review of key properties , 
+current progresses , and future perspectives [J]. Medical Image 
+Analysis , 2023 , 85: 102762 .
+图 13　MRI -PET 、MRI -CT 消融实验雷达图 。 （a）MRI -PET ； （b）MRI -CT
+Fig. 13　Radar charts of MRI -PET and MRI -CT of ablation experiments . (a) MRI -PET ; (b) MRI -CT
+
+=== PDF_PAGE 14 ===
+0810001 -14
+研究论文 第 45 卷 第 8 期/2025  年 4 月/光学学报
+[12] Tang W , He F Z , Liu Y , et al . MATR : multimodal medical 
+image fusion via multiscale adaptive transformer [J]. IEEE 
+Transactions on Image Processing , 2022 , 31: 5134 -5149 .
+[13] 尹 海 涛, 周 昌 盛. 基 于 交 叉 融 合Transformer 的 红 外 与 可 见 光
+图像融合方法 [J]. 激光与光电子学进展 , 2025 , 62(6): 0637002 .
+Yin H T , Zhou C S . Cross fusion Transformer -based infrared 
+and visible lmage fusion method [J]. Laser & Optoelectronics 
+Progress , 2025 , 62(6): 0637002 .
+[14] Tang W , He F Z . FATFusion : a functional -anatomical 
+transformer for medical image fusion [J]. Information Processing &  
+Management , 2024 , 61(4): 103687 .
+[15] Zhao Z , Bai H , Zhang J , et al . CDDFuse : correlation -driven 
+dual -branch feature decomposition for multi -modality image 
+fusion [C]∥Proceedings of the IEEE/CVF Conference on 
+Computer Vision and Pattern Recognition , 2023 : 5906 -5916 .
+[16] Wu Z H , Liu Z J , Lin J , et al . Lite transformer with long -short 
+range attention [EB/OL ]. (2020 -04-24) [2024 -12-12]. https : ∥
+arxiv .org/abs/ 2004 .11886 .
+[17] Azam M A , Khan K B , Salahuddin S , et al . A review on 
+multimodal medical image fusion : compendious analysis of 
+medical modalities , multimodal databases , fusion techniques 
+and quality metrics [J]. Computers in Biology and Medicine , 
+2022 , 144: 105253 .
+[18] Haghighat M B A , Aghagolzadeh A , Seyedarabi H . A non -
+reference image fusion metric based on mutual information of 
+image features [J]. Computers & Electrical Engineering , 2011 , 
+37(5): 744 -756.
+[19] van Aardt J . Assessment of image fusion procedures using 
+entropy , image quality , and multispectral classification [J]. 
+Journal of Applied Remote Sensing , 2008 , 2(1): 023522 .
+[20] 孙 彬, 高 云 翔, 诸 葛 吴 为, 等 . 可 见 光 与 红 外 图 像 融 合 质 量 评
+价指标分析 [J]. 中国图象图形学报 , 2023 , 28(1): 144 -155.
+Sun B , Gao Y X , Zhuge W W , et al . Analysis of quality 
+objective assessment metrics for visible and infrared image fusion
+[J]. Journal of Image and Graphics ，2023 , 28(1): 144 -155.
+[21] Li S T , Yang B . Multifocus image fusion using region 
+segmentation and spatial frequency [J]. Image and Vision 
+Computing , 2008 , 26(7): 971 -979.
+[22] Zhao W D , Wang D , Lu H C . Multi -focus image fusion with a 
+natural enhancement via a joint multi -level deeply supervised 
+convolutional neural network [J]. IEEE Transactions on Circuits 
+and Systems for Video Technology , 2019 , 29(4): 1102 -1115 .
+[23] Karim S , Tong G , Li J Y , et al . Current advances and future 
+perspectives of image fusion : a comprehensive review [J]. 
+Information Fusion , 2023 , 90: 185 -217.
+[24] Deshmukh M , Bhosale U . Image fusion and image quality 
+assessment of fused images [J]. International Journal of Image 
+Processing , 2010 , 4(5): 484 -508.
+[25] Xu H , Ma J Y . EMFusion : an unsupervised enhanced medical 
+image fusion network [J]. Information Fusion , 2021 , 76: 177 -186.
+[26] Li B , Peng H , Luo X H , et al . Medical image fusion method 
+based on coupled neural P systems in nonsubsampled shearlet 
+transform domain [J]. International Journal of Neural Systems , 
+2021 , 31(1): 2050050 .
+[27] He D , Li W S , Wang G F , et al . MMIF -INet : multimodal 
+medical image fusion by invertible network [J]. Information 
+Fusion , 2025 , 114: 102666 .
+[28] 田娟秀 , 刘国才 . 基于 NSST 变换和 PCNN 的医学图像融合方
+法[J]. 中国医学物理学杂志 , 2018 , 35(8): 914 -920.
+Tian J X , Liu G C . Medical image fusion method based on non -
+subsampled shearlet transform and pulse coupled neural network
+[J]. Chinese Journal of Medical Physics , 2018 , 35(8): 914 -920.
+[29] Zhao Z X , Bai H W , Zhang J S , et al . Equivariant multi -
+modality image fusion [C] ∥2024  IEEE/CVF Conference on 
+Computer Vision and Pattern Recognition (CVPR ), June 16 ‒
+22, 2024 , Seattle , WA , USA . New York : IEEE Press , 2024 : 
+25912 -25921 .
+[30] Tang L F , Yuan J T , Zhang H , et al . PIAFusion : a progressive 
+infrared and visible image fusion network based on illumination 
+aware [J]. Information Fusion , 2022 , 83: 79-92.
+ 
+Dual ⁃Branch Multimodal Medical Image Fusion Based on Local and Global 
+Information Collaboration
+Shen Yu
+1
+, Liu Jiaying
+1*
+, Yan Jiarong
+1
+, Wang Ruoxuan
+1
+, Ma Yukun
+1
+, Li Jiangcheng
+1
+, Bai 
+Shan
+1
+, Wei Ziyi
+1,2
+, Li Yangyang
+1
+, Qiang Zhenkai
+1
+1
+School of Electronics and Information Engineering , Lanzhou Jiaotong University , Lanzhou 730070 , Gansu , China ; 
+2
+Gansu Cuiying Information Technology Co ., Ltd ., Lanzhou 730030 , Gansu , China
+Abstract 
+Objective 　 Medical image fusion is a crucial technology for assisting doctors in making accurate diagnoses . However , 
+existing medical image fusion techniques suffer from issues such as blurred lesion boundaries , loss of detailed information , 
+and high texture similarity between normal tissues and lesion regions . To address these problems , we propose a dual -
+branch multimodal medical image fusion method based on the collaboration of local and global information . This method 
+not only reduces the loss of detailed information but also effectively improves the clarity and accuracy of the fused images , 
+which ensures more precise identification of lesion regions , thereby providing more reliable and accurate support for 
+medical image diagnosis .
+Methods 　We propose a dual -branch multimodal medical image fusion model based on the collaboration of local and global 
+information . Firstly , the model utilizes a multi -scale depth -separable convolutional network to extract feature information 
+
+=== PDF_PAGE 15 ===
+0810001 -15
+研究论文 第 45 卷 第 8 期/2025  年 4 月/光学学报
+with different receptive fields from the input images . Subsequently , the extracted features are fed into a dual -branch 
+structure , which mainly consists of two modules : the deep local feature enhancement module and the global information 
+extraction module . The local feature enhancement module focuses on enhancing image details , especially those in the 
+lesion areas , to improve the clarity of these regions . The global information extraction module , on the other hand , 
+emphasizes capturing the global structural context of the input images , which ensures the overall consistency of the images 
+and the integrity of their organizational structures during the fusion process . To further optimize the feature fusion process , 
+we introduce two advanced fusion units : the Multidimensional Joint Local Fusion Unit (MLFU ) and the Cross -Global 
+Fusion Unit (CGFU ). The MLFU efficiently fuses the local features extracted by the two branches , which ensures that 
+important fine -grained information is retained and enhanced during the fusion process . The CGFU promotes the fusion of 
+global features , which facilitates information sharing and complementarity between different modalities . Finally , a 
+convolutional layer is used to adjust and reconstruct the fused features , and a fused image with richer details and higher 
+clarity is output .
+Results and Discussions 　 The effectiveness of the proposed model in medical image fusion tasks has been validated 
+through extensive comparison and ablation experiments . The experimental results demonstrate that our model significantly 
+outperforms nine other mainstream methods in several key objective evaluation metrics on the Harvard public medical 
+image dataset . Specifically , our model achieves improvements of 3.14%, 0.95%, 13.66%, 16.81%, and 1.12% in EN , 
+SD , SF , AG , and CC , respectively (Table 4). The model enhances local feature extraction through the deep local feature 
+enhancement module , which accurately captures subtle differences in the input images and significantly improves the clarity 
+of lesion boundaries . Furthermore , to further optimize the fusion results , the model employs different fusion strategies for 
+different feature types , which effectively integrates local features with global information and achieves more efficient 
+information complementarity and collaboration between modalities . As a result , the fused images exhibit richer texture 
+details and clearer structural features , thereby significantly enhancing image readability and diagnostic value (Figs . 6, 7, 
+and 8). Ablation experiments further validate the effectiveness of each module in the model . The results show that 
+removing the deep local feature enhancement module leads to a noticeable decline in lesion boundary clarity and texture 
+detail , particularly in high -contrast lesion areas , where the fusion quality deteriorates . Furthermore , removing the global 
+information fusion module results in a significant loss of global consistency and information complementarity between 
+different modalities , which leads to a fusion result with a lack of necessary global coherence (Figs . 11, 12, and 13).
+Conclusions 　The algorithm proposed in this paper effectively integrates local and global information , achieving excellent 
+detail preservation and structural representation in medical image fusion tasks . This method not only accurately fuses 
+normal tissue structures to ensure global consistency but also highlights the details of abnormal lesion areas , which 
+improves the visibility and recognizability of lesions . By combining deep local feature extraction with global context 
+information , the algorithm ensures the preservation of local details while effectively enhancing the texture features and 
+boundary clarity of lesions . The fused images exhibit richer texture details and clearer structural features . Experimental 
+results , verified through numerous comparative experiments , demonstrate that this algorithm is effective in improving the 
+diagnostic accuracy of medical images . Compared with other mainstream methods , the proposed algorithm performs 
+outstandingly in multiple key objective evaluation metrics , especially in terms of detail preservation , structural clarity , and 
+lesion prominence .
+Key words  multimodal medical image fusion ; local and global information ; attention mechanism ; dual -branch architecture

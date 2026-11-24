@@ -1,0 +1,7 @@
+﻿==== proc
+Writing log to /data/heluofan/picai/workdir/nnUNet_raw_data/picai_prep_20261124093311.log
+==== count
+imagesTr=4249
+labelsTr=1416
+==== names
+==== dsjson

@@ -1,0 +1,5 @@
+﻿ssh: C:\Windows\System32\OpenSSH\ssh.exe
+scp: C:\Windows\System32\OpenSSH\scp.exe
+sshpass: 
+py: True
+paramiko: paramiko 5.1.0

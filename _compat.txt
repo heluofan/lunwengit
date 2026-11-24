@@ -1,0 +1,27 @@
+==== np-aliases
+
+
+==== amp
+/data/heluofan/picai/repos/nnUNet_v1/nnUNet-1.7.0/nnunet/network_architecture/neural_network.py:25:from torch.cuda.amp import autocast
+/data/heluofan/picai/repos/nnUNet_v1/nnUNet-1.7.0/nnunet/training/network_training/nnUNetTrainerV2.py:34:from torch.cuda.amp import autocast
+/data/heluofan/picai/repos/nnUNet_v1/nnUNet-1.7.0/nnunet/training/network_training/nnUNetTrainerV2_DDP.py:43:from torch.cuda.amp import autocast
+/data/heluofan/picai/repos/nnUNet_v1/nnUNet-1.7.0/nnunet/training/network_training/nnUNet_variants/benchmarking/nnUNetTrainerV2_2epochs.py:24:from torch.cuda.amp import autocast
+/data/heluofan/picai/repos/nnUNet_v1/nnUNet-1.7.0/nnunet/training/network_training/nnUNet_variants/benchmarking/nnUNetTrainerV2_dummyLoad.py:22:from torch.cuda.amp import autocast
+/data/heluofan/picai/repos/nnUNet_v1/nnUNet-1.7.0/nnunet/training/network_training/network_trainer.py:24:from torch.cuda.amp import GradScaler, autocast
+/data/heluofan/picai/repos/nnUNet_v1/nnUNet-1.7.0/nnunet/training/network_training/network_trainer.py:404:            self.amp_grad_scaler = GradScaler()
+/data/heluofan/picai/repos/nnUNet_v1/nnUNet-1.7.0/nnunet/training/network_training/nnUNetTrainerV2_DP.py:29:from torch.cuda.amp import autocast
+
+==== dl
+[  616s]   1.43/25.02 GB   5.7%  inst=2.46 avg=2.39 MB/s ETA=169 min
+[  631s]   1.47/25.02 GB   5.9%  inst=2.40 avg=2.39 MB/s ETA=168 min
+1.5G	/data/heluofan/picai/downloads
+
+==== gpu-free
+0, 28893 MiB, 0 %
+1, 0 MiB, 0 %
+2, 0 MiB, 0 %
+3, 0 MiB, 0 %
+4, 14699 MiB, 0 %
+5, 0 MiB, 0 %
+6, 0 MiB, 0 %
+7, 0 MiB, 0 %

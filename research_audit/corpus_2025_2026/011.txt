@@ -1,0 +1,1108 @@
+=== PDF_PAGE 1 ===
+·综述 ·
+体内原位生物 3D 打印物理干预度与打印深度双轴
+演进模型及研究前瞻
+张恒瑞 1，姜兆亮 2*，张卫锋 1*，巩立超 2，王思亮 2，陈杰 1
+1 青岛科技大学 智能制造学院，山东 青岛 266061
+2 山东大学 机械工程学院，山东 济南 250101
+张恒瑞, 姜兆亮, 张卫锋, 巩立超, 王思亮, 陈杰．体内原位生物 3D 打印物理干预度与打印深度双轴演进模型及研究前瞻 [J]．生
+物工程学报, 2026, 42(8): 3463-3477．
+ZHANG Hengrui , JIANG Zhaoliang , ZHANG Weifeng , GONG Lichao , WANG Siliang , CHEN Jie . Dual-axis evolution model of 
+physical intervention-bioprinting depth for in situ  3D bioprinting in vivo  and research perspectives [J]. Chinese Journal of 
+Biotechnology, 2026, 42(8): 3463-3477.
+摘 要：体内原位生物 3D 打印正引领再生医学制造范式的深刻变革 。然而，要实现从单纯结构
+复现到复杂功能重建的跨越 ，当前技术亟待突破 “活体动态微环境深度适配 ”的本征工程壁垒 。针
+对此挑战 ，本文首次提出 “物理干预度 -生物打印深度 ”双轴演进理论模型 ，系统性地将技术发展
+脉络划分为开放环境下的宏观形貌重塑 (阶段一 )、受限腔道内的柔性介入成形 (阶段二 )与非接触
+式能量场控组装 (阶段三 )。结合在多相流体动态混合控性 、机器学习驱动的形变补偿及仿生多孔
+梯度结构设计等交叉领域的深度实践 ，本文着重剖析了多模态感知 、生理运动补偿与人工智能闭
+环控制在提升活体制造精度中的核心支撑作用 ，并系统总结了各演进阶段在骨 、软骨、皮肤及内
+脏器官等典型组织修复中的临床前验证成果 。本文构建的双轴演进模型不仅为破解技术路线的碎
+片化困境提供了系统性理论坐标 ，更为跨学科研究者突破从实验室概念验证向临床智能化装备转
+化的工程瓶颈厘清了全景路径 。面对深层安全性评估与技术标准化等转化壁垒 ，本文前瞻性地指
+出：未来应依托多模态物理场融合与数字孪生 ，打破单一材料局限 ，聚焦复杂异质组织的原位精
+准构建 ，推动制造范式向 “无细胞原位组织诱导 ”全面演进 ，从而为终末期组织缺损提供基于 “体
+内微型自主修复工厂 ”的终极医学解答 。
+关 键 词： 体内原位生物 3D 打印 ；双轴演进模型 ；物理干预度 ；无创场控组装 ；智能闭环控制 ；
+临床前应用验证 ；无细胞原位组织诱导
+生 物 工 程 学 报
+Chinese Journal of Biotechnology
+CSTR: 32114.14.j.cjb.260339
+DOI: 10.13345/j.cjb.260339
+张恒瑞 等 || 体内原位生物 3D打印物理干预度与打印深度双轴演进模型及研究前瞻
+Aug. 25, 2026, 42(8): 3463-3477
+http://journals .im.ac.cn/cjbcn
+©2026 Chin J Biotech , All rights reserved
+资助项目 ：国家自然科学基金 (52275347)；山东省重点研发计划 (2023CXPT085)
+This work was supported by the National Natural Science Foundation of China (52275347) and the Key Research and 
+Development Program of Shandong Province (2023CXPT085).
+*Corresponding authors. E-mail: JIANG Zhaoliang, jiangzhaoliang@sdu.edu.cn; ZHANG Weifeng, zwfeng@qust.edu.cn
+Received: 2026-04-27; Accepted: 2026-05-14; Published online: 2026-06-05
+3463
+
+=== PDF_PAGE 2 ===
+http://journals .im.ac.cn/cjbcn
+ISSN 1000-3061    CN 11-1998/Q    生物工程学报     Chin J Biotech
+Dual-axis evolution model of physical intervention-bioprinting 
+depth for in situ 3D bioprinting in vivo and research perspectives
+ZHANG Hengrui1, JIANG Zhaoliang2*, ZHANG Weifeng1*, GONG Lichao2, WANG Siliang2, CHEN Jie1
+1 College of Intelligent Manufacturing, Qingdao University of Science and Technology, Qingdao 266061, Shandong, 
+China
+2 School of Mechanical Engineering, Shandong University, Jinan 250101, Shandong, China
+Abstract: In situ 3D bioprinting in vivo  is leading a profound paradigm shift of manufacturing in 
+regenerative medicine. However, to achieve the leap from mere structural replication to complex 
+functional reconstruction, current technologies urgently need to overcome the intrinsic engineering 
+barrier of deep adaptation to the dynamic in vivo microenvironment. To address this challenge, this 
+review proposes for the first time a dual-axis evolutionary theoretical model of degree of physical 
+intervention-bioprinting depth . This model systematically categorizes the technological trajectory 
+into three stages : macroscopic morphological remodeling in open environments (stage 1), flexible 
+interventional shaping within restricted cavities (stage 2), and non-contact energy field-controlled 
+assembly (stage 3). Drawing upon deep practices in interdisciplinary fields such as dynamic mixing 
+control of multiphase fluids , machine learning-driven deformation compensation , and biomimetic 
+porous gradient structure design , this review highlights the core supporting roles of multimodal 
+perception, physiological motion compensation , and artificial intelligence closed-loop control in 
+enhancing in vivo  manufacturing precision . Furthermore , it systematically summarizes the 
+preclinical validation outcomes of each evolutionary stage in the repair of typical tissues , including 
+bone, cartilage , skin , and internal organs . This dual-axis model not only establishes systematic 
+theoretical coordinates to resolve the fragmentation of current technological routes , but also 
+delineates a comprehensive roadmap for interdisciplinary researchers to overcome the engineering 
+bottlenecks in translating laboratory proof-of-concept into intelligent clinical devices . In view of 
+the translational barriers such as deep-tissue safety evaluation and technological standardization , 
+this review prospectively points out that future endeavors should rely on the integration of 
+multimodal physical fields and digital twins to break the limitations of single materials . By 
+focusing on the in situ precise construction of complex heterogeneous tissues , the manufacturing 
+paradigm will comprehensively evolve towards cell-free in situ  induction , thereby providing an 
+ultimate medical solution for end-stage tissue defects based on an in vivo  miniature autonomous 
+repair factory.
+Keywords: in situ  3D bioprinting in vivo ; dual-axis evolutionary model ; degree of physical 
+intervention; non-invasive field-controlled assembly ; smart closed-loop control ; preclinical 
+application validation; cell-free in situ induction
+近年来，传统“体外构建 -体内植入 ”组织工
+程虽进展显著 ，但在临床转化中仍面临瓶颈 。
+体外预制支架难以与不规则 、动态的缺损创面
+实现高精度解剖学适配 [1-3]；长期体外培养不仅
+3464
+
+=== PDF_PAGE 3 ===
+： cjb@im.ac.cn
+☏： 010-64807509
+张恒瑞 等 | 体内原位生物 3D打印物理干预度与打印深度双轴演进模型及研究前瞻
+增加污染风险 [4-5]，且缺乏天然生理微环境导致
+移植物早期存活率低、功能整合缓慢[2,4]。此外，
+大块组织的植入常需二次开放手术 [5]，有悖微创
+化趋势。
+为 此， 体 内 原 位 生 物3D 打 印(in situ  3D 
+bioprinting in vivo)应运而生，推动了再生医学制
+造范式的转变[1,3]。该技术以患者活体病灶为 “生
+物反应器”，将生物墨水直接沉积并交联于缺损
+部位[2,6]。这不仅省去了体外培养与移植步骤 ，
+规 避 了 支 架 不 匹 配、 易 污 染 及 黏 附 不 稳 等 问
+题[3]，更利用人体原生微环境加速组织功能化重
+建[7-8]。然而，现有原位打印研究仍普遍局限于
+动物模型层面的概念验证 ，在打印组织的力学
+性能匹配 、长期功能整合及临床标准化方面亟
+待突破，迄今尚未实质性迈入临床试验阶段[9]。
+如图 1 所示，全球体内原位生物 3D 打印领
+域的发文量自 2021 年起呈指数级增长 ，展现出
+强劲的发展势头与巨大的临床转化潜力 。顺应
+这一前沿技术浪潮 ，我国学者也加速推进了 “体
+外构建+体内优化”的核心研究布局[8]，致力于突
+破可移植功能器官的制造瓶颈。
+尽管临床潜力巨大 ，但当前技术路线高度
+碎片化 ：从手持式打印设备 [10-13]与多自由度机
+械臂[1-2,14-15]，到微创柔性软体机器人 [16-17] 及磁
+驱动导管[18]，再到依靠近红外光 [5,19]、超声[20-21]
+或磁场[22-23]驱动的无创空间组装技术 。由于操
+作平台与驱动机制大相径庭 ，领域内亟需一个
+系统性的理论框架来梳理其演进脉络 ，以打破
+技术壁垒并推进临床标准化 。基于此 ，结合本
+团队在复杂流体在线动态混合控制 [24]及仿生多
+孔支架功能梯度设计 [25]等方面的工程学研究实
+践，本文首次提出 “物理干预度 -生物打印深度 ”
+双轴演进模型 ，并系统论述技术发展的 3 个核
+心阶跃 ：从应对浅表创伤的 “ 开放环境原位打
+印” (阶段一)，到攻克受限腔道的“微创介入式打
+印” (阶段二)，再到突破能量穿透壁垒的“无创深
+层生物打印 ” (阶段三)。同时，横向剖析涵盖运
+动补偿[26-29]、多模态感知[30-32]及人工智能[33-34]的
+智能闭环控制体系 ，并结合骨 、软骨、皮肤及
+脏器等活体动物模型研究 ，系统评估各演进阶
+图1　体内原位生物3D打印领域文献发表总趋势图    数据合并自Web of Science核心合集与中国知网 ，检
+索截至2026年3月。
+Figure 1　Overall publication trend in the field of in situ 3D bioprinting in vivo. Data merged from the Web of 
+Science core collection and China National Knowledge Infrastructure, up to March 2026.
+3465
+
+=== PDF_PAGE 4 ===
+http://journals .im.ac.cn/cjbcn
+ISSN 1000-3061    CN 11-1998/Q    生物工程学报     Chin J Biotech
+段的临床前转化潜力 。最后，深入探讨本征临
+床转化壁垒 ，以期为多学科研究者提供从工程
+创新到临床落地的全景指南。
+1　　物理干预度与制造深度双轴物理干预度与制造深度双轴
+演进模型演进模型
+当前，体内原位生物 3D 打印技术跨越宏观
+机械直写与微观场力调控 。本文首次提出 “物理
+干 预 度- 生 物 打 印 深 度” (physical intervention-
+bioprinting depth)双轴演进模型 ，其坐标系下的
+技术演进阶段图谱如图 2 所示。该模型跳出了
+单纯以打印原理分类的传统框架 ，转而以临床
+干预的微创化趋势与物理能量穿透的工程极限
+作为核心变量 ，提供了一个兼具临床价值与工
+程前瞻性的全景坐标系。
+1.1　双轴变量的临床与工程定义
+横轴(X 轴)代表物理干预度 ，即技术实施对
+健康组织造成的物理创伤以及依赖实体器械的
+程度。由左至右干预度逐渐降低 ：(1) 高物理干
+预区(开放手术)依赖大创口暴露病灶 ，失血与感
+染风险高[2,35]；(2) 中低干预区(微创介入)通过自
+然腔道或微小穿刺进入 ，依赖微型柔性器械靶
+向递送[17-18]；(3) 零实体干预区 (完全无创 )彻底
+摒弃实体探头 ，在体外遥控物理场穿透组织完
+成体内组装[5,23,36]。
+纵轴(Y 轴)代表生物打印深度 ，即靶向病灶
+的三维可及性及组织屏蔽效应 ，深度由下至上
+递增：(1) 浅表组织区如角膜 、表皮，无厚重组
+织遮挡 ，设备尺寸约束小 [11-12,37]；(2) 受限腔道
+区如消化道或腹腔脏器表面 ，要求平台具备极
+高柔顺性[17-18]；(3) 深层实体脏器区如心肌内部，
+由于常规能量场在组织深部存在严重的衰减与
+散射效应 ，实现高精度穿透构成了原位打印的
+终极壁垒[5,20]。
+1.2　双轴坐标系下技术演进阶段图谱
+本模型不仅是对现有技术在空间维度的系
+统分类 ，更揭示了体内生物制造范式在时间维
+度上的演进规律 。这一演进的核心驱动力源于
+降低临床创伤的医学需求与突破能量穿透极限
+的工程挑战之间的相互制约与协同发展 ，并由
+此催生了技术路线的 3 个核心发展阶段。
+阶 段 一 ： 开 放 环 境 下 的 宏 观 形 貌 重 塑
+(2016 年左右起步 ，高物理干预度 、浅表深度)。
+此阶段以 “ 即时适配 ” 为核心目标 。以 2016 年
+Biopen 等手持打印系统的成功验证为标志 ，技
+术重点在于依托开放手术提供的不受限操作空
+图2　双轴演进模型示意图
+Figure 2　Schematic diagram of the dual-axis evolutionary model.
+3466
+
+=== PDF_PAGE 5 ===
+： cjb@im.ac.cn
+☏： 010-64807509
+张恒瑞 等 | 体内原位生物 3D打印物理干预度与打印深度双轴演进模型及研究前瞻
+间进行原位修复 。此时的制造模式主要沿用宏
+观机械挤出框架 ，通过操作端的灵活性来补偿
+复杂创面的不规则性 。该阶段实现了从 “体外预
+制”向“术中即刻构建 ”的转变，但仍伴随较高的
+临床创伤代价[10-11,35]。
+阶 段 二 ： 受 限 腔 道 内 的 柔 性 介 入 成 形
+(2020 年前后出现 ，中低物理干预度 、受限腔道
+深度)。随着微创医学的推进 ，技术演进的核心
+转向“空间顺应性 ”。以 2020 年后涌现的柔性机
+器人(如 F3DB)及磁驱动导管系统为代表 ，制造
+平台从刚性机械向微型柔性器械过渡 。研究重
+心转向通过自然腔道或微小穿刺路径将微型打
+印模块递送至靶区 ，成功将原位打印的应用范
+围从体表拓展至脏器受限腔道内部 ，并在微小
+空间内实现了高精度的材料沉积[17-18]。
+阶段三：非接触式能量场控组装 (2020 年至
+今的前沿探索 ，零实体干预 、深层实体深度 )。 
+为突破实体器械在深部组织中的物理空间限制
+与屏障效应 ，底层技术逻辑发生了从 “实体接触
+式沉积”向“无创能量场控组装 ”的范式转移 。技
+术不再依赖有形打印头 ，转而利用具备显著穿
+透优势的无形物理能量场 (如衰减极低的超声与
+磁场，或处于“组织光学窗口 ”的近红外光 )，对
+体内预置的响应性墨水进行远程触发与三维组
+装。结合成像引导与声学全息等前沿方案 ，原
+位制造逐步实现了深层实体组织内的无创高分
+辨构建 ，代表了该领域向多物理场耦合驱动方
+向的前沿演进[5,21,36]。
+本文后续章节将严格遵循这一双轴演进逻
+辑，由浅入深 、由有形到无形 ，逐一剖析支撑
+这三大阶跃的具体操作平台与智能前驱体系统。
+2　　开放环境原位生物打印开放环境原位生物打印
+开放环境下的原位生物打印主要针对体表
+创伤或术中完全暴露的缺损 ，利用充分暴露的
+宏观操作空间实现大面积 、高保真的组织形貌
+重构[7]。
+在双轴模型的左下象限 ，物理干预度虽高 ，
+却换取了几乎不受空间约束的操作窗口与最高
+的制造鲁棒性 ；因此，本阶段的技术主线是围
+绕开放暴露的创面完成宏观形貌的快速重塑 ，
+并 以 术 中“ 即 时 适 配” 作 为 临 床 概 念 验 证 的
+起点[7,11]。
+2.1　手持式生物打印系统
+手持式设备摆脱了术前复杂的三维建模 ，
+赋予术者极高的操作自由度以即时应对不规则
+创面[13,15]。利用双腔同轴挤出的 Biopen 可在术
+中将包裹干细胞的复合墨水与光引发剂同步沉
+积于关节软骨缺损处 ，其芯/壳结构能够有效将
+活细胞与有毒光引发剂物理隔离 ，在保证快速
+光交联成形强度的同时实现了超 90% 的细胞存
+活率[10]，并成功诱导人源间充质干细胞在原位
+形成天然透明软骨样组织 [38]；该技术进一步在
+绵羊模型中实现了显著优于微骨折术的软骨再
+生[35]。在皮肤组织工程中 ，原位沉积载有血管
+内皮生长因子 (vascular endothelial growth factor , 
+VEGF)或特定细胞的敷料可显著促进血管新生 ；
+在猪全层皮肤缺损模型中 ，该策略将伤口过度
+收缩率从 46% 降至 18%[12,39]。此外，纯机械驱
+动的便携设备(如 Bioprint FirstAid)被证实即使在
+极端微重力环境下 ，也能稳定挤出活细胞墨水
+完成应急覆盖[40]。
+2.2　机械臂辅助生物打印
+对于大尺度 、非平面或对制造精度要求极
+高的缺损 ，集成多自由度工业机器人的自动化
+系统具备不可替代的优势 [14-15]。机械臂结合结
+构光扫描与运动学逆解 ，可有效克服非结构化
+表面限制 ，在复合缺损中实现高保真的自适应
+沉积[2]。在预设路径下，多自由度机械臂可在约
+1 min 内完成兔膝关节软骨缺损的原位修复 [14]，
+也 可 实 现 大 体 积 肌 肉 损 失(volumetric muscle 
+loss, VML)区域的生物墨水定向沉积 [41]。特别是
+在对光学要求严苛的角膜重建中 ，前沿技术已
+将高精度自动化平台与光固化技术深度结合 ，
+如 可 见 光 驱 动 的 立 体 光 刻 (stereolithography, 
+3467
+
+=== PDF_PAGE 6 ===
+http://journals .im.ac.cn/cjbcn
+ISSN 1000-3061    CN 11-1998/Q    生物工程学报     Chin J Biotech
+SLA)[42] 以及数字光处理 (digital light processing , 
+DLP)[43-44]。在模拟基质床上直接固化出的含细
+胞 角 膜 等 效 物， 其 胶 原 网 络 不 仅 透 光 率 极 高
+(>90%)，且力学模量高度逼近天然角膜。
+2.3　开放微环境适配型生物墨水
+针对开放创面流体易冲刷未固化墨水的复
+杂出血微环境 ，由微凝胶骨料与前体溶液构成
+的“生物混凝土 ”双组分墨水展现出优异的抗冲
+刷与原位保形能力 [45]。此外，基于干式双面胶
+(dry double-sided tape, DST)机制的聚丙烯酸网络
+能在 5 s 内吸收界面游离水并形成共价锚定 ，湿
+态剪切黏附高达 120 kPa[46]。受贻贝启发的儿茶
+酚仿生水凝胶在潮湿表面展现出极强锚定与原
+位止血能力[4,47-48]。在应对极易并发细菌生物膜
+感染的创面时 ，生物墨水被进一步赋予抗菌功
+能：例如，在海藻酸盐基质中非共价交联抗菌
+肽，有效打通了止血 、抗菌与组织再生的转化
+路径[4]。为规避传统紫外光引发的细胞毒性 ，可
+见光诱导交联技术(400-500 nm)已成为安全替代
+方案[49]，基于曙红 Y[50]和钌/过硫酸钠(ruthenium/ 
+sodium persulfate, Ru/SPS)[51-52] 的交联体系被广
+泛应用，确保挤出打印细胞存活率>95%[49]。
+3　　微创介入式生物打印微创介入式生物打印
+随着物理干预度降低 ，刚性器械在狭窄腔
+道内操作严重受限 。如图 3 所示，原位打印逐
+步转向高空间顺应性的微创柔性平台 ，依靠智
+能材料在受限腔道表面完成精细成形。
+3.1　柔性机器人与内窥镜集成系统
+腔内非结构化空间要求打印平台具备高度
+柔顺性 。将微型生物打印模块集成于医用内窥
+镜是解决该痛点的有效途径 。基于微机电系统
+(microelectromechanical systems , MEMS ) 的 三 臂
+Delta 微型打印平台可通过内窥镜狭小通道 ，在
+图3　实体原位生物打印操作平台的微创化演进与空间拓展    A ：手持式生物打印设备[35]；B：基于多自
+由度(6-DOF)工业机械臂的自动化原位打印系统 [14]；C：柔性内窥镜机器人 (F3DB)系统[17]；D：铁磁柔性
+导管机器人(FSCR)[18]。
+Figure 3　 Minimally invasive evolution and spatial expansion of physical in situ  bioprinting platforms . A : 
+Handheld bioprinting device [35]; B : Automated in situ  bioprinting system based on a multi-degree-of-freedom 
+(6-DOF) industrial robotic arm [14]; C : Flexible endoscopic robotic (F3DB) system [17]; D : Ferromagnetic soft 
+catheter robot (FSCR)[18].
+3468
+
+=== PDF_PAGE 7 ===
+： cjb@im.ac.cn
+☏： 010-64807509
+张恒瑞 等 | 体内原位生物 3D打印物理干预度与打印深度双轴演进模型及研究前瞻
+体外胃模型中实现含活细胞网状结构的高保真
+打印[16]。创新融合三自由度软体机械臂与蛇形
+内窥镜的 F3DB 系统，利用液压驱动，可在猪肾
+及离体结肠等极复杂曲面上进行多层组织精确
+沉积[17]。
+3.2　磁驱动柔性导管系统
+为克服机械线缆与流体管路在深层弯曲腔
+道中的物理牵绊 ，基于外加磁场的铁磁柔性导
+管机器人(ferromagnetic soft catheter robot, FSCR)
+实现了操作端与执行端的物理去耦 。通过在聚
+二甲基硅氧烷 (polydimethylsiloxane, PDMS)基体
+中掺杂硬磁微粒 ，结合外部非均匀磁场的力矩
+调控，导管可在狭小切口内实现高精度的平移
+与旋转运动 。内置纤维网强化结构使得该导管
+在高压挤出下径向膨胀率极低 ，成功在活体大
+鼠肝脏曲面上完成了微创原位沉积[18]。
+3.3　微创微环境适配型生物墨水
+微创介入要求生物墨水在狭长毛细导管输
+送中不发生相分离 ，且挤出后迅速恢复屈服应
+力以防滑脱 [17]。为解决高浓度载细胞墨水易堵
+塞微细喷嘴的痛点 ，基于动态共价键的微凝胶
+组 装 (dynamic covalent microgel assembly , DC-
+MA)生物墨水被提出，其在剪切应力下表现为低
+黏度流体 ，显著降低挤出阻力 ；挤出后 ，由于
+动态化学键瞬间自发重建 ，无需额外交联剂即
+可恢复极高的储能模量与形状保真度 [53]。此外，
+在受限微管径内实现多组分流体甚至是高黏度
+异质材料的均匀混合是一大工程挑战 。针对剪
+切稀化流体在微通道内的动态变配比沉积难题 ，
+本课题组在前期装备研发中 ，建立了基于改进
+型凯尼斯静态混合器 (Kenics static mixer, KSM)
+的 计 算 流 体 力 学(computational fluid dynamics , 
+CFD)模型，有效破解了非牛顿流体的异步传输
+与混合延时缺陷 [24]。将这一底层的多相流体控
+性理论平移至微创介入导管系统中 ，不仅能解
+决常规软组织水凝胶的顺畅输送 ，更为未来在
+体内原位精准沉积具备结构 /成分梯度的复杂复
+合材料(如陶瓷基骨修复支架)奠定了不可或缺的
+流体力学基础 。为彻底克服深部受限腔道内难
+以引入外部触发源(如光源)的工程瓶颈，基于生
+物正交点击化学 (bioorthogonal click chemistry)的
+双组分生物墨水正成为微创挤出打印的前沿范
+式[54]。 利 用 四 嗪 - 反 式 环 辛 烯 (tetrazine/trans-
+cyclooctene, TCO ) 或 无 铜 催 化 (strain-promoted 
+azide-alkyne cycloaddition, SPAAC)等点击反应机
+制[55-56]，双组分前体在导管喷嘴混合瞬间即可
+实现无源条件下的极速自发交联 ，且具备绝对
+的体内生物正交安全性 ，为下一代微创原位制
+造提供了理想的材料学支撑。
+4　　无创深层生物打印无创深层生物打印
+面对深层组织的严峻物理屏蔽 ，制造介质
+由“实体器械 ”彻底转向 “无形物理场 ”，演进出
+“微创预置墨水 +无接触场控触发 ”的混合范式 。
+光、声、磁等物理场能向分子间交联能的转化 ，
+构成了深部无创构建的核心机制 ，这三大物理
+场驱动机制如图 4 所示。
+4.1　 光 学 穿 透 极 限 突 破 与 上 转 换 原 位
+交联
+光 学 系 统 具 备 极 高 的 制 造 分 辨 率， 但 软
+组 织 对 光 波 的 强 散 射 与 吸 收 导 致 可 见 光 穿 透
+深 度 仅 为 亚 毫 米 级。 为 突 破 此 屏 障， 技 术 向
+吸 收 率 最 低 的 近 红 外(near-infrared, NIR ) 窗 口
+(700-1 000 nm ) 演 进[57]。 数 字 近 红 外 光 聚 合
+(digital near-infrared photopolymerization, DNP)利
+用数字微镜将 NIR 光束图案化并投射穿透皮肤 ，
+其高度依赖掺杂了上转换纳米粒子 (upconversion 
+nanoparticles, UCNPs)的响应生物墨水 ，在深部
+组织吸收低能 NIR 光子后上转换为紫外 /可见
+光，进而原位触发光引发剂 。在预置该类复合
+墨水的前提下 ，实现了完全无创的皮下软骨定
+制化交联固化[5,19]。
+3469
+
+=== PDF_PAGE 8 ===
+http://journals .im.ac.cn/cjbcn
+ISSN 1000-3061    CN 11-1998/Q    生物工程学报     Chin J Biotech
+4.2　 声 学 场 域 的 原 位 聚 合 与 声 辐 射 力
+组装
+超声机械波在软组织中的衰减系数极低 ，
+可轻易穿透数厘米厚的实体脏器 [20]。在化学交
+联层面，聚焦超声(focused ultrasound, FUS)汇聚
+于深部靶点 ，利用产生的局部热效应触发热敏
+脂质体 (lyso-thermosensitive liposomes, LTSLs)相
+变 释 放 交 联 剂， 实 现 海 藻 酸 盐 网 络 快 速 凝 胶
+化[21]；或探索利用超声空化或声流效应产生的
+局部能量 ，触发引发剂产生活性自由基 ，直接
+引发聚合物共价交联 [20]。在物理组装层面 ，声
+学全息术 (acoustic holographic assembly, AHA)通
+过声辐射力 ，无需特制响应基团即可将悬浮细
+胞精准推挤至声压波节处 ，实现非接触式高密
+度组装[36]；结合挤出式生物打印与声致液滴气
+化(acoustic droplet vaporization, ADV)技术，亦可
+在 生 物 支 架 内 部 实 现 相 变 乳 液 的 高 精 度 微 图
+案化[58]。
+4.3　磁场驱动的扭矩定向与空间自组装
+磁场在穿透人体时几乎无能量衰减 。鉴于
+高梯度场在深部产生平移力困难 ，当前深层驱
+动主要依赖均匀静态磁场产生的磁扭矩机制 。
+通过在低黏度前体中掺杂高饱和磁化强度的磁
+性微粒，外部静态磁场(如 2-26 mT)施加磁扭矩
+驱动微粒旋转对齐 。这种微观的扭矩取向会带
+动周围基质发生力学重排 ，诱导形成高度有序
+的各向异性结构[23,59-60]。在宏观成形层面，磁力
+可驱动二维沉积的水凝胶发生无支撑自由悬浮
+形变，构建深层三维分支管网 [61]，并在顺磁介
+质配合下直接驱动细胞球体无支架悬浮融合 ，
+实现宏观尺度的空间自组装[22]。
+5　　智能感知与闭环控制共性支智能感知与闭环控制共性支
+撑体系撑体系
+活体动态生理微环境是贯穿各演进阶段的
+共性挑战 。由于传统开环策略难以保证复杂环
+境下的制造精度 ，如图 5 所示 ，构建 “感知-决
+图4　无创深层打印的三大物理场驱动机制
+Figure 4　Three major physical field-driven mechanisms for non-invasive deep bioprinting.
+3470
+
+=== PDF_PAGE 9 ===
+： cjb@im.ac.cn
+☏： 010-64807509
+张恒瑞 等 | 体内原位生物 3D打印物理干预度与打印深度双轴演进模型及研究前瞻
+策-执行”的智能闭环控制体系成为必然支撑。
+5.1　生理运动补偿与自适应追踪
+活体高精度沉积必须克服生理节律空间位
+移。主流策略利用双目相机或结构光扫描实时
+捕捉组织三维点云变化[27,62]，通过算法提取位移
+特征后输入至逆向运动学求解器 [28-29]。针对高
+频谐波运动严重的相位延迟 ，前沿研究引入扩
+展卡尔曼滤波等预测算法 ，有效补偿了系统的
+固有延迟[26,63]。该机制使喷嘴随靶标同步起伏 ，
+将复杂生理节律下的动态跟踪误差稳定收敛至
+亚毫米量级。
+5.2　多模态原位感知与质量监测
+制造的不可逆性要求系统具备严密的实时
+质量控制能力 。在形貌缺陷监测方面 ，集成数
+字显微视觉与图像分割算法可实时量化层宽与
+挤出连续性 [31]；在内部结构评估方面 ，利用亚
+波长分辨率的高频原位超声成像能够无损穿透
+并检测沉积层间的微观孔隙与分层缺陷 [30]；此
+外结合荧光成像可追踪细胞或活性因子的空间
+分布[32]。多模态融合提供了从宏观保真度到微
+观细胞活力的全景式原位评估。
+5.3　人工智能赋能的工艺优化
+面对活体组织复杂的物理化学交互 ，传统
+的试错法难以高效锁定最佳工艺窗口 。人工智
+能尤其是机器学习的介入 ，为工艺参数的全局
+寻优提供了核心 “大脑”。通过构建涵盖多维材
+料与工艺参数的数据集 ，神经网络模型能够精
+准 预 测 特 定 生 物 墨 水 的 流 变 特 性 与 结 构 保 真
+度[33-34]。制造过程的几何保真度预测是实现闭
+环控制的前提 。本课题组在前期复杂成形工艺
+研究中 ，曾利用随机森林等机器学习算法 ，成
+功建立了材料固化过程的体积收缩预测与精准
+尺寸补偿模型。这种“工艺-形变-性能”的数据驱
+动预测逻辑 ，为解决活体动态微环境下的材料
+流淌与交联变形提供了可靠的算法迁移路径 。 
+在原位打印阶段 ，基于预训练模型的专家系统
+图5　原位生物制造的智能闭环控制体系
+Figure 5　Smart closed-loop control system for in situ biofabrication.
+3471
+
+=== PDF_PAGE 10 ===
+http://journals .im.ac.cn/cjbcn
+ISSN 1000-3061    CN 11-1998/Q    生物工程学报     Chin J Biotech
+可根据视觉传感器反馈的实时形变数据 ，动态
+微调挤出速率或运动进给量 ，有效纠正材料流
+淌或过度堆积 ，极大提升了活体复杂环境下的
+制造鲁棒性[34]。
+5.4　原位生物打印的临床前应用验证
+尽管体内原位生物 3D 打印在动态适应与闭
+环控制方面仍面临诸多工程挑战 ，但其在加速
+组织功能化重建方面的临床潜力已在多种动物
+模型中得到初步证实 。如表 1 所示，伴随操作
+平台从开放环境的手持式设备 (阶段一)向微创柔
+性系统(阶段二)及无创能量场 (阶段三)演进，原
+位打印技术已在骨与软骨缺损 、大面积皮肤烧
+伤、大体积肌肉损失乃至深层内脏器官的修复
+中展现出令人鼓舞的疗效 。这些临床前验证不
+仅证明了原位打印在匹配复杂解剖形貌上的优
+势，更为该技术向人体临床试验的实质性转化
+奠定了坚实的数据基础。
+6　　挑战与展望挑战与展望
+6.1　技术壁垒与临床转化挑战
+体内原位生物 3D 打印革新了传统组织工程
+静态范式。本文提出的“物理干预度-生物打印深
+度”双轴演进模型，厘清了技术向微创/无创化发
+展的脉络 。然而，要实现从单纯的结构复现到
+复杂功能重建的跨越 ，该技术仍面临重重难题
+与本征挑战。
+首先 ，在工程与操作层面 ，微创入路与打
+印操作空间的矛盾日益凸显 [17-18]。同时 ，能量
+穿透深度与时空分辨率之间存在本征的物理拮
+抗关系 ：光学系统受限于软组织散射 ，难以兼
+顾深部穿透与高分辨 [5,57]；具备穿透优势的磁场
+则受限于恩绍定理 ，极难在深部直接悬浮并构
+建复杂 3D 拓扑[22]。
+其次 ，在材料与生物学层面 ，生物墨水的
+即时交联(要求快速成形与高力学强度 )与细胞存
+活率 (要求温和的生化微环境 )之间存在严峻权
+衡。深层预置墨水的长期安全性与活体免疫评
+价机制尚缺失 ；如何在缺乏预制微血管网的受
+限空间内确保大体积实体细胞早期存活与免疫
+耐受，仍是核心瓶颈 。此外，传统灭菌易破坏
+水凝胶本构与生物大分子活性 ，制造工艺必须
+向深紫外(ultraviolet, UV)冷杀菌及全封闭流体系
+统演进[64-65]。
+最后 ，在临床转化层面 ，该领域目前在技
+术标准化与监管路径上仍存在巨大空白 。底层
+操作规程 、生物材料质控体系及伦理审查标准
+的不完善 ，严重制约了该技术向人体临床试验
+的实质性推进[9,66]。
+6.2　应对挑战的未来演进终极蓝图
+展望未来 ，针对上述重重壁垒 ，单一物理
+场或材料的局限性注定无法应对活体动态微环
+境的极端复杂性 。如图 6 所示，原位打印的终
+极工程蓝图将紧密围绕以下核心方向展开：
+(1) 微创化、无创化与多模态融合 。为化解
+微创入路与空间的矛盾 ，未来的介入平台将通
+过微创通道实现多相智能前驱体的高效精准递
+送；随后，利用静态磁场施加的磁扭矩完成微
+观 胶 原 纤 维 与 磁 性 微 粒 的 各 向 异 性 生 理 排
+布[23,59]；最终，利用声辐射力与超声原位聚合完
+成宏观实体的三维交联固化 ，以多模态物理场
+的接力融合突破能量穿透极限[20-21]。
+(2) 多功能化与无细胞原位组织诱导 。为突
+破即时交联与细胞存活率的权衡矛盾 ，制造范
+式将从高风险的 “活细胞递送 ”向“无细胞原位组
+织诱导 (cell-free in situ induction)”演进 。结合本
+课题组在仿生多孔网络以及陶瓷基复合骨修复
+支架连续梯度设计方面的长期实践 [25]，未来的
+打印设备必将与仿生拓扑优化深度结合 ，原位
+构建多重梯度微环境 。通过打印负载特定趋化
+因子(如 SDF-1α)的多功能智能支架 ，靶向调节
+巨噬细胞极化(如 M2 型)并主动募集内源性干细
+胞与内皮细胞 [67-68]，充分挖掘宿主组织的内源
+性再生潜力 ，将其转化为原位生物反应器 ，从
+而规避体外细胞植入的免疫风险。
+(3) 智能化、标准化与器官重建 。伴随计算
+3472
+
+=== PDF_PAGE 11 ===
+： cjb@im.ac.cn
+☏： 010-64807509
+张恒瑞 等 | 体内原位生物 3D打印物理干预度与打印深度双轴演进模型及研究前瞻
+表1　体内原位生物3D打印在典型组织修复中的临床前应用汇总
+Table 1　Summary of preclinical applications of in situ 3D in vivo bioprinting in typical tissue repair
+Target 
+tissue
+Cartilage
+Skin
+Bone
+Skeletal 
+muscle
+Cornea
+Gastric 
+wall 
+(validation 
+scenario)
+Liver/
+organ
+Deep 
+cartilage
+Technology and 
+evolution stage
+Stage I: handheld 
+coaxial printing 
+(Biopen)
+Stage I: handheld 
+extrusion printing
+Stage I: in situ 
+extrusion printing
+Stage I: handheld in 
+situ photocrosslinking
+Stage I: DLP in situ 
+photocrosslinking
+Stage II: endoscope-
+integrated miniature 
+Delta platform
+Stage II: magnetically 
+driven ferromagnetic 
+soft catheter
+Stage III: non-invasive 
+digital near-infrared 
+photopolymerization 
+(DNP)
+Animal/validation 
+model
+Sheep (full-
+thickness cartilage 
+defect of femoral 
+condyle)
+Pig (full-thickness 
+skin defect)
+Rat (cranial defect 
+model)
+Mouse 
+(quadriceps 
+volumetric muscle 
+loss, VML)
+Rabbit (anterior 
+lamellar corneal 
+defect)
+In vitro 
+biomimetic 
+stomach model
+Live rat (liver 
+surface)/ex vivo 
+porcine tissue
+Mouse 
+(subcutaneous in 
+situ repair)
+Core bioink 
+configuration
+HA-GelMA+
+ADSCs
+GelMA+VEGF
+GelMA microgels+
+GelMA precursor+
+BMSCs
+GelMA+laponite 
+nanoclay+VEGF
+GelMA+CSMA
+Gelatin-alginate+
+gastric epithelial/
+smooth muscle 
+cells
+Conductive 
+hydrogel and 
+silicone rubber 
+composite ink
+GelMA+
+UCNP@LAP 
+nanoinitiator+cells
+Preclinical repair/validation effect
+Macroscopic and histological scores 
+at 8 weeks significantly better than 
+microfracture, with new cartilage 
+mainly filled with hyaline cartilage 
+(type II collagen)
+Wound contraction rate significantly 
+decreases to 18% at 14 days (46% in 
+control group), exhibiting higher 
+neovascularization density and re-
+epithelialization
+Ink exhibits high rheological 
+robustness (potential for first-aid 
+applications); bone volume fraction at 
+the defect increases significantly after 
+4 weeks, forming typical bone 
+structures
+Maximum running speed and distance 
+of mice significantly improve after 8 
+weeks, with reduced fibrosis area, 
+effectively promoting muscle function 
+recovery
+Achieves sutureless in situ closure, 
+restores physiological corneal 
+curvature within 4 weeks of 
+implantation, and effectively 
+promotes epithelialization and stromal 
+regeneration
+Successfully passes through narrow 
+channels to achieve high-fidelity 
+printing of double-layer mesh 
+scaffolds, verifying the potential of 
+deep cavity micro-interventional 
+operations
+Achieves high-precision deposition on 
+living organ surfaces via small 
+incisions, verifying the morphological 
+adaptability of the system to complex 
+deep curved surfaces
+Constructs customized ear-shaped 
+cartilage structures non-invasively 
+under the skin, with chondrocyte 
+lacunae and functional matrix 
+secretion observed after 1 month
+Reference
+[35]
+[39]
+[45]
+[41]
+[44]
+[16]
+[18]
+[5]
+GelMA: Gelatin methacryloyl ; HA-GelMA : Hyaluronic acid-gelatin methacryloyl ; ADSCs: Adipose-derived stem cells ; BMSCs : 
+Bone mesenchymal stem cells ; VEGF : Vascular endothelial growth factor ; VML : V olumetric muscle loss ; DLP : Digital light 
+processing; CSMA : Chondroitin sulfate methacrylate ; DNP : Digital near-infrared photopolymerization ; UCNP : Upconversion 
+nanoparticles; LAP: Lithium phenyl-2,4,6-trimethylbenzoylphosphinate.
+3473
+
+=== PDF_PAGE 12 ===
+http://journals .im.ac.cn/cjbcn
+ISSN 1000-3061    CN 11-1998/Q    生物工程学报     Chin J Biotech
+医学与人工智能的深度介入 ，集成高频超声 、
+荧光追踪等多模态原位传感器的闭环系统将实
+时同步患者体内病灶的数字孪生模型[31,34]。通过
+机器学习算法全自动接管多自由度机械补偿与
+场力调控 ，未来的原位打印系统将演化为高度
+智能化的 “体内微型自主修复工厂 ”。在此基础
+上，随着从基础硬件 、前驱体墨水到外科操作
+流程的全面标准化以及监管审批路径的明晰 ，
+体内打印必将跨越单一均质软组织修复的局限 ，
+最终实现复杂硬组织乃至全功能器官的原位重
+建 ， 为 终 末 期 器 官 衰 竭 提 供 终 极 的 再 生 医 学
+解答[9]。
+作者贡献声明
+张恒瑞：选题与框架设计、文献调研与分析、初
+稿撰写、稿件修改、插图绘制；姜兆亮：选题指导、
+内容审阅、稿件润色修改、经费支持；张卫锋：选题
+建议、稿件审阅与修改；巩立超、王思亮、陈杰：内
+容审阅、稿件润色与修改。
+作者利益冲突公开声明
+作者声明没有任何可能会影响本文所报告工作的
+已知经济利益或个人关系。
+REFERENCES
+[1] SAMANDARI M , MOSTAFA VI A, QUINT J , MEMIĆ 
+A, TAMAYOL A . In situ  bioprinting : intraoperative 
+implementation of regenerative medicine [J]. Trends in 
+Biotechnology, 2022, 40(10): 1229-1247.
+[2] HU CW, WANG CM, BIAN SQ, QI WC, LIU B, WANG 
+LL, WEN CY , WU J , LU WW , ZHAO XL . In situ  
+bioprinting: tailored printing strategies for regenerative 
+medicine[J]. International Journal of Bioprinting , 2024: 
+3366.
+[3] HUANG JH , ZHOU GX , JIANG Q , LI L . In situ  3D 
+bioprinting: the future of regenerative medicine [J/OL]. 
+Fundamental Research, 2025. https://doi.org/10.1016/j.fmre. 
+2025.06.004.
+[4] ZHANG M , ZHANG Q , CHEN XY, JIANG TZ , SONG 
+PP, WANG BJ , ZHAO X . Mussel-inspired 
+nanocomposite hydrogel based on alginate and 
+antimicrobial peptide for infected wound repair [J]. 
+International Journal of Biological Macromolecules , 
+2022, 219: 1087-1099.
+[5] CHEN YW , ZHANG JM , LIU X , WANG S , TAO J , 
+图6　未来体内原位再生制造蓝图
+Figure 6　Blueprint for future in vivo in situ regenerative manufacturing.
+3474
+
+=== PDF_PAGE 13 ===
+： cjb@im.ac.cn
+☏： 010-64807509
+张恒瑞 等 | 体内原位生物 3D打印物理干预度与打印深度双轴演进模型及研究前瞻
+HUANG YL, WU WB, LI Y, ZHOU K, WEI XW, CHEN 
+SC, LI X , XU XW , CARDON L , QIAN ZY , GOU ML . 
+Noninvasive in vivo  3D bioprinting [J]. Science 
+Advances, 2020, 6(23): eaba7406.
+[6] MacADAM A , CHAUDRY E , McTIERNAN CD , 
+CORTES D , SUURONEN EJ , ALARCON EI . 
+Development of in situ  bioprinting : a mini review [J]. 
+Frontiers in Bioengineering and Biotechnology , 2022, 10: 
+940896.
+[7] SINGH S , CHOUDHURY D , YU F , MIRONOV V , 
+NAING MW . In situ  bioprinting-Bioprinting from 
+benchside to bedside ?[J]. Acta Biomaterialia , 2020, 101: 
+14-25.
+[8] HE CF, HE JK , WU CT , RUAN CS , GU Q , HAO YQ , 
+WU Y, BAI S , HAN XX , OUYANG L , YIN J , ZHOU 
+HZ, XIONG Z , XIE MB , SHAO L , NIE J , MA L , 
+SHUAI CJ, ZHOU CC , ZHAO X , et al . 3D printing for 
+tissue/organ regeneration in China [J]. Bio-Design and 
+Manufacturing, 2025, 8(2): 169-242.
+[9] JIAN YL, DEHLI F, WISBAR M, TAOUM A, DUARTE 
+CAMPOS D . In situ bioprinting: bioprinting methods , 
+bioinks, cell sources & advanced bioprinting strategies [J]. 
+Biofabrication, 2026, 18(1): 012007.
+[10] DUCHI S , ONOFRILLO C , O ’CONNELL CD , 
+BLANCHARD R , AUGUSTINE C , QUIGLEY AF , 
+KAPSA RMI , PIVONKA P , WALLACE G , Di BELLA 
+C, CHOONG PFM . Handheld co-axial bioprinting : 
+application to in situ  surgical cartilage repair [J]. 
+Scientific Reports, 2017, 7: 5837.
+[11] O’CONNELL CD , di BELLA C , THOMPSON F , 
+AUGUSTINE C , BEIRNE S , CORNOCK R , 
+RICHARDS CJ , CHUNG J , GAMBHIR S , YUE ZL , 
+BOURKE J , ZHANG BB , TAYLOR A , QUIGLEY A , 
+KAPSA R, CHOONG P , WALLACE GG . Development 
+of the Biopen : a handheld device for surgical printing of 
+adipose stem cells at a chondral wound site [J]. 
+Biofabrication, 2016, 8(1): 015019.
+[12] DEMIR E, METLI SN , TUTUM BE , GOKYER S , OTO 
+C, YILGOR P . Hand-held bioprinters assisting in situ  
+bioprinting[J]. Biomedical Materials , 2025, 20(2): 
+022012.
+[13] PAZHOUHNIA Z, BEHESHTIZADEH N , NAMINI MS , 
+LOTFIBAKHSHAIESH N . Portable hand-held 
+bioprinters promote in situ  tissue regeneration [J]. 
+Bioengineering & Translational Medicine , 2022, 7(3): 
+e10307.
+[14] DONG H, HU B, ZHANG WK, XIE WT, MO J, SUN H, 
+SHANG JY . Robotic-assisted automated in situ  
+bioprinting[J]. International Journal of Bioprinting , 2023, 
+9(1): 629.
+[15] KAMARAJ M , MOGHIMI N , JOSHI A , REZAYOF O , 
+BARER A, CAO S , ORKIN R , ALAMBEIGI F , JOHN 
+JV. Recent advances in handheld and robotic bioprinting 
+approach for tissue engineering [J]. Advanced Materials 
+Technologies, 2025, 10(15): 2500206.
+[16] ZHAO WX, XU T. Preliminary engineering for in situ in 
+vivo bioprinting : a novel micro bioprinting platform for 
+in situ in vivo  bioprinting at a gastric wound site [J]. 
+Biofabrication, 2020, 12(4): 045020.
+[17] THAI MT , PHAN PT , TRAN HA , NGUYEN CC , 
+HOANG TT, DA VIES J, RNJAK-KOV ACINA J, PHAN 
+HP, LOVELL NH, DO TN. Advanced soft robotic system 
+for in situ  3D bioprinting and endoscopic surgery [J]. 
+Advanced Science, 2023, 10(12): 2205656.
+[18] ZHOU C , YANG YZ , WANG JX , WU QY , GU ZZ , 
+ZHOU YT, LIU XR , YANG YY, TANG HC , LING Q , 
+WANG L, ZANG JF . Ferromagnetic soft catheter robots 
+for minimally invasive bioprinting [J]. Nature 
+Communications, 2021, 12: 5072.
+[19] THAMMANNAGOWDA VK , SHIV ANNA KGG , 
+PANIER S , KALAPPA P . A review on upconversion 
+nanoparticles in biomedical applications via 3D printing, 
+bioprinting, and photocuring techniques [J]. Next 
+Materials, 2025, 9: 101314.
+[20] DEBBI L , MACHOUR M , DAHIS D , SHOYHET H , 
+SHUHMAHER M , POTTER R , TABORY Y , 
+GOLDFRACHT I, DENNIS I , BLECHMAN T , FUCHS 
+T, AZHARI H , LEVENBERG S . Ultrasound mediated 
+polymerization for cell delivery , drug delivery , and 3D 
+printing[J]. Small Methods, 2024, 8(7): 2301197.
+[21] DA VOODI E, LI JH , MA XT, NAJAFABADI AH, YOO 
+J, LU GX , SANI ES , LEE S , MONTAZERIAN H , KIM 
+G, WILLIAMS J, YANG JW, ZENG YS, LI LS , JIN ZY, 
+SADRI B, NIA SS, WANG LV, HSIAI TK, WEISS PS, et 
+al. Imaging-guided deep tissue in vivo sound printing [J]. 
+Science, 2025, 388(6747): 616-623.
+[22] PARFENOV V A, KOUDAN EV , BULANOV A EA , 
+KARALKIN PA , DAS PEREIRA F , NORKIN NE , 
+KNYAZEV A AD, GRYADUNOV A AA, PETROV OF , 
+V ASILIEV MM, MYASNIKOV MI , CHERNIKOV VP , 
+KASYANOV V A, MARCHENKOV AY , BRAKKE K , 
+KHESUANI YD , DEMIRCI U , MIRONOV V A . 
+Scaffold-free, label-free and nozzle-free biofabrication 
+technology using magnetic levitational assembly [J]. 
+Biofabrication, 2018, 10(3): 034104.
+[23] PARDO A, BAKHT SM , GOMEZ-FLORIT M , RIAL R , 
+MONTEIRO RF, TEIXEIRA SPB , TABOADA P, REIS 
+RL, DOMINGUES RMA , GOMES ME . Magnetically-
+assisted 3D bioprinting of anisotropic tissue-mimetic 
+constructs[J]. Advanced Functional Materials , 2022, 
+32(50): 2208940.
+[24] GUO WW, JIANG ZL , ZHONG HH , HOU RY , XU J . 
+Impact of online mixing via KSM on the accuracy of 
+ingredient deposition in manufacturing FGMs [J]. 
+International Journal of Mechanical Sciences , 2023, 241: 
+107971.
+[25] GUO WW, MA AQ , JIANG ZL , GONG LC , DAI HW , 
+HAN SY. Direct ink writing of functionally graded bone 
+scaffolds using ceramic foams to mimic natural bone 
+hierarchical porosity and multiple gradients [J]. 
+Composites Part B: Engineering, 2025, 300: 112465.
+[26] YUEN SG , KETTLER DT , NOVOTNY PM , PLOWES 
+RD, HOWE RD . Robotic motion compensation for 
+beating heart intracardiac surgery [J]. The International 
+Journal of Robotics Research, 2009, 28(10): 1355-1372.
+[27] ZHU ZJ , PARK HS , McALPINE MC . 3D printed 
+deformable sensors [J]. Science Advances , 2020, 6(25): 
+eaba5575.
+3475
+
+=== PDF_PAGE 14 ===
+http://journals .im.ac.cn/cjbcn
+ISSN 1000-3061    CN 11-1998/Q    生物工程学报     Chin J Biotech
+[28] GUERRA A , DA V ANI S , USAI C , JÜNGST T , 
+BOUTOPOULOS C, FORTUNATO GM. High-accuracy 
+real-time controlled robotic-based bioprinting onto 
+unknown and moving surfaces [J]. The International 
+Journal of Advanced Manufacturing Technology , 2025, 
+141(3/4): 1619-1634.
+[29] FORTUNATO GM , BONATTI AF , BATONI E , 
+MACALUSO R , VOZZI G , de MARIA C . Motion 
+compensation system for robotic based in situ bioprinting 
+to balance patient physiological movements [J]. 
+Bioprinting, 2022, 28: e00248.
+[30] YANG T, JIN YQ, SMITH LM, DAHOTRE NB, NEOGI 
+A. Real-time in-situ ultrasound monitoring of soft 
+hydrogel 3D printing with subwavelength resolution [J]. 
+Communications Engineering, 2024, 3: 162.
+[31] ZANDERIGO G , AFGHAH F , COLOSIMO BM , 
+RAMAN R . Modular and AI-driven in situ  monitoring 
+platform for real-time process analysis in embedded 
+bioprinting[J]. Device, 2025, 3(11): 100927.
+[32] MARGARITA A, GUGLIANDOLO SG , SANTONI S , 
+MOSCATELLI D, COLOSIMO BM. A novel solution for 
+real-time in-situ cell distribution monitoring in 3D 
+bioprinting via fluorescence imaging [J]. Biofabrication , 
+2025, 17(2): 021001.
+[33] FREEMAN S, CALABRO S , WILLIAMS R , JIN S , YE 
+KM. Bioink formulation and machine learning-
+empowered bioprinting optimization [J]. Frontiers in 
+Bioengineering and Biotechnology, 2022, 10: 913579.
+[34] ROBAZZI JVS , DERMAN ID , GUPTA D , HAUGH L , 
+SINGH YP, PAL V, YILMAZ YO , LIU SH , DIAS AL , 
+FLAUZINO RA, OZBOLAT IT. The synergy of artificial 
+intelligence and 3D bioprinting : unlocking new frontiers 
+in precision and tissue fabrication [J]. Advanced 
+Functional Materials, 2026, 36: e09530.
+[35] Di BELLA C , DUCHI S , O ’CONNELL CD , 
+BLANCHARD R , AUGUSTINE C , YUE ZL , 
+THOMPSON F , RICHARDS C , BEIRNE S , 
+ONOFRILLO C , BAUQUIER SH , RYAN SD , 
+PIVONKA P , WALLACE GG , CHOONG PF . In situ 
+handheld three-dimensional bioprinting for cartilage 
+regeneration[J]. Journal of Tissue Engineering and 
+Regenerative Medicine, 2018, 12(3): 611-621.
+[36] SHI MH, FISCHER P, MELDE K . Acoustic holographic 
+assembly of cell-dense tissue constructs [J]. 
+Biofabrication, 2025, 17(3): 035009.
+[37] FUEST M, YAM GH, MEHTA JS , DUARTE CAMPOS 
+DF. Prospects and challenges of translational corneal 
+bioprinting[J]. Bioengineering, 2020, 7(3): 71.
+[38] ONOFRILLO C , DUCHI S , O ’CONNELL CD , 
+BLANCHARD R , O ’CONNOR AJ , SCOTT M , 
+WALLACE GG , CHOONG PFM , Di BELLA C . 
+Biofabrication of human articular cartilage : a path 
+towards the development of a clinical treatment [J]. 
+Biofabrication, 2018, 10(4): 045006.
+[39] NUUTILA K, SAMANDARI M , ENDO Y, ZHANG YT, 
+QUINT J , SCHMIDT TA , TAMAYOL A, SINHA I . In 
+vivo printing of growth factor-eluting adhesive scaffolds 
+improves wound healing[J]. Bioactive Materials, 2022, 8: 
+296-308.
+[40] WARTH N, BERG M, SCHUMACHER L, BOEHME M, 
+WINDISCH J , GELINSKY M . Bioprint FirstAid : a 
+handheld bioprinter for first aid utilization on space 
+exploration missions [J]. Acta Astronautica , 2024, 215: 
+194-204.
+[41] QUINT JP , MOSTAFA VI A , ENDO Y , PANAYI A , 
+RUSSELL CS , NOURMAHNAD A , WISEMAN C , 
+ABBASI L , SAMANDARI M , SHEIKHI A , NUUTILA 
+K, SINHA I , TAMAYOL A . In vivo  printing of 
+nanoenabled scaffolds for the treatment of skeletal 
+muscle injuries[J]. Advanced Healthcare Materials , 2021, 
+10(10): 2002152.
+[42] MAHDA VI SS , ABDEKHODAIE MJ , KUMAR H , 
+MASHAYEKHAN S, BARADARAN-RAFII A , KIM K . 
+Stereolithography 3D bioprinting method for fabrication 
+of human corneal stroma equivalent [J]. Annals of 
+Biomedical Engineering, 2020, 48(7): 1955-1970.
+[43] JIA S, BU YS, LAU DA, LIN ZZ, SUN TH, LU WW, LU 
+S, RUAN CS , CHAN CJ . Advances in 3D bioprinting 
+technology for functional corneal reconstruction and 
+regeneration[J]. Frontiers in Bioengineering and 
+Biotechnology, 2023, 10: 1065460.
+[44] NIE XF, WANG LY, XU ZY, CUI CY, WANG SY, LI FF, 
+DAI Q , LIU WG . 3D-bioprinted biomimetic epithelial-
+stromal hydrogel construct with in situ  
+photocrosslinkable bioadhesive for suture-free corneal 
+regeneration[J]. Advanced Healthcare Materials , 2026, 
+15(12): e04578.
+[45] XIE MJ, SHI Y, ZHANG C, GE MJ, ZHANG JB, CHEN 
+ZC, FU JZ , XIE ZJ , HE Y . In situ  3D bioprinting with 
+bioconcrete bioink[J]. Nature Communications, 2022, 13: 
+3597.
+[46] YUK H , V ARELA CE , NABZDYK CS , MAO XY , 
+PADERA RF, ROCHE ET, ZHAO XH. Dry double-sided 
+tape for adhesion of wet tissues and devices [J]. Nature , 
+2019, 575(7781): 169-174.
+[47] BARROS NR , CHEN Y , HOSSEINI V , WANG WY , 
+NASIRI R , MAHMOODI M , YALCINTAS EP , 
+HAGHNIAZ R , MECWAN MM , KARAMIKAMKAR 
+S, DAI W, SARABI SA, FALCONE N, YOUNG P, ZHU 
+YZ, SUN WJ , ZHANG SM , LEE J , LEE K , AHADIAN 
+S, et al . Recent developments in mussel-inspired 
+materials for biomedical applications [J]. Biomaterials 
+Science, 2021, 9(20): 6653-6672.
+[48] ZHANG W, WANG RX, SUN ZM , ZHU XW, ZHAO Q , 
+ZHANG TF, CHOLEWINSKI A, YANG FK, ZHAO BX, 
+PINNARATIP R, FOROOSHANI PK, LEE BP. Catechol-
+functionalized hydrogels : biomimetic design , adhesion 
+mechanism, and biomedical applications [J]. Chemical 
+Society Reviews, 2020, 49(2): 433-464.
+[49] ZHENG ZZ, EGLIN D, ALINI M, RICHARDS GR, QIN 
+L, LAI YX . Visible light-induced 3D bioprinting 
+technologies and corresponding bioink materials for 
+tissue engineering : a review [J]. Engineering , 2021, 7(7): 
+966-978.
+[50] NOSHADI I , HONG S , SULLIV AN KE , SHIRZAEI 
+SANI E, PORTILLO-LARA R, TAMAYOL A, SHIN SR, 
+GAO AE , STOPPEL WL , BLACK LD , 
+KHADEMHOSSEINI A , ANNABI N . In vitro  and in 
+3476
+
+=== PDF_PAGE 15 ===
+： cjb@im.ac.cn
+☏： 010-64807509
+张恒瑞 等 | 体内原位生物 3D打印物理干预度与打印深度双轴演进模型及研究前瞻
+vivo analysis of visible light crosslinkable gelatin 
+methacryloyl (GelMA) hydrogels [J]. Biomaterials 
+Science, 2017, 5(10): 2093-2105.
+[51] MAJOR G , LONGONI A , SIMCOCK J , MAGON NJ , 
+HARTE J , BATHISH B , KEMP R , WOODFIELD T , 
+LIM KS . Clinical applicability of visible light-mediated 
+cross-linking for structural soft tissue reconstruction [J]. 
+Advanced Science, 2023, 10(26): 2300538.
+[52] SHUKLA AK, AHN M , GAO J , LEE D , YOON S , OH 
+SO, GAO G , CHO WW , KIM BS . Exploring the 
+angiogenic potential of skin patches with endothelial cell 
+patterns fabricated via in-bath 3D bioprinting using light-
+activated bioink for enhanced wound healing [J]. 
+Biomaterials, 2026, 325: 123575.
+[53] FENG Q , LI DG , LI QT , LI HF , WANG ZT, ZHU SL , 
+LIN ZF, CAO XD , DONG H . Assembling microgels via 
+dynamic cross-linking reaction improves printability , 
+microporosity, tissue-adhesion , and self-healing of 
+microgel bioink for extrusion bioprinting [J]. ACS Applied 
+Materials & Interfaces, 2022, 14(13): 15653-15666.
+[54] MUELLER E, POULIN I , BODNARYK WJ, HOARE T. 
+Click chemistry hydrogels for extrusion bioprinting : 
+progress, challenges , and opportunities [J]. 
+Biomacromolecules, 2022, 23(3): 619-640.
+[55] ZHANG YJ, CHEN H, ZHANG TT, ZAN Y, NI TY, LIU 
+M, PEI RJ . Fast-forming BMSC-encapsulating hydrogels 
+through bioorthogonal reaction for osteogenic 
+differentiation[J]. Biomaterials Science , 2018, 6(10): 
+2578-2581.
+[56] HULL SM, LINDSAY CD, BRUNEL LG , SHIWARSKI 
+DJ, TASHMAN JW, ROTH JG, MYUNG D, FEINBERG 
+AW, HEILSHORN SC . 3D bioprinting using UNIversal 
+orthogonal network (UNION) bioinks [J]. Advanced 
+Functional Materials, 2021, 31(7): 2007983.
+[57] PEARSON S, FENG J, del CAMPO A. Lighting the path: 
+light delivery strategies to activate photoresponsive 
+biomaterials in vivo [J]. Advanced Functional Materials , 
+2021, 31(50): 2105989.
+[58] ALIABOUZAR M , LEY AWY , MEURS S , PUTNAM 
+AJ, BAKER BM , KRIPFGANS OD , FOWLKES JB , 
+FABIILLI ML . Micropatterning of acoustic droplet 
+vaporization in acoustically-responsive scaffolds using 
+extrusion-based bioprinting [J]. Bioprinting , 2022, 25: 
+e00188.
+[59] BETSCH M , CRISTIAN C , LIN YY , BLAESER A , 
+SCHÖNEBERG J , VOGT M , BUHL EM , FISCHER H , 
+DUARTE CAMPOS DF . Incorporating 4D into 
+bioprinting: real-time magnetically directed collagen 
+fiber alignment for generating complex multilayered 
+tissues[J]. Advanced Healthcare Materials , 2018, 7(21): 
+1800894.
+[60] HWANGBO H , CHAE S , RYU D , KIM G . In situ  
+magnetic-field-assisted bioprinting process using 
+magnetorheological bioink to obtain engineered muscle 
+constructs[J]. Bioactive Materials, 2025, 45: 417-433.
+[61] XIE RX , CAO YX , SUN RJ , WANG R , MORGAN A , 
+KIM J, CALLENS SJP, XIE K, ZOU JW, LIN JL, ZHOU 
+K, LU XR , STEVENS MM . Magnetically driven 
+formation of 3D freestanding soft bioscaffolds [J]. 
+Science Advances, 2024, 10(5): eadl1549.
+[62] ZHU ZJ , GUO SZ , HIRDLER T , EIDE C , FAN XX , 
+TOLAR J , McALPINE MC . 3D printed functional and 
+biological materials on moving freeform surfaces [J]. 
+Advanced Materials, 2018, 30(23): 1707495.
+[63] ERNST F , DÜRICHEN R , SCHLAEFER A , 
+SCHWEIKARD A. Evaluating and comparing algorithms 
+for respiratory motion prediction [J]. Physics in Medicine 
+and Biology, 2013, 58(11): 3911-3929.
+[64] CARRANZA T, ZALBA-BALDA M, BARAIBAR MJB , 
+deLa CABA K , GUERRERO P . Effect of sterilization 
+processes on alginate/gelatin inks for three-dimensional 
+printing[J]. International Journal of Bioprinting , 2023, 
+9(1): 645.
+[65] 苑龙, 李森, 卞继超, 李万祥, 王国栋 . 3D 生物打印生物
+墨水灭菌技术的合理选择与应用 [J]. 中国组织工程研
+究, 2022, 26(18): 2914-2921.
+YUAN L , LI S , BIAN JC , LI WX , WANG GD . 
+Reasonable choice and application of bio-ink sterilization 
+technology for 3D bioprinting [J]. Chinese Journal of 
+Tissue Engineering Research , 2022, 26(18): 2914-2921 
+(in Chinese).
+[66] 牟怡平 , 张扬, 郑中阳 , 李奇 . 3D 生物打印临床应用的
+伦 理 困 境 与 法 律 规 制 研 究[J]. 医 学 与 哲 学, 2025, 
+46(19): 37-40, 45.
+MOU/MU) YP, ZHANG Y, ZHENG ZY, LI Q . Research 
+on the ethical dilemma and legal regulation of clinical 
+application of 3D bioprinting[J]. Medicine & Philosophy , 
+2025, 46(19): 37-40, 45 (in Chinese).
+[67] CHEN L, LI ZY, ZHENG YT, ZHOU F, ZHAO JL, ZHAI 
+QY, ZHANG ZQ , LIU TR , CHEN YM , QI SH . 3D-
+printed dermis-specific extracellular matrix mitigates scar 
+contraction via inducing early angiogenesis and 
+macrophage M 2 polarization [J]. Bioactive Materials , 
+2022, 10: 236-246.
+[68] ZENG HJ , CHEN ZY , WEI PY , HUANG HF , LIU B , 
+FAN ZJ . Rapid customization of biomimetic cartilage 
+scaffold with stem cell capturing and homing capabilities 
+for in situ  inductive regeneration of osteochondral 
+defects[J]. Advanced Functional Materials , 2024, 34(28): 
+2400608.
+3477

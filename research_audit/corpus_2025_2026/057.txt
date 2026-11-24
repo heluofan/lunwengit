@@ -1,0 +1,855 @@
+=== PDF_PAGE 1 ===
+研究论文
+数据分析与知识发现
+基于跨模态知识图对比学习的医学出版物推荐研究
+*
+夏中华
+1
+ 齐江蕾
+2
+ 丁 浩
+3, 4
+1
+（南京大学信息管理学院  南京  210023）
+2
+（长沙民政职业技术学院民政与社会工作学院  长沙  410004）
+3
+（南京邮电大学教育科学与技术学院  南京  210023）
+4
+（南京邮电大学管理学院  南京  210003）
+摘要: 【目的】 提出一种医学出版物推荐模型 ，运用跨模态信息提高推荐的准确率 。 【方法】 首先利用医学术
+语系统将标签内容标准化 ，将图文标签进行配对 ，再利用配对的语义标签通过对比学习将图像与文本之间的
+特征语义进行对齐 ，进而基于对齐的特征语义构建跨模态交叉注意力机制 ，并通过用户对不同模态兴趣权重
+预测用户对出版物的偏好 。 【结果】 在两个出版物数据集上与三种最新的多模态基线模型进行对比实验 ，模
+型的精确率平均为 62.79%，F1 值平均为 53.62%，NDCG 平均为 61.17%，各指标结果总体优于基线模型 。 【局
+限】 对于仅包含单一模态的预训练数据可能需要额外的冷启动方法 。 【结论】 所提模型跨模态信息特征的融
+合能力强，可以有效缓解不同模态间语义鸿沟问题 ，提高医学出版物推荐的准确率 。
+关键词: 推荐系统 对比学习 医学出版物推荐  交叉注意力
+分类号: TP391
+DOI: 10.11925/infotech.2096-3467.2024.0022
+引用本文: 夏中华， 齐江蕾， 丁浩 . 基于跨模态知识图对比学习的医学出版物推荐研究 ［J］. 数据分析与知识
+发现， 2025， 9（5） ： 136-145.(Xia Zhonghua , Qi Jianglei , Ding Hao . Medical Publication Recommendation Based 
+on Cross-Modal Contrastive Learning Between Knowledge and Graph [J]. Data Analysis and Knowledge 
+Discovery, 2025, 9(5): 136-145.)
+1 引 言
+近年来 ，医疗多模态技术可以充分利用图像和
+文本的信息 ，集成不同的医学成像技术 、生物医学工
+程和数据分析方法
+［1］
+，为医疗诊断与治疗提供了全
+新的视角和可能性 ，从而获得极大的普及
+［2］
+。医学
+出版物同样包含大量的多模态信息 。医学出版物是
+指涉及医学领域的各种出版物 ，主要包括医学期刊 、
+书籍、指南、论文、报告、新闻等 ，涵盖了广泛的医学
+专业图像和文本的内容信息 。面对海量出版物 ，如
+何有效地为行业用户进行相关精准化推荐是目前所
+面临的挑战
+［3］
+，也是本文推荐系统研究的主要动机 。
+大量现有出版物表征方法只从出版物文本中学习表
+示
+［4］
+。事实上 ，除了文本之外 ，许多医学出版物也使
+用丰富的图像更好地吸引用户的阅读 ，不仅是因为
+对文本内容的兴趣 ，也因为医学出版物图片具有很
+高的医学临床参考价值
+［5］
+。
+医学出版物多模态推荐面临着一些挑战 ，如数
+据整合与标准化 、成像技术之间的差异 、信息共享与
+通讯作者（Corresponding author） ： 丁浩（Ding Hao） ，ORCID：0000-0003-3528-5686，E-mail：dinghao@smail .nju.edu.cn。
+*本文系国家社会科学基金重大项目 （项目编号 ：20&ZD154） 和江苏省科研与实践创新计划项目 （项目编号 ： KYCX23_0079） 的研
+究成果之一 。
+The work is supported by the National Social Science Fund of China (Grant No . 20&ZD154), Postgraduate Research & Practice Innovation 
+Program of Jiangsu Province (Grant No. KYCX23_0079).
+136
+
+=== PDF_PAGE 2 ===
+总第 101 期    2025 年    第 5 期
+Data Analysis and Knowledge Discovery
+隐私保护等 ，这些问题仍然困扰着这一领域
+［6-7］
+。由
+于涉及隐私和法律问题 ，医学领域大量模态间匹配
+的数据难以被广泛利用
+［8］
+，缺乏高质量的标记数据
+集，推荐系统在模型训练时会丢失重要特征细节
+［9］
+。
+如果将文本和图片的特征单独进行学习 ，则会导致
+文本特征与图片语义特征不匹配 ，造成不同模态之
+间的语义鸿沟 ，致使模型性能下降 。例如，某种疾病
+在 不 同 阶 段 可 能 具 有 不 同 的 症 状（可 能 由 文 字 描
+述） ，症 状 的 表 现 形 式 也 可 能 不 同（可 能 由 图 像 描
+绘） 。人工标注虽然能取得较好的效果 ，但是高昂的
+标注成本限制了其在大数据推荐领域的应用和推
+广
+［10］
+。在此背景下 ，本文提出一个基于跨模态语义
+对齐的医学出版物推荐模型 ，并结合用户侧的交叉
+偏好增强用户对图像和文本的跨模态偏好的感知和
+预测 ，在单一模态数据或者少量模态数据的基础上
+进一步扩大模型的感受野 ，以实现更精准化的医学
+出版物推荐 。
+本文的主要贡献如下 。
+（1）通 过 统 一 医 学 语 言 系 统（Unified Medical 
+Language System ，UMLS）将图文标签所包含的医学
+实 体 标 准 化，运 用 ClinicalBERT 和 3D-ResNet 技 术
+进行模态信息编码 ，并应用对比学习将图像与文本
+之间的语义进行对齐 ，从而有效缓解不同模态间语
+义鸿沟的问题 。
+（2）针对用户融合了跨模态交叉兴趣 ，结合对齐
+的图文数据 ，可以有效地感知用户不同模态间的偏
+好权重，进一步提高模型推荐的有效性 。
+2 相关工作
+2.1　语义对齐研究
+语义对齐是指通过匹配模式之间的关系信息 ，
+确保不同模式中所表达的含义一致
+［11］
+。Gu 等
+［12］
+通
+过研究情绪检测的层次注意策略 ，实现了词级对齐 。
+Huddar 等
+［13］
+提出一种情绪识别模型 ，该模型在单词
+水平上提取不同的模态特征 ，并采用强制对齐实现
+模态之间的时间依赖性交互 。然而 ，这种对齐只关
+注基于单词的局部融合 ，忽略了序列关系之间的交
+叉词的影响 。Liu 等
+［14］
+提出一种门控双向对齐网络 ，
+基 于 长 短 时 记 忆 网 络（Long Short -Term Memory ， 
+LSTM）的隐藏状态发现语音和文本之间的对齐关
+系 。SANM（Semantic Alignment Network for Multi -
+modal）模型针对每种模态构建多空间学习框架 ，并
+在该框架下构建基于跨模态语义学习的自模态交互
+模 块
+［15］
+。 EEGA（Edge-Enhanced Graph Alignment ）
+模型结合边缘增强的图对齐网络 ，利用边缘信息辅
+助对象与实体之间的对齐 ，寻找实体 -实体关系和对
+象-对象关系之间的相关性
+［16］
+。通过语义对齐可以
+关联不同模态之间的数据 ，提高模型跨模态信息特
+征的融合能力
+［17］
+。
+2.2　多模态推荐研究
+随着深度学习技术的推广 ，多模态技术在推荐
+领域中也有广泛的应用
+［18］
+。ConvMF 有效地结合矩
+阵分解和卷积神经网络 ，捕获用户 -物品交互的全局
+和 局 部 结 构 ，融 合 卷 积 神 经 网 络（Convolutional 
+Neural Networks ，CNN） 和 概 率 矩 阵 分 解
+（Probabilistic Matrix Factorization ，PMF）做 推 荐 任
+务，解决传统 CNN 不适合回归的缺陷 ，提高了推荐
+准确性
+［19］
+。由于融合了矩阵分解和卷积神经网络 ，
+可能导致计算成本较高 ，尤其是对于大规模数据集 。
+VBPR （Visual and Textual Bayesian Personalized 
+Ranking）模型利用 VGG（Visual Geometry Group）模
+块得到预分割的图像区域 ，利用注意力机制在图像
+区域中捕捉用户偏好 ，同时由于用户评论本质是一
+种 捕 捉 用 户 偏 好 的 弱 监 督 信 号，因 而 该 算 法 利 用
+LSTM 融合注意力图像嵌入词生成过程
+［20］
+。由于预
+处理过程包括多种数据类型的融合 ，模型的复杂性
+提 高 。 ODMT （Online Distillation -Enhanced Multi -
+modal Transformer）模型在物品表示学习阶段引入
+一个项目标识符感知的多模态  Transformer 模块，以
+促进不同特征之间的信息交互 ，在预测优化阶段采
+用在线蒸馏训练策略 ，使多源数据相互学习 ，提高预
+测鲁棒性 ，能够处理异构多模态数据
+［21］
+。但该方法
+仅考虑了物品特征的多模态学习 ，没有充分考虑用
+户侧模态偏好特征 ，可能会导致推荐结果不精确 。
+MEGCF （Multimodal Entity Graph Collaborative 
+Filtering）模型从多模态数据中提取语义丰富的实
+体，将这些实体集成到用户 -项目交互图中
+［22］
+。通过
+构建一个对称线性图卷积网络模块 ，在图上进行信
+息传播以捕获高阶语义关联和协同滤波信号 ，并利
+用评价数据中的情感信息对图卷积网络中的邻居聚
+137
+
+=== PDF_PAGE 3 ===
+研究论文
+数据分析与知识发现
+合进行细粒度加权。但由于图卷积网络的运算复杂度
+可较高，对于处理大规模密集型数据集可能会面临困
+难。LUDP（Learning the User ’s Deeper Preferences）
+模型通过用户与项目之间的历史交互构建用户偏好
+图，在此基础上聚合多模态特征作为用户对模态的
+偏好，作为辅助信息相结合 ，增强了从协作信号中学
+习到的用户和项目表示 ，从而了解更深层次的用户
+偏好 ，提高了推荐系统的个性化程度
+［23］
+。但该方法
+忽略了跨模态之间的语义匹配关系 ，可能会加剧多
+模态的语义鸿沟问题 。
+本文提出一个基于跨模态语义对齐的医学出版
+物推荐模型以改善现有问题 。对于模态数据稀疏性
+问题，本文扩展了多模态预训练 ，覆盖大量的未配对
+图像和文本数据集 ，以跨模态组合方式缩放训练数
+据的数量以满足训练需求 ；对于用户侧的交叉跨模
+态偏好不匹配问题 ，本文采用对比学习的模态特征
+对齐方法增强用户对出版物图像和文本的跨模态偏
+好的感知和预测 ；同时，通过语义标签对齐将跨模态
+特征匹配 ，可以缓解不同模态间语义鸿沟问题 ，实现
+更精准化的医学出版物推荐 。
+3 模型构建
+本文模型的主要任务是利用跨模态医学知识构
+建知识驱动的语义相似性推荐出版物模型 ，提高模
+型在专业领域的泛化能力 ，模型的整体框架如图 1
+所示。
+3.1　数据预处理
+本文的文本预处理支撑数据主要来源于由美国
+国 立 医 学 图 书 馆 开 发 的 统 一 医 学 语 言 系 统
+（UMLS） 。为了增强用户多模态偏好学习 ，本文充
+分利用用户现有的医学出版物的图像和纯文本跨模
+态偏好数据 ，将知识与图的特征融合 ，并通过对比学
+习挖掘更多的真样本之间的兴趣关联 ，消除阴性样
+本（Negative Sample）的影响 ，进一步提高医学出版
+物推荐的准确性 。
+（1）文本预处理 。对于某个医学出版物 ，为了对
+其 文 章 进 行 句 子 级 别 的 分 解 ，本 文 使 用 NLTK
+（Natural Language Toolkit）自然语言处理工具 ，先将
+出版物的相关文本输入句子分割工具 ，该工具通过
+分析文章的语法和标点符号等信息 ，将文章逐句分
+图 1　模型框架示意图
+Fig.1　Schematic Diagram of the Model
+138
+
+=== PDF_PAGE 4 ===
+总第 101 期    2025 年    第 5 期
+Data Analysis and Knowledge Discovery
+解为一系列具有独立意义的句子 ，在此过程中考虑
+不同语境下的句子边界 ，让每个分割出的句子都具
+有完整的语义 。对于报告 、网页等小于 1 000 字符的
+短篇文档 ，模型对全文直接进行处理 ；对于论文 、书
+籍等大于 1 000 字符的长篇文档 ，则按照章节分批处
+理。抽取预处理后文本中的医学实体 ，方便为下一
+步跨模态实体标签语义配对 。
+（2）标签语义配对 。标签语义配对是指生物医
+学文本与 UMLS 词表中的概念进行匹配 。对于生物
+医学文本 ，将其映射到 UMLS 中的标准医学概念 ，并
+提取出其中的医学实体和术语 ，这些实体可能包括
+疾病名称 、药物 、解剖结构等 。对于带有描述标签
+（Caption）的图像 ，将原始类映射到 UMLS 概念。最
+终，将提取的图片的标签和文本概念进行映射配对 ，
+从而实现图像和文本的标签语义统一标准化 ，并用
+于用户知识图特征的对比匹配学习 。
+3.2　特征编码
+对于样本 Stxt 和 Simg，先提取图像和文本实体标
+签构建多热向量（Multi-hot Vectors） ，构建图像表示
+序列和文本表示序列分别为 Eimg = [ e(1)img，e(2)img，⋯，e(n )img ]
+和 Etxt = [ e(1)txt，e(2)txt ，⋯，e(m )txt ]。计算配对文本和图像的
+对应实体标签 Ltxt 和 Limg，最后通过跨模态标签兴趣
+权重 Wtxt 和 Wimg 衡量用户对它们的偏好 。
+对 于 文 本 内 容，本 文 通 过 医 学 领 域 预 训 练 的
+Clinical-BERT
+［24］
+文本编码器创建文本实体的嵌入 。
+将 文 本 样 本 投 射 到 向 量 空 间etxt ∈ RM，如 公 式（1）
+所示。
+etxt = ClinicalBERT ( Stxt ) (1)
+然后，使用投影头（Projection Head）将文本表征
+向量映射到对比学习的隐空间 RH。这里使用多层
+感知器（Multilayer Perceptron ，MLP）进行抽取 ，如公
+式（2）所示。
+vt = MLP0 (etxt ) (2)
+对 于 图 像 内 容，本 文 使 用 3D-ResNet 进 行 编
+码
+［25］
+，其 结 构 如 图2 所 示。ResNet 表 示 残 差 连 接，
+3D-ResNet 与 之 最 大 区 别 在 于 3DConv 结 构 。
+3DConv 的输入 、特征图（Feature Map）由 2DConv 的
+单个特征图变成序列特征图 （Series Feature Map ） ，
+可以同时抽取用户访问医学图像与时序的联合特
+征，将特征投射到向量空间eimg ∈ RN，如公式（3）所示。
+eimg = 3D - ResNet ( Stxt ) (3)
+同样，将图像表征向量通过 MLP 投影到对比学
+习的隐空间 RH，如公式（4）所示。
+vg = MLP1 (eimg ) (4)
+将文本与图像编码嵌入相同的维数 H 以用于对
+比学习。
+3.3　基于对比学习的用户知识图特征匹配
+知识图特征匹配是指将提取的文本知识和图片
+语义特征匹配 ，从而实现不同模态特征语义对齐 。
+同一个输入图像经过两次变换后得到不同特征 vt 和
+vg，按照对比学习原理
+［26］
+，即可根据这些特征构建损
+失 函 数，并 通 过 构 建 标 签Limg 和 Ltxt 连 接 图 像 和 文
+本 。 在 每 次 迭 代 中，分 别 对 输 入 图 像 和 文 本 进 行
+Kbatch 采样，建立软目标（Soft Targets）权重。
+首先 ，通过计算输出标签之间的语义余弦相似
+度 eTm en，再通过 Softmax 分别对图像和文本分别进行
+归一化计算 ，如公式（5）所示。
+h =
+■
+■
+■
+|
+|||||
+|
+|||||
+exp (eTm en )
+∑m=1
+Kbatch
+exp (eTm en )，  L(m )txt → ∀L(n )img
+exp (eTm en )
+∑n=1
+Kbatch
+exp (eTm en )，  L(n )img → ∀L(m )txt
+(5)
+其次 ，计算输出的归一化相似概率 。先计算图
+像与文本嵌入的归一化余弦相似度 ，再通过带温度
+系 数 的 Softmax 得 到 预 测 的 相 似 度，如 公 式（6）
+所示。
+图 2　3D-ResNet 结构示意图
+Fig.2　Diagram of 3D-ResNet Structure
+139
+
+=== PDF_PAGE 5 ===
+研究论文
+数据分析与知识发现
+r =
+■
+■
+■
+|
+|||||
+|
+|||||
+exp (v  t T v  g /τ )
+∑m=1
+Kbatch
+exp (v  t T v  g /τ ) ，  L(m )txt → ∀L(n )img
+exp (v  t T v  g /τ )
+∑n=1
+Kbatch
+exp (v  t T v  g /τ ) ，  L(n )img → ∀L(m )txt
+(6)
+其中，v  t 与 v  g 分别为归一化的 vt 和 vg；温度参数 τ
+为调节对比学习过程中标签最大值权重平滑程度的
+超参数 。最终 ，使用交叉熵
+［27］
+定义软目标和归一化
+相似概率之间语义匹配损失 ，如公式（7）所示。
+LCEm，n = - 1Kbatch ∑mKbatch∑nKbatch hm，n log rm，n (7)
+同理，可以得出交叉熵 LCEn，m，最终跨模态特征匹
+配权重矩阵 z 训练的目标函数如公式（8）所示。
+L = LCEm，n + LCEn，m
+2 (8)
+3.4　目标推荐模型
+在图像与文本标签进行学习匹配的基础上 ，将
+匹配的标签对应用于计算用户对文本与图像的兴趣
+偏好 ，进一步提高跨模态推荐的准确性 。通过结合
+用户浏览出版物数量考虑用户兴趣权重 ，如公式（9）
+所示。
+w(i ) = 1k ∑i=1k ei × exp ( zi T vi )∑i=1k exp ( zi T vi ) (9)
+其中，ei 表示每个点击出版物的嵌入向量 ；W 表
+示权重矩阵 。
+最 终 可 以 得 到 Wimg = [ w(1)img，w(2)img，⋯，w( k )img ] 和
+Wtxt = [ w(1)txt ，w(2)txt ，⋯，w( k )txt ]。其中 ，k 表示用户点击浏
+览的出版物数量 ，其具体数值取决于每个用户的浏
+览数量。用户对浏览的出版物的兴趣往往是交叉关
+联的
+［28］
+，因此需要综合考虑用户的跨模态交叉兴趣
+进行推荐系统建模 ，才能取得更好的效果 。
+设用户候选出版物的文本和图权重表示分别
+表 示 为wctxt 和 wcimg，点 击 浏 览 出 版 物 与 候 选 出 版 物
+的 不 同 模 态 之 间 的 交 叉 关 联 特 征，如 公 式（10）
+所示 。
+crlStxt→Pimg = Softmax (Wtxt × wcimg ) (10)
+同理，可得出 crlSimg→Ptxt。对于相同模态内容关联
+度则直接使用公式（5）中描述的归一化相似度进行
+计算，如公式（11）所示。
+ΦS→P = exp (vS T vP )
+∑i=1
+k
+exp (vS T vP ) (11)
+最终用户跨模态交叉用户的兴趣嵌入 Euser 的计
+算方法，如公式（12）所示。
+Euser = Wtxt × e-L crlSimg→Ptxt + Wimg × e-L crlStxt→Pimg +
+ΦStxt→Ptxt +  ΦSimg→Pimg (12)
+其中，e-L ∈ (0，1]为跨模态特征匹配关联惩罚系
+数，用于避免用户浏览的出版物与候选出版物不同
+模态特征过度匹配对关联度进行惩罚 。本文出版物
+排名推荐预测分值来自候选出版物的嵌入 ei 以及用
+户嵌入 Euser，推荐预测分值定义如公式（13）所示。
+Predictscore = 1k (∑i=1k ei Softmax ( zi T vi )) Euser (13)
+最终 ，根据对出版物的预测分值从高到低对用
+户进行推荐 。
+4 实验评估
+4.1　数据集
+本文实验使用 MedICaT
+［29］
+和 MIMIC-CXR
+［30］
+两
+个数据集进行预训练 。其中 ，MedICaT 数据集主要
+适用于研究医学影像与文本标注的语义关联性问
+题 ，所 包 含 的 图 和 标 题 文 本 均 抽 取 自 PubMed 
+Central 上开源文献出版物 。MIMIC-CXR 数据集包
+含 X 射线胸片图像和相应的临床报告文本数据 ，模
+拟图文出版物用于预训练 。
+本文的测试数据集由亚马逊出版物数据集
+［31］
+以
+及大学图书馆借阅数据集组成（支撑数据［2］ ） ，将用
+户 与 医 学、生 物 学 等 相 关 领 域 出 版 物 的 交 互 数 据
+（如：点击、浏览）作为测试数据集 ，并将序列数据的
+前 80% 作为训练集 、后 20% 作为测试集评估模型推
+荐性能。数据清洗、过滤后得到的数据集规模如表 1
+所示。
+统一标准化数据标签语义 ，将对应实体映射到
+统一医学语言系统（UMLS）中的概念 。具体过程如
+表 1　测试数据集规模
+Table 1　Size of Test Datasets
+数据集
+亚马逊图书数据集
+图书馆借阅数据集
+用户数量
+103 529
+25 183
+医学出版物数量
+1 585
+207
+浏览数量
+157 485
+2 706
+140
+
+=== PDF_PAGE 6 ===
+总第 101 期    2025 年    第 5 期
+Data Analysis and Knowledge Discovery
+下：首先按 3.1 节提取图像标签和文本标签 ，将从标
+签中提取的术语进行标准化处理 ，并对词形变化 、大
+小写、拼写错误进行检查 ，删除重复项 ，以确保同义
+词和缩写的一致性 ，以便与 UMLS 中的标准术语进
+行匹配；然后，将标准化后的术语与 UMLS 的超级叙
+词表（Metathesaurus）中的术语进行模糊匹配 ；识别
+匹配的术语对应的 UMLS 概念 ，并为每个匹配的术
+语 分 配 唯 一 的 UMLS 概 念 标 识（Concept Unique 
+Identifier，CUI） ，并将匹配术语与其概念的父级 、子
+级、同义词等关联起来 ；获取与匹配的 UMLS 概念相
+关联的属性信息 ，如定义关系 、层次结构关系 、临床
+属性等 ，为匹配的  UMLS 概念标注语义类型 ，以指
+示其属于对应的概念类型 （如疾病 、药物、解剖学结
+构等） ，至此完成标签语义的标准化统一 。
+4.2　评价指标
+本 文 使 用 NDCG （Normalized Discounted 
+Cummulative Gain） 、精确率 、召回率和 F1 值作为主
+要实验评价指标 。根据文献［32］的描述 ，各指标定
+义如下。
+NDCG 表示归一化折损累积增益 ，如公式（14）
+所示。
+NDCG@N = 1IDCG@N ∑i=1N 2bi - 1log2 i + 1 (14)
+如果出版物位于推荐结果列表中 ，bi 值为 1，否
+则为 0。
+精确率定义如公式（15）所示。召回率定义如公
+式（16）所示。
+Precision = |Lall ∩ Lread||Lall| (15) 
+Recall = |Lall ∩ Lread||Lread| (16)
+其中 ，Lread 是测试集中目标用户选购或者借阅
+的出版物集合 ；Lall 是推荐列表中所有出版物的推荐
+列表；|Lall ∩ Lread| 是 Lall 和 Lread 的出版物交集数量 。
+F1 值定义如公式（17）所示。
+F1 = 2 × Precision × RecallPrecision + Recall (17)
+4.3　参数设置
+在 本 文 实 验 中，预 训 练 数 据 集 为MedICaT 及
+MIMIC-CXR，采用 10 折交叉验证进行评估 。为了
+更有效地提取图片特征 ，首先所有图像都被填充成
+正方形 ，然后统一缩放到 224×224 像素的尺寸 。再
+把所有文字描述部分合并 ，并将它们分成句子 ，删除
+包含少于两个单词的句子 ，学习率为 0.1，批处理大
+小为 100，权重衰减设为 0.01，Epoch 为 10，学习率预
+热（Warmup）设为 0.1，最后在 RTX4090 与 RTX-3090
+双图形处理器（Graphics Processing Unit ，GPU）服务
+器上采用混合精度训练并于 12 h 内完成。
+4.4　参数实验
+为了研究参数 τ 的取值变化对实验的影响 ，本文
+选取不同的 τ 值，使用精确率指标衡量实验结果 。
+参数 τ 影响实验结果如图 3 所示 。当 τ 增加时 ，
+标签最大值权重趋于平滑 ，模型性能逐步提高 ，但当
+τ 达到 0.5 附近时精确度最高 ，超过 0.5 时精确度开始
+逐 渐 下 降，因 此 本 文 模 型 中 最 优 温 度 参 数 值 取 为
+τ=0.5。
+为了进一步研究用户历史浏览医学出版物数量
+参数 k 和推荐精确率之间的关系 ，结合数据集特点 ，
+取每个用户两年的浏览数量为 k，每半年为一个浏览
+阶段 ，按时间从近到远划分为 4 个阶段｛k4 ，k2 ，3k4 ，
+k｝ ，其中 k 的具体数值取决于每个用户的浏览数量 。
+使用每个阶段每个推荐的精确率的平均值作为该阶
+段的评价结果 ，如图 4 所示。
+随着融入浏览历史数据的增多 ，精确率也随之
+上升 ，当浏览数据比重达到 3/4 左右时 ，精确率又稍
+微下降。由此可知 ，只考虑近期的浏览项 ，由于数据
+图 3　参数 τ 的影响实验结果
+Fig.3　Experimental Results on the Effect of 
+Parameter τ
+141
+
+=== PDF_PAGE 7 ===
+研究论文
+数据分析与知识发现
+太少，可能会丢失用户历史的兴趣偏好 ，但使用过于
+久远的浏览项进行推荐 ，也可能由于用户的兴趣发
+生漂移，引发推荐精确率下降 ，因此合理地选取用户
+的历史浏览数据量可以改善推荐效果 。
+4.5　消融实验
+消融实验的数据结果分析了引入不同特征对目
+标模型的影响表现 ，其中包括 W/O Cross（没有引入
+交叉兴趣机制 ） 、W/O Image（没有引入图像特征 ） 、
+W/O Cross+Image（两个特征均未引入 ）以及本文的
+目标模型（两个特征均引入） 。使用亚马逊图书和图
+书馆借阅数据集的实验结果如图 5 所示。
+在 亚 马 逊 图 书 数 据 集 上，从 W/O Cross+Image
+到 W/O Cross ，F1@5 和 NDCG@5 指 标 性 能 有 显 著
+提升 ，分别提高 9.93 个百分点和 12.01 个百分点 ，其
+中@后面的数值表示推荐的数量 ，说明加入图像信
+息可以提高推荐性能 。进一步从 W/O Cross 到 W/O 
+Image，F1 和 NDCG 再次分别提升 16.20 个百分点和
+14.42 个百分点 ，表明交叉兴趣融合对推荐性能的提
+升效果更显著 。本文模型相较于 W/O Image ，同时
+考虑了模态语义对齐与用户侧交叉兴趣的协同影
+响，因此 F1 和 NDCG 分别提升了 27.57 个百分点和
+26.28 个百分点。
+在 图 书 馆 借 阅 数 据 集 上，从 W/O Cross+Image
+到 W/O Cross ，模型性能也有较明显的提升 ，F1@5
+和 NDCG@5 指 标 分 别 提 升 了 11.94 个 百 分 点 和
+10.17 个百分点 ；从 W/O Cross 到 W/O Image 分别提
+升了 11.51 个百分点和 16.30 个百分点 ，说明加入图
+像信息和交叉注意力对推荐性能改善具有积极作
+用。本文模型相对于 W/O Image 进一步融合跨模态
+语义匹配 ，F1 和 NDCG 分别提升了 32.35 个百分点
+和 26.45 个百分点。
+从上述结果来看 ，在两个数据集上 ，引入图像信
+息和交叉兴趣融合机制都对推荐性能有所改善 ，展
+示了本文模型在考虑跨模态语义匹配和用户侧的兴
+趣特征融合的优越性 。
+4.6　性能对比实验
+在针对亚马逊图书和图书馆借阅数据集的多模
+态 推 荐 性 能 对 比 实 验 中 ，本 文 选 取 ODMT
+［25］
+、
+MEGCF
+［26］
+和 LUDP
+［27］
+三个多模态推荐模型作为实
+验基线模型 。模型性能对比实验结果如表 2 所示。
+图 4　用户历史浏览出版物数量与推荐效果实验结果
+Fig.4　Experimental Results on the Number  of 
+Publications Viewed by Users in History
+图 5　消融实验结果
+Fig.5　The Results of Ablation Experiment
+表 2　推荐性能对比实验结果
+Table 2　The Experimental Results of Recommended Performance
+指标
+Precision@5
+Precision@10
+F1@5
+F1@10
+NDCG@5
+NDCG@10
+ODMT
+亚马逊图书
+0.548 2
+0.524 3
+0.553 2
+0.561 6
+0.536 2
+0.546 2
+图书馆借阅
+0.516 6
+0.534 1
+0.526 3
+0.551 8
+0.542 5
+0.566 3
+MEGCF
+亚马逊图书
+0.542 1
+0.557 3
+0.562 3
+0.557 3
+0.596 7
+0.569 2
+图书馆借阅
+0.557 2
+0.557 9
+0.607 2
+0.580 6
+0.588 5
+0.605 2
+LUDP
+亚马逊图书
+0.564 1
+0.567 5
+0.564 7
+0.546 3
+0.562 9
+0.565 3
+图书馆借阅
+0.553 8
+0.545 9
+0.552 0
+0.551 6
+0.565 2
+0.557 1
+本文模型
+亚马逊图书
+0.622 3
+0.633 4
+0.643 7
+0.635 3
+0.621 7
+0.601 7
+图书馆借阅
+0.648 9
+0.620 3
+0.612 3
+0.615 4
+0.637 2
+0.623 5
+142
+
+=== PDF_PAGE 8 ===
+总第 101 期    2025 年    第 5 期
+Data Analysis and Knowledge Discovery
+在 亚 马 逊 图 书 数 据 集 上 ，本 文 模 型 的
+Precision@5 和 Precision@10 分 别 达 到 0.622 3 和
+0.633 4，优于 ODMT、MEGCF 和 LUDP 模型；在图书
+馆 借 阅 数 据 集 上，本 文 模 型 的 Precision@5 达 到
+0.648 9，略高于其他模型 ，但在 Precision@10 指标上
+与 MEGCF 模型接近 。进一步观察 F1@5 和 F1@10
+指标 ，本文模型在亚马逊图书数据集和图书馆借阅
+数据集上都表现出较高的 F1 值。特别是在亚马逊
+图书数 据集上，本文模型的F1@5 和F1@10 分别达到
+0.643 7 和 0.635 3，优 于 其 他 基 线 模 型 。 对 于
+NDCG@5 和 NDCG@10 指标，本文模型在亚马逊图
+书数据集和图书馆借阅数据集上也取得一定的优
+势 。 特 别 是 在 亚 马 逊 图 书 数 据 集 上，本 文 模 型 的
+NDCG@5 和 NDCG@10 分别达到 0.621 7 和 0.601 7，
+高于其他基线模型 ；在图书馆借阅数据集上 ，本文模
+型与 MEGCF 模型表现最接近 ，但仍然取得较高的
+NDCG@5 指标 ，达到 0.637 2。由此可以看出 ，本文
+模型充分结合了项目不同模态匹配的语义特征 ，与
+用户侧交叉兴趣特征充分融合 ，有效提升了模型的
+多模态推荐性能 。
+5 结 语
+本文提出一种医学出版物推荐模型 ，该模型基
+于跨模态语义对齐 ，并结合用户侧的跨模态交叉兴
+趣特征融合机制 。相较于仅依赖单一模态或少量模
+态数据的方法 ，通过结合跨模态特征 ，模型能够更准
+确地捕捉和预测用户对图像和文本的不同模态偏
+好，进一步提高推荐的精确度 。实验结果验证了本
+文跨模态用户兴趣特征融合应用于出版物推荐的优
+越性。
+未来工作将深入研究模型架构的优化 。计划引
+入更先进的跨模态特征提取网络 ，如基于零样本学
+习（Zero-Shot）的图像特征提取器和或高阶文本特征
+提取器。此外，考虑引入多模态注意力机制 ，以便模
+型能够自适应地关注图像和文本中与用户兴趣最相
+关的部分 。同时 ，也希望将当前的框架与大语言模
+型相结合 ，构建一个更为强大的跨模态统一生成式
+推 荐 模 型，为 用 户 提 供 更 为 个 性 化 和 精 准 的 推 荐
+服务。
+参考文献：
+[1] Kim S , Lee N , Lee J , et al . Heterogeneous Graph Learning for 
+Multi-modal Medical Data Analysis [C]//Proceedings of the 37th 
+AAAI Conference on Artificial Intelligence . 2023: 5141-5150.
+[2] Liu H , Li S S , Zhu J C , et al . DDIFN : A Dual-discriminator 
+Multi-modal Medical Image Fusion Network [J]. ACM 
+Transactions on Multimedia Computing , Communications and 
+Applications, 2023, 19(4): 145.
+[3] 丁浩, 艾文华, 胡广伟, 等 . 融合用户兴趣波动时序的个性化推荐
+模型[J]. 数据分析与知识发现 , 2021, 5(11): 45-58.(Ding Hao, Ai 
+Wenhua, Hu Guangwei , et al . A Personalized Recommendation 
+Model with Time Series Fluctuation of User Interest [J]. Data 
+Analysis and Knowledge Discovery , 2021, 5(11): 45-58.)
+[4] 宋欢迎, 贾雪雯 . 我国数字阅读研究进展 、主题及特点 [J]. 中国
+编 辑 , 2022(1): 78-84. (Song Huanying , Jia Xuewen . Research 
+Progress, Themes , and Characteristics of Digital Reading in 
+China [J]. Chinese Editor, 2022 (1): 78-84.)
+[5] de Souza M A , Cordeiro D C A , de Oliveira J , et al . 3D Multi-
+modality Medical Imaging : Combining Anatomical and Infrared 
+Thermal Images for 3D Reconstruction [J]. Sensors , 2023, 23(3): 
+1610.
+[6] Zhang S , Zhang J J , Tian B , et al . Multi-modal Contrastive 
+Mutual Learning and Pseudo-Label Re-learning for Semi-
+supervised Medical Image Segmentation [J]. Medical Image 
+Analysis, 2023, 83: 102656.
+[7] Abid M H , Ashraf R , Mahmood T , et al . Multi-modal Medical 
+Image Classification Using Deep Residual Network and Genetic 
+Algorithm[J]. PLoS One, 2023, 18(6): e0287786.
+[8] Vasu G T , Palanisamy P . CT and MRI Multi-modal Medical 
+Image Fusion Using Weight-Optimized Anisotropic Diffusion 
+Filtering[J]. Soft Computing , 2023, 27(13): 9105-9117.
+[9] Wang B Y, Xie Q Q , Pei J H , et al . Pre-trained Language Models 
+in Biomedical Domain : A Systematic Survey [J]. ACM 
+Computing Surveys , 2023, 56(3): 55.
+[10] Dogra A, Kumar S . Multi-modality Medical Image Fusion Based 
+on Guided Filter and Image Statistics in Multidirectional Shearlet 
+Transform Domain [J]. Journal of Ambient Intelligence and 
+Humanized Computing , 2023, 14(9): 12191-12205.
+[11] Qian Y, Pan L . Leveraging Multimodal Features for Knowledge 
+Graph Entity Alignment Based on Dynamic Self-Attention 
+Networks[J]. Expert Systems with Applications , 2023, 228: 
+120363.
+[12] Gu Y, Yang K N , Fu S Y , et al . Multimodal Affective Analysis 
+Using Hierarchical Attention Strategy with Word-Level 
+Alignment[C]//Proceedings of the Conference Association for 
+Computational Linguistics Meeting . 2018: 2225-2235.
+[13] Huddar M G , Sannakki S S , Rajpurohit V S . Attention-Based 
+143
+
+=== PDF_PAGE 9 ===
+研究论文
+数据分析与知识发现
+Word-Level Contextual Feature Extraction and Cross-Modality 
+Fusion for Sentiment Analysis and Emotion Classification [J]. 
+International Journal of Intelligent Engineering Informatics , 
+2020, 8(1): 1-18.
+[14] Liu P F, Li K , Meng H . Group Gated Fusion on Attention-Based 
+Bidirectional Alignment for Multimodal Emotion Recognition
+[OL]. arXiv Preprint, arXiv: 2201.06309.
+[15] Hou M X , Zhang Z , Liu C , et al . Semantic Alignment Network 
+for Multi-modal Emotion Recognition [J]. IEEE Transactions on 
+Circuits and Systems for Video Technology , 2023, 33(9): 5318-
+5329.
+[16] Yuan L, Cai Y , Wang J , et al . Joint Multimodal Entity-Relation 
+Extraction Based on Edge-Enhanced Graph Alignment Network 
+and Word-Pair Relation Tagging [C]//Proceedings of the 37th 
+AAAI Conference on Artificial Intelligence and 35th Conference 
+on Innovative Applications of Artificial Intelligence and 13th 
+Symposium on Educational Advances in Artificial Intelligence . 
+2023: 11051-11059.
+[17] Liu Y, Qiao L F , Lu C C , et al . OSAN : A One-Stage Alignment 
+Network to Unify Multimodal Alignment and Unsupervised 
+Domain Adaptation [C]//Proceedings of 2023 IEEE/CVF 
+Conference on Computer Vision and Pattern Recognition . 2023: 
+3551-3560.
+[18] 李树青, 苗蕾, 严梓豪, 等 . 学术虚拟社区知识交流效率研究方
+法 综 述[J]. 科 技 情 报 研 究, 2022, 4(1): 1-12.(Li Shuqing , Miao 
+Lei, Yan Zihao , et al . A Survey of Research Methods on 
+Knowledge Exchange Efficiency of Academic Virtual Community
+[J]. Scientific Information Research , 2022, 4(1): 1-12.)
+[19] Kim D , Park C , Oh J , et al . Convolutional Matrix Factorization 
+for Document Context-Aware Recommendation [C]//Proceedings 
+of the 10th ACM Conference on Recommender Systems . 2016: 
+233-240.
+[20] He R, McAuley J . VBPR: Visual Bayesian Personalized Ranking 
+from Implicit Feedback [C]//Proceedings of the AAAI conference 
+on artificial intelligence . 2016: 144-150.
+[21] Ji W , Liu X Y , Zhang A , et al . Online Distillation-Enhanced 
+Multi-modal Transformer for Sequential Recommendation [C]//
+Proceedings of the 31st ACM International Conference on 
+Multimedia. 2023: 955-965.
+[22] Liu K , Xue F , Guo D , et al . MEGCF : Multimodal Entity Graph 
+Collaborative Filtering for Personalized Recommendation [J]. 
+ACM Transactions on Information Systems , 2023, 41(2): 30.
+[23] Lei F, Cao Z Q , Yang Y N , et al . Learning the User ’s Deeper 
+Preferences for Multi-modal Recommendation Systems [J]. ACM 
+Transactions on Multimedia Computing , Communications and 
+Applications, 2023, 19(3s): 138.
+[24] Yan B , Pei M T . Clinical-BERT : Vision-Language Pre-training 
+for Radiograph Diagnosis and Reports Generation [C]//
+Proceedings of the 36th AAAI Conference on Artificial 
+Intelligence. 2022: 2982-2990.
+[25] Hara K , Kataoka H , Satoh Y . Can Spatiotemporal 3D CNNs 
+Retrace the History of 2D CNNs and Imagenet ?[C]//Proceedings 
+of 2018 IEEE/CVF Conference on Computer Vision and Pattern 
+Recognition. 2018: 6546-6555.
+[26] Wang F Y, Zhou Y Y , Wang S J , et al . Multi-granularity Cross-
+Modal Alignment for Generalized Medical Visual Representation 
+Learning[C]//Proceedings of the 36th International Conference 
+on Neural Information Processing Systems . 2022: 33536-33549.
+[27] Grill J B , Strub F , Altché F , et al . Bootstrap Your Own Latent a 
+New Approach to Self-Supervised Learning [C]//Proceedings of 
+the 34th International Conference on Neural Information 
+Processing Systems . 2020: 21271-21284.
+[28] Chen C , Song B , Guo J , et al . Multi-dimensional Shared 
+Representation Learning with Graph Fusion Network for Session-
+Based Recommendation [J]. Information Fusion , 2023, 92: 
+205-215.
+[29] Subramanian S , Wang L L , Bogin B , et al . MedICaT : A Dataset 
+of Medical Images , Captions , and Textual References [C]//
+Findings of the Association for Computational Linguistics : 
+EMNLP 2020. 2020: 2112-2120.
+[30] Johnson A E W, Pollard T J , Berkowitz S J , et al. MIMIC-CXR , a 
+De-identified Publicly Available Database of Chest Radiographs 
+with Free-Text Reports[J]. Scientific Data , 2019, 6(1): 317.
+[31] McAuley J , Leskovec J . Hidden Factors and Hidden Topics : 
+Understanding Rating Dimensions with Review Text [C]//
+Proceedings of the 7th ACM Conference on Recommender 
+Systems. 2013: 165-172.
+[32] 丁浩, 胡广伟, 王婷, 等 . 基于时序漂移的潜在因子模型推荐方
+法 [J]. 数 据 分 析 与 知 识 发 现, 2022, 6(10): 1-8.(Ding Hao , Hu 
+Guangwei, Wang Ting , et al . Recommendation Method for 
+Potential Factor Model Based on Time Series Drift [J]. Data 
+Analysis and Knowledge Discovery , 2022, 6(10): 1-8.)
+作者贡献声明 ：
+夏中华：设计研究方案 ，完成实验，论文撰写与修改 ；
+齐江蕾：协助进行论文撰写和修订 ；
+丁浩： 完善研究思路与方案 ，完善实验 ，提出多轮修改建议并进行最
+终版本修订 。
+利益冲突声 明：
+所有作者声明不存在利益冲突关系 。
+支撑数据：
+[1] Julian McAuley . 亚马逊图书数据集 .http://snap.stanford.edu/data/
+144
+
+=== PDF_PAGE 10 ===
+总第 101 期    2025 年    第 5 期
+Data Analysis and Knowledge Discovery
+amazon/productGraph/categoryFiles/ .
+[2] 李荣,廖映红 ,李双 . 东北财经大学图书馆用户借阅数据集 .http://
+hdl.handle.net/20.500.12304/10566 V1[Version].
+收稿日期：2024-01-08
+收修改稿日期 ：2024-04-15
+Medical Publication Recommendation Based on Cross-Modal 
+Contrastive Learning Between Knowledge and Graph
+Xia　Zhonghua
+1
+ Qi　Jianglei
+2
+ Ding　Hao
+3, 4
+1
+(School of Information Management , Nanjing University, Nanjing 210023, China)
+2
+(School of Civil Affairs and Social Work , Changsha Social Work College , Changsha 410004, China)
+3
+(College of Education Science and Technology , Nanjing University of Posts and Telecommunications , Nanjing 
+210023, China)
+4
+(School of Management , Nanjing University of Posts and Telecommunications , Nanjing 210003, China)
+Abstract: [Objective]　This study proposes a medical publication recommendation model that uses cross-modal 
+information to improve recommendation accuracy . [Methods]　First, the medical terminology system was 
+employed to standardize label content and align image-text tags . Paired semantic labels were then utilized to align 
+feature semantics between images and texts through contrastive learning . Based on the aligned semantic features , 
+a cross-modal cross-attention mechanism was constructed , and user preferences for publications were predicted by 
+analyzing their interest weights across different modalities . [Results]　Comparative experiments with three state-of-
+the-art multimodal baseline models on two publication datasets showed that the proposed model achieved an 
+average precision of 62.79%, F1-score of 53.62%, and NDCG of 61.17%, outperforming the baseline models in 
+all metrics . [Limitations]　Additional cold-start methods may be required for pre-training data containing only 
+single-modality information . [Conclusions]　The proposed model exhibits strong cross-modal feature fusion 
+capabilities, effectively mitigating semantic gaps between modalities and improving the accuracy of medical 
+publication recommendations . 
+Keywords: Recommender Systems Contrastive Learning Medical Publication Recommendations Cross Attention
+145

@@ -1,0 +1,600 @@
+=== PDF_PAGE 1 ===
+ 实  验  技  术  与  管  理 第 43 卷  第 10 期  2026 年 10 月 
+ Experimental Technology and Management V ol.43  No.10  Oct. 2026 
+                                        
+收稿日期 :  2026-07-15 
+基金项目 : 国家自然科学基金（ 42201018 ） 
+作者简介 : 胡广荣（ 1987 —），男，北京，博士，工程师，主要研究方向为土壤水文学， hugr@bnu.edu.cn 。 
+通信作者 : 龚吉蕊（ 1969 —），女，宁夏中卫，博士，教授级高级实验师，主要研究方向为植被资源与资源生态学， jrgong@bnu.edu.cn 。 
+引文格式 : 胡广荣，龚吉蕊，刘莹莹，等 . X 射线 CT 图像处理方法与定量分析研究进展 [J]. 实验技术与管理 , 2026, 43(10): 1-7. 
+Cite this article: Hu G R, Gong J R, Liu Y Y , et al. Advances in X-ray comput ed tomography image processing methods and quantitative analysis 
+[J]. Experimental Technology and Management, 2026, 43(10): 1-7. (in Chinese) 
+ 
+ISSN 1002-4956 
+CN11-2034/T 
+DOI: 10.16791/j.cnki.sjg.2026.10.001 
+专题— —地表过程实验技术  
+X 射线 CT 图像处理方法与定量分析研究进展  
+胡广荣，龚吉蕊，刘莹莹，高晓飞，刘春玲，魏   欣，刘瑛娜，辛   甜 
+（北京师范大学  地理科学学部  地表过程与水土风沙灾害风险防控全国重点实验室，北京   100875 ） 
+摘  要：X 射线计算机断层成像（X-CT）是一种重要的无损成像技术，用于多孔介质内部结构表
+征，在地理学、材料科学、生物医学等学科有重要应用。X-CT 图像为多角度投影经数学重建获得
+的三维衰减场， 灰度值与物质类别并非简单对应， 数据处理流程直接影响定量分析的可靠性。 噪声、
+伪影、分辨率限制与灰度重叠等是制约 X-CT 定量精度的主要因素，其影响沿处理流程链传递并放
+大，导致孔隙率、连通性及拓扑参数等指标偏差。围绕 X-CT 图像处理全链条，文章系统梳理了图
+像重建、预处理、分割、三维表征及参数提取等环节的主流方法与适用局限，并讨论了 AI 辅助分
+析、三维多模态融合及标准化可复现分析等前沿方向。未来，X-CT 图像处理需在算法稳健性、流
+程透明性与结果可验证性间寻求平衡，以提升复杂样品定量分析的可信度与跨研究可比性。 
+关键词： X 射线 CT；图像处理；图像分割；三维结构定量分析；伪影校正  
+中图分类号： K903；N33     文献标识码： A     文章编号： 1002-4956(2026)10-0001-07 
+1  背景 
+X 射线计算机断层成像（X-ray computed tomography，
+X-CT） 是一种应用广泛的无损三维成像技术， 其原理
+是基于射线衰减差异重建样品内部结构。与破坏性测
+试及二维断面观测相比，该技术可无损获取样品的三
+维结构数据，支撑定量化的结构表征与几何参数提取，
+目前已在地理学、地球科学、材料科学、生物医学等
+多个学科发挥了重要作用 [1-2] 。随着显微 CT、同步辐
+射 CT 及原位动态 CT 等技术的成熟 [3] ，X-CT 的应用
+已从静态结构可视化拓展至动态过程追踪 [4] 、多场耦
+合响应分析及数值模拟验证 [5] ，成为实验与计算之间
+的重要连接手段。  
+X-CT 并非直接获取样品结构的光学影像，而是
+基于多角度投影数据，经数学重建生成的三维衰减场。
+数据形态为体素化三维灰度矩阵，每个体素的灰度值
+近似表征局部物质对 X 射线的有效线性衰减系数。 然
+而， 该体素灰度值受样品性质、 扫描能谱、 成像几何、
+探测器响应及重建算法等多种因素影响，与物质类别
+间并非简单的线性映射关系 [1] 。因此，能否有效提取
+样品结构信息依赖图像重建、预处理、分割、三维表
+征与参数计算等多个环节 [6-7] ，各环节算法选择和参数
+配置均会影响最终识别结果，并决定了结构定量分析
+的精度与可靠性 [8-9] 。 
+当前 X-CT 图像处理依然面临若干关键瓶颈，成
+像过程中伴随噪声、伪影、空间分辨率约束以及多相
+灰度重叠等，严重干扰灰度场与真实结构边界的对应
+关系，导致相间识别和分割不稳定。这些误差沿处理
+流程逐级累积与传递，最终影响孔隙率、连通性、比
+表面积及拓扑参数等指标的测算精度 [4,10] ，成为制约
+X-CT 定量分析结果重复性和可比性的主要因素。 
+X-CT 数据处理框架通常包括图像重建、预处理、
+目标分割、三维表征及参数提取等标准流程。传统图
+像处理方法在灰度对比高、边界清晰的样品中效果良
+好，但在多相复杂体系、低信噪比及强伪影条件下，
+其泛化能力和鲁棒性明显下降。近年来，随着深度学
+习和多模态融合技术的发展，为 X-CT 的复杂结构识
+别和多源信息融合提供了新途径，但其高度依赖训练
+数据的代表性、配准精度及超参数调优，算法可解释
+性与物理一致性仍待加强。  
+
+
+=== PDF_PAGE 2 ===
+2  实  验  技  术  与  管  理  
+ 
+本文从 X-CT 成像物理基础出发，沿数据处理与
+定量分析链条，梳理各关键环节的技术原理与适用边
+界，重点剖析方法局限与误差传播机制，并在此基础
+上探讨人工智能辅助分析、多模态融合策略、三维定
+量指标体系构建及标准化可复现分析流程等前沿方
+向，以期为优化处理策略、提升定量结果精确度提供
+系统性参考。  
+2  X-CT 图像形成、处理与定量分析难点  
+2.1  图像形成原理与处理流程  
+X-CT 成像的物理基础为 X 射线与物质相互作用
+产生的衰减差异。当射线穿过样品时，不同组分因密
+度、原子序数和厚度差异表现出不同的吸收和散射特
+征，探测器记录衰减系数沿射线路径的积分，基于拉
+东变换和傅里叶切片定理，多角度投影可通过重建算
+法反演为二维切片或三维体数据，从而实现样品内部
+结构的数字化表达 [9,11] 。 
+X-CT 成像过程包括射线发射、投影采集与图像
+重建 （图1）。 图像重建是将投影数据转换为空间域灰
+度分布的核心步骤，无论是选用滤波反投影（ filtered 
+back projection ，FBP）算法、处理锥束 CT 数据的
+Feldkamp-Davis-Kress （FDK）算法，还是选用迭代重
+建算法及基于深度学习的算法，均直接影响后续处理
+链的输入质量。迭代重建算法及基于深度学习的算法
+在低剂量、有限角或强吸收样品条件下展现出更优的
+噪声抑制和伪影校正能力。重建输出的体素化灰度矩
+阵中，各体素值为局部区域综合衰减效应的表征，并
+非直接标识物质类型。因此， X-CT 图像处理的核心
+任务是将灰度体数据转化为具有物理或结构意义的可
+计算信息， 这一转化需依次经过预处理 （降噪、 校正、
+增强）、分割（相分类）、三维表征与参数提取（孔隙
+率、连通性、网络拓扑参数等）等步骤。由此可见，
+在 X-CT 成像的投影采集、图像重建、预处理、目标
+分割、三维表征、参数提取等流程中，任一环节的方
+法与参数偏差均会沿链条向下传递，最终输出结果的
+可靠性取决于整条链路的系统优化，而非单一环节的
+独立最优 [3,10] 。 
+ 
+ 
+ 
+ 
+图 1  X-CT 图像处理流程  
+ 
+2.2  图像质量影响因素与处理难点  
+理想条件下，X 射线衰减服从 Beer-Lambert 定律，
+重建图像可近似表征衰减系数分布。 但在实际成像中，
+样品非均质性、能谱多色性、几何偏差、采样密度及
+重建模型近似等因素均使图像发生退化。 噪声、 伪影、
+部分容积效应与灰度重叠是影响结构识别精度的主要因
+素， 且上述因素并非独立作用， 而是非线性协同耦合[4]。 
+噪声源于光子统计涨落与探测器响应，低剂量条
+
+=== PDF_PAGE 3 ===
+ 胡广荣，等： X 射线 CT 图像处理方法与定量分析研究进展  3 
+ 
+件下表现尤为突出，噪声会削弱低对比度相间差异，
+使微孔隙与弱边界难以稳定识别，噪声抑制需在平滑
+保真与结构保留之间寻优 [12] 。 伪影 （射束硬化、 环状、
+散射及稀疏采样条纹）具有空间结构特征，易与裂隙
+或颗粒边界混淆，校正不足与校正过度均会损害灰度
+关系的物理真实性 [10,13] 。分辨率与部分容积效应界定
+会影响可稳定解析的结构尺度下限，体素内多相混合
+使界面模糊、小尺度结构漏判 [14] 。灰度重叠下单一阈
+值分割失效， 需借助纹理特征或形态先验辅助判别 [3]。
+上述退化因素的耦合效应意味着，图像增强与伪影校
+正不应单纯追求视觉美观，而应以提升后续结构定量
+的准确性与稳健性为评价准则，避免单目标过度优化
+损害整体处理链的性能。  
+2.3  X-CT 图像定量分析的不确定性来源  
+X-CT 定量分析的最终目标是从三维体数据中提
+取几何、形态和拓扑参数（孔隙率、球形度、连通性
+等），但 X-CT 定量分析结果仅为特定成像条件与处理
+流程下的结构估计值，而非样品真实结构的绝对测度[5]。
+不确定性来自数据层、方法层、定义层与验证层四个
+维度。 
+在数据层面，空间分辨率、信噪比、灰度稳定性
+及伪影等因素共同制约了定量分析的精度。分辨率不
+足会导致边界偏移和小尺度结构缺失，噪声与伪影会
+混淆真实结构与成像失真，低对比度则削弱灰度与物质
+类别之间的对应关系。因此， X-CT 定量结果应在特
+定成像条件下解释，不宜外推为样品全尺度结构的完
+整表征[1] 。 
+在方法层面，滤波强度、阈值选择、算法规则和
+人工修正均会影响结构边界，微小偏差沿处理链逐级
+放大，会显著影响体积分数、表面积、连通性和拓扑
+指标[5,10] 。 深度学习方法虽可降低人工介入的主观性，
+但其结果仍受到训练样本代表性、标注一致性和模型
+泛化能力等因素的影响。  
+在定义层， 不同软件对连通性准则、 表面积计算、
+骨架化及孔喉划分的实现细节不一，直接影响结果的
+可比性。该问题并非局限于单一研究案例，反映出当前
+X-CT 定量分析中计算标准与基准体系仍有待完善[15-16]。 
+在验证层面， X-CT 定量分析面临的根本困境是
+无绝对真值基准可供直接标定。人工标注受专家经验
+影响，合成数据无法复现真实噪声与伪影统计特征。
+质量法、压汞法或显微成像法等交叉验证可增强可信
+度，但各方法在观测尺度和指标定义上存在差异 [1,8] 。
+因此， 验证应被视为多方法、 多尺度的综合评价过程，
+而非单一步骤。  
+综上，提升 X-CT 定量分析的可靠性，除完整报
+告扫描条件、算法参数与软件版本等元数据外，还需
+开展系统性的参数敏感性分析，并以多方法交叉验证
+支撑结论的科学解释力。  
+3  X-CT 图像处理常用方法及其适用局限  
+3.1  图像重建、增强与伪影校正方法  
+图像重建、增强与伪影校正构成 X-CT 图像处理
+的前端环节，其输出质量直接决定后续分割、三维表
+征和结构参数计算的可靠性。  
+在图像重建方法方面，滤波反投影（ filtered back 
+projection ，FBP）作为图像重建的经典算法，计算高
+效、实现成熟，在常规扫描条件下应用广泛 [2] 。然而，
+在低剂量、稀疏角或样品含强吸收组分时， FBP 易产
+生条纹伪影、混叠失真、杯状硬化等结构性误差。代
+数迭代重建与统计迭代重建通过反复比较前向投影与
+实测投影，并引入先验约束，在上述条件下可显著改善
+图像质量[17]。总变分（total variation，TV）等正则化约
+束策略能有效抑制噪声和条纹，但正则化强度若设置不
+当，将导致真实边界过度平滑，形成新的结构失真。 
+在图像增强与校正方面，双边滤波和非局部均值
+滤波因兼顾降噪与保边的能力，在岩石、土壤和水泥
+基多孔介质 X-CT 图像处理中较为常用 [3-4] 。但 滤 波 强
+度的选择存在本质性两难：过弱则残留噪声干扰分割；
+过强则抹除微孔或裂隙边界，直接损害连通性和拓扑
+参数精度。伪影校正需因型施策，射束硬化、环状伪
+影、散射、金属伪影可通过预滤波、多项式校正、双
+能成像、散射补偿、投影域插值、频域滤波或图像域 /
+投影域联合校正等方法抑制 [18-19] ，但校正参数若偏离
+物理实际，同样可能诱发次生失真。  
+近年来，U-Net、 残差网络和生成对抗网络等深度
+学习模型被用于低剂量重建、 降噪和伪影校正 [10,13,20] 。
+其优势在于可从海量数据中学习复杂的映射关系，但
+模型性能高度依赖于训练数据与目标扫描条件的匹配
+程度，存在过度增强非真实结构或抑制弱信号的风险。
+因此，重建、增强与伪影校正应依据具体成像条件和
+定量目标进行针对性地设计，并通过标准样品测试或
+多算法交叉验证加以验证。  
+3.2  图像分割与目标结构提取方法  
+图像分割是 X-CT 数据由灰度表征向结构定量转
+化的关键步骤，其任务是将孔隙、颗粒、裂隙或有机
+质等目标相从背景中分离出来。 由于孔隙率、 连通性、
+表面积等核心参数直接基于分割结果计算，边界判别
+的微小偏差均可能在后续量化分析中被放大，使分割环
+节成为整条处理链中误差注入最集中、影响最大的步骤。 
+阈值分割计算简单、易解释，在灰度对比显著、
+噪声较低的样品中表现稳健 [4] ，但复杂多孔介质常存
+在灰度峰重叠、亮度不均和射束硬化等问题，使全局
+
+=== PDF_PAGE 4 ===
+4  实  验  技  术  与  管  理  
+ 
+或自适应阈值在有机质-孔隙、冰-水等低对比度界面处
+失效[3,21]。区域生长、分水岭与形态学方法分别利用灰
+度连续性、梯度信息和形态先验改善局部边界刻画，但
+对种子点、阈值参数及后处理规则的敏感性较高[22-23]。 
+机器学习辅助分割将灰度、纹理、边缘及空间邻
+域特征纳入体素分类，对灰度重叠和局部亮度变化适
+应性更强 [24-25] ，且标注量需求相对较低，但训练区域
+若未能覆盖样品的结构异质性，在模糊边界处仍可能
+产生系统误判。针对灰度严重重叠的极端情形，双能
+X-CT、碘蒸气染色或配准减影等辅助策略可提高不同
+相之间的可分性 [21,26] ，但会增加扫描设计和数据处理
+的复杂度。  
+深度学习方法在大规模三维数据分割中展现出效
+率和精度优势 [25,27] ，但其跨样品、跨仪器和跨分辨率
+泛化能力仍然是公认短板。此类方法的黑箱特性使其
+结果缺乏物理可解释性，分割质量需通过人工复核、
+多算法对比或外部观测结果验证，并在论文中翔实报
+告训练样本、标注策略、模型参数和评价依据。  
+3.3  三维可视化与结构定量分析方法  
+三维可视化与结构定量分析将标签体数据转化为
+可解释的结构参数，是连接目标识别与科学解释的后
+处理环节。与二维切片相比，三维分析能更完整地描
+述孔隙网络、裂隙延展和颗粒空间排布等异质结构[4,5]。 
+可视化分为体绘制和面绘制两种策略：体绘制通
+过透明度和颜色映射展示内部结构分布，对映射参数
+敏感；面绘制基于 marching cubes 等算法提取等值面，
+便于计算表面积、体积和曲率等参数 [4] ，但体素离散
+化和网格平滑操作对细小结构的面积估算存在不可忽
+视的干扰。  
+结构定量涵盖几何形态和拓扑连通两个维度：前
+者涉及体积分数、比表面积、孔隙分布与裂隙开度；
+后者包括欧拉示性数、连通组分数及节点 -边拓扑关
+系。Minkowski 泛函可将体积、表面积、平均曲率和
+欧拉示性数整合为统一的形态描述体系，在多孔介质
+结构表征中具有应用价值 [5,28] 。 
+骨架化、孔隙网络建模和迂曲度计算则将结构参
+数量化为可对接物理模拟的输入：骨架化将孔隙或裂
+隙简化为中心线网络，提取分支长度、节点数量和连
+通路径；孔隙网络模型将孔隙空间抽象为孔体和喉道，
+给出孔喉尺寸、配位数和连通性，便于与渗流和溶质
+运移模拟结合 [5,28] ；迂曲度可由骨架路径、网络路径
+或传输模拟等方法计算得到，其结果差异本质上反映
+出迂曲度定义、计算路径和模型假设尚未统一的深层
+问题。上述参数高度依赖分辨率、分割精度和后处理
+规则，而体素尺寸过大、过度平滑或骨架化规则差异
+则可能引入偏差。  
+3.4  常用软件平台及其应用特点  
+软件平台是上述各环节方法的载体，不同平台在
+算法集成、批处理能力和二次开发能力方面存在差异，
+直接影响处理效率、流程透明性和结果可比性。  
+Avizo、VGStudio MAX 和 Dragonfly 等商业软件
+集成度高，提供交互式分割、三维结构测量与可视化
+等完备功能，适用于复杂数据处理，但成本较高，算
+法细节与默认参数透明度有限 [4,25,29] 。ImageJ/Fiji 、3D 
+Slicer 等开源软件及 Python 生态中的 scikit-image 、
+SimpleITK 、PoreSpy 和 OpenPNM 等工具，具有源代
+码开放、处理过程可由脚本记录等特点，便于批量处
+理，适合可复现研究，但对编程能力与数据格式管理
+要求较高 [1,25,29] 。 
+从方法论层面审视，软件选择的本质是在操作便
+捷性与流程透明性之间进行取舍。无论采用何种平台，
+均应规范报告软件名称、版本号、关键参数设置、训
+练样本来源及验证方式，这不仅是对方法严谨性的基
+本要求，也是确保 X-CT 定量结果可追溯、可比较、
+可复核的必要条件。  
+4  X-CT 图像处理技术的发展趋势  
+X-CT 图像处理正经历从经验依赖型操作向数据
+驱动型分析、从二维定性观察向三维定量表征、从个
+案化流程向标准化体系的系统性转变。本节从 AI 辅
+助分析、三维多模态融合与标准化可复现性三个维度，
+梳理 X-CT 图像处理的发展趋势。  
+4.1  从经验驱动处理向 AI 辅助与智能化分析演进  
+传统 X-CT 图像处理依赖滤波、阈值分割、区域
+生长和人工修正，处理结果易受操作者经验和参数设
+定影响。在灰度重叠、边界模糊或噪声伪影共存的复
+杂样品中，获得客观一致的分割结果较为困难，关键
+定量参数的可信度也受到制约 [30] 。 
+近年来，机器学习和深度学习为降低经验依赖、
+提升批量处理能力提供了新路径。随机森林、支持向
+量机等传统机器学习方法利用灰度、纹理和空间邻域
+特征进行体素分类。以 U-Net 为代表的深度学习模型
+增强了复杂边界和低对比度结构的识别能力，使人工
+干预重心由参数调整转向样本标注和结果校验 [10,24-25]。
+生成对抗网络、Transformer 等模型也被用于低剂量重
+建、降噪、伪影校正和复杂结构识别，推动 CT 图像
+处理由经验驱动向数据驱动转变。  
+然而，AI 方法并未消除不确定性， 其不确定性更
+多体现在数据层面。模型性能高度依赖训练数据的代
+表性，跨设备、跨样品的泛化能力不足与可解释性较
+弱仍是核心瓶颈。当测试条件超出训练分布范围时，
+模型可能抑制弱信号或误判细小目标，甚至生成非真
+
+=== PDF_PAGE 5 ===
+ 胡广荣，等： X 射线 CT 图像处理方法与定量分析研究进展  5 
+ 
+实结构，这类偏差在视觉上可能并不显著，但却足以
+改变结构参数的数值基础 [10,20] 。 
+因此，AI 辅助 X-CT 图像处理不应以完全自动化
+为目标，现阶段更具可行性的路径是人机协同分析框
+架：AI 承担批量数据的初步识别和候选分割， 研究人
+员负责关键参数设定、异常结构判别与结果验证。将
+衰减模型、形态约束等物理先验引入模型构建，有助
+于推动 AI 辅助 X-CT 图像处理由单纯数据驱动转向物
+理约束与数据驱动相结合的方向发展，从而缓解训练
+数据依赖、泛化能力不足和结果可解释性较弱等问题。  
+4.2  从二维观察走向三维定量与多模态融合  
+三维定量使 X-CT 分析单元从二维切片提升至三
+维体积，分析目标从可视化展示转向可计算结构描述。
+基于几何形态、拓扑连通与各向异性等指标，研究者
+可构建孔隙网络模型或有限元网格，将 X-CT 分析从
+静态结构表征延伸至渗流、扩散等过程模拟 [31-32] 。 
+多模态融合在此基础上进一步拓展了 X-CT 的表
+征边界。单一 X-CT 难以区分密度相近的组分，亦难
+以同时满足形态、成分与功能响应的联合分析需求[14]。
+多模态融合通过跨模态信息互补弥补上述不足： X-CT
+与聚焦离子束扫描电镜（ FIB-SEM ）结合可补充纳米
+尺度结构信息；X-CT 与能谱仪（EDS）或电子背散射
+衍射系统（EBSD）联用可获取元素分布和晶体取向[2,33]；
+X-CT 与核磁共振成像（ NMRI）或光谱成像结合，则
+有助于实现固体骨架、水分状态、有机质分布或相变
+过程的协同表征 [33-34] 。 
+多模态融合的核心在于整合不同尺度和不同物理
+含义的信息， 实现结构、 组成和功能响应的联合解释。
+未来，三维定量与多模态融合的深化，有望突破单一
+成像模态的固有局限，支撑“结构—过程—功能”耦
+合关系的定量解析。  
+4.3  从个案化流程走向标准化与可复现分析  
+AI 辅助与多模态融合在提高分析能力的同时， 也
+加剧了流程依赖性， X-CT 图像处理各环节的方法选
+择和参数设定均影响最终结果。在缺乏统一的参数记
+录和质量控制时，不同研究间的差异可能混杂多环节
+误差，严重削弱结果的可比性 [4,30] 。 
+可复现性问题在分割和参数提取环节尤为突出。
+阈值分割、区域生长与人工修正依赖视觉判断，欧拉
+示性数、孔喉网络和连通组分等高阶指标对边界差异
+极为敏感 [16] 。不同软件在滤波、插值、连通性判定和
+三维形态学算法上有差异，叠加商业软件算法透明度
+不足，进一步加大了结果验证的难度 [15-16] 。 
+标准化分析流程是提升 X-CT 定量结果可比性和
+可复现性的关键路径，其核心并非强制统一方法，而
+是完整记录关键参数、明确指标定义并评估不确定性
+来源，将扫描、重建、预处理、分割、参数计算和验
+证纳入全链条约束 [15,35] 。 
+开放数据、开源流程和基准测试是构建可复现性
+的三项支柱 [29] 。科学研究应在条件允许时共享原始数
+据、处理脚本、分割标签和元数据，为算法比较和跨
+实验室验证提供基础 [16,36] 。基准测试借助标准样品或
+已知真值的合成数据集，评估不同算法和软件平台的
+误差范围与适用边界。随着 AI 的广泛使用，训练数
+据、标注策略、超参数与软件版本对结果的影响更需
+公开记录和重复验证 [10,15,37] 。 
+X-CT 图像处理并非单一技术路径的线性推进，
+而是智能化、三维化与标准化三条主线协同演化的过
+程。AI 辅助提升处理效率与复杂模式识别能力， 三维
+定量与多模态融合拓展信息维度与科学问题的回答边
+界，标准化与可复现性则为结果的可信转化提供制度
+性保障。三者共同推动 X-CT 图像处理从经验驱动的
+图像操作，转向流程透明、参数可追溯和结果可验证
+的定量分析范式，使 X-CT 技术在多学科前沿研究中
+发挥更加坚实的支撑作用。  
+5  结语 
+当前 X-CT 图像处理已形成较为完整的技术体
+系，在灰度对比显著、边界清晰的样品中可获得可靠
+的定量结果。然而，对于复杂多相材料、低对比度体
+系及微细结构接近体素分辨率尺度的样品，噪声、伪
+影、部分容积效应与灰度重叠等质量限制因素沿处理
+链条逐级传递与放大，导致定量参数的稳定性和可比
+性仍面临挑战。  
+突破上述瓶颈， 需从三个方向协同推进： AI 辅助
+处理提升复杂结构识别效率与批量处理能力；三维定
+量与多模态融合推动 X-CT 分析从形态表征走向“结
+构—组成—功能”联合解释；标准化与可复现分析则
+为跨研究比较和误差评估提供制度性基础。 X-CT 图
+像处理不宜单纯追求算法复杂度或自动化程度，而应
+在方法稳健性、流程透明性与结果可验证性之间寻求
+系统平衡，从而提升其在跨尺度结构表征和多学科前
+沿研究中的支撑能力。  
+参考文献  （References ） 
+[1] Mooney S J, Young I M, Heck R J, et al . X-ray imaging of the 
+soil porous architecture[M] . Cham: Springer, 2022 .  
+[2] Helliwell J R, Sturrock C J, Grayling K M, et al . Applications of 
+X-ray computed tomography for examining biophysical interactions 
+and structural development in soil systems: A review[J] . 
+European Journal of Soil Science, 2013, 64(3): 279–297 .  
+[3] Reedy C L, Reedy C L . High-resolution micro-CT with 3D 
+image analysis for porosity characterization of historic bricks 
+
+=== PDF_PAGE 6 ===
+6  实  验  技  术  与  管  理  
+ 
+[J]. NPJ Heritage Science, 2022, 10(1): 83 .  
+[4] Schl üter S, Sheppard A, Brown K, et al . Image processing of 
+multiphase images obtained via X-ray microtomography: A 
+review[J] . Water Resources Research, 2014, 50(4): 3615–3639 .  
+[5] Rabot E, Wiesmeier M, Schlüter S, et al . Soil structure as an 
+indicator of soil f unctions: A review[J] . Geoderma, 2018, 314: 
+122–137 .  
+[6] 冯杰, 郝振纯 . CT 扫描确定土壤大孔隙分布 [J]. 水科学进展 , 
+2002, 13(5): 611–617 .  
+Feng J, Hao Z C . Distribution of soil m acropores characterized 
+by CT[J] . Advances in Water Science, 2002, 13(5): 611–617 . (in 
+Chinese) 
+[7] 周虎, 李文昭 , 张中彬 , 等. 利用 X 射线 CT 研究多尺度土壤
+结构[J]. 土壤学报 , 2013, 50(6): 1226–1230 .  
+Zhou H, Li W Z, Zhang Z B, et al . Characterization of 
+multi-scale soil structure with X-ray computed tomography[J] . 
+Acta Pedologica Sini ca, 2013, 50(6): 1226–1230 . (in Chinese) 
+[8] Cnudde V , Boone M N . High-resolution X-ray computed 
+tomography in geosciences: A re view of the cu rrent technology 
+and applications[J] . Earth-Science Revi ews, 2013, 123: 1–17 .  
+[9] Ghosh T, Maity P P, Rabbi S M F, et al . Application of X-ray 
+computed tomography in soil and plant-a review[J] . Frontiers in 
+Environmental Science, 2023, 11: 1216630 .  
+[10] Bellens S, Guerrero P, Vandewalle P, et al . Machine learning in 
+industrial X-ray computed tomography-a review[J] . CIRP 
+Journal of Manufacturing Science and Technology, 2024, 51: 
+324–341 .  
+[11] Zhang H, He H L, Gao Y J, et al . Applications of Computed 
+Tomography (CT) in environmental soil and plant sciences[J] . 
+Soil and Tillage Research, 2023, 226: 105574 .  
+[12] Bouckaert L . Dependency of organic matter decomposition on 
+soil pore network structure as revealed by X-ray micro-CT[D] . 
+GHent, Belgium: Ghent University, 2012 .  
+[13] Koetzier L R, Mastrodicasa D, Szczykutowicz T P, et al . Deep 
+learning image reconstruction for CT: Technical principles and 
+clinical prospects[J] . Radiology, 2023, 306(3): e221257 .  
+[14] Kaur P , Lamba J, Way T R, et al . Effect of image resolution and 
+soil core diameter on soil pore characteristics quantified using 
+X-ray computed tomography[J] . Journal of Soils and Sediments, 
+2025, 25(9): 2611–2625 .  
+[15] Wilbig J, Wilson-Heid A E, Bernard L, et al . Comparison of 
+porosity analysis based on X-ray computed tomography on 
+metal parts produced by additive manufacturing[J] . Applied 
+Sciences, 2025, 15(18): 9876 .  
+[16] Weller U, Albrecht L, Schlüter S, et al . An open Soil Structure 
+Library based on X-ray CT data[J] . Soil, 2022, 8(2): 507–515 .  
+[17] Park S B . Advances in deep learning for computed tomography 
+denoising[J] . World Journal of Clinical Cases, 2021, 9(26): 
+7614–7619 .  
+[18] 杨富强 , 杨瑶, 李志翔 , 等. X 射线工业 CT 成像过程复杂伪
+影抑制方法综述 [J]. 自动化学报 , 2023, 49(4): 687–704 .  
+Yang F Q, Yang Y , Li Z X, et al . Review of complex artifact 
+reduction methods for industrial computerized tomography 
+imaging[J] . Acta Automatica Sinica, 2023, 49(4): 687–704 . (in 
+Chinese) 
+[19] Jiang S B, Sun Y W, Xu S, et al . Metal artifact correction in 
+industrial CT images based on a dual-domain joint deep 
+learning framework[J] . Applied Sciences, 2024, 14(8): 3261 .  
+[20] Sahu A, Mathur S, Takaoka H, et al . Transforming CT imaging 
+with deep learning: Noise reduction, artifact management, and 
+clinical applications: A comprehensive review[J] . European 
+Journal of Radiology Artificial Intelligence, 2025, 4: 100042 .  
+[21] Gadylyaev D . Applying computed tomography (CT) scanning 
+for segmentation of permafrost constituents in drill cores[D] . 
+Potsdam: University of Potsdam, 2021 .  
+[22] 李鑫. 基于 CT 的黄土微细观空隙结构及优先流特性研究 [D]. 
+西安: 长安大学 , 2020 .  
+Li X . Research on micro and meso void structure and 
+preferential flow characteristics of loess based on CT[D] . Xi’an: 
+Chang’an University, 2020 . (in Chinese) 
+[23] 丁天宇 , 郭自春 , 王玥凯 , 等. 不同秸秆还田方式下砂姜黑
+土团聚体内颗粒有机质的空间分布特征：基于 X 射线 CT 技
+术和机器学习 [J]. 土壤学报 , 2025, 62(2): 375–387 .  
+Ding T Y , Guo Z C, Wang Y K, et al . The spatial distribution of 
+particulate organic matter within  aggregates of shajiang black 
+soil under various straw return practices based on X-ray CT 
+technology and machine learning[J] . Acta Pedologica Sinica, 
+2025, 62(2): 375–387 . (in Chinese) 
+[24] Arganda-Carreras I, Kaynig V , Rueden C, et al . Trainable Weka 
+Segmentation: A machine learning tool for microscopy pixel 
+classification[J] . Bioinformatics, 2017, 33(15): 2424–2426 .  
+[25] Rippner D A, Raja P V , Earles J M, et al . A workflow for 
+segmenting soil and plant X-ray computed tomography images 
+with deep learning in Google's Colaboratory[J] . Frontiers in 
+Plant Science, 2022, 13: 893140 .  
+[26] He J H, Margenot A J, Nakayama Y , et al . Comparison of 
+automated chemical-guided segm entation and human annotation 
+of soil organic matter in X-ray microcomputed tomography imaging 
+in contrasted soil types[J] . Geoderma, 2026, 469: 117769 .  
+[27] Guo Z C, Ding T Y , Li J Q, et al . Contrasting effects of 
+long-term fertilization on pore structure and POM in upland and 
+paddy soils revealed by X-ray CT[J] . European Journal of Soil 
+Science, 2026, 77(2): e70298 .  
+[28] V ogel H J, Weller U, Schlüter S . Quantification of soil structure 
+based on Minkowski functions[J] . Computers & Geosciences, 
+2010, 36(10): 1236–1245 . 
+[29] Li X Y , Duan H Y , Yang X F . A comprehensive China topsoil 
+dataset of high-resolution microstructure, topographical 
+characteristics and ph ysical properties[J] . Scientific Data, 2026, 
+13(1): 769 .  
+[30] Baveye P C, Laba M, Otten W, et al . Observer-dependent 
+variability of the thresholding step in the quantitative analysis 
+of soil images and X-ray microtomography data[J] . Geoderma, 
+2010, 157(1/2): 51–63 .  
+[31] 程亚南 , 刘建立 , 吕菲, 等. 基于 CT 图像的土壤孔隙结构三
+维重建及水力学性质预测 [J]. 农业工程学报 , 2012, 28(22): 
+115–122 .  
+Cheng Y N, Liu J L, Lyu F, et al . Three-dimensional 
+reconstruction of soil pore st ructure and prediction of soil 
+hydraulic properties based on CT images[J] . Transactions of the 
+Chinese Society of Agricultural Engineering, 2012, 28(22): 
+115–122 . (in Chinese) 
+[32] 李雪莹 , 陆峥, 何源, 等. 应用 XCT 断层扫描技术和 GAN 深
+度学习模型的多孔介质微观结构定量研究 [J]. 生态环境学
+报, 2024, 33(1): 119–130 .  
+Li X Y , Lu Z, He Y , et al . Reconstruction of porous media 
+microstructure via X-ray computed tomography and generative 
+adversarial networks[J] . Ecology and Environmental Sciences, 
+2024, 33(1): 119–130 . (in Chinese) 
+[33] Lucas M, Pihlap E, Steffens M, et al . Combination of imaging 
+infrared spectroscopy and X-ray computed microtomography 
+for the investigation of Bio- and physicochemical processes in 
+structured soils[J]. Frontiers in Environmental Science, 2020, 8: 42. 
+[34] 佘琳琳 , 朱孔阳 , 李明月 , 等. X 射线 CT 成像技术在地质学
+中的应用 [J]. 华东地质 , 2025, 46(2): 149–170 .  
+She L L, Zhu K Y , Li M Y , et al . Applications of X-ray 
+
+=== PDF_PAGE 7 ===
+ 胡广荣，等： X 射线 CT 图像处理方法与定量分析研究进展  7 
+ 
+computed tomography in geology[J] . East China Geology, 2025, 
+46(2): 149–170 . (in Chinese) 
+[35] Du Plessis A, Sperling P , Beerlink A, et al . Standard method for 
+microCT-based additive manufacturing quality control 4: Metal 
+powder analysis[J] . MethodsX, 2018, 5: 1336–1345 .  
+[36] Rowe T B, Luo Z X, Ketcham R A, et al . X-ray computed 
+tomography datasets for forensic analysis of vertebrate fossils 
+[J]. Scientific Data, 2016, 3(1): 160040 .  
+[37] Anderson D, Ramachandran P, Trapp J, et al . A review of image 
+processing and analysis of computed tomography images using 
+deep learning methods[J] . Physical and Engineering Sciences in 
+Medicine, 2025, 48(4): 1491–1523 .  
+Advances in X-ray computed tomography image processing  
+methods and quantitative analysis 
+HU Guangrong, GONG Jirui, LIU Yingying, GAO Xiaofei, LIU Chunling, WEI Xin, LIU Yingna, XIN Tian 
+(State Key Laboratory of Earth Surface Processes and Disaster Risk Reduction, Faculty of Geographical Science,  
+Beijing Normal University, Beijing 100875, China) 
+Abstract: [Objective] X-ray computed tomography (X-CT) is an important nondestructive three-dimensional im aging technique for 
+characterizing internal structures across various fields, including geography, geoscience, materials science, biomedicine, and porous media 
+research. Compared with destructive testi ng and two-dimensional section observation, X-CT enables the digital reconstruction of  internal 
+structures, providing a basis for quantitative characterization, geometric measurement, and process-oriented analysis. However, CT images 
+are not direct optical records of a sample’s true structure; rather, they represent three-dimensional attenuation fields recons tructed from 
+multi-angle projection data through mathematical algorithms. The gr ayscale value of each voxel depends on multiple factors, inc luding 
+material composition, density, X-ray energy spectrum, imaging geometry, detector response, sampling strategy, and reconstruction method. 
+Therefore, grayscale values lack a simple  one-to-one correspondence with material categories. Reliable structural interpretation requires a 
+comprehensive processing workflow that transf orms raw grayscale volume data into physically meaningful, computable, and compara ble 
+quantitative information. [Methods] Exploring the full X-CT processing chain, this review systematically summarizes the major m ethods, 
+technical roles, and applicable limitations of image reconstruc tion, preprocessing, artifact correction, target segmentation, 
+three-dimensional visualization, structural  quantification, parameter extraction, and common software platfo rms. Image reconstr uction 
+determines the quality of the input data for subsequent processing, while preprocessi ng and artifact correction improve the sig nal-to-noise 
+ratio, reduce systematic distortions, and enhance structural bounda ries. Segmentation is the key step that converts continuous grayscale 
+data into discrete structural categories such as pores, particles, fractures, matrix phases, or defects. Three-dimensional char acterization and 
+parameter extraction further ge nerate quantitative indicators, including poros ity, specific surface area, connectivity, tortuos ity, and 
+pore-network topology. Because these parameters derive from a chain of interdependent procedures, the reliability of CT-based 
+quantitative analysis depends not only on in dividual algorithms but also on the consis tency, transparency, and quality control of the entire 
+workflow. [Results] The review identifies noise, artifacts, insufficient spatial resolution, partial-volume effects, and graysc ale overlap as 
+the major factors restricting the accuracy and robustness of CT image analysis. Noise and artifacts may distort grayscale distr ibutions and 
+structural boundaries; insufficie nt spatial resolution and partia l-volume effects may blur interfa ces and lead to the omission or 
+underestimation of small-scale pores, throats, and fractures; gr ayscale overlap in complex multiphase samples often triggers 
+threshold-based segmentation instability. Th ese uncertainties propagate and amplify al ong the processing chain, impacting the a ccuracy 
+and comparability of porosity, connectivity, specific surface area,  tortuosity, and topological pa rameters. In addition, differ ences in 
+preprocessing strategies, segmentation algorith ms, region-of-interest selection, parame ter definitions, and software implementa tions may 
+reduce reproducibility across studies. Therefore, CT-derived parameters must be understood as structural estimates under specif ic imaging 
+conditions and processing workflows rather than absolute representa tions of the true structure. [C onclusions] Recent advances in artificial 
+intelligence, three-dimensional quantitative analysis, multimodal fusion, and reproducible workflows are transforming X-CT imag e 
+processing. Machine learning and deep learning methods provi de new opportunities for denois ing, artifact correction, and 
+complex-structure segmentation, especially in low-contrast, noisy, or large-scale three-dimensional datasets. Nevertheless, mod el 
+performance depends strongly on training-data representativeness,  annotation quality, imaging conditions, generalization, and p hysical 
+interpretability. By pairing X-CT with complementary techniques, such as FIB-SEM, EDS, EBSD, NMRI, or spectral imaging, multimodal 
+fusion integrates structural, compositional, and functional data across scales, thereby extending CT analysis from morphologica l 
+description to structure–composition–function interpretation. At the same time, standa rdized reporting, open data, open-source workflows, 
+benchmark datasets, and uncertainty assessm ent are essential for improving reproducibilit y and cross-study comparability. Futur e X-CT 
+image processing should not simply pursue algo rithmic complexity or full automation. Instead, it must balance algorithm robustn ess, 
+workflow transparency, and result verifiability, thereby enhancing the credibility of quantitative analysis of complex samples and 
+strengthening the role of X-CT in cross-scale structural characterization and multidisciplinary research. 
+Key words:  X-ray computed tomography; image proce ssing; image segmentation; th ree-dimensional structural  quantificati on; artifact 
+correction 
+（编辑：孙浩）  

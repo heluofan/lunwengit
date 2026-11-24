@@ -1,0 +1,47 @@
+﻿==== left
+105G	/data/heluofan/models
+36G	/data/heluofan/image
+19G	/data/heluofan/envs
+8.9G	/data/heluofan/qwen3-embed
+8.7G	/data/heluofan/dynamo-venv
+8.2G	/data/heluofan/miniforge3
+2.2G	/data/heluofan/chitu-src
+2.1G	/data/heluofan/bench
+1.2G	/data/heluofan/wheels
+1.2G	/data/heluofan/venvs
+898M	/data/heluofan/shifts_ms_pt2.zip
+227M	/data/heluofan/sage-src
+123M	/data/heluofan/mf.sh
+61M	/data/heluofan/_restore
+51M	/data/heluofan/sage-dist
+27M	/data/heluofan/ops-nvfp4
+18M	/data/heluofan/logs
+16M	/data/heluofan/_wbt
+13M	/data/heluofan/qi21_vl
+1.7M	/data/heluofan/_wb_ref.png
+
+==== total
+193G	/data/heluofan
+/dev/nvme0n1    7.0T  193G  6.4T   3% /data
+
+==== bk
+-rw-rw-r-- 1 heluofan heluofan 207K Nov 24 10:36 /data/heluofan/_seg_metrics_20261124.tar.gz
+./datasets/met_fixed.csv
+./datasets/cases_all.csv
+./datasets/met_summary.json
+./datasets/met_ctrl_summary.json
+./datasets/all_psma.json
+./datasets/met_fixed_summary.json
+./datasets/met.csv
+./oof_postproc_sensitivity.csv
+./oof_per_case_dice.csv
+./analysis/oof_postprocessing/label_map.json
+./analysis/oof_postprocessing/plans.json
+./analysis/oof_postprocessing/postprocessing.json
+./analysis/oof_postprocessing/dataset.json
+./analysis/oof_postprocessing/oof_surface_metrics.csv
+./analysis/oof_postprocessing/dataset_anonymous.json
+./analysis/oof_postprocessing/summary.json
+./nnUNet_raw/Dataset501_Flare22/dataset.json
+./oof_surface_metrics.csv
+./folds_summary.md

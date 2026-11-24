@@ -1,0 +1,649 @@
+=== PDF_PAGE 1 ===
+2025 年 第 70 卷 第 33 期: 5746 ~ 5756 
+医学物理专辑   评 述 
+锥形束计算机断层扫描的技术革新与临床转化: 多模态 
+硬件集成与成像算法优化 
+施江媛, 李光俊, 宋莹 *, 柏森 * 
+四川大学华西医院, 放射物理技术中心, 成都 610041 
+* 联系人, E-mail: songying_wch@163.com; baisen@scu.edu.cn 
+2025-04-27 收稿, 2025-09-26 修回, 2025-09-28 接受, 2025-09-29 网络版发表 
+四川省自然科学基金(2024NSFSC1789)、成都市科技成果转化示范项目(2024-YF09-00014-SN)、四川大学“从0到1”创新研究项目 
+(2022SCUH0021)和四川大学华西医院临床研究孵化项目(2022HXFH009)资助  
+摘要 锥形束计算机断层扫描(cone beam computed tomography, CBCT)作为口腔医学、放疗导航及术中引导等领 
+域的高分辨率三维成像工具, 其临床深度应用仍面临辐射剂量累积风险、金属伪影干扰及定量精度不足等挑战. 
+近年来, 通过多模态硬件集成与智能算法协同优化实现了技术突破. 在硬件层面: 碳纳米管X射线源显著降低辐射 
+剂量30%~50%并将Hounsfield单位精度提升60%, 软组织对比噪声比改善30%~50%; 光子计数探测器凭借直接X光 
+子-电荷转换机制, 在低剂量条件下保持高对比度成像; 双层平板探测器基于能谱分离技术实现单次曝光双能采集, 
+碘定量误差<5%; 二维反散射网格结合散射采样算法将CT值不均匀性从20 HU降至10 HU. 在算法层面, 深度学习 
+驱动成像范式革新: 双域协同重建框架从稀疏投影数据中恢复解剖细节; 扩散模型通过概率生成机制解决超低剂 
+量重建的病态逆问题; 金属伪影抑制整合双能分解与注意力引导, 使金属-组织界面条纹伪影减少71%; 定量优化框 
+架基于对比学习提升骨密度测量精度, 软组织HU预测误差降低30%. 这些技术突破已促成临床转化, 未来通过便携 
+集成、联邦学习和增强现实引导, 将进一步推动CBCT在肿瘤精准监测与微创介入等领域的深度应用, 构建“更低 
+辐射剂量、更高定量精度、更广临床覆盖”的智能成像新范式. 
+关键词 锥形束CT, 硬件创新, 算法优化, 人工智能    
+锥形束计算机断层扫描(cone beam computed to-
+mography, CBCT)是一种先进的容积成像技术, 能够提 
+供高分辨率的三维图像, 广泛应用于口腔种植牙、正 
+畸的评估, 放射治疗摆位验证, 介入手术的实时影像引 
+导, 以及细微骨折的诊断等领域. 然而, 其临床推广面 
+临多重挑战: 辐射剂量累积风险、低剂量与图像质量 
+的矛盾、金属伪影干扰、定量分析精度不足以及图像 
+分割效率低下等问题, 制约了其进一步应用. 为突破这 
+些局限, 许多研究聚焦于多维度技术优化——硬件层 
+面, 碳纳米管X射线源与光子计数探测器等革新能够显 
+著降低辐射剂量并提升成像效率; 算法层面, 深度学习 
+与双能成像技术协同应用, 可以在超低剂量下实现高 
+保真重建、精准抑制伪影, 并通过物质分解算法提升 
+组织参数量化精度. 本文系统探讨了CBCT技术的瓶颈 
+与创新策略, 从硬件革新、算法升级到多模态融合, 全 
+面解析CBCT的临床潜力与未来方向.  
+1 CBCT技术演进与临床挑战 
+1.1 技术原理与历史发展脉络 
+CBCT是一种基于锥形X射线束和平板探测器的三 
+维成像技术, 其发展可追溯至1982年Robb第一次将 
+© 2025《中国科学》杂志社 www.scichina.com csb.scichina.com  
+引用格式: 施江媛, 李光俊, 宋莹, 等. 锥形束计算机断层扫描的技术革新与临床转化: 多模态硬件集成与成像算法优化. 科学通报, 2025, 70: 5746–5756 
+Shi J, Li G, Song Y, et al. Technological innovations and clinical translation of cone beam computed tomography: multimodal hardware integration and 
+imaging algorithm optimization (in Chinese). Chin Sci Bull, 2025, 70: 5746–5756, doi: 10.1360/CSB-2025-0608    
+
+=== PDF_PAGE 2 ===
+CBCT的概念引入放射学 [1] . 2001年首台商业化设备 
+NewTom 9000通过美国食品药品监督管理局认证并应 
+用于牙科领域, 标志着CBCT正式进入临床实践 [2] . 
+CBCT成像系统由X射线源、平板探测器和机械臂三 
+部分构成. 与传统CT使用的扇形X射线束不同, CBCT 
+采用锥形X射线束和平板探测器, 围绕患者旋转180° 
+~360°, 一次性捕获整个解剖区域的二维投影(如图1所 
+示). 这些投影被实时传输到计算机, 通过算法重建为 
+三维数据, 从而实现对目标区域的多平面、高分辨率 
+三维成像 [3]. 与传统螺旋CT相比, CBCT凭借其多平面 
+动态成像能力、设备移动性优势及与放射治疗加速器 
+的集成特性, 在临床应用中展现出显著的技术优越性 
+和实践价值 [3,4].  
+1.2 临床应用现状与核心瓶颈 
+作为一种先进的三维成像技术, CBCT在医学领域 
+应用广泛. 在口腔医学领域, CBCT的应用显著提升了 
+诊断和治疗的精确性. 在牙周再生治疗中, CBCT结合 
+3D建模技术显著提高了牙周缺陷的评估精度, 为个性 
+化治疗提供了基础, 使治疗效果更加可靠 [5]; 在根管治 
+疗中, CBCT通过多平面成像技术显著提高了根管系统 
+的可视化程度, 使复杂根管的诊断准确率提升至90%以 
+上 [6]; 在种植牙领域, CBCT通过精确的三维成像技术 
+显著提高了种植体的定位精度, 使种植手术的成功率 
+提升至95%以上, 同时减少了术后疼痛和肿胀 [7]. 在放 
+射治疗领域, CBCT通过精确的患者定位和内部解剖变 
+化的验证, 显著提高了治疗的准确性和安全性 [8]; 此外, 
+CBCT能够量化实际照射剂量与计划剂量之间的差异, 
+帮助医生及时调整治疗方案, 减少副作用并提高治疗 
+效果 [9]. 在外科手术导航中, CBCT通过提供高精度的 
+三维成像和实时的解剖结构评估, 显著提高了手术的 
+准确性和安全性, 通过实时评估手术器械的位置和解 
+剖结构的变化, CBCT可以帮助外科医生及时调整手术 
+方案, 减少手术风险并改善手术效果 [10].  
+虽然CBCT凭借其高分辨率三维成像能力, 在口腔 
+医学、放射治疗及外科导航等领域广泛应用, 但其临 
+床推广仍面临多重技术挑战. 首先, 辐射剂量累积风险 
+成为核心挑战, 尤其对于儿童或需多次扫描的患者, 研 
+究显示, 接受30次盆腔放疗CBCT扫描的患者中, 每 
+10000人约400人可能因辐射暴露罹患继发性癌症 [11]. 
+其次, 低剂量与图像质量的矛盾在临床中尤为突出, 剂 
+量降低可能导致噪声加剧、软组织对比度下降, 甚至 
+掩盖关键病灶. 此外, 金属伪影干扰(如牙科植入物引 
+发的射束硬化效应)常导致图像失真, 影响诊断准确性; 
+定量分析精度不足则限制了CBCT在放疗剂量计算中 
+的应用.  
+因此, 如何通过优化硬件和软件来解决当前CBCT 
+的局限性, 拓展其临床应用是当前面临的重要挑战.  
+2 多模态硬件集成与范式突破 
+提升CBCT成像性能依赖于关键硬件的协同创新 
+与物理机制的优化. 本节系统阐述碳纳米管场发射X射 
+线源、高压发生器瞬态响应控制、光子计数与双层探 
+测器能量分辨, 以及二维反散射网格散射抑制的技术 
+进展, 分析其通过材料、结构与工作模式优化实现的 
+成像性能提升.  
+2.1 碳纳米管X射线源: 从场致发射到多源阵列设计 
+碳纳米管(carbon nanotube, CNT)X射线源的技术 
+革新标志着X射线成像领域的重大突破. 自1895年X射 
+线发现以来, 传统X射线源长期依赖热电子发射原理, 
+需将阴极加热至约1000°C以克服材料功函数, 促使电 
+子通过热运动逸出并撞击阳极靶面, 通过轫致辐射产 
+生X射线 [12] . 然而, 此类热阴极技术存在响应速度慢 
+图 1 CBCT成像示意图 
+Figure 1 CBCT imaging process  
+评 述  
+5747  
+
+=== PDF_PAGE 3 ===
+(毫秒级)、高温运行导致器件寿命缩短、体积庞大等 
+固有缺陷, 限制了其进一步发展 [13]. 为克服热阴极的局 
+限性, 研究者探索了基于场致发射机制的阴极材料. 场 
+致发射是一种量子隧穿效应, 电子在强电场作用下通 
+过隧穿势垒逸出, 相较于热电子发射, 场致发射无需高 
+温, 可实现纳秒级快速响应, 且能耗更低 [14]. CNT凭借 
+其卓越的电学、热学以及机械性能, 从众多材料中脱 
+颖而出, 成为场电子发射器件的理想材料之一 [15]. 自 
+1995年首次报道单个CNT的场致发射特性以来, 已有 
+多个研究聚焦于CNT的场发射特性, 积极评估其在场 
+发射器应用方面的可行性与潜力 [16,17]. 典型的CNT X 
+射线管采用三极管结构, 包括CNT阴极、栅极、聚焦 
+电极和金属靶. X线产生过程如图2所示 [13], 通过编程 
+栅极电压, 可独立控制多像素阴极, 多角度同时发射X 
+射线, 实现无机械运动的断层成像.  
+CNT X射线源的引入应用为多源CBCT的实现奠 
+定了基础, 推动了相关研究的深入与拓展. 传统的 
+CBCT在软组织对比度、X射线衰减量化、图像失真 
+和伪影等方面存在局限, 使其临床应用主要集中于骨 
+骼等硬组织成像, 并给定量分析带来挑战 [18]. 实验与数 
+值模拟研究表明, 采用多源阵列取代单一宽锥角X射线 
+管可有效突破以上技术瓶颈 [19]. 然而, 多源阵列要求X 
+射线源能够产生快速扫描X射线束, 并实现较小射束间 
+距, 以有效减小每个射束的锥角. CNT X射线源阵列可 
+实现快速脉冲, 并允许较小源间距从而实现源的高密 
+度集成, 推动了多源CBCT的应用. Xu等人 [20,21]提出的 
+用CNT的多源CBCT扫描仪与传统CBCT相比, 将 
+Hounsfield单位值的精度提高了60%, 消除了锥形束伪 
+影, 扩大了轴向覆盖范围, 并将软组织对比度与噪声比 
+提高了30%~50%. Li等人 [22]进一步验证了CNT X射线 
+源阵列达到了多源CBCT设计对口腔颌面成像所需的 
+性能, 包括空间和时间分辨率、光子能量和通量、一 
+致性和稳定性. Dillon等人 [23]提出的CNT源阵列和高帧 
+率检测器集成在直线加速器可减少呼吸运动的影响, 
+在治疗实施期间实现体积成像.  
+CNT X射线源的技术突破为双能CBCT (dual en-
+ergy-CBCT, DE-CBCT)的发展提供了关键支持. 在牙科 
+CBCT成像中, 金属伪影是制约成像质量的核心问题, 
+牙科修复体及植入物等金属材料对X射线的强衰减会 
+引发射束硬化效应与光子饥饿现象, 导致重建三维图 
+像中出现条纹状伪影与晕状伪影, 显著降低诊断准确 
+性 [24]. DE-CBCT通过双能量数据的采集, 基于物质分 
+解算法虚拟单能图像(virtual monoenergetic images, 
+VMI), 并计算有效原子序数与有效电子密度, 从而有 
+效抑制金属伪影 [25]. 目前, DE-CBCT的实现主要依赖 
+于以下技术路径: 双源-双探测器系统、多源-单探测器 
+系统、快速kV切换技术以及单源-双层探测器系 
+统 [26~29]. CNT X射线源凭借其独特性能为DE-CBCT提 
+供了创新解决方案. 基于CNT的X射线源具备两个独立 
+控制的场发射阴极, 在共同的阳极上形成相应的焦点, 
+支持X射线束的快速切换. 此外, CNT源支持对每束X 
+射线的通量与曝光时间进行独立编程, 从而优化低能 
+与高能图像的剂量分布与噪声特性 [30]. 这一特性使得 
+DE-CBCT无需依赖高成本的能量敏感探测器或复杂的 
+高压快速切换模块即可实现双能数据采集, 显著降低 
+了系统复杂度与设备成本, 为临床推广提供了可行性 
+基础 [31,32]. 基于CNT X线源的DE-CBCT金属伪影去除 
+效果如图3 [31].  
+2.2 快速kV切换: 高压发生器瞬态响应与功率稳定 
+性的技术革新 
+快速kV切换技术是实现双能CBCT成像的关键手 
+段, 其核心在于高压发生器在瞬态响应速度与输出功 
+率稳定性方面的技术革新. 双能CBCT利用不同组织/ 
+材料对高低能量X射线的吸收衰减差异, 不仅能有效区 
+分不同组织, 还能显著减少硬化伪影和金属伪影, 并提 
+图 2 碳纳米管X线源结构 [13]  
+Figure 2 Configuration of CNT-based X-ray source [13]  
+2025 年 11 月 第 70 卷 第 33 期  
+5748  
+
+=== PDF_PAGE 4 ===
+供更丰富的物质定量信息 [33]. 实现毫秒级管电压的精 
+准、快速切换要求高压发生器具备卓越的瞬态响应能 
+力, 以驱动X射线源在同一机架旋转周期内交替输出 
+高、低能射线, 从而同步采集双能投影数据; 同时, 维 
+持切换过程中及切换后X射线输出功率的高度稳定是 
+保证成像质量一致性的关键, 这直接依赖于高压发生 
+器强大的功率稳定性和热管理能力 [25]. Müller等人 [34] 
+通过直接测量快速kV切换在C型臂系统中的稳定性, 
+证实了其在临床C型臂CBCT系统上实施快速kV扫描 
+并应用自定义设置的可行性. Cassetta等人 [35]利用商用 
+放疗设备开发模式下的机载影像系统, 评估了其核心 
+依赖于高压发生器在特殊模式下可控性与稳定性的快 
+速kV切换的双能成像性能, 验证了其生成的VMI和相 
+对电子密度图像可为图像引导放疗提供高质量、稳定 
+的应用信息.  
+2.3 光子计数与双层探测器: 能量分辨与散射抑制 
+的工程突破 
+新型探测器材料的引入为CBCT的发展提供了新 
+的方向. 传统的平板探测器是能量积分探测器, 采用碘 
+化铯(CsI)作为主要闪烁体材料, X射线穿透人体后, 被 
+闪烁体吸收并转换为可见光, 再由光电二极管将光信 
+号转化为电信号传输到计算机, 经算法重组为三维图 
+像. 尽管传统CsI闪烁体与有源矩阵平板探测器的组合 
+已形成成熟成像体系, 但其探测量子效率在低剂量或 
+高分辨率条件下显著受限, 这主要源于加性电子噪声 
+与成像信号的高比值. 金属氧化物半导体的引入能够 
+降低电子噪声, 在低剂量参数设置下提高图像质量和 
+空间分辨率 [36]. 然而, 此类金属氧化物半导体探测器受 
+到辐射耐受性不足和有效成像面积受限的双重制 
+约 [37]. 在此背景下, 光子计数探测器(photon-counting 
+detector, PCD)通过直接X射线-电荷转换机制实现了范 
+式突破. PCD直接将X光子转换为电信号, 无需闪烁体, 
+能够消除电子学噪声. PCD在低剂量成像时仍能保持 
+高对比度, 并已在加速器集成CBCT系统进行了初步验 
+证 [38]. 与能量积分探测器相比, PCD具有降低电子加法 
+噪声和Swank噪声的优势 [39].  
+双层探测器的硬件创新显著推动了CBCT技术的 
+发展. 传统的平板探测器依赖单层能量积分机制, 难以 
+实现双能成像所需的能量分离与低噪声特性. 而双层 
+探测器(dual-layer flat-panel detector, DL-FPD)通过顶 
+部和底部两层独立探测器的协同工作, 其中较薄的顶 
+层吸收低能X射线, 较厚的底层吸收透射的高能X射线, 
+可在单次曝光中同时捕获低能和高能投影数据, 避免 
+了kV切换或双源系统的时间与空间失配问题 [26]. Shi等 
+人 [26]研发的原型DL-FPD在顶部和底部分别采用200和 
+550 μm厚的CsI闪烁体, 并通过1 mm铜滤片增强光谱分 
+离, 使得双能成像的碘定量误差小于5%. 此外, DL-FPD 
+的层间几何校准与散射校正技术进一步提升了图像质 
+量. Zhang等人 [40]提出的e-Grid方法基于DL-FPD的双能 
+信号模型, 通过线性映射与扩散算法有效估计散射分 
+布, 使低能和高能CT图像的非均匀性分别降低77%和 
+66%, 并显著提高了材料分解的准确性. 此外, DL-FPD 
+与快速kV切换的联合光谱成像方案通过多能量数据互 
+补, 将碘基图像的对比噪声比(contrast-to-noise ratio, 
+CNR)提升了80.5%, 并减少了条纹伪影 [33]. 这些创新不 
+仅拓展了CBCT在定量成像和实时引导中的应用潜力, 
+还为其临床推广提供了可靠的技术基础.  
+2.4 二维反散射网格的散射校正机制与性能验证 
+二维反散射网格(two-dimensional antiscatter grid, 
+2D-ASG)的集成推动了CBCT图像质量的提升. 在 
+图 3 金属伪影对比图 [31]. 获取条件: (a) 临床CBCT ; (b) 台式CBCT ; 
+从DE-CBCT数据集在70 (c)、90 (d)、1 10 (e)和150 (f) keV下合成的 
+VMI. 管电流: 15 mA, 射线源到物体中心距离: 400 mm, 射线源到探 
+测器距离: 615 mm. 图像以相同的窗位窗宽[–750 HU, 2250 HU]显示 
+Figure 3 Comparative visualization of metal artifacts reduction [31]. 
+Acquired with a clinical CBCT (a), and the benchtop CBCT-1 (b) at 
+15 mA tube current. (c, d, e, f) are VMI synthesized from the DE-CBCT 
+dataset at 70, 90, 110 and 150 keV, respectively. The source-object- 
+distance (SOD) and source-imager-distance (SID) are 400 and 615 mm. 
+Images are displayed with the same window of [–750 HU, 2250 HU]  
+评 述  
+5749  
+
+=== PDF_PAGE 5 ===
+CBCT成像中, 散射伪影对图像质量有显著影响. 2D- 
+ASG作为一种有效的解决方案, 近年来在该领域得到 
+了深入研究和应用. Alexeev等人 [41]于2018年首次在平 
+板探测器CBCT系统中实现该技术的工程化应用, 其采 
+用钨基微加工工艺构建的矩形孔阵列结构直接集成于 
+探测器表面. 实验结果显示, 该装置在定性评估中可显 
+著提升CT值准确性与对比噪声比, 同时有效抑制散射 
+相关图像伪影, 如图4所示 [41]. 值得注意的是, 2D-ASG 
+的性能优势在多模态场景中具有普适性. Bayat等人 [42] 
+通过同步kV -MV放射治疗平台验证, 将MV射线对kV - 
+CBCT的交叉散射干扰降低至临床可接受水平. 在牙科 
+CBCT应用中, 其空间选择性屏蔽特性使散射强度下降 
+至1/20~1/10, 骨组织与软组织对比度分别提升27%和 
+48%, 牙齿邻接面CT值偏差从510 HU锐减至146 
+HU [43]. Altunbas等人 [44]和Cobos等人 [45]进一步验证了 
+网格间距、隔膜厚度等参数和面积对性能的影响. 然 
+而, 即使采用2D-ASG, 仍有一定比例的残余散射影响 
+CT值定量精度. 为克服这一限制, Yu等人 [46]提出利用 
+基于网格的散点采样(grid-based scatter sampling, GSS) 
+方法, 通过将网格结构转化为原位散射测量装置, 成功 
+实现残余散射的动态校正. 该技术使水模体CT值不均 
+匀性从20 HU降至10 HU, 图像噪声水平降低23%, 并 
+显著缓解金属植入物界面的条纹伪影. 通过协同应用 
+2D-ASG与GSS校正, 光子计数CBCT系统中的HU值不 
+均匀性降低了2/3, 对比度提高了2倍 [47], 并为DE-CBCT 
+的精确物质分解提供了技术基础 [48].  
+3 数据驱动的计算成像优化策略 
+人工智能相关重建算法有力推动了CBCT的发展. 
+剂量优化方面, 借助机器学习模型, 可在降低剂量时减 
+少图像噪声和伪影, 保障图像诊断质量; 定量分析上, 
+利用人工智能算法精准处理图像数据, 提供更精确的 
+组织密度等信息, 助力临床决策; 伪影去除方面, 深度 
+学习算法可有效识别并抑制金属伪影等图像伪影, 提 
+升图像清晰度. 这些作用促进了CBCT技术在降低剂 
+量、提升图像质量及拓展应用领域的进步.  
+3.1 投影-图像双域协同高保真重建 
+CBCT技术在医学成像领域具有重要地位, 但其辐 
+射剂量问题始终是临床应用的一大挑战. 近年来, 人工 
+智能相关重建算法的发展为CBCT的剂量优化提供了 
+新的解决方案. 这些算法的核心在于通过数据驱动的 
+方法, 在降低辐射剂量的同时, 有效平衡图像质量和诊 
+断需求. 卷积神经网络(convolutional neural networks, 
+CNNs)通过对称残差连接与自监督学习策略, 能够从稀 
+疏投影数据中恢复解剖细节, 显著提升图像边缘清晰 
+度. 例如, Jiang等人 [49]提出的SR-CNN模型, 通过增强 
+稀疏视图CBCT图像的边缘清晰度和详细解剖结构, 实 
+现了与全视图CBCT相当的图像质量. 然而, 当采样极 
+为稀疏时, SR-CNN可能会丢失患者特异性信息. 为此, 
+他们进一步提出了合并编码器CNN, 该方法利用患者 
+特异性先验信息, 从先验CT图像和欠采样CBCT图像 
+中提取特征, 使得重建图像质量与CT相似, 结构清晰 
+准确 [50]. 生成对抗网络(generative adversarial networks, 
+GANs)则通过对抗训练机制, 在投影域或图像域生成 
+高质量合成图像. 例如, CycleGAN [51]通过循环一致性 
+约束将低剂量CBCT图像映射至高剂量CT等效图像, 
+从而减少放疗剂量计算误差. 通过将注意机制和循环 
+一致性引入GAN框架, 可以实现无配对训练并提高图 
+像的结构保真度 [52].   
+除了上述的单独图像域或投影域方法外, 双域协 
+同方法能够充分利用投影域和图像域的信息, 帮助进 
+一步降低辐射剂量. Hu等人 [53]提出的HDNet结合了投 
+影域和图像域的信息, 通过U-Net插值缺失投影、基于 
+FDK的初始重建以及最终的U-Net增强, 实现了图像质 
+量提升和伪影减少. Chao等人 [54]提出的DualCNN框架 
+图 4 不同反散射网格下的重建体模图像 [41]. 第一行: 小体模; 第二 
+行: 大体模; 第三行: 骨盆体模 
+Figure 4 Reconstructed phantom images with different anti-scatter 
+grids [41]. The first row: small phantom; the second row: large phantom; 
+the third row: pelvis phantom  
+2025 年 11 月 第 70 卷 第 33 期  
+5750  
+
+=== PDF_PAGE 6 ===
+在投影域和图像域分别设计CNN, 以消除稀疏视图 
+CBCT中的伪影. 他们进一步提出的混合域网络框架 
+Dual-AGNet开发了基于结构相似性和感知损失函数的 
+联合损失函数, 能够更好地保留精细结构并提高视觉 
+质量 [55]. Ketcha等人 [56]提出的双域方法能够去除CBCT 
+中的稀疏采样伪影和金属伪影, 对低剂量CBCT引导的 
+手术和金属植入物评估具有重要的临床意义. 上述突 
+破推动了低剂量CBCT重建的变革, 助力CBCT从传统 
+成像向高保真、高效能的临床诊断工具转变, 为医学 
+影像的精准应用开辟了新路径.  
+3.2 扩散模型驱动的多任务CBCT重建优化 
+尽管CNN与GAN在投影域或图像域重建中取得了 
+显著成果, 其在极端稀疏采样或复杂伪影场景下仍面 
+临患者特异性信息丢失与结构保真度受限的挑战. 近 
+年来, 扩散模型(diff usion model, DM)凭借其概率生成 
+框架与渐进式优化特性, 在医学图像重建领域展现出 
+巨大潜力. Diffusion模型是一类功能强大的生成模型, 
+通过在正向过程中逐步增加噪声, 然后在逆向过程逐 
+步消除噪声恢复高质量图像 [57]. 这一过程赋予其优异 
+的复杂噪声分布拟合能力、生成图像的解剖合理性以 
+及对不完全数据的鲁棒性, 使其在CBCT多任务重建中 
+展现出独特优势. 在生成伪CT方面, Fu等人 [58]引入能 
+量引导函数, 在去噪过程中分离域不变特征与CBCT特 
+定噪声, 显著提升跨域转换的解剖学保真度; Hu等 
+人 [59]提出融合视觉转换器与变分信息瓶颈, 通过自注 
+意力机制捕获全局特征并压缩冗余信息, 增强模型对 
+头颈部复杂解剖结构的重建能力; Zhang等人 [60]提出的 
+纹理保留扩散模型则结合自适应高频优化与双模态特 
+征融合, 有效维持软组织纹理细节. 在剂量计算关键指 
+标上, Peng等人 [61]提出的diffusio n模型生成的伪CT将 
+HU值误差降低至临床可接受范围, 大幅提升放射治疗 
+规划精度. 此外, diffusion模型在稀疏CBCT重建中也展 
+现出对病态逆问题的有效求解能力, 为降低辐射剂量 
+与优化扫描流程提供技术路径 [62,63].  
+3.3 深度学习重建中的定量精度优化 
+CBCT广泛用于牙科成像和放疗摆位, 但由于锥形 
+束几何形状的高度散射辐射会使图像质量退化, 降低 
+了CBCT图像中的HU值准确性, 使其在软组织评估、 
+剂量计算和骨密度测量等定量评估上表现出局限 
+性 [64]. 基于深度学习的图像增强技术为提升CBCT定量 
+精度提供了创新解决方案, 其中基于GAN的方法被广 
+泛使用于从CBCT到伪CT图像的转换, 并显示出良好 
+的软组织对比度、剂量计算精度和结构细节 [65,66] . 为 
+进一步提升性能, Liu等人 [67]引入注意力机制模块, 将 
+HU值的平均绝对误差从81.06显著降低至56.89, 有效 
+提升了器官边界清晰度与HU预测准确率. Kang等 
+人 [68]则通过整合对比学习框架, 构建了具备语义关系 
+一致性损失函数与空间相关性约束的改进型GAN模 
+型, 并辅以多尺度重建损失函数, 在保持全局结构完整 
+性的同时实现了局部细微特征的精准重建. 在骨密度 
+定量分析领域, Yong等人 [69]和Park等人 [70]提出的深度 
+学习系统通过非线性映射优化, 成功提升了骨骼影像 
+的线性度、均匀性及对比度, 该模型在颅骨标本及临 
+床患者数据集中均显示出与标准CT高度一致的骨密度 
+测量结果, 其建立的定量分析体系为骨质疏松症的精 
+确诊断提供了可靠的技术支撑. 上述技术突破标志着 
+CBCT正从传统形态学成像向定量化诊断范式演进, 为 
+精准医疗提供了新的技术路径.  
+3.4 金属伪影抑制策略与算法创新 
+金属植入物会导致X线迅速衰减, 在CBCT图像上 
+产生伪影, 模糊关键的解剖结构并影响诊断准确性 [71]. 
+除了上述提到的DE-CBCT能够减少金属伪影以外, 人 
+工智能相关算法在减轻CBCT成像中金属伪影方面具 
+有巨大潜力 [72]. 其中CNN应用尤其广泛, 主要围绕多域 
+协同处理、迭代优化和新型网络架构三个方向展开创 
+新. 在多域协同处理方面, Tang等人 [73]提出的双域处理 
+框架通过投影域线性化校正与图像域的CNN处理相结 
+合, 其性能显著优于传统频域融合法. Ketcha等人 [56]通 
+过独立训练图像域和投影域网络, 有效解决了低剂量 
+CBCT的空间视图伪影问题. 迭代优化策略为金属伪影 
+去除提供了新的技术路径. Park等人 [74]提出的迭代框 
+架通过在投影域强制数据一致性约束, 实现了金属伪 
+影抑制与形态结构保留的平衡. 新型网络架构的探索 
+持续推进技术边界. Kim等人 [75]通过双网络架构分别 
+处理先验图像和归一化金属伪影抑制结果, 进一步强 
+化了伪影消除效果. Ki等人 [76]提出的双编码器结构在 
+头颈部放疗中增强了CBCT图像的组织辨识与结构勾 
+画能力. 此外, Lyu等人 [77]通过投影域细粒度分割实现 
+了术中CBCT的优化, 为机器人辅助脊柱微创手术提供 
+了技术支撑. 这些技术进展共同推动着CBCT成像质量 
+的提升, 特别是在复杂金属植入场景下的诊断应用. 除 
+评 述  
+5751  
+
+=== PDF_PAGE 7 ===
+了以上方法外, 通过将口腔内光学扫描数据引入dif fu-
+sion模型的投影域数据的分析和处理中, 能够有效减少 
+金属伪影 [78]; 动物实验也验证了dif fusion模型可有效改 
+善硬组织可视化效果, 提高图像的对比噪声比 [79].  
+4 总结与展望 
+CBCT技术通过硬件革新与智能算法的深度融合, 
+已在降低辐射剂量、提升成像质量及拓展临床应用方 
+面取得显著进展. 硬件层面, 碳纳米管X射线源阵列与 
+光子计数探测器的应用, 不仅解决了传统设备的辐射 
+累积与软组织对比度不足等问题, 还为双能成像和金 
+属伪影抑制提供了技术支撑; 二维反散射网格与散射 
+校正技术的协同优化, 进一步提升了定量分析的可靠 
+性. 算法层面, 深度学习驱动的低剂量重建、伪影校正 
+及多模态数据融合, 突破了传统迭代算法的效率瓶颈, 
+为个性化治疗规划与实时导航奠定了基础. 然而, 辐射 
+剂量与图像质量的权衡、定量标准缺失及复杂临床场 
+景的适配性仍是亟待突破的挑战.    
+未来, CBCT技术将朝着智能化、精准化与多模态 
+融合的方向持续演进. 硬件系统的微型化与多源阵列 
+集成有望推动便携式设备的临床应用, 同时结合双能/ 
+多能成像与磁共振、能谱CT等多模态数据, 可增强组 
+织特异性分析与功能成像能力. 人工智能算法的自监 
+督学习与联邦学习框架将加速模型泛化, 实现跨设备 
+与跨场景的稳定性能; 动态剂量调制技术与辐射风险 
+预测模型的结合, 则可为患者提供个性化辐射防护方 
+案. 此外, 随着增强现实技术与术中实时成像的深度融 
+合, CBCT在心血管介入、骨科微创及肿瘤免疫监测等 
+新兴领域的应用潜力将进一步释放. 通过硬件-算法-临 
+床的闭环优化, CBCT技术最终将实现“更低剂量、更 
+高精度、更广覆盖”的终极目标, 为精准医疗时代提供 
+强有力的影像支持.    
+参考文献  
+1  Robb R A. The dynamic spatial reconstructor: an X-ray video-fluoroscopic CT scanner for dynamic volume imaging of moving organs. IEEE Trans 
+Med Imag, 1982, 1: 22–33  
+2  Mozzo P, Procacci C, Tacconi A, et al. A new volumetric CT machine for dental imaging based on the cone-beam technique: Preliminary results. 
+Eur Radiol, 1998, 8: 1558–1564  
+3  Venkatesh E, Venkatesh Elluru S. Cone beam computed tomography: basics and applications in dentistry. J Istanbul Univ Fac Dent, 2017, 51  
+4  Rashid A, Feinberg L, Fan K. The application of cone beam computed tomography (CBCT) on the diagnosis and management of maxillofacial 
+trauma. Diagnostics, 2024, 14: 373  
+5  Verykokou S, Ioannidis C, Angelopoulos C. Evaluation of 3D modeling workflows using dental CBCT data for periodontal regenerative treatment. 
+JPM, 2022, 12: 1355  
+6  Patel S, Brown J, Semper M, et al. European Society of Endodontology position statement: use of cone beam computed tomography in 
+Endodontics. Int Endod J, 2019, 52: 1675–1678  
+7  Greenberg A. Advanced dental implant placement techniques. J Istanbul Univ Fac Dent, 2017, 51(Suppl 1): S76–S89  
+8  Catona G M, Marcu L G. Qualitative and quantitative evaluation of the role of CBCT in rectal cancer radiotherapy. Radiol Med, 2025, 130: 150– 
+160  
+9  De Jong R, Visser J, Van Wieringen N, et al. OC-0303 Dosimetric benefit of a clinically applied adaptive plan selection strategy for rectal cancer. 
+RadioTher Oncol, 2019, 133: S154–S155 
+10  Haemmerli J, Ferdowssian K, Wessels L, et al. Comparison of intraoperative CT- and cone beam CT-based spinal navigation for the treatment of 
+atlantoaxial instability. Spine J, 2023, 23: 1799–1807 
+11  Peroni M, Ciardo D, Spadea M F, et al. Automatic segmentation and online virtualCT in head-and-neck adaptive radiation therapy. Int J Radiat 
+Oncol Biol Phys, 2012, 84: e427–e433 
+12  Coolidge W D. A powerful Röntgen ray tube with a pure electron discharge. Phys Rev, 1913, 2: 409–430 
+13  Puett C, Inscoe C, Hartman A, et al. An update on carbon nanotube-enabled X-ray sources for biomedical imaging. WIREs Nanomed 
+Nanobiotechnol, 2018, 10: e1475 
+14  Cheng Y, Zhou O. Electron field emission from carbon nanotubes. Comptes Rendus Physique, 2003, 4: 1021–1033 
+15  Han J S, Lee S H, Go H, et al. High-performance cold cathode X-ray tubes using a carbon nanotube field electron emitter. ACS Nano, 2022, 16: 
+10231–10241 
+16  de Heer W A, Bacsa W S, Châtelain A, et al. Aligned carbon nanotube films: production and optical and electronic properties. Science, 1995, 268: 
+845–847 
+2025 年 11 月 第 70 卷 第 33 期  
+5752  
+
+=== PDF_PAGE 8 ===
+17  Xu X, Kim J, Laganis P, et al. A tetrahedron beam computed tomography benchtop system with a multiple pixel field emission x-ray tube. Med 
+Phys, 2011, 38: 5500–5508 
+18  Posiewnik M, Piotrowski T. A review of cone-beam CT applications for adaptive radiotherapy of prostate cancer. Phys Med, 2019, 59: 13–21 
+19  Becker A E, Hernandez A M, Schwoebel P R, et al. Cone beam CT multisource configurations: evaluating image quality, scatter, and dose using 
+phantom imaging and Monte Carlo simulations. Phys Med Biol, 2020, 65: 235032 
+20  Xu S, Hu Y, Li B, et al. Volumetric computed tomography with carbon nanotube X-ray source array for improved image quality and accuracy. 
+Commun Eng, 2023, 2: 71 
+21  Xu S, Li B, Inscoe C R, et al. Evaluation of the feasibility of a multisource CBCT for maxillofacial imaging. Phys Med Biol, 2023, 68: 175012 
+22  Li B, Inscoe C R, Xu S, et al. A carbon nanotube x-ray source array designed for a new multisource cone beam computed tomography scanner. 
+Phys Med Biol, 2024, 69: 075028 
+23  Dillon O, Reynolds T, O’Brien R T. X-ray source arrays for volumetric imaging during radiotherapy treatment. Sci Rep, 2023, 13: 9776 
+24  Yousefi F, Mohammadi Y, Nikikhah K, et al. Investigating the effectiveness of MAR algorithm on magnitude of artifacts in CBCT images: a 
+systematic review. Oral Radiol, 2025, 41: 311–319 
+25  Sajja S, Lee Y, Eriksson M, et al. Technical principles of dual-energy cone beam computed tomography and clinical applications for radiation 
+therapy. Adv Radiat Oncol, 2020, 5: 1–16 
+26  Shi L, Lu M, Bennett N R, et al. Characterization and potential applications of a dual-layer flat-panel detector. Med Phys, 2020, 47: 3332–3343 
+27  Li H, Giles W, Bowsher J, et al. A dual cone-beam CT system for image guided radiotherapy: initial performance characterization. Med Phys, 
+2013, 40: 021912 
+28  Zbijewski W, Sisniega A, Stayman J W, et al. Dual-energy imaging of bone marrow edema on a dedicated multi-source cone-beam CT system for 
+the extremities. Proc SPIE Int Soc Opt Eng, 2015, 9412: 94120V  
+29  Kim H J, Kim J E, Choo J, et al. A clinical pilot study of jawbone mineral density measured by the newly developed dual-energy cone-beam 
+computed tomography method compared to calibrated multislice computed tomography. Imag Sci Dent, 2019, 49: 295–299 
+30  Zhang J, Yang G, Cheng Y, et al. Stationary scanning X-ray source based on carbon nanotube field emitters. Appl Phys Lett, 2005, 86: 184104 
+31  Li B, Hu Y, Xu S, et al. Low-cost dual-energy CBCT by spectral filtration of a dual focal spot X-ray source. Sci Rep, 2024, 14: 9886 
+32  Li B, Spronk D, Luo Y, et al. Feasibility of dual-energy CBCT by spectral filtration of a dual-focus CNT X-ray source. PLoS One, 2022, 17: 
+e0262713 
+33  Taylor P A, Hartzell S, Mirandola A, et al. OSLD nanoDot characterization for carbon radiotherapy dosimetry. Phys Med Biol, 2024, 69: 115001 
+34  Müller K, Datta S, Ahmad M, et al. Interventional dual-energy imaging—Feasibility of rapid kV-switching on a C-arm CT system. Med Phys, 
+2016, 43: 5537–5546 
+35  Cassetta R, Lehmann M, Haytmyradov M, et al. Fast-switching dual energy cone beam computed tomography using the on-board imager of a 
+commercial linear accelerator. Phys Med Biol, 2020, 65: 015013 
+36  Cao Q, Sisniega A, Brehler M, et al. Modeling and evaluation of a high-resolution CMOS detector for cone-beam CT of the extremities. Med Phys, 
+2018, 45: 114–130 
+37  Liang A K, El-Mohri Y, Zhao Q, et al. Count rate capabilities of polycrystalline silicon photon counting detectors for CBCT applications—A 
+theoretical study. Phys Med Biol, 2020, 65: 035009 
+38  Hood S, Newall M, Butler P, et al. First linac-mounted photon counting detector for image guided radiotherapy: planar image quality 
+characterization. Med Phys, 2025, 52: 1159–1171 
+39  Tanguay J, Yun S, Kim H K, et al. Detective quantum efficiency of photon-counting X-ray detectors. Med Phys, 2015, 42: 491–509 
+40  Zhang X, Xie J, Tan Y, et al. Model-based CBCT scatter correction with dual-layer flat-panel detector. Med Phys, 2025, 52: 1500–1514 
+41  Alexeev T, Kavanagh B, Miften M, et al. Two-dimensional antiscatter grid: a novel scatter rejection device for Cone-beam computed tomography. 
+Med Phys, 2018, 45: 529–534 
+42  Bayat F, Eldib M E, Kavanagh B, et al. Concurrent kilovoltage CBCT imaging and megavoltage beam delivery: suppression of cross-scatter with 
+2D antiscatter grids and grid-based scatter sampling. Phys Med Biol, 2022, 67: 165005 
+43  Li B, Somerkivi V, Bayat F, et al. Effect of a prototype 2-dimensional antiscatter grid on image quality obtained with a dental cone-beam computed 
+tomography scanner. Imag Sci Dent, 2025, 55: 37–47 
+44  Altunbas C, Alexeev T, Miften M, et al. Effect of grid geometry on the transmission properties of 2D grids for flat detectors in CBCT. Phys Med 
+Biol, 2019, 64: 225006 
+45  Cobos S F, Norley C J, Nikolov H N, et al. 3D-printed large-area focused grid for scatter reduction in cone-beam CT. Med Phys, 2023, 50: 240–258 
+46  Yu Z, Park Y, Altunbas C. Simultaneous scatter rejection and correction method using 2D antiscatter grids for CBCT. Proc SPIE Int Soc Opt Eng, 
+2020, 11312: 113122W  
+47  Sabounchi R, Pyakurel U, Bayat F, et al. Effect of scatter suppression with 2D antiscatter grids in photon counting compact CBCT. Proc SPIE Int 
+评 述  
+5753  
+
+=== PDF_PAGE 9 ===
+Soc Opt Eng, 2024, 12925: 129253L  
+48  Altunbas C. Feasibility of dual-energy CBCT material decomposition in the human torso with 2D anti-scatter grids and grid-based scatter sampling. 
+Med Phys, 2024, 51: 334–347 
+49  Jiang Z, Chen Y, Zhang Y, et al. Augmentation of CBCT reconstructed from under-sampled projections using deep learning. IEEE Trans Med 
+Imag, 2019, 38: 2705–2715 
+50  Jiang Z, Zhang Z, Chang Y, et al. Prior image-guided cone-beam computed tomography augmentation from under-sampled projections using a 
+convolutional neural network. Quant Imag Med Surg, 2021, 11: 4767–4780 
+51  Chan Y, Li M, Parodi K, et al. Feasibility of CycleGAN enhanced low dose CBCT imaging for prostate radiotherapy dose calculation. Phys Med 
+Biol, 2023, 68: 105014 
+52  Hansen D C, Landry G, Kamp F, et al. ScatterNet: a convolutional neural network for cone-beam CT intensity correction. Med Phys, 2018, 45: 
+4916–4926 
+53  Hu D, Liu J, Lv T, et al. Hybrid-domain neural network processing for sparse-view CT reconstruction. IEEE Trans Radiat Plasma Med Sci, 2021, 5: 
+88–98 
+54  Chao L, Wang Z, Zhang H, et al. Sparse-view cone beam CT reconstruction using dual CNNs in projection domain and image domain. 
+Neurocomputing, 2022, 493: 536–547 
+55  Chao L, Zhang P, Wang Y, et al. Dual-domain attention-guided convolutional neural network for low-dose cone-beam computed tomography 
+reconstruction. Knowledge-Based Syst, 2022, 251: 109295 
+56  Ketcha M D, Marrama M, Souza A, et al. Sinogram + image domain neural network approach for metal artifact reduction in low-dose cone-beam 
+computed tomography. J Med Imag, 2021, 8: 052103 
+57  Yang L, Zhang Z, Song Y, et al. Diffusion models: a comprehensive survey of methods and applications. ACM Comput Surv, 2024, 56: 1–39 
+58  Fu L, Li X, Cai X, et al. Energy-guided diffusion model for CBCT-to-CT synthesis. Comput Med Imag Graphics, 2024, 113: 102344 
+59  Hu C, Cao N, Li X, et al. CBCT-to-CT synthesis using a hybrid U-Net diffusion model based on transformers and information bottleneck theory. 
+Sci Rep, 2025, 15: 10816 
+60  Zhang Y, Li L, Wang J, et al. Texture-preserving diffusion model for CBCT-to-CT synthesis. Med Image Anal, 2025, 99: 103362 
+61  Peng J, Qiu R L J, Wynne J F, et al. CBCT-Based synthetic CT image generation using conditional denoising diffusion probabilistic model. Med 
+Phys, 2024, 51: 1847–1859 
+62  Xie J, Shao H C, Li Y, et al. Prior frequency guided diffusion model for limited angle (LA)-CBCT reconstruction. Phys Med Biol, 2024, 69: 
+135008 
+63  Pan S, Peng J, Gao Y, et al. CBCT reconstruction using single X-ray projection with cycle-domain geometry-integrated denoising diffusion 
+probabilistic models. IEEE Trans Med Imag, 2025, 44: 2933–2947 
+64  Bayat F, Ruan D, Miften M, et al. A quantitative CBCT pipeline based on 2D antiscatter grid and grid-based scatter sampling for image-guided 
+radiation therapy. Med Phys, 2023, 50: 7980–7995 
+65  Tien H J, Yang H C, Shueng P W, et al. Cone-beam CT image quality improvement using Cycle-Deblur consistent adversarial networks (Cycle- 
+Deblur GAN) for chest CT imaging in breast cancer patients. Sci Rep, 2021, 11: 1133 
+66  Zhang Y, Yue N, Su M, et al. Improving CBCT quality to CT level using deep learning with generative adversarial network. Med Phys, 2021, 48: 
+2816–2826 
+67  Liu Y, Lei Y, Wang T, et al. CBCT-based synthetic CT generation using deep-attention cycleGAN for pancreatic adaptive radiotherapy. Med Phys, 
+2020, 47: 2472–2483 
+68  Kang S R, Shin W, Yang S, et al. Structure-preserving quality improvement of cone beam CT images using contrastive learning. Comput Biol Med, 
+2023, 158: 106803 
+69  Yong T H, Yang S, Lee S J, et al. QCBCT-NET for direct measurement of bone mineral density from quantitative cone-beam CT: a human skull 
+phantom study. Sci Rep, 2021, 11: 15083 
+70  Park C S, Kang S R, Kim J E, et al. Validation of bone mineral density measurement using quantitative CBCT image based on deep learning. Sci 
+Rep, 2023, 13: 11921 
+71  Machado A H, Fardim K A C, de Souza C F, et al. Effect of anatomical region on the formation of metal artefacts produced by dental implants in 
+cone beam computed tomographic images. DentoMaxillofac Radiol, 2018, 47: 20170281 
+72  Wajer R, Wajer A, Kazimierczak N, et al. The impact of AI on metal artifacts in CBCT oral cavity imaging. Diagnostics, 2024, 14: 1280 
+73  Tang H, Lin Y B, Jiang S D, et al. A new dental CBCT metal artifact reduction method based on a dual-domain processing framework. Phys Med 
+Biol, 2023, 68: 175016 
+74  Park H S, Seo J K, Hyun C M, et al. A fidelity-embedded learning for metal artifact reduction in dental CBCT. Med Phys, 2022, 49: 5195–5205 
+75  Kim S, Ahn J, Kim B, et al. Convolutional neural network–based metal and streak artifacts reduction in dental CT images with sparse-view 
+2025 年 11 月 第 70 卷 第 33 期  
+5754  
+
+=== PDF_PAGE 10 ===
+sampling scheme. Med Phys, 2022, 49: 6253–6277 
+76  Ki J, Lee J M, Lee W, et al. Dual-encoder architecture for metal artifact reduction for kV-cone-beam CT images in head and neck cancer 
+radiotherapy. Sci Rep, 2024, 14: 27907 
+77  Lyu T, Wu Z, Ma G, et al. PDS-MAR: a fine-grained projection-domain segmentation-based metal artifact reduction method for intraoperative 
+CBCT images with guidewires. Phys Med Biol, 2023, 68: 215007 
+78  Wang Y, Liu X, Li L. Metal artifacts reducing method based on diffusion model using intraoral optical scanning data for dental cone-beam CT. 
+IEEE Trans Med Imag, 2024, 44: 3529–3538 
+79  Oliveira M L, Schaub S, Dagassan-Berndt D, et al. Development and evaluation of a deep learning model to reduce exomass-related metal artefacts 
+in cone-beam CT: an ex vivo study using porcine mandibles. DentoMaxillofac Radiol, 2025, 54: 109–117 
+评 述  
+5755  
+
+=== PDF_PAGE 11 ===
+Summary for “锥形束计算机断层扫描的技术革新与临床转化: 多模态硬件集成与成像算法优化” 
+Technological innovations and clinical translation of cone beam 
+computed tomography: multimodal hardware integration and 
+imaging algorithm optimization 
+Jiangyuan Shi, Guangjun Li, Ying Song* & Sen Bai* 
+Department of Radiotherapy Physics & Technology, West China Hospital, Sichuan University, Chengdu 610041, China 
+* Corresponding authors, E-mail: songying_wch@163.com; baisen@scu.edu.cn 
+Cone beam computed tomography (CBCT) faces significant challenges in clinical translation, including radiation dose 
+accumulation, metal artifact interference, and insufficient quantitative accuracy. This review comprehensively analyzes 
+recent innovations addressing these limitations through synergistic hardware integration and computational imaging 
+optimization. 
+Hardware advancements demonstrate paradigm-shifting progress: (1) carbon nanotube (CNT) field-emission X-ray 
+sources enable multi-source array configurations with rapid pulsed operation, reducing radiation exposure by 30%–50% 
+while extending axial coverage. Clinical validations confirm 60% improvement in Hounsfield unit (HU) accuracy and 
+30%–50% enhancement in soft-tissue contrast-to-noise ratio compared to conventional CBCT. (2) Photon-counting 
+detectors (PCD) eliminate scintillator conversion stages, directly translating X-ray photons into electronic signals to 
+maintain high contrast at ultra-low doses. Experimental studies verify reduced electronic noise and improved Swank noise 
+characteristics. (3) Dual-layer flat-panel detectors (DL-FPD) acquire simultaneous low- and high-energy projections 
+through spectral separation (200/550 μm CsI scintillators + 1 mm Cu filter), achieving iodine quantification errors < 5% for 
+dual-energy CBCT (DE-CBCT). Integration with fast-kV switching further elevates contrast-to-noise ratio (CNR) by 
+80.5%. (4) Two-dimensional antiscatter grids (2D-ASG) combined with grid-based scatter sampling (GSS) algorithms 
+reduce water phantom CT number nonuniformity from 20 HU to 10 HU (50% improvement) and decrease metal artifact- 
+induced CT value deviations in dental implants from 510 HU to 146 HU. 
+Algorithmic innovations leverage artificial intelligence for performance breakthroughs: (1) dual-domain reconstruction 
+frameworks synergize projection- and image-domain features using convolutional neural networks (CNNs) and generative 
+adversarial networks (GANs), restoring anatomical details from sparse-view acquisitions (< 50% projections) while 
+maintaining structural fidelity. (2) Diffusion models (DM) resolve ill-posed inverse problems through probabilistic 
+generation, enabling high-fidelity synthetic CT (sCT) conversion with clinically acceptable HU errors for radiotherapy 
+dose calculation. Energy-guided DM architectures further separate domain-invariant features from CBCT-specific noise. 
+(3) Metal artifact reduction integrates DE-CBCT material decomposition (70–150 keV virtual monoenergetic imaging) 
+with attention-guided dual-encoder networks, suppressing streak artifacts by 71% at metal-tissue interfaces. (4) 
+Quantitative accuracy optimization via contrastive learning frameworks improves bone mineral density measurement 
+concordance with standard CT (R 2 > 0.95) and reduces HU prediction errors by 30% in soft-tissue segmentation. 
+Clinical translation is accelerated by these synergies: CNT-based DE-CBCT eliminates metal artifacts in dental 
+restorative assessments, while DL-FPD enables real-time intraoperative guidance for spinal robotics. Future trajectories 
+include portable multi-source CBCT systems, federated learning for cross-institutional model generalization, and 
+augmented reality integration for dynamic dose modulation. These developments establish CBCT as a versatile platform 
+for precision oncology, minimally invasive surgery, and image-guided interventions, ultimately achieving the tripartite goal 
+of “lower radiation, higher quantitative accuracy, and broader clinical applicability”. 
+cone beam CT, hardware innovation, algorithm optimization, artificial Intelligence 
+doi: 10.1360/CSB-2025-0608 
+2025 年 11 月 第 70 卷 第 33 期  
+5756  

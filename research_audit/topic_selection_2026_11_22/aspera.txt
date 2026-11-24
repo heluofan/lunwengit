@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>IBM Aspera</title>
+    <meta http-equiv="Content-Security-Policy" content="">
+    <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="translucent-black">
+    <meta name="apple-mobile-web-app-title" content="IBM Aspera">
+    <link rel="icon" sizes="192x192" href="/aspera/faspex/app-192.png">
+    <link rel="icon" sizes="128x128" href="/aspera/faspex/app-128.png">
+    <link rel="apple-touch-icon" href="/aspera/faspex/apple-touch-icon.png">
+    <link rel="icon" type="image/x-icon" href="/aspera/faspex/favicon.ico">
+    <script src="/aspera/faspex/config.js"></script>
+    <script src="/aspera/faspex/hls.js"></script>
+    <script type="text/javascript">
+      window.asperaBaseEnvironment = {
+        aspera_starter_version: '209.14.9',
+        app_commit_hash: '63be26b',
+        app_name: 'Aspera',
+        app_version: '5.0.18',
+        http_gateway_chunk_size: '',
+        http_gateway_concurrent_uploads: '',
+        logout_url: '/',
+        server_version: '5.0.18',
+        supports_mobile_app: true,
+      };
+
+      window._analytics = {
+        "segment_key": 'sWUFDK5jlfEOQx3zbm493cHLcIpNm5KH',
+        "coremetrics": false,
+        "optimizely": false,
+        "skipIdentify": true,
+        "autoPageView": false
+      };
+    </script>
+    <!-- <script src="https://console.test.cloud.ibm.com/analytics/build/bluemix-analytics.min.js"></script> -->
+    <script type="module" crossorigin src="/aspera/faspex/assets/index-TqS764Mh.js"></script>
+    <link rel="stylesheet" crossorigin href="/aspera/faspex/assets/index-H8Z2xAPz.css">
+  </head>
+  <body>
+    <noscript>IBM Aspera Requires JavaScript to be enabled.</noscript>
+    <div id="aspera-offline-loading">
+      <style>
+        .cds--header {
+          display: flex;
+          align-items: center;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 3rem;
+          background-color: #161616;
+          z-index: 6000;
+          font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
+        }
+
+        a.cds--header__name {
+          font-size: 0.875rem;
+          font-weight: 400;
+          line-height: 1.125rem;
+          letter-spacing: 0.16px;
+          display: flex;
+          align-items: center;
+          height: 100%;
+          padding: 0 2rem 0 1rem;
+          text-decoration: none;
+          font-weight: 600;
+          letter-spacing: 0.1px;
+          line-height: 20px;
+          -webkit-user-select: none;
+          user-select: none;
+          border: 0.125rem solid transparent;
+          transition: border-color 110ms;
+          outline: none;
+          color: #f4f4f4;
+        }
+
+        .cds--header__name--prefix {
+          font-weight: 400;
+        }
+
+        @keyframes rotate {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes init-stroke {
+          0% {
+            stroke-dashoffset: 240;
+          }
+          100% {
+            stroke-dashoffset: 40;
+          }
+        }
+
+        .cds--loading {
+          animation-name: rotate;
+          animation-duration: 690ms;
+          animation-timing-function: linear;
+          animation-fill-mode: forwards;
+          animation-iteration-count: infinite;
+          width: 10.5rem;
+          height: 10.5rem;
+          margin: 4rem auto;
+          margin-bottom: 0;
+        }
+
+        .cds--loading__svg {
+          fill: transparent;
+        }
+
+        .cds--loading__stroke {
+          stroke: #0f62fe;
+          stroke-dashoffset: 40;
+        }
+
+        .cds--loading__svg circle {
+          stroke-width: 8;
+          stroke-linecap: butt;
+          stroke-dasharray: 240;
+        }
+
+        .cds--loading svg circle {
+          animation-name: init-stroke;
+          animation-duration: 10ms;
+          animation-timing-function: cubic-bezier(0.2, 0, 0.38, 0.9);
+        }
+      </style>
+      <header aria-label="IBM Aspera" class="cds--header cds--g100">
+        <a class="cds--header__name"><span class="cds--header__name--prefix">IBM</span>&nbsp;Aspera</a>
+      </header>
+      <div aria-atomic="true" aria-live="assertive" class="center-loading cds--loading">
+        <svg class="cds--loading__svg" alt="Loading" viewBox="-75 -75 150 150">
+          <circle class="cds--loading__stroke" cx="0" cy="0" r="37.5"></circle>
+        </svg>
+      </div>
+    </div>
+    <div id="root"></div>
+  </body>
+</html>

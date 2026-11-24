@@ -1,0 +1,1156 @@
+=== PDF_PAGE 1 ===
+第52卷 第5期/2026年5月/计算机工程 综述论文
+基金项目:中央高水平医院临床科研业务费专项资金(2025NHLHCRFHLA04)。
+作者简介:李辉(CCF 高级会员),男,副教授、博士,主研方向为计算机图形学;刘佳煜,硕士研究生;徐雅萍(通信作者),副主任护师、硕士。
+收稿日期:2025-09-18  修回日期:2025-11-18  E-mail:yaping0535@163.com
+面向医学图像分割的深度学习模型架构与性能评估方法综述
+李辉1,刘佳煜1,徐雅萍2
+(1.北京化工大学信息科学与技术学院,北京 100029;2.中日友好医院骨科,北京 100029)
+摘 要:医学图像分割在多模态成像数据中实现病灶或结构的 像 素 级 定 位 是 支 撑 辅 助 诊 断 与 临 床 决 策 的 关 键 任
+务。针对医学图像分割网络架构 快 速 演 化 与 评 价 指 标 存 在 的 语 义 歧 义、统 计 不 稳 等 局 限,旨 在 系 统 梳 理 网 络 结
+构、任务特征和评价指标三者间的适配关系,揭示方法发展 路 径 与 性 能 边 界,构 建 面 向 实 际 应 用 需 求 的 结 构-指 标
+匹配机制。基于2020—2025年 WebofScience核 心 数 据 库 的 代 表 性 文 献,首 先 梳 理 Transformer、图 神 经 网 络
+(GNN)、扩散模型等主干架构的设计机制与演化路径;然后总结轻量化、混合结构及提示引导范式的关键 特 征;接
+着结合公开数据集实证研究,对不同网络结构在器 官、肿 瘤 与 脑 组 织 等 典 型 任 务 中 的 分 割 性 能 进 行 定 量 对 比,涵
+盖95%豪斯多夫距离(HD95)、Dice相似系数(DSC)、交 并 比(IoU)等 常 用 指 标,并 识 别 出 HD95 在 边 界 复 杂 任 务
+中波动较大、DSC 对小目标敏感性不足、IoU 在 结 构 区 分 方 面 存 在 局 限 等 问 题;最 后 进 一 步 揭 示 了 指 标 误 用 与 任
+务特征不匹配的统计根源,构 建 了 任 务 结 构-指 标 推 荐 映 射,提 出 基 于 任 务 粒 度 的 指 标 选 择 策 略,并 探 讨 动 态 网
+络、自监督学习、跨模态建模等方向对模型泛化能力的潜在促进作用。
+关键词:医学图像分割;深度学习;网络架构;评价指标体系;任务适配
+中图分类号:TP391.41   文献标志码:A DOI:10.19678/j.issn.1000-3428.0253035
+ReviewonDeepLearningModelArchitecturesandPerformance
+Evaluation MethodsforMedicalImageSegmentation
+LIHui
+1
+ LIUJiayu
+1
+ XU Yaping
+2
+ 1 CollegeofInformationScienceandTechnology BeijingUniversityofChemicalTechnology Beijing100029 China 
+2 DepartmentofOrthopaedics China-JapanFriendshipHospital Beijing100029 China 
+【Abstract】 Medicalimagesegmentation enables pixel-levellocalization oflesions oranatomicalstructuresin
+multimodalimagingdataandservesasakeyfoundationforcomputer-aideddiagnosisandclinicaldecision-making 
+Thisstudyaddressestherapidevolutionof medicalimagesegmentationnetworkarchitecturesandtheinherent
+limitations semanticambiguityandstatisticalinstability ofexistingevaluation metrics Thisstudyaimsto
+systematicallyexamineanddelineatethealignmentamongnetworkstructure taskcharacteristics andevaluation
+metrics revealthe method development path and performance boundaries and establish a structure-metric
+matchingmechanismtailoredtopracticalclinicalneeds BasedonrepresentativeliteraturefromtheWebofScience
+CoreCollectionbetween2020and2025 thisstudyfirstreviewsthedesignmechanismsandevolutionarypathways
+ofcorearchitectures suchasTransformers GraphNeuralNetworks GNNs  andDiffusionModels DMs  and
+thensummarizestheessentialcharacteristicsoflightweight hybrid andprompt-guidedparadigms Subsequently 
+byintegrating empiricalstudies on public datasets a quantitative comparisonis conducted across different
+architecturesintypicalsegmentationtasksinvolvingorgans tumors andbraintissues coveringcommon metrics
+suchastheDiceSimilarityCoefficient DSC  95% HausdorffDistance HD95  andIntersectionover Union
+ IoU  Theresultsindicatethat HD95exhibitshighvariabilityinboundary-complextasks DSCshowslimited
+sensitivitytosmalltargets andIoU presentsinsufficientstructuraldiscriminationcapability Furthermore this
+studyrevealsthestatisticalcausesunderlying metricmisapplicationandtask-metricmismatch constructsatask-
+structure-to-metricrecommendation mapping proposesatask-granularity-based metricselectionstrategy and
+exploreshowdynamicnetworks self-supervisedlearning andcross-modalmodelingcontributetotheenhancement
+ofmodelgeneralization 
+【Keywords】medicalimagesegmentation deeplearning networkarchitecture evaluation metricsystem task
+adaptation
+
+=== PDF_PAGE 2 ===
+第52卷 第5期/2026年5月/计算机工程
+0 引言
+  医学图像分割作为医学图像处理领域的核心任
+务,旨在将影像中的器官、组织或病灶区域进行像素
+级精确划分,为 辅 助 诊 断 提 供 关 键 支 撑。 国 内 外 大
+量研究推动了该领 域 方 法 不 断 创 新,同 时 促 成 了 高
+质量公开数据集建设和标准化评价体系形成。
+  随 着 深 度 学 习 的 发 展, 该 领 域 融 合
+Transformer、图神经网络(GNN)、扩散模型等多种
+建模机制。近年来,模型设计呈现显著趋势:一方面
+Transformer等 基 础 结 构 不 断 优 化,在 二 维/三 维
+(2D/3D)图像处理、边界建模、小样本学习等方面进
+展突出;另一方 面 混 合 结 构、轻 量 化 网 络 及 Prompt
+范式兴起,促使模型向“高性能-低复杂度-交互适应
+性”发展。在多模 态、多 任 务 并 行 背 景 下,医 学 图 像
+分割技 术 已 逐 步 从 “模 型 驱 动”转 向 “任 务-数 据 驱
+动”融合阶段,亟需系统总结各类模型在不同任务中
+的结构优势与适用边界。
+  与 此 同 时,目 前 广 泛 采 用 的 重 叠 率 [Dice相 似
+系数(DSC)、交并比(IoU)]、边 界 距 离 [95% 豪 斯 多
+夫距离 (HD95)、平 均 对 称 表 面 距 离 (ASSD)]等 指
+标在不同任务下可能存在语义歧义、统计不稳定、可
+比性不足等问题,易 导 致 性 能 误 判。 特 别 是 在 多 类
+别分割、拓扑结构建模和小目标检测等任务中,现有
+指标难以全面反映 模 型 实 际 能 力,缺 乏 系 统 性 指 标
+选择方案。尽管已有综述从模型结构或任务分类角
+度 进 行 总 结,但 针 对 “结 构-任 务-指 标”三 者 之 间 适
+配关系的系统梳理仍相对欠缺。
+  在此背景下,结合近5年代表性文献,本文从研
+究趋势、结构分类与评价体系三方面,揭示医学图像
+分割方法的发展路径、性能表现及指标使用局限性,
+构建面向实际任务需求的结构-指标匹配机制,推动
+分割方法在多样化任务场景下的可解释性与高效演
+化。研究目标主要包括以下4个方面:
+  1)结合近5年代表性文献,基于发文趋势、关键
+词共现、技术领域演化等维度,分析当前医学图像分
+割领域的研究热点与任务转向。
+  2)围绕当前主 流 医 学 图 像 分 割 网 络 架 构,归 纳
+Transformer、GNN、扩 散 模 型 等 基 础 结 构,进 一 步
+总结混合结构、轻 量 化 网 络、Prompt引 导 等 新 兴 范
+式,分析其特点与任务适配能力,明确主流方法的演
+化逻辑与数据驱动趋势。
+  3)系统整理当 前 常 用 的 重 叠 率、边 界 距 离 和 体
+积误差指标,探讨其任务适用性,比较不同类型网络
+结构在典型任务中 的 量 化 性 能,识 别 指 标 驱 动 下 的
+性能趋势与结构优势。
+  4)面向器官、肿瘤等不同类型分割任务,探讨常
+用指标任务适用性,识别其在泛化能力评估方面的潜
+在误区,推动建立更合理、可解释的指标使用体系。
+1 文献范围
+  本文基于 WebofScience核心数据库,系统检索
+2020年1月至2025年2月期间医学影像人工智能相
+关 文 献,采 用 布 尔 逻 辑 组 合 关 键 词:(″medical
+imaging″OR″radiology″)AND (″artificialintelligence″
+OR″deeplearning″OR″radiomics″OR″multimodal
+fusion″),排除非英文文献及非医学影像类研究,最终
+纳入有效文献1691篇。
+1.1 文章数量
+  如图1(a)所示(彩色效果见《计 算 机 工 程》官 网
+HTML 版,下同),2021年 至 2024 年 间 该 领 域 发 文
+量呈稳定上升 趋 势,从 2021 年 253 篇 增 至 2023年
+的高峰 429 篇,随 后 在 2024 年 略 微 下 降 至 417 篇。
+2025年由于统计时间尚 未 结 束,仅 收 录 80篇,数 量
+显著偏低,预计后续将有所上升。
+  国家层面分析如图1(b)所示,中国和印度发文
+最多,沙特阿拉伯和美国也表现活跃,持续有较高文
+献产出,英国、韩国等国家发文量波动较大且贡献相
+对有限。整体来看,相 关 研 究 呈 现 出 全 球 化 发 展 趋
+势,亚洲国家表现突出。
+1.2 关键词共现
+  图 1(c)进 一 步 展 示 了 关 键 词 数 量 及 其 占 比 随
+时间的变化趋势,以揭示技术热点与发展脉络。
+  首 先,“deeplearning”、“convolutionalneural
+networks”和“imagesegmentation”构成核心关键词
+集群,体现深度学习 的 主 流 地 位 及 卷 积 神 经 网 络 的
+广泛应用。“classification”和“featureextraction”等
+反 映 出 对 模 型 性 能 优 化 的 不 断 研 究。 其 次,
+“transferlearning”和“artificialintelligence”占 比 提
+升,预示了技术融 合 趋 势,“covid-19”等 特 定 疾 病 关
+键词反映出对 公 共 卫 生 事 件 的 快 速 响 应,“machine
+learning”显示传统方法与新兴深度学习技术形成互
+补研究 生 态。 此 外,“diagnosis”和 “computer-aided
+diagnosis”占比稳定,表明以 临 床 诊 断 为 导 向,向 实
+际诊断辅 助 工 具 转 化 趋 势 明 确。 “segmentation”、
+“medicalimaging”和 “computedtomography”指 向
+临床影像分割需求,展现技术落地路径。
+1.3 研究领域
+  如 图 1 (d)所 示,Engineering Biomedical、
+EngineeringElectricalElectronic占 据 主 导,反 映 了 工
+28
+
+=== PDF_PAGE 3 ===
+第52卷 第5期/2026年5月/计算机工程
+程 学 科 与 生 物 医 学、信 息 技 术 的 交 叉 融 合 是 当 前 热
+点。计算 机 科 学 下 属 子 领 域 InformationSystems、
+AI、InterdisciplinaryApplications表现突出,体现了数
+据管理、智能算法、学科融合等方向的活跃性。总体
+来看,工程与计科驱动主导,医学基础学科作为辅助
+背景,呈现工程-计科-医学三者交汇的特征。
+图1 近5年文献统计图
+Fig 1 Statisticalchartofliteraturesinthepast5years
+1.4 数据集统计分析
+  当前公开数 据 集
+[1]主 要 集 中 于 多 器 官 分 割、肿
+瘤与病灶识别、脑组织分割、血管结构提取等四大方
+向。在多器官任务中,BTCV、AMOS和 Synapse等
+计算机断层扫描(CT)数据集因覆盖脏器丰富、标注
+一致 性 高 而 被 广 泛 采 用;BraTS 系 列 数 据 集 是 脑 肿
+瘤分割 的 事 实 标 准,提 供 多 模 态 磁 共 振 成 像 影 像
+(MRI),支 持 跨 机 构 评 测;LiTS 与 KiTS 分 别 聚 焦
+于肝脏与肾脏病灶 识 别,适 用 于 评 估 小 体 积 目 标 分
+割 性 能。 血 管 与 视 网 膜 任 务 常 用 数 据 集 包 括
+DRIVE、CHASE_DB1与 STARE,强调细长结构与
+边界连续性。在脑组织结构建模方面,MRBrainS18
+和IBSR 提供高分辨率体素级标注。
+2 医学图像分割网络架构
+2.1 发展历程及现状
+  医 学 图 像 分 割 任 务 网 络 结 构 经 历 了
+Transformer、扩散模 型、GNN 等 架 构 的 演 化,并 逐
+渐融合混合建模、轻量 优 化 及 Prompt范 式 等 技 术,
+呈现出多样化发 展 趋 势。 本 节 按 照 上 述 脉 络,对 主
+流分割网络进行系统分类和剖析。
+2.1.1 单一主导范式
+  Transformer在医学 图 像 分 割 任 务 中
+[2]的 主 要
+优 势 在 于 建 模 长 程 依 赖 和 捕 捉 全 局 上 下 文。
+UNETR
+[3]最 早 采 用 视 觉 Transformer(ViT)作 为
+主编码器并结合卷积 解 码 器,实 现 3D 脑 MRI图 像
+的 端 到 端 建 模。TransBTS
+[4] 引 入 Transformer-
+Bottleneck模块,增强语义建模。MedT
+[5]通过门 控
+轴向注意力机制 设 计 双 分 支 网 络,分 别 捕 捉 局 部 和
+全局信息,增强对复杂结构的表达。UNETR+ +
+[6]
+引入体素聚焦注意力,构 建 具 有 线 性 复 杂 度 的 高 效
+Transformer,缓解 了 3D 图 像 处 理 的 高 计 算 负 担。
+总体来看,Transformer已 逐 步 发 展 为 高 效 独 立 建
+模体系,展现出良好的适应性。
+  扩 散 模 型 近 年 在 医 学 图 像 分 割 任 务 中 表 现 突
+出 ,主 要 适 用 于 边 界 模 糊 、标 签 稀 缺 场 景 。FEU-
+Diff
+[7]引 入 动 态 不 确 定 性 融 合 机 制 ,通 过 逐 步 去 噪
+对 模 糊 边 界 区 域 具 有 良 好 鲁 棒 性 。DDPM-UNet
+[8]
+融 合 去 噪 扩 散 概 率 模 型 与 U-Net架 构 用 于 3D
+MRI病 灶 区 域 建 模 ,显 著 提 升 了 小 体 积 病 变 识 别
+38
+
+=== PDF_PAGE 4 ===
+第52卷 第5期/2026年5月/计算机工程
+性 能 。 此 外 ,SemanticDiffusion
+[9]在 弱 监 督 场 景 下
+通 过 语 义 引 导 生 成 伪 标 签 ,增 强 结 构 一 致 性 ,缓 解
+高 质 量 标 签 依 赖 问 题 。 总 体 来 看 ,扩 散 模 型 正 从
+生 成 建 模 扩 展 至 多 任 务 融 合 与 弱 监 督 优 化 ,展 现
+出 巨 大 潜 力 。
+  GNN 因能够建模非欧几里得空间结构,逐渐被
+用于医学 图 像 分 割 任 务。 早 期 GCN-UNet
+[10]通 过
+构建像素或区域邻 接 图 以 增 强 空 间 关 系 建 模,适 用
+于结构复 杂 区 域 的 分 割。 随 后 GAUNet
+[11]引 入 图
+注意力机制,动态建模节点权重,在细粒度组织分割
+中表现良好。近期研究进一步拓展了其特征表达和
+结构建 模 能 力,AdaHGNN
+[12]利 用 k 近 邻 构 建 超
+边,捕捉高阶区域 关 系。 文 献 [13]提 出 了 跨 模 态 协
+作 框 架,保 持 了 多 模 态 图 像 分 割 一 致 性。
+TransGraphNet
+[14]融合了 Transformer与 GCN,实
+现了全局和局部特 征 的 有 效 结 合,显 著 改 善 了 复 杂
+结构的分割精 度。GNN 正 从 静 态 图 卷 积 向 动 态 邻
+域演化,在复杂解剖 与 模 态 异 质 任 务 中 展 现 出 更 强
+的结构建模能力。
+  综上,如图2所示,医学图像分割技术正呈现出
+多元并行的发展 格 局。 这 些 不 同 路 径 相 互 交 叉、彼
+此赋能,共同驱动着整个领域的技术边界持续拓展。
+图2 单一主导范式发展历程
+Fig 2 Evolutionofsingle-dominantparadigms
+2.1.2 混合架构
+  混合结构网络 融 合 不 同 模 型 优 势,展 现 出 较 强
+的适应性 与 鲁 棒 性。 典 型 代 表 包 括 卷 积 神 经 网 络
+(CNN)与 Transformer融合、扩 散 模 型 与 判 别 模 型
+结合等,在性能和泛化能力上表现出显著优势。
+  首 先,以 TransUNet
+[15] 为 代 表 的 CNN-
+Transformer混合架构有效增强了 U-Net这类经典
+模型的长程依赖建 模 能 力,同 时 保 留 高 分 辨 率 定 位
+能力。进 一 步 升 级 的 TransFuse
+[16]采 用 “并 行 分
+支”设计,CNN 与 Transformer分支同时提取特征,
+再通过 BiFusion模块融合两者特 征,实 现 更 高 效 的
+上下文融合和推 理 速 度。 其 次,扩 散 模 型 与 判 别 模
+型的融 合 也 呈 现 出 了 新 的 发 展 方 向。HiDiff
+[17]提
+出在传统分割器 之 上 加 入 扩 散refiner,利 用 BBDM
+(BrownianBridgeDiffusion Model)对 分 割 结 果 进
+行建模并细化。该混合式设计在多个模态数据集上
+展现了对小目标分割和跨数据集迁移场景的显著优
+势。再者,MultiResUNet与 Transformer的融合架
+48
+
+=== PDF_PAGE 5 ===
+第52卷 第5期/2026年5月/计算机工程
+构
+[18]将 卷 积 提 取 的 多 尺 度 特 征 与 Transformer的
+全局注 意 力 结 合,并 引 入 深 监 督 机 制,通 过 SAM
+(SpatialAttention Module)优 化 训 练 过 程,在 边 界
+模糊与弱对比度场 景 下,拥 有 更 优 的 分 割 精 度 与 鲁
+棒性。
+  近年来,生成式 与 序 列 建 模 范 式 在 混 合 架 构 中
+表现出显著价值。相关工作表明:将扩散refiner与
+U-Net/Transformer编 码 器 耦 合
+[19]能 显 著 提 高 跨
+数据集泛化与弱 监 督 场 景 的 鲁 棒 性。 与 此 同 时,生
+成对抗网络(GAN)在跨模态映射、纹理 与 边 界 细 化
+方面仍具优势,常用 于 生 成 伪 样 本 或 提 升 细 节 保 真
+度
+[20]。此外,基 于 状 态 空 间 模 型 (如 Mamba)的 架
+构
+[21]通过线性复杂度的长程依赖建 模,为 高 分 辨 率
+医学 影 像 的 全 局 上 下 文 捕 获 提 供 了 高 效 的 替 代
+方案。
+2.1.3 轻量化及交互范式
+  随着边缘部署 和 实 时 诊 断 需 求 的 增 长,轻 量 化
+医学图像分割网 络 成 为 重 要 研 究 方 向。 近 年 来,众
+多前沿模型通过 nmODE
+[22]技术实现医学图像分割
+模型网络 结 构 优 化 与 参 数 量 压 缩。 文 献 [23]结 合
+nmODE 与多尺度 特 征 融 合,实 现 高 分 辨 率 特 征 的
+低开销解码。文献[24]利 用 基 于 神 经 记 忆 ODE 的
+轻量 U-like网络,实现 解 码 器 瘦 身 与 精 度 保 持。 相
+关研究采用离 散 化 nmODE
+[25]以 强 化 训 练 稳 定 性,
+NM-SSM
+[26]在多器 官 分 割 中 显 著 降 低 参 数 量 并 提
+升推理效率。这些成果验证了 nmODE 在单任务分
+割下,有效平衡了模型复杂度与分割精度,为低资源
+环境临床部署提供了新方向。
+  Prompt范式通过引入交互提示与语义引导,为
+小样本与跨模态 医 学 图 像 分 割 带 来 了 突 破。SAM-
+Med
+[27]采用视 觉 嵌 入 与 交 互 提 示 实 现 多 器 官 即 插
+即用分割。MedicalSAM Adapter
+[28]在主干中嵌入
+轻量化 Adapter模块,仅 调 整 少 量 参 数 即 可 适 配 多
+模 态 任 务。 LViT-Med
+[29] 将 语 言 提 示 融 入
+Transformer结 构,引 导 目 标 区 域 识 别 与 跨 模 态
+分割。
+  近 期 研 究 显 示:不 同 参 数 高 效 微 调 (PEFT)机
+制对性能影响显著。 文 献 [30]通 过 冻 结 主 干,仅 优
+化提示层与少量附加模块,即可接近全量微调精度。
+H-SAM
+[31]引入分层 LoRA(Low-RankAdaptation)模
+块,以低秩更新实现显存节约与快速收敛。Adapter-
+based
+[28,32]展现出更 强 的 跨 任 务 迁 移 能 力。 总 体 来
+看,Tuning 具 备 最 高 精 度、LoRA 资 源 效 率 最 优、
+Adapter在跨 域 场 景 下 表 现 稳 定。Prompt范 式 正
+朝“提示驱动+PEFT 融 合”方 向 演 化,为 高 效 通 用
+的分割模型奠定基础。
+2.2 模型复杂度与计算可部署性分析
+  近年来,医学图 像 分 割 模 型 在 精 度 提 升 的 同 时
+也面临计 算 复 杂 度 与 临 床 可 部 署 性 的 挑 战。 大 型
+Transformer和扩散模型虽在特征建模与生成一致
+性上表现优异,但其参数量(>108)与计算需求使得
+在资源受限的影像工作站或移动终端部署困难。
+  为平衡精度与 效 率,研 究 者 从 结 构 压 缩 与 自 适
+应计算展开探索。 一 方 面,轻 量 化 网 络 通 过 通 道 剪
+枝、深度可分离卷积和知识蒸馏等方式,显著减少冗
+余计算;另一方面,硬件感知的动态推理策略可根据
+输入复杂度自适 应 分 配 计 算 资 源。 此 外,混 合 精 度
+训练与低比特量化 技 术 进 一 步 降 低 了 算 力 占 用,为
+实时手术导航和边缘设备部署提供了可行路径。
+2.3 当前挑战
+  医学图像的专业标注依赖领域专家,成本高昂,
+导致高质量标注样本长期稀缺。为缓解监督信号不
+足对模型训练的限 制,产 生 了 弱 监 督 和 半 监 督 学 习
+方法。图像弱监督 分 割 具 有 典 型 的 三 阶 段 策 略,包
+括伪标签生成、图辅助学习及模型训练过程。然而,
+不同网络 架 构 在 弱 标 签 环 境 下 的 鲁 棒 性 仍 差 异 明
+显,尤 其 在 小 样 本
+[33]、噪 声 标 签 条 件 下,现 有 CNN
+与 Transformer混合模型依然难以保持稳定高精度
+的分割表现,表现出一定的过拟合和泛化能力不足。
+  临床诊断常依 赖 多 模 态 影 像,不 同 模 态 间 数 据
+异构且互补性强,有效融合多源信 息
+[34]以 提 升 准 确
+性是关键难题。当前多模态融合方法(如图3所示)
+多数在 CNN、Transformer和 GNN 框 架 内 引 入 跨
+模态注意力机制、多层次特征融合策略,实现信息交
+互和语义补充,但在 保 证 临 床 实 时 性 和 鲁 棒 性 的 前
+提下,设计轻量高效 且 具 强 泛 化 能 力 的 融 合 模 型 仍
+具挑战。
+  在临床应用中,模 型 的 可 解 释 性 直 接 关 系 医 生
+的信任度和决策采纳率。当前多数深度学习模型仍
+为“黑盒”
+[35],难以明确展示预测依 据。虽 然 已 有 基
+于注意力图、梯度可 视 化 和 图 网 络 节 点 权 重 解 释 的
+方法在 Transformer和 GNN 模 型 中 有 所 探 索,但
+仍缺乏系统 化、标 准 化 解 释 框 架
+[36],使 得 解 释 结 果
+难以直 接 被 临 床 医 生 理 解 和 应 用,影 响 实 际 临 床
+推广。
+  综上,医学图像 分 割 网 络 面 临 弱 标 签 与 少 样 本
+泛化挑战、多模态数据融合复杂、模型可解释性不足
+等多方面 挑 战。 未 来 研 究 应 结 合 稳 健 的 弱 监 督 学
+习、多模态协同融合、系统的可解释框架,向更精准、
+可靠及临床友好的方向发展。
+58
+
+=== PDF_PAGE 6 ===
+第52卷 第5期/2026年5月/计算机工程
+图3 多模态融合方法流程图
+Fig 3 Flowchartofmultimodalfusionmethods
+3 常见评价指标及架构性能比较
+3.1 常见指标
+3.1.1 重叠度指标
+  DSC 是医学图像分割常用评价标准之一,衡量
+预测区域与真实区域的重叠程度。IoU 同样衡量交
+并比,但对不重 叠 区 域 惩 罚 更 强。 为 直 观 对 比 其 计
+算逻辑差异,如图 4
+[37]所 示,以 预 测 分 割 集 合 A、真
+实 分 割 集 合 B 为 例,拆 解 了 计 算 过 程。 其 中,
+DSensitivity、VPPV、RIoU、CDSC 分 别 表 示 敏 感 度
+(Sensitivity)、阳性预测值(PPV)、IoU、DSC。
+图4 重叠度指标对比示意图
+Fig 4 Schematicchartofoverlapmetriccomparison
+  DSC 在实际应用中具有一定局限性,如图 5
+[37]
+所示,包括问题表述不当、指标选择不合理以及指标
+应用不规范。
+  首 先 ,DSC 对 类 别 分 布 高 度 敏 感 ,在 类 别 不 均
+衡 的 场 景 中 容 易 产 生 显 著 偏 差 。 如 图 5(a)所 示 ,
+在 某 些 实 际 任 务 中 ,若 参 考 标 签 中 存 在 多 个 目 标
+区 域 ,但 预 测 结 果 仅 覆 盖 其 中 一 个 大 目 标 区 域 ,
+DSC 仍 可 能 得 到 较 高 分 数 ,而 全 面 识 别 多 个 区 域
+但 稍 有 偏 差 的 结 果 反 而 被 赋 予 较 低 分 数 。 因 此 ,
+仅 以 DSC 检 测 多 个 结 构 或 小 体 积 病 灶 极 易 导 致 语
+义 层 面 的 误 判 。
+  其 次,DSC 不 具 备 良 好 的 边 界 敏 感 性,无 法 准
+确 反 映 微 小 边 界 误 差 对 整 体 分 割 质 量 的 影 响。
+图5(b)展示了两 个 预 测 结 果 在 分 割 边 界 上 存 在 细
+微差异 (Prediction1 和 Prediction2 仅 1 像 素 错
+位),但 DSC 分数分别为 0.80 与 0.79,差异被 指 标
+放大。因此,仅依赖 DSC 进行跨数据集或模型优劣
+排序,可能造成过度简化甚至误导结论。
+  最 后,DSC 常 被 错 误 用 于 跨 样 本、跨 层 级 的 数
+据汇总,导 致 统 计 结 果 严 重 偏 差。 如 图 5(c)所 示,
+某医院5位患者包 含 不 同 数 量 图 像 样 本,若 直 接 对
+图像层面 DSC 值 进 行 简 单 平 均 (ØDSCimg =0.8),忽
+略患者层级的结构权重将导致结果被高样本量患者
+主导。按照患者为 单 位 加 权 汇 总,得 到 的 真 实 平 均
+值为 ØDSCpatient=0.6。在实际 多 中 心、多 病 例 任 务 评
+估中,层级结构被忽视极易造成泛化评估失真。
+  为 增 强 指 标 的 结 构 表 征 能 力,研 究 者 提 出 了
+clDice(centerlineDice)
+[38]以 衡 量 分 支 结 构 的 连 通
+性。此外,VolumeDice 是 DSC 的 体 积 扩 展 形 式,
+用于3D 医 学 图 像 中 空 间 结 构 的 整 体 分 割 质 量 评
+估。同时,Tversky系数(TverskyIndex)作 为 DSC
+和IoU 的 推 广 形 式,引 入 可 调 权 重,在 类 别 不 平 衡
+或小目标分割场景下应用广泛。
+3.1.2 距离度量指标
+  豪斯多夫距离(HD)衡 量 预 测 边 界 与 真 实 边 界
+之间的最大距离,适合评估最坏情况边界偏移(安全
+边界),其95% 版 本 HD95 可 缓 解 极 端 点 对 整 体 评
+估的影响。
+  平均对称表 面 距 离(ASSD)计 算 两 个 边 界 之 间
+所有点的平均距离,提供更平滑的边界误差评估,常
+与 HD 联合使用以兼顾平均性能与最坏性能。
+  HD 及 HD95常被用作主流解剖结构边界清晰
+度和空间定位精 度 的 边 界 性 能 评 价 指 标。 然 而,其
+在统计稳定性方面存在误用与过度依赖问题。
+  首 先,HD95 并 非 真 正 鲁 棒,易 受 局 部 误 差 影
+响,即便整体 重 叠 度 良 好 (DSC 高),当 分 割 存 在 集
+中漂移或小范围 断 裂 时,其 值 也 会 显 著 上 升。 例 如
+肺结节分割 中 两 模 型 DSC 相 近 (约 0.88),因 边 缘
+微 小 跳 跃 ,HD95相 差3倍 以 上 ,在 小 目 标 或 复 杂 边
+68
+
+=== PDF_PAGE 7 ===
+第52卷 第5期/2026年5月/计算机工程
+图5 DSC 常见误用问题示意图
+Fig 5 SchematicchartofDSCcommonmisuseissues
+界区域问 题 更 明 显。 其 次,HD95 难 以 解 释 语 义 问
+题,仅反映单点最大误差近似,无法体现整体边界结
+构完整性或拓扑连 续 性,而 临 床 更 关 注 是 否 沿 解 剖
+边界正确 贴 合,而 非 仅 “最 坏 距 离”。ASSD 则 能 更
+均衡度量边界误差,适合评估整体贴合质量。此外,
+边界指标应结合任务解读,在小目标、边界模糊情形
+下,HD95不宜 作 为 唯 一 或 首 要 指 标。 指 标 解 释 需
+回归目标本身,而非单纯数值对比。
+  为克服 HD95在小目标和局部错位中的波动问
+题,文献[39]提 出 BoundaryF1Score 以 及 局 部 化
+HD(Localized HD),更 关 注 边 界 一 致 性 与 连 接 性,
+贴近临床精准切边的需求评估。
+3.1.3 体积误差指标
+  相对体 积 误 差 (RVE)通 过 计 算 预 测 体 积 与 真
+实体积的 相 对 差 异,评 估 分 割 结 果 的 系 统 性 偏 倚。
+此外,还可结合 VolumeDice或 绝 对 体 积 差(AVD)
+用于多尺度器官或 病 灶 体 积 一 致 性 验 证,从 而 更 全
+面地表征全局定量性能与统计稳定性。
+3.1.4 不平衡敏感性指标
+  Fβ-score通过引入权重参数调整召回率与精确
+率的重要 性,以 更 关 注 小 样 本 类 别。BA(Balanced
+Accuracy)在多类别 场 景 下 可 防 止 多 数 类 主 导 总 体
+78
+
+=== PDF_PAGE 8 ===
+第52卷 第5期/2026年5月/计算机工程
+结果。MCC(MatthewsCorrelationCoefficient)和
+Cohen'sKappa通过同时考 虑 真 阳 性、真 阴 性、假 阳
+性、假 阴 性,更 适 合 类 别 比 例 差 异 显 著 的 任 务。 此
+外,Precision-Recall曲 线 下 的 面 积 (AUPRC)相 较
+ROC-AUC 更能反映正负样本比例失衡下的分类性
+能。在小病灶检测中应优先报告 Fβ-score、MCC 或
+AUPRC,而 在 多 器 官 分 割 中 则 应 兼 顾 DSC 与 BA,
+以进行更全面的评估。
+  如表1所示,从重叠度、边界精度、体积一致性、
+结构一致性4个 维 度,汇 总 了 代 表 指 标 及 用 途。 其
+中:TopologyError指的 是 分 割 结 果 在 结 构 连 接 性
+或 形 状 完 整 性 上 与 真 实 标 签 存 在 不 一 致;熵
+(Entropy)衡量预测结果不确定性或信息复杂度,适
+用于不确定性建 模;期 望 校 准 误 差 (ECE)评 估 模 型
+置信度与实际准确 率 的 偏 差,有 助 于 提 升 临 床 可 解
+释性和安全性;UncertaintyDice是将预测不确定性
+引入 DSC 评估,综合衡量分割准确性与模型输出不
+确定性之间的关系。
+表1 常见指标分类
+Table1 Commonmetriccategories
+MetricDimension RepresentativeMetric TypicalUseCase
+Overlap Dice,IoU,TverskyIndex Basicpredictionregionaccuracy
+BoundaryAccuracy HD95,ASSD,BoundaryF1Score Evaluatesboundaryerrorsinsensitivestructures
+VolumeConsistency VolumeDice,RVE Assesseslesionvolume
+StructuralConsistency clDice,TopologyError Ensuresconnectivityandtopology (e.g.,ventricles,bloodvessels)
+Uncertainty Entropy,ECE,UncertaintyDice Reflectsmodeluncertaintyregardinginput/parameters
+ClassBalance
+Sensitivity,Specificity,BA,
+Fβ-score,G-mean,AUPRC Detectionandrecognitioninclass-imbalancedorfew-shotscenarios
+3.2 性能比较
+  本节系统梳理多种模型在多类医学影像数据集上
+DSC、HD95指标的表现,如表2、表3所示,其中,空白
+表示原文献中未展示,“—”表示无相关测试结果。
+表2 模型-数据集-DSC 表
+Table2 Model—dataset—DSCtable %
+Model BTCV ACDC LiTS BraTS KiTS AMOS Synapse
+A3DS-SegResNet
+[40] 80.69 90.69 79.28 90.79 81.11 87.27
+A3DS-SwinUNETR
+[40] 76.54 82.68 68.59 89.90 52.82 85.05
+CoTr
+[40] 81.95 90.56 79.10 90.73 84.59 88.02
+MedNeXt-L-k3
+[40] 84.70 92.65 82.14 91.35 88.25 89.62
+MedNeXt-L-k5
+[40] 85.04 92.62 82.34 91.50 87.74 89.73
+MISSFormer
+[41] 87.90 81.96
+nnFormer
+[40-41] 80.86 92.40 77.40 90.22 75.85 81.55 86.57
+nnU-Net
+[40] 83.08 91.54 80.09 91.24 86.04 88.64
+STU-Net-B
+[40] 83.05 91.30 79.19 90.85 86.32 88.46
+STU-Net-L
+[40] 83.36 91.31 80.31 91.26 85.84 89.34
+STU-Net-S
+[40] 82.92 91.04 78.50 90.55 84.93 88.08
+Swin-UNet
+[41] 90.00 79.13
+Swin-UNETR
+[40-41] 78.89 91.29 76.50 90.68 81.27 83.81 83.48
+TransBTS
+[41,42] 81.31 90.66 87.03 86.52
+TransUNet
+[3,41] 83.80 89.71 77.49
+U-Mamba-Bot
+[40] 83.51 91.79 80.40 91.26 86.22 89.13
+U-Mamba-Enc
+[40] 82.41 91.22 80.27 90.91 86.34 88.38
+U-Net
+[41] 76.85
+UNETR
+[41] 66.06 85.29 81.20 84.10 81.98 78.35
+88
+
+=== PDF_PAGE 9 ===
+第52卷 第5期/2026年5月/计算机工程
+表3 模型-数据集-HD95表
+Table3 Model—dataset—HD95table %
+Model MSD-Spleen MSD-Brain-WT MSD-Brain-ET MSD-Brain-TC MSD-Brain-All Synapse
+AttUNet
+[3] 4.09 9.00 10.45 10.46 9.97
+CoTrw/oCNN[3] 4.75 11.49 9.59 12.58 11.22
+CoTr
+[3] 3.86 9.20 9.45 10.45 9.70
+MISSFormer
+[41] 18.20
+nnFormer
+[41] 10.63
+SETR-MLA
+[3] 4.09 15.50 10.24 14.72 13.49
+SETR-NUP
+[3] 4.12 14.42 11.72 15.19 13.78
+SETR-PUP
+[3] 4.11 15.25 11.76 15.02 14.01
+Swin-UNet
+[41] 21.55
+Swin-UNETR
+[41] 10.55
+TransBTS
+[3] — 10.03 9.97 8.95 9.65
+TransUNet
+[3,41] 4.03 14.03 10.42 14.50 12.98 31.69
+U-Net
+[3,41] 4.09 9.21 11.12 10.24 10.19 —
+UNETR
+[3,41] 1.33 8.27 9.35 8.85 8.82 18.59
+UNETR++
+[41] 7.53
+3.3 适应性分析
+  表4统计了模型在数据集中的综合表现。数据
+统计与归一化方法:缺失值填充,使用该列同行均值
+填充;Min-Max 归 一 化,Norm (CDSC )= (CDSC -
+52.82)/(92.65-52.82);Norm(D HD95)=(D HD95-
+1.33)/(31.69-1.33);加 权 综 合,SScore =0.6×
+Norm(CDSC)+0.4× (1-Norm(D HD95))。 其 中,
+D HD95 表示 HD95。
+表4 模型综合得分
+Table4 Modelcomprehensivescore
+Model
+Comprehensive
+Score
+Norm(CDSC) 1-Norm(DHD95)
+MedNeXt-L-k5 0.874 0.905 0.831
+MedNeXt-L-k3 0.865 0.889 0.831
+U-Mamba-Bot 0.860 0.861 0.859
+STU-Net-L 0.859 0.867 0.847
+CoTr 0.857 0.861 0.851
+nnU-Net 0.855 0.848 0.863
+STU-Net-B 0.854 0.845 0.863
+TransUNet 0.853 0.851 0.855
+U-Mamba-Enc 0.852 0.838 0.867
+STU-Net-S 0.851 0.840 0.863
+A3DS-SegResNet 0.849 0.832 0.875
+TransBTS 0.848 0.826 0.887
+nnFormer 0.847 0.830 0.875
+Swin-UNETR 0.844 0.809 0.895
+A3DS-SwinUNETR 0.834 0.778 0.907
+UNETR 0.825 0.661 0.918
+  Transformer架构(如 UNETR、Swin-UNet)在
+3D 脑肿瘤分割(BraTS)中 表 现 优 异,凭 借 自 注 意 力
+捕捉区域关系,DSC 和 HD95 表 现 优 于 传 统 CNN。
+而 CNN 类 模 型 (如 U-Net、nnU-Net)在 小 目 标、边
+界模糊任务(如ISIC 病变)中占优,能更好地提取局
+部细节,鲁棒性 更 高。 扩 散 模 型 在 边 界 精 度 方 面 表
+现出色,ASSD 通常低于 2.0 mm,在 复 杂 区 域 重 建
+中效果优于标准 CNN。
+  混合结构结合 CNN 局部感知与 Transformer/
+GNN 全 局 建 模,大 尺 度 结 构 分 割 泛 化 性 强。
+Prompt范 式 模 型 下 的 提 示 引 导 模 型 (如 SAM-
+Med)具备零样本/少样本推理能力,适用于跨模态、
+低标注或高 变 异 性 场 景,虽 不 及 定 制 模 型,但 其 在
+2D 中任务迁移灵活性高,人机交互潜力大。
+  然而,需注意模型性能受多种实验条件制约,包
+括损失函数设计、训 练 样 本 数 量、超 参 数 调 优、数 据
+预处理方式、输 入 分 辨 率 等。 不 同 研 究 中 指 标 计 算
+方法(如是否包含空 白 切 片、边 界 粗 糙 度 处 理)也 可
+能影响最终评估 结 果。 因 此,具 体 应 用 中 应 避 免 对
+单一指标孤立解读,需结合多维评价与任务场景(如
+器官大小、模态复杂度)进行综合判断。
+4 基于子任务的指标误用分析与选择
+4.1 指标误用分析
+  在医学图像分 割 任 务 的 评 估 中,通 用 指 标 因 定
+义简单、计算便捷已成为主流评估工具。然而,在任
+98
+
+=== PDF_PAGE 10 ===
+第52卷 第5期/2026年5月/计算机工程
+务结构和语义差异 显 著 的 背 景 下,直 接 以 其 进 行 跨
+任务模型比较可能导致误解和错误结论
+[38,43-44]。本
+节将从任务场景复杂度、判断标准模糊度、目标大小
+与形态难度方面展开分析。
+  医学图像分割任务结构异质性强。多器官任务
+目标往往形状规则、边界明确,而病灶或血管类任务
+则涉及小目标、不 规 则 形 状、分 支 拓 扑 等 复 杂 结 构,
+这类任务中常规 DSC 或IoU 难 以 敏 感 地 捕 捉 性 能
+差异。例如ISIC 数 据 集 中 的 病 灶 分 割 结 果 即 使 边
+界明显错位
+[45],仍 可 能 获 得 高 DSC,掩 盖 实 际 语 义
+误差。相比之 下,拓 扑 敏 感 指 标 (如 clDice)对 血 管
+等分支结构的预测 解 释 力 更 高,提 示 指 标 应 依 据 任
+务结构进行调整。
+  不同任务对模 型 能 力 要 求 不 同,单 一 指 标 提 升
+并 不 代 表 所 有 任 务 的 泛 化 能 力 增 强。 例 如
+Transformer架构 在 BraTS 脑 肿 瘤 任 务 中 DSC 显
+著提升(3%~5%),但在ISIC 病灶任务中提升不足
+1%。这并非模型性能下降,而是肿瘤任务对长程依
+赖建模的 需 求 更 高,Transformer的 全 局 建 模 能 力
+在该语境下更具优 势,而 皮 肤 病 变 任 务 更 依 赖 边 界
+细节与局部感受野。这种误读风险在单一指标报告
+中尤为突出,可能造 成 “表 面 性 能 一 致,实 质 机 制 不
+同”的认知偏差。
+  指标选择需匹配任务特性、临床目标,否则数值
+优也未必有效。小目标分割中 DSC 易不稳定,推荐
+BoundaryF1Score补 充 边 界 质 量。 多 类 别 任 务 总
+体 DSC 易 被 主 类 主 导,应 使 用 MacroDice(各 类 别
+DSC均值,不考虑类别样本量,适合类别不均衡情况)
+或 Per-classIoU(单 类 别 交 叉 比,反 映 某 个 类 别 预 测
+区域与真实区域的重叠程度)避免类别不均衡产生掩
+盖效应。此 外,拓 扑 任 务 应 引 入 clDice/Connectivity
+Error
+[46]以反映断裂、粘连等预测缺陷。
+  综上,应构建任务结构感知的指标体系:任务结
+构先行,根据目标 大 小、拓 扑 特 征、语 义 结 构 分 析 需
+求;多维度组合,使 用 DSC/IoU 捕 捉 面 积 的 同 时 引
+入clDice、ASSD、BoundaryF1Score等 评 估 边 界 和
+结构;分类 评 估 报 告,对 多 类 别 任 务 采 用 per-class
+分析,避免主类误导;跨任务对比引入相对增益或归
+一化指标,辅助 对 模 型 迁 移 能 力 的 公 平 评 估。 这 种
+任务结构-指标匹 配 策 略 有 助 于 提 升 指 标 解 释 力 与
+评价外推性。
+4.2 基于子任务的指标选择
+  医学图像分割 任 务 种 类 繁 多,广 泛 覆 盖 多 个 临
+床需求。由于目标 结 构 在 解 剖 形 态、数 据 属 性 与 临
+床价值方面存在显 著 差 异,难 以 全 面 地 衡 量 模 型 性
+能。因 此 建 立 任 务 敏 感 型 的 评 价 体 系 显 得 尤 为
+关键。
+4.2.1 器官分割
+  器官分割任 务 聚 焦 于 肝 脏、肺、前 列 腺、胰 腺 等
+大体积、边界清 晰 的 解 剖 结 构。 这 类 结 构 通 常 解 剖
+稳定、组织差异明显,对模型的基本特征提取和结构
+泛化能力要求较 高。 其 目 标 区 域 体 积 较 大、边 界 相
+对规整、解剖结构标准化程度高,更适合评估模型整
+体分割性能,尤其是体素重叠度和几何一致性,强调
+结构整体的精准恢 复 与 体 积 保 持,而 非 边 界 模 糊 或
+微小器 官 所 需 的 精 细 建 模,广 泛 使 用 的 指 标 包 括
+DSC、HD95/ASSD、RVE。
+  在器官分割场 景 中,不 同 网 络 性 能 表 现 有 明 显
+差异。CNN 模型凭 借 强 大 的 局 部 建 模 与 上 下 文 融
+合能力,在 器 官 结 构 中 仍 为 主 流 选 择。nnUNet通
+过自适应超参数配 置,已 成 为 多 器 官 公 开 基 准 的 性
+能上限参考。Transformer架 构 进 一 步 增 强 了 长 程
+上下文建模能力,在 处 理 形 变 较 大 的 器 官 边 界 时 结
+构一致性表现更优。 混 合 模 型 兼 顾 CNN 细 粒 度 提
+取与 Transformer全 局 语 义 表 达,近 年 来 取 得 领 先
+效果。
+4.2.2 肿瘤与病灶分割
+  肿瘤与病灶分 割 聚 焦 于 识 别 形 态 多 变、边 界 模
+糊、异质性显著的 异 常 区 域,但 由 于 其 结 构 小、边 界
+模糊、类别极度不平衡,对模型的细粒度建模能力要
+求更高。病灶区域常表现出如下特性:体积小、形态
+复杂、边界不规则,与正常组织之间的灰度分布差异
+微弱;肿瘤内部异质性强,存在坏死区、增强区、实性
+区等不同生物学亚区;类不平衡严重,小病灶仅占图
+像总像素极少比例,常导致训练偏向背景。
+  为解决上述挑战,针对性评价指标包含:Tversky
+Index/FTL (Focal Tversky Loss,基 于 Tversky
+Loss
+[47]引入 focal调 制 因 子 γ 的 改 进 损 失)、DSC/
+FocalDice(标准 DSC加幂次γ>1的focal因子,使损
+失在易分割区域权重低、难分割区域权重高,提升网
+络对 难 样 本 的 关 注 度)、HD95、Entropy/Uncertainty-
+awareDice(将模型预测的不确定性因素融入 DSC 相
+关计算,常以损失函数形式体现)。
+  肿瘤分割任务具有强边界建模、小目标感知、类
+别不平衡鲁棒 性 等 挑 战。CNN 模 型 在 多 尺 度 融 合
+与跳跃连接设计上 持 续 优 化,但 对 微 小 病 灶 或 形 变
+较大的区域仍 有 局 限。Transformer通 过 建 模 长 程
+依赖提升对异质结 构 的 全 局 理 解,尤 其 在 复 杂 脑 肿
+瘤任务中检测 能 力 优 于 CNN。 扩 散 模 型 用 于 复 杂
+结构生成式建模,处 理 不 确 定 边 界。 混 合 结 构 融 合
+09
+
+=== PDF_PAGE 11 ===
+第52卷 第5期/2026年5月/计算机工程
+CNN 局部细节捕捉与 Transformer语义表达,取得
+了较好平衡。文献[48]提出基于注意力的多模态神
+经胶质瘤分割,该分 割 具 有 针 对 小 强 度 差 异 的 多 注
+意力层,以关注小强度差异神经胶质瘤区域。
+4.2.3 脑组织与皮层结构分割
+  脑组织与皮层 结 构 分 割 旨 在 精 确 划 分 灰 质、白
+质、脑室及大脑皮 层 等 区 域,为 脑 图 谱 构 建、神 经 发
+育评估、神经疾 病 辅 助 诊 断 等 提 供 基 础。 因 涉 及 大
+量细粒度区域,需格 外 关 注 结 构 一 致 性 与 空 间 连 通
+性。主要挑战包括:拓扑结构高度复杂,皮层折叠导
+致显著的边 界 不 规 则 性 和 3D 空 间 复 杂 度;解 剖 结
+构对称性强且个体差异显著,要求高泛化能力;部分
+区域体积极小,训 练 对 标 签 误 差 高 度 敏 感。 常 用 指
+标为 DSC、clDice/TopoLoss
+[49]、ASSD/HD。
+  针对这些特点,逐 步 发 展 出 多 种 适 配 网 络 结 构
+和优化策 略。UNet及 变 体 因 多 尺 度 融 合 机 制,能
+对 复 杂 区 域 实 现 鲁 棒 建 模,被 广 泛 采 用。
+Transformer通过长 距 离 建 模 能 力,有 效 捕 捉 折 叠
+结构的远程依赖关系,提升了解剖一致性。GNN 将
+脑区域显式建模为 图 结 构,在 保 持 区 域 拓 扑 关 系 方
+面显示出优越性;同时,引入拓扑保持损失函数在训
+练中
+[50]显著提 高 了 模 型 对 复 杂 皮 层 区 域 的 结 构 保
+持能力。
+4.2.4 血管分割
+  血管分割任务在视网膜图像分析、脑血管结构重
+建、心血管疾病辅助诊断中意义重大,目标是精确分
+割出细长、分支繁多、拓扑复杂的血管结构,对连通性
+保 持 能 力、小 目 标 敏 感 性 及 边 界 连 续 性 建 模 要 求 极
+高。血管结 构 普 遍 存 在 以 下 难 点
+[51]:目 标 细 小 且 分
+支密集,传统卷积核易忽略细节导致小血管断裂或遗
+漏;血管连通性与拓扑结构是诊断关键,若出现分割
+断裂将严重影响临床判断;光照变化、成像模糊及病
+理区 域 伪 影 常 造 成 边 界 模 糊。常 用 评 价 指 标 包 含
+clDice、Precision/Recall、HD95/BoundaryF1Score。
+  CNN 早 期 多 采 用 U-Net变 体,增 强 残 差 连 接
+和多尺度特征融合 捕 捉 微 小 管 道,但 在 高 噪 声 环 境
+下易发生断裂。拓扑感知网络结合拓扑保真度的损
+失函数 Topology-preservingLoss,显著减少预测断
+裂
+[52]。GNN 将 血 管 视 为 图,利 用 节 点 (支 点 )、边
+(血管段)显式建模,采 用 图 注 意 力 机 制 增 强 分 支 连
+通性,但 推 理 复 杂。Transformer利 用 自 注 意 力 机
+制建模长程依赖,在 血 管 分 叉 和 交 叉 区 域 连 通 性 修
+复能 力 更 好。混 合 模 型 结 合 CNN、Transformer与
+扩散模型补全断裂 片 段,在 噪 声 场 景 中 恢 复 血 管 连
+续性,成为新兴趋势。
+4.2.5 多器官分割
+  多 器 官 分 割 任 务 多 见 于 腹 部 CT/MRI等 高 复
+杂解剖场景,需同时识别多个不同尺度、形态和纹理
+特征的器官结构,常 作 为 医 学 图 像 分 割 算 法 通 用 性
+的测试基准,在器 官 建 模、术 前 规 划、图 谱 配 准 等 临
+床任务中具有重 要 的 应 用 价 值。 其 挑 战 在 于:多 类
+别异质性强,器官 形 状、大 小、灰 度 值 等 方 面 差 异 显
+著,难以共享特征;类 别 不 平 衡,大 器 官 占 据 主 导 区
+域,小器官精度易 被 忽 略;解 剖 上 下 文 复 杂,需 捕 捉
+器官间的相对位置与结构约束。
+  常用评价指标 包 括:MeanDice(Dice平 均 值)/
+Macro-averagedIoU(每类单 独 计 算IoU,再 对 所 有
+类 别 取 算 术 平 均 )、HD、Per-class Sensitivity/
+Specificity
+[53](每类器官分 别 评 估 识 别 能 力,检 测 类
+别间性能差 异)、Class-wise Metrics(按 类 分 别 计 算
+的评价指标再汇总,展现每个类别的性能差异)。
+  UNet、VNet等 扩 展 至 多 通 道 输 出 以 支 持 多 类
+预测,但在类别间特 征 共 享 和 不 平 衡 处 理 上 存 在 瓶
+颈。nnU-Net
+[54]自 动 调 参 优 化 预 处 理 与 模 型 配 置
+成为 任 务 基 线。TransBTS
+[55]、SegMamba[21,56]等
+引入状态空间模型 SSM,提升对器官间 空 间 关 系 与
+上下文的建模能力。 同 时,文 献 [57]显 式 建 模 解 剖
+结构约束,提升小器官检测能力。
+4.2.6 交互式与弱监督分割
+  交互式与弱监督分割旨在降低高质量像素级标
+签依赖,结合用户提示(如点击、框选)、弱标签(如图
+像级标签、粗略掩码)或 预 训 练 模 型 提 升 性 能,适 用
+于少样本病灶分 割、跨 中 心 部 署 等。 任 务 特 征 为 不
+确定性高,输入提 示 变 化、标 签 不 完 整,易 导 致 输 出
+结果不稳定。边界 模 糊,部 分 提 示 缺 乏 明 确 边 界 信
+息,难以捕捉细节。考虑人机交互,不仅要评估分割
+质量,还需衡量交互效率与响应准确度。
+  常 用 评 价 指 标 包 括 Uncertainty-aware Dice/
+Entropy Map(评 估 模 型 在 边 界 模 糊 区 的 信 心 表 达
+能力)、ClicksvsAccuracy(度 量 达 到 目 标 精 度 所 需
+用户提示 数,是 交 互 效 率 的 核 心 指 标)、Click-based
+Accuracy(以用户点 击 为 提 示 时 模 型 输 出 的 分 割 准
+确率,衡量提示效率与模型响应能力)和 ECE。
+  SAM-Med
+[58]迁移 SAM,微调适配灰阶 结 构 与
+解剖约束。CLIP-MedSeg
+[59]引 导 多 模 态 分 割,支 持
+语言提示或弱标签驱动。MedClick
+[60]支持 点 选、框
+选等交互方式,引入点到边界距离编码,有效提升多
+轮交互效 率 与 精 度。FastSAM-Med
+[61]构 建 支 持 多
+模态提示 交 互 范 式,兼 顾 推 理 速 度 与 响 应 灵 活 性。
+文献[62]使用注意 力 增 强 与 伪 标 签 挖 掘 策 略,显 著
+19
+
+=== PDF_PAGE 12 ===
+第52卷 第5期/2026年5月/计算机工程
+提升了病灶弱标签的定位精度。
+  如表5所示,从分割任务出发,梳理特征并针对
+性推荐评估指标,以 便 更 清 晰 地 结 合 不 同 医 学 图 像
+分割任务选择适配指标。
+表5 分割任务-特征-指标表
+Table5 Segmentationtask—feature—metrictable
+SegmentationTask FeatureKeywords Recommended Metrics
+OrganSegmentation Largevolume,clearstructure Dice,HD95,RVE
+Tumor/LesionSegmentation Smalltarget,blurredboundary TverskyIndex,HD95,Entropy,FocalDice
+BrainStructureSegmentation Complextopology,multiplebrainregions Dice,clDice,TopoLoss,ASSD
+VascularSegmentation Slenderbranches,criticalconnectivity clDice,Precision/Recall,BoundaryF1Score
+Multi-OrganSegmentation Multipleclasses,largestructuraldifferences MeanDice,Class-wiseMetrics,HD
+Interactive/WeaklySupervisedSegmentation Uncertainty,interactiveoptimization Entropy,ECE,Click-basedAccuracy
+5 结束语
+  医学图像分割研究正从以结构创新为核心的模
+型堆叠优化,逐步迈向网络架构、任务属性与评价体
+系三者协同发展的阶段。当前研究在任务范式上呈
+现“细化-融合”并行演进,分割对象从宏观器官拓展
+至微观结构
+[63],交 互 式 分 割、弱 监 督 与 跨 模 态 融 合
+不断强化模型的语 义 理 解 与 人 机 协 作 能 力;在 模 型
+架构上,各类结构在表达能力、泛化性能与部署效率
+间持续权衡,轻 量 化 与 动 态 计 算 成 为 提 升 3D 影 像
+处理效率的重要方 向,而 提 示 驱 动 的 分 割 模 型 虽 具
+潜力,但在标签不足 与 模 态 偏 移 下 仍 面 临 适 应 性 限
+制;在评价体系方面,传统指标在不同任务间的可比
+性与解释性存在差异,表面距离、拓扑保持性与不确
+定性评估等维度的 重 要 性 逐 渐 凸 显,亟 需 构 建 面 向
+任务特性的指标 选 择 框 架。 总 体 来 看,未 来 的 发 展
+应在高效灵活的网络设计与科学合理的评价体系之
+间形成协同,通过模型压缩
+[64]、硬 件 感 知 优 化、多 指
+标组合评估等策略促进算法在临床中的可部署性与
+可靠性,从而加速医 学 图 像 分 割 技 术 从 实 验 室 性 能
+向实际医疗价值的落地转化。
+参考文献
+ 1  ANTONELLI M REINKE A BAKAS S et al The
+medical segmentation decathlon  J   Nature
+Communications 2022 13 1  4128 
+ 2  HE K L GAN C LIZ Y etal Transformersin medical
+imageanalysis J  IntelligentMedicine 2023 3 1  59-78 
+ 3  HATAMIZADEH A TANG YC NATH V etal UNETR 
+Transformers for 3D medical image segmentation C ∥
+ProceedingsoftheIEEE CVF WinterConferenceonApplications
+ofComputerVision WACV  WashingtonD C  USA IEEE
+Press 2022 1748-1758 
+ 4  WANG L HU P SHEN C etal TransBTS multimodal
+brain tumor segmentation using Transformer EB OL  
+ 2025-08-11  https ∥arxiv org abs 2103 04430 
+ 5  VALANARASU J M J OZA P HACIHALILOGLU I 
+etal MedicalTransformer gatedaxial-attentionformedical
+imagesegmentation C ∥Proceedingsofthe MedicalImage
+Computing and Computer Assisted Intervention Berlin 
+Germany SpringerInternationalPublishing 2021 36-46 
+ 6  NTANZIS VIRIRIS UNETR + + with voxel-focused
+attention efficient 3D medicalimage segmentation with
+linear-complexityTransformers J  AppliedSciences 2025 
+15 20  11034 
+ 7  GENG S JIANG S HOU T etal FEU-Diff adiffusion
+modelwithfuzzyevidence-drivendynamicuncertaintyfusion
+formedicalimagesegmentation J OL  IEEE Transactions
+on NeuralNetworksand LearningSystems 1-16 2025-08-
+11  https ∥ieeexplore ieee org document 11165205 
+ 8  GAO M YANG Y WANG H et al DDPM-UNet 
+denoisingdiffusionprobabilisticmodelsfor3D medicalimage
+segmentation EB OL   2025-08-11  https ∥arxiv org 
+abs 2211 03364 
+ 9  ZHENG H ZHANG Y ZHANG X etal SemanticDiffusion
+for weakly supervised medical image segmentation C ∥
+Proceedingsofthe AAAIConferenceon ArtificialIntelligence 
+PaloAlto USA AAAIPress 2023 1-10 
+ 10  GAO Y GLOCKER B RUECKERT D Graph U-Netfor
+braincorticalparcellation C ∥Proceedingsof MICCAI􀆶19 
+WashingtonD C  USA IEEEPress 2019 1-8 
+ 11  ZHU M XIAO Y LIUJ etal GraphattentionU-Netfor
+braintumorsegmentation J  Neurocomputing 2021 452 
+360-372 
+ 12  CHAISR JAIN R K MO S C etal A noveladaptive
+hypergraph neural network for enhancing medicalimage
+segmentation  C ∥ Proceedings of the International
+Conference on Medical Image Computing and Computer
+AssistedIntervention Berlin Germany Springer 2024 
+23-33 
+ 13  ZHOU X G SUN Y Y DENG M etal Robustsemi-
+supervised multimodalmedicalimagesegmentationviacross
+modalitycollaboration C ∥ProceedingsoftheInternational
+Conference on Medical Image Computing and Computer
+AssistedIntervention Berlin Germany Springer 2024 
+57-67 
+ 14  ZHANGJ YEZY CHEN M Y etal TransGraphNet a
+novelnetwork for medicalimage segmentation based on
+Transformerand graphconvolution J  BiomedicalSignal
+ProcessingandControl 2025 104 107510 
+ 15  CHEN J N MEI J R LI X H et al TransUNet 
+Rethinkingthe U-Netarchitecturedesignfor medicalimage
+segmentationthroughthelensofTransformers J  Medical
+ImageAnalysis 2024 97 103280 
+ 16  ZHANG Y D LIU H Y HU Q TransFuse fusing
+TransformersandCNNsfor medicalimagesegmentation C ∥
+Proceedingsofthe MedicalImage Computing and Computer
+AssistedIntervention Berlin Germany Springer 2021 14-24 
+ 17  CHEN T WANG C H CHEN Z H etal HiDiff hybrid
+29
+
+=== PDF_PAGE 13 ===
+第52卷 第5期/2026年5月/计算机工程
+diffusionframeworkfor medicalimagesegmentation EB 
+OL   2025-08-11  https ∥ hub baai ac cn paper 
+ace71b6a-ccbc-42f1-8fca-ebeb9da0cdcb 
+ 18  AL QURRIA ALMEKKAWY M Hybrid MultiResUNet
+with Transformers for medicalimage segmentation J  
+Biomedical Signal Processing and Control 2025 110 
+108056 
+ 19  XINGZ H WAN L FU H Z etal Diff-UNet adiffusion
+embeddednetworkforrobust3D medicalimagesegmentation
+ J  MedicalImageAnalysis 2025 105 103654 
+ 20  NAGARE M BUZZARD G T BOUMAN C A Texture
+matchingGAN forCTimageenhancement J  Journalof
+MathematicalImagingandVision 2025 67 4  45 
+ 21  XINGZ H YE T YANG Y J etal SegMamba long-
+range sequential modeling mamba for 3D medicalimage
+segmentation C ∥ Proceedings of the Medical Image
+Computing and Computer Assisted Intervention Berlin 
+Germany Springer 2024 578-588 
+ 22  LUO H Y HE T YIZ AstablemappingofnmODE J  
+ArtificialIntelligenceReview 2024 57 5  120 
+ 23  NIU H ZHOU Y X YAN X H etal Ontheapplications
+ofneuralordinary differentialequationsin medicalimage
+analysis J  ArtificialIntelligenceReview 2024 57 9  236 
+ 24  HE Q YAO X WUJ etal AlightweightU-likenetwork
+utilizing neural memory ordinary differentialequationsfor
+slimmingthedecoder C ∥ProceedingsofIJCAI􀆶24 Vienna 
+Austria International Joint Conferences on Artificial
+IntelligenceOrganization 2024 821-829 
+ 25  XU X LUO H YIZ etal Aforwardlearningalgorithm
+for neural memory ordinary differential equations J  
+Internation Journal of Neural Systems 2024 34 9  
+2450048 
+ 26  WANGZ GU J ZHOU W etal Neural memorystate
+spacemodelsformedicalimagesegmentation J  Internation
+JournalofNeuralSystems 2025 35 1  2450068 
+ 27  MA J ZHANG Y GU S et al Segment anythingin
+medical images with prompt-enhanced vision foundation
+model J  Nature MachineIntelligence 2023 5 9  1135-
+1146 
+ 28  WUJD WANG Z Y HONG M X etal MedicalSAM
+Adapter adaptingsegmentanythingmodelformedicalimage
+segmentation J  MedicalImage Analysis 2025 102 
+103547 
+ 29  LIZH LIYX LIQD etal LViT languagemeetsvision
+Transformerin medical image segmentation J  IEEE
+Transactionson MedicalImaging 2024 43 1  96-107 
+ 30  FISCHER M BARTLER A YANG B Prompttuningfor
+parameter-efficientmedicalimagesegmentation J  Medical
+ImageAnalysis 2024 91 103024 
+ 31  CHENGZ H WEIQ Y ZHU H R etal Unleashingthe
+potentialof SAM for medical adaptation via hierarchical
+decoding C ∥ProceedingsoftheIEEE CVF Conferenceon
+Computer Vision and Pattern Recognition  CVPR  
+WashingtonD C  USA IEEEPress 2024 3511-3522 
+ 32  赵欣 李森 李智生 基于 CNN 和 Transformer并行编码 的
+腹部多器 官 图 像 分 割 J  吉 林 大 学 学 报 理 学 版  2024 
+62 5  1145-1154 
+   ZHAO X LI S LI Z S Abdominal multi-organimage
+segmentation based on parallel coding of CNN and
+Transformer J  Journal of Jilin University  Science
+Edition  2024 62 5  1145-1154  inChinese 
+ 33  BAI W CHEN C TARRONI G etal Semi-supervised
+learningforcardiac MRIsegmentation viaanatomicaledge
+andshapeconstraints Z  2022 
+ 34  赖小波 许茂盛 徐小媚 多模 态 MR 图 像 和 多 特 征 融 合 的
+胶质母细胞瘤自动分割 J  计算机 辅 助 设 计 与 图 形 学 学 报 
+2019 31 3  421-430 
+   LAIXB XU M S XU X M Automaticsegmentationfor
+glioblastoma multiformeusing multimodal MRimagesand
+multiplefeatures J  JournalofComputer-Aided Design &
+ComputerGraphics 2019 31 3  421-430  inChinese 
+ 35  PATRÍCIO C NEVESJC TEIXEIRA L F Explainable
+deep learning methodsin medicalimage classification a
+survey J  ACM ComputingSurveys 2024 56 4  1-41 
+ 36  TJOA E GUAN C T A surveyoneXplainable Artificial
+Intelligence  XAI  toward medical XAI J  IEEE
+Transactionson Neural Networks and Learning Systems 
+2021 32 11  4793-4813 
+ 37  MAIER-HEIN L REINKE A EISENMANN M etal 
+Metricsreloaded pitfalls and recommendationsforimage
+analysisvalidation J  NatureMethods 2024 21 195-212 
+ 38  TAHA A A HANBURY A Metricsfor evaluating 3D
+medicalimagesegmentation analysis selection andtool
+ J  BMC MedicalImaging 2015 15 29 
+ 39  KERVADEC H BOUCHTIBAJ DESROSIERS C etal 
+Boundary loss for highly unbalanced segmentation J  
+MedicalImageAnalysis 2021 67 101851 
+ 40  ISENSEE F WALD T ULRICH C et al nnU-Net
+revisited acallforrigorousvalidationin3D medicalimage
+segmentation C ∥Proceedings of MICCAI􀆶24 Berlin 
+Germany Springer 2024 488-498 
+ 41  SHAKER A MAAZ M RASHEED H etal UNETR+ + 
+delvingintoefficientandaccurate3D medicalimagesegmentation
+ J  IEEE Transactions on MedicalImaging 2024 43 9  
+3377-3390 
+ 42  ROY S KOEHLER G ULRICH C et al MedNeXt 
+Transformer-drivenscaling of ConvNetsfor medicalimage
+segmentation C ∥Proceedings of MICCAI􀆶23 Berlin 
+Germany Springer 2023 405-415 
+ 43  IRATNI M ABDULLAH A ALDHAHERI M et al 
+Transformersforneuroimagesegmentation scopingreview
+ J  Journal of Medical Internet Research 2025 27 
+e57723 
+ 44  张啸成 王涛 田昕 等 基 于 移 位 窗 口 自 注 意 力 机 制 的 新
+生儿脑区 域 图 像 分 割 J  吉 林 大 学 学 报 理 学 版  2024 
+62 5  1129-1137 
+   ZHANG X C WANG T TIAN X etal Imageregion
+segmentation of neonatal brain based on self-attention
+mechanismofshiftedwindows J  JournalofJilinUniversity
+ ScienceEdition  2024 62 5  1129-1137  inChinese 
+ 45  王斯豪 张 笃 振 杨 昌 昌 基 于 双 路 径 注 意 力 机 制 和 多 尺 度
+信息 融 合 的 皮 肤 病 变 图 像 分 割 J  计 算 机 应 用 2025 
+45 3  978-989 
+   WANGS H ZHANG DZ YANG CC SkinLesionimage
+segmentationbased on dual-path attention mechanism and
+multi-scaleinformation fusion J  Journal of Computer
+Applications 2025 45 3  978-989  inChinese 
+ 46  O K S GALDRAN A RIERA-MARIN M et al 
+Uncertainty aware segmentation quality assessment in
+medicalimages C ∥ProceedingsoftheIEEEInternational
+SymposiumonBiomedicalImaging ISBI  Athens Greece 
+IEEEPress 2024 1-5 
+ 47  LIN T Y GOYAL P GIRSHICK R etal Focallossfor
+dense object detection C ∥ Proceedings of the IEEE
+International Conference on Computer Vision  ICCV  
+Venice Italy IEEEPress 2017 2999-3007 
+ 48  LIU X B HOU S F LIU S et al Attention-based
+multimodalgliomasegmentation with multi-attentionlayers
+forsmall-intensity dissimilarity J  Journalof King Saud
+University  Computer and Information Sciences  2023 
+35 4  183-195 
+ 49  LO H VASCONCELOS N TRIVEDI M etal Topological
+constraintsin deep learning for image segmentation C ∥
+Proceedingsof CVPR􀆶22 Washington D C  USA IEEE
+39
+
+=== PDF_PAGE 14 ===
+第52卷 第5期/2026年5月/计算机工程
+Press 2022 1-10 
+ 50  WEN B ZHANG H BARTSCH D U G etal Topology-
+preservingimagesegmentation withspatial-awarepersistent
+feature matching  C ∥ Proceedings of the IEEE CVF
+InternationalConferenceonComputerVision WashingtonD C  
+USA IEEEPress 2025 5762-5771 
+ 51  LIU Z H SUNAR M S TAN TS etal Deeplearningfor
+retinalvesselsegmentation asystematicreviewoftechniques
+andapplications J  Medical & Biological Engineering &
+Computing 2025 63 8  2191-2208 
+ 52  SHIT S PAETZOLD J C SEKUBOYINA A et al 
+clDice—anoveltopology-preservinglossfunctionfortubular
+structuresegmentation C ∥ProceedingsoftheIEEE CVF
+Conference on Computer Vision and Pattern Recognition
+ CVPR  WashingtonD C  USA IEEEPress 2021 1-15 
+ 53  邢莹 闫晓华 普程伟 等 全 自 动 数 字 图 像 分 析 在 外 周 血
+白细胞形态学复检中的临 床 应 用 J  中 华 医 学 杂 志 2016 
+96 8  634-639 
+   XING Y YAN X H PU C W etal Clinicalapplicationof
+automaticdigitalimageanalysisinthereview ofperipheral
+bloodleukocytemorphology J  NationalMedicalJournalof
+China 2016 96 8  634-639  inChinese 
+ 54  ISENSEEF JAEGERPF KOHLSA A etal nnU-Net 
+aself-configuring methodfordeeplearning-basedbiomedical
+imagesegmentation J  NatureMethods 2021 18 2  203-
+211 
+ 55  WANG W X CHEN C DING M et al TransBTS 
+multimodalbraintumorsegmentationusing Transformer C ∥
+ProceedingsofMICCAI􀆶21 Berlin Germany Springer 2021 
+109-119 
+ 56  高路尧 胡 长 虹 肖 树 林 基 于 超 像 素 分 割 的 图 注 意 力 网 络
+的高 光 谱 图 像 分 类 J  吉 林 大 学 学 报 理 学 版  2024 
+62 2  357-368 
+   GAO L Y HU C H XIAO S L Hyperspectralimage
+classification based on superpixelsegmentation with graph
+attentionnetworks J  JournalofJilin University Science
+Edition  2024 62 2  357-368  inChinese 
+ 57  JEON Y S YANG H FU H et al Teaching aithe
+anatomy behind the scan addressing anatomicalflawsin
+medicalimage segmentation with learnable prior C ∥
+ProceedingsoftheIEEE CVFInternationalConferenceon
+ComputerVision Washington D C  USA IEEE Press 
+2025 24024-24033 
+ 58  MAJ HE Y T LIFF etal Segmentanythinginmedical
+images J  NatureCommunications 2024 15 1  654 
+ 59  KOLEILAT T ASGARIANDEHKORDI H RIVAZ H 
+etal MedCLIP-SAM bridging text and image towards
+universalmedicalimagesegmentation C ∥Proceedingsofthe
+InternationalConferenceon MedicalImage Computingand
+Computer Assisted Intervention Berlin Germany 
+Springer 2024 643-653 
+ 60  JIY ZHANG Z ZHOU T etal MedClick interactive
+medicalimage segmentation with click prompt C ∥
+Proceedingsof MICCAI􀆶23 Berlin Germany Springer 
+2023 1-12 
+ 61  LUO Y XU Q FENGJ etal Med-FastSAM improving
+transferefficiency of SAM to domain-generalised medical
+image segmentation EB OL   2025-08-11  https ∥
+openreview net pdf id=ZL1Vb8LuE1 
+ 62  RAHMATIB SHIRANIS KESHAVARZ-MOTAMEDZ 
+A hybridapproachforenhancingpseudo-labelingin medical
+images through pseudo-label refinement J  Scientific
+Reports 2025 15 1  35161 
+ 63  LIU X B SONG L P LIU S etal A review ofdeep-
+learning-based medicalimage segmentation methods J  
+Sustainability 2021 13 3  1224 
+ 64  LIU X Y DING X YU L etal PQ-SAM post-training
+quantizationforsegmentanything model C ∥Proceedingsof
+theInternational Conference on Computer Vision Berlin 
+Germany Springer 2024 420-437 
+文字编辑 陆燕菲
+栏目编辑 宋 圆
+49

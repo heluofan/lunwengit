@@ -1,0 +1,974 @@
+=== PDF_PAGE 1 ===
+2026 年 第 71 卷 第 27 期: 6324 ~ 6338 
+中国科学院苏州纳米技术与纳米仿生研究所成立20周年专辑   评 述 
+光片荧光显微技术研究进展及其应用 
+吴峰 1,2, 姚汀峰 2, 李春炎 2, 陈光村 2, 杨光 2*, 张叶俊 2*, 王强斌 1,2* 
+1. 中国科学技术大学纳米技术与纳米仿生学院, 合肥 230026 
+2. 中国科学院苏州纳米技术与纳米仿生研究所, 江苏省类器官创制与精准医疗重点实验室, 中国科学院纳米-生物界面重点实验室, 苏州     
+215123 
+* 联系人, E-mail: gyang2024@sinano.ac.cn; yjzhang2009@sinano.ac.cn; qbwang2008@sinano.ac.cn 
+2026-05-31 收稿, 2026-08-06 修回, 2026-08-06 接受, 2026-08-07 网络版发表 
+国家自然科学基金(22127808)、 国家重点研发计划(2024YF A1803402)、 苏州市科技计划(SYG2024080)和江苏省自然科学基金(BK20232046) 
+资助  
+摘要 光片荧光显微技术(light-sheet fluorescence microscopy, LSFM)凭借低光毒性、低光漂白和高速三维成像等 
+优势, 已成为活体生物动态过程观测和大体积样本三维重构的重要技术手段, 并广泛应用于发育生物学、神经科 
+学和临床病理等领域. 本文系统介绍了光片荧光显微技术的基本成像原理与典型光路结构, 综述了正交双物镜、 
+多物镜、单物镜及开顶式等主要构型的发展历程、技术特点及适用场景. 在此基础上, 围绕光片荧光显微技术视 
+场拓展、空间分辨率提升和深层组织成像能力增强等关键发展方向, 重点评述了无衍射光束光片、晶格光片、结 
+构光照明光片、单分子定位光片、双光子光片、近红外二区光片以及人工智能辅助计算成像等代表性技术的研 
+究进展. 进一步结合生物医学研究需求, 总结了光片荧光显微技术在胚胎发育追踪、全脑神经活动监测、大体积 
+组织三维病理分析、亚细胞动态观测及药物评价等方面的典型应用. 最后, 展望了光片荧光显微技术与自适应光 
+学、多模态成像、智能计算等前沿技术深度融合的发展趋势, 以及其在高性能生物成像和临床精准诊疗中的应用 
+前景, 以期为新一代光片荧光显微系统的设计与应用提供参考. 
+关键词 光片荧光显微技术, 光路结构, 成像, 生物医学应用    
+高分辨三维显微成像技术是解析生命活动基本单 
+元、揭示组织发育与器官构建规律、探索疾病发生机 
+制的关键研究工具, 在发育生物学、神经科学、临床 
+病理诊断及生物医学工程领域具有不可替代的支撑作 
+用. 然而, 传统宽场荧光显微技术与共聚焦显微技术受 
+限于其固有的成像机制, 普遍存在光毒性高、光漂白 
+显著等共性短板, 难以兼顾活体样本长时程观测、厚 
+组织深层成像与高通量三维重构的研究需求, 制约了 
+对复杂多细胞体系、活体胚胎发育及大尺寸临床病理 
+样本的精细化、动态化研究的深度和广度.  
+光片荧光显微成像技术的兴起, 为突破上述瓶颈 
+提供了全新的技术路径 [1,2]. 该技术基于片状光激发与 
+正交荧光探测的核心原理, 仅对样本成像焦面进行精 
+准照明, 大幅降低非成像区域的光辐射损伤与荧光漂 
+白. 结合面阵探测器快速采集的优势, 可实现生物样本 
+高速、低损伤的光学切片与三维重构, 有效弥补了传 
+统宽场与共聚焦技术的不足. 凭借其优异的成像性能, 
+光片荧光显微技术现已广泛应用于亚细胞动态监测、 
+模式生物胚胎发育追踪、全脑尺度神经图谱构建、类 
+器官发育观测与临床三维病理分析等诸多场景, 成为 
+生物三维动态成像的重要平台.  
+自正交光片成像理念提出以来, 国内外学者持续 
+对光片荧光显微技术光路架构、激发光调控方式与三 
+维成像算法展开了持续而深入的迭代优化. 在光路结 
+© 2026《中国科学》杂志社 www.scichina.com csb.scichina.com  
+引用格式: 吴峰, 姚汀峰, 李春炎, 等. 光片荧光显微技术研究进展及其应用. 科学通报, 2026, 71: 6324–6338 
+Wu F, Yao T, Li C, et al. Research progress and applications of light-sheet fluorescence microscopy (in Chinese). Chin Sci Bull, 2026, 71: 6324–6338, doi: 
+10.1360/CSB-2026-0809    
+
+=== PDF_PAGE 2 ===
+构层面, 系统设计已经从经典的正交双物镜光路构型, 
+逐步衍生出多物镜、单物镜、开顶式等多元化架 
+构 [3~5], 针对分辨率各向异性、样本兼容性和成像盲区 
+等问题提出了不同解决方案. 在激发光层面, 传统的高 
+斯光片不断迭代升级, 贝塞尔光束、艾里光束等无衍 
+射光束以及晶格光场的引入 [6,7] , 有效平衡了成像视 
+场、空间分辨率与穿透深度之间的固有矛盾. 与此同 
+时, 超分辨成像、双光子激发、近红外二区成像与人 
+工智能计算成像等前沿技术与光片显微系统进行深度 
+融合, 持续拓展光片荧光显微技术在空间分辨率和组 
+织穿透深度方面的能力边界 [8~11]. 一方面, 各类超分辨 
+光路设计与重构算法显著提升了三维各向同性分辨率, 
+实现了对亚细胞精细结构的成像; 另一方面, 深层组织 
+成像技术有效攻克厚组织与活体器官的成像壁垒, 而 
+人工智能算法则在图像降噪、畸变校正与高速重构方 
+面显著提升成像质量与检测效率, 共同推动光片荧光 
+显微技术从基础科研工具向高通量、标准化、临床化 
+成像设备转型.  
+本文系统梳理各类光片荧光显微技术的成像原 
+理、光路结构与迭代演进过程, 重点综述大视场成像、 
+超分辨成像、深层组织成像及智能化成像四大核心技 
+术的最新研究进展, 总结其在生物医学各领域的典型 
+应用, 剖析当前技术发展面临的瓶颈与挑战, 并展望光 
+片荧光显微技术的未来发展趋势, 旨在为新型高性能 
+光片显微成像系统的研发优化、多技术融合创新及生 
+物医学规模化应用提供参考与借鉴.  
+1 光片荧光显微技术典型光路结构 
+光片荧光显微成像技术主要由光片荧光激发和荧 
+光探测两大核心模块构成. 其基本原理是通过光学整 
+形, 将激发光束转化为微米级超薄片状光场, 从而实现 
+对样本特定焦平面的选择性照明. 光片的生成方式主 
+要分为静态成型与动态扫描两类: 静态光片通常借助 
+柱面透镜对激光进行单向聚焦, 使其在焦平面处形成 
+薄层照明光束; 而动态光片则通过扫描聚焦激光, 并借 
+助时序叠加形成均匀片状照明. 在技术发展初期, 光片 
+荧光显微技术普遍采用高斯光进行照明. 对于高斯光 
+束, 其光腰半径ω 0和瑞利长度Z可分别表示为  
+n = / NA , (1) 0 ill ill
+Z = / , (2) 0 2 ill
+其中, 激发波长: 
+ill ; 照明物镜数值孔径: 
+NA ill ; 探测介 
+质折射率: n [12]. 
+上述关系揭示, 高斯光片的厚度与其有效传播长 
+度之间存在固有的权衡机制. 缩小光腰半径虽能获取 
+更薄的光片以提升轴向分辨率, 但瑞利长度亦随之缩 
+短, 致使有效成像视场受限; 反之, 若为拓展视场范围 
+而增大光腰尺寸, 则必然以牺牲轴向分辨率为代价. 因 
+此, 在高斯光束照明模式下, 光片厚度与有效视场难以 
+兼顾的矛盾, 成为制约传统光片荧光显微技术性能提 
+升的关键瓶颈.  
+为突破这一局限, 科研人员发展了多种特殊光场 
+调控技术, 例如利用相位调制产生贝塞尔光束、艾里 
+光束和晶格光场等结构化照明, 以实现更长传播距离、 
+更薄光片厚度或更优的深层组织成像性能. 与此同时, 
+为满足不同生物样本和应用场景需求, 光片荧光显微 
+技术的照明与探测架构亦经历了持续的迭代与优化, 
+从最初的正交双物镜构型, 逐渐发展出多物镜、单物 
+镜以及开顶式等多种光路形式. 各类架构在空间分辨 
+率、成像视场、样品兼容性和系统复杂度等维度各具 
+特点. 下文将对这些代表性光片荧光显微技术结构及 
+其发展历程进行介绍.  
+1.1 正交双物镜光片荧光显微技术 
+正交双物镜光片荧光显微技术采用独立的照明物 
+镜和探测物镜, 其激发光传播方向与荧光探测方向垂 
+直, 典型结构如图1(a)所示 [2]. 1993年, Voie等人 [1]提出 
+正交平面荧光层切成像(orthogonal-plane fluorescence 
+optical sectioning, OPFOS), 采用侧向片状光照明与垂 
+直探测相结合的正交光路结构, 实现了大体积生物样 
+本的非侵入式光学层切成像, 从而为现代光片荧光显 
+微技术技术的发展奠定了基础. 然而, 受限于当时光片 
+质量和探测性能, OPFOS技术主要被应用于固定组织 
+的三维结构观测, 难以满足活体样本动态成像需求.  
+2004年, Huisken等人 [2]在OPFOS基础上提出选择 
+性平面照明显微技术(selective plane illumination micro-
+scopy, SPIM). 该系统通过优化照明与探测光路设计, 
+并协同面阵探测器并行采集和多维样品操控技术, 显 
+著提高了光学切片能力与成像效率, 同时大幅降低了 
+光漂白和光毒性. SPIM成功实现了活体胚胎的长期三 
+维动态成像, 标志着光片荧光显微技术正式进入活体 
+生物成像阶段. 早期光片照明通常采用柱面透镜对激 
+光进行单轴聚焦形成静态光片, 但由于高斯光束传播 
+过程中存在衍射扩散, 光片厚度和均匀性受到限制. 
+评 述  
+6325  
+
+=== PDF_PAGE 3 ===
+2011年, Keller等人 [13]提出数字扫描激光光片荧光显微 
+技术(digital scanned laser light sheet microscopy , 
+DSLM), 利用高速扫描聚焦激光束形成动态光片, 实现 
+了对光片厚度、宽度及照明位置的灵活调控, 显著改 
+善了光片均匀性和成像质量, 进一步推动了活体发育 
+过程的高速三维成像研究. 另外 [13], Holekamp等人 [14] 
+提出目标耦合平面照明显微技术(objective-coupled pla-
+nar illumination, OCPI), 将照明光片与探测物镜刚性耦 
+合并同步轴向扫描, 实现由“样品扫描”向“光学扫描”的 
+转变, 有效降低了运动伪影并提高了体成像速度. 该设 
+计避免了大体积样品频繁移动引发的机械误差, 为高 
+速体积成像提供了新的技术路线.  
+2011年, Wu等人 [15]提出倒置式选择性平面照明显 
+微技术(inverted selective plane illumination microscopy, 
+iSPIM), 将光片模块集成于常规倒置显微技术平台, 大 
+幅提高了系统易用性和样品兼容性. 同时, 该系统结合 
+双视角融合重建策略, 有效改善了传统光片荧光显微 
+技术轴向分辨率较低导致的各向异性问题, 使光片荧 
+光显微技术更加适用于细胞培养、模式生物发育以及 
+神经科学等领域研究.  
+总体而言, 正交双物镜光片荧光显微技术的发展 
+经历了从OPFOS到SPIM、DSLM、OCPI以及iSPIM的 
+持续演进, 在成像质量、扫描速度、空间分辨率和系 
+统易用性等方面不断优化, 构建了现代光片荧光显微 
+技术的基本技术框架, 并为后续多物镜光片、单物镜 
+光片以及开顶式光片荧光显微技术的发展奠定了基础.  
+1.2 多物镜光片荧光显微技术 
+正交双物镜光片荧光显微技术虽然具有高速、低 
+光毒性等优势, 但仍存在两方面局限: 其一, 由于照明 
+与探测数值孔径不对称, 系统横向分辨率通常优于轴 
+向分辨率, 导致点扩散函数呈各向异性分布, 三维重建 
+中容易出现结构拉伸失真; 其二, 单侧照明与单侧探测 
+容易受到生物组织散射、吸收及遮挡效应影响, 导致 
+图像对比度和信噪比在不同区域分布不均. 为突破上 
+述局限, 研究人员发展了多物镜光片荧光显微技术, 通 
+过引入多方向照明、多视角探测及图像融合重建策略, 
+实现更高质量的三维成像.  
+2012年, Keller等人 [3]开发了同步多视角光片显微 
+成像系统(simultaneous multiview light-sheet micro-
+scopy, SiMView), 采用双侧同步照明与双侧探测架构, 
+可同时获取多个视角的样品信息, 并通过融合重建显 
+著提高三维成像质量, 有效减弱样品遮挡和阴影伪影, 
+被广泛应用于大尺度胚胎发育过程的长期动态观测. 
+2013年, Wu等人 [16]提出双视图倒置选择性平面照明显 
+微技术(dual-view inverted selective plane illumination 
+microscopy, diSPIM), 利用两支相互垂直布置的物镜交 
+替承担照明与探测功能, 通过双视角图像融合显著改 
+图 1 (a) 正交光片荧光显微技术原理示意图 [2]; (b) 开顶式荧光显微技术原理示意图 [5] 
+Figure 1 Schematic diagrams of the principle of orthogonal light-sheet fluorescence microscopy (a) [2], and open-top fluorescence microscopy (b) [5]  
+2026 年 9 月 第 71 卷 第 27 期  
+6326  
+
+=== PDF_PAGE 4 ===
+善轴向分辨率, 实现近各向同性三维成像. 随后, Kumar 
+等人 [17]进一步完善了系统设计与重建算法, 推动了diS -
+PIM在细胞生物学和发育生物学中的广泛应用. 为进一 
+步提高空间分辨率与视角覆盖能力, 科研人员开始探 
+索三物镜及更多物镜协同成像方案. 2016年, Manton等 
+人 [18] 提出T riSPIM(three-objective light-sheet micro-
+scopy), 采用三物镜协同照明与探测架构, 在较大视场 
+范围内实现了接近衍射极限的各向同性分辨率 
+(300~400 nm), 进一步提升了复杂生物样本的三维重 
+建质量. 近年来, 多物镜光片荧光显微技术逐渐与开顶 
+式结构、高通量自动化成像及类器官研究需求相结合. 
+2024年, 研究者报道了一种融合双照明、双探测和开 
+顶式布局的四物镜光片荧光显微技术系统 [19]. 该系统 
+不仅具备多视角融合重建能力, 且高度兼容标准多孔 
+板, 在实现约330 nm近各向同性分辨率的同时, 支持多 
+样本自动化长期观测, 为类器官发育、胚胎筛选及高 
+通量生物医学研究提供了新的技术平台.  
+总体而言, 多物镜光片荧光显微技术凭借多视角 
+照明与探测策略, 有效克服了传统正交双物镜光片荧 
+光显微技术在轴向分辨率、遮挡伪影和成像均匀性方 
+面的不足, 实现了更高质量的三维重建. 然而, 随着物 
+镜数量增加, 系统光学设计、机械集成和标定重建过 
+程也更加复杂, 成本和调试难度大幅攀升, 这在一定程 
+度上限制了该技术的广泛普及.  
+1.3 单物镜光片荧光显微技术 
+单物镜光片荧光显微技术利用单枚物镜同时承担 
+光片照明与荧光探测的双重任务. 相较于传统正交双 
+物镜光片荧光显微技术, 该类系统无需独立照明物镜, 
+显著降低了光路复杂度, 提高了样品兼容性和系统集 
+成度, 可直接与标准倒置显微技术平台兼容, 因此在活 
+细胞成像、高内涵筛选及动态生物学研究领域备受 
+瞩目.  
+2008年, Dunsby等人 [4]提出斜平面显微术(oblique 
+plane microscopy, OPM), 该技术利用单枚高数值孔径 
+物镜的离轴区域产生倾斜照明光片, 并通过同一物镜 
+收集荧光信号, 实现了单物镜光片显微成像, 为后续单 
+物镜光片技术的发展奠定了基础.  
+随后, 研究人员围绕成像速率和分辨率对单物镜 
+光片架构进行了持续优化. 2015年, Bouchard等人 [20]提 
+出扫描共焦对准平面激发显微术(swept confocally- 
+aligned planar excitation microscopy, SCAPE), 通过高 
+速振镜同步实现光片扫描与荧光去扫描, 三维体成像 
+速率达到10~100体积/s, 实现了自由运动生物样本的高 
+速三维动态观测. 2019年, Yang等人 [21]提出落射照明式 
+选择性平面照明显微技术(epi-illumination SPIM, epi- 
+SPIM), 利用倾斜落射照明形成高质量光片, 有效提高 
+了系统空间分辨率, 实现亚细胞尺度三维成像. 随着高 
+数值孔径单物镜成像需求不断攀升, 研究人员进一步 
+优化远程成像光路. 2020年, Sapoznik等人 [22]提出高数 
+值孔径单物镜光片荧光显微技术, 通过三级物镜远程 
+成像结构改善高角度光线传输效率, 在保持较大视场 
+的同时, 获得接近传统双物镜系统的空间分辨率, 推动 
+单物镜光片荧光显微技术迈入高速高分辨成像阶段.  
+近年来, 单物镜光片荧光显微技术逐渐与计算成 
+像、超分辨成像及智能重建技术深度融合. 2021年, 
+Fang等人 [23]将内容感知压缩感知方法引入单物镜光片 
+荧光显微技术, 实现了全器官尺度下具备亚细胞分辨 
+率快速三维成像. 2022年, Zhao等人 [24]结合结构化光 
+场调控与深度学习重建算法, 实现活细胞近各向同性 
+超分辨成像. 2024年, Wang等人 [25]进一步将贝塞尔光 
+束与单物镜光片架构相结合, 实现了大规模细胞群体 
+的高速动态观测, 为免疫细胞行为研究提供了新的技 
+术手段.  
+总体而言, 单物镜光片荧光显微技术通过共享照 
+明与探测物镜, 大幅提高了系统紧凑性和样品兼容性, 
+并可直接集成于常规倒置显微技术平台. 伴随着计算 
+成像和智能重建技术的发展, 该类系统正逐步缩小与 
+传统双物镜光片荧光显微技术在空间分辨率方面的差 
+距, 成为活细胞三维动态成像的重要技术路线.  
+1.4 开顶式光片荧光显微技术 
+开顶式光片荧光显微技术(open-top light-sheet mi-
+croscopy, OTLS)是一类顶部完全开放的光片荧光显微 
+技术架构, 其典型结构如图1(b)所示 [5]. 该系统将照明 
+与探测物镜布置于样品下方, 通过倾斜入射方式形成 
+光片, 实现对样品的三维成像. 与传统光片荧光显微技 
+术需要将样品悬挂或包埋于特定样品池不同, OTLS能 
+够直接兼容培养皿、多孔板以及大尺寸组织样本, 显 
+著提高了样品装载效率和实验操作便利性.  
+2015年, McGorty等人 [5]首次提出开顶式光片荧光 
+显微技术架构, 验证了该结构在样品兼容性和系统易 
+用性方面的优势. 随后, McGorty等人 [26]于2017年进一 
+步将开顶式架构与高数值孔径相结合, 提升了系统的 
+评 述  
+6327  
+
+=== PDF_PAGE 5 ===
+空间分辨率, 推动了其在生物成像中的应用. 2019年, 
+Glaser等人 [27]针对不同组织透明化方案带来的折射率 
+变化问题, 建立了兼容多种透明化介质的开顶式光片 
+成像平台, 实现了大尺寸组织样本的高效三维成像. 随 
+着应用需求不断增长, 研究人员开始探索兼顾高通量 
+与高分辨率的开顶式光片系统. 2022年, Glaser等人 [28] 
+提出混合式开顶光片显微术(hybrid open-top light-sheet 
+microscopy), 融合单物镜斜平面显微术与选择性平面 
+照明显微术的优势, 在低倍率模式下实现大体积样本 
+快速扫描, 在高倍率模式下实现局部区域高分辨率成 
+像, 从而兼顾整体结构观测与精细结构解析. 近年来, 
+开顶式光片荧光显微技术进一步与先进光场调控技术 
+结合. 2023年, Park等人 [29]将双光子贝塞尔光片引入开 
+顶式架构, 显著提升厚组织样本的成像深度, 实现毫米 
+级三维成像. 2025年, Li等人 [30]将艾里光束引入开顶式 
+光片荧光显微技术, 通过无衍射光场调控提高光片均 
+匀性和有效传播长度, 进一步改善大体积生物样本的 
+成像质量. 除结构优化外, 开顶式光片荧光显微技术在 
+高通量活体成像方面也展现出独特优势. 2024年, Moos 
+等人 [19] 开发了开顶式多样本双视角光片荧光显微技 
+术, 实现了多类活体样本的长期并行观测, 连续成像时 
+间可达12天, 并支持单细胞水平动态追踪与定量分析, 
+为类器官发育、生物体再生及多细胞系统动态研究提 
+供了高通量成像平台.  
+总体而言, 开顶式光片荧光显微技术通过开放式 
+样品布局显著提高了系统易用性和样品兼容性, 并逐 
+步向高分辨率、高通量和深层组织成像方向发展, 已 
+成为连接基础生命科学研究与临床病理成像的重要光 
+片荧光显微技术路线.  
+为进一步明晰不同架构的适用边界, 表1从数值孔 
+径匹配性、空间分辨率及样品兼容性等维度对各类构 
+型进行了横向对比. 可以看到, 正交双物镜系统作为经 
+典构型, 在成像质量上表现均衡, 但由于照明与探测路 
+径相互垂直, 系统对样本封装方式有特定要求, 难以兼 
+容标准多孔板等活细胞培养耗材. 多物镜系统通过多 
+视角照明与探测的信息融合, 在三维空间分辨率各向 
+同性方面优势最为突出, 但系统复杂度与校准难度也 
+相应增加. 单物镜系统凭借照明与探测共用同一物镜 
+的设计, 能够直接适配倒置显微镜平台并兼容多孔板 
+培养皿, 在保持较高空间分辨率的同时实现了最佳样 
+品兼容性, 但成像视场的均匀性仍有提升空间. 开顶式 
+系统则通过完全开放式的样品布局, 在大体积组织和 
+临床样本的装载便利性方面具有独特优势, 然而其空 
+间分辨率相对受限, 更多适用于大尺度结构成像场景. 
+探测与激发物镜数值孔径匹配方面, 正交双物镜、多 
+物镜、开顶式等系统激发和探测物镜相互独立, 可自 
+由搭配, 一般可实现数值孔径匹配, 单物镜系统因为激 
+发与探测同用一个物镜, 难以实现数值孔径匹配, 需主 
+动压低照明数值孔径. 在时间分辨率方面, 各构型实际 
+成像速度受相机性能、荧光探针亮度、激发光功率、 
+扫描策略及视场范围等多因素耦合影响, 往往因具体 
+系统配置和应用场景而异. 上述构型在分辨率、视场 
+均匀性与样品兼容性之间各有所长, 实际应用中需根 
+据样本类型、成像通量及分辨率需求进行针对性选择 
+与优化.  
+2 光片荧光显微技术演进 
+光片荧光显微技术凭借平面选择性照明和正交探 
+测架构, 实现了高速、低光毒性的大体积三维成像. 然 
+而, 受光束衍射、光学系统数值孔径以及生物组织散 
+射等因素限制, 传统光片荧光显微技术在成像视场、 
+空间分辨率和组织穿透深度等方面仍存在一定瓶颈. 
+围绕这些关键局限, 研究者发展出多种技术路线持续 
+推动光片荧光显微技术向大视场、高分辨率和深层组 
+织成像方向发展. 本章将重点介绍光片荧光显微技术 
+在这三个主要发展方向上的代表性技术及研究进展.  
+2.1 大视场光片荧光显微技术光片 
+显微技术的视场范围与空间分辨率之间存在固有 
+约束. 随着照明光片传播距离增加, 其厚度逐渐增大, 
+表 1 典型LSFM光路构型综合性能对比表 
+Table 1 Comprehensive performance comparison of typical LSFM optical configurations 
+光片荧光显微技术光路结构 数值孔径是否匹配 横向空间分辨率 轴向空间分辨率 是否兼容标准多孔板/培养皿 
+正交双物镜 [31] 是 0.3~1 μm 1~5 μm 否 
+多物镜 [16] 是 0.33 μm 0.33 μm 否 
+单物镜 [22] 否 ~200 nm ~520 nm 是 
+开顶式 [5] 是 ~1.1 μm ~6.2 μm 是 
+2026 年 9 月 第 71 卷 第 27 期  
+6328  
+
+=== PDF_PAGE 6 ===
+导致轴向分辨率下降和成像均匀性劣化. 为在大尺度 
+样本中实现快速高分辨率成像, 研究人员发展了多种 
+技术策略, 包括平铺光片(tiling light sheet)、轴向扫描 
+光片以及基于无衍射光束的艾里光片和贝塞尔光片等. 
+这些方法在维持较高空间分辨率的同时, 显著拓展了 
+有效成像视场.  
+平铺光片荧光显微技术通过激发光平铺增加成像 
+视场. 针对大视场成像中光片衍射扩散所导致的分辨 
+率下降的瓶颈, 2015年, Gao等人 [32]提出激发光片拼接 
+策略. 该方法通过空间光调制器在视场平面内快速平 
+移并拼接, 逐区域成像后重构图像, 从而在保持高分辨 
+率的同时显著拓展成像视场, 其原理如图2 [32] 所示. 
+2020年, Chen等人 [33]进一步优化搭建一套兼容常规透 
+明化方法、多尺度高分辨、可半自动化校准的平铺光 
+片系统. 2025年, Hu等人 [34]将平铺光片荧光显微技术与 
+深度学习分割算法结合, 定量解析了不同年龄小鼠脊 
+髓运动神经元的三维形态结构. 同年, 该团队进一步整 
+合组织膨胀显微技术与平铺光片荧光显微技术 [35], 在 
+单细胞分辨率及全器官尺度下, 系统解析了无性涡虫 
+在稳态生长与再生过程中神经元的异速生长规律, 并 
+构建了相应的神经-肌肉连接图谱. 2019年, Gao等 
+人 [36]将晶格光片超薄层切技术与平铺光片成像方法相 
+结合, 有效改善了平铺光片的轴向分辨能力, 可在厚组 
+织样本中实现低光毒性、高分辨率、大视场的三维成 
+像. 2019年, Wang等人 [37]提出非连续光片平铺成像方 
+案, 该策略在提升大样本成像速度与图像信噪比的同 
+时, 有效减轻了成像过程中的光漂白问题. 平铺光片通 
+过横向移动或拼接多个薄光片以实现对大视场的覆盖, 
+但单个光片在传播方向上的发散问题仍然存在, 轴向 
+分辨率随光片传播深入样品而逐渐下降. 与平铺光片 
+不同, 轴向扫描光片(axially swept light-sheet micro-
+scopy, ASLM) [38~40] 从时间维度对光片进行动态调控, 
+为突破“光片厚度”与“光片长度”之间的相互限制提供 
+了另一种有效途径.  
+平铺光片与轴向扫描光片都是基于高斯光束照明, 
+其成像速率和均匀性因而受限. 研究人员进一步将无 
+衍射光束引入光片成像体系. 无衍射光束(non-dif fract-
+ing beams)通过光场调制技术, 使光束在传播过程中横 
+向光强分布不随距离扩散, 从而克服普通高斯光束固 
+有的衍射发散特性. 用于构建光片成像的无衍射光束 
+主要分为艾里光片和贝塞尔光片两类. 艾里光束是一 
+种典型无衍射光束, 具备独特的无衍射、自愈性、自 
+弯曲传播等光学特性. 因此, 艾里光片在传播过程中能 
+保持极窄的中心主峰, 从而有效工作长度远高于传统 
+高斯光片. 同时, 艾里光片具备自愈特性, 穿透散射较 
+强的生物组织时不易畸变衰减, 适用于胚胎、类器官 
+等脆弱活体样本的长时间动态追踪. 2014年, Vetten-
+burg等人 [6]基于艾里光束突破高斯光片瑞利长度限制, 
+实现大视场高轴向分辨率三维成像. 然而, 艾里光片存 
+在旁瓣干扰问题, 高能量旁瓣会在非焦平面引入严重 
+的背景荧光噪声、增加光毒性并降低图像对比度. 消 
+除或减弱艾里光束的旁瓣影响成为其后续研究者不断 
+努力的方向, 研究人员采用了图像重建去卷积等算法 
+优化 [41,42]、艾里光束双光子化 [43]、光束叠加 [44]等技术 
+手段. 另有研究将艾里光片荧光显微技术与其他光学 
+技术进行融合. 2025年, 香港城市大学Hus等人 [45]采用 
+偏振无关艾里超表面透镜替代传统复杂相位调制器件, 
+研制出结构紧凑、便于携带的艾里光片荧光显微技术, 
+该系统有效视场为200 μm, 横向分辨率0.69 μm, 轴向 
+分辨率2.3 μm. 同年, Kasu等人 [46]将艾里光片与单物镜 
+显微技术结合, 解决了传统单物镜光片荧光显微技术 
+视场小、通量低的问题. 2025年, 北京脑科学与类脑研 
+究所吴江来团队 [47]利用艾里光束弯曲传播特性与探测 
+物镜场曲像差进行协同设计, 在厘米级视场范围内实 
+现了光场与成像面的匹配, 实现了透明组织样本的高 
+速、高分辨率三维成像.  
+贝塞尔光片一般是通过锥棱镜或空间光调制器, 
+将入射高斯激光调制为无衍射贝塞尔光束, 以缩小系 
+统点扩展函数, 提升轴向成像分辨率. 2011年, Plan-
+chon等人 [7]将扫描贝塞尔光束引入光片荧光显微技术, 
+突破高斯光片分辨率和视场的相互限制. 然而, 贝塞尔 
+光束同样存在旁瓣效应. 为抑制贝塞尔光束旁瓣引起 
+的离焦背景, 研究者提出了双光子激发、晶格光片、 
+图 2 平铺光片荧光成像原理 [32] 
+Figure 2 Principle of tiling light-sheet fluorescence imaging [32]  
+评 述  
+6329  
+
+=== PDF_PAGE 7 ===
+互补光束、双环掩模调制以及自适应长度控制等多种 
+策略 [48~52]. 其中, 姚保利团队提出的互补光束法和双环 
+掩模调制技术能够通过光场干涉实现旁瓣抑制, 在保 
+持长工作距离的同时进一步提高光片质量和成像对 
+比度.  
+需要指出的是, 上述各类大视场光片技术在突破 
+视场限制的同时, 亦面临各自特有的技术瓶颈. 平铺光 
+片虽能通过薄片拼接实现大范围高分辨率成像, 但逐 
+区域扫描的成像模式决定了其体积成像速度受限于拼 
+接步数与单帧曝光时间, 难以满足毫秒级动态过程的 
+捕捉需求; 同时, 相邻光片拼接区域的照明不均可能引 
+入条带伪影, 对后期图像配准与融合算法提出了较高 
+要求. 轴向扫描光片通过时空同步扫描在视场范围内 
+维持了均匀的轴向分辨率, 然而其成像通量受限于滚 
+动快门与光片扫描的精密时序配合, 且单次体成像的 
+有效信号采集效率较低, 对弱荧光样本的探测灵敏度 
+构成挑战. 艾里光片与贝塞尔光片虽借助无衍射光束 
+实现了长距离均匀照明, 但二者均受限于固有的旁瓣 
+效应, 在一定程度上削弱了光片显微镜低光毒性的核 
+心优势, 现有旁瓣抑制策略虽能有效缓解该问题, 但往 
+往以牺牲系统简洁性、成像速度为代价. 总体而言, 光 
+片荧光显微技术每一项视场拓展策略的背后, 都伴随 
+着系统复杂度、成像速度或信噪比等方面的折中, 未 
+来研究需在光场调控、扫描策略与计算补偿之间寻求 
+更优的协同平衡.  
+2.2 超分辨光片荧光显微技术 
+光片荧光显微技术的横向分辨率与宽场显微技术 
+一致, 受衍射极限约束, 约为200 nm, 因而难以分辨亚 
+百纳米尺度的细胞器和膜结构. 轴向分辨率则由照明 
+光片厚度和探测物镜参数共同决定. 常规光片荧光显 
+微技术轴向分辨率显著低于横向分辨率, 存在严重各 
+向异性 [53]. 为突破传统光片荧光显微技术在分辨率上 
+的限制, 研究人员将光片照明与结构光照明显微技术 
+(structured illumination microscopy, SIM)、可逆饱和 
+光学荧光跃迁显微技术(reversible saturable optical 
+fluorescence transitions, RESOLFT)、单分子定位显微 
+技术(single molecule localization microscopy, SMLM)等 
+超分辨成像策略相结合, 在保持低光毒性和快速体成 
+像优势的同时, 实现了纳米尺度三维成像. 本小节将综 
+述经典类型的超分辨光片荧光显微技术及其发展现状.  
+晶格光片荧光显微技术(lattice light-sheet micro-
+scopy, LLSM)由Betzig团队于2014年提出 [53], 该技术利 
+用空间光调制器产生多个相干贝塞尔光束构建二维光 
+学晶格(图3(a) [53]), 并经快速扫描形成超薄且低旁瓣光 
+片, 实现约230 nm横向分辨率和380 nm轴向分辨率. 相 
+比传统高斯光片, 晶格光片显著提高了光学切片能力 
+和轴向分辨率, 兼具低光毒性和高速体成像优势, 为长 
+时间活细胞三维动态观测(图3(b) [53])提供了重要工具. 
+此后, 研究人员将晶格光片与单物镜光片荧光显微技 
+术 [54]、自适应光学技术 [55,56]等相结合, 进一步改善了 
+深层组织成像质量和空间分辨率. SIM光片荧光显微 
+技术通过向样品投射周期性结构光, 并结合多幅相移 
+图像的重建, 实现约两倍于衍射极限的空间分辨率, 同 
+时保持光片荧光显微技术低背景、高对比度和快速三 
+维成像的优势.  
+2018年, Aakhte等人 [57]将SIM与光片荧光显微技术 
+相结合, 实现了横向超分辨成像. 2022年, Chen等人 [8] 
+进一步将SIM引入单物镜光片中, 在简化系统结构的同 
+时实现超分辨三维成像. 近年来, 研究者还将计算成像 
+与深度学习方法引入SIM光片荧光显微技术. 2025年, 
+戴琼海院士团队 [11]提出基于虚拟结构光与深度学习重 
+建的光片荧光显微技术, 通过从常规光片图像中恢复 
+等效结构光信息, 实现了约120 nm × 160 nm的近各向 
+同性超分辨分辨率. 同时, 结合基于图像反馈的快速自 
+适应波前校正策略, 进一步提升了深层样本超分辨成 
+像性能. RESOLFT是一类利用可逆光控荧光分子实现 
+超分辨成像的技术. 其基本原理是通过空间选择性地 
+激活和淬灭荧光分子, 仅允许极小区域内的荧光发射 
+(图3(c) [58]), 从而突破光学衍射极限(图3(d, e) [58]). 2016 
+年, Hoyer等人将RESOLFT与光片荧光显微技术结 
+合 [58], 实现了超分辨三维光片成像. 与STED等超分辨 
+技术相比, RESOLFT具有光剂量低、光毒性小等优势, 
+但其成像过程需要逐层完成荧光激活、暗态调制和信 
+号读取, 导致体成像速度受到限制. 针对这一瓶颈, 
+Bodén等人 [59] 依托可逆开关荧光蛋白开发了多层并行 
+激发结构与探测的多平面RESOLFT光片荧光显微技 
+术, 实现多个深度层面的同步超分辨成像, 将单次体积 
+成像时间缩短至500~1000 ms, 显著提高了三维成像 
+效率.  
+单分子定位光片荧光显微技术融合光片照明与单 
+分子定位技术, 通过稀疏激活荧光分子并对单分子点 
+扩散函数进行高精度定位, 实现突破衍射极限的纳米 
+尺度成像. 单分子定位显微技术由Zhuang、Hess和Bet -
+2026 年 9 月 第 71 卷 第 27 期  
+6330  
+
+=== PDF_PAGE 8 ===
+zig等于2006年独立提出 [60~62] . 2011年, Zanacchi等 
+人 [63]将单分子定位技术与光片照明结合, 实现了横向 
+分辨率约20 nm、轴向分辨率50~100 nm的三维超分辨 
+成像. 由于传统单分子定位方法需要采集大量图像, 成 
+像速度受到限制, 2013年, Hu等人 [64]提出了一种基于贝 
+叶斯推断的单分子定位光片成像方法, 提高了单分子 
+识别与定位效率, 实现了活体样本的快速三维超分辨 
+成像. 近年来, 单分子定位光片荧光显微技术逐渐与单 
+物镜光片、自适应光学及漂移校正技术深度融合. 
+2025年, 研究人员 [65]将单分子荧光反馈自适应光学与 
+单物镜光片荧光显微技术相结合, 构建了适用于大尺 
+度深层组织样本的超分辨成像平台, 通过实时像差校 
+正和纳米级漂移补偿, 实现横向分辨率7.0±0.4 nm、轴 
+向分辨率40.5±1.5 nm的超高精度三维成像, 显著拓展 
+了该技术在复杂生物样本中的应用能力.  
+2.3 高穿透深层组织成像光片荧光显微技术 
+传统的光片荧光显微技术成像波段在可见光 
+(400~700 nm)和近红外一区(700~900 nm), 受生物组织 
+散射和吸收效应影响, 其有效成像深度通常被限制在 
+数百微米至约1 mm, 难以实现厚组织或完整器官内部 
+微观结构的原位观测. 对于离体样本, 组织透明化是一 
+种有效的处理手段; 然而, 针对无法进行组织透明化的 
+活样本, 如何突破成像深度瓶颈成为重要研究目标.  
+光在生物组织中的散射强度随波长增加而降低, 
+组织穿透能力随之增强, 因此, 延长光片成像的激发与 
+探测波长成为提高光片成像穿透深度的重要手段. 双 
+光子光片荧光显微技术是通过采用近红外激发光并利 
+用双光子非线性激发机制来提高组织穿透深度的重要 
+方法. 该技术通常与贝塞尔光束、艾里光束等长焦深 
+图 3 (a) 超分辨晶格光片照明光束的二维光学晶格图 [53]; (b) 晶格光片对细胞分裂过程超分辨示踪 [53]; (c) RESOLFT光片荧光显微技术实现超 
+分辨原理图 [58]; (d) RESOLFT光片荧光显微技术与传统光片荧光显微技术分辨率对比图 [58]; (e) RESOLFT光片显微对细胞丝超分辨成像图 [58] 
+Figure 3 (a) 2D optical lattice of super-resolution lattice light sheet beam [53]; (b) super-resolution time-lapse imaging of cell division with lattice light 
+sheet microscopy [53]; (c) working principle of RESOLFT light sheet fluorescence microscopy for super-resolution imaging [58]; (d) resolution comparison 
+between RESOLFT and conventional light sheet microscopy [58]; (e) super-resolution images of cellular filaments acquired by RESOLFT light sheet 
+microscopy [58]  
+评 述  
+6331  
+
+=== PDF_PAGE 9 ===
+光场结合, 以兼顾成像深度和视场范围. 2021年, Taka-
+nezawa等人 [9]开发了双光子贝塞尔光片荧光显微技术 
+实现数微米量级轴向分辨率和毫米级组织穿透深度. 
+2025年, 清华大学秦培武团队联合南方科技大学等研 
+究单位 [66], 将扫描贝塞尔光片与光场显微技术相结合, 
+并引入电可调透镜实现自动聚焦, 完成了活体斑马鱼 
+血管网络及红细胞动力学过程的高速三维成像.  
+尽管双光子光片荧光显微技术能够借助非线性激 
+发机制提高组织穿透深度, 但其荧光发射波段仍主要 
+位于可见光区域, 组织散射效应依然存在. 相比之下, 
+近红外二区(NIR-II, 1000~1700 nm)光片荧光显微技术 
+同时延长激发波长和探测波长, 进一步降低组织散射 
+和吸收效应, 已成为深层在体成像的重要发展方向.  
+2019年, 斯坦福大学戴宏杰团队利用近红外二区低 
+散射、高穿透的特性, 报道了以1300 nm光片照明结合 
+铟镓砷探测的深层成像技术 [10], 无需组织透明化即可 
+实现小鼠头骨下脑血管网络的深层三维成像及多器官 
+无创动态观测. 2021年, 该团队进一步将SIM与近红外 
+二区光片荧光显微技术相结合 [67], 通过结构光重建改 
+善了近红外二区光片荧光显微技术的空间分辨率和成 
+像对比度, 实现了深层组织的高分辨率在体成像. 随后, 
+国内多个研究团队围绕近红外二区光片荧光显微技术 
+开展了深入研究. 2022年, 天津大学张晓东团队 [68]将艾 
+里光束与近红外二区光片荧光显微技术相结合, 利用艾 
+里光束非衍射和自修复特性提高光片传播稳定性, 在保 
+持较大视场范围的同时进一步改善了成像均匀性和组 
+织穿透能力. 在无需开颅和去除头骨的条件下, 该系统 
+实现了小鼠脑深部微血管网络的高对比度成像, 其成像 
+深度和成像质量均优于传统高斯光片方案. 2025年, 该 
+团队进一步将近红外二区艾里光片荧光显微技术设计 
+为开顶式结构 [30], 在保持深层组织成像能力的同时提 
+升了样品装载灵活性和系统易用性, 拓展了该技术在 
+大体积生物样本及临床组织样本中的应用潜力.  
+近红外二区波段的引入有效提升了光片显微的组 
+织穿透深度. 但同样需要指出的是, 近红外二区光片荧 
+光显微技术虽利用了激发与发射均处于组织散射较低 
+的窗口, 但该波段高性能荧光探针的匮乏严重制约了 
+其多色成像和分子特异性标记能力; 同时, 近红外波段 
+探测所需的铟镓砷相机在量子效率、暗噪声和价格方 
+面相较于硅基探测器仍存在明显劣势. 此外, 深层成像 
+中长波长激发虽降低了散射, 却仍然难以有效缓解组 
+织吸收和像差累积问题. 未来亟需在新型近红外探针 
+开发、低成本长波长探测器研制及自适应像差补偿技 
+术等方面持续突破, 使深层光片成像真正成为兼具深 
+度、分辨率与分子特异性的普适性工具.  
+上述技术路线在单一性能维度上的突破各有所长, 
+实际应用中往往需要在成像视场、空间分辨率、穿透 
+深度、时间分辨率、光毒性及系统复杂度等多个相互 
+制约的维度之间综合权衡. 在视场拓展方面, 平铺光片 
+与轴向扫描光片成像范围最大, 却分别受制于逐区拼 
+接的时间代价与信号采集效率的降低; 无衍射贝塞尔 
+与艾里光片则在视场与穿透深度间同时获益, 但旁瓣 
+效应仍需复杂手段抑制. 在超分辨成像方面, 晶格光片 
+普适性较好但系统极度复杂, 单分子定位与RESOLFT 
+空间精度最高却对荧光探针和计算重建高度依赖, 时 
+间分辨率受限. 在深层成像方面, 双光子光片与近红外 
+二区光片有效拓展了深度边界, 但分别面临光毒性偏 
+高和探针/探测器技术尚不成熟的制约. 总体而言, 当 
+前尚无单一技术能够在所有维度上同时达到最优, 实 
+际研究中需根据样本类型、成像尺度与动态需求, 在 
+各项性能之间做出针对性取舍.  
+3 光片荧光显微技术在生物医学研究中的 
+应用 
+光片荧光显微技术凭借低光毒性、低光漂白、高 
+速三维成像以及大体积样本观测能力, 已在生物医学 
+研究领域获得广泛应用. 相较于共聚焦显微技术等传 
+统成像技术, 光片荧光显微技术能够在尽可能维持生 
+物体正常生理状态的条件下, 实现长时间、大尺度、 
+高时空分辨率成像, 因此特别适用于发育过程追踪、 
+神经活动记录、组织病理分析以及亚细胞动态观测等 
+研究领域. 近年来, 随着组织透明化、超分辨成像、人 
+工智能及计算光学技术的发展, 光片荧光显微技术的 
+应用范围不断拓展, 已逐渐成为现代生命科学研究的 
+重要技术平台.  
+3.1 神经与发育科学研究 
+发育过程涉及细胞增殖、迁移、分化及器官形成 
+等一系列复杂事件, 需要在较大时空尺度下进行连续 
+观测. 光片荧光显微技术能够以较低光剂量实现长时 
+程三维成像, 因此已成为发育生物学研究的重要工具. 
+2004年, Huisken等人 [2]展示了光片荧光显微技术在鱼 
+类和昆虫胚胎发育研究中的应用. 随后, Keller等人 [69] 
+实现了斑马鱼胚胎发育全过程的三维动态重建, 连续 
+2026 年 9 月 第 71 卷 第 27 期  
+6332  
+
+=== PDF_PAGE 10 ===
+24 h追踪数万个细胞的运动轨迹, 从整体层面揭示了器 
+官形成过程中细胞群体的协同行为(图4(a)). 随着成像 
+能力不断提升, 光片荧光显微技术逐渐被应用于更加 
+复杂的哺乳动物胚胎研究. 2018年, McDole等人 [70]实 
+现了小鼠着床后胚胎发育过程的单细胞水平动态记录, 
+为研究早期器官形成和细胞生长提供了重要工具. 神 
+经系统具有高度复杂的空间连接结构和快速动态活动 
+特征, 对成像技术提出了兼顾高时空分辨率和大视场 
+的严格要求. 光片荧光显微技术能够实现大规模神经 
+元群体活动的同步记录, 在神经科学领域展现出独特 
+优势. 2013年, Ahrens等人 [71]利用该技术实现了活体斑 
+马鱼全脑约十万个神经元钙活动信号的近同步监测, 
+在单细胞分辨率下观察到全脑尺度神经网络活动模式. 
+随后, 2017年, Cong等人 [72]将超高速光片扫描与闭环目 
+标追踪技术相结合, 实现了自由游泳状态下斑马鱼全 
+脑神经活动的实时记录(图4(b)), 揭示了捕食行为过程 
+中从视觉感知、前脑决策到运动执行的神经信息传递 
+过程. 上述研究表明, 光片荧光显微技术已成为连接细 
+胞尺度与系统尺度神经活动的重要技术手段.  
+3.2 组织病理和药理研究 
+在传统的病理学中, 观察大体积生物组织的内部 
+结构需要依赖机械切片和图像拼接, 存在切片错位而 
+导致关键空间连接信息丢失、成像效率低等问题. 光 
+片显微成像技术与组织透明化技术的结合, 使光片荧 
+光显微技术成为观测大体积生物组织内部结构的重要 
+工具. 组织透明化技术2013年被报道 [73], 通过与光片荧 
+光显微技术的联合应用, 研究者首次在不借助机械切 
+片的情况下, 重建了成年小鼠全脑的神经投射网络. 其 
+后科研工作者 [74]改进透明化技术, 实现小鼠全生物体 
+神经连接成像和全身血管网络可视化. 在癌症研究领 
+域 [75], 科研工作者利用组织透明化技术结合光片荧光 
+显微技术, 实现了对癌症在全身范围内微转移的三维 
+全景扫描. 这种全局视野揭示了肿瘤细胞如何利用血 
+管和淋巴系统进行远端转移, 为癌症治疗方案的制定 
+提供了全新的空间生物学依据. 光片荧光显微技术在 
+从实验室走向临床的三维病理成像的过程中, 其优势 
+体现为“极高的成像通量”, 处理一个厘米级厚度的成 
+人器官样本, 扫描速度比传统的共聚焦扫描显微技术 
+快两个数量级以上. 这一效率使得大规模三维病理筛 
+查成为可能. 2017年, Liu 团队 [76]利用开顶式光片荧光 
+显微技术实现了对未经切片的临床前列腺组织样本三 
+维病理成像, 为“三维数字病理”提供了技术基础. 该方 
+法不仅保留了组织样本完整性, 还提高了病理诊断的 
+空间信息利用率, 展示了光片荧光显微技术在精准医 
+疗领域的重要应用潜力. 除组织结构研究外, 光片荧光 
+显微技术在药物递送和纳米医学研究中同样发挥着重 
+要作用. 2025年, Luo等人 [77]将组织透明化、光片荧光 
+显微技术与深度学习算法相结合, 建立了SCP-Nano单 
+细胞分辨率纳米载体分析平台, 实现了对脂质纳米颗 
+粒、DNA origami等纳米药物在全小鼠器官水平的精 
+准三维定位与靶向性评估, 为纳米药物的体内递送研 
+图 4 (a) 斑马鱼胚胎发育过程光片荧光成像图 [69]; (b) 幼年斑马鱼在捕食行为中的全脑荧光成像 [72] 
+Figure 4 (a) Light-sheet fluorescence imaging of developing zebrafish embryos [69]; (b) whole-brain imaging of juvenile zebrafish during predation [72]  
+评 述  
+6333  
+
+=== PDF_PAGE 11 ===
+究和安全性评价提供了重要工具.  
+3.3 细胞生物学研究 
+细胞生物学研究关注亚细胞结构及其动态相互作 
+用, 对空间分辨率和时间分辨率均有较高要求. 随着超 
+分辨成像、自适应光学及计算光学的发展, 光片荧光 
+显微技术逐渐突破传统分辨率限制, 成为研究细胞器 
+动态行为的重要工具. 2014年, Chen等人 [53]提出晶格 
+光片荧光显微技术, 实现了亚细胞结构的高时空分辨 
+率成像, 在保证低光毒性的前提下, 能够长期观测活细 
+胞内复杂动态过程. 近年来, 超分辨光片荧光显微技术 
+进一步推动了细胞生物学研究的发展. 2025年, 清华大 
+学团队提出元学习驱动的反射式晶格光片技术(Meta- 
+rLLS-VSIM), 实现了近各向同性超分辨成像. 该系统依 
+托毫秒级自适应波前校正, 能够在复杂胞内环境中清 
+晰解析出线粒体嵴的动态重构过程. 同期研究还观测 
+到溶酶体机械力介导的线粒体分裂, 以及微管与溶酶 
+体间的“搭便车”转运现象. 2026年, 研究者 [78]联合活细 
+胞三维光片荧光显微技术、STED超分辨成像与冷冻 
+电镜开展研究, 探究线粒体珍珠化调控mtDNA拟核空 
+间分布的内在机制, 证实钙离子信号可诱导线粒体形 
+成串珠状膜缢缩结构, 依靠膜张力分散聚集的拟核, 再 
+通过内膜嵴固定拟核的均匀排布间距, 由此阐明一条 
+不依赖线粒体融合与分裂的线粒体基因组空间调控通 
+路. 此外, 多平面RESOLFT光片技术取得进展 [59], 使研 
+究人员能够在极低光剂量条件下长期追踪核孔复合 
+物、肌动蛋白网络等亚细胞结构的动态演化. 上述研 
+究表明, 光片荧光显微技术已逐渐从细胞形态观察工 
+具发展为解析细胞器相互作用、能量代谢调控及细胞 
+命运决定机制的重要研究平台.  
+4 总结与展望 
+光片荧光显微技术凭借平面选择性照明和正交荧 
+光探测的独特成像机制, 在保持低光毒性和弱光漂白 
+的同时, 实现了高速、大体积三维成像, 已成为现代生 
+物医学研究中最具代表性的活体成像技术之一. 自OP -
+FOS和SPIM提出以来, 光片荧光显微技术经历了从正 
+交双物镜结构到多物镜、单物镜以及开顶式结构的持 
+续演进; 同时, 围绕视场拓展、分辨率提升和成像深度 
+增强等关键需求, 发展出平铺光片、轴向扫描光片、 
+无衍射光片、超分辨光片以及近红外深层成像等多种 
+技术路线. 经过三十余年的发展, 光片荧光显微技术已 
+逐步实现从胚胎发育观测工具向跨尺度、高通量、多 
+场景生物成像平台的转变, 并在发育生物学、神经科 
+学、组织病理学、类器官研究以及亚细胞动态观测等 
+领域发挥着重要作用.  
+尽管取得了显著进展, 光片荧光显微技术的发展 
+仍受到若干核心瓶颈制约. 从本质上看, 视场范围、空 
+间分辨率、组织穿透深度和成像速度之间的相互制约 
+关系仍然存在: 超高分辨率往往伴随着视场减小和数 
+据量激增; 深层组织成像则受到散射、吸收及像差累 
+积的限制; 多视角和多模态成像虽然提升了图像质量, 
+但也增加了系统复杂度和数据处理负担. 因此, 如何在 
+大尺度观测与精细结构解析之间建立更优平衡, 仍是 
+未来光片荧光显微技术发展的核心科学与工程问题.  
+展望未来, 光片荧光显微技术的发展将呈现光场 
+工程化、成像智能化、多模态融合化和应用临床化四 
+个趋势. 在光学层面, 通过自适应光学、结构化光场调 
+控以及新型超表面器件等技术, 有望进一步突破视场、 
+分辨率与穿透深度之间的传统权衡关系; 在成像模式 
+层面, 光片荧光显微技术将持续与双光子激发、近红 
+外二区成像、超分辨显微和单分子定位技术深度融合, 
+实现从器官、细胞到分子尺度的跨尺度成像; 在数据 
+处理层面, 人工智能驱动的图像重建、像差校正、目 
+标识别与定量分析技术将逐渐成为光片荧光显微技术 
+的重要组成部分, 推动成像、重建和分析全流程自动 
+化; 在应用层面, 随着开顶式光片、高通量自动化平台 
+以及标准化成像流程的发展, 光片荧光显微技术有望 
+进一步拓展至数字病理、类器官评价、药物筛选及临 
+床精准诊疗等领域.  
+光片荧光显微技术正由单一成像设备逐步发展为 
+集光学工程、计算成像、人工智能与生物医学研究于 
+一体的综合技术平台. 随着相关关键技术的持续突破, 
+光片荧光显微技术有望实现更大尺度、更高分辨率、 
+更深穿透和更智能化的生物成像, 为生命科学基础研 
+究和精准医学发展提供更加有力的技术支撑.    
+参考文献  
+1  Voie A H, Burns D H, Spelman F A. Orthogonal-plane fluorescence optical sectioning: three-dimensional imaging of macroscopic biological 
+2026 年 9 月 第 71 卷 第 27 期  
+6334  
+
+=== PDF_PAGE 12 ===
+specimens. J Microsc, 1993, 170: 229–236  
+2  Huisken J, Swoger J, Del Bene F, et al. Optical sectioning deep inside live embryos by selective plane illumination microscopy. Science, 2004, 305: 
+1007–1009  
+3  Tomer R, Khairy K, Amat F, et al. Quantitative high-speed imaging of entire developing embryos with simultaneous multiview light-sheet 
+microscopy. Nat Meth, 2012, 9: 755–763  
+4  Dunsby C. Optically sectioned imaging by oblique plane microscopy. Opt Express, 2008, 16: 20306–20316  
+5  McGorty R, Liu H, Kamiyama D, et al. Open-top selective plane illumination microscope for conventionally mounted specimens. Opt Express, 
+2015, 23: 16142–16153  
+6  Vettenburg T, Dalgarno H I C, Nylk J, et al. Light-sheet microscopy using an Airy beam. Nat Meth, 2014, 11: 541–544  
+7  Planchon T A, Gao L, Milkie D E, et al. Rapid three-dimensional isotropic imaging of living cells using Bessel beam plane illumination. Nat Meth, 
+2011, 8: 417–423  
+8  Chen B, Chang B J, Roudot P, et al. Resolution doubling in light-sheet microscopy via oblique plane structured illumination. Nat Meth, 2022, 19: 
+1419–1426  
+9  Takanezawa S, Saitou T, Imamura T. Wide field light-sheet microscopy with lens-axicon controlled two-photon Bessel beam illumination. Nat 
+Commun, 2021, 12: 2979 
+10  Wang F, Wan H, Ma Z, et al. Light-sheet microscopy in the near-infrared II window. Nat Meth, 2019, 16: 545–552 
+11  Qiao C, Li Z, Wang Z, et al. Fast-adaptive super-resolution lattice light-sheet microscopy for rapid, long-term, near-isotropic subcellular imaging. 
+Nat Meth, 2025, 22: 1059–1069 
+12  Olarte O E, Andilla J, Gualda E J, et al. Light-sheet microscopy: a tutorial. Adv Opt Photon, 2018, 10: 111–179 
+13  Keller P J, Schmidt A D, Wittbrodt J, et al. Digital scanned laser light-sheet fluorescence microscopy (DSLM) of zebrafish and Drosophila 
+embryonic development. Cold Spring Harb Protoc, 2011, 10: 1235–1243  
+14  Holekamp T F, Turaga D, Holy T E. Fast three-dimensional fluorescence imaging of activity in neural populations by objective-coupled planar 
+illumination microscopy. Neuron, 2008, 57: 661–672 
+15  Wu Y, Ghitani A, Christensen R, et al. Inverted selective plane illumination microscopy (i SPIM) enables coupled cell identity lineaging and 
+neurodevelopmental imaging in Caenorhabditis elegans. Proc Natl Acad Sci USA, 2011, 108: 17708–17713 
+16  Wu Y, Wawrzusin P, Senseney J, et al. Spatially isotropic four-dimensional imaging with dual-view plane illumination microscopy. Nat 
+Biotechnol, 2013, 31: 1032–1038 
+17  Kumar A, Wu Y, Christensen R, et al. Dual-view plane illumination microscopy for rapid and spatially isotropic imaging. Nat Protoc, 2014, 9: 
+2555–2573 
+18  Manton J D, Rees E J. triSPIM: light sheet microscopy with isotropic super-resolution. Opt Lett, 2016, 41: 4170–4173 
+19  Moos F, Suppinger S, de Medeiros G, et al. Open-top multisample dual-view light-sheet microscope for live imaging of large multicellular systems. 
+Nat Meth, 2024, 21: 798–803 
+20  Bouchard M B, Voleti V, Mendes C S, et al. Swept confocally-aligned planar excitation (SCAPE) microscopy for high-speed volumetric imaging of 
+behaving organisms. Nat Photon, 2015, 9: 113–119 
+21  Yang B, Chen X, Wang Y, et al. Epi-illumination SPIM for volumetric imaging with high spatial-temporal resolution. Nat Meth, 2019, 16: 501–504 
+22  Sapoznik E, Chang B J, Huh J, et al. A versatile oblique plane microscope for large-scale and high-resolution imaging of subcellular dynamics. 
+eLife, 2020, 9: e57681 
+23  Fang C, Yu T, Chu T, et al. Minutes-timescale 3D isotropic imaging of entire organs at subcellular resolution by content-aware compressed-sensing 
+light-sheet microscopy. Nat Commun, 2021, 12: 107 
+24  Zhao Y, Zhang M, Zhang W, et al. Isotropic super-resolution light-sheet microscopy of dynamic intracellular structures at subsecond timescales. 
+Nat Meth, 2022, 19: 359–369 
+25  Wang Z, Wang J, Zhao Y, et al. 3D live imaging and phenotyping of CAR-T cell mediated-cytotoxicity using high-throughput Bessel oblique plane 
+microscopy. Nat Commun, 2024, 15: 6677 
+26  Mcgorty R, Xie D, Huang B. High-NA open-top selective-plane illumination microscopy for biological imaging. Opt Express, 2017, 25: 17798– 
+17810 
+27  Glaser A K, Reder N P, Chen Y, et al. Multi-immersion open-top light-sheet microscope for high-throughput imaging of cleared tissues. Nat 
+Commun, 2019, 10: 2781 
+28  Glaser A K, Bishop K W, Barner L A, et al. A hybrid open-top light-sheet microscope for versatile multi-scale imaging of cleared tissues. Nat 
+Meth, 2022, 19: 613–619 
+29  Park W Y, Yun J, Shin J, et al. Open-top Bessel beam two-photon light sheet microscopy for three-dimensional pathology. eLife, 2023, 12: 
+RP92614 
+评 述  
+6335  
+
+=== PDF_PAGE 13 ===
+30  Li Y, Ao S, Li H, et al. Research on microscopic imaging of open-top light-sheet based on Airy beam (in Chinese). J Optoelectron Laser, 2025, 36: 
+882–890 [李渊, 敖思雨, 李宏伟, 等. 基于艾里光束的开顶光片显微成像研究. 光电子·激光, 2025, 36: 882–890]  
+31  Engelbrecht C J, Stelzer E H. Resolution enhancement in a light-sheet-based microscope (SPIM). Opt Lett, 2006, 31: 1477–1479 
+32  Gao L. Extend the field of view of selective plan illumination microscopy by tiling the excitation light sheet. Opt Express, 2015, 23: 6102–6111 
+33  Chen Y, Li X, Zhang D, et al. A versatile tiling light sheet microscope for imaging of cleared tissues. Cell Rep, 2020, 33: 108349 
+34  Hu H, Wang D, Chen Y, et al. Morphological segmentation with tiling light sheet microscopy to quantitatively analyze the three-dimensional 
+structures of spinal motoneurons. Cell Regen, 2025, 14: 17 
+35  Lu J, Xu H, Wang D, et al. 3D reconstruction of neuronal allometry and neuromuscular projections in asexual planarians using expansion tiling 
+light sheet microscopy. eLife, 2025, 13: RP101103 
+36  Gao L, Tang W C, Tsai Y C, et al. Lattice light sheet microscopy using tiling lattice light sheets. Opt Express, 2019, 27: 1497–1506 
+37  Wang D, Jin Y, Feng R, et al. Tiling light sheet selective plane illumination microscopy using discontinuous light sheets. Opt Express, 2019, 27: 
+34472–34483 
+38  Dean K M, Roudot P, Welf E S, et al. Deconvolution-free subcellular imaging with axially swept light sheet microscopy. Biophys J, 2015, 108: 
+2807–2815 
+39  Chakraborty T, Driscoll M K, Jeffery E, et al. Light-sheet microscopy of cleared tissues with isotropic, subcellular resolution. Nat Meth, 2019, 16: 
+1109–1113 
+40  Aakhte M, Müller G F, Roos L, et al. Isotropic, aberration-corrected light sheet microscopy for rapid high-resolution imaging of cleared tissue. Nat 
+Biotechnol, 2025, doi: 10.1038/s41587-025-02882-8  
+41  Qin S. Image reconstruction for large FOV Airy beam light-sheet microscopy by a 3D deconvolution approach. Opt Lett, 2020, 45: 2804–2807 
+42  Vettenburg T. Planar light-sheet microscopy with curved Airy beams. Biomedical Imaging and Sensing Conference, 2023, 12608, doi: 10.1117/ 
+12.3007903  
+43  Liu P, Chen H, Pang M, et al. Airy-like beam-based light-sheet microscopy with improved FOV for zebrafish intracerebral hemorrhage. Opt 
+Express, 2022, 30: 14709–14722 
+44  Gu S, Yu X, Bai C, et al. Multiple Airy beams light-sheet fluorescence microscopy. Front Phys, 2022, 10: 1111023 
+45  Hsu H C, Vyas S, Chu C H, et al. Metasurface-based Airy light-sheet fluorescence microscopy. Appl Phys Rev, 2025, 12: 031412 
+46  Kasu R, Luo H, Luckhart S, et al. Single-objective Airy light-sheet imaging. ACS Photonics, 2025, 12: 2432–2439 
+47  Tang L, Wang J, Ding J, et al. Curved light sheet microscopy for centimetre-scale cleared tissue imaging. Nat Photon, 2025, 19: 577–584 
+48  Fahrbach F O, Gurchenkov V, Alessandri K, et al. Light-sheet microscopy in thick media using scanned Bessel beams and two-photon fluorescence 
+excitation. Opt Express, 2013, 21: 13824–13839 
+49  Liu G, Ruan X, Milkie D E, et al. Characterization, comparison, and optimization of lattice light sheets. Sci Adv, 2023, 9: eade6623 
+50  Jia H, Yu X, Yang Y, et al. Construction and optimization of the complementary beam of Bessel beam (in Chinese). Acta Photon Sin, 2018, 47: 
+0708002 [贾昊, 于湘华, 杨延龙, 等. 贝塞尔光束的互补光束设计与优化. 光子学报, 2018, 47: 0708002]  
+51  Wang P, Zhou Y, Zhao Y X, et al. Double-ring-modulated light sheet fluorescence microscopic technique for multi-scale high-resolution 3D 
+imaging (in Chinese). Chin Optics, 2022, 15: 1321–1331 [王鹏, 周尧, 赵宇轩, 等. 用于多尺度高分辨率三维成像的双环光片荧光显微技术. 中 
+国光学, 2022, 15: 1321–1331] 
+52  Meinert T, Rohrbach A. Light-sheet microscopy with length-adaptive Bessel beams. Biomed Opt Express, 2019, 10: 670–681 
+53  Chen B C, Legant W R, Wang K, et al. Lattice light-sheet microscopy: imaging molecules to embryos at high spatiotemporal resolution. Science, 
+2014, 346: 1257998 
+54  Cheng S, Saliba N, Gagliano G, et al. Single-objective lattice light sheet microscopy with microfluidics for single-molecule super-resolution 
+imaging of mammalian cells. ACS Photonics, 2026, 13: 249–262 
+55  Shi Y, Tabet J S, Milkie D E, et al. Smart lattice light-sheet microscopy for imaging rare and complex cellular events. Nat Meth, 2024, 21: 301–310 
+56  Malivert M, Harms F, Veilly C, et al. Active image optimization for lattice light sheet microscopy in thick samples. Biomed Opt Express, 2022, 13: 
+6211–6228 
+57  Aakhte M, Akhlaghi E A, Müller H A J. SSPIM: a beam shaping toolbox for structured selective plane illumination microscopy. Sci Rep, 2018, 8: 
+10067 
+58  Hoyer P, de Medeiros G, Balázs B, et al. Breaking the diffraction limit of light-sheet fluorescence microscopy by RESOLFT. Proc Natl Acad Sci 
+USA, 2016, 113: 3442–3446 
+59  Bodén A, Ollech D, York AG, et al. Super-sectioning with multi-sheet reversible saturable optical fluorescence transitions (RESOLFT) microscopy. 
+Nat Methods, 2024, 21: 882–888  
+60  Betzig E, Patterson G H, Sougrat R, et al. Imaging intracellular fluorescent proteins at nanometer resolution. Science, 2006, 313: 1642–1645 
+61  Hess S T, Girirajan T P K, Mason M D. Ultra-high resolution imaging by fluorescence photoactivation localization microscopy. Biophys J, 2006, 
+2026 年 9 月 第 71 卷 第 27 期  
+6336  
+
+=== PDF_PAGE 14 ===
+91: 4258–4272 
+62  Rust M J, Bates M, Zhuang X. Sub-diffraction-limit imaging by stochastic optical reconstruction microscopy (STORM). Nat Meth, 2006, 3: 793– 
+796 
+63  Cella Zanacchi F, Lavagnino Z, Perrone Donnorso M, et al. Live-cell 3D super-resolution imaging in thick biological samples. Nat Meth, 2011, 8: 
+1047–1049 
+64  Hu Y S, Zhu Q, Elkins K, et al. Light-sheet Bayesian microscopy enables deep-cell super-resolution imaging of heterochromatin in live human 
+embryonic stem cells. Opt Nano, 2013, 2: 7 
+65  Cabillic M, Forriere H, Bettarel L, et al. In-depth single molecule localization microscopy using adaptive optics and single objective light-sheet 
+microscopy. Nat Commun, 2025, 16: 8362 
+66  Wang C, Su D, Zhang Z, et al. Zebrafish fluorescence imaging platform based on Bessel light sheet illumination. Biomed Opt Express, 2025, 16: 
+1678–1691 
+67  Wang F, Ma Z, Zhong Y, et al. In vivo NIR-II structured-illumination light-sheet microscopy. Proc Natl Acad Sci USA, 2021, 118: e2023888118 
+68  Liu P, Shi T, Li H, et al. Airy beam assisted NIR-II light-sheet microscopy. Nano Today, 2022, 47: 101628 
+69  Keller P J, Schmidt A D, Wittbrodt J, et al. Reconstruction of zebrafish early embryonic development by scanned light sheet microscopy. Science, 
+2008, 322: 1065–1069 
+70  McDole K, Guignard L, Amat F, et al. In toto imaging and reconstruction of post-implantation mouse development at the single-cell level. Cell, 
+2018, 175: 859–876.e33 
+71  Ahrens M B, Orger M B, Robson D N, et al. Whole-brain functional imaging at cellular resolution using light-sheet microscopy. Nat Meth, 2013, 
+10: 413–420 
+72  Cong L, Wang Z, Chai Y, et al. Rapid whole brain imaging of neural activity in freely behaving larval zebrafish (Danio rerio). eLife, 2017, 6: 
+e28158 
+73  Chung K, Wallace J, Kim S Y, et al. Structural and molecular interrogation of intact biological systems. Nature, 2013, 497: 332–337 
+74  Pan C, Cai R, Quacquarelli F P, et al. Shrinkage-mediated imaging of entire organs and organisms using uDISCO. Nat Meth, 2016, 13: 859–867 
+75  Lewis S M, Berthelet J, Whitehead L W, et al. LeGO-3D: 3D imaging of lung metastases and vascularisation using light sheet fluorescence 
+microscopy. npj Imag, 2025, 3: 58 
+76  Glaser A K, Reder N P, Chen Y, et al. Light-sheet microscopy for slide-free non-destructive pathology of large clinical specimens. Nat Biomed 
+Eng, 2017, 1: 0084 
+77  Luo J, Molbay M, Chen Y, et al. Nanocarrier imaging at single-cell resolution across entire mouse bodies with deep learning. Nat Biotechnol, 2025, 
+43: 2009–2022 
+78  Landoni J C, Lycas M D, Macuada J, et al. Pearling drives mitochondrial DNA nucleoid distribution. Science, 2026, 392: 102–109 
+评 述  
+6337  
+
+=== PDF_PAGE 15 ===
+Summary for “光片荧光显微技术研究进展及其应用” 
+Research progress and applications of light-sheet  
+fluorescence microscopy 
+Feng Wu1,2, Tingfeng Yao2, Chunyan Li2, Guangcun Chen2, Guang Yang2*,  
+Yejun Zhang2* & Qiangbin Wang1,2* 
+1 School of Nano-Tech and Nano-Bionics, University of Science and Technology of China, Hefei 230026, China 
+2 CAS Key Laboratory of Nano-Bio Interface, Jiangsu Key Laboratory of Organoid Engineering and Precision Medicine, Suzhou Institute of Nano-Tech 
+and Nano-Bionics, Chinese Academy of Sciences, Suzhou 215123, China 
+* Corresponding authors, E-mail: gyang2024@sinano.ac.cn; yjzhang2009@sinano.ac.cn; qbwang2008@sinano.ac.cn 
+Light-sheet fluorescence microscopy (LSFM) has emerged as one of the most versatile volumetric imaging techniques in 
+contemporary biomedical research. By selectively illuminating only the focal plane of detection while leaving the remainder of the 
+specimen in darkness, LSFM fundamentally decouples illumination from detection, thereby achieving optical sectioning with 
+minimal phototoxicity and photobleaching. This unique combination of low photodamage, high acquisition speed, and large- 
+volume coverage has positioned LSFM as an indispensable tool for long-term observation of dynamic biological processes and 
+three-dimensional structural reconstruction of intact samples. This review provides a comprehensive overview of LSFM, spanning 
+its fundamental principles, evolutionary trajectory of optical configurations, technological breakthroughs, and broad-spectrum 
+biomedical applications. We begin by elucidating the core imaging principle—orthogonal arrangement of illumination and 
+detection—and the physical mechanisms governing light-sheet generation, including both static beam shaping and dynamic 
+scanning strategies. We then systematically survey the development of major optical architectures, ranging from the classic 
+orthogonal dual-objective geometry to multi-objective systems that enable multiview fusion, single-objective designs that 
+maximize sample accessibility and system compactness, and open-top configurations that facilitate large-scale clinical specimen 
+imaging. Each architecture is examined with respect to its technical characteristics, performance trade-offs, and optimal 
+application scenarios. Subsequently, we focus on recent technological advances aimed at overcoming the inherent limitations of 
+conventional LSFM in three key directions. For field-of-view expansion, we discuss tiling light-sheet microscopy, axially swept 
+light-sheet microscopy, and non-diffracting beam implementations based on Airy and Bessel beams, which collectively push the 
+boundaries between resolution and imaging volume. For spatial resolution enhancement, we review super-resolution strategies 
+integrated with LSFM, including lattice light-sheet microscopy, structured illumination microscopy, and single-molecule 
+localization microscopy, which together bridge the gap between mesoscopic imaging and nanoscale precision. For deep-tissue 
+penetration, we summarize recent progress in two-photon light-sheet microscopy and near-infrared-II (NIR-II) light-sheet 
+microscopy, highlighting how longer excitation and emission wavelengths mitigate scattering and absorption to enable imaging 
+through intact cranium and thick tissues. Beyond hardware innovations, we also examine the growing role of computational 
+methods in LSFM, including artificial intelligence-assisted image reconstruction, denoising, aberration correction, and automated 
+feature recognition, which are progressively transforming LSFM from a purely optics-driven technique into a synergistic platform 
+of physical and computational imaging. The biomedical applications of LSFM are then reviewed across multiple scales, from 
+embryonic development tracking and whole-brain neuronal activity mapping, to three-dimensional histopathological analysis of 
+large clinical specimens, subcellular organelle dynamics, and pharmacokinetic evaluation of nanomedicines. Finally, we discuss 
+future perspectives on the convergence of LSFM with adaptive optics, multimodal integration, and intelligent data processing, and 
+assess its potential to transition from basic research laboratories toward clinical diagnostics and precision medicine. This review is 
+intended to serve as a comprehensive reference for researchers and engineers working on the design, implementation, and 
+application of next-generation LSFM systems. 
+light-sheet fluorescence microscopy, optical configuration, imaging, biomedical applications 
+doi: 10.1360/CSB-2026-0809 
+2026 年 9 月 第 71 卷 第 27 期  
+6338  

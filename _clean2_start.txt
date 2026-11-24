@@ -1,0 +1,13 @@
+LAUNCHED
+=== start Tue Nov 24 10:36:07 AM CST 2026 ===
+== 删除前清单 ==
+/data/heluofan/seg_work                  219G
+/data/heluofan/picai                     155G
+/data/heluofan/eegfnirs                  22G
+/data/heluofan/der_data                  14G
+/data/heluofan/brats_work                6.6G
+/data/heluofan/thyroid_tta               1.2G
+
+backup candidates: 19
+backup: 208K
+used_before_kb=633095132

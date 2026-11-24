@@ -1,0 +1,856 @@
+=== PDF_PAGE 1 ===
+0410003 ‐1
+第 54 卷第  4 期
+2025  年 4 月
+Vol.54 No.4
+April  2025
+光 子 学 报
+ACTA PHOTONICA SINICA
+MSP -YOLACT ：面向多模态 PET/CT 肺部肿瘤
+医学图像的实例分割模型
+周涛
+1，3
+，柴文文
+1，3
+，王亚星
+1，3
+，陈凯雄
+1，3
+，陆惠玲
+2
+，石道宗
+1，3
+（1 北方民族大学  计算机科学与工程学院 ，银川  750021）
+（2 宁夏医科大学  医学信息与工程学院 ，银川  750004）
+（3 北方民族大学  图像图形智能处理国家民委重点实验室 ，银川  750021）
+摘 要 ：针对多模态肺部肿瘤医学图像对比度低 、病灶边界模糊 ，现有方法未充分考虑多模态图像信息
+互 补 性 的 问 题，提 出 了 面 向 多 模 态PET/CT 肺 部 肿 瘤 医 学 图 像 的 实 例 分 割 模 型，该 模 型 为 充 分 利 用 不
+同模态图像的病灶共性特征进行病灶形态增强 ，设计融合 PET 和 CT 模态图像特征的多模态特征混合
+器；为增加模型对病灶区域的关注度 ，构造增强特征金字塔 ，该结构由强化特征融合模块以及多尺度特
+征 融 合 器 组 成；为 增 强 模 型 对 病 灶 区 域 的 定 位 能 力，设 计 基 于 全 局 与 局 部 特 征 强 化 的 并 行 特 征 增 强 预
+测头模块 。使用临床多模态肺部肿瘤医学图像数据集验证模型的有效性 ，结果表明所提模型对于肺部
+病 灶 分 割 的 APdet 、APseg 、ARdet 、ARseg 、mAP det 和 mAP seg 分 别 为 64.55%、65.53%、51.47%、52.28%、
+64.37% 和 65.41%。 该 模 型 实 现 对 肺 部 肿 瘤 病 灶 区 域 的 精 确 检 测 分 割，以 及 对 肺 部 肿 瘤 自 动 化 辅 助 诊
+断具有积极意义 。
+关键词 ：医学图像 ；肺部肿瘤 ；多模态 ；PET/CT ；实例分割 ；注意力机制
+中图分类号 ：TP391.4    文献标识码 ：A doi：10.3788 /gzxb 20255404 .0410003
+0 引言
+实例分割是治疗计划 、手术和预后评估方面的重要技术手段 ，其对医学图像分割结果的准确性将影响
+医生对病情阶段 、病情严重程度的判断 ，从而影响后续治疗效果
+［1］
+。随着医学图像设备的发展 ，多模态图像
+也随之产生 。常见用于肺部肿瘤的医学图像有正电子发射型计算机断层扫描 （Positron Emission Computed 
+Tomography ，PET）图像 、计算机断层扫描 （Computed Tomography ，CT）图像以及 PET/CT 图像 。PET/CT
+结合了 PET 对肿瘤检测的高灵敏度和 CT 的解剖信息 ，但仍然缺乏部分病灶的有效信息
+［2］
+。因此 ，通过结合
+多种成像信息辅助分割是必要的 。
+目前的肺部肿瘤图像分析方法大多基于图像分析任务的知识 ，融合来自每个模态的信息
+［3］
+。如：LI L
+［4］
+提出多模态脑肿瘤分割的模型 ，通过使用图像融合作为特征学习的附加正则化实现更充分的多模态特征融
+合 。 FU X
+［5］
+引 入 深 度 学 习 框 架，该 框 架 使 用 多 模 态 空 间 注 意 模 块 自 动 学 习 肿 瘤 相 关 的 空 间 区 域，并 抑 制
+PET 输入的生理高摄取正常区域进而从 CT 图像中分割具有较高肿瘤可能性的区域 。CHEN S
+［6］
+设计了自
+动分割任务的混合注意力融合分割网络 。通过混合注意力利用 PET 的肿瘤区域增强特性来指导 CT 分割 ，
+从而抑制不相关噪声区域 。上述研究表明 ，通过对多模态图像进行病灶信息结合可以获得更丰富的疾病信
+息，从而使得分割效果更好 。
+多模态医学图像分割的挑战不仅在于其对同一病灶区域呈现的属性不同 ，还在于肺部肿瘤医学图像中
+引用格式 ： ZHOU Tao ， CHAI Wenwen ， WANG Yaxing ， et al . MSP -YOLACT ：Instance Segmentation Model for Multimodal 
+PET/CT Medical Images of Lung Tumors ［J］. Acta Photonica Sinica ， 2025 ， 54（4） ：0410003
+周涛 ，柴文文 ，王亚星 ，等 . MSP -YOLACT ：面向多模态 PET/CT 肺部肿瘤医学图像的实例分割模型 ［J］. 光子学报 ，2025 ，54
+（4） ：0410003
+基金项目 ：国家自然科学基金 (No. 62062003 )，宁夏自然科学基金 (No. 2023 AAC 0329 )
+第一作者 ：周涛 ，zhoutaonxmu@ 126.com
+通讯作者 ：柴文文 ，chaiwenwen@stu .nmu .edu.cn
+收稿日期 ：2024  ‒ 09 ‒ 19；录用日期 ：2024  ‒ 12 ‒ 20
+http: // www. photon. ac. cn
+
+=== PDF_PAGE 2 ===
+光 子 学 报
+0410003 ‐2
+存在的低对比度 、边界模糊的病灶区域问题
+［7］
+。ZHOU S
+［8］
+提出了新型的高分辨率多尺度编码器 -解码器网
+络 ，其 中 为 编 码 器-解 码 器 结 构 引 入 多 尺 度 密 集 连 接，收 集 高 分 辨 率 语 义 信 息 以 实 现 准 确 的 边 界 定 位。
+ZHOU P
+［9］
+提出一种新的方法 ，通过多模态共同注意获得肿瘤感知的深层特征以实现精确的肿瘤定位和多
+级协调注意突出肿瘤区域以进行更精确的分割 ，可以有效地利用弱配对图像中的信息来进行精确的肿瘤
+分割 。
+针对现有的多模态医学图像分割方法未充分考虑多模态图像病灶信息互补以及肺部肿瘤医学图像中
+病灶信息对比度低 、病灶边界模糊等问题
+［10］
+，本文提出了面向多模态 PET/CT 肺部肿瘤医学图像的实例分
+割模型（Multimodal enhanced parallel prediction head You Only Look At Coefficients ，MSP -YOLACT ） ，其主
+要贡献有 ：1）设计多模态特征混合器 （Multi -mode Feature Mixer ，MFM） ，引用 PET 、CT 两种模态的病灶信
+息对 PET/CT 分支进行特征补充 ，增强病灶区域的共性信息 ；2）提出增强特征金字塔 ，该结构由强化特征融
+合 模 块（Strengthen Feature Fusion Module ，SFFM）以 及 多 尺 度 特 征 融 合 器（Multi -scale Feature Fusion 
+Module ，MFFM）组成 ，通过强化特征融合机制关注高层语义信息以及抑制高层特征图的背景噪声 ，通过多
+尺度特征融合器充分利用 PET 、CT 特征信息对特征金字塔底层特征图进行信息补充 ，增强网络形态信息学
+习 能 力；3）提 出 并 行 特 征 增 强 预 测 头 模 块（Parallel Feature Enhancement Prediction Head Module ，
+PFEPHM ） ，该模块通过重新构建锚框分支和掩膜系数分支 ，有效提升了模型在目标检测和实例分割任务中
+的 性 能。 此 外，还 应 用 全 局 与 局 部 特 征 强 化 模 块（Global and Local Feature Enhancement Module ， 
+GLFEM ） ，通过充分融合全局特征与局部特征 ，增强模型对病灶区域及其边界像素属性的识别能力 。
+1 网络整体架构
+基 于YOLACT
+［11］
+提 出 面 向 多 模 态PET/CT 肺 部 肿 瘤 医 学 图 像 的 实 例 分 割 模 型MSP -YOLACT 。整
+体网络结构如图 1 所示 。在图 1（A）部分 ，网络路径包括 PET 、PET/CT 、CT 三个分支 ，其中 PET/CT 为主
+干网络 ，PET 、CT 分支为辅助网络 ，通过多模态特征混合器捕获 PET 、CT 辅助网络特异性特征对 PET/CT
+特征进行补充 ，并将主干网络中的特征信息通过逐像素相加的方式融入辅助网络中 ，实现主副网络特征交
+互。在图 1（B）增强特征金字塔部分 ，通过强化特征融合模块关注高层语义信息后将高层特征图与低层特征
+图进行逐像素相加 ，利用高层语义信息对低层特征信息进行强化 ，并通过多尺度特征融合器充分融合 PET 、
+CT 分支的特征信息对特征金字塔底层信息进行增强 。在图 1（C）并行特征增强预测头模块部分 ，将来自增
+强特征金字塔的特征图进行特征预测 ，其通过对目标边界框 、目标掩膜分支进行重构 ，从而增强模型对病灶
+区域检测以及病灶边界刻画能力 ，并应用全局与局部特征强化模块将双分支结构中特征图的病灶区域进行
+增 强。 然 后 将 每 一 个 特 征 图 获 取 的 特 征 预 测 结 果 进 行 融 合，经 过 非 极 大 值 抑 制（Non -Max Suppression ，
+NMS）后得出目标边界框与掩膜系数 ，最后将掩膜系数和原型分支进行线性组合并按照目标边界进行切片
+（Crop）处理 ，通过真实标注与预测结果间的阈值 （Threshold ）获取分割结果 。
+图 1　整体网络结构
+Fig. 1　Overall network structure
+
+=== PDF_PAGE 3 ===
+周涛 ，等：MSP -YOLACT ：面向多模态 PET/CT 肺部肿瘤医学图像的实例分割模型
+0410003 ‐3
+从医学图像成像的角度分析 ，使用多模态图像对病变区域进行表达 ，远比单模态图像更能全面表示病
+灶的信息 。因此设计 MSP -YOLACT 模型对多模态肺部肿瘤医学图像进行实例分割 ，其通过多模态特征混
+合器实现利用 PET 、CT 以及 PET/CT 三种图像的共性信息增强病灶区域的特征信息 。同时 ，针对肺部肿
+瘤医学图像中存在的对比度低 、边界模糊等病灶区域问题 ，除了利用多模态特征进行病灶信息增强外 ，还通
+过增强特征金字塔以及并行特征增强预测头模块两个部分对病灶区域进行特征增强 ，增强特征金字塔部分
+通过强化特征融合模块在特征图自上而下的融合过程中聚焦于高层特征图语义信息同时抑制噪声因子 ，并
+通过多尺度特征融合器充分利用不同模态的特征信息对 PET/CT 特征图进行特征补充 。并行特征增强预
+测头通过重构锚框与掩膜系数分支 ，增强模型对病灶区域定位与分割能力 ，同时采用全局与局部特征强化
+模块突显病灶区域和病灶边界 。
+1.1　多模态特征混合器
+不同模态的肺部肿瘤图像成像方式不同 ，对同一病灶区域呈现的病灶边缘 、纹理 、形状存在差异 。因此
+设计多模态特征融合模块 ，通过 PET 、CT 分支自适应学习两个分支中病灶区域的共性特征 ，通过特征逐像
+素 融 合 的 方 式 实 现 丰 富PET/CT 分 支 的 病 灶 信 息，从 而 突 显 病 灶 区 域 特 征，并 将 融 合 后 的 特 征 图 分 别 与
+PET 、CT 分支进行信息融合 ，充分利用多模态图像的信息互补性 ，增强不同模态间的病灶特征 ，多模态特征
+融合模块具体如图 2 所示 。
+首先 ，将输入的 PET 、CT 特征图通过自适应平均池化 （AdaptiveAvgpool ）获取特征图所有像素点的平
+均值 ，利用 1×1 卷积 、批量归一化（Batch Normalization ， BN）和 Relu 激活函数等操作优化网络的表达能力 。
+其次 ，将获取到的 PET 、CT 特征信息相加 ，增强病灶信息 ，并利用 Sigmoid 函数获取融合后特征图的权值 。
+在 PET/CT 分支中 ，首先 ，利用 1×1 卷积提取查询 （Q） 、键（K）和值（V）特征 ，并与可学习矩阵相乘得到
+Wq、Wk 和 Wv。计算 Wq 和 Wk 的点积 ，以增强特征间的相似度 ，对点积结果应用 SoftMax ，得到注意力权重 。
+将注意力权重与 Wv 相乘 ，实现特征的加权融合 。接着 ，注意特征图与 PEC/CT 图进行相加 ，突显 PEC/CT
+特征图中的病灶特征 。然后 ，通过从 PET 、CT 图像获取的权值与加权后的 PET/CT 图像进行权值处理 ，增
+强 PET/CT 图像中的病灶特征 。最后 ，将 PET/CT 的原始特征图与融合后的特征图进行相加 ，保证 PET/
+CT 图像在融合 PET 、CT 图像相关病灶属性的同时有效抑制其背景噪声 。
+图 2　多模态特征混合器
+Fig. 2　Multi -mode feature mixer
+
+=== PDF_PAGE 4 ===
+光 子 学 报
+0410003 ‐4
+1.2　增强特征金字塔
+1.2.1　强化特征融合模块
+特征金字塔通过低分辨率 、语义强的特征与高分辨率 、语义弱的特征结合达到对特征图进行融合的目
+的
+［12］
+，然而在自上而下的融合过程中 ，高层特征图的病灶语义信息虽然能在一定程度上对低层特征图病灶
+信息进行加强 ，但也增强了背景噪声因子 ，从而影响上下文特征的学习 ，因此通过设计强化特征融合模块 ，
+其利用自注意力模块
+［13］
+聚焦于高层特征图的病灶区域 ，使得模型在自上而下的融合过程中 ，能够在有选择
+性地聚焦于高层特征图的病灶信息的同时抑制噪声 ，具体如图 3 所示 。
+首先 ，将高层特征图 PET/CT（i）通过自注意力机制将输入的特征图转换成三个不同的向量 ：查询（Q） 、
+键（K）以及值（V） ，具体表示为
+■
+■
+■
+||||
+||||
+Q = xwQ
+K = xwK
+V = xwV
+（1）
+式中 ，x 表示输入特征图 ，wQ、wK、wV 是模型需要学习的参数 ，分别对应查询 、键和值的权重矩阵 。然后将 Q
+和 K 执行点积 F（Q，K），使得当前目标的每个元素能进行相似性匹配 ，即
+F ( Q，K )= QK
+T
+（2）
+式（2）中 Q 与 K
+T
+执行点乘操作获得像素之间的相似性 ，随后通过特征缩放防止梯度消失 ，并进行归一
+化使得训练时梯度更加稳定 ，即
+Attention ( Q，K，V )= SoftMax ( )QK
+T
+dK
+（3）
+式中 ，dK 表示 K 的维度 ，通过 SoftMax 函数对 Q 和 K 点积结果进行归一化并转换为 0−1 之间的权值 ，将归一
+化的结果与 V 矩阵进行加权从而获得自注意力机制的输出 。
+最后将生成的特征图与下层特征图 PET/CT（i-1）进行强化特征融合 ，确保低分辨特征图的语义信息
+与高分辨率特征图的细节信息引导 。
+1.2.2　多尺度特征融合器
+由于不同病灶区域的形状与大小存在差别且同一病灶区域的纹理 、边缘等细节信息在不同模态图像中
+表现不一致 ，而 PET 、CT 分支经过主副交互网络后不仅具备 PET/CT 的主要信息 ，还具备与 PET/CT 图像
+不同的病灶细节信息 ，因此设计多尺度特征融合器 ，接收不同尺度的 PET 、CT 特征图进行融合 ，PET 图像
+蕴含病灶功能信息 ，因此通过通道注意力
+［14］
+聚焦 PET 图像中的病灶区域 ，CT 图像蕴含病灶结构信息 ，因此
+通过空间注意力
+［15］
+突显病灶轮廓等结构信息 ，并将两个分支的特征图进行逐像素融合 ，有效地融合前景突
+出特征和背景突出特征后与特征金字塔最底层特征图进行逐像素融合 ，增强网络形态信息学习能力 。
+图 3　强化特征融合模块
+Fig.3　Strengthen feature fusion module
+
+=== PDF_PAGE 5 ===
+周涛 ，等：MSP -YOLACT ：面向多模态 PET/CT 肺部肿瘤医学图像的实例分割模型
+0410003 ‐5
+如图 4 所示 ，首先 ，PET 、CT 两个分支分别将经过特征交互的 PET 2、PET 3、PET 4、PET 5、CT2、CT3、
+CT4、CT5 传入四条不同深度的扩张卷积链 （T_1， T_ 2， T_ 3， T_ 4） ，卷积链分别由 3×3 扩张卷积 、不同扩
+张率 t（t=1， 2， 3， 4） 、不同 padding（padding= 1， 2， 3， 4）堆叠而成 ，并将每条卷积链的输出进行逐元素相加
+融合 ，经过多尺度融合的特征图充分融合了 PET 、CT 图像中的病灶信息 ，然后利用空间注意力机制关注 CT
+分支融合图像 ，利用通道注意力聚焦 PET 分支融合图像中的病灶信息 。
+空间注意力机制是由全局最大池化 、全局平均池化 、7×7 卷积 、拼接以及 Sigmoid 等操作获取空间权重
+注意力图的 ，最后将空间权重注意力图和输入图像进行相乘得到空间加权特征图 ，即
+MS ( P )= P ⊗ { }σ ( )Conv7 × 7 ( )[ ]MaxPool ( )P ；AvgPool ( )P = P ⊗ { }σ ( )Conv7 × 7 ( )[ ]P
+s
+max；P
+s
+avg （4）
+式中 ，MS ( P ) 输出空间注意力特征图像 ，σ 代表 Sigmoid 函数 ，P
+s
+max， P
+s
+avg 代表经过最大池化和平均池化输出的
+特征图 ，[；] 代表拼接操作 。
+首先对输入的特征图并行进行最大池化 、全局池化后将两个池化输出的特征图输入到共享的多层感知
+机（Multi -Layer Perceptron ， MLP）中，MLP 是由两个 1×1 卷积和 Relu 组成的两层神经网络 ，然后通过逐元
+素相加合并两个输出的 1×1 卷积的特征图 ，最后使用 sigmoid 函数生成最终的注意力特征图 ，并与输入图像
+进行相乘实现通道加权 。通道注意力计算公式为
+Mc ( P )= P ⊗ { }σ ( )MLP ( )MaxPool( P )+ AvgPool( P ) =
+P ⊗ { }σ ( )Conv
+2
+1 × 1 ( )δ ( )Conv
+1
+1 × 1 ( )P
+s
+max + Conv
+2
+1 ( )δ ( )Conv
+1
+1 × 1 ( )P
+s
+avg
+（5）
+式中 ，Mc ( P ) 代表输出通道注意力特征图像 ，δ 表示 Relu 激活函数 。
+图 4　多尺度特征融合器
+Fig.4　Multi -scale feature fusion
+
+=== PDF_PAGE 6 ===
+光 子 学 报
+0410003 ‐6
+最后将经过空间注意力与通道注意力增强特征信息的 CT、PET 特征图进行逐像素融合 ，从而实现两个
+特征图的信息互补 ，提高模型在边界信息上的表现 。
+1.3　并行特征增强预测头模块
+单阶段实例分割的特征预测部分是通过目标检测和目标分割的并行进行实现对目标的实例分割 ，相比
+于两阶段实例分割而言 ，单阶段实例分割缺少了区域提议过程 ，使得模型对于医学图像中存在的病灶区域
+与背景信息无法很好地区分
+［16］
+。因此 ，设计并行特征增强预测头模块 ，通过对锚框 、掩膜系数两个分支进行
+重构 ，增强模型对病灶区域的定位以及边界刻画能力 ，并利用全局与局部特征强化模块对目标检测 、目标分
+割前的特征图进行特征增强 ，凸出病灶区域 ，细化病灶边界 ，如图 5 所示 。
+并行特征增强预测头模块将接收来自增强特征金字塔不同层 Pi，经过全局与局部特征增强模块后 ，分
+别进行锚框 Box 、掩膜系数 Mask Coefficients 以及类别 Class 的相关计算 。其中锚框分支通过对每个像素点
+生成不同比例的锚框 ，实现对病灶区域的定位 ；掩膜系数分支则是通过预测每个掩膜的系数从而实现对掩
+膜的一一对应 ；类别分支则是通过使用 SoftMax 函数实现对特征图的类别判定 。
+全局与局部特征强化模块 ，通过自适应平均池化获取全局特征外观和卷积运算关注局部性特征图中相
+邻的点并将全局与局部特征进行融合 ，提高模型对于病灶区域和病灶边界的像素属性的识别能力 。算法伪
+代码如表 1 所示 。
+如图 6 所示 ，首先 ，输入特征图通过 1×1 卷积得到 Q、K、V 三个特征图 。 Q 和 K 进行点积运算后 ，通过
+Softmax 函数归一化得到注意力权重 ，再与 V 相乘得到自注意力 输出特征图 。再通过残差连接将自注意力
+图 5　并行特征增强预测头模块
+Fig.5　Parallel feature enhancement prediction head module
+表 1　全局与局部特征强化模块伪代码
+Table 1　Global and local feature enhancement module pseudo code module
+Input ：input feature map x
+Output ：output feature map yswgc
+1：ys = SelfAttion ( x ) /*performs self -attention on the input feature map */
+2：ysq = Conv ( x )/*perform the convolution operation on ys*/
+3：yswq = depthwise conv ( ysq )/*perform a single -channel grouped convolution */
+4：ysq1 = AdapAvgpool( ysq ) /*ysq performs adaptive averaging pooling*/
+5：ysqp1 = AdapAvgpool( yswq )/*yswq performs adaptive average pooling*/
+6：ysq2 = BN ( Conv
+2
+1 × 1 ( δ ( BN ( Conv
+1
+1 × 1 ( ysq ) ) ) ) )/*ysq performs 1×1 convolution and normalization */
+7：ysqp2 = BN ( Conv
+2
+1 × 1 ( δ ( BN ( Conv
+1
+1 × 1 ( yswq ) ) ) ) )/*yswq performs 1×1 convolution and normalization */
+8：ysqc=ysq1+ysq2 /*ysq1 and ysq2 are added */
+9：ysqpc=ysqp1+ysqp2/*ysqp1 and ysqp2  are added */
+10：ysqpcc =[ ysqc；ysqpc ]/*concatenate ysq with yswq*/
+11：yswgc=ysqpcc+x/* add ysqpcc to x*/
+
+=== PDF_PAGE 7 ===
+周涛 ，等：MSP -YOLACT ：面向多模态 PET/CT 肺部肿瘤医学图像的实例分割模型
+0410003 ‐7
+特征图与原始特征图相加 ，降低病灶对外部信息的依赖 。其次 ，特征图经过卷积运算 ，得到特征图 （a） 。通
+过单通道分组卷积对特征图 （a）简单运算得到更多特征图 ，以此降低计算成本 ，具体运算方式如式 （6）所示 。
+将特征图（a）划分成两组 ，每一组执行两个分支操作 ：一个分支进行自适应池化和 1×1 卷积 、BN、ReLU 操
+作，获取全局特征 ；另一个分支经过 1×1 卷积 、BN、ReLU 操作 ，获取局部特征 。将全局特征分支扩展至与
+局部特征分支相同尺寸后 ，逐像素融合 ，得到特征图（b） 。最后 ，将两组特征图拼接 ，并通过残差连接与原始
+特征图融合 ，增强病灶边界特征 。
+yj = ϕ，j ( y )，∀j = 1，…，m （6）
+式中 ，ϕ 是 3×3 卷积 ，yj 表示经过第 j 个卷积生成的不同特征图 。
+2 实验结果与分析
+2.1　实验环境与参数设定
+实 验 环 境：采 用Windows Server 2019 系 统，计 算 机 内 存 为64 GB ，搭 载 两 块Intel Xeon Gold 6154 ， 
+3GHz x 36 CPU 处理器 ，并采用两块并行的 TITAN Ⅴ显卡加速图像处理 。基于 Pytorch（GPU）框架进行网
+络搭建 ，Python 3.7.10，Pytorch 1.7.0 深度学习框架 ，CUDA 11.3.58。
+数据布局 ：将多模态肺部肿瘤数据集按 8：2 划分训练集和测试集 ，分别用于模型训练和性能测试 。每个
+模态数据（PET/CT 、PET 、CT）保持相同比例划分 ，以确保数据分布的一致性 ，其中 ，三种模态图像数据集
+的最终样本数分别为 1 024 张，总共为 3 072 张，PET/CT 、PET 、CT 三种模态各 819 张作为训练集 ，各 205 张
+作为测试集 。
+参数设置 ：在模型训练中采用随机梯度下降 （Stochastic Gradient Descent ，SGD）优化器优化模型参数 ，
+初始学习率设置为 0.000 1，训练周期设置为 150 ，批处理大小设置为 2，损失函数是用来评估网路模型的预
+测值和真实值差异的函数 ，损失函数值越小 ，意味着模型的预测值和真实值之间的差异越小 。损失包括分
+类损失 class_loss 、边框回归损失 bbox_loss 、掩膜分割损失 mask_loss 。其中分类损失为交叉熵损失 （BCE） ，
+公式为
+Lclass = BCE ( C，Cgt ) （7）
+式中 ，C 为预测类别 ，Cgt 为真实类别 。边框回归损失公式为
+Lbox = 1 - IOU ( B， Bgt ) （8）
+式中 ，B 为预测边框 ，Bgt 为真实边框 ，IOU 为交并比 。掩膜分割损失损失为交叉熵损失 ，公式为
+Lmask = BCE ( M，Mgt ) （9）
+式中 ，M 为预测掩膜 ，Mgt 为真实掩膜 。
+实验过程 ：模型在训练过程中监控损失值的变化趋势 ，并使用早停机制来防止过拟合 。当测试集的性
+能在多个 epoch 内不再提升时 ，训练提前终止 。在测试阶段 ，使用与训练集相同的参数配置 ，对测试集进行
+性能评估 ，并通过平均精度 （Average Precision ， AP） 、召回率（Average Recall ， AR）等评价指标来衡量模型
+的分割和检测性能 。
+图 6　全局与局部特征强化模块
+Fig.6　Global and local feature enhancement module
+
+=== PDF_PAGE 8 ===
+光 子 学 报
+0410003 ‐8
+2.2　实验设计思路
+由于目前缺少公开多模态肺部肿瘤数据集 ，通过设计实验 ，包括不同模态图像的实验 、消融实验以及对
+比实验 ，全面验证所提模型的有效性 。通过不同模态图像间的信息互补及模型各模块的作用 ，进一步提升
+对病灶区域的检测与分割性能 。
+不同模态图像的相关实验设计如表 2 所示 ，通过四组实验来验证多模态交互网络的优势 ，由于本文主干
+网络使用 PET/CT 模态图像 ，所以通过使用 PET/CT 作为输入图像 。实验一 ，与基本的 YOLACT 网络进
+行对比 ，它通过单分支特征提取 PET/CT 图像 ；实验二 ，基于 YOLACT 网络结构 ，在特征提取部分增加一个
+分支 ，输入图像为 PET/CT 以及 CT 两种模态的图像 ，并通过两模态特征图相加进行特征交互 ，其中主干网
+络使用 PET/CT 模态图像 ，辅助网络使用 CT 模态图像输入 ；实验三 ，与实验二结构一致 ，改变输入图像为
+PET/CT 以及 PET 两种模态的图像 ，主干网络使用 PET/CT 模态图像 ，辅助网络使用 PET 模态图像输入 ；
+实验四 ，基于 YOLACT 网络结构 ，在特征提取部分增加两个分支 ，输入图像为 PET/CT 、CT 以及 PET 三种
+模态的图像 ，并通过三模态特征图相加进行特征交互 ，其中主干网络使用 PET/CT 模态图像 ，辅助网络使用
+PET 、CT 模态图像输入 。
+消融实验设计如表 3 所示 。实验一 ，PET/CT 、PET 、CT 三个分支分别采用 ResNet 50
+［17］
+作为主干网络
+并通过特征图相加进行特征交互 ，用 Feature Pyramid Networks （FPN）进行特征融合后 ，使用预测头进行特
+征预测 ；实验二 ，PET/CT 、PET 、CT 三个分支分别采用 ResNet 50 作为主干网络 ，并用 MFM 进行特征交互 ，
+用 FPN 进 行 特 征 融 合 后，使 用 预 测 头 进 行 特 征 预 测；实 验 三，PET/CT 、PET 、CT 三 个 分 支 分 别 采 用
+ResNet 50 作为主干网络 ，并用 MFM 进行特征交互 ，在 FPN 中采用 SFFM 进行特征融合 ，使用预测头进行特
+征预测 ；实验四 ，PET/CT 、PET 、CT 三个分支分别采用 ResNet 50 作为主干网络 ，并用 MFM 进行特征交互 ，
+在 FPN 中采用 SFFM 进行特征融合后 ，用 MFF 对特征金字塔最底层特征图进行特征信息补充 ，使用预测头
+进行特征预测 ；实验五 ，PET/CT 、PET 、CT 三个分支分别采用 ResNet 50 作为主干网络 ，并用 MFM 进行特
+征交互 ，在 FPN 中采用 SFFM 进行特征融合后 ，用 MFF 对特征金字塔最底层特征图进行特征信息补充 ，使
+用双分支预测头进行特征预测 ；实验六 ，PET/CT 、PET 、CT 三个分支分别采用 ResNet 50 作为主干网络 ，并
+用 MFM 进行特征交互 ，在 FPN 中采用 SFFM 进行特征融合后 ，用 MFF 对特征金字塔最底层特征图进行特
+征信息补充 ，使用双分支预测头进行特征预测 ，并在双分支预测头上加入 GLFEM 。
+在对比实验设计中 ，本文整体上做两类实验 。第一类是两阶段实例分割网络对比 ，第二类是单阶段实
+例分割网络对比 ，两类共七次实验 ：实验一 ，YOLACT（ResNet 50） ，ResNet 50 作为特征提取网络的 YOLACT ；
+实 验 二，YOLACT （ResNet 101） ，ResNet 101 作 为 特 征 提 取 网 络 的YOLACT ；实 验 三，YOLACT++ 
+表 2　不同模态相关性实验设计
+Table 2　Experimental designs for different modal correlations
+Experiment
+Experiment one
+Experiment two
+Experiment three
+Experiment four
+PET/CT
+√
+√
+√
+√
+CT
+×
+√
+×
+√
+PET
+×
+×
+√
+√
+Branch
+1
+2
+2
+3
+表 3　不同模块消融实验设计
+Table 3　Ablation experiment design of different modules
+Ablation experiment
+Experiment one
+Experiment two
+Experiment three
+Experiment four
+Experiment five
+Experiment six
+ResNet 50
+√
+√
+√
+√
+√
+√
+FPN
+√
+√
+√
+√
+√
+√
+Head
+√
+√
+√
+√
+×
+×
+MFM
+×
+√
+√
+√
+√
+√
+SFFM
+×
+×
+√
+√
+√
+√
+MFF
+×
+×
+×
+√
+√
+√
+DHead
+×
+×
+×
+×
+√
+√
+GLFEM
+×
+×
+×
+×
+×
+√
+
+=== PDF_PAGE 9 ===
+周涛 ，等：MSP -YOLACT ：面向多模态 PET/CT 肺部肿瘤医学图像的实例分割模型
+0410003 ‐9
+（ResNet 50）
+ ［18］
+，ResNet 50 作 为 特 征 提 取 网 络 的YOLACT++ ；实 验 四，YOLACT++ （ResNet 101） ，
+ResNet 101 作 为 主 干 的YOLACT++ ；实 验 五，Mask RCNN （ResNet 50）
+ ［19］
+，ResNet 50 作 为 主 干 的Mask 
+RCNN ；实验六 ，Mask RCNN （ResNet 101） ，ResNet 101 作为主干的 Mask RCNN ；实验七 ，MSP -YOLACT ，
+采用 ResNet 50 作为主干 ，即为该文所提模型 。实验一至实验四是单阶段实例分割的对比 ；实验五与实验六
+是两阶段实例分割的对比 。
+2.3　评价指标与数据集
+2.3.1　评价指标
+为了更全面地分析和评估 MSP -YOLACT 模型的识别性能 ，并便于与其他网络进行比较 ，本文使用交
+并 比（Intersection over Union ， IoU） ，平 均 精 度（AP） ，平 均 召 回 率（AR）以 及 均 值 平 均 精 度（mean Average 
+Precision ， mAP）作为评价标准来评估模型实例分割性能
+［20］
+。混淆矩阵（Confusion Matrix ）反映了模型对各
+个类别的真实值和预测值之间的差异 ，根据图像真实类别和模型预测类别构建混淆矩阵 ，并通过混淆矩阵
+中的真阳性（True Positive ， TP）值、假阳性（False Positive ， FP）值、真阴性（True Negative ， TN）值和假阴性
+（False Negative ， FN）值计算以上评价指标值 ，其中 TP 表示模型正确识别出病灶区域 ；FP 表示模型将正常
+组织区域误诊为病灶区域 ；TN 表示模型正确识别出正常组织区域 ；FN 表示模型将病灶区域漏诊为正常组
+织区域 。
+IoU 用于测量标注框和预测框之间的相关度 ，数值越大 ，表示相关度越高 ，则该模型的性能越好 ，公式为
+IOU = TP/( TP + FP + FN ) （10）
+AP 是正确识别的目标个数占总识别的目标个数的百分数 ，用于衡量在每个类别上模型检测器的性能
+优劣 。其中 APdet 表示模型目标检测的 AP 值，APseg 表示模型目标分割的 AP 值，th 表示每一类别的阈值 ，t 为
+检测样本数 。数值越大 ，则该模型的性能越好 。公式为
+AP = 1|t| 1|th| ∑t   TP ( t )TP ( t )+ FP ( t ) （11）
+AR 是正确识别的目标个数占测试集中识别的目标个数的百分数 。其中 ARdet 表示模型目标检测的 AR
+值，ARseg 表示模型目标分割的 AR 值。数值越大 ，则该模型的性能越好 。公式为
+AR = 1|t| 1|th| ∑t   TP ( t )TP ( t )+ FN ( t ) （12）
+mAP 是衡量检测精度的指标 。其中 mAP det 表示模型目标检测的 mAP 值，mAP seg 表示模型目标分割的
+mAP 值，c 为检测类别 。数值越大 ，该模型的性能越好 。公式为
+mAP = 1|c| ∑c ( )1|t| 1|th| ∑i   TP ( t )TP ( t )+ FP ( t )   （13）
+2.3.2　数据集
+实验所用数据集来源于宁夏某三甲医院核医学科提供的肺癌患者原始 PET/CT 检查图 ，以及相关的临
+床病理诊断数据 。临床病理诊断数据包括 ：女性 46 例，男性 49 例；年龄 39~76 岁，平均年龄（50.63±5.11）岁。
+吸 烟40 例，烟 龄2~25 年，平 均 烟 龄（12.11±2.44）年，肿 瘤 良 恶 性，医 嘱 检 查 结 论 及 临 床 诊 断 等 文 本 信 息。
+静脉注射氟［18F］脱氧葡萄糖注射液 （18F-FDG）3.7 mBq·kg
+−1
+注射完显像剂一小时 1 h 后在安静 、避光的房
+间平卧进行肺部及躯干部图像采集 ，扫描完成取横断面 、矢状面与冠状面图像 。为确保对病变进行正确标
+注，本次数据经过两位图像科专业医师评估 ，图像标签由临床医师手动绘制 。
+2.4　实验结果
+2.4.1　不同模态图像相关实验
+不同模态图像分割结果如表 4 所示 ，实验四的各项指标 APdet 、APseg 、ARdet 、ARseg 、mAP det 和 mAP seg 分别为
+58.57%、59.86%、49.18%、49.22%、58.44% 和 59.53%，高于单模态和双模态实验结果 ，证明了多模态医学
+图像信息互补有效缓解了单种模态医学图像分割时病灶特征提取能力不足等问题 ，且多模态医学图像信息
+互补后的病灶区域增强效果相较于双模态提升效果更为显著 。
+在多模态图像数据集上进行消融实验 ，对 MSP -YOLACT 模型中各个模块的有效性进行了验证 。实验
+
+=== PDF_PAGE 10 ===
+光 子 学 报
+0410003 ‐10
+结果见表 5，实验二相比于实验一在各项指标上均有所提升 ，说明使用多模态特征融合器使得 PET 、CT 分支
+自适应学习与肿瘤相关特征并对 PET/CT 分支的特征图进行补充 ，从而突显病灶边界特征 。实验三的各项
+指标上比实验二提升了 1.05%、0.53%、0.48%、1.34%、1.08% 和 0.51%，说明强化特征融合机制在自上而下
+的融合过程中聚焦于高层特征图语义信息的同时抑制噪声因子 ，使网络更好地提取有效的边界特征 。实验
+四的各项指标上比实验三提升了 1.07%、0.32%、0.24、0.40%、0.45% 和 0.12%，表明使用多尺度特征融合器
+将 PET 、CT 图像特征信息对特征金字塔最底层进行特征补充 ，提高模型在边界信息上的表现 。实验五在各
+项 指 标 上 比 实 验 四 的 提 高 了0.50%、0.94%、0.67%、0.45%、1.17% 和 0.84%，表 明 对 预 测 头 结 构 中 的 锚 框
+分 支 以 及 掩 膜 系 数 分 支 进 行 重 构，细 化 边 界 信 息，提 高 模 型 分 割 检 测 能 力。 实 验 六 为 本 文 所 提 出 的
+MSP -YOLACT 模型 ，其相比于实验五的各项性能均显著提高 ，表明全局与局部特征强化模块能够很好地
+对病灶区域进行特征增强 ，提高模型对于病灶区域和病灶边界的像素属性的识别能力 ，从而有效提高肿瘤
+的检测与分割的性能 。
+消融实验各项评价指标值对比结果如图 7 所示 ，随着各个模块的加入 ，模型的各项性能得到提升 ，进一
+步 验 证 了 每 个 模 块 的 有 效 性，也 更 加 直 观 地 显 示 出 多 模 态 特 征 交 互 补 能 够 显 著 提 高 模 型 的 检 测 与 分 割
+性能 。
+表 4　不同模态图像相关实验 （IoU= 0.50）
+Table 4　Different modal image correlation experiment （IoU= 0.50）
+Model
+Experiment one
+Experiment two
+Experiment three
+Experiment four
+APdet /%
+58.31
+57.63
+58.39
+58.57
+APseg /%
+59.78
+59.33
+59.62
+59.86
+ARdet /%
+49.08
+48.89
+48.97
+49.18
+ARseg /%
+49.16
+48.95
+49.08
+49.22
+mAP det /%
+58.25
+57.59
+58.31
+58.44
+mAP seg /%
+59.45
+59.18
+59.32
+59.53
+表 5　消融实验结果 （IoU= 0.50）
+Table 5　Results of ablation experiments （IoU= 0.50）
+Model
+Experiment one
+Experiment two
+Experiment three
+Experiment four
+Experiment five
+Experiment six
+APdet /%
+58.57
+59.73
+60.78
+61.85
+62.35
+64.55
+APseg /%
+59.86
+61.83
+62.36
+62.68
+63.62
+65.53
+ARdet /%
+49.18
+49.30
+49.78
+50.02
+50.69
+51.47
+ARseg /%
+49.22
+49.34
+50.65
+51.05
+51.50
+52.58
+mAP det /%
+58.44
+59.59
+60.67
+61.12
+62.29
+64.37
+mAP seg /%
+59.53
+61.70
+62.21
+62.33
+63.17
+65.41
+图 7　MSP -YOLACT 模型不同模块实例分割结果的雷达图
+Fig. 7　Radar map of different module instances segmentation results of MSP -YOLACT model
+
+=== PDF_PAGE 11 ===
+周涛 ，等：MSP -YOLACT ：面向多模态 PET/CT 肺部肿瘤医学图像的实例分割模型
+0410003 ‐11
+3.4.2　不同网络的对比实验
+表 6 列出了该模型与其他实例分割网络在同一数据集上的对比结果 ，由表可见 ，单阶段实例分割网络
+YOLACT （ResNet 50）的 APdet 、APseg 、APdet 、APseg 、mAP det 和 mAP seg 分 别 为58.31%、59.78%、49.08%、
+49.16%、58.25% 和 59.65%，表明 YOLACT（ResNet 50）对多模态肺癌图像时 ，能够有效提取病灶特征 ，准确
+检测和分割病灶 。但缺乏多尺度特征的充分融合 ，YOLACT（ResNet 50）在检测和分割小目标时表现不佳 ，
+容易忽略细小的病灶区域 。YOLACT（ResNet 101）的各项指标分别为 59.28%、60.38%、49.54%、49.57%、
+59.14% 以及 60.21%；相比于 YOLACT（ResNet 50） ，YOLACT 使用 ResNet 101 作为主干网络拥有更强的特
+征提取能力和精度 。然而 ，肺癌影像中的肿瘤边界往往是不规则且模糊的 ，所以 YOLACT（ResNet 101）对
+小目标分割仅有一定程度的缓解 。因此 ，YOLACT++ （ResNet 50）和 YOLACT++ （ResNet 101）通过在
+预测头中添加更多的卷积层进一步增强局部特征 ，使得模型在分割不规则形状和模糊边界时更加精准 。相
+比 于YOLACT（ResNet 50） ，YOLACT++ （ResNet 50）的 各 项 指 标 提 升4.02%、3.8%、1.9%、1.96%、3.9%
+以 及3.66%；相 比 于YOLACT（ResNet 101） ，YOLACT++ （ResNet 101）的 各 项 指 标 提 升3.87%、4.13%、
+1.6%、2%、3.94% 以及 4.22%。相比于单阶段实例分割网络 ，两阶段实例分割网络通过区域建议网络并逐
+一精细化处理 ，使得它在目标的定位和分割上精度较高 。因此 ，Mask RCNN（ResNet 50）的各项指标分别为
+62.85%、63.65%、51.02%、51.27%、62.55% 和 63.45%；Mask RCNN （ResNet 101）各项指标分别为 63.87%、
+64.95%、51.12%、51.77%、63.64%、64.87%。然 而，区 域 建 议 网 络（Region Proposal Network ，RPN）预 定 义
+的锚框 ，当目标边界复杂或不规则时 ，可能会导致较大的边界误差 。因此针对上述问题 ，提出 MSP -YOLACT
+模型 。该模型通过构建多模态特征融合器充分利用多模态特征信息对病灶区域特征信息进行补充 ；设计增强
+特征金字塔利用不同模态的特征信息缓解特征提取阶段下采样带来的图像病灶细节信息丢失问题 ；设计双
+分支预测头 ，通过重构锚框 、掩膜系数分支提高模型检测与分割能力 。该模型的各项指标均优于其它网络 ，
+APdet、APseg、APdet、APseg、mAP det、mAP seg 分别达到 64.55%、65.53%、51.47%、52.58%、64.37% 和 65.41%。
+图 8 展示 了该模型与对比网络的实例分割各项指标的三维柱状图 ，其中 x 轴表示不同指标 ，1~6 依次代
+表 6　对比实验结果 （IoU= 0.50）
+Table 6　Comparative experimental results （IoU= 0.50）
+Model
+YOLACT（ResNet 50）
+YOLACT （ResNet 101）
+YOLACT ++ （ResNet 50）
+YOLACT ++ （ResNet 101）
+Mask Rcnn（ResNet 50）
+Mask Rcnn（ResNet 101）
+MSP-YOLACT
+APdet /%
+58.31
+59.28
+62.33
+63.15
+62.85
+63.87
+64.55
+APseg /%
+59.78
+60.38
+63.58
+64.51
+63.65
+64.95
+65.53
+ARdet /%
+49.08
+49.54
+50.98
+51.14
+51.02
+51.12
+51.47
+ARseg /%
+49.16
+49.57
+51.12
+51.57
+51.27
+51.77
+52.58
+mAP det /%
+58.25
+59.14
+62.15
+63.08
+62.55
+63.64
+64.37
+mAP seg /%
+59.65
+60.21
+63.31
+64.43
+63.45
+64.87
+65.41
+图 8　不同网络实例分割结果柱状图
+Fig. 8　Bar graphs of different network instances segmentation results
+
+=== PDF_PAGE 12 ===
+光 子 学 报
+0410003 ‐12
+表 APdet 、APseg 、APdet 、APseg 、mAP det 、mAP seg 。不同的颜色表示不同的模型 。y 轴表示各项评价指标对应的数
+值大小 ，表明该模型通过多模态交互的方式取得更优越的检测和分割性能 。
+2.4.3　模型可视化分析
+为了能够更好地凸显本文模型的分割性能 ，给出 YOLACT 以及 5 个模块消融实验的可视化结果 ，每个
+实验给出 3 张实例分割结果图像以及均值平均精度 mAP 值，其结果如图 9 所示 。以图 9 第一列为例 ，第一行
+是 YOLACT 模型分割结果和均值平均精度 mAP 值，其 mAP 值为 0.64，本实验在 YOLACT 的基础上逐渐
+增 加MFM 模 块、MFM -SFFM 模 块、MFM -SFFM -MFF 模 块、MFM -SFFM -MFF -DHead 模 块 以 及
+MFM -SFFM -MFF -DHead -GLFEM 模 块，可 以 看 出 模 型 的 分 割mAP 值 逐 渐 上 升 至0.69，精 度 提 升 了
+7.81%。整体来看 ，本文模型的整体架构和各个模块设计具有合理性 ，能够较好地实现肺部图像中肿瘤病变
+的实例分割任务 。
+图 9　分割结果
+Fig.9　The segmentation results
+
+=== PDF_PAGE 13 ===
+周涛 ，等：MSP -YOLACT ：面向多模态 PET/CT 肺部肿瘤医学图像的实例分割模型
+0410003 ‐13
+3 结论
+本文充分考虑 CT、PET 与 PET/CT 三种模态设备的不同成像模式以及图像特点 。针对多模态医学图
+像实例分割未充分考虑多模态图像病灶信息互补 ，以及肺部肿瘤医学图像中存在的对比度低 、病灶边界模
+糊等问题 ，提出面向多模态 PET/CT 肺部肿瘤医学图像的实例分割模型 ，通过设计多模态特征混合器 、增强
+特征金字塔以及并行特征增强预测头模块 ，实现对多模态图像的信息互补 ，同时对病灶边界区域进行特征
+增强 ，并提高病灶区域与背景区域的对比度 。在临床多模态肺部肿瘤医学图像数据集验证模型的有效性 ，
+结果表明所提模型对于肺部病灶分割的 APdet 、APseg 、ARdet 、ARseg 、mAP det 和 mAP seg 分别为 64.55%、65.53%、
+51.47%、52.28%、64.37% 和 65.41%。该模型实现对肺部肿瘤病灶区域的精确检测分割 ，以及对肺部肿瘤
+自动化辅助诊断具有积极意义 ，然而该模型受周围组织挤压导致对病灶形变或者遮挡等问题的分割能力相
+对较弱 。因此针对多模态中受周围组织影响的弱小病灶进行精确分割是未来的研究方向之一 。
+参考文献
+［1］ DALCA A V ， GUTTAG J ， SABUNCU M R . Anatomical priors in convolutional networks for unsupervised biomedical 
+segmentation［C］. Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition ， 2018 ： 9290 -9299 .
+［2］ ZHOU T ， LU H ， YANG Z ， et al . The ensemble deep learning model for novel COVID -19 on CT images ［J］. Applied 
+Soft Computing ， 2021 ， 98： 106885 .
+［3］ ZHOU Tao ， DANG Pei ， LU Huiling ， et al . Multi -modal ， multi -scale and multi -dimension PET/CT image Transformer 
+segmentation model ［J］. Journal of Electronics and Information Technology ， 2023 ， 45（10） ： 3529 -3537 .
+周涛 ， 党培 ， 陆惠玲 ， 等 . 跨模态跨尺度跨维度的  PET/CT 图像的  Transformer 分割模型［J］. 电子与信息学报 ， 2023 ， 
+45（10） ： 3529 -3537 .
+［4］ LI L ， ZHAO X ， LU W ， et al . Deep learning for variational multimodality tumor segmentation in PET/CT ［J］. 
+Neurocomputing ， 2020 ， 392 ： 277 -295.
+［5］ FU X ， BI L ， KUMAR A ， et al . Multimodal spatial attention module for targeting multimodal PET -CT lung tumor 
+segmentation［J］. IEEE Journal of Biomedical and Health Informatics ， 2021 ， 25（9） ： 3507 -3516 .
+［6］ CHEN S ， LI A ， CHEN J ， et al . Hybrid attention fusion segmentation network for diffuse large B -cell lymphoma in 
+PET -CT［C］. 2022  14th International Conference on Wireless Communications and Signal Processing （WCSP） ， IEEE ， 
+2022 ： 72-76.
+［7］ ZHOU X ， SUN Y ， DENG M ， et al . Robust semi -supervised multimodal medical image segmentation via cross modality 
+collaboration ［C］. International Conference on Medical Image Computing and Computer -Assisted Intervention . Cham ： 
+Springer Nature Switzerland ， 2024 ： 57-67.
+［8］ ZHOU S ， NIE D ， ADELI E ， et al . High -resolution encoder -decoder networks for low -contrast medical image 
+segmentation［J］. IEEE Transactions on Image Processing ， 2019 ， 29： 461 -475.
+［9］ ZHOU P ， LI Y ， CHEN H ， et al . Coco -attention for tumor segmentation in weakly paired multimodal MRI Images ［J］. 
+IEEE Journal of Biomedical and Health Informatics ， 2023 ， 27（6） ： 2944 -2955 .
+［10］ ZHOU Tao ， DONG Yali ， LIU Shan ， et al . Cross -modality multi -encoder hybrid attention U -net for lung tumors images 
+segmentation ［J］. Acta Photonica Sinica ， 2022 ， 51（4） ： 0410006 .
+周 涛，董 雅 丽，刘 珊，等 . 用 于 肺 部 肿 瘤 图 像 分 割 的 跨 模 态 多 编 码 混 合 注 意 力U-Net［J］. 光 子 学 报， 2022 ， 51（4） ： 
+0410006 .
+［11］ BOLYA D ， ZHOU C ， XIAO F ， et al . Yolact ： real -time instance segmentation ［C］. Proceedings of the IEEE/CVF 
+International Conference on Computer Vision ， 2019 ： 9157 -9166 .
+［12］ LIN T Y ， DOLLÁR P ， GIRSHICK R ， et al . Feature pyramid networks for object detection ［C］. Proceedings of the 
+IEEE Conference on Computer Vision and Pattern Recognition ， 2017 ： 2117 -2125 .
+［13］ WANG S ， LI B Z ， KHABSA M ， et al . Linformer ： Self -attention with linear complexity ［J/OL］. arXiv ：2006 .04768 ， 
+（2020 -6-18） ［2020 -6-14］.https ：//doi .org/ 10.48550 /arXiv .2006 .04768 .
+［14］ HU J ， SHEN L ， SUN G . Squeeze -and -excitation networks ［C］. Proceedings of the Ieee Conference on Computer Vision 
+and Pattern Recognition ， 2018 ： 7132 -7141 .
+［15］ WOO S ， PARK J ， LEE J Y ， et al . Cbam ： convolutional block attention module ［C］. Proceedings of the European 
+conference on Computer Vision （ECCV） ， 2018 ： 3-19.
+［16］ ZHOU Tao ， ZHAO Yanan ， LU Huiling ， et al . Case segmentation of medical image ： from candidate region to non -
+candidate region ［J］. Journal of Biomedical Engineering ， 2022 ， 39（6） ： 1218 -1232 .
+周涛 ， 赵雅楠 ， 陆惠玲 ， 等 . 医学图像实例分割 ： 从有候选区域向无候选区域 ［J］. 生物医学工程杂志 ， 2022 ， 39（6） ： 
+1218 -1232 .
+［17］ HE K ， ZHANG X ， REN S ， et al . Deep residual learning for image recognition ［C］. Proceedings of the IEEE Conference 
+
+=== PDF_PAGE 14 ===
+光 子 学 报
+0410003 ‐14
+on Computer Vision and Pattern Recognition ， 2016 ： 770 -778.
+［18］ ZHOU C . Yolact++ better real -time instance segmentation ［M］. University of California ， Davis ， 2020 .
+［19］ HE K ， GKIOXARI G ， DOLL′AR P ， et al . Mask R -CNN［C］. Proceedings of the IEEE International Conference on 
+Computer Vision ， 2017 ： 2961 -2969 .
+［20］ LIANG Xinyu ， LIN Xikun ， QUAN Jichuan ， et al . Research progress of image instance segmentation based on deep 
+learning ［J］. Acta Electronica Sinica ， 2020 ， 48（12） ： 2476 .
+梁新宇 ， 林洗坤 ， 权冀川 ， 等 . 基于深度学习的图像实例分割技术研究进展 ［J］. 电子学报 ， 2020 ， 48（12） ： 2476 .
+MSP -YOLACT ：Instance Segmentation Model for Multimodal PET/CT 
+Medical Images of Lung Tumors
+ZHOU  Tao
+1，3
+， CHAI  Wenwen
+1，3
+， WANG  Yaxing
+1，3
+， CHEN  Kaixiong
+1，3
+， 
+LU Huiling
+2
+， SHI  Daozong
+1，3
+（1 School of Computer Science and Engineering ， North Minzu University ， Yinchuan 750021 ， China）
+（2 School of Medical Information & Engineering ， Ningxia Medical University ， Yinchuan 750004 ， China）
+（3 Key Laboratory of Image and Graphics Intelligent Processing of State Ethnic Affairs Commission ， North Minzu 
+University ， Yinchuan 750021 ， China）
+Abstract： With the development of medical image technology ， multimodal medical image instance 
+segmentation is a research hotspot . Existing instances segmentation model of multimodal medical image 
+does not fully consider the complementary information of multimodal images lesions . To address the issues 
+of low contrast and blurred boundary of lesion information in lung tumor medical images ， the instance 
+segmentation model is proposed for PET/CT lung tumor medical images in this paper . The main 
+contributions of the model include the following 3 parts . Firstly ， in order to adequately fully utilize the 
+common features of lesions in different modal images for lesion morphological enhancement ， a multimodal 
+feature mixer is designed . The module adaptively learns the common features related to lesion area through 
+the PET and CT 2 branches . Specifically ， it first normalizes the input PET and CT feature maps to make 
+the data distribution more stable . Then ， it adopts the self -attention mechanism to extract the PET/CT 
+branche features . This mechanism enables the model to focus on different parts of the features and capture 
+more discriminative information . After that ， it fuses the features of lesions areas learned from PET and CT 
+branches into PET/CT branches pixel by pixel . By using a weighted fusion method ， the important features 
+are emphasized ， thereby highlighting the features of lesions areas and making the lesion regions stand out 
+more clearly in the images . Secondly ， in order to increase the lesion area attention ， the enhanced feature 
+pyramid is designed ， which includes an enhanced feature fusion module and a multi -scale feature fusion 
+device . For the enhanced feature fusion module ， in the top -down fusion process ， the module focuses on the 
+semantic information of the high -level feature map while suppressing the noise factor . It does this by 
+leveraging self -attention mechanisms to selectively emphasize relevant features . For the multi -scale feature 
+fusion device ， which receives the coarse and fine information of PET and CT branch features ， the module 
+effectively fuses the fore -back ground prominent features ， fills the lowest pyramid feature map 
+information ， and enhances the learning ability of image morphological information by using dedicated 
+convolutional operations for better feature extraction . Finally ， in order to enhance the localization and 
+boundary characterization ability of the model ， a parallel feature enhancement prediction head module is 
+designed . This structure reconstructs the anchor frame and mask coefficient branches . Specifically ， the 
+anchor frame branch generates a different proportion of anchor frame for each pixel based on the learned 
+feature distribution ， and the mask coefficient branch realizes a one -to-one corresponding to the mask by 
+accurately predicting the coefficient of each mask ， so as to precisely locate the lesion area . Additionally ， 
+global and local feature enhancement modules are introduced to further enhance the lesion areas in the 
+feature map ， and thus significantly improve the ability to identify the lesion regions and lesion boundaries . 
+The clinical multimodal lung tumor medical image dataset is used to verify the validity of the model . PET/
+CT single mode is used to detect and segment lung tumor lesion area ， the mAP det ，mAP seg  are 58.25 and 
+59.45， respectively . PET/CT and CT modes are used to detect and segment lung tumor lesion area ， the 
+
+=== PDF_PAGE 15 ===
+周涛 ，等：MSP -YOLACT ：面向多模态 PET/CT 肺部肿瘤医学图像的实例分割模型
+0410003 ‐15
+        Foundation  item： National Natural Science Foundation of China （No. 62062003） ， Natural Science Foundation of Ningxia （No. 2023AAC0329）
+mAP det， mAP seg  are 57.59 and 59.18， respectively . PET/CT and PET modes are used to detect and 
+segment lung tumor lesion area ， the mAP det， mAP seg  are 58.31 and 59.32， respectively . The experimental 
+results showed that the AP det ， AP seg ， AR det ， AR seg ， mAP det ， and mAP seg  of the proposed model are 
+64.55%， 65.53%， 51.47%， 52.28%， 64.37% and 65.41%， respectively ， for the lung tumor lesions area 
+detection and segmentation . This model can achieve accurate detection and segmentation of lung tumor 
+lesion area ， which is of positive significance for automated auxiliary diagnosis of lung tumors .
+Key words ： Medical image ； Lung tumors ； Multimodal ； PET/CT ； Instance segmentation ； Attention 
+mechanism
+OCIS Codes： 100.2960 ； 100.3008 ； 170.3880
+CSTR： 32255 .14.gzxb 20255404 .0410003

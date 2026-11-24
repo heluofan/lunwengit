@@ -1,0 +1,1296 @@
+=== PDF_PAGE 1 ===
+ 
+引用格式：娄世猛, 邵玉斌, 杜庆治, 等. 基于KAN与CKAN优化的医学图像分割模型[J]. 浙江大学学报：工学版, 2026, 60(6): 1277−1288.
+Citation: LOU Shimeng, SHAO Yubin, DU Qingzhi, et al. Medical image segmentation model based on KAN and CKAN optimization [J]. Journal of Zhejiang
+University: Engineering Science, 2026, 60(6): 1277−1288.
+基于KAN与CKAN优化的医学图像分割模型
+娄世猛1，邵玉斌1，杜庆治1，唐菁敏1，张赜涛2
+(1. 昆明理工大学 信息工程与自动化学院，云南 昆明 650500；2. 云南省媒体融合重点实验室，云南 昆明 650228)
+摘  要： 为了解 决UNet模型在医学图像分割任务中的复杂特征提取与泛化能力不足的问题，提出基 于Kolmogorov-
+Arnold网络（ KAN）和卷 积KAN（CKAN）的优化模 型KUNet，增 强UNet模型的性能 . 通过 用CKAN替换传统卷积
+层，引 入KAN特征增强模块，优化跳跃连接，结合自适应基函数学习机制，在保留结构信息的同时提高特征提取
+的多样性与精度 . 在4个不同的多模态数据 集LiTS、CORN、DRIVE和 Lungs上， 与UNet基线模型、 nnUNet模型 和
+Swin-UNet模型进行对比实验 . 结果表明， UNet基线模型 与KUNet模型 在4个数据集 上Dice系数 和IoU系数的平
+均最大性能差异指标（ MAPG）分别 为0.679 9和 0.620 3， 且KUNet模型相较于最优或次优模型 在4个数据集上的
+平均提升指标 为0.321 3和 0.262 5. 利用KUNet模型，能够在短周期内有效提取到更多的特征，提升图像分割的准确度 .
+关键词： 图像分割；UNet；Kolmogorov-Arnold network（KAN）；卷积KAN（CKAN）；最大性能差异指标(MAPG)
+中图分类号： TP 393           文献标志码： A           文章编号： 1008−973X（2026）06−1277−12
+DOI: 10.3785/j.issn.1008-973X.2026.06.015
+Medical image segmentation model based on
+KAN and CKAN optimization
+LOU Shimeng1,  SHAO Yubin1,  DU Qingzhi1,  TANG Jingmin1,  ZHANG Zetao2
+(1. Faculty of Information Engineering and Automation, Kunming University of Science and Technology, Kunming 650500, China;
+2. Yunnan Province Key Laboratory for Media Integration, Kunming 650228, China)
+Abstract: An optimized model KUNet based on Kolmogorov-Arnold network (KAN) and convolutional KAN (CKAN)
+was proposed to enhance the performance of the UNet model in order to address the limitation of the UNet model in
+complex feature extraction and generalization capability for medical image segmentation task. Traditional convolutional
+layer was replaced with CKAN, KAN feature enhancement module was introduced, and skip connection was optimized.
+Then the diversity and accuracy of feature extraction were improved while preserving structural information by
+incorporating an adaptive basis function learning mechanism. Comparative experiments were conducted against the
+UNet baseline model, nnUNet model and Swin-UNet model on four different multimodal datasets: LiTS, CORN,
+DRIVE and Lungs. Results showed that the average maximum absolute performance gap (MAPG) between the UNet
+baseline model and the KUNet model across the four datasets were 0.679 9 and 0.620 3 for Dice coefficient and IoU
+coefficient, respectively, and the KUNet model achieved average improvement metrics of 0.321 3 and 0.262 5 compared
+with the optimal or suboptimal model across the four datasets. The KUNet model was utilized to effectively extract
+more feature within short training cycle and improve the accuracy of image segmentation.
+Keywords: image segmentation; UNet; Kolmogorov-Arnold network (KAN); convolutional Kolmogorov-
+Arnold network (CKAN); maximum absolute performance gap (MAPG)
+图像分割是计算机视觉和多模态数据处理中
+的关键技术，被广泛应用于医学影像、眼科、自动
+驾驶等领域[1-2]. 在医学影像中，图像分割支持器官
+精准分割、肿瘤定位、细胞核分析等关键任务，对
+疾病的早期诊断和治疗规划起着至关重要的作
+用[3-4]. 在眼科领域，角膜神经和眼球结构的精确分
+收稿日期：2025−06−28.            网址：https://www.zjujournals.com/eng/CN/10.3785/j.issn.1008-973X.2026.06.015
+基金项目：云南省媒体融合重点实验室资助项目（220245203）.
+作者简介：娄世猛（2001—），男，硕士生，从事智能信息处理研究. orcid.org/0009-0002-3212-4318.E-mail：2962772160@qq.com
+通信联系人：邵玉斌，男，教授. orcid.org/0009-0007-1028-8035. E-mail：shaoyubin999@qq.com
+第 60  卷第 6  期
+   2026  年 6  月
+浙     江     大     学     学     报 (工学版)
+Journal of Zhejiang University (Engineering Science)
+Vol.60  No.6
+Jun.  2026  
+
+=== PDF_PAGE 2 ===
+割对青光眼以及视网膜病变的早期诊断至关重要[5].
+在自动驾驶系统中，图像分割可以确保复杂交通
+环境下的实时目标检测和系统安全性[6].
+UNet模型因其独特的U型编码器-解码器结构
+和跳跃连接模块，成为图像分割的经典方法[7]. 传
+统卷积层难以有效地捕获多尺度和长距离依赖信
+息，在细节保留以及边界区域的分割精度方面存
+在一定的局限[8-9]. 为了应对这些局限性，多种改进
+模型已被提出，如利用空洞卷积的DeepLab系列[10]、
+基于Transformer的Swin-UNet[11]以及通过自动化
+配置机制的nnUNet[12-13]. 这些模型在面对特定数据
+集的特殊挑战时仍显不足，如CORN数据集中角
+膜神经的细腻复杂结构[14]和DRIVE数据集中眼部
+血管结构的精确边界提取[15].
+Liu等[16]提出的基于 Kolmogorov-Arnold 定理
+的KAN（Kolmogorov-Arnold 网络）模型表现出了
+强大的非线性特征表达能力，能够有效捕捉复
+杂数据中的潜在模式. 卷积KAN（convolutional
+Kolmogorov-Arnold network，CKAN）结合卷积操作
+与可学习的基函数，尤其适用于图像数据的多尺
+度特征提取[17]. 目前，将KAN网络应用于图像分割
+领域已有一些初步进展. Li等[18]将KAN嵌入经典
+U-Net编码-解码链路，提出Tokenized KAN模块的
+U-KAN网络. Ma等[19]提出将DeepKAN模块用于
+高维特征精炼，GLKAN模块用于解码器细节恢
+复，构建端到端遥感分割网络DeepKANSeg网络.
+Agrawal等[20]融合KAN层与Mamba状态空间模型，
+构建轻量级3D分割的KAN-Mamba混合网络. 这进
+一步表明KAN网络对于图像分割领域的适用性.
+本文提出基于KAN和CKAN网络的KUNet模
+型. 用CKAN替换传统卷积层，以增强多尺度特征
+提取能力. 在解码器上采样过程中，引入KAN层作
+为特征增强模块. 通过KAN处理编码器特征图，以
+优化跳跃连接. 引入基于三次样条函数的自适应基
+函数学习机制. 在4个多模态数据集（LiTS、CORN、
+DRIVE、Lungs）上的实验验证了模型的性能提升和
+泛化能力，为处理复杂、多模态数据提供了高效的
+解决方案. 
+1   算法设计
+ 
+1.1    网络架构和优化模型KUNet
+针对UNet模型在处理复杂特征提取及提高泛
+化能力方面存在一定局限性的问题，基于UNet基
+线模型，提出基于KAN与CKAN网络的KUNet模
+型. 将UNet基线中的编码器和解码器中的传统
+3×3卷积层替换为CKAN网络. 在解码器的每次上
+采样后，添加KAN层作为特征增强模块. 在跳跃链
+接部分，在编码器特征图上应用KAN处理后再与
+解码器拼接. 引入基于三次样条函数的自适应基函
+数学习，动态调整KAN和CKAN的基函数.
+当前UNet的改进主要集中在特征提取与融合.
+UNet++通过强化多尺度融合提升性能[8]；Attention
+UNet则通过引入注意力机制以聚焦关键区域[21]；
+ResUNet利用残差连接，增强训练稳定性[22]. 面对
+复杂的多模态数据集，现有方法难以提供足够灵
+活的特征表达能力.
+提出KUNet模型，该模型结合KAN[16]和
+CKAN[17]网络，旨在大幅提升UNet在复杂数据集
+上的分割性能. KUNet通过用CKAN替代卷积层、
+KAN强化特征提取、优化跳跃连接以及引入自适
+应基函数学习等核心改进，显著提高了分割精度
+和模型的泛化能力. KUNet模型的结构如图1所示.
+该模型在CORN[14]、LiTS[23]和DRIVE[15]等挑战性
+数据集上展现出优异性能.
+ 
+输入
+CKAN 3×3, Relu 
+拼接
+最大池化 2×2 
+上采样 CKAN 2×2 
+Conv 1×1 
+3 64 64
+128 128
+256 256
+512 512
+1 024
+1 024 512
+512 256
+256 128
+128 64 64主干特征提取网络 加强特征提取网络
+自适应 KAN 层
+512
+256
+128
+输出
+预测网络
+1
+编码器 解码器
+ 
+图 1    KUNet模型的架构图
+Fig.1    Architecture diagram of KUNet model
+1278 浙          江          大          学          学          报（工学版） 第 60 卷
+
+=== PDF_PAGE 3 ===
+1) 用CKAN替换卷积层. 编码器和解码器中的
+卷积层被CKAN替换，增强了网络的非线性特性.
+在每个CKAN层后，依次添加批归一化、ReLU激
+活函数和最大池化下采样操作，特征通道数从
+64逐步增加到1 024. 这样的设计使得模型更适合
+图像任务中的局部特征提取.
+2) KAN特征增强模块. 在解码器中的每次上
+采样后，插入KAN特征增强模块，用于对上采样
+后的特征图进行非线性变换，进一步优化特征表
+达. KAN层的输出表达式为
+z =
+m∑
+i=1
+wiϕi(Fup): (1)
+Fup
+wi
+ϕi
+式中：   为上采样后的特征图，    为权重，    为可
+学习基函数.
+3)优化跳跃连接. 传统UNet中的跳跃连接直
+接拼接编码器和解码器的特征图，这可能导致信
+息冗余. 提出在跳跃连接中引入KAN进行预处理，
+使得编码器特征图经过KAN处理后与解码器特征
+图拼接，拼接后使用3×3卷积调整通道数. 优化后
+的跳跃连接公式为
+Fskip =Concat(Fdec，KAN(Fenc)): (2)
+Fenc
+Fdec
+式中：   和    分别为编码器和解码器的特征图.
+4)自适应基函数学习. KAN和CKAN的基函
+数是通过引入基于三次样条函数的自适应基函数
+学习动态调整的. 三次样条函数是分段多项式函
+数，具有平滑性（连续二阶导数）和可微性[24-25]，能
+够有效捕捉输入数据的复杂非线性模式. 这种特性
+使得该模式特别适合用于图像分割任务中的特征
+表示. 通过引入可训练的三次样条基函数，模型能
+够在训练过程中学习数据集特定的非线性变换，
+避免了固定基函数的局限性. 这种自适应性使模型
+能够更好地处理多模态数据，例如 RGB 图像和灰
+度图像. 
+1.2    KAN与CKAN网络 
+1.2.1   KAN网络　KAN网络基于Kolmogorov-
+Arnold表示定理[16]，核心思想是将输入变量映射到
+可学习的高维函数空间中，从而有效逼近复杂的
+非线性函数.
+f :
+[0; 1]n ! R
+Kolmogorov-Arnold表示定理表明，任何连续的
+多变量函数   都可以通过下式进行表示：
+f (x1; 
+ ; xn) =
+2n+1∑
+q=1
+ϕq
+(
+n∑
+p=1
+ q;p(xp)
+)
+: (3)
+ϕq
+ q;p
+式中：   和    为连续函数，分别用于对输入变量
+和其组合进行变换. 在KAN网络中，基函数
+ q;p(xp)
+ϕq
+ 通常是由神经网络学习得到的非线性映射
+函数，组合函数   
+可以是多项式或其他高维映射
+形式. KA
+N网络的数学特性使得它能够有效逼近
+复杂的非线性映射，尤其是在高维数据上的表现
+优异. 通过利用这些可学习基函数，KAN网络能够
+提取输入数据的复杂特征，提升模型的学习能力. 
+1.2.2   卷积KAN网络　卷积KAN（convolutional
+Kolmogorov-Arnold network, CKAN）网络是在
+KAN网络的基础上，将卷积操作引入模型中[17]，从
+而结合卷积神经网络（CNN）和KAN的优点. 卷积
+操作提供了局部感受野的特性， KAN通过高维非
+线性映射加强了表达能力. 因此CKAN也更适合用
+于图像任务，特别是图像的局部特征提取，弥补了
+传统卷积在复杂图像任务中的局限性，模型架构
+图见图2.
+ 
+ 
+CKAN 网络
+KAN
+卷积层
+KAN
+卷积层
+最大
+池化
+最大
+池化
+展平层 KAN
+线性层
+ 
+图 2    CKAN网络模型的架构图
+Fig.2    Architecture  diagram  of  convolutional  Kolmogorov-Arnold
+network model
+ 
+ϕ
+KAN卷积与CNN中使用的卷积的主要区别在
+于内核. 在CNN中，内核由权重组成，而在卷积
+KAN中，内核的每个元素   是利用 b样条的可学习
+非线性函数. 形式上，每个元素被定义为
+ϕ=w1 spline(x) + w2 silu(x): (4)
+ϕi
+j
+ak
+l
+ϕi
+j(akl)
+K 2 RNM
+在KAN卷积中，内核在图像上滑动并将相应
+的激活函数   应用于相应的像素    ，将输出像素
+计算为   的总和.  设KAN的内核为   ，
+图像矩阵为
+Image =
+■
+|■
+a11 :
+:: a1n
+::: :::
+am1    amn
+■
+|■; (5)
+则KAN卷积的定义为
+(Image  K)i; j =
+N∑
+k=1
+M∑
+l=1
+ϕk
+l(ai+k; j+l): (6)
+结合卷积操作与KAN的高维函数映射，CKAN
+能够在图像特征提取中实现更强的表现力和
+鲁棒性. 
+1.2.3   KAN/CKAN的计算复杂度分析　传统卷积
+的计算成本随输入/输出通道数和卷积核面积呈乘
+法增长. CKAN通过通道内基展开与1×1线性混
+合，主导开销与基的个数呈线性关系，基本不受空
+间核大小的影响. 当基数小于卷积核面积时，CKAN
+第 6 期 娄世猛, 等：基 于KAN与 CKAN 优化的医学图像分割模型 1279
+
+=== PDF_PAGE 4 ===
+在参数量和乘加次数上通常显著低于标准卷积，
+基函数评估的固定开销在高效实现下可忽略. 例
+如，在2D UNet常见配置下，CKAN可将参数量和
+计算量降低约50%，该优势在3D分割中随核体积
+增大而进一步放大. 尽管基展开导致的瞬时通道放
+大（输入通道数×基数）会对显存和带宽造成压力，
+但可以通过分组混合、高分辨率阶段自适应设置
+更小的基数及融合算子等方式缓解. 
+2   数据集及预处理
+为了全面评估所提模型在多样化应用场景下
+的性能，选取4个具有代表性的数据集. 这些数据
+集涵盖医学影像（肝脏、肺部）与眼科诊断（角膜神
+经、眼底血管）领域，旨在测试模型在不同任务类
+型和数据结构下的分割能力. 利用这些数据集能够
+验证模型的鲁棒性和泛化能力. 各数据集的详细信
+息可以参照表1.
+ 
+ 
+表 1    数据集的统计表
+Tab.1    Dataset statistics table
+ 
+数据集 样本数量 分辨率 分割目标
+LiTS 400 512×512 肝脏
+CORN 1  238 384×384 角膜神经
+DRIVE 20 565×584 眼底血管
+Lungs 200 512×512 肺
+ 
+LiTS（Liver Tumor Segmentation Challenge）数据
+集包含400张肝脏CT/MRI图像，主要用于医学影
+像中的器官分割任务. 该数据集中存在器官形态变
+异及图像噪声，要求模型具备较强的鲁棒性和抗
+噪能力. 由于肝脏分割精度直接影响后续诊断和治
+疗方案的制定，该数据集中复杂的解剖结构和病理
+表现对模型的医学影像分割性能提出了显著挑战[23].
+CORN数据集包含1 238张角膜神经图像[14]，
+这些图像中的神经结构极为纤细，使得精确分割
+成为关键难题. 由于角膜神经的准确分割对眼科诊
+断，尤其是早期角膜疾病检测，具有重要的临床价
+值，因此要求分割模型必须具备出色的局部细节
+提取能力.
+DRIVE数据集包含20张眼底血管图像[15]. 尽
+管样本数量有限，但每张图像均蕴含复杂的纹理
+与细节，这使得该数据集成为评估模型在小样本下
+性能的理想选择. 该数据集的核心挑战是如何在数
+据稀缺的条件下，保证分割结果的精度与稳定性.
+Lungs数据集源自2017年Kaggle图像分割竞
+赛的2D部分，提供200张2D肺部病灶图像. 该任
+务专注于肺部病灶的精确分割，在肺部疾病早期
+诊断中具有广泛应用. 这类图像通常展现出较强的
+结构化特征，因此要求模型能够有效识别并精确
+分割不同类型的病变区域，保持较高的分割精度
+和召回率.
+为了确保数据处理的一致性并提升模型的训
+练效果，对所有数据集进行统一的标准化预处理：
+将像素归一化至[0,1.0]，图像随机裁剪至512×512
+分辨率，以适配模型输入并降低计算负担. 同时，
+为了增强模型的泛化能力和鲁棒性，实施随机水
+平与垂直翻转增强（概率均为0.5），有助于模型学
+习图像的空间变换特性. 在数据集划分方面，所有
+数据均严格遵循70%训练集、15%验证集和
+15%测试集的比例，旨在利用现有数据并确保模
+型在独立测试集上的泛化能力. 
+3   实验与分析
+ 
+3.1    评估指标
+P
+G
+使用Dice系数，评估模型的分割精度. Dice系
+数用于衡量预测区域   与真实标签    的重叠程度：
+Dice = 2jP \ GjjPj + jGj: (7)
+该指标特别适用于医学图像分割任务，尤其是在
+处理类不平衡问题时，Dice系数能够反映前景区
+域的分割质量. 当处理肝脏、肺部或眼科等医学影
+像时，Dice系数常被用来衡量模型的性能[26].
+交并比（IoU）作为另一种常用指标，通过计算
+预测区域与真实区域的交集与并集的比值来衡量
+分割效果[27]，公式为
+IoU = jP \ GjjP [ Gj: (8)
+IoU在自动驾驶、视频监控及医学影像等领域中被
+广泛应用，尤其在处理复杂目标和背景时，它能够
+提供比Dice系数更细致的性能评估.
+为了更好地衡量优化模型与基线模型在相同
+训练周期下的性能差距，定义最大性能差异（max-
+imum absolute performance gap，MAPG）指标：
+MAPGm = maxt2T [Mopt(t)   Mbase(t)]: (9)
+Mopt(t)
+Mbase(t)
+t
+式中：   和    分别为优化模型与基线模型
+在训练周期   上的性能指标（如 Dice或IoU）. MAPG
+能够反映在相同训练代价下，优化模型相对于基
+线模型在整个训练过程中的最大性能提升，尤其
+适用于评估模型在早期训练阶段的收敛速度与优
+势幅度.
+在图像分割任务中，模型性能在经过充分训练
+后，常常在常规指标（如Dice系数与交并比IoU）上
+1280 浙          江          大          学          学          报（工学版） 第 60 卷
+
+=== PDF_PAGE 5 ===
+趋近饱和值（即接近1.0）. 在这种情况下，尽管模
+型在优化后相较于基线模型仍有性能提升，但传
+统的绝对指标（如Dice增加了0.002）往往难以有
+效反映优化的真实效益.
+∆
+为了更合理地评估在高性能区间的相对提升
+效果，引入归一化相对提升指标   ，定义如下：
+∆ = A   B1   (A + B)=2: (10)
+A
+B
+A; B 2 (0; 1:0)
+式中：   为优化后模型的评估指标（如 Dice或
+IoU），   为基线模型的评估指标，    .
+A   B
+1   (A + B)=2
+∆
+∆
+式（10）将性能的绝对提升值（即   ）相对于当
+前模型与理论上限之间的剩余空间（即   
+）
+进行归一化，衡量单位潜力空间所实现的实际提
+升，该指标具有如下特点. 1
+)适应高分段性能评估.
+当原始指标接近1时，   能够有效放大细微的实际
+改进，更真实地反映优化难度与价值. 2
+)提升的归
+一化度量. 该指标将性能提升与“剩余提升空间”联
+系起来，具有良好的相对评估能力. 3)适用于比较
+不同的模型优化策略. 在传统指标差异微小的情况
+下，   可以提供更具区分度的相对提升视角.
+∆
+∆
+本次实验采用   指标，衡量 KUNet模型相对于
+其他模型的性能提升. 尤其当Dice和IoU精度指标
+普遍超过0.9时，   提供了对优化效果更敏感、更具
+区分度的评估手段. 
+通过模型参数量（反映复杂
+度）和训练时间（决定开发部署效率与实际可行
+性），评估模型的计算效率. 
+3.2    损失函数与模型训练
+为了优化分割效果，采用Dice损失与交叉熵
+损失相结合的混合损失函数，以利用两者在处理
+类不平衡问题上的互补优势[28]. 混合损失函数的
+定义为
+L =LDice + (1  )LCE: (1
+1)
+ = 0:5
+其中，   用于平衡 2种损失的贡献. Dice损失
+的公式为
+LDice = 1   2jP \ GjjPj + jGj: (12)
+交叉熵损失的公式为
+LCE =  
+∑
+c
+Gc ln Pc: (13)
+式中：Pc为当前像素属于类别c的概率；Gc表示真
+实标签的指示器，即表示对于当前像素，真实类别
+是否为c.
+P
+G
+该损失函数的设计能够有效解决不同数据集
+中的类不平衡问题，通过优化预测区域   与真实标
+签   
+的重叠程度，提高模型的分割精度.
+实验基
+于PyTorch框架开展，训练平台为NVIDIA
+1 = 0:9
+2 = 0:999
+RTX 4070Ti Super显卡（16 GB显存）. 训练的超参
+数配置如下：初始学习率设定为10−4，采用余弦退
+火调度策略[29]，最小学习率为10−6；批次大小设为
+8，以保证稳定的梯度更新；优化器选择Adam，参
+数设置为   ，     . 模型训练过程分为短
+周期和长周期2种模式. 在短周期模式下，各数据
+集的训练轮数上限分别如下：LiTS为 15轮，CORN
+为 2 000轮，DRIVE 为1 000轮，Lungs为20轮. 在长
+周期模式下，训练至模型完全收敛. 
+3.3    模型可视化分割结果的对比分析
+为了验证KUNet的有效性，对比基线模型
+（UNet、nnUNet、Swin-UNet）与优化模型KUNet在
+4个数据集（LiTS、CORN、DRIVE及Lungs）上相同
+训练周期的分割可视化结果. 鉴于数据划分的随机
+性，各模型测试阶段的可视化样本可能并非源自
+完全相同的原始图像，故尽可能选取分割难度相
+近的样本，以确保性能对比的公平性. 具体的分割
+效果如图3~6所示.
+如图3所示，在LiTS数据集的分割结果中，相
+较于传统UNet、Swin-UNet及nnUNet，所提出的
+KUNet模型展现出更优的性能. 从可视化结果分析
+ 
+(a) UNet (d) KUNet
+原图
+掩膜
+分割结果
+(c) nnUNet(b) Swin-UNet
+ 
+图 3    在LiTS数据集上的可视化分割结果
+Fig.3    Visual segmentation result on LiTS dataset
+ 
+(a) UNet (d) KUNet
+原图
+掩膜
+分割结果
+(b) Swin-UNet (c) nnUNet
+ 
+图 4    在CORN数据集上的可视化分割结果
+Fig.4    Visual segmentation result on CORN dataset
+第 6 期 娄世猛, 等：基 于KAN与 CKAN 优化的医学图像分割模型 1281
+
+=== PDF_PAGE 6 ===
+可知，UNet虽能初步定位肿瘤区域，但边界细节处
+理模糊，且部分微小区域存在遗漏，表明其在复杂
+结构特征提取方面存在局限. Swin-UNet借助自注
+意力机制增强了全局信息建模能力，但分割边界
+不平滑，并伴随一定程度的块状伪影. nnUNet在结
+构连续性与边缘准确性方面取得显著提升，分割
+区域相对完整，但在处理细微结构时存在轻微的
+像素偏移. KUNet在分割区域提取中展现出更优异
+的边界贴合度与精确的形状保持能力.
+如图4所示，在CORN数据集上的分割结果对
+比中，各模型间的性能差异显著. UNet模型在提取
+角膜神经结构时存在明显的漏检现象，尤其是在
+图像细节部分，分割不连贯，致使部分关键细节丢
+失. 引入自注意力机制后，Swin-UNet在CORN数据
+集上的分割能力大幅下降，不能实现有效的分割.
+与UNet和Swin-UNet相比，nnUNet模型具备更佳
+的分割边界连续性，但在处理复杂细节时，存在边
+界模糊和部分细微结构缺失的问题. 相较而言，
+KUNet模型在此任务中表现尤为出色，分割结果高
+度完整，边界保持连贯且细节捕捉更清晰. 尤其在
+角膜神经的纤细分支区域，KUNet能够更精确地捕
+捉到丰富的细节，有效抑制噪声干扰.
+如图5所示，在DRIVE数据集上，各模型分割
+性能呈现显著差异. UNet虽能捕捉眼底图像中的
+主要血管结构，但细节处理存在模糊与遗漏，尤其
+在纤细血管分割精度上不足. Swin-UNet在引入自
+注意力机制后，虽在大范围血管结构提取上有所
+改善，但面对复杂交错血管区域时难以有效处理
+细节，导致分割边界不连续. nnUNet在血管结构分
+割精度上有所提升，边界更为连贯，但在处理特定
+复杂交错血管（尤其是图像边缘与血管分叉处）时
+灵活性不足. KUNet在该任务中表现最优，分割结
+果细节清晰且边界连贯，尤其在分支血管捕捉上
+展现出超越其他模型的精确性，能够高效处理纤
+细与复杂血管结构，有效避免遗漏与伪分割现象.
+如图6所示，在Lungs数据集上各模型呈现显
+著性能差异. 短周期训练下，UNet甚至未能生成有
+效分割结果. Swin-UNet虽利用Transformer自注意
+力机制提升了对大范围结构的捕捉能力，但分割
+边界处理欠佳，尤其在细小区域分割中出现断裂，
+导致细节丢失. nnUNet通过结构改进实现了最精
+确的分割结果，尤其在整体轮廓上呈现出更强的
+连贯性. KUNet虽在某些方面（如整体轮廓的最高
+精确度）略逊于nnUNet，但展现了强大的分割性
+能，不仅在肺部整体区域提取上表现精准，且在细
+节处理上表现出色，尤其在较小或复杂形状的肺
+区域能够保持较高的边缘清晰度，有效避免了其
+他模型常见的漏检与伪分割问题.
+综上所述，在4个典型医学图像分割数据集
+（LiTS、CORN、DRIVE及Lungs）上的实验结果表
+明，各模型在不同任务中展现出差异化的性能特
+征. UNet作为基础模型具备一定的结构识别能力，
+但在复杂场景中常出现边界模糊、细节缺失与小
+结构漏检等问题，尤其在CORN与DRIVE这类对
+细节要求较高的数据集上表现相对较弱. 引入
+Transformer后，Swin-UNet的全局建模能力有所增
+强，在结构复杂区域（如LiTS与Lungs数据集）能
+够提取更多上下文信息，但受限于高计算成本与
+局部连接弱化，在小尺度目标分割与边缘连续性
+上仍显不足. nnUNet通过自适应网络配置机制显
+著提升了模型泛化性，在各数据集上均表现稳定，
+尤其在DRIVE与CORN数据集上边界保持能力较
+强，但在处理高复杂度场景时存在潜在的过拟合
+风险或形态偏差. 所提出的KUNet模型综合了多
+尺度特征融合与边缘感知机制，在所有数据集上
+均取得最优或近最优的分割效果，尤其在肿瘤、神
+经与血管等复杂结构识别中展现出卓越的边界精
+ 
+(a)UNet (d)KUNet
+原图
+掩膜
+分割结果
+(b)Swin-UNet (c)nnUNet
+ 
+图 5    在DRIVE数据集上的可视化分割结果
+Fig.5    Visual segmentation result on DRIVE dataset
+ 
+(a) UNet (d) KUNet
+原图
+掩膜
+分割结果
+(b) Swin-UNet (c) nnUNet
+ 
+图 6    在Lungs数据集上的可视化分割结果
+Fig.6    Visual segmentation result on Lungs dataset
+1282 浙          江          大          学          学          报（工学版） 第 60 卷
+
+=== PDF_PAGE 7 ===
+度、细节完整性与鲁棒性，验证了该模型作为优化
+方案在多类型医学图像分割任务中的有效性与
+通用性. 
+3.4    模型性能曲线的对比分析
+为了全面评估KUNet模型相对于nnUNet、
+Swin-UNet及基线UNet模型的性能优势，绘制4个
+模型在LiTS、CORN、DRIVE和Lungs数据集上的
+Dice系数和IoU随训练周期的变化曲线. 鉴于
+KUNet模型是基于UNet架构改进而成，为了量化
+其相对于基线模型的性能提升幅度，在曲线图中
+标注了两者之间的最大绝对性能差距（maximum
+absolute performance gap, MAPG）. 如图7~10所示分
+别为4个数据集上各模型在不同训练周期En的性
+能表现.
+如图7所示为各模型在LiTS数据集上的性能
+曲线对比结果. KUNet模型在LiTS数据集上表现
+出优于其他对比模型的性能. Dice系数和IoU曲线
+表明，KUNet在训练初期便超越UNet、nnUNet和
+Swin-UNet，并在后续训练过程中持续保持领先优
+势，最终2项指标均接近1，展现出良好的拟合能
+力与泛化性能. UNet的性能提升缓慢，最终Dice系
+数和IoU均处于较低水平，表明该模型在处理复杂
+医学图像分割任务时存在明显的局限性. Swin-UN-
+et虽然通过引入自注意力机制获得了一定的性能
+提升，但在训练过程中性能波动较大，收敛稳定性
+有待改善.
+如图8所示为各模型在CORN数据集上的性
+能曲线对比结果. KUNet在Dice和IoU 2项评价指
+标上均展现出显著优势. 具体而言，nnUNet虽然在
+训练初期呈现较快的收敛特性，但最终分割性能不
+仅低于UNet，且与KUNet存在明显差距. Swin-UNet
+尽管引入Transformer架构以增强全局上下文信息
+的捕获能力，但在CORN数据集上的分割效果欠
+佳，几乎未能进行有效地分割.
+如图9所示为各模型在DRIVE数据集上的性
+能曲线对比结果. KUNet展现出最优的分割性能，
+Dice系数与IoU系数均显著优于其他对比模型. 具
+体而言，KUNet在训练初期便实现Dice与IoU系数
+的快速提升，尽管在前期收敛速度略低于nnUNet，
+但最终两项指标均达到最高值，体现出优异的收
+敛特性与鲁棒性. UNet的性能提升较缓慢且波动
+显著，最终稳定于较低水平，暴露出该模型在此任
+务中的固有局限性. nnUNet前期分割性能略优于
+UNet，后期Dice与IoU系数虽然有所提升，但整体
+收敛速度不及KUNet. Swin-UNet在训练早期呈现
+较快上升趋势，但后续增长趋缓，最终性能未能超
+越KUNet与nnUNet. 综上所述，KUNet在DRIVE数
+据集上兼具快速收敛能力与高精度稳定性，充分
+验证了其在视网膜血管分割任务中的优越性.
+如图10所示为各模型在Lungs数据集上的性
+能曲线对比结果. KUNet与nnUNet均在训练早期
+迅速达到较高性能水平，并在中后期保持稳定. nnUNet
+的最终性能略低于KUNet，验证了KUNet在分割精
+度与稳定性方面的优势. UNet的训练过程呈现明
+ 
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1.0
+0 5 10 15 20 30 50 100
+IoU
+UNet
+KUNet
+nnUNet
+Swin-Unet
+UNet
+KUNet
+nnUNet
+Swin-Unet
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1.0
+0 5 10 15 20 30 50 100
+Dice
+En
+En
+(a)
+(b)
+ 
+图 7    UNet、KUNet、nnUNet、Swin-UNet模型 在 LiTS数据集上
+的性能曲线
+Fig.7    Performance curve of UNet, KUNet, nnUNet and Swin-UNet
+model on LiTS dataset
+ 
+0
+0.05
+0.10
+0.15
+0.20
+0.25
+0.30
+0.35
+0.40
+0 100 200 500 1 000 2 000
+IoU
+UNet
+KUNet
+nnUNet
+Swin-Unet
+UNet
+KUNet
+nnUNet
+Swin-Unet
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0 100 200 500 1 000 2 000
+Dice
+En
+En
+(a)
+(b)
+ 
+图 8    UNet、KUNet、nnUNet、Swin-UNet模型 在 CORN数据集
+上的性能曲线
+Fig.8    Performance curve of UNet, KUNet, nnUNet and Swin-UNet
+model on CORN dataset
+第 6 期 娄世猛, 等：基 于KAN与 CKAN 优化的医学图像分割模型 1283
+
+=== PDF_PAGE 8 ===
+显的性能滞后特征：前20轮迭代内Dice与IoU系
+数近乎为零，直至中后期才出现显著增长，暴露出
+其在特征提取与边界定位方面的固有缺陷. Swin-
+UNet虽然依托Transformer架构展现出良好的整体
+收敛趋势，且早期性能提升迅速，但收敛阶段略有
+延迟，最终性能不及KUNet与nnUNet.
+综合CORN、DRIVE、LiTS及Lungs 4个典型医
+学图像分割数据集上的性能曲线图可知，所提出
+的KUNet模型在Dice与IoU两项关键评价指标上
+均展现出显著优势. 从整体趋势分析，KUNet于训
+练初期即呈现快速收敛特性，并在中后期保持稳
+定增长，于全部4个数据集上均达到或接近最优性
+能，体现了其卓越的全局上下文建模与细节表征
+能力. nnUNet的性能曲线相对平稳，具备一定的泛
+化能力，但在收敛速度与最终精度方面均略逊于
+KUNet. Swin-UNet凭借自注意力机制在特定训练
+阶段实现了性能的快速增长，然而收敛阶段存在
+波动性，稳定性不足. 综上所述，KUNet在4个数据
+集上均实现了更快的收敛速度、更高的分割精度
+及更强的鲁棒性，充分验证了其在多种医学图像
+分割任务中的通用性与优越性. 
+3.5    性能对比分析
+为了更全面地量化KUNet在训练过程中相对
+于基线模型UNet的性能提升幅度，引入最大性能
+提升指标（MAPG）. 该指标旨在度量KUNet与UN-
+et在同一训练周期下的最大性能增益，详细数据见
+表2. 该指标在图7~10中均予以标记.
+表2呈现了KUNet模型相对于UNet基线模型
+的性能提升幅度（MAPG）. 结果表明，KUNet在不
+同数据集上的性能增益存在显著差异. 具体而言，
+在LiTS数据集上，Dice系数（MAPG1）与IoU系数
+（MAPG2）的性能提升分别达到0.978 6与0.958 2；在
+DRIVE数据集上，两项指标分别为0.714 7与0.556 1；
+在Lungs数据集上，则分别为0.965 1与0.9332. 上
+述结果充分表明，KUNet在早期训练阶段即可实现
+ 
+0 300 1 000 3 000 10 000
+IoU UNet
+KUNet
+nnUNet
+Swin-Unet
+UNet
+KUNet
+nnUNet
+Swin-Unet
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1.0
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1.0
+0 300 1 000 3 000 10 000
+Dice
+(a)
+(b)
+En
+En
+ 
+图 9    UNet、KUNet、nnUNet、Swin-UNet模型 在 DRIVE数据集
+上的性能曲线
+Fig.9    Performance curve of UNet, KUNet, nnUNet and Swin-UNet
+model on DRIVE dataset
+ 
+0 10 20 30 40 50 100
+UNet
+KUNet
+nnUNet
+Swin-Unet
+UNet
+KUNet
+nnUNet
+Swin-Unet
+0 10 20 30 40 50 100
+IoU
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1.0
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1.0 Dice
+En
+(a)
+En
+(b)
+ 
+图 10    UNet、KUNet、nnUNet、Swin-UNet模型 在 Lungs数据集
+上的性能曲线
+Fig.10    Performance curve of UNet, KUNet, nnUNet and Swin-UN-
+et model on Lungs dataset
+ 
+表 2   KUNet模型与UNet基线模型在各数据集上的最大性能差距
+Tab.2    Maximum performance gap between KUNet model and UNet baseline model on each dataset
+ 
+数据集 周期 Dice MAPG1 IoU MAPG2
+UNet模型 KUNet模型 UNet模型 KUNet模型
+LiTS 10 0 0.978 6 0.978 6 0 0.958 2 0.958 2
+CORN 200 0.065  3 0.126 4 0.061 1 0.033  9 0.067 7 0.033 8
+DRIVE 300 0 0.714 7 0.714 7 0 0.556 1 0.556 1
+Lungs 10 0 0.965 1 0.965 1 0 0.933 2 0.933 2
+均值 — — — 0.679 9 — — 0.620 3
+1284 浙          江          大          学          学          报（工学版） 第 60 卷
+
+=== PDF_PAGE 9 ===
+快速收敛，并取得显著的分割性能提升. 然而，在
+CORN数据集上，MAPG1与MAPG2仅为0.061 1与
+0.033 8，表明KUNet与UNet在该数据集上的性能
+差距相对较小，提升幅度较为有限. 从总体均值来
+看，MAPG1与MAPG2分别达到0.679 9与0.620 3，验
+证了KUNet在多数医学图像分割任务中的有效性.
+综上所述，实验结果表明，KUNet模型在多个
+数据集上均较UNet基线模型获得了显著的性能提
+升，尤其是在早期训练阶段，KUNet模型能够更快
+地达到更高的性能水平. 尽管在部分复杂数据集
+（如CORN）上，KUNet的优化效果相对有限，但总
+体而言，KUNet模型展现出更强的适应性和更高的
+分割精度.
+∆
+∆
+∆
+∆
+∆
+为了评估所提优化策略的有效性，在LiTS、
+CORN、DRIVE和Lungs4个数据集上对nnUNet、
+Swin-UNet、UNet及KUNet模型进行了训练与测
+试，并采用标准评估指标进行性能量化. 为系统化
+分析KUNet模型相对于对比模型的性能差异，定
+义相对提升指标   及其均值    ，用于衡量KUNet与
+各数据集上最优或次优模型的性能差距. 具体而
+言，若KUNet在某数据集上取得最优性能，则   表
+示其相对于次优模型的提升幅度（正值）；若
+KUN-
+et为次优，则   表示其与最优模型的性能差距（负
+值，在表中以“
+↓”标识）；若KUNet未进入前两名，
+则该数据集不纳入   计算.  表3中，最优结果以加
+粗字体标注.
+表3展示了各模型在不同数据集上的最终分
+割性能. 结果表明，KUNet在多数数据集上均展现
+出显著优势，验证了所提优化策略的有效性. 具体
+而言，在LiTS数据集上，KUNet取得Dice系数0.990 5
+与IoU系数0.930 1，均为次优性能，与最优的nnUNet
+相差仅0.001 2与0.002 6，相对提升指标分别为−0.134 8
+与−0.147 7. 在CORN数据集上，nnUNet与Swin-
+UNet的分割性能均低于UNet基线模型，而KUN-
+et显著优于UNet，Dice与IoU系数的相对提升指标
+分别为0.035 3与0.023 5，体现了其在复杂数据集上
+的处理能力. 在DRIVE数据集上，KUNet表现最
+优，Dice系数（0.930 1）与IoU系数（0.869 4）均位列
+第一，较次优的UNet模型具有显著优势，相对提
+升指标达到最高值0.922 5与0.8373. 在Lungs数据
+集上，KUNet的Dice系数与IoU系数分别为0.984 2
+与0.969 8，相对提升指标为0.462 3与0.336 9，展现
+了该模型对于复杂数据分布的强适应性与鲁棒性.
+综上所述，KUNet在4个数据集中3项指标最优、
+1项次优，综合性能位居首位. 平均而言，Dice与
+IoU系数的相对提升指标分别为0.321 3与0.262 5，
+证明了KUNet模型的有效性与泛化能力.
+EUNet
+EnnUNet
+ESwin-UNet
+EKUNet
+TUNet
+TnnUNet
+TSwin-UNet
+TKUNet
+为了对比各模型的计算效率，统计各模型达到
+最佳性能时所需的训练周期数及相应的训练时
+间，如表4所示. 其中，   、     、   、
+ 分别为各模型的最佳周期，    、   、
+ 、    分别为相应的训练时间.
+从表4可以看出，不同模型在效率与性能权衡
+方面存在显著差异. UNet在LiTS与Lungs数据集上
+展现出相对较快的训练速度，尤其在Lungs数据集
+上仅需262.87 s. 在CORN与DRIVE数据集上，该模
+型需要较多的训练轮次（分别为2 000与5 000轮），
+导致训练时间分别达到37 674.04 s与1 630.20 s，反
+映出该模型对不同数据规模与复杂度的适应能力
+有限. nnUNet则表现出良好的稳定性，但训练时间
+普遍较长，在DRIVE数据集上高达63 932 s，表明
+其自动配置机制在提升泛化能力的同时伴随较高
+的计算代价. Swin-UNet的训练周期与UNet相近
+（LiTS与Lungs均为100轮，CORN为2 000轮），但
+训练时间普遍较短，在LiTS与Lungs上分别仅需
+544 s与383 s，体现出较高的训练效率；在CORN数
+据集上需要15 380 s，说明Swin-UNet的计算效率优
+势随着数据规模或复杂度的增加而减弱. KUNet在
+CORN与DRIVE数据集上分别需要2 000与10 000
+轮训练周期，总体训练时间处于合理范围；在Lungs
+数据集上仅需50轮即可达到最佳性能，训练用时
+为241.8 s，表明KUNet对轻量级数据具有良好的
+ 
+表 3   UNet、KUNet、nnUNet、SWin-UNet模型在各数据集上的最佳性能
+Tab.3    Best performance of UNet, KUNet, nnUNet and SWin-UNet model on each dataset
+ 
+网络模型 Dice IoU
+LiTS CORN DRIVE Lungs LiTS CORN DRIVE Lungs
+UNet 0.980  9 0.513  3 0.810  4 0.960  9 0. 962 6 0.353  1 0.681  3 0.924  8
+nnUNet 0.991 7 0.321 9 0.798  1 0.974  7 0.983 7 0.204 9 0.652  1 0.956  3
+Swin-UNet 0. 984 2 0.081  5 0.687  5 0.957  1 0. 968 8 0.043 0.523  9 0.917  7
+KUNet 0.990  5 0.530 2 0.930  1 0.984  2 0.981 1 0.368 1 0.869  4 0.968  9
+∆
+0.134 8↓ 0.035  3 0.922  5 0.462  3 0. 147 7↓ 0.023  5 0.837  3 0.336  9
+∆
+0.321 3 0.262 5
+第 6 期 娄世猛, 等：基 于KAN与 CKAN 优化的医学图像分割模型 1285
+
+=== PDF_PAGE 10 ===
+适应性.
+综上所述，KUNet在多数数据集上取得了优异
+性能，但在LiTS数据集上略逊于nnUNet. 经分析可
+知，该差异主要源于模型针对特定数据集的适配
+策略不同，而非主干网络表达能力不足. nnUNet的
+优势在于其针对腹部CT影像的自适应处理流程.
+通过自动调整体素间距与重采样方案，处理各向
+异性分辨率. 利用强度归一化与软组织窗口化技
+术，增强对比度. 采用前景优先采样策略、Dice与
+交叉熵联合损失函数及深度监督机制，应对类别
+不平衡问题并提升小病灶检出率. 运用级联策略实
+现粗定位与精细化分割，增强对形态变异与噪声
+的鲁棒性. 通过优化的数据增强（强度偏移、伽马
+变换、弹性形变）、推理策略（滑窗预测、测试时增
+强、2D/3D集成）及后处理（连通域过滤、空洞填
+充），抑制假阳性. 上述策略对于处理LiTS数据集
+中形态变异显著、噪声突出、前景稀疏等问题具有
+关键作用，使得nnUNet在该数据集上表现出优势.
+KUNet在CORN数据集上的性能提升有限，可
+能原因如下. 1）KAN模块的可训练基函数在处理
+极细目标结构时存在适应性限制，影响特征映射
+质量. 2）CKAN的感受野设计侧重多尺度特征提
+取，对于微小且密集分布的神经末梢，可能出现覆
+盖不足或特征稀释的现象. 3）当前模型缺乏针对角
+膜神经细结构的专门优化机制（如局部上下文建
+模或细节增强模块）. 后续研究可以考虑引入轻量
+级局部注意力机制、基函数尺度自适应调节或基
+于形态学先验的细结构引导策略，提升模型在细
+小目标分割任务中的性能与泛化能力.
+KUNet在部分任务中训练效率下降的问题主
+要源于CKAN与KAN模块的较高计算复杂度.
+CKAN虽然增强了多尺度特征提取能力，但复杂的
+核函数计算与多通道交互操作增加了计算开销. 编
+码器与解码器中引入的KAN层虽然提升了细节保
+留与特征融合能力，但基于可训练基函数的非线
+性表达机制导致计算量显著增加. 针对该问题，可
+以采用以下优化策略：通道剪枝、低秩分解（用于
+压缩CKAN卷积核与KAN参数矩阵）、KAN模块
+稀疏化或知识蒸馏等轻量化方法；或将CKAN替换
+为深度可分离卷积结构，以降低推理与训练成本. 
+3.6    消融实验
+为了评估KUNet模型中各优化模块的具体贡
+献，在LiTS数据集上设计消融实验. KUNet在UN-
+et基线模型的基础上引入3项关键改进：在跳跃连
+接中嵌入KAN层，在解码器上采样后引入KAN
+层，以及采用CKAN替代传统卷积层. 实验采用控
+制变量法，每组实验仅变更单一模块，其余配置均
+与完整的KUNet模型保持一致. 在与主实验相同
+的训练配置下，对以下4种变体模型进行评估，结
+果如表5所示. 1）变体A：移除跳跃连接中的
+KAN层. 2）变体B：移除解码器上采样后的KAN
+层. 3）变体C：将所有CKAN层替换为传统的双卷
+积模块. 4）变体D：将自适应基函数（三次样条函
+数）替换为固定基函数，即冻结基函数参数（线性
+层权重），仅学习共享系数.
+ 
+ 
+表 5    不同模块配置下的消融实验结果比较
+Tab.5    Comparison  of  ablation  study  result  under  different
+module configuration
+ 
+模型 Dice IoU
+完整KUNet 0.990 5 0.981 1
+变体A 0.988 6 0.977 4
+变体B 0.990 4 0.981 0
+变体C 0.982 5 0.965 7
+变体D 0.989 2 0.978 6
+ 
+变体A的Dice系数与IoU分别下降0.001 9与
+0.003 7，表明跳跃连接中的KAN层通过增强低级
+特征与高级特征的语义匹配，有效促进了多尺度
+特征融合，使解码器能够生成更精确的分割结果.
+变体B的Dice系数与IoU仅分别下降0.000 1，与完
+整模型的性能基本持平，表明解码器上采样后的
+KAN层对模型性能的提升具有边际效应，该配置
+可以为后续网络结构设计提供参考. 变体C的Dice
+系数与IoU分别下降0.008 0与0.015 4，降幅最显
+著，表明CKAN层在特征提取阶段发挥关键作用.
+相较于传统卷积层，CKAN层凭借自适应特性与多
+尺度信息融合能力，能够在不同尺度特征间建立
+更强的非线性关联，提升特征表示的丰富性与判
+别性. 变体D的Dice系数与IoU分别下降0.001 3
+ 
+表 4   UNet、KUNet、nnUNet、Swin-UNet模型在各数据集上的计算效率
+Tab.4    Calculation efficiency of UNet, KUNet, nnUNet and Swin-UNet model on each dataset
+ 
+数据集
+EUNet
+EnnUNet
+ESwin-UNet
+EKUNet
+TUNet /s
+TnnUNet /s
+TSwin-UNet /s
+TKUNet /s
+LiTS 100 100 100 100 557.11 4  344 544 998.17
+CORN 2000 100 2000 2000 37  674.04 5  507 15 380 57  941.40
+DRIVE 5 000 5 000 5  000 10  000 1  630.20 63  932 1 659 5  458.41
+Lungs 100 100 100 50 262.87 5  509 383 241.84
+1286 浙          江          大          学          学          报（工学版） 第 60 卷
+
+=== PDF_PAGE 11 ===
+与0.002 5，表明自适应基函数能够在训练过程中
+学习数据特定的非线性变换，克服了固定基函数
+的表达能力局限性，进而提升模型的分割精度.
+上述消融实验结果定量验证了各优化模块对
+KUNet性能的贡献程度. 其中，CKAN层贡献最显
+著，证实了其在多尺度特征提取中的核心作用. 跳
+跃连接中的KAN层次之，验证了其在特征融合阶
+段的有效性. 自适应基函数机制表现出明显的优
+势，体现了数据自适应学习的必要性. 解码器上采
+样后的KAN层贡献相对有限，但保留了一定的性
+能提升潜力. 综上所述，4项优化模块的协同作用
+共同构成了KUNet的性能优势. 
+4   结　语
+提出基于KAN与CKAN的UNet优化模型
+KUNet. 该模型采用CKAN模块替代传统卷积层，
+结合特征增强机制、优化的跳跃连接与自适应基
+函数策略，有效提升了模型的非线性表达能力与
+细节还原能力. 在4个多模态数据集上的实验表
+明，该模型在Dice和IoU等评价指标上均优于对
+比模型，尤其在小样本和短周期训练条件下展现
+出更高的分割精度与泛化能力. 尽管训练时间有所
+增加，但考虑到性能的显著提升，该计算开销在可
+接受范围内. 后续研究将重点关注模型的轻量化设
+计，以提升性能并推动模型在实际应用场景中
+的部署.
+ 
+参考文献(References):
+ GARCIA-GARCIA A, ORTS-ESCOLANO S, OPREA S, et al. A
+review  on  deep  learning  techniques  applied  to  semantic
+segmentation [EB/OL]. [2025-08-17].  https://arxiv.org/abs/1704.
+06857.
+[1]
+ MINAEE S, BOYKOV Y, PORIKLI F, et al. Image segmentation
+using deep learning: a survey [J]. IEEE Transactions on Pattern
+Analysis and Machine Intelligence, 2021, 44(7): 3523–3542.
+[2]
+ ROTH H R, LU L, FARAG A, et al. DeepOrgan: multi-level deep
+convolutional  networks  for  automated  pancreas  segmentation
+[C]//Medical  Image  Computing  and  Computer-Assisted
+Intervention. Cham: Springer, 2015: 556–564.
+[3]
+ LITJENS G, KOOI T, BEJNORDI B E, et al. A survey on deep
+learning in medical image analysis [J].  Medical Image Analysis,
+2017, 42: 60–88.
+[4]
+ DEVALLA S K, PHAM T H, PANDA S K, et al. Towards label-
+free 3D segmentation of optical coherence tomography images of
+the optic nerve head using deep learning [J].  Biomedical Optics
+Express, 2020, 11(11): 6356–6378.
+[5]
+ CORDTS  M,  OMRAN  M,  RAMOS  S,  et  al.  The  cityscapes
+dataset for semantic urban scene understanding [C]//Proceedings
+[6]
+of  the  IEEE  Conference  on  Computer  Vision  and  Pattern
+Recognition. Las Vegas: IEEE, 2016: 3213–3223.
+ RONNEBERGER  O,  FISCHER  P,  BROX  T.  U-Net:
+convolutional  networks  for  biomedical  image  segmentation
+[C]//Medical  Image  Computing  and  Computer-Assisted
+Intervention. Cham: Springer, 2015: 234–241.
+[7]
+ ZHOU Z, RAHMAN SIDDIQUEE M M, TAJBAKHSH N, et al.
+UNet++:  a  nested  U-Net  architecture  for  medical  image
+segmentation [C]//Deep  Learning  in  Medical  Image  Analysis
+and  Multimodal  Learning  for  Clinical  Decision  Support.
+Cham: Springer, 2018: 3–11.
+[8]
+ ZHAO H, SHI J, QI X, et al. Pyramid scene parsing network
+[C]//Proceedings of the IEEE Conference on Computer Vision
+and Pattern Recognition. Honolulu: IEEE, 2017: 6230–6239.
+[9]
+ CHEN L C, PAPANDREOU G, KOKKINOS I, et al. DeepLab:
+semantic image segmentation with deep convolutional nets, atrous
+convolution, and fully connected CRFs [J].  IEEE  Transactions
+on  Pattern  Analysis  and  Machine  Intelligence, 2018, 40(4):
+834–848.
+[10]
+ CAO H, WANG Y, CHEN J, et al. Swin-Unet: Unet-like pure
+transformer  for  medical  image  segmentation  [C]// European
+Conference  on  Computer  Vision.  Cham:  Springer,  2023:
+205–218.
+[11]
+ ISENSEE F, JAEGER P F, KOHL S A A, et al. nnU-NET: a self-
+configuring method for deep learning-based biomedical image
+segmentation [J]. Nature Methods, 2021, 18(2): 203–211.
+[12]
+ ISENSEE F, PETERSEN J, KLEIN A, et al. nnU-NET: self-
+adapting framework for U-Net-based medical image segmentation
+[EB/OL]. [2025-08-17]. https://arxiv.org/abs/1809.10486.
+[13]
+ MOU L, ZHAO Y, CHEN L, et al. CS-Net: channel and spatial
+attention  network  for  curvilinear  structure  segmentation
+[C]//Medical  Image  Computing  and  Computer  Assisted
+Intervention. Cham: Springer, 2019: 721–730.
+[14]
+ STAAL J, ABRAMOFF M D, NIEMEIJER M, et al. Ridge-based
+vessel  segmentation  in  color  images  of  the  retina  [J]. IEEE
+Transactions on Medical Imaging, 2004, 23(4): 501–509.
+[15]
+ LIU Z, WANG Y, VAIDYA S, et al. KAN: Kolmogorov-Arnold
+networks  [EB/OL].  [2025-08-17].  https://arxiv.org/abs/2404.
+19756.
+[16]
+ BODNER  A  D,  TEPSICH  A  S,  SPOLSKI  J  N,  et  al.
+Convolutional Kolmogorov-Arnold networks [EB/OL]. [2025-08-
+17]. https://arxiv.org/abs/2406.13155.
+[17]
+ LI C, LIU X, LI W, et al. U-KAN makes strong backbone for
+medical image segmentation and generation [J].  Proceedings  of
+the  AAAI  Conference  on  Artificial  Intelligence, 2025, 39(5):
+4652–4660.
+[18]
+ MA X, WANG Z, HU Y, et al. Kolmogorov-Arnold network for
+remote sensing image semantic segmentation [EB/OL]. [2025-08-
+17]. https://arxiv.org/abs/2501.07390.
+[19]
+ AGRAWAL A, AGRAWAL A, GUPTA S, et al. KAN-Mamba
+FusionNet:  redefining  medical  image  segmentation  with  non-
+linear  modeling  [EB/OL].  [2025-08-17]. https://arxiv.org/abs/
+2411.11926.
+[20]
+第 6 期 娄世猛, 等：基 于KAN与 CKAN 优化的医学图像分割模型 1287
+
+=== PDF_PAGE 12 ===
+ OKTAY O, SCHLEMPER J, FOLGOC L L, et al. Attention U-
+Net: learning where to look for the pancreas [EB/OL]. [2025-08-
+17]. https://arxiv.org/abs/1804.03999.
+[21]
+ ZHANG Z, LIU Q, WANG Y. Road extraction by deep residual
+U-Net  [J].  IEEE  Geoscience  and  Remote  Sensing  Letters,
+2018, 15(5): 749–753.
+[22]
+ BILIC P, CHRIST P, LI H B, et al. The Liver tumor segmentation
+benchmark  (LiTS)  [J]. Medical  Image  Analysis,  2023,  84:
+102680.
+[23]
+ SCHOENBERG  I  J.  Contributions  to  the  problem  of
+approximation of equidistant data by analytic functions: part A. -
+on  the  problem  of  smoothing  or  graduation.  a  first  class  of
+analytic  approximation  formulae  [J]. Quarterly  of  Applied
+Mathematics, 1946, 4(1): 45–99.
+[24]
+ HOLLADAY  J  C.  A  smoothest  curve  approximation  [J].
+Mathematical  Tables  and  Other  Aids  to  Computation, 1957,
+[25]
+11(60): 233–243.
+ MILLETARI  F,  NAVAB  N,  AHMADI  S  A.  V-net:  fully
+convolutional  neural  networks  for  volumetric  medical  image
+segmentation  [C]// Proceedings  of  the  Fourth  International
+Conference on 3D Vision. Stanford: IEEE, 2016: 565–571.
+[26]
+ EVERINGHAM M, VAN GOOL L, WILLIAMS C K I, et al.
+The  pascal  visual  object  classes  (VOC)  challenge  [J].
+International  Journal  of  Computer  Vision,  2010,  88(2):
+303–338.
+[27]
+ TAGHANAKI S A, ZHENG Y, ZHOU K S, et al. Combo loss:
+handling input and output imbalance in multi-organ segmentation
+[J].  Computerized  Medical  Imaging  and  Graphics, 2019, 75:
+24–33.
+[28]
+ LOSHCHILOV  I,  HUTTER  F.  SGDR:  stochastic  gradient
+descent with warm restarts [EB/OL]. [2025-08-17].  https://arxiv.
+org/abs/1608.03983.
+[29]
+ 
+ 
+（上接第1268页）
+ NYE  C  D,  ROBERTS  B  W.  A  neo-socioanalytic  model  of
+personality  development  [M]//Work  across  the  lifespan.
+London: Academic Press, 2019: 47-79.
+[10]
+ LIN  H,  WANG  C,  SUN  Y.  How  big  five  personality  traits
+influence information sharing on social media: a meta analysis
+[J]. PLoS One, 2024, 19(6): e0303770.
+[11]
+ PICAZO-VELA S, CHOU S Y, MELCHER A J, et al. Why
+provide an online review? an extended theory of planned behavior
+and the role of Big-Five personality traits [J].  Computers  in
+Human Behavior, 2010, 26(4): 685–696.
+[12]
+ 迪路阳, 钟寒, 施水才. 网络舆情预警研究综述[J]. 数据分析与
+知识发现, 2023, 7(8): 17–29.
+DI Luyang, ZHONG Han, SHI Shuicai. Review of early warning
+for online public opinion [J].  Data  Analysis  and  Knowledge
+Discovery, 2023, 7(8): 17–29.
+[13]
+ 李振鹏, 陈碧珍, 罗静宇. 基于文本挖掘的网络舆情分类研究
+[J]. 系统科学与数学, 2020, 40(5): 813–826.
+LI Zhenpeng, CHEN Bizhen, LUO Jingyu. Research on network
+public opinion classification based on text mining [J].  Journal of
+Systems  Science  and  Mathematical  Sciences,  2020,  40(5):
+813–826.
+[14]
+ LIN H, WANG C, HAO Q. A novel personality detection method[15]
+based  on  high-dimensional  psycholinguistic  features  and
+improved distributed Gray Wolf Optimizer for feature selection
+[J].  Information  Processing  and  Management,  2023,  60(2):
+103217.
+ LUO Z, TIAN J, ZENG J, et al. Flood risk evaluation of the
+coastal city by the EWM-TOPSIS and machine learning hybrid
+method [J].  International Journal of Disaster Risk Reduction,
+2024, 106: 104435.
+[16]
+ JI J, WANG D. Evaluation analysis and strategy selection in
+urban flood resilience based on EWM-TOPSIS method and graph
+model [J]. Journal of Cleaner Production, 2023, 425: 138955.
+[17]
+ ORESHKIN B N, CARPOV D, CHAPADOS N, et al. N-BEATS:
+neural  basis  expansion  analysis  for  interpretable  time  series
+forecasting  [EB/OL].  [2025-06-15].  https://arxiv.org/abs/1905.
+10437.
+[18]
+ LIN  H,  WANG  C.  DIGWO-N-BEATS:  an  evolutionary  time
+series prediction method for situation prediction [J].  Information
+Sciences, 2024, 664: 120316.
+[19]
+ 崔鹏, 张巍, 何毅, 等. 突发公共事件网络舆情演化及政府应对
+能力研究[J]. 现代情报, 2018, 38(2): 75–83.
+CUI  Peng,  ZHANG  Wei,  HE  Yi,  et  al.  Dynamic  evolution
+research on the government’s response capability to the public
+opinions in the context of public emergencies [J].  Journal  of
+Modern Information, 2018, 38(2): 75–83.
+[20]
+1288 浙          江          大          学          学          报（工学版） 第 60 卷

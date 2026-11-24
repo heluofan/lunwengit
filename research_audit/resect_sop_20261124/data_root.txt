@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"  > <!--<![endif]-->
+  <head>
+    <meta charset="utf-8" />
+      <meta name="csrf_field_name" content="_csrf_token" />
+      <meta name="_csrf_token" content="IjkwMTY5NGMwMmM3YTk4M2I4OTQwZDBkOTYwNzMxOTk1MWE4ZTFmYmEi.awTz-Q.RfzG-HATj4t8bqa9Gdi9wvnwbK8" />
+
+      <meta name="generator" content="ckan 2.11.5" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error 404 - NIRD Research Data Archive</title>
+
+    
+    <link rel="shortcut icon" href="/sigma2-base/sigma2_favicon.png" />
+    
+    
+  
+     
+
+  
+      
+      
+      
+    
+  
+
+
+
+    
+
+  
+
+    
+
+
+    
+    <link href="/webassets/base/51d427fe_main.css" rel="stylesheet"/>
+<link href="/webassets/ckanext-scheming/073d7cfa_scheming_css.css" rel="stylesheet"/>
+<link href="/webassets/ckanext-sigma2/6cc31d01-style.css" rel="stylesheet"/>
+<link href="/webassets/ckanext-oauth2/305141ac-oauth2.css" rel="stylesheet"/>
+<link href="/webassets/ckanext-activity/8dd77216_activity.css" rel="stylesheet"/>
+    
+    
+
+  </head>
+
+  
+  <body data-site-root="https://data.archive.sigma2.no/" data-locale-root="https://data.archive.sigma2.no/" >
+
+    
+    <div class="visually-hidden-focusable"><a href="#content">Skip to main content</a></div>
+  
+
+  
+    
+
+ 
+<div class="sigma2-header">
+
+
+<div class="account-masthead">
+  <div class="container">
+     
+    <nav class="account not-authed" aria-label="Account">
+      <ul class="list-unstyled">
+        
+    <li><a href="/user/login">Log in</a></li>
+    
+      </ul>
+    </nav>
+     
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="container">
+      
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <hgroup class="header-image navbar-left">
+
+      
+      
+      <a class="logo" href="/">
+        <img src="/images/sigma2-logo.svg" alt="NIRD Research Data Archive"
+          title="NIRD Research Data Archive" />
+      </a>
+      
+      
+
+       </hgroup>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navigation-toggle"
+        aria-controls="main-navigation-toggle" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="fa fa-bars text-white"></span>
+      </button>
+
+      <div class="main-navbar collapse navbar-collapse bg-button" id="main-navigation-toggle">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          
+            
+              
+              
+          
+              <li><a href="/dataset/">Datasets</a></li><li><a href="/institution/">Institutions</a></li><li><a href="/subject/">Subjects</a></li>
+	          
+          </ul>
+
+      
+      
+          <form class="d-flex site-search" action="/dataset/" method="get">
+              <label class="d-none" for="field-sitewide-search">Search Datasets...</label>
+              <input id="field-sitewide-search" class="form-control me-2"  type="text" name="q" placeholder="Search" aria-label="Search datasets..."/>
+              <button class="btn" type="submit" aria-label="Submit"><i class="fa fa-search"></i></button>
+          </form>
+      
+      </div>
+    </nav>
+  </div>
+</header>
+</div>
+
+  
+    <div class="main">
+      <div id="content" class="container">
+        
+          
+  
+  
+
+
+          
+            <div class="toolbar" role="navigation" aria-label="Breadcrumb">
+              
+
+            </div>
+          
+
+          <div class="row wrapper no-nav">
+            
+            
+            
+
+            
+
+            
+  <article class="module">
+    <div class="module-content">
+      
+      <h1>404 Not Found</h1>
+      
+      The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+    </div>
+    
+    
+  
+  </article>
+
+          </div>
+        
+      </div>
+    </div>
+  
+    <footer class="site-footer">
+  <div class="container">
+    
+    <div class="row footer-row " style="background-color: #A7B1B7;">
+      <div class="col-md-auto footer-links">
+          <h4>Learn More</h4>
+          <ul class="list-unstyled">
+              <li><a style="color:black; font-size:18px" target="_blank" href="https://www.sigma2.no/service/research-data-archive">About</a></li>
+              <li><a style="color:black; font-size:18px" href="https://documentation.sigma2.no/nird_archive/user-guide.html?test=1234">FAQ</a></li>
+          </ul>
+      </div>
+      <div class="col-md-auto footer-divider mobile-hide" /></div>
+      <div class="col-md-auto footer-links">
+          <h4>Data Portal</h4>
+          <ul class="list-unstyled">
+              <li><a style="color:black; font-size:18px" href="/dataset/">Datasets</a></li>
+              <li><a style="color:black; font-size:18px" href="/institution/">Institutions</a></li>
+              <li><a style="color:black; font-size:18px" href="/subject/">Subjects</a></li>
+          </ul>
+      </div>
+      <div class="col-md-auto footer-divider mobile-hide"></div>
+      <div class="col-md-auto footer-links">
+          <h4>Useful Links</h4>
+          <ul class="list-unstyled">
+              <li><a style="color:black; font-size:18px" target="_blank" href="https://documentation.sigma2.no/nird_archive/user-guide.html">Documentation</a></li>
+              <li><a style="color:black; font-size:18px" target="_blank" href="https://www.sigma2.no/processing-personal-information-research-data-archive">Privacy Policy</a></li>
+              <li><a style="color:black; font-size:18px" target="_blank" href="https://www.sigma2.no/data-policy">Data Policy</a></li>
+              <li><a style="color:black; font-size:18px" href="mailto:archive.manager@nris.no">Feedback</a></li>
+          </ul>
+      </div>
+    </div>
+    
+  </div>
+  <div style="background-color: #2E4354; border-top-left-radius: 50px;border-top-right-radius: 50px;  min-height: 91px;">
+    <div class="container" style="display: flex; justify-content: space-between; flex-wrap: wrap">
+      <div style="display: flex; align-items: center; gap: 2rem; justify-content: space-between; padding-top: 2rem; padding-bottom: 1rem;">
+          <div style=" display: flex; align-items: center; gap: 2rem; border-top-left-radius: 50px;">
+            <a class="logo" href="/">
+              <img src="/images/sigma2-logo.svg" alt="NIRD Research Data Archive"
+                title="NIRD Research Data Archive" style="width: 89px; height: 22px;"/>
+            </a>
+            <div class="line"></div>
+            <img src="/images/nris-logo.svg" alt="nris-logo"/>
+
+            
+          </div>
+          <div style="width: 2px; height: 45%; background-color: gray;"></div>
+          <div>
+              <a href="mailto:archive.manager@nris.no" style="font-size: 16px; color: rgb(168, 176, 183);">Contact</a>
+          </div>
+          <div style="width: 2px; height: 45%; background-color: gray;"></div>
+          <img src="/images/CoreTrustSeal-logo-transparent.png" alt="core-trust-seal-logo" title="Core Trust Seal"
+               style="width: 66px; height: 66px;background-color: white; border-radius: 33px"/>
+
+      </div>
+      <div style="display: flex; padding-top: 2rem">
+        <p style="color: white; margin: 0; border-top-left-radius: 50px;">
+          Powered by
+          <a href="http://ckan.org" style="color: orange; text-decoration-line: underline;">
+            CKAN
+          </a>.
+           Created by
+        </p>
+        <img src="/images/datopian-logo.png" alt="Datopian-logo"
+             title="Datopian" style="width: 89px; height: 22px; margin-left: 10px;">
+      </div>
+    </div>
+  </div>
+</footer>
+  
+  
+    
+  
+  
+  
+    
+    
+    
+
+
+     
+    
+
+  
+
+
+    
+    
+    <link href="/webassets/vendor/f3b8236b_select2.css" rel="stylesheet"/>
+<link href="/webassets/vendor/53df638c_fontawesome.css" rel="stylesheet"/>
+    <script src="/webassets/vendor/240e5086_jquery.js" type="text/javascript"></script>
+<script src="/webassets/vendor/773d6354_vendor.js" type="text/javascript"></script>
+<script src="/webassets/vendor/6d1ad7e6_bootstrap.js" type="text/javascript"></script>
+<script src="/webassets/vendor/529a0eb7_htmx.js" type="text/javascript"></script>
+<script src="/webassets/base/a65ea3a0_main.js" type="text/javascript"></script>
+<script src="/webassets/base/78ac888d_ckan.js" type="text/javascript"></script>
+<script src="/webassets/ckanext-oauth2/f7c3b3ca-oauth2.js" type="text/javascript"></script>
+<script src="/webassets/sigma2/js/custom.min.js?727aa24e" type="text/javascript"></script>
+<script src="/webassets/sigma2/js/mask.min.js?0b6bfacb" type="text/javascript"></script>
+<script src="/webassets/activity/0fdb5ee0_activity.js" type="text/javascript"></script>
+  </body>
+</html>

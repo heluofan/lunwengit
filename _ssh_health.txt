@@ -1,0 +1,95 @@
+==================== sys
+$ hostname; uname -r; nproc; free -g | head -2
+k8s-gpu-04
+5.15.0-198-generic
+128
+               total        used        free      shared  buff/cache   available
+Mem:             503          22          18           0         463         477
+==================== disk
+$ df -h | head -25
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs            51G  5.9M   51G   1% /run
+/dev/sda2       878G  291G  543G  35% /
+tmpfs           252G  1.1M  252G   1% /dev/shm
+tmpfs           5.0M     0  5.0M   0% /run/lock
+/dev/sda1       1.1G  6.1M  1.1G   1% /boot/efi
+tmpfs            51G  4.0K   51G   1% /run/user/1000
+tmpfs            51G  4.0K   51G   1% /run/user/1001
+/dev/nvme0n1    7.0T  1.7T  5.0T  25% /data
+==================== data
+$ ls -la /data/ 2>&1 | head -20; echo ---; ls -la /data/heluofan 2>&1 | head -40
+total 36
+drwxrwsr-x  6 root     data      4096 Nov 20 18:27 .
+drwxr-xr-x 22 root     root      4096 Nov 11 09:52 ..
+drwxr-sr-x  3 root     data      4096 Nov 16 18:09 chr
+drwxr-x--- 34 heluofan heluofan  4096 Nov 23 14:58 heluofan
+drwx------  2 root     root     16384 Nov 11 09:44 lost+found
+lrwxrwxrwx  1 root     root        14 Nov 10 12:39 test-user4 -> /data/heluofan
+drwxr-sr-x  2 ubuntu   ubuntu    4096 Nov 19 17:27 ubuntu
+---
+total 1046764
+drwxr-x--- 34 heluofan heluofan      4096 Nov 23 14:58 .
+drwxrwsr-x  6 root     data          4096 Nov 20 18:27 ..
+-rw-rw-r--  1 heluofan heluofan      1393 Nov 14 17:00 amos_check.py
+-rw-rw-r--  1 heluofan heluofan      4365 Nov 14 16:37 amos_dl.py
+-rw-rw-r--  1 heluofan heluofan      1336 Nov 14 16:45 amos_inspect.py
+-rw-rw-r--  1 heluofan heluofan      1754 Nov 14 16:54 _amos_run.log
+-rw-rw-r--  1 heluofan heluofan      1483 Nov 14 16:58 amos_unzip.py
+drwxrwxr-x  3 heluofan heluofan      4096 Nov 20 14:36 bench
+-rw-rw-r--  1 heluofan heluofan      3577 Nov 17 20:55 bench_chitu.py
+-rw-rw-r--  1 heluofan heluofan      2883 Nov 18 10:06 bench_conc.py
+-rw-rw-r--  1 heluofan heluofan      1217 Nov 17 21:06 bench_fixed.sh
+-rw-rw-r--  1 heluofan heluofan      4072 Nov 18 10:42 bench_prefill2.py
+-rw-rw-r--  1 heluofan heluofan      2022 Nov 17 21:50 bench_prefill.py
+-rw-rw-r--  1 heluofan heluofan      2655 Nov 18 09:38 bench_prefix.py
+-rw-rw-r--  1 heluofan heluofan      7381 Nov 18 10:22 bench_sweep.py
+drwxrwxr-x  2 heluofan heluofan      4096 Nov 20 11:16 bin
+-rw-rw-r--  1 heluofan heluofan       590 Nov 14 13:41 _bn.log
+-rw-rw-r--  1 heluofan heluofan      3321 Nov 14 13:41 bn.py
+drwxrwxr-x  7 heluofan heluofan      4096 Nov 11 00:38 brats_work
+-rwxrwxr-x  1 heluofan heluofan      1198 Nov 17 20:39 build_chitu.sh
+-rwxr-xr-x  1 heluofan heluofan      1254 Nov 11 17:42 build_sage_in_container.sh
+drwxrwxr-x  4 heluofan heluofan      4096 Nov 20 11:17 .cache
+-rw-rw-r--  1 heluofan heluofan      1171 Nov 18 17:19 check_env.sh
+-rw-rw-r--  1 heluofan heluofan       930 Nov 18 10:19 chitu_ctl.sh
+drwxrwxr-x 23 heluofan heluofan      4096 Nov 18 10:43 chitu-src
+drwxrwxr-x  7 heluofan heluofan      4096 Nov  9 11:40 ComfyUI
+-rw-r--r--  1 heluofan heluofan      1333 Oct 30 10:30 conv_bf16_enc.py
+drwxrwxr-x  2 heluofan heluofan      4096 Nov 17 20:40 cuda-12.8
+drwxrwxr-x  7 heluofan heluofan      4096 Nov 21 15:41 der_data
+-rw-rw-r--  1 heluofan heluofan       369 Nov 14 13:33 _diag_nan.log
+-rw-rw-r--  1 heluofan heluofan      6355 Nov 14 13:32 diag_nan.py
+-rw-rw-r--  1 heluofan heluofan      2497 Nov 14 13:33 _diag_stdout.log
+-rw-rw-r--  1 heluofan heluofan       180 Nov 14 16:36 _dltest.log
+drwxrwxr-x  3 heluofan heluofan      4096 Nov  9 17:45 downloads
+drwxrwxr-x  5 heluofan heluofan      4096 Nov 10 15:48 dynamo-deploy
+drwxrwxr-x  3 heluofan heluofan      4096 Nov 10 13:22 dynamo-src
+drwxrwxr-x  8 heluofan heluofan      4096 Nov 10 15:11 dynamo-venv
+drwxrwxr-x  9 heluofan heluofan      4096 Nov 22 16:24 eegfnirs
+-rw-rw-r--  1 heluofan heluofan      7226 Nov 14 14:58 elim2.out
+==================== mount
+$ mount | grep -Ei 'data|nvme|sd' | head -20
+/dev/sda2 on / type ext4 (rw,relatime)
+/dev/sda1 on /boot/efi type vfat (rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro)
+/dev/nvme0n1 on /data type ext4 (rw,noatime,stripe=32)
+/dev/sda2 on /var/lib/kubelet/pods/78022103-ea6a-4913-9a7b-91192c2e0af5/volume-subpaths/counters/nvidia-dcgm-exporter/1 type ext4 (rw,relatime)
+/dev/sda2 on /var/lib/kubelet/pods/10c16d84-ebd7-4451-b233-882ffac8bc5d/volume-subpaths/manager-config/manager/0 type ext4 (rw,relatime)
+==================== tools
+$ for t in aria2c axel curl wget python3 p7zip unzip tmux screen nohup setsid; do printf '%-10s ' $t; command -v $t || echo MISSING; done
+aria2c     MISSING
+axel       MISSING
+curl       /usr/bin/curl
+wget       /usr/bin/wget
+python3    /usr/bin/python3
+p7zip      MISSING
+unzip      MISSING
+tmux       /usr/bin/tmux
+screen     /usr/bin/screen
+nohup      /usr/bin/nohup
+setsid     /usr/bin/setsid
+==================== py
+$ python3 -V 2>&1; echo ---; ls /data/heluofan/envs 2>&1 | head
+Python 3.10.12
+---
+chitu
+ms

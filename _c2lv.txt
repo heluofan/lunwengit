@@ -1,0 +1,32 @@
+﻿=== start Tue Nov 24 10:36:07 AM CST 2026 ===
+== 鍒犻櫎鍓嶆竻鍗?==
+/data/heluofan/seg_work                  219G
+/data/heluofan/picai                     155G
+/data/heluofan/eegfnirs                  22G
+/data/heluofan/der_data                  14G
+/data/heluofan/brats_work                6.6G
+/data/heluofan/thyroid_tta               1.2G
+
+backup candidates: 19
+backup: 208K
+used_before_kb=633095132
+>>> rm -rf /data/heluofan/seg_work
+<<< done, exists=NO
+>>> rm -rf /data/heluofan/picai
+<<< done, exists=NO
+>>> rm -rf /data/heluofan/eegfnirs
+<<< done, exists=NO
+>>> rm -rf /data/heluofan/der_data
+<<< done, exists=NO
+>>> rm -rf /data/heluofan/brats_work
+<<< done, exists=NO
+>>> rm -rf /data/heluofan/thyroid_tta
+<<< done, exists=NO
+used_after_kb=201328640
+freed_gb=411
+== 鍓╀綑 ==
+193G	/data/heluofan
+/dev/nvme0n1    7.0T  193G  6.4T   3% /data
+=== DONE Tue Nov 24 10:36:46 AM CST 2026 ===
+
+1

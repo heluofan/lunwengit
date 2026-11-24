@@ -1,0 +1,1056 @@
+=== PDF_PAGE 1 ===
+书书书
+协
+和 医 学 杂 志
+Medical Journal of Peking Union Medical College Hospital
+Vol. 17 No. 4 895
+基
+金 项 目: 国 家自 然科 学基 金 ( 62027901 ，U22A20343 ，81930053 )
+引 用 本文: 方 梦 捷，田 捷． 医 学影 像 基 础 模 型: 进 展、 挑战与临床转化 ［J］． 协 和 医 学 杂 志， 2026 ， 17 ( 4 )
+: 895-904． doi : 10． 12290 /
+xhyxzz．2026-0416．
+·主
+题 论 文·述 评 ·
+医学影像基础模型 : 进
+展、挑战 与临床 转化
+方梦
+捷
+1
+，田 捷
+1，2
+1
+中
+国 科 学 院自 动 化 研 究 所，中 国 科 学 院分子影像重点实验室 ，分子影像技术研 发 与 转 化北 京 市重 点 实 验 室，北 京 100190
+2
+北
+京 航 空 航 天 大学 医 学 科 学与 工 程学 院，北 京大 数 据 精 准医 疗 高 精 尖创 新 中 心 ，北 京 100191
+通
+信 作 者: 田 捷 ，E- mail: jie．tian@ia．ac．cn
+【摘
+要 】 医 学影像基础模型作 为 医 学影 像 智能 分 析 的重 要 发 展 方 向，正 推动 该 领 域 由 面向 单 一 任 务 的 专用 建 模 逐 步
+转向 以 大 规 模 预 训 练和 通 用表 征学 习 为 基 础的 新 范 式。此 类模 型在 多模 态 信 息 整 合、跨 任 务 迁 移、多 场 景 适 配和 生成 式
+交 互 等方 面 展 现 出 较 大 潜 力。然 而 ，目 前 多数 研 究主 要基 于 基 准 数 据集 、回顾性队列或受控 实 验条 件 ，尚 存 在数 据 代表
+性 不 足、任 务 设 置 偏 离 真实 工 作流 、泛 化 与稳 健 性 验 证 不 充分 、伦 理 监 管和 责 任边 界 不 清 等问 题。本 文 梳 理医 学影 像 基
+础 模 型的 研 究背 景、关 键技 术和 应 用 进 展，并 进 一 步 讨 论数 据治 理、临 床 工 作流 嵌 入和 伦 理 监 管 等 现实 挑 战， 以 期 为相
+关 研究与临床转化 提 供 参 考。
+【关 键词 】 人 工 智能 ; 基 础 模 型; 医 学影 像; 多 模 态 数 据; 临 床部 署
+【中 图 分 类号 】 TP18 ; TP391. 4 ; Ｒ318 【文 献 标 志 码】 A 【文 章 编 号】 1674- 9081( 2026 ) 04- 0895- 10
+DOI : 10. 12290 / xhyxzz. 2026-0416
+Medical Imaging Foundation Models : Advances ，Challenges ，
+and Clinical Translation
+FANG Mengjie
+1
+，TIAN Jie
+1，2
+1
+Beijing Key Laboratory of Molecular Imaging Technology Ｒesearch and Translation ，CAS Key Laboratory of Molecular Imaging ，
+Institute of Automation ，Chinese Academy of Sciences ，Beijing 100190 ，China
+2
+Beijing Advanced Innovation Center for Big Data- Based Precision Medicine ，School of Engineering Medicine ，
+Beihang University ，Beijing 100191 ，China
+Corresponding author : TIAN Jie ，E- mail: jie．tian@ia．ac．cn
+【Abstract 】 Medical imaging foundation models ，as an important direction in the intelligent analysis of
+medical images ，are driving a paradigm shift in this field —from task- specific modeling for individual tasks to-
+ward a new paradigm grounded in large- scale pre- training and general- purpose representation learning． These
+models have demonstrated considerable potential in multimodal information integration ，cross- task transfer ，
+multi- scenario adaptation ， and generative interaction． However ， most current studies remain based on
+benchmark datasets ，retrospective cohorts ，or controlled experimental conditions ，and still face challenges such
+as insufficient data representativeness ，task settings that deviate from real- world clinical workflows ，inadequate
+validation of generalizability and robustness ，and ambiguous boundaries of ethical oversight and accountability．
+This article reviews the research background ，key technologies ，and advances in the applications of medical
+
+=== PDF_PAGE 2 ===
+协
+和 医 学 杂 志
+896 July ，2026
+imaging foundation models ，and further discusses practical challenges including data governance ，workflow inte-
+gration ，and ethical regulation ，with the aim of providing guidance for related research and clinical translation．
+【Key words 】 artificial intelligence ; foundation model ; medical imaging ; multimodal data ; clinical deployment
+Funding : National Natural Science Foundation of China ( 62027901 ，U22A20343 ，81930053 )
+Med J PUMCH ，2026 ，17( 4)
+: 895 － 904
+人 工
+智 能 已 广 泛 用 于 医 学 影 像 的 病 灶 检 出
+［1］
+、
+疾
+病分类
+［2］
+和 预 后 预 测
+［3］
+等 任 务。 特
+别 是 深 度学 习
+的发展，显 著 提升了影 像 分析 的自 动 化水 平 及 特征 挖
+掘能 力，推动医 学影 像 智能分析 由依 赖 人工设计 特征
+的传 统 模 式 转 向 端 到 端 的 数 据 驱 动 范 式
+［4］
+。 然 而，
+围
+绕单一任务构建 的 专用 模 型 通常 依 赖高 质 量人工标
+注数 据，其性 能易受 训 练数 据来 源、规模和分布 特征
+的限制，在 跨任务 迁 移、多中心泛化和多模态信息 整
+合方面 存 在 不 足。
+在 此 背 景下 ， 基 础 模 型为 医 学 影 像 智 能 分 析 提
+供 了新 的 思 路
+［5］
+。 与 针
+对 单 一 任 务 分 别 建 模 的 传 统
+范 式 不同 ， 医 学影 像 基 础 模 型强 调 在 大 规 模 数 据上
+学 习 可 迁 移 的 通 用 表 示 ， 再 结 合 具 体 任 务 进 行 适
+配 ， 以 提 高 模 型 在 不 同 任 务 和 场 景 中 的 复 用 能 力 。
+这 一 方 向有 望 缓 解医 学 影 像 标 注 成 本 高、 数 据 异 质
+性 强 、 重 复 开 发 较 多 等问 题， 推 动 模 型能 力 由单 一
+预 测 拓展 至 多 任 务 处 理 、 多 模 态 协 同 和 更 深 层 次的
+医 学 语义 理 解 。
+需要指出的是，医 学影 像 基 础 模 型仍 处于快 速发
+展阶 段，其能 力 边 界和研 究范围 仍在 不断 演进。现 有
+研究 仍主 要基于基 准 数 据集、公开 数 据集或 受 控实 验
+条件，尚 不 能直 接等同于 真实 临 床价 值。若 仅 依据 模
+型规模、任务覆 盖数 量或单项指 标 提升判 断 其应用 前
+景，容易放大 技 术预期，甚 至形成将实 验 室表 现视 为
+临 床 可 用性 的认 识偏差。因此，本文在 梳 理医 学影 像
+基础模型研究进展 的基 础上，重 点关注 其从技 术潜 力
+走向 临 床应用过程中面临的 关 键约 束，以 期 为相关 研
+究 与 转 化提 供 参 考。
+1 医学影像基础模型 的
+概念
+早期
+医 学影 像 智能分析 主 要依 赖纹理、形 状、 灰
+度统 计等人工设计 特征，并结合机 器学习模 型完成 病
+灶识别、疾 病分类 或风 险预测。这类方法在 一定程 度
+上推动了 人工 智能与 临 床需求的结合，但其 特征 表达
+能 力有 限，且高度 依 赖图 像预处理、病 灶分割和特 征
+工程 。深 度学习 的 应用使模 型能够直 接从 原 始图 像中
+学习分层表 征，显 著 提升了分割、分类和检 测等任 务
+的自 动 化水 平，推动医 学影 像 智能分析进入以数 据驱
+动为核心的新阶 段。
+然而，既 往深 度学习研 究主 要围 绕 特定临 床 问 题
+构建 专用 模 型。此种模式虽可在明 确场 景下取 得较 好
+效果 ，但其局限性也较为突出: 其一，医 学影 像标 注
+成本 高、高度 依 赖专业医师 经验，导 致高 质 量标 注数
+据难以大规模获 取; 其二，不同中心、设备、扫 描协
+议和重建参数带来的数 据 分布差异，限制 了模 型的 外
+部泛化能 力; 其三，单任务 训 练形成 的模 型 通常缺 乏
+可迁 移 性，不同任务之 间 难以 有效复用，易造成模 型
+的重复开发 和应用碎 片化。
+随着 BEＲT
+［6］
+推动
+自 然语言 处 理 进 入 大 规 模 预 训
+练阶 段，以及 CLIP
+［7］
+、ViT
+［8］
+等模
+型促进视 觉与多 模
+态预 训 练方法的发展，基于大规模无标 注或弱标 注数
+据学习通 用表 征，并通过适 配机制服务 于 多种下游 任
+务 的研 究范 式 逐渐 形 成。 医 学 影 像 具 有 数 据 类 型 多
+样、临 床语义密集 和标 注成本 高等特点，具备 探 索基
+础 模 型的 现实需求与 数 据 基 础。
+医 学影 像 基 础 模 型指基于 较大规模医 学影 像及 相
+关多 源数 据 进行预 训 练，并可 作为共 享 底 座 支 持多 类
+下游任务 的 一 类模 型。与传 统任务 专用 模 型相比， 其
+更强 调在 预 训 练阶 段学习可迁 移 的通 用表 征，再通 过
+线性探测、微调、提 示学习、指令 微调等方式 适 配 不
+同任务、模态和应用场 景。需要明 确的是，医 学影 像
+基 础 模 型并 不 等同 于 参 数 规 模 更 大 的 深 度学 习 模 型。
+若模 型仅 针 对单一疾 病和 单一任务进行训 练，即 便参
+数 量较大，仍 更 接近专用 模 型，而非 严 格 意义 上的 基
+础 模 型。
+现有 医 学影像基础模型大 致 沿 着 影 像 表 征 预 训
+练、影 像-语言对齐、多 源 信 息 融 合 和 动 态 场 景 建模
+等方 向发展。其训 练数 据从 无标 注影 像逐 步扩展至 影
+像-报告配 对 数 据、 临 床文 本、 结 构化 临 床 信息、 多
+组学数 据以及动态超 声和手术视频等连 续数 据。相 应
+地，模 型能 力也由分类、分割、检 测等传 统任 务， 扩
+展至报告生成、图文检索、医 学问答和多模态 交 互 等
+场景 。对医 学影 像 基 础 模 型的评价除关注模 型规模 和
+任务覆 盖外，更应重视其在 真实 临 床场 景中的 泛化 能
+力、可靠性和可 验证增 益。
+
+=== PDF_PAGE 3 ===
+医
+学 影 像 基 础 模 型: 进 展、挑战与临床转化
+Vol. 17 No. 4 897
+2 医学影像基础模型 的
+关键技 术
+医
+学影 像 基 础 模 型的构建涉及数 据组 织、模 型架
+构、预 训 练目标、 任 务 适 配和 性 能评 估等 多个 环 节，
+其 常见构建路径 见表 1。
+2. 1 预 训 练数 据组 织
+预训 练数 据是医 学影 像 基 础 模 型构建 的基 础， 其
+规模、模态覆 盖、来 源多样性和组 织质 量直 接影响 模
+型表 征 的广 度与迁 移 潜 力。现有预 训 练数 据主 要包 括
+以下三类: 一是大 规 模 影 像 数 据 ［包 括 CT 、 磁 共 振
+成 像 ( magnetic resonance imaging ， MＲI ) 、 X 线、 超
+声和数字病理 等］， 主 要用 于 学 习 模 态 内 部 的 解 剖 结
+构、病变 形 态 和 图 像 表 征; 二 是 多 源 数 据 ( 包 括 影
+像-报告配对数 据、临 床文本、检验指 标等 )
+， 可 为 视
+觉语言预
+训 练和多模态 建模提 供弱监督信息; 三是 时
+序数 据 ( 包 括 内 镜视 频、 手 术 视 频 和 动 态 超 声 等 )
+，
+有助于模
+型学习时空连 续表 征和流程性信息。与 自 然
+图 像不同，医 学影 像 数 据具 有 显 著的 跨中 心 异 质 性，
+不同设备、采集 协议、重建参数和病例分布 构成均 可
+能带来域 偏 移; 多模态数 据还 涉及采集时点、解剖 对
+应关 系、语义粒 度 和 记 录方 式 的 一致 性 问 题。 因 此，
+高 质 量预 训 练数 据的 构 建 并非 多 源 数 据的 简 单 汇 总，
+而需经 过数 据清洗、质 量筛 选、去重、配对关系 确 认
+和来 源控制等过程。
+现有研 究已从不同角度 体现了预 训 练数 据组 织的
+重要 性。例如，Lu 等
+［9］
+为 构 建 计 算 病 理 视
+觉 语 言 基
+础 模 型，对公开 图文数 据 进行病理图 像筛 选、图注 拆
+分、图文匹配及样本来 源过滤，最 终从 约 179 万 对 图
+文样本中筛出约 117 万对 人类病理图文数 据 用于 预 训
+练。Wu 等
+［10］
+整
+合 多 源 医 学 多 模 态 数 据， 构 建 包 含
+2D 和 3D 影 像 的 大 规 模 候 选 数 据 库， 随 后 筛 选 出 约
+300 万条高 质 量放射学样 本， 用 于 训 练放 射 学 基 础 模
+型。Jaspers 等
+［11］
+收集了超过 470 万
+帧、覆 盖 23 类 手
+术过程的 手 术 视 频 数 据， 并 构 建 视 频 基 础 模 型 数 据
+库，发现除数 据 量外，数 据多样性、术式覆 盖和 数 据
+组成同样会影响模 型的 泛化性 能。
+不 同 研 究对 预 训 练数 据 规 模 的 表 述 方 式 并 不 一
+致 。 研 究 者 可 能 以 患 者 、 检 查 、 序 列 、 图 像 、 切
+片 、 图 像块 、 视 频 帧或 图 文 对 作 为 统 计 单 位 ， 而 这
+些 数 量之 间并 不具 备 直 接 可 比 性 。 尤 其 是 在 数 字 病
+理 与 视 频 数 据中 ， 图 像 块 或 视 频 帧 的 数 量 可迅 速 扩
+大 ， 但 由 于这 些 样 本 往 往 来 源 于 同 一 患 者 、 同 一 切
+片 或 同 一 视 频 片 段 ， 内 部 具 有 高 度 相 关 性， 不 能 等
+同 于 独 立病 例 样 本 量。 影 像 报 告 虽 为 视 觉 语 言 预 训
+练 提 供 了重 要 的弱 监 督 信 号 ， 但 也 可 能 受 到 模 板 化
+表 达 、 机 构 书 写 习 惯 、 漏 报 信 息 和 流 程 性 偏 倚 的 影
+响 。 因 此 ， 在 描 述 预 训 练 数 据 时 ， 不 宜 仅 强 调 总
+量 ， 还 应 重 点 说 明 样 本 统 计 单 位 、 患 者 级 独 立 性 、
+跨 中 心 覆 盖、 去 重 策 略 和 质 量 控 制 方 法 。 上 述 信 息
+也 是 解释 不 同 模 型性 能 差 异 、 判 断 迁 移 边 界和 设 计
+后 续 验 证 方 案 的 基 础。
+表 1 医
+学 影 像 基 础 模 型的 主 要构 建 路 径 及 技 术特 点
+Tab． 1 The main construction pathways and technical characteristics of medical imaging foundation models
+构建路径 主
+要 数 据 基 础 主 要技 术特点 主 要 应用指向 需关注的问 题
+影
+像表 征 预 训 练 CT 、MＲI 、 X 线 、 超 声、
+病 理 等大 规 模 影 像 数 据，
+可 包 括 无 标 注 、 弱 标 注
+或 有 标 注数 据
+基 于 自 监 督 或 弱 监 督 学 习 获 取 通
+用 影 像表 征， 常 见 目 标 包 括 掩 码
+建 模 、图 像 重 建、 对 比 学 习、 实
+例 区 分 或 解 剖结 构感 知学习 等
+分类、分割、 检 测、 分 型、
+风 险 预 测 和 预 后 评 估 等
+任务
+患者级 独 立性、 跨 中 心 泛 化 、
+成 像 协 议 差 异、 标 注 质 量 、
+少样本迁 移 能 力
+影
+像-语言对齐 医 学影 像及 其配 对 报 告 、
+图 文 说 明 、 视 觉 问 答 或
+区 域 文 本 标 注
+建 立 视 觉表 征 与 医 学 文 本 语 义 之
+间 的 对 应 关系， 常 用 方 式 包 括 图
+文 对 比 学 习、 跨 模 态 匹 配、 报 告
+生 成 、区 域 语义 对齐和指令 微调
+图 文 检 索、 报 告 生 成、 医
+学问 答、 异 常 定 位 和 交 互
+式分析 等
+报告 文 本 偏 倚、 语 义 粒 度 不
+一 致、 影 像 证 据 不 足 、 生 成
+内容可靠性、事实一致性
+多源临 床 信息融合 影 像、 病 历 文 本 、 检 验
+指 标、 治 疗 信 息 、 组 学
+及 随 访 结 局 等 多源 数 据
+在 统 一 框 架 中 整 合 多 源 信 息， 常
+用 方式 包 括 跨 模 态 对 齐、 注 意 力
+融 合 、 门 控 融 合、 专 家 混 合 和 任
+务 协 同 建 模
+综 合 诊 断、 疗 效 预 测、 治
+疗推 荐、 预 后 评 估 和 临 床
+决 策支 持等
+模 态 缺 失、 信 息 异 步、 流 程
+性 噪 声、 变 量 可 获 得 性、 伪
+相关和任务 边 界 界定
+时空 动态 建模 手 术 视 频 、 内 镜 视 频 、
+动 态 超 声 、 多 视 图 检 查
+序 列 及 相 关 文 本 或 流 程
+标 注
+学 习 连 续视 觉变化和过 程 性 信 息，
+常 用 方 式 包 括 视 频 自 监 督 学 习、
+时 空 特 征 建 模、 多 视 图 聚 合 和 事
+件 序 列 建模
+手术阶 段识 别、器 械 识 别、
+动 态 判 读、 流 程 分 析、 导
+航辅助和质 量控制等
+实 时 延 迟 、 视 野 质 量 、 操 作
+者 差 异、 设 备 差 异、 异 常 场
+景识别和工 作流 嵌 入
+注: 表中分类
+主 要用于方 法 学 梳 理，并 非 互 斥 关 系 ，同 一 模 型 可同时 包 含多种技 术路径; MＲI ( magnetic resonance imaging )
+: 磁共振成像
+
+=== PDF_PAGE 4 ===
+协
+和 医 学 杂 志
+898 July ，2026
+2. 2 模
+型框 架与预 训 练
+医 学影 像 基 础 模 型的框架设计总体 上借 鉴了通 用
+人工 智能 领 域 的大规模预 训 练思 路，并结合医 学影 像
+的空间结 构、模态属性和临 床语义 特点 进行调整。 以
+Transformer 为代表 的架构因具有较强 的 长 程 依 赖建 模
+能 力，已成为多种基 础 模 型的重要组成部分。在文 本
+领 域，GPT
+［12］
+等 仅
+解 码 器 模 型 主 要 面向 语 言 生 成 与
+指令响应。在视 觉领 域， ViT
+［8］
+通 过
+将 图 像划 分 为 图
+像块并 编 码 为 序 列， 使 Transformer 能 够 用 于 图 像 表
+征学习。SAM
+［13］
+采 用
+图 像编 码 器、 提 示编 码 器 和 掩
+码解码器相 结合 的 设计，使模 型能够在 不同 提 示条 件
+下 快 速适 配具 体分 割 目 标， 从 而 提 升 通 用 分割 能 力。
+在医 学多模态 场 景中，影 像、文本及 其他临 床 信息 也
+可在统一 表 征空 间 中 实 现 交 互， 从 而 支 撑 视 觉理 解、
+报告生成、分割等更为复杂的任务。
+训 练 流程 上， 医 学 影像基础模型通 常 遵 循 “预
+训 练-迁 移” 的 技 术路 线， 即 先 在 大 规 模 医 学影 像及
+相关 配对数 据上学习通 用表 征，再迁 移至 具 体 下游 任
+务。其核心在 于通过合 理 的 预 训 练目标学习可迁 移 的
+结构 先验 与 临 床相关语义。现有预 训 练策 略包 括生 成
+式 建模和对比式学习，其中，生成 式 建模侧重于对 数
+据分 布 及内部结 构关系的 建模，常见形式包 括遮 蔽重
+建、图 像恢复、报告生成和跨模态生成 等; 而对 比 式
+学习则主 要通过构建 正负样本关系，拉近相关样本 的
+表 征距离、拉 远无关样本的 表 征距离，从而学习具 有
+较强区分性和跨模态对齐能 力 的 表 征。这类方法 既可
+用于单模态 影 像， 也 可 用于 影 像-报 告 配 对 数 据的 视
+觉语言建模。总体而言，生成 式 建模更 强调结 构完 整
+性与语义 依 赖关系，对比式学习更 强调表 征 的可区 分
+性与跨模态对齐能 力。对医 学场 景 而言，预 训 练策 略
+不宜 简单照 搬自 然 图 像领 域 范 式，而 应结合医 学数 据
+的模态属性、空间结 构 特征及临 床语义组 织方式， 进
+行针 对性 设计。近年研 究亦发现，融合生成 式 建模 与
+对比式学习 的联合 预 训 练策 略，可能更 具发展潜 力。
+2. 3 下 游任务 适 配
+下游任务 适 配是医 学影 像 基 础 模 型由通 用表 征走
+向具 体应用的 关 键环 节，其目的 在 于将预 训 练阶 段获
+得的结 构表 征、语义表 征 或 跨模态对齐能 力 迁 移至 特
+定的临 床 任务。常见的 适 配策 略包 括线性探测、全 参
+数微调、参数 高效 微调、提 示学习和指令 微调等。线
+性 探 测 通 常 冻 结 预 训 练骨 干 网 络 ， 仅 训 练 线 性 分 类
+头 或 浅 层 任 务 头 ， 主 要 用 于 评 估 预 训 练 表 征 的可 分
+性 与 迁 移 潜 力， 也 常 用 于 初 步 验 证 基 础 模 型 质 量。
+全 参 数 微 调 则 更 新 模 型 全部 参 数 ， 能 够 更 充 分 地 适
+应 目 标 任 务 ， 但 对 数 据 规 模 、 计 算 资 源 和 过 拟 合 控
+制 的 要求 也更 高 。 参 数 高 效 微 调 通 过 仅 更 新 少 量 附
+加 参 数 或 低 秩 参 数 ， 如 适 配 器 ( Adapter )
+［14］
+、 低
+秩
+适 配 ( LoＲA )
+［15］
+等方 式， 在 尽 量 保
+留 预 训 练知 识 的
+同时降 低训 练 成本。 提 示学 习 则 通 过 设 计 输 入 提 示、
+可学习提 示向 量或区域提 示，引导模 型关注与 目标 任
+务相关 的信息，尤其适用于视 觉语言模 型和交 互 式分
+割等 场 景
+［16］
+。指 令
+微 调 主 要用 于 具 备 视 觉语 言 交 互
+能力 的模 型，通过 将任务目标组 织为指令 形式进行 进
+一 步 训 练，从而增强 其任务 理解、交 互和泛化能 力。
+不同 下游任务对适 配方式 的需求有所不同。对 于
+分类、分 型和风 险预测等全 局判 别任务，线性探测 或
+轻量微调 可 作为 初 步 评 估 和 低 标 注 场 景 下 的 优 先 方
+案，但仍 需关注类别不平衡、校准稳定性和外部验 证
+表现 。对于分割、 检 测和 区 域 定 位 等 密 集 预 测 任 务，
+通常还需 结合任务特 异性解码 头、空间分辨 率 恢复 机
+制或区域提 示，并对骨 干特征进行适度调整，以适 应
+局部结 构识别和边 界定位需求。对于报告生成、医 学
+问答和多模态 推 理 等任务，需在视 觉表 征基 础上进 一
+步结合语言解码器、跨模态 交 互模块或指令数 据， 使
+模型 能够处理更 复杂的语义表达和交 互 式输出。需 指
+出的是，预 训 练获 得的通 用表 征 并 不会自 动 转 化为 所
+有下游任务 的 性 能提升，其适 配效 果仍与预 训 练数 据
+分布、预 训 练目标、目标任务 类型及 具 体适 配策 略等
+因素密切相关。因此，医 学影 像 基 础 模 型的下游适 配
+并非 简单迁 移 应用，而是在保 留通 用表 征 能 力、强 化
+任务特 异性和控制部署成本之 间进行权 衡。
+2. 4 模 型 评估
+医 学影 像 基 础 模 型的评 估不 应局限于单一任务 的
+性能 比较，而 应综合考察其通 用性、迁 移 能 力、 稳 定
+性及临 床应用潜 力。与传 统单任务模 型相比，基 础 模
+型的评 估维 度 更为 多 元
+［17］
+。 在 任 务 指
+标 层面， 应 根
+据 任务 类型选择相应指 标。例如，分类任务中的曲 线
+下面积 ( area under the curve ， AUC ) 、 准 确 率、 灵 敏
+度和特 异 度; 分割 任 务 中 的 Dice 系 数、 交 并比 ( in-
+tersection over union ，IoU ) 和 Hausdorff 距离; 检 测任
+务中的平均精度 均 值 ( mean average precision ， mAP )
+或 召 回 率; 生 成 任 务 中 的 双 语 评 估 替 补 ( bilingual
+evaluation understudy ， BLEU ) 、 面 向 召 回 的摘 要 评 估
+替 补 ( recall- oriented understudy for gisting evaluation ，
+ＲOUGE ) 、 基 于 共 识 的 图 像 描 述 评 估 ( consensus-
+based image description evaluation ， CIDEr ) 和 人 工 评
+价等。由 于基 础 模 型更 强调 预 训 练 表 征 的复 用 能 力，
+评 估 还应 关注零样本、少样本及跨任务 表 现，以判 断
+
+=== PDF_PAGE 5 ===
+医
+学 影 像 基 础 模 型: 进 展、挑战与临床转化
+Vol. 17 No. 4 899
+模
+型在有 限标 注条件下的 迁 移 潜 力。
+技 术指 标 仅能反映模 型在特定数 据集 和任务定义
+下的 表 现，不 能直 接等同于临 床获益。因此，医 学影
+像 基 础 模 型的 评 估应 从 三 个 层 面 开 展:
+( 1) 算 法 性
+能层面，关注模
+型在外部验证、时间 外验证、亚 组 分
+析和输入扰动条件下的 表 现，并评 估其校准度、稳 健
+性和失败模式; ( 2) 临 床决 策层 面， 关 注 模 型输 出
+是否准确可靠、依据是否充分、定位是否合 理， 以 及
+能否提高诊断一致性、减少漏诊误诊、支 持 风 险分 层
+或优化治疗决 策，并与医 生独 立判 断 及 人机协作表 现
+进行比较; ( 3) 流 程 影响 层 面， 关 注 报 告 周 转 时 间、
+分诊效 率、 复 查 率、 资 源 利 用 和 患 者 结 局 等 实 际 影
+响，并通过 连 续 入 组 队 列 或 前瞻 性 工 作 流 研 究 加 以
+验证。
+3 医学影像基础模型 的
+应用进展
+3. 1 单模态医学影像基础模型
+单模态医
+学影 像 基 础 模 型主 要基于单一影 像 模态
+的大规模 数 据 进行预 训 练，从同类影 像中 学习可复 用
+的结 构表 征与 疾 病 相关 模 式， 并 迁 移至 分 类、 分 割、
+检 测 及预 后 评 估 等 下 游 任 务。 现 有 研 究 已 在 数 字 病
+理、X 线、CT 和 MＲI 等 模 态 中 取 得一 系 列 进 展， 展
+现出一定的 跨任务 迁 移 潜 力。
+在数字病 理 领 域， Xu 等
+［18］
+基 于 超 过 17 万 张 全
+视野切片和约 13 亿 个 图
+像 块 进 行 预 训 练， 构 建 了 基
+于整 张切片的病理基 础 模 型，并 在肿 瘤分 型及多种 分
+子相关任务中取 得较好表 现，包 括泛癌生物标志物 预
+测，肺 腺 癌和泛癌基因 突变预测，以及肿 瘤突变负 荷
+预测等。该研 究提 示，大规模真实世界病理数 据 与整
+张切片层 面 的 长 程 依 赖 建 模 有 助 于 提 升 模 型迁 移 能
+力。Wang 等
+［19］
+在胃
+癌、食管癌和 结 直肠 癌中 构 建 了
+基于 HE 切 片 的 病 理 基 础 模 型， 先 在 10 余 万 张 全 视
+野切片、超过 1. 3 亿 个 图 像块 上 进 行 自 监 督 预 训 练，
+再将其迁 移至 疾 病 特 异生存、无病生存及辅助化 疗获
+益预测等任务。结果显 示，该模 型 可在 多 队 列中实 现
+较稳 定的风 险分层，并 在分期基 础上进一 步提升预 后
+评 估能 力，为治疗获益判 断 提 供补充信息。在放射 影
+像 方面，Pai 等
+［20］
+基 于 11 467 个 CT 病
+灶 进 行 自 监 督
+预 训 练，构建了 病 灶级 CT 基 础 模 型， 用 于 学 习 与 肿
+瘤表型和临 床结局相关 的影 像表 征，该模 型在病 灶 解
+剖部位分类、肺结节良 恶性判 断和非小 细 胞 肺 癌总 生
+存 预测等任务中的 表 现优于传 统监督学习和既有预 训
+练 方 法， 且 在 训 练 样 本 较 少 时 优 势 更 为 明 显。
+Ma 等
+［21］
+提出面向胸部 X 线的基
+础 模 型，通过整 合 多
+个公开 数 据集 中的异质专家标 注进行循环预 训 练， 使
+模 型在胸部疾 病诊断、少样本学习、长尾分布 处理 及
+跨 站 点 泛 化 等 场 景 中 表 现 出 较 好 的 适 应 性 。 Tak
+等
+［22］
+基于 48 965 例脑 MＲI 进行自 监 督 预
+训 练， 并 将
+所得模 型迁 移至序列分类、脑 龄预测、 IDH 基 因 突变
+预测、生存 预测和肿 瘤分割等 多个任务，结果显 示 其
+具有较强的 迁 移 能 力。上述研 究表明，单模态基 础 模
+型在大规模表 征学习、少样本适 配和多任务 迁 移方 面
+具有良好的 应用 基 础。
+3. 2 医 学视 觉 语 言模 型
+医 学视 觉语言模 型是在影 像编码与语言建模 基 础
+上发展起来的 一 类重要分支。与早期主 要依 赖 特征 拼
+接的 多模态融合方法相比，此 类模 型更 强调在统一 语
+义空间中建立影 像内 容 与 医 学 语言 之 间的 对 应 关系。
+影 像-报告配对 数 据在 临 床中 广 泛 存 在， 为 视 觉语 言
+预训 练提 供 了重要 的数 据 基 础，使模 型能够在影 像表
+征学习 的同 时 纳 入 医 学 语义 信 息， 进 而 支 持 报 告 关
+联、医 学问答、区域定位和交 互 式分析 等任务。
+Christensen 等
+［23］
+利 用 103 万
+个 心 脏 超 声 视 频 及
+对应解释文本 进行视 觉语言预 训 练，将超 声影 像 与 临
+床解释映射到联合 嵌 入空间，使模 型在未针 对 具 体任
+务单独训 练 的情 况下 即 可 完 成 左 心 室射 血 分 数估 计、
+肺动脉 压预测 及器械识别等零样本评 估，并进一 步实
+现图 像到报告检索、跨时间同一患者识别 及临 床状 态
+变化检 测。此外，该研 究还通过文本提 示 下的注意 区
+域分 析， 对 模 型 关 注 的 影 像 区 域 进 行 了 初 步 解 释。
+Gao 等
+［24］
+提出面向 多 视 图 乳
+腺 X 线 与 诊 断 报 告 的 基
+础模 型，通过由粗到细的图文对齐策 略学习报告语 义
+与影 像异 常区域之 间的对应 关系，并结合异 常感 知学
+习增强模 型对可疑区域 的 关注。结果显 示，该模 型不
+仅提 高乳 腺 恶性肿 瘤分类 的标 注效率，还支 持零样 本
+分割与定位，提 示视 觉语言预 训 练有助于更有效地 对
+齐报告语义与 影 像 局部异 常区域。
+在病理和 医 学问答场 景中，视 觉语言模 型也逐 步
+从图文 检 索 扩 展 至 更 复 杂 的 医 学 推 理 和 定 位 任 务。
+Liu 等
+［25］
+提出一种
+视 觉语言生存分析框架，将病 理 视
+觉语言基 础 模 型 用于生存 预测任务。该方法利用语 言
+编码的 预后 相关信息引导多实例特征聚合，并结合 适
+应生存分析特点的提 示学习与风 险预测设计，使 视 觉
+语言模 型能够更好地用于病理 预后建模，在 5 个 数 据
+集上取 得了较好的 判 别与 校 准 表 现。 Chen 等
+［26］
+的 研
+究则在医
+学视 觉问答基 础上支 持点、框等视 觉提 示输
+入，并输出与回答相关 的像素级分割结果，将回答 涉
+
+=== PDF_PAGE 6 ===
+协
+和 医 学 杂 志
+900 July ，2026
+及的解剖结
+构或病变区域 在图 像中标 注出来，从而 实
+现文本理解与区域定位的 一体化。总体而言，医 学视
+觉语言模 型正 推动医 学影 像 分析 由单纯视 觉 识别向 影
+像-语义联合 理解 及交 互 式 应用 方 向拓展。
+3. 3 多模态医学影像基础模型
+多模态医 学影 像 基 础 模 型面向 临 床流程中的 多源
+信息 整 合，强调 影 像、临 床文本、结 构化指 标 及治 疗
+相关信息之 间的协同建模，以支 持诊断、治疗推荐 和
+预后评 估等复杂任务。与单模态模 型相比，多模态 模
+型能够同时利用不同 来 源的信息，更 接近临 床决 策中
+的综合判 断过程; 在技 术上，也正 由简单的信息拼 接
+转 向跨模态对齐、动态融合和 任 务 协 同。 Ma 等
+［27］
+在
+胸部 CT 与报告联合
+预 训 练 的基 础上， 进 一 步将 人 口
+学信息、实 验 室检 查 结 果 和 用 药 信 息 纳 入 统 一 框 架，
+通过多尺 度、 多 模 态 自 监 督 学 习 获 得 跨 模 态 语 义 表
+示，并 在疾 病诊断、报告生成和处方推荐等任务中 验
+证其效 果，显 示出联合 建模 影 像、临 床检查结果和 药
+物信息 的 潜 力。Hamamci 等
+［28］
+基于 25 692 例 胸 部 CT
+及
+相应放射 学 报告 构 建 了 CT- ＲATE 数 据集， 并 提 出
+CT- CLIP 与 CT- CHAT 两种模 型。其中，CT- CLIP 通过
+3D CT 体数 据 与报告的对比学习获 得可 迁 移 表示， 不
+仅可 用于 多异 常 检 测，还支 持病例检索和 报告到影 像
+检 索; CT- CHAT 则 在 CT- CLIP 视 觉 编 码 器 基 础 上，
+通过多模态投影器 将 3D CT 表 征接入大语言模 型，并
+结合超过 270 万 组视 觉问答样本 进行指令 微调， 从 而
+实现 面向 3D 胸 部 CT 的 问 答 与 报 告 生 成。 该 研 究将
+体数 据表 征学习、视 觉语言对齐和 生成 式 交 互结合 在
+同一框架中，体现了 3D 放 射 影像基础模型向 多 任 务
+和交 互 式 应用扩展的发展趋 势。
+在 鼻 咽 癌 场 景 中， Wang 等
+［29］
+提 出 整
+合 CT 、
+MＲI 、鼻 咽镜图 像及文本 信息 的 多模 态 基 础 模 型， 通
+过分阶 段课程式 融 合 策 略， 依 次完 成 视 觉知 识 学 习、
+粗粒度 对齐和细粒度融合。具 体而言，模 型先通过 混
+合对比掩 码自编码器学习 多模态视 觉信息，再借助 视
+觉指令 微调 实现与语言模 型的粗粒度 对齐，最后利 用
+专家混合 交叉注意机制实现全 局多模态信息 的深 度融
+合，在诊断、报告生成、肿 瘤分割和预后评 估等 任 务
+中取 得了较好的综 合 表 现。 Chen 等
+［30］
+则 尝
+试 将 多 个
+单模态医 学大 模 型 与多模态小模 型 进行 协同学习， 以
+应对多模态融合中的 表 征差异和模态 主导问 题。该 方
+法一方面通过模态 专家混合融合模块，整 合来自胸 部
+X 线、CT 、病 理、 临 床 文 本、 时 间 序 列 和 表 格 等 六
+种模态 的大 模 型表 征; 另一方面，利用对比学习和 自
+适 应加 权 策 略协调 大 模 型路 径 与 小 模 型路 径 的 贡 献，
+最 终在死 亡预测、住院时长、再入院预测 及肾 透明 细
+胞 癌 12 个月 生存 预测 等 任 务 中， 表 现优 于 多种 现 有
+多模态方法和 单一模 型 基线。
+3. 4 面 向 视 频与动 态 场 景 的医学影像基础模型
+针对 手术视频和动态超 声等连 续视 觉数 据，医 学
+影 像 基 础 模 型不 再 局 限 于 静 态 影 像 中 的 空 间 表 征 学
+习，而是进一 步 建模时间维度 上的结 构变化、器械 运
+动、操作 步 骤 及 多 视 图 动 态 信 息， 以 支 持 工 作 流 分
+析、手术导航和综合判读等任务。与静态影 像 基 础 模
+型相比，此 类模 型更 强调时空特征 的联合 建模，以 及
+对长序列、多片段和多视频信息 的 整 合。
+Yuan 等
+［31］
+利用
+开放手术 教 学 视 频 中 的 讲 解 音 频
+转录文本，构建 视 频 片 段-文 本 配 对 数 据， 并 通 过 两
+种自 动语 音识别系统生成 互补的文本 转写: 一种偏 重
+手术 术语识别，另一种偏重句子连贯性，并将 二者 作
+为同一视频片段的双 文本视图 进行对比学习。其模 型
+不仅在文本检索、时序活动定位和视频描述等视 觉语
+言任务中表 现出较好的 迁 移 能 力，还可在零样本条 件
+下用于手术器械、阶 段和动 作识别，显 示出教学视 频
+这一弱监督资源在手术 基 础 模 型训 练中的 潜 力。
+Tu 等
+［32］
+提 出 眼 科 手 术 视 频 基
+础 模 型 ， 基 于
+110 万 段视频片段、覆 盖 144 类 眼 科 手 术 进行 自 监 督
+视频预 训 练，学习显微操作中的时空运动特征，并 结
+合两阶 段知识蒸 馏实现模 型轻量 化部署。该模 型在 手
+术步骤识别、器械识别、并发症检 测、技能评 估、 场
+景分割和 局 部 结 构 定 位 等 多 项 任 务 中 取 得 了 较 好 表
+现。进一 步集成至手术显微镜后，还在湿实 验猪 眼手
+术中提 供实时导航 信息 并改 善术中表 现。
+在动态超 声场 景中， Vukadinovic 等
+［33］
+基 于 超 过
+1200 万段超
+声 视 频-报 告 对， 训 练 多视 图、 视 频 化 的
+视 觉语言 基 础 模 型， 并 引 入 视 图 分 类 与 解 剖 注 意 模
+块，对完整 心 脏 超 声 检 查 中 的 多 个 视 频 进 行 加 权 整
+合。该 模 型在 来 自 5 个 国 际 医 疗 系 统 的 23 项 心脏 结
+构和功能评 估任务上均取 得较好表 现，优于既 往医 学
+基础 模 型，在部分 任务上可达到或超过任务特 异性 超
+声模 型的 性 能。
+4 发展
+趋势 与挑战
+4. 1 数
+据 质量
+在完成 预 训 练数 据组 织之后，数 据能否支撑临 床
+转化 ，还取决于其代表 性及 其与 目标应用场 景 的 一致
+性。与单纯扩大样本 量相比，更关 键 的是数 据能否 覆
+盖真实 工 作流中的 设备类型、扫 描协议、病例构成 和
+
+=== PDF_PAGE 7 ===
+医
+学 影 像 基 础 模 型: 进 展、挑战与临床转化
+Vol. 17 No. 4 901
+图
+像 质 量波动，并 建立可靠的影 像、文本及多模态 对
+应 关系
+［34］
+。如果 数
+据 主 要来 自 高度 筛 选的 队 列， 模
+型可 能难以充分覆 盖真实 临 床 分布，从而影响外部 泛
+化能 力和输出稳定性。对于 多模态基 础 模 型而言， 这
+一问 题更加突出，因为模 型性 能 不仅取决于各单一 模
+态 的数 据 质 量，还受到不同模态之 间对应 关系、采 集
+时点和信息完 整 性 的影 响。 Ｒui 等
+［35］
+围
+绕 同一 患 者、
+同一检查 中 自 然 形 成 的 多模 态 影 像 组 开 展 预 训 练研
+究，结果提 示，稳定的 跨模态对应 关系有助于提升 预
+训 练 表 征 的有 效 性。 此 外， 对 于 3D 影 像、 罕 见 病 和
+复杂临 床场 景，高 质 量 数 据仍 相 对不 足，不同机构 之
+间的标 注 标准和病例结 构差异也会进一 步限制模 型的
+可推广性
+［36］
+。合
+成数 据和联邦学习为 缓 解数 据不 足、
+隐 私约 束和多机 构 协 作 困 难 提 供 了补 充 路 径。 例 如，
+Jiang 等
+［37］
+基于
+多机 构、 多 器 官、 多 模 态 超 声数 据 开
+展联邦预 训 练，显 示出提升跨机构数 据协同利用能 力
+的 潜 力。未来数 据集建 设仍应重视连 续病例纳入、 跨
+机构验证、患者群体代表 性、罕见病 覆 盖以及非理 想
+图像 的 合 理保 留，使数 据规模优势能够更可靠 地转 化
+为临 床场 景中的 泛化能 力和应用稳定性。
+4. 2 多模态 融 合
+多模态融合是医 学影 像 基 础 模 型能 力拓展的重要
+方 向，其关 键 在 于围 绕 具 体临 床 任务构建 稳定、有 效
+且可解释的 联 合 表 征
+［38］
+。 在
+真 实 场 景中， 不 同 模 态
+对疾 病表 征 的贡 献随患者特征、疾 病 阶 段和任务目 标
+的不 同而变化，固定融合策 略往 往 难以适 应复杂多 变
+的临 床需求。Wu 等
+［39］
+研
+究指出，在 多模态 多任务 建
+模中，不同模态对不同患者和任务 的贡 献具有动态 变
+化特征，静态融合可能使优势模态占据主导地 位， 从
+而削弱其 他 模 态 中 具 有 诊 断 价 值的 信 息。 Zhu 等
+［40］
+研
+究表明，多任务干扰不仅存 在 于 主干模 型内部， 也
+可能出现 在 跨模态连接环 节，若不同任务共用完全 一
+致的对齐接口，任务相关 表 征可能 在传递过程中被 削
+弱。与此同时，医 学影 像、文本报告、检验指 标和 治
+疗 信息往 往 形成 于 不同诊疗环 节，在采集时点、语 义
+层级和记 录方式上并 不完全一致，且可能 受缺项、 延
+迟录入和流程性噪声的影响。若模 型在融合 多源信 息
+时不区分 信息产生的时间顺序、临 床 可获 得性及决 策
+节点，可能将中心特 异性模式、诊疗路径或 治疗选 择
+中的相关 性误判为疾 病表 征，从而影响其在 跨中心 和
+跨 场 景条件下的 稳定性。因此，多模态基 础 模 型不 应
+简单追求输入信息 的数 量增加，而 应以具 体临 床决 策
+节点为依据，明 确哪些信息 在 该环 节真实 可获 得、 可
+信且具有增量价 值。例如，急诊分诊、术前评 估、 疗
+效预测和随访管 理所对应 的信息来 源、时间窗口和 决
+策后果并 不相 同，其输入、输出 和评价 指 标也需 相应
+界定。如何在模态缺失、信息异步和任务目标不 一致
+的条件下有效利用互补信息，并减少 伪相关和模态 冲
+突带 来的干扰，将直 接影响多模态医 学影 像 基 础 模 型
+的实 际应用价 值。
+4. 3 临 床 价值 验 证与工 作 流 嵌 入
+常规测试指 标往 往 难以充分反映医 学影 像 基 础 模
+型的临 床 可 用性
+［41］
+。 指
+标 提升 并 不必 然 意 味 着 关 键
+征象识别 更准确，也不 足以说明模 型在 跨机构、跨 设
+备及输 入 扰 动 条 件 下 仍 能 保 持 稳 定 可 靠 的 输 出
+［42］
+。
+Chen 等
+［43］
+针
+对医 学影 像 分割 基 础 模 型的 部 署 研 究表
+明，真实应用中的挑 战不仅 来自域 偏 移，还 包 括提 示
+框轻 微变化导 致的 性 能波动，而依 赖 参数更新的 适 配
+方法又可能 面临更新 信号 有 限、灾难性遗 忘和计算 费
+用较高等问 题。这 提 示基 础 模 型的落地瓶 颈并 不仅 在
+于预 训 练阶 段 是否学习到充分表 征，更在 于 能否在 持
+续 变化的 临 床 环 境 中 保 持 稳 定、 可 控 且 可 复 核 的 输
+出。Zhou 等
+［44］
+研
+究表 明， 基 础 模 型虽 具 备 较 强 的 通
+用特征提取能 力，但在具 体医 学任务上 仍可能 不及 任
+务 专用 模 型， 且 模 型 规 模 增 大 往 往 伴 随 部 署 成 本 上
+升。因此，传 统 专 用 模 型并 不 会 被 基 础 模 型简 单 取
+代; 在任务 边 界 清晰、输入模态 稳定、部署资源 有 限
+且评价终点明 确的 场 景中，专用 模 型仍可能具有更 直
+接的优化路径和验证优势。
+基础 模 型能否真 正进入临 床，取决于其能否嵌 入
+真实 工 作流，并 在 适 应 证明 确、输入 边 界 清晰、 职 责
+划分合 理 的 前提 下，为特定环 节提 供可 验证 的实 际增
+益。较为可行的路径并非让模 型直 接替代医 生完成 完
+整诊断，而是在风 险分层、辅助分诊、报告草 拟、 交
+互式 分割、结 构化随访和专科化决 策支 持等环 节承 担
+有限 、可复核的任务。相应地，模 型部署时需与 影 像
+存档与 通 信系统 ( Picture Archiving and Communication
+System ，PACS ) 、 放 射 信 息 系 统 ( Ｒadiology Informa-
+tion System ， ＲIS ) 、 医 院信 息 系 统 ( Hospital Informa-
+tion System ，HIS ) 等 形 成 稳 定 接 口， 并 明 确 输 入 数
+据质 量控制、输出呈现方式、医 生修改记 录、失 败 预
+警、日 志留存和 版本追 踪的机制。对于具备生成 式 或
+视觉 语言交 互 能 力 的模 型，还应提 供必要 的 不确 定性
+提 示、证据区域 或相似病例依据，避 免以流畅自 然语
+言掩盖证据不 足。其应用风 险不仅包 括性 能 不 足和 效
+率受限，也包 括证据不 足 的 推断、区域定位偏 差、 跨
+模态 推断失配以及模 型更新后的 性 能漂移 等问 题。 因
+此，对医 学影 像 基 础 模 型应用前 景 的判 断，不 能仅 依
+
+=== PDF_PAGE 8 ===
+协
+和 医 学 杂 志
+902 July ，2026
+据
+基 准 数 据集指 标、任务覆 盖数 量或模 型规模，而 应
+将性 能、效率、安全控制、责 任划分和工 作流匹 配 性
+统筹纳入评价与设计，使其 更适 合作为可监督、可 校
+正 的临 床协作 工具。
+4. 4 伦 理监管 与持续治理
+医 学影 像 基 础 模 型的 伦 理 监 管问 题不 应被视为临
+床部署 后的附 加环 节， 而 应贯 穿 数 据采 集、 预 训 练、
+微调、验证、上线和持续更新 全过 程
+［5，38 ，41］
+。 数
+据 层
+面，大规模预 训 练涉及跨机构影 像、报告和临 床 信息
+的 整 合，需明 确 数 据 脱 敏、 知 情 授 权、 二 次 使 用 边
+界、跨区域共 享规则及再识别风 险控制。对于 合 成数
+据、网络图文数 据和弱标 注报告数 据，还应评 估其 是
+否引入虚 假分 布、 版 权 及 患 者 隐 私风 险。 模 型层 面，
+需关注模 型在 不同年龄、性别、地区和疾 病谱人群 中
+的 潜 在 偏倚，以及低 资源机构、罕见病和低质 量 图 像
+场 景中的 潜 在 不公平表 现。监 管和责 任层面，基 础 模
+型，尤其 是视 觉语言与生成 式系统，具有输出形式 复
+杂、适 配方式 多样和 版本迭代频繁等特点。上线前 应
+明确 模 型的 适 应 证、禁用场 景、输入质 量要求、 输 出
+解释边 界及 人工复核责 任; 上线后则需建立性 能漂 移
+监测、错误事件上报、版本回滚、再验证和审计 追 踪
+机制。对于采用持续学习 或周期性更新的模 型，不 能
+默认更新后性 能仍 然 保 持 稳 定， 而 应 在代 表 性数 据、
+关 键亚组和高风 险场 景中重 新 进行验证。
+5 小
+结
+医
+学影 像 基 础 模 型为 医 学影 像 智能分析提 供 了从
+专用 模 型走向 通 用表 征和任务复用的新 方 向。这一 变
+化有助于降 低对高 质 量标 注的依 赖、缓 解任务割裂 问
+题，并 推动多模态信息 整 合和跨任务 迁 移。但 也应 看
+到，现阶 段 相关研 究的 证据层级仍有 限: 诸多结果 主
+要来自 基 准 数 据集、回 顾 性 队 列和受 控实 验环境， 尚
+未充分证 实 其 能 够 在 真 实 工 作流 中 稳 定 改 善 诊 断 效
+率、决 策质 量或患者结局。未来研 究不 应仅追求更 大
+规模 模 型、更多任务覆 盖和更高离线指 标，而 应更 加
+重视前瞻性研 究、失败模式分析、临 床流程适 配、 伦
+理监 管和持续治 理。医 学影 像 基 础 模 型未来 更可行 的
+发展 方 向应是在通 用底 座、专科模 型和人工复核 之 间
+形成可 验证、可追责、可迭代的协同机制，使其 从 技
+术潜 力展示逐 步走向具有明 确边 界和实 际增 益的临 床
+辅助工具。
+作 者 贡 献: 方 梦 捷负 责 论文撰 写 及 修 订; 田 捷负 责 提
+供 选 题思路、确 定 论文框 架。
+利 益 冲 突: 所 有作者 均 声明不存在利益冲突
+参 考 文 献
+［1］ Wang J ，Qiao L ，Zhou S C ，et al． Weakly supervised lesion
+detection and diagnosis for breast cancers with partially anno-
+tated ultrasound images ［J］． IEEE Trans Med Imaging ，
+2024 ，43 ( 7)
+: 2509-2521．
+［2］ Li J ，Xu S N ，Wang Y ，et al． Spectral CT- based nomogram
+for preoperative prediction of perineural invasion in locally
+advanced gastric cancer : a prospective study ［J］． Eur Ｒa-
+diol ，2023 ，33 ( 7) : 5172-5183．
+［3］ Chen X ，Fang M J ，Dong D ，et al． Development and valida-
+tion of a MＲI- based radiomics prognostic classifier in
+patients with primary glioblastoma multiforme ［J］． Acad
+Ｒadiol ，2019 ，26 ( 10) : 1292-1300．
+［4］ Xu Y W ，Khan T M ，Song Y ，et al． Edge deep learning in
+computer vision and medical diagnostics : a comprehensive
+survey ［J］． Artif Intell Ｒev ，2025 ，58 ( 3) : 93．
+［5］ Santos Ｒ ，Debuc D C ，Somfai G M． Cautious optimism on
+foundation models in medical imaging balancing privacy and
+innovation ［J］． NPJ Digit Med ，2026 ，9 ( 1) : 215．
+［6］ Devlin J ，Chang M W ，Lee K ，et al． BEＲT : pre- training of
+deep bidirectional transformers for language understanding
+［DB / OL］． ( 2019-05-24) ［2026-03-26］． https : / / doi． org /
+10．48550 / arXiv．1810．04805．
+［7］ Ｒadford A ， Kim J W ， Hallacy C ， et al． Learning
+transferable visual models from natural language supervision
+［C］ / / Proceedings of the 38th International Conference on
+Machine Learning． New York : PMLＲ ，2021 : 8748-8763．
+［8］ Dehghani M ，Djolonga J ，Mustafa B ，et al． Scaling vision
+transformers to 22 billion parameters ［C］ / / Proceedings of
+the 40th International Conference on Machine Learning． New
+York : PMLＲ ，2023 : 7480-7512．
+［9］ Lu M Y ，Chen B W ，Williamson D F K ，et al． A visual- lan-
+guage foundation model for computational pathology ［J］．
+Nat Med ，2024 ，30 ( 3) : 863-874．
+［10］ Wu C Y ，Zhang X M ，Zhang Y ，et al． Towards generalist
+foundation model for radiology by leveraging web- scale
+2D＆3D medical data ［J ］． Nat Commun ， 2025 ， 16
+( 1) : 7866．
+［11］ Jaspers T J M ，De Jong Ｒ L P D ，Li Y P ，et al． Scaling up
+self- supervised learning for improved surgical foundation
+models ［J］． Med Image Anal ，2026 ，108 : 103873．
+［12］ Brown T B ，Mann B ，Ｒyder N ，et al． Language models are
+few- shot learners ［ C ］ / / Proceedings of the 34th
+International Conference on Neural Information Processing
+
+=== PDF_PAGE 9 ===
+医
+学 影 像 基 础 模 型: 进 展、挑战与临床转化
+Vol. 17 No. 4 903
+Systems． Ｒed Hook ， NY : Curran Associates Inc． ， 2020 :
+1877-1901．
+［13］ Kirillov A ，Mintun E ， Ｒavi N ， et al． Segment anything
+［C］ / / 2023 IEEE / CVF International Conference on Com-
+puter Vision ( ICCV ) ． Los Alamitos ，CA : IEEE Computer
+Society ，2023 : 3992-4003．
+［14］ Houlsby N ，Giurgiu A ，Jastrzebski S ，et al． Parameter- effi-
+cient transfer learning for NLP ［C］ / / Proceedings of the
+36th International Conference on Machine Learning． New
+York : PMLＲ ，2019 : 2790-2799．
+［15］ Hu E J ，Shen Y L ，Wallis P ，et al． LoＲA : low- rank adap-
+tation of large language models ［DB / OL］． ( 2021-10-16 )
+［ 2026- 03- 26 ］． https : / / doi． org / 10． 48550 / arXiv．
+2106．09685．
+［16］ Wang J Q ，Shi E Z ，Yu S G ，et al． Prompt engineering for
+healthcare : methodologies and applications ［J ］． Meta
+Ｒadiol ，2026 ，4 ( 1)
+: 100190．
+［17］ Fang M J ，Wang Z P ，Pan S T ，et al． Large models in med-
+ical imaging : advances and prospects ［J］． Chin Med J
+( Engl ) ，2025 ，138 ( 14) : 1647-1664．
+［18］ Xu H W ，Usuyama N ，Bagga J ，et al． A whole- slide foun-
+dation model for digital pathology from real-world data ［J］．
+Nature ，2024 ，630 ( 8015 ) : 181-188．
+［19］ Wang X Y ，Jiang Y M ，Yang S ，et al． Foundation model for
+predicting prognosis and adjuvant therapy benefit from digital
+pathology in GI cancers ［J］． J Clin Oncol ， 2025 ， 43
+( 32) : 3468-3481．
+［20］ Pai S ，Bontempi D ，Hadzic I ，et al． Foundation model for
+cancer imaging biomarkers ［J］． Nat Mach Intell ，2024 ，6
+( 3) : 354-367．
+［21］ Ma D A ，Pang J X ，Gotway M B ，et al． A fully open AI
+foundation model applied to chest radiography ［J］． Nature ，
+2025 ，643 ( 8071 ) : 488-498．
+［22］ Tak D ，Garomsa B A ，Zapaishchykova A ，et al． A general-
+izable foundation model for analysis of human brain MＲI
+［J］． Nat Neurosci ，2026 ，29 ( 4) : 945-956．
+［23］ Christensen M ，Vukadinovic M ，Yuan N ，et al． Vision- lan-
+guage foundation model for echocardiogram interpretation
+［J］． Nat Med ，2024 ，30 ( 5) : 1481-1488．
+［24］ Gao Y ，Zhou H Y ，Wang X ，et al． Visualizing radiologic
+connections : an explainable coarse- to- fine foundation model
+with multiview mammograms and associated reports ［J］．
+Ｒadiol Artif Intell ，2026 ，8 ( 1) : e240646．
+［25］ Liu P ，Ji L P ，Gou J X ，et al． Interpretable vision- language
+survival analysis with ordinal inductive bias for computational
+pathology ［DB / OL］． ( 2025- 02- 11 ) ［2026- 03- 26 ］．
+https : / / doi．org / 10．48550 / arXiv．2409．09369．
+［26］ Chen Y Y ，Xu D X ，Huang Y ，et al． MIMO : a medical vi-
+sion language model with visual referring multimodal input
+and pixel grounding multimodal output ［C］/ / 2025 IEEE /
+CVF Conference on Computer Vision and Pattern
+Ｒecognition ( CVPＲ ) ． Los Alamitos ，CA : IEEE Computer
+Society ，2025 : 24732-24741．
+［27］ Ma L D ，Liang H Ｒ ，He Y W ，et al． A vision- language pre-
+trained transformer for versatile clinical respiratory disease
+applications ［J］． Nat Biomed Eng ，2025 : 1-19［2026-03-
+26 ］． https : / / www． nature． com / articles / s41551- 025-
+01544- z．
+［28］ Hamamci I E ，Er S ，Wang C Y ，et al． Generalist foundation
+models from a multimodal dataset for 3D computed
+tomography ［J / OL］． Nat Biomed Eng ，2026 : 1-19［2026-
+03- 26 ］． https : / / www． nature． com / articles / s41551- 025-
+01599- y．
+［29］ Wang Z P ，Fang M J ，Tang L L ，et al． HiCur- NPC : hierar-
+chical feature fusion curriculum learning for multi- modal
+foundation model in nasopharyngeal carcinoma ［J］． IEEE
+Trans Med Imaging ，2025 ，44 ( 10) : 3997-4009．
+［30］ Chen W Y ，Zhao Z H ，Yao J C ，et al． Multi- modal medical
+diagnosis via large- small model collaboration ［C］ / / 2025
+IEEE / CVF Conference on Computer Vision and Pattern Ｒec-
+ognition ( CVPＲ ) ． Los Alamitos ，CA : IEEE Computer Soci-
+ety ，2025 : 30763-30773．
+［31］ Yuan K ，Srivastav V ，Yu T ，et al． Learning multi- modal
+representations by watching hundreds of surgical video
+lectures ［J］． Med Image Anal ，2025 ，105 : 103644．
+［32］ Tu P X ，Zheng C ，Xie X L ，et al． An ophthalmic video
+foundation model for surgical recognition and navigation with
+wet- lab porcine eye validation ［J / OL］． Nat Biomed Eng ，
+2026 : 1- 12 ［2026- 03- 26 ］． https : / / www． nature． com /
+articles / s41551-026-01622- w．
+［33］ Vukadinovic M ，Chiu I M ，Tang X ，et al． Comprehensive
+echocardiogram evaluation with view primed vision language
+AI ［J］． Nature ，2026 ，650 ( 8103 ) : 970-977．
+［34］ Jiao L C ，Yang J Y ，Li Ｒ Y ，et al． Foundation model for
+medical imaging : a comprehensive review ［J］． IEEE Trans
+Artif Intell ，2026 ，7 ( 5) : 2426-2446．
+［35］ Ｒui S H ，Chen L Z ，Tang Z Y ，et al． Multi- modal vision
+pre- training for medical image analysis ［C］ / / 2025 IEEE /
+CVF Conference on Computer Vision and Pattern
+Ｒecognition ( CVPＲ ) ． Los Alamitos ，CA : IEEE Computer
+Society ，2025 : 5164-5174．
+［36］ Wu J ，Wang Y L ，Zhong Z S ，et al． Vision- language foun-
+dation model for 3D medical imaging ［J］． NPJ Artif Intell ，
+2025 ，1 ( 1) : 17．
+［37］ Jiang Y C ，Feng C M ，Ｒen J K ，et al． From pretraining to
+privacy : federated ultrasound foundation model with self- su-
+
+=== PDF_PAGE 10 ===
+协
+和 医 学 杂 志
+904 July ，2026
+pervised learning ［J］． NPJ Digit Med ，2025 ，8 ( 1)
+: 714．
+［38］ Tavakoli N ，Shakeri Z ，Gowda V ，et al． Generative AI and
+foundation models in radiology : applications ，opportunities ，
+and potential challenges ［J ］． Ｒadiology ， 2025 ， 317
+( 2) : e242961．
+［39］ Wu C W ，Shuai Z T ，Tang Z X ，et al． Dynamic modeling of
+patients ， modalities and tasks via multi- modal multi- task
+mixture of experts ［C / OL］/ / The 13th International Confer-
+ence on Learning Ｒepresentations ，2025 : 1- 15［2026- 03-
+26］． https : / / openreview．net / forum ? id = NJxCpMt0sf．
+［40］ Zhu X ，Hu Y ，Mo F B ，et al． Uni- Med : a unified medical
+generalist foundation model for multi- task learning via con-
+nector- MoE ［C］ / / Proceedings of the 38th International
+Conference on Neural Information Processing Systems． Ｒed
+Hook ，NY : Curran Associates Inc． ，2024 : 81225-81256．
+［41］ Paschali M ，Chen Z H ，Blankemeier L ，et al． Foundation
+models in radiology : what ，how ，why ，and why not ［J］．
+Ｒadiology ，2025 ，314 ( 2) : e240597．
+［42］ Fu J ，Fang M J ，Wu L ，et al． Development ，advancement ，
+and clinical integration of artificial intelligence technology in
+gastric cancer ［J］． Chin Med J ( Engl ) ，2025 ，138 ( 24) :
+3332-3350．
+［43］ Chen K C ，Luo X Y ，Qin T X ，et al． Test- time adaptation
+for foundation medical segmentation model without
+parametric updates ［DB / OL］． ( 2025- 07- 15) ［2026- 03-
+26］． https : / / doi．org / 10．48550 / arXiv．2504．02008．
+［44］ Zhou Y H ，Li H L ，Du S Y ，et al． Low- rank knowledge de-
+composition for medical foundation models ［C］ / / 2024
+IEEE / CVF Conference on Computer Vision and Pattern Ｒec-
+ognition ( CVPＲ ) ． Los Alamitos ，CA : IEEE Computer Soci-
+ety ，2024 : 11611-11620．
+( 收 稿 : 2026-03-30 录 用 : 2026-06-25 在 线 : 2026-07-08 )
+( 本 文
+编 辑: 李 慧文 )
+■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+·封
+面 故 事·
+AI 之
+光照亮 肿瘤 诊疗的未知之境
+北
+京协和 医学 院 2020 级临床医学 八年 制 陈益 良
+本
+期 《协 和 医 学杂 志 》 主 题为: AI 驱 动 的 多 模
+态影 像与肿 瘤 精 准 诊 疗，聚 焦 于人 工智能 技 术 迅 猛 发
+展之 际，其为医 学影 像与肿 瘤 精 准医疗 带 来 的深 刻 变
+革、崭新 机遇与前 沿 挑 战。
+AI 正 以 前所 未 有 的方 式 重 塑医 学诊 疗 的基 本 范
+式。本 期封 面 以星 空 为 背 景， 展 现 了 宇 宙 的 浩 瀚 无
+垠，寓 意 着医 学 知 识 的 学 海 无 涯、 探 索 之 路 未 有 穷
+期。在传 统诊 疗 模式中，医者 多依赖 个人经 验与规 律
+总结 ，从 繁杂 的信 息中抽 丝 剥 茧、寻 找病灶 线 索。 然
+而，庞杂 的医 学资 料 犹 如漫天星斗，散 乱 无 章， 医 者
+常需 孤 身 面 对海量文献、影 像与数 据，恰 如在广 袤星
+空中艰 难 辨向，步 履维艰。
+画面 中央，一 位 奔 跑的医者穿行于现实医 学 与 人
+工智能 的交 汇 之 境。 他 手 中 紧 握 的 一 束 光 芒， 正 是
+AI 技 术化 作 的 智 慧之 光—
+— —这
+道 光 助 他高 效 梳 理亿
+万级 数 据脉 络，深入 由海量病例与影 像检 测 构 筑的 数
+字 宝库。曾 几何 时， 混 沌 模 糊 的 “医 学 宇 宙 ” 在 这
+束 光的照 射 下， 思 路 变 得 更 加清 晰、 层 次 愈 加分 明。
+光之 所向，前路昭然，医者 的步伐 亦 随之加 快。 这 一
+切，正是 AI 赋能下医 学探 索走 向 清 晰、 便 捷 与 高效
+的生动 写照。
+医 学发 展永 无 止 境， 而 我 们 愿 借 AI 之 翼， 持 续
+追寻驱散病痛、守 护生命的终 极 答 案。

@@ -1,0 +1,785 @@
+ CoRe-Sleep: A Multimodal Fusion Framework for Time Series Robust to Imperfect Modalities. 
+  // Restore the saved color scheme preference, or
+  // enact the browser preference if "automatic", 
+  // without expecting DOM load to have completed.
+  //
+  // Also restore any saved readingmode and ToC display preferences.
+  function initializeReadingPreferences() {
+    let saved_theme = localStorage.getItem("ar5iv_theme") || "automatic";
+    if (saved_theme === "automatic") {
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        saved_theme = "dark";
+      }
+    }
+    if (saved_theme == "dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+    const tocDisplay = localStorage.getItem('arxiv_html_paper_toc_display');
+    if (tocDisplay) {
+      document.documentElement.setAttribute("data-toc-display", tocDisplay);
+    }
+    const readingMode = localStorage.getItem('arxiv_html_paper_reading_mode');
+    if (readingMode) {
+      document.documentElement.setAttribute("data-reading-mode", readingMode);
+    }
+  }
+  // Run as soon as JS starts, to minimize repainting
+  initializeReadingPreferences();
+  /* Reading mode hides the chrome and the empty .arxiv-html-header marker: the pinned JS reads
+     the marker's display to know which way to toggle. The marker draws no box. */
+  .arxiv-html-header { display: contents; }
+  html[data-reading-mode="enabled"] :is(.arxiv-html-site-chrome, .arxiv-html-header, .ds-site-footer) { display: none; }
+  /* The paper controls' icons are blocks, so they sit centred (the pinned JS shows the theme
+     icon by making its span a block). */
+  .arxiv-html-site-chrome .ds-site-header-tools svg { display: block; width: 18px; height: 18px; flex-shrink: 0; fill: currentColor; }
+  /* ar5iv dims every image in dark mode and puts it on a white wash, for paper figures;
+     arXiv's own render as they are (the logo on the bar, the funder logos on their white
+     chips). Important: ar5iv's dark rules are unlayered, as specific as
+     :root:not([data-theme]) img:not(.ltx_no_dark_filter). */
+  :is(.ds-site-header, .ds-site-footer) img { filter: none !important; }
+  .ds-site-header img { background-color: transparent !important; }
+  /* Wide (the theme's 1280px): the theme lays the body out as a grid whose full-width top rows
+     were the band's and its sticky reader bar's. The band takes the first and scrolls away; the
+     header, the paper's bar (no site navigation, the paper's controls), takes the second and
+     stays in view, the one sticky bar, with the anchor clearance that requires (DESIGN-POLICIES).
+     The controls show their names. */
+  @media (min-width: 1280px) {
+    html { scroll-padding-top: 80px; }
+    .arxiv-html-site-chrome { display: contents; }
+    .arxiv-html-site-chrome > #ds-announcement { grid-area: announce; }
+    .arxiv-html-site-chrome > .ds-site-header { grid-area: header; position: sticky; top: 0; z-index: 3; }
+    .arxiv-html-site-chrome .tool-icon { display: none; }
+  }
+  /* Narrow: the header scrolls away, and the controls show icons (names kept for screen
+     readers; Why HTML? goes). The theme's contents panel is fixed below where its old sticky
+     bar was, and hidden only once the reader has closed it, so until then it is an invisible box
+     over the header and the paper: it shows only while open, under the chrome, in its place in
+     the page. The paper's footer (build logs, reporting instructions) keeps the text's side
+     inset; the theme gives it none, so it met the screen edges. */
+  @media (max-width: 1279px) {
+    .arxiv-html-site-chrome .tool-wide { display: none; }
+    .arxiv-html-site-chrome .tool-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    html:not([data-toc-display="block"]) .ltx_page_navbar { display: none; }
+    .ltx_page_navbar { position: absolute; top: auto; }
+    .arxiv-html-footer { padding-inline: 1rem; }
+  }
+ Skip to main content 
+       Report GitHub Issue 
+       × 
+       Title: 
+       Content selection saved. Describe the issue below: 
+       Description: 
+       Submit without GitHub 
+       Submit in GitHub 
+      Why HTML? 
+          Report Issue 
+           Back to Abstract 
+          Download PDF 
+           Contents 
+          Reading mode 
+                         Colour theme 
+   Abstract   
+    I   Introduction    
+    II   Data & Methods   
+     II-A    Data    
+     II-B    Transformer Backbone    
+     II-C    CoRe-Sleep Architecture    
+     II-D    Training Objectives    
+     II-E    Architecture Benchmarks (Early & Mid-Late Fusion)    
+     II-F    Implementation    
+     II-G    Experiments    
+    III   Results & Discussion   
+     III-A    Multimodal    
+     III-B    Missing Modality    
+     III-C    Noisy Modalities    
+     III-D    Training with Incomplete Data    
+    IV   Conclusion    
+   References   
+    License: CC BY 4.0
+arXiv:2304.06485v1 [eess.SP] 27 Mar 2023 
+ CoRe-Sleep: A Multimodal Fusion Framework for Time Series Robust to Imperfect Modalities.    Thanks:  
+This project has received funding from the Flemish Government (AI Research Program) and from the FWO ( ’Artificial Intelligence (AI) for data-driven personalised medicine’, G0C9623N and ’Deep, personalized epileptic seizure detection’, G0D8321N ) and Leuven.AI Institute.   Thanks:  K. Kontras, C. Chatzichristos, J. Suykens and M. De Vos are with the Stadius group in the Department of Electrical Engineering at KU Leuven University, 3000 Leuven, Belgium. M. De Vos is also with the Department of Development and Regeneration, KU Leuven University (e-mail: konstantinos.kontras@kuleuven.be; christos.chatzichristos@kuleuven.be; johan.suykens@kuleuven.be; maarten.devos@kuleuven.be).    Thanks:  H. Phan is with Amazon Alexa, Cambridge, USA (e-mail: huypq@amazon.co.uk).    
+ Konstantinos Kontras
+ Christos Chatzichristos
+ Huy Phan
+  Affiliation:  Johan Suykens and Maarten De Vos
+  Abstract 
+ Sleep abnormalities can have severe health consequences. Automated sleep staging, i.e. labelling the sequence of sleep stages from the patient’s physiological recordings, could simplify the diagnostic process. Previous work on automated sleep staging has achieved great results, mainly relying on the EEG signal. However, often multiple sources of information are available beyond EEG. This can be particularly beneficial when the EEG recordings are noisy or even missing completely. In this paper, we propose CoRe-Sleep, a Coordinated Representation multimodal fusion network that is particularly focused on improving the robustness of signal analysis on imperfect data. We demonstrate how appropriately handling multimodal information can be the key to achieving such robustness. CoRe-Sleep tolerates noisy or missing modalities segments, allowing training on incomplete data. Additionally, it shows state-of-the-art performance when testing on both multimodal and unimodal data using a single model on SHHS-1, the largest publicly available study that includes sleep stage labels. The results indicate that training the model on multimodal data does positively influence performance when tested on unimodal data. This work aims at bridging the gap between automated analysis tools and their clinical utility. 
+ Index Terms:  Sleep Staging, Multimodal Fusion, Imperfect Modalities, Incomplete Data
+  I   Introduction  
+ Sleep is vital for our well-being. It has been linked to various brain and mental health diseases  [ 1 ] , particularly in the elderly population  [ 2 ] . Sleep studies typically involve recording patients’ sleep using various sensors in a clinical setting. These sensors measure various physiological signals, such as Electroencephalogram (EEG), Electrocardiogram (ECG), Electrooculogram (EOG), Electromyogram (EMG) and respiration. 
+ During the analysis of the patient’s sleep, a sleep stage label is given to every 30 seconds for the duration of the recording. The American Academy of Sleep Medicine (AASM) scoring standard  [ 3 ]  recommends assigning the following labels for adult sleep: Wake, Rapid Eye Movement (REM) and the three sleep phases N1, N2, and N3 related to lighter and deeper sleep. Extracting such a sequence of sleep labels (which is called the hypnogram) is time-consuming for experts, hence research focuses on automating it. 
+ Previous research on automating sleep staging has primarily focused on using a single modality, EEG. Initial approaches used handcrafted features  [ 4 ,  5 ,  6 ,  7 ] , based on prior knowledge about the characteristics of EEG. Recent methods employ Neural Networks (NNs) to automatically extract these features, for example with Convolutional NNs (CNN)  [ 8 ,  9 ,  10 ] , Recurrent NNs (RNN)  [ 11 ,  12 ] , Transformers (TF)  [ 13 ,  10 ,  14 ,  15 ,  16 ]  and more  [ 17 ,  18 ] . 
+ Efforts have been made to exploit the use of multimodal input for sleep staging. Multimodal data, obtained from different sources, offer interrelated observations of the underlying phenomenon. They potentially contain complementary information for the identification of the underlying data distribution  [ 19 ,  20 ] . Concatenating EEG, EOG, and EMG signals as model input, instead of EEG alone, has been shown to slightly improve performance in previous studies  [ 11 ,  12 ] . However, there has been limited research on how to optimize the available multimodal input. It remains crucial how different combining methods (fusion approaches) could improve results. 
+ Multimodal information can be beneficial for sleep staging. While exploiting multimodal input might only marginally outperform the best single modality (i.e. the EEG), it might enhance the robustness of the system when this single modality fails. For example, when EEG is noisy or missing, multimodal processing can lead to more accurate results than relying on EEG alone. 
+ Missing and noisy data have been handled with imputation and denoising strategies respectively. Imputing missing values has been widely explored in statistics either for a few missing values  [ 21 ,  22 ]  or for higher dimensional data  [ 23 ,  24 ,  25 ,  26 ,  27 ,  28 ,  29 ] . Recently, imputation has been achieved by masking the missing data with a learnable embedding  [ 30 ,  31 ] , allowing the network to interpolate the values based on the remaining input. In the case of noisy samples, data are retained but there might be ambiguity about the amount of useful information they contain. Previous approaches facing noisy EEG include either an explicit  [ 32 ,  33 ,  34 ]  EEG-tailored denoising pre-phase or a more generic implicit one  [ 35 ] . We will demonstrate here that multimodality can face both missing and noisy modality issues in an elegant way. 
+ Multimodal models can fuse the multiple input data in various ways. Fusing data at the input-level, by projecting it onto a new dimensional space, is called Early fusion  [ 36 ] . This has been the most common approach in previous sleep staging research. Such casting on a new space can be challenging especially if modalities differ significantly in dimensionality and sampling rate  [ 19 ] . Fusing on the decision-level by an ensemble of single-modality networks has been a more straightforward designing approach  [ 37 ] , however, it reduces the multimodal collaboration. Such approaches are called Late fusion. Intermediate solutions include fusing the modalities before the classifier, referred to as Mid-Late fusion  [ 38 ] . Despite being simplistic, this distinction based on the point of multimodal fusion seems to apply to the vast majority of multimodal architectures. 
+ A further distinction of Late/Mid-Late models is whether they include the communication among the modality-specific parts of networks and the various ways that have been used for such communication. CoRe-Sleep, the multimodal network introduced in this paper, falls into this category allowing mid-late fusion to have coordinated representations  [ 39 ] . Most works follow the general framework of aggregating information from one part of the network and transmitting it in a compressed form to the others. This can be achieved for example with the summation of intermediate CNN channels  [ 40 ] , the exchange of intermediate representations  [ 41 ] , any of the Squeeze and Excite gates  [ 42 ]  or cross-attention weights  [ 43 ,  44 ,  45 ,  46 ,  47 ] . The latter approach will also be exploited by CoRe-Sleep. 
+ Our Contribution 
+ We propose CoRe-Sleep, a multi-modal model for sleep staging. The model is based on a TF backbone encoder  [ 48 ,  49 ] , the coordinated representations multimodal fusion and is trained with a multi-task objective. CoRe-Sleep’s TF encoder uses an 8-layer of inner-outer block structure similar to SleepTransformer. The inner TF block processes the features extracted from Short-Time Fourier Transform (STFT) within a 30-second window, while the outer TF block maps interactions between the aggregated features of several sequential windows, 21 in this case (10.5 minutes) following  [ 12 ,  13 ] . Four TF blocks are used, one for each of the unimodal and multimodal processing of each modality. In the multimodal blocks, pairwise cross-attention is added as means of communication between modalities, similar to  [ 45 ,  46 ,  47 ] , to ensure the coordination of the modalities. The model is trained using multiple supervised losses for the unimodal and multimodal predictions, and a self-supervised objective for aligning the unimodal representations, following previous works in vision and text  [ 50 ,  45 ] . 
+ The architectural choices and the training objective of CoRe-Sleep led to the four benefits emerging: 
+  •  
+ State-of-the-art results when trained and tested with EEG and EOG modalities on the largest public dataset, the Sleep Heart Health Study (SHHS). 
+  •  
+ Robustness to missing modalities during
+inference; Improved performance compared to solely EEG-trained models and its own unimodal equivalent when tested with only one modality. Training with both modalities benefits unimodal testing. 
+  •  
+ Robustness to highly noisy data when it is present in one of the modalities. 
+  •  
+ Ability to train even with missing-modality data, i.e. allowing for the use of patient recordings that include only one modality. 
+ The rest of the paper is organised as follows. In Section   II  , we present the dataset and the methods used in CoRe-Sleep and we introduce the experiments. In Section   III  , we describe and discuss the results, comparing our method with previous state-of-the-art and additional benchmark models. Lastly, we conclude the article in Section   IV  . 
+  II   Data & Methods  
+ This section presents the architecture of the multimodal fusion network CoRe-Sleep and its multi-task objective. We begin by providing a brief overview of the largest publicly available dataset that is used in all our subsequent experiments. 
+   II-A    Data  
+  SHHS   [ 51 ,  52 ] . Initially intended to determine cardiovascular and other consequences of sleep-disordered breathing, SHHS consists of two rounds of recordings. We experiment with data from the first round, recorded between 1995-1998 (SHHS-1). It contains 5.791 subjects aged from 39 to 90 and includes several modalities. We will use the EEG (C4-A1) sampled at 125Hz, and EOG (L-R) sampled at 50Hz. Scoring was completed using the Rechtschaffen and Kales (R&K) guideline  [ 53 ] . Following previous work, we merge stages N3 and N4 into the N3 stage, while Movement and Unscored labels were discarded. 
+ To preprocess the data a series of steps have been followed. Initially, we load the signals and labels. Following previous works  [ 12 ] , we discard patients’ recordings that do not contain windows with labels from each of the five classes. We also discard segments from the beginning and the end of the recording if the number of wake stage windows is greater than the windows of another stage. More specifically we discard       #  ​  w  ​  a  ​  k  ​  e   −   #  ​   2   n  ​  d    ​  d  ​  o  ​  m  ​  i  ​  n  ​  a  ​  n  ​  t    2   \frac{\#wake-\#2^{nd}dominant}{2}    from each side. EEG and EOG are resampled at 100Hz and filtered with a bandpass FIR on [0.3, 40] Hz and on [0.3, 23] Hz. The signals are transformed with STFT using 2-second time bins with 1-second overlap and 256 points hamming window, resulting in 128-dimension features. Then we create the 30-second windows without overlap with their corresponding label, using the majority policy when more than one class is presented within the 30-seconds. Finally, we split the patients of the dataset using a random split of 70-30% for the train-test set and from the training we keep 100 patient recordings for the validation set. 
+   a)    CoRe-Sleep General Layout  
+   b)    Unimodal and Multimodal Encoders  
+   Fig. 1 :   CoRe-Sleep: Coordinated Representation -based multimodal fusion model for Sleep Staging  a) : The general layout of the model is illustrated. Each modality (Electroencephalography (EEG) and Electroculography (EOG)) is processed by its unimodal encoder to create the corresponding unimodal representations, which are then fed to the multimodal encoder. The multimodal encoders cross-attend with the unimodal representation of the other modality, creating the multimodal representation. Supervised losses are calculated based on each representation (EEG, EOG, and multimodal). The model also uses a self-supervised alignment loss between the unimodal representations, as in  [ 54 ] . The dashed lines represent the shared weight connections of the Feed-Forward (FF) and the Self-Attention weights.  b) : The figure shows a unimodal and a multimodal encoder with their components. The input data has both inner and outer dimensions, which are processed by their respective N-layers Transformer (TF) blocks. To summarize the inner sequence, a learnable class embedding [CLS] is utilized. The outputs of the inner and outer TF of one modality are used to cross-attend the multimodal representation of the other modality, leading to the coordinated representations.  
+   II-B    Transformer Backbone  
+ The TF backbone is the TF encoder described in  [ 48 ] . The encoder is responsible for processing the input sequence. The TF encoder consists of multiple layers, each with two components. The first is the multi-head self-attention (SA), which allows different parts of the input sequence to interact. The second is a fully connected feed-forward (FF) network, which applies a non-linear transformation to each position in the sequence. Both components have a residual connection and a (post-) layer normalization  [ 55 ] . A distinctive TF encoder is utilized to handle each modality     X  m   X_{m}   . The equations describing this encoder are: 
+     a  ​  t  ​   t  h   ​   (   X  m   )    \displaystyle att_{h}(X_{m})    
+       =   softmax  ​   (      W  h  K   ​   X  m   ​    (    W  h  Q   ​   X  m    )   ⊺      d  k      )   ​   W  h  V   ​   X  m     \displaystyle=\text{softmax}(\frac{W^{K}_{h}X_{m}(W^{Q}_{h}X_{m})^{\intercal}}{\sqrt{d_{k}}})W^{V}_{h}X_{m}    
+  (1)    
+     S  ​  A  ​   (   X  m   )    \displaystyle SA(X_{m})    
+     =  concat   [  a  t   t  1    (   X  m   )   ,  .  .  ,  a  t   t  H    (   X  m   )   ]    W  O    \displaystyle=\text{concat}[att_{1}(X_{m}),..,att_{H}(X_{m})]W^{O}    
+  (2)    
+     Z  m   \displaystyle Z_{m}    
+       =   layernorm  ​   (    X  m   +   S  ​  A  ​   (   X  m   )     )     \displaystyle=\text{layernorm}(X_{m}+SA(X_{m}))    
+  (3)    
+     F  ​  F  ​   (   Z  m   )    \displaystyle FF(Z_{m})    
+       =    m  ​  a  ​  x  ​   (  0  ,     Z  m   ​   W  1  F    +   b  1  F    )   ​   W  2  F    +   b  2  F     \displaystyle=max(0,Z_{m}W^{F}_{1}+b^{F}_{1})W^{F}_{2}+b^{F}_{2}    
+  (4)    
+     o  ​  u  ​  t  ​  p  ​  u  ​  t   \displaystyle output    
+       =   layernorm  ​   (    Z  m   +   F  ​  F  ​   (   Z  m   )     )     \displaystyle=\text{layernorm}(Z_{m}+FF(Z_{m}))    
+  (5)    
+ Input modality      X  m   ∈   ℝ       b  ​  a  ​  t  ​  c  ​  h   ×  s   ​  e  ​  q  ​  u  ​  e  ​  n  ​  c  ​  e   ×  f   ​  e  ​  a  ​  t  ​  u  ​  r  ​  e  ​  s     X_{m}\in\mathbb{R}^{batch\times sequence\times features}    is a batch of sequence of features. The weights of the SA component have dimensions      W  h  K   ,    W  h  Q   ∈   ℝ    d   m  ​  o  ​  d  ​  e  ​  l    ×   d  k       W^{K}_{h},W^{Q}_{h}\in\mathbb{R}^{d_{model}\times d_{k}}   ,      W  h  V   ∈   ℝ    d   m  ​  o  ​  d  ​  e  ​  l    ×   d  u      W^{V}_{h}\in\mathbb{R}^{d_{model}\times d_{u}}   ,      W  O   ∈   ℝ    H  ​   d  u    ×   d   m  ​  o  ​  d  ​  e  ​  l       W^{O}\in\mathbb{R}^{Hd_{u}\times d_{model}}    and      d   m  ​  o  ​  d  ​  e  ​  l    =  128   d_{model}=128   ,     H  =  8   H=8   ,      d  k   =  16   d_{k}=16   ,      d  u   =  128   d_{u}=128   . The SA allows for measuring pairwise similarity between all the feature vectors in the sequence, re-weighting them to favour those with greater similarity. The utilization of multi-head facilitates the extraction of numerous interactions among different parts of the sequence. For the FF a two-layer multi-layer perception (MLP) with the Rectified Linear Unit (ReLU)  [ 56 ]  as activation function has been used, with weights      W  1  F   ∈   ℝ   d   m  ​  o  ​  d  ​  e  ​  l      W^{F}_{1}\in\mathbb{R}^{d_{model}}   ,      W  2  F   ∈   ℝ    d   f  ​  f    ×   d   m  ​  o  ​  d  ​  e  ​  l       W^{F}_{2}\in\mathbb{R}^{d_{ff}\times d_{model}}   , biases      b  1  F   ∈   ℝ   d   f  ​  f      b^{F}_{1}\in\mathbb{R}^{d_{ff}}   ,      b  2  F   ∈   ℝ   d   m  ​  o  ​  d  ​  e  ​  l      b^{F}_{2}\in\mathbb{R}^{d_{model}}    and dimensionality      d   f  ​  f    =  1024   d_{ff}=1024   . The point-wise FF is responsible to process each feature vector of the sequence independently of the others. 
+   II-C    CoRe-Sleep Architecture  
+ CoRe-Sleep’s architecture utilizes the TF backbone and the multimodal fusion of coordinated representations. Initially, we describe the encoder for a single modality and subsequently, we proceed with the multimodal part of the network. 
+ In CoRe-Sleep architecture, the inner-outer framework described in Section   I   is used, similar to  [ 12 ,  9 ,  13 ] . Each modality has its own unimodal encoder which is an 8-layer TF encoder. The first 4-layers are processing the inner sequence, finding the interactions between the features extracted from STFT within the 30-second windows. Afterwards, the inner sequence features are aggregated. The last 4-layers of the TF encoder process the outer sequence, the interactions between these aggregated features of neighbouring windows. We allow for maximum 21 sequential windows, following  [ 12 ,  13 ] , but recent works indicate that even greater numbers could be beneficial  [ 57 ] . The Inner-Outer scheme is visualised in Figure   1b)  . 
+ CoRe-Sleep’s unimodal encoder is similar to SleepTransformer  [ 13 ]  with two modifications: 
+  1.  
+ It uses a learnable embedding, for the class  [CLS] , for aggregating inner-sequence features instead of a separate attention module. This allows more interaction via multi-head attention and multi-layer aggregation. 
+  2.  
+ It uses learnable relative positional embeddings  [ 58 ]  instead of absolute sinusoidal ones. These allow the model to learn dependencies between positions in the feature sequence and are more efficient because they are incorporated into the attention mechanism. 
+ These changes result in a small improvement. The unimodal encoder’s output is utilized by a predictor and together they form the unimodal equivalent network, which is discussed in later sections. 
+ To achieve multimodal fusion, we exploit coordinated representations. Coordinated representation is a mid-late fusion scheme, where each modality has a separate network stream, with established communication between them. We first calculate the inner and outer sequence feature representations of each modality with the modality-specific unimodal encoders, described above. We feed then each modality’s inner and outer representation to the corresponding multimodal encoder branches of the other modality, Figure   1a)  . The weights of SA and FF are shared among the multimodal and the unimodal encoders of each modality. The multimodal encoders have the same structure as the unimodal encoders with an additional cross-attention (CA) component to let one modality affect the representation of the other, similar to  [ 48 ,  45 ,  46 ,  47 ,  44 ] . The CA component allows the pairwise similarities between the sequence steps of the two modalities      X  1   ,   X  2    X_{1},X_{2}    to affect the importance by re-weighting one of them. The equations describing the CA component are: 
+       c-att  h   ​   (   X  1   |   X  2   )    =   softmax  ​   (     W  h  K   ​   X  1   ​    (    W  h  Q   ​   X  2    )   ⊺      d  k     )   ​   W  h  V   ​   X  1     \text{c-att}_{h}(X_{1}|X_{2})=\text{softmax}(\frac{W^{K}_{h}X_{1}(W^{Q}_{h}X_{2})^{\intercal}}{\sqrt{d_{k}}})W^{V}_{h}X_{1}    
+  (6)    
+     CA   (   X  1   |   X  2   )   =  concat   [   c-att  1    (   X  1   |   X  2   )   ,  .  .  ,   c-att  H    (   X  1   |   X  2   )   ]    W  O    \text{CA}(X_{1}|X_{2})=\text{concat}[\text{c-att}_{1}(X_{1}|X_{2}),..,\text{c-att}_{H}(X_{1}|X_{2})]W^{O}    
+  (7)    
+ The matrices     W  h  K   W^{K}_{h}   ,     W  h  Q   W^{Q}_{h}   ,     W  h  V   W^{V}_{h}   ,     W  O   W^{O}    have the same dimensionality as in the TF encoder described in   II-B  , without being the same set of parameters. The CA component is placed between the SA and the FF block of each layer. Multiple sequential CAs can be used to extend CoRe-Sleep on more than two input modalities. The output of each multimodal encoder, which is dedicated to one modality, can be considered the representation of the corresponding modality grounded on (influenced by) the remaining modalities. The final representation based on all modalities is a summation of the different grounded multimodal representations. Such summation allows all predictors to have the same number of parameters and possibly share them among the predictors of each modality. 
+   II-D    Training Objectives  
+ The model jointly optimizes three distinct loss functions, see Figure   1a)  . The two of them are supervised Cross-Entropy (CE) losses, from the predictions of the unimodal and the multimodal network’s output. The third is a self-supervised alignment (AL) loss between the two modalities. 
+  Alignment Loss (AL) : It exploits the fact that EEG and EOG signals are measured at the same time, allowing to cast this as a self-supervised task of predicting which 30-second windows of one modality corresponds to the other modality. This is motivated by literature on vision-text integration  [ 54 ,  45 ,  46 ,  47 ] , where images align with captions and the task is to match them. CoRe-Sleep compares each window’s unimodal representation with those of other modalities to predict matching pairs, with each representation being dedicated to a single window. We cast the problem as a double classification task with each modality having to predict its position in the other one, similar to  [ 54 ] . 
+  Multi-Supervised Loss (MS) : CoRe-Sleep’s architecture creates both unimodal and multimodal representations. MS loss is the summation of supervised losses arising from placing additional predictors to each unimodal representation. It reduces the competing effects of each modality  [ 59 ]  by allowing the worse-performing modality to affect proportionally the total loss. MS loss enforces the network to be able to perform well with all modalities present as well as with each modality separately. In CoRe-Sleep the multiple predictions come at minimal computational overhead. 
+ Given a training set of patients full night recordings, the goal is to identify the sleep label    y  y    for each 30-second window. The patient recordings are segmented in windows to create the dataset     X  =   (   {   X  1  1   ,  .  .   X  M  1   }   ,  .  .  ,   {   X  1  L   ,  .  .   X  M  L   }   )    X=(\{X^{1}_{1},..X^{1}_{M}\},..,\{X^{L}_{1},..X^{L}_{M}\})    where    M  M    denotes the number of modalities, in this paper     M  =  2   M=2    and    L  L    the total number of windows in the dataset. Each      X  m  l   ∈   ℝ   T  ×  D     X^{l}_{m}\in\mathbb{R}^{T\times D}    and        m  =  1   ,   .   .  ,  M   m=1,..,M    contains the frequency features with resolution     D  =  128   D=128    extracted from STFT where a smaller window of 2 seconds with a 1-second overlap is applied. It results in     T  =  29   T=29    feature vectors representing a 30-second window. 
+ Sequential windows include useful information therefore we preserve such information by processing multiple neighbouring windows together. Following the inner-outer framework, we process first the within-window features      {   X  1  l   ,  .  .  ,   X  M  l   }   ∈   ℝ   M  ×  T  ×  D     \{X^{l}_{1},..,X^{l}_{M}\}\in\mathbb{R}^{M\times T\times D}   , aggregating information on the output of the inner       ∈   ℝ   M  ×  1  ×  D     \in\mathbb{R}^{M\times 1\times D}   . Subsequently, we map the interaction between neighbouring windows on the outer sequence. To achieve that we take sequential windows of the same recording, allowing for a maximum of 21 sequential windows following  [ 12 ,  13 ] . Each model    f  f    trained in the experiments dedicates a subpart of its total parameters    θ  \theta    for each of the modalities    m  m   , denoted as     θ  m   \theta_{m}   . Each such subpart of the network calculates the unimodal predictions used to calculate the MS loss. In conclusion following  [ 54 ] , the alignment loss is obtained by summing up the CE losses, where the predictions are calculated using the outer product of pairwise unimodal representations, and the targets are set to the identity matrix    I  I   . Intuitively AL tries to predict which window of one modality belongs to the other. The target of AL loss is the outer sequence length, so the AL loss has a different magnitude than the rest of the losses, therefore we include a scaling parameter      λ  A   =  0.1   \lambda_{A}=0.1   . We observed model performance is not sensitive to small changes on     λ  A   \lambda_{A}   ; however this still might not be the optimal value. 
+ The final training objective     L  ⁡   (  X  ,   y  /   f  θ    )    L(X,y/f_{\theta})    is a sum of the previously mentioned: 
+     L  ⁡   (   X  ,  y   |   f  θ   )    \displaystyle L(X,y|f_{\theta})    
+       =    CE  ​   (    f  θ   ​   (  X  )    ,  y  )   ​   +  MS   ​   (   X  ,  y   |   f  θ   )    +   AL  ​   (  X  |   f  θ   )      \displaystyle=\text{CE}(f_{\theta}(X),y)\text{+}\text{MS}(X,y|f_{\theta})+\text{AL}(X|f_{\theta})    
+  (8)    
+  with  
+       OPEN   M  ​  S  ​   (   X  ,  y   |   f  θ   )    )   =     ∑   m  =  1   M     C  ​  E  ​   (    f   θ  m    ​   (   x  i   )    ,  y  )        and   \displaystyle MS(X,y|f_{\theta}))=\sum_{m=1}^{M}CE(f_{\theta_{m}}(x_{i}),y)\quad\text{and}    
+  (9)    
+     OPEN   A  ​  L  ​   (  X  |   f  θ   )    )   \displaystyle AL(X|f_{\theta}))    
+       =    λ  A   ​     ∑   m  =  1   M       ∑      j  =  1        m  ≠  j      M     CE  ​   (    f   θ  m    ​   (   X  m   )   ​   f   θ  j    ​    (   X  j   )   ⊺    ,  I  )        \displaystyle=\lambda_{A}\sum_{m=1}^{M}\sum\limits_{\begin{subarray}{c}j=1\\
+m\neq j\end{subarray}}^{M}\text{CE}(f_{\theta_{m}}(X_{m})f_{\theta_{j}}(X_{j})^{\intercal},I)    
+  (10)    
+   TABLE I :   
+The table compares the unimodal and multimodal performance of the Core, Early, and Mid-Late architectures on the SHHS-1 dataset. Systematically AL and MS losses are added until Core-Sleep achieves the best results overall. All models are trained on EEG & EOG and tested on EEG (middle), EOG (right) or both (left). We perform training three times with different dataset splits to report variance. Results from the literature on this dataset are added below the dashed line. Metrics used: Accuracy, Cohen’s Kappa, Macro-F1.  
+ Dataset:  SHHS-1  
+ Overall Metrics  
+ Test Modalities 
+ EEG-EOG 
+ EEG 
+ EOG  
+ Model 
+ Acc 
+    κ  \kappa    
+ MF1 
+ Acc 
+    κ  \kappa    
+ MF1 
+ Acc 
+    κ  \kappa    
+ MF1  
+ Early 
+ 89.1    ±  \pm    0.0  
+ 0.847    ±  \pm    0.001  
+  81.7    ±  \pm    0.3   
+ 58.0    ±  \pm    1.4  
+ 0.403    ±  \pm    0.025  
+ 42.5    ±  \pm    1.9  
+ 43.6    ±  \pm    10.3  
+ 0.201    ±  \pm    0.111  
+ 29.2    ±  \pm    8.1   
+ Mid-Late 
+ 89.1    ±  \pm    0.1  
+  0.848    ±  \pm    0.002   
+ 81.6    ±  \pm    0.2  
+  85.4    ±  \pm    0.4   
+  0.797    ±  \pm    0.006   
+  78.2    ±  \pm    0.7   
+  75.4    ±  \pm    2.3   
+  0.639    ±  \pm    0.039   
+  59.1    ±  \pm    2.5    
+ CoRe 
+ 89.1    ±  \pm    0.0  
+ 0.847    ±  \pm    0.001  
+ 81.6    ±  \pm    0.3  
+ 64.7    ±  \pm    8.4  
+ 0.458    ±  \pm    0.139  
+ 46.2    ±  \pm    13.1  
+ 28.3    ±  \pm    13.2  
+ -0.016    ±  \pm    0.126  
+ 11.9    ±  \pm    6.2   
+ Early  + AL  
+ 89.2    ±  \pm    0.0  
+ 0.849    ±  \pm    0.000  
+  81.9    ±  \pm    0.2   
+ 49.7    ±  \pm    14.4  
+ 0.298    ±  \pm    0.179  
+ 39.4    ±  \pm    13.8  
+ 34.0    ±  \pm    4.7  
+ 0.094    ±  \pm    0.066  
+ 21.6    ±  \pm    9.1   
+ Mid-Late  + AL  
+ 89.2    ±  \pm    0.1  
+ 0.848    ±  \pm    0.002  
+ 81.7    ±  \pm    0.3  
+  85.7    ±  \pm    0.3   
+  0.800    ±  \pm    0.004   
+  78.2    ±  \pm    0.6   
+  74.8    ±  \pm    2.3   
+  0.627    ±  \pm    0.036   
+  57.2    ±  \pm    3.0    
+ CoRe  + AL  
+  89.3    ±  \pm    0.2   
+  0.850    ±  \pm    0.002   
+ 81.8    ±  \pm    0.1  
+ 53.7    ±  \pm    7.5  
+ 0.341    ±  \pm    0.120  
+ 39.6    ±  \pm    11.0  
+ 43.9    ±  \pm    4.1  
+ 0.172    ±  \pm    0.069  
+ 23.0    ±  \pm    3.1   
+ Early  + MS  
+  89.4    ±  \pm    0.1   
+  0.851    ±  \pm    0.002   
+  82.1    ±  \pm    0.3   
+ 81.7    ±  \pm    1.1  
+ 0.742    ±  \pm    0.015  
+ 65.8    ±  \pm    1.0  
+ 77.7    ±  \pm    1.5  
+ 0.686    ±  \pm    0.018  
+ 62.4    ±  \pm    1.2   
+ Mid-Late  + MS  
+ 89.2    ±  \pm    0.1  
+ 0.849    ±  \pm    0.002  
+ 81.6    ±  \pm    0.1  
+ 87.7    ±  \pm    0.2  
+ 0.828    ±  \pm    0.003  
+ 80.1    ±  \pm    0.2  
+  84.9    ±  \pm    0.2   
+  0.787    ±  \pm    0.002   
+ 74.4    ±  \pm    0.2   
+ CoRe  + MS  
+  89.4    ±  \pm    0.1   
+  0.851    ±  \pm    0.002   
+ 82.0    ±  \pm    0.3  
+  87.9    ±  \pm    0.2   
+  0.830    ±  \pm    0.003   
+  80.3    ±  \pm    0.4   
+  84.9    ±  \pm    0.1   
+  0.787    ±  \pm    0.002   
+  74.5    ±  \pm    0.2    
+ Early  + MS + AL  
+  89.5    ±  \pm    0.1   
+  0.853    ±  \pm    0.002   
+  82.3    ±  \pm    0.2   
+ 87.1    ±  \pm    1.7  
+ 0.820    ±  \pm    0.021  
+ 79.7    ±  \pm    1.6  
+ 83.4    ±  \pm    3.0  
+ 0.770    ±  \pm    0.036  
+ 74.0    ±  \pm    2.3   
+ Mid-Late  + MS + AL  
+ 89.3    ±  \pm    0.1  
+ 0.851    ±  \pm    0.002  
+ 81.9    ±  \pm    0.1  
+  88.0    ±  \pm    0.2   
+ 0.831    ±  \pm    0.003  
+ 80.4    ±  \pm    0.2  
+  85.2    ±  \pm    0.1   
+  0.792    ±  \pm    0.002   
+ 75.1    ±  \pm    0.1   
+ CoRe-Sleep ( MS + AL ) 
+  89.5    ±  \pm    0.1   
+  0.853    ±  \pm    0.002   
+  82.3    ±  \pm    0.3     
+  88.2    ±  \pm    0.2   
+  0.834    ±  \pm    0.003   
+  80.8    ±  \pm    0.4     
+  85.3    ±  \pm    0.1   
+  0.792    ±  \pm    0.001   
+  75.3    ±  \pm    0.3    
+ Unimodal Equivalent 
+ - 
+ - 
+ - 
+ 87.7    ±  \pm    0.2  
+ 0.828    ±  \pm    0.003  
+ 80.1    ±  \pm    0.4  
+ 85.1    ±  \pm    0.1  
+ 0.790    ±  \pm    0.001  
+ 75.0    ±  \pm    0.2   
+ XSleepNet  [ 12 ]  
+ 88.8 
+ 0.843 
+ 82.0 
+ 87.6 
+ 0.826 
+ 80.7 
+ - 
+ - 
+ -  
+ SleePyCo  [ 14 ]  
+ - 
+ - 
+ - 
+ 87.9 
+ 0.830 
+ 80.7 
+ - 
+ - 
+ -  
+ SleepTransformer  [ 13 ]  
+ - 
+ - 
+ - 
+ 87.7 
+ 0.828 
+ 80.1 
+ - 
+ - 
+ -  
+   II-E    Architecture Benchmarks (Early & Mid-Late Fusion)  
+ We introduce here two benchmark models which along with previous state-of-the-art from literature we compare with CoRe-Sleep. These models assist in illustrating the benefits of the multimodal fusion architecture and the training objectives. We take two of the uttermost cases, the Early and the Mid-Late fusion. As the name suggests, the former fuses multimodal input before encoding and the latter trains modality encoders separately and only fuses them before the predictor, see Figure   2  . 
+  Early fusion  is a model structure that has no modality-specific processing and data are merged (by concatenation) before the model in the data-level. Only preprocessing steps are distinctive between the two modalities. The same TF blocks are processing both modalities by considering them parts of the sequence both in inner and outer parts. That allows each modality to attend to each other and creates the fonts to identify better multimodal interactions. TF distinguish the time relationships with the positional encoding. Similarly, to achieve the discrimination between the two modalities we sum another learnable embedding unique for every modality  [ 60 ] . We note that Early fusion requires more than one forward pass to obtain the unimodal representations, hence reducing the inference speed. 
+  Mid-Late fusion  is the architecture where each modality has its own unimodal encoder which produces the unimodal representations and by just summing them up we get the multimodal as well. Calculating both the unimodal and alignment losses comes straightforward since modalities are disentangled. We define Mid-Late fusion as the model architecture without these additional losses. Finally, both unimodal and multimodal predictions can be acquired with a single forward pass. 
+ On top of these benchmark models, we define CoRe, the model with the same architecture as CoRe-Sleep but trained without the additional training objectives MS and AL. CoRe follows the Mid-Late model of creating a separate encoder for each modality but with established communication between them. CoRe, Early and Mid-Late models have the same TF backbone and inner-outer logic in each of their blocks. In all models, the final multimodal representation is created by summing the two unimodal representations. A learnable class embedding  [CLS]  is utilised to aggregate inner-sequence information, following  [ 49 ] . Each model is trained on the multimodal predictor CE loss and the two additional losses (MS and AL) are gradually added to show their benefit. 
+   a)    Mid-Late Fusion  
+   b)    Early Fusion  
+   Fig. 2 :   
+ a)  Mid-Late fusion scheme (MS + AL): Each modality has its own encoder and information gets only merged before the multimodal predictor. The Mid-Late model refers to the model trained solely on the Multimodal loss, while the models incorporating MS and AL are explicitly identified. Similar to CoRe-Sleep, this Mid-Late fusion scheme can derive both unimodal and multimodal predictions in a single forward pass.
+ b)  Early fusion scheme (MS + AL): In the Early model, both EEG and EOG embeddings are processed by a shared encoder to calculate the multimodal loss. The Early model is defined again without the MS and AL losses. Unlike the Mid-Late scheme, the Early model requires two forward passes to compute the unimodal representations.  
+   II-F    Implementation  
+ All our models are implemented in PyTorch  [ 61 ]  and they have been trained on a single GPU node. We use Adam  [ 62 ]  optimizer with the learning rate and the weight decay being 1e-4. We train with batch size 16 and outer sequence 21  [ 13 ] , resulting in 336 sleep labels per batch. We validate our models every 400 optimization steps. We also use a cosine annealing  [ 63 ]  scheduler with a maximum learning rate of 0.03 and 20k warm-up optimization steps. We consider a model converged when it has not been improved in the last 100k optimization steps (approximately 9 epochs) and then we apply early stopping. 
+ Each unimodal and multimodal encoder has an inner and outer block of TF, each with 4 layers of post-normalization TF. Relative positional embedding  [ 58 ]  is only added to key vectors in attention components. Models have 128-dimensional input, 8 attention heads, 1024-dimensional MLP for FF, and 2-layer MLP for predictors all with 0.3 dropout probability. Weights are shared among the SA and FF parts of the unimodal and multimodal encoders. 
+   II-G    Experiments  
+ A series of experiments demonstrate the improvements of CoRe-Sleep. The importance of each component is evaluated by comparing the performance of Early, Late, and CoRe when trained and tested on multimodal (EEG and EOG) input, and gradually AL and MS losses are added. We note that CoRe-Sleep is the CoRe architecture with added MS and AL losses. Next, we test the models’ performance when one of the modalities (EEG or EOG) is missing with the goal to assess the robustness of missing modalities. For these experiments, the models do not need to be retrained. Only the unimodal equivalent model and the models reported in previous studies are trained and tested using one modality. 
+ To explore the robustness of the model to noisy modalities, a subset of SHHS-1, where one of the modalities is highly noisy, is extracted. Such noisy cases can be identified by thresholding the difference in STD of EEG and EOG modalities. The STD is evaluated on large chunks of 10 minutes to avoid picking artefacts. Only the patients that present corruption in over 40   %  \%    of the recording are kept, to avoid picking patients with noise segments at the beginning or end of a recording where sensors might not yet be attached or have been detached. This subsampling is applied three times, once for each split of the dataset with [17, 20, 11] patients having over 40% noisy EEG and [10, 4, 3] having over 40% noisy EOG on the different spits. Notably, EEG, the dominant modality for sleep staging, appears to contain more long noisy periods. We test the models on these sets of patients to evaluate robustness to noisy modalities. 
+ CoRe-Sleep is capable of also being trained with modality-incomplete data. The motivation of this last experiment is to examine the behaviour of the model under such unimodal data additions. CoRe-Sleep is trained from scratch with an initial subset of 100 multimodal patients and a variable number of unimodal ones (either from EEG, EOG or both). Only on the initial 100, are the MS and AL losses calculated. When both unimodal modalities are added they don’t belong to the same patient. The experiment is repeated three times adding gradually patients with EEG, EOG or from both modalities. 
+   Fig. 3 :   This figure provides an illustration of a patient from SHHS-1 whose EEG modality was highly corrupted in the second half of the recording. The top section of the figure displays the EEG (C4-A1) and EOG (L-R) signals, with a sudden increase in the standard deviation of the EEG signal indicating the presence of noise. The two rows below show the class predictions (hypnogram) of the unimodal EEG and EOG models, as well as the multimodal EEG-EOG CoRe-Sleep model. Notably, in the highly noisy area, the EEG model performed poorly, while the multimodal model remained robust by leveraging the information provided by the EOG.  
+  III   Results & Discussion  
+ This section demonstrates the contribution of each component in the multimodal fusion in standard, missing-modality and noisy scenarios, and analyses the behaviour of our model trained on incomplete multimodal data. 
+   III-A    Multimodal  
+ Results on training and testing CoRe-Sleep and the benchmark models (Early and Mid-Late) with multimodal input show that optimizing the multimodal fusion leads to outperforming previous state-of-the-art by a small margin, as shown in the first column of Table   I  . All models, namely Early, Mid-Late and Core, performed similarly when no additional losses were added. However, adding the AL loss improved the performance of Early and Core, which are the models that include attention interactions between the two modalities. MS loss contributes consistently to all three models. We demonstrate that CoRe-Sleep performs similarly to Early ( when MS + AL are added), which is the model that allows the maximum interactions between modalities. 
+   III-B    Missing Modality  
+ One of the main advantages of CoRe-Sleep is its ability to handle missing modalities. In this second experiment, the already trained models are evaluated in scenarios where only one of the two modalities is present. The second and third columns of Table   I   display the missing modality scenario experimental results. Mid-Late fusion performs the best without the additional losses. This is expected, the model which has fewer interactions between modalities and each of its encoders is focused on a single modality, to not be affected as much absence of one modality. 
+ We observe how the models behave when extra losses are included. Each model shows a distinct response to the addition of AL loss. In Mid-Late it has a small contribution. In CoRe, when used without MS, it assists in balancing the performance between the two modalities. AL in the Early model deteriorates both the performances of EEG and EOG. However, when combined with MS, all models exhibit improved performance. Meanwhile, MS loss has a consistent effect on all models, indicating that each modality has to perform on each own as well. All models benefit from MS loss, with more effect on CoRe and Early. CoRe-Sleep’s performance exceeds both in scenarios of missing EEG or EOG over all the other models. It even slightly outperforms its unimodal equivalent and the previous state-of-the-art models that have been trained solely on the present modality. 
+ The contribution of this experiment is twofold. Firstly, it shows that the multimodal fusion and the multi-task objective can strengthen the model’s ability to perform inference with a subset of the modalities given during training. This addition makes CoRe-Sleep able to overcome issues such as sensor detachment, device deficiency or lack of all recording modalities. Secondly, the results show that, as CoRe-Sleep multimodal training surpasses its unimodal equivalent models both for EEG and EOG, unimodal models in general can benefit from multimodal training. 
+   TABLE II :   Comparison of model performance (Accuracy, Cohen’s    κ  \kappa    and Macro-F1) on subset of Noisy SHHS-1 Patients  
+ Dataset: Noisy SHHS-1 
+ Overall Metrics  
+ Test Modalities 
+ EEG-EOG Noisy  
+ Model 
+ Acc 
+    κ  \kappa    
+ MF1  
+ Unimodal Equivalent EEG 
+ 56.1    ±  \pm    0.019  
+ 0.351    ±  \pm    0.029  
+ 43.7    ±  \pm    3.5   
+ Unimodal Equivalent EOG 
+ 80.6    ±  \pm    2.1  
+ 0.722    ±  \pm    0.03  
+ 69.5    ±  \pm    2.0   
+ Early 
+ 77.9    ±  \pm    2.9  
+ 0.669    ±  \pm    0.046  
+ 68.6    ±  \pm    4.4   
+ Mid-Late 
+ 81.7    ±  \pm    0.3  
+ 0.702    ±  \pm    0.007  
+ 73.9    ±  \pm    0.4   
+ CoRe 
+ 79.5    ±  \pm    1.4  
+ 0.706    ±  \pm    2.1  
+ 67.7    ±  \pm    1.8   
+ Early  + AL  
+ 81.1   ±  \pm    1.2  
+ 0.730   ±  \pm    0.017  
+ 70.4   ±  \pm    1.1   
+ Mid-Late  + AL  
+ 82.2   ±  \pm    0.7  
+ 0.746   ±  \pm    0.009  
+ 70.2   ±  \pm    0.7   
+ CoRe  AL  
+ 82.2   ±  \pm    0.3  
+ 0.745   ±  \pm    0.006  
+ 71.4   ±  \pm    0.5   
+ Early  + MS  
+ 81.1   ±  \pm    1.0  
+ 0.730   ±  \pm    0.015  
+ 70.2   ±  \pm    1.2   
+ Mid-Late  + MS  
+ 84.2   ±  \pm    0.5  
+ 0.774   ±  \pm    0.008  
+ 73.2   ±  \pm    1.0   
+ CoRe  + MS  
+ 82.9   ±  \pm    1.1  
+ 0.754   ±  \pm    0.015  
+ 71.5   ±  \pm    0.9   
+ Early  + MS + AL  
+ 83.1    ±  \pm    0.5  
+ 0.758    ±  \pm    0.007  
+ 72.2    ±  \pm    0.6   
+ Mid-Late  + MS + AL  
+ 83.8    ±  \pm    1.1  
+ 0.769    ±  \pm    0.016  
+ 73.0    ±  \pm    1.5   
+ CoRe-Sleep 
+ 84.0    ±  \pm    1.2  
+ 0.771    ±  \pm    0.017  
+ 73.0    ±  \pm    0.7   
+ XSleepNet  [ 12 ]  
+ 75.5    ±  \pm    2.6  
+ 0.641    ±  \pm    0.04  
+ 61.7    ±  \pm    4.3   
+   a)    Unimodal EEG and EOG  
+   b)    Unimodal EEG  
+   c)    Unimodal EOG  
+   Fig. 4 :   CoRe-Sleep was trained using a sub-group of 100 multimodal patients who had both EEG and EOG, as well as some unimodal patients who only had EEG or EOG:  a)  We add patients who provide only EEG, as well as an equal number of patients who provide only EOG. We consistently observe an improvement in the performance of both multimodal and unimodal predictors.  b)  We add patients who provide only EEG. A decrease of EOG predictor performance is noted.  c)  We add patients who provide only EOG. Consistently here, we notice a decrease in the performance of the modality that was not provided. All experiments have been repeated three times with different dataset splits to obtain the shown variance.  
+   III-C    Noisy Modalities  
+ A patient in this subset is visualised in Figure   3  . After almost two and a half hours, the EEG begins to behave irregularly, highly likely because the electrode is getting detached. The predictions of unimodal EEG in that area can be seen below in blue. When the recording is noisy, the predictions are clearly wrong as continuous Wake is predicted. The CoRe-Sleep model is less affected by noise in the EEG data, as it adapts its predictions based on information contained in the EOG. Evidently, the predictions of unimodal EOG and CoRe-Sleep in the noisy area display great similarities. 
+ In general, testing on the subset of noisy patients leads to decreased performance in all models. However, such imperfect data quality does occur in real life. Table   II   shows an overview of the performance on the noisy subset. Since EEG is more often the broken modality in the subset, its unimodal equivalent model performs substantially worse than the EOG one. Models Early and CoRe underachieve in comparison to using EOG only. On the contrary, Mid-Late shows some further robustness to noisy cases. The Mid-Late model has separate encoders for each modality, allowing one to remain uninfluenced by the noisy behaviour of the other. It’s the same property that allows it to do well in the missing modality scenario. Adding AL and MS losses benefits all three models. Only in the case of Mid-Late, we see some declined behaviour when both are added compared with adding only the MS loss. CoRe-Sleep manages to perform close to Mid-Late model exhibiting robustness in the noisy modality scenario. The added value of using multimodal fusion is highlighted since the predictions based on noisy modality can be amended by the non-noisy ones. Finally, the literature benchmark evaluated on multimodal data, XSleepNet, is an early fusion approach and clearly underperforms in this subset. 
+ Evaluating a model solely on carefully screened data that exclude any noise or missing modalities, as done in most datasets, may not accurately reflect the full capabilities of the model. Testing the models on missing or noisy modalities can give a further less biased impression of the models’ abilities. 
+   III-D    Training with Incomplete Data  
+ In the last experiment, the ability of CoRe-Sleep to be trained with the assistance of large sets of modality-incomplete data is examined. In Figure   4  , three different training scenarios are presented. In each scenario, we train models with a different number of training patients. Every model has the same 100 multimodal patients from which both MS and AL loss are calculated. Furthermore, unimodal patients are added gradually, either from both modalities or from solely EEG or EOG in Figures   4a)  ,   4b)   and   4c)   respectively. For those additional patients, we calculate only the unimodal loss with respect to the included modality. The generalization performance on the test set is measured for each step. In this experiment, parameter sharing among predictors facilitated faster and more stable convergence, particularly in situations where data was limited in size. 
+ Three major findings can be observed: 
+  1.  
+ When the number of additional unimodal patients is close to the number of initial multimodal ones (in this case 100) then all three predictors increase their performance. This can be seen in all three experiments. 
+  2.  
+ Adding the same number of unimodal patients from both modalities, without being the same patients, favours all three predictors even when adding unimodal ones outmatch by far the initial multimodal ones (see Figure   4a)  ). 
+  3.  
+ The performance of the other modality deteriorates when adding unimodal patients in much larger numbers than the initial multimodal ones, as shown in Figures   4b)   and   4c)  . 
+ With this experiment, we show that patients’ recordings with missing modalities can be included in the training and help to improve overall model performance. Adding unimodal data should be carefully exploited at a large scale (greater magnitudes than multimodal data), especially in cases where inference should come separately from both modalities. CoRe-Sleep can leverage all available data making it more flexible for real-world scenarios. 
+  IV   Conclusion  
+ We propose CoRe-Sleep, a multimodal model that is able to perform inference on incomplete multimodal data and that shows robustness to missing modalities. CoRe-Sleep exceeds by a small margin previous state-of-the-art results in both multimodal and unimodal settings. Trained with a multi-task loss, it shows robustness in noisy modality scenarios. We compare against other architectures to reveal the properties of the Coordinate Representation fusion and the chosen multi-task loss. As noisy recordings cannot be avoided in real life, this work could be a significant step towards automating sleep staging in clinical settings. 
+ Our study highlights two key insights regarding multimodal machine learning. Firstly, training models with multiple modalities can yield performance improvements, even when testing only involves a subset of the modalities. Contrary to common practice, training models on the specific modalities that will be present during testing may not always lead to optimal performance. Secondly, our findings suggest that including training data points that lack some of the modalities can benefit model performance. These insights can inform the development of more effective multimodal machine learning approaches for a wide range of applications. 
+ References 
+  [1] 
+A. Brzecka, J. Leszek, G. M. Ashraf, M. Ejma, M. F. Ávila-Rodriguez, N. S.
+Yarla, V. V. Tarasov, V. N. Chubarev, A. N. Samsonova, G. E. Barreto
+ et al. , “Sleep disorders associated with alzheimer’s disease: a
+perspective,”  Frontiers in neuroscience , vol. 12, p. 330, 2018.
+  [2] 
+A. K. Patel, V. Reddy, and J. F. Araujo, “Physiology, sleep stages,” in
+ StatPearls [Internet] . StatPearls Publishing, 2022.
+  [3] 
+R. B. Berry, R. Brooks, C. E. Gamaldo, S. M. Harding, C. Marcus, B. V. Vaughn
+ et al. , “The aasm manual for the scoring of sleep and associated
+events,”  Rules, Terminology and Technical Specifications, Darien,
+Illinois, American Academy of Sleep Medicine , 2012.
+  [4] 
+E. Alickovic and A. Subasi, “Ensemble svm method for automatic sleep stage
+classification,”  IEEE Transactions on Instrumentation and
+Measurement , vol. 67, no. 6, pp. 1258–1265, 2018.
+  [5] 
+Y. Li, K. M. Wong, and H. de Bruin, “Electroencephalogram signals
+classification for sleep-state decision–a riemannian geometry approach,”
+ IET signal processing , vol. 6, no. 4, pp. 288–299, 2012.
+  [6] 
+V. Bajaj and R. B. Pachori, “Automatic classification of sleep stages based on
+the time-frequency image of eeg signals,”  Computer methods and
+programs in biomedicine , vol. 112, no. 3, pp. 320–328, 2013.
+  [7] 
+L. Fraiwan, K. Lweesy, N. Khasawneh, H. Wenz, and H. Dickhaus, “Automated
+sleep stage identification system based on time–frequency analysis of a
+single eeg channel and random forest classifier,”  Computer methods and
+programs in biomedicine , vol. 108, no. 1, pp. 10–19, 2012.
+  [8] 
+O. Tsinalis, P. M. Matthews, Y. Guo, and S. Zafeiriou, “Automatic sleep stage
+scoring with single-channel eeg using convolutional neural networks,”
+ arXiv preprint arXiv:1610.01683 , 2016.
+  [9] 
+A. Supratak and Y. Guo, “Tinysleepnet: An efficient deep learning model for
+sleep stage scoring based on raw single-channel eeg,” in  2020 42nd
+Annual International Conference of the IEEE Engineering in Medicine &
+Biology Society (EMBC) , 2020, pp. 641–644.
+  [10] 
+A. Supratak, H. Dong, C. Wu, and Y. Guo, “Deepsleepnet: A model for automatic
+sleep stage scoring based on raw single-channel eeg,”  IEEE
+Transactions on Neural Systems and Rehabilitation Engineering , vol. 25,
+no. 11, pp. 1998–2008, 2017.
+  [11] 
+H. Phan, F. Andreotti, N. Cooray, O. Y. Chén, and M. De Vos, “Seqsleepnet:
+end-to-end hierarchical recurrent neural network for sequence-to-sequence
+automatic sleep staging,”  IEEE Transactions on Neural Systems and
+Rehabilitation Engineering , vol. 27, no. 3, pp. 400–410, 2019.
+  [12] 
+H. Phan, O. Y. Chén, M. C. Tran, P. Koch, A. Mertins, and M. De Vos,
+“Xsleepnet: Multi-view sequential model for automatic sleep staging,”
+ IEEE Transactions on Pattern Analysis and Machine Intelligence , 2021.
+  [13] 
+H. Phan, K. Mikkelsen, O. Y. Chén, P. Koch, A. Mertins, and M. De Vos,
+“Sleeptransformer: Automatic sleep staging with interpretability and
+uncertainty quantification,”  IEEE Transactions on Biomedical
+Engineering , vol. 69, no. 8, pp. 2456–2467, 2022.
+  [14] 
+S. Lee, Y. Yu, S. Back, H. Seo, and K. Lee, “Sleepyco: Automatic sleep scoring
+with feature pyramid and contrastive learning,”  arXiv preprint
+arXiv:2209.09452 , 2022.
+  [15] 
+J. Pradeepkumar, M. Anandakumar, V. Kugathasan, D. Suntharalingham, S. L.
+Kappel, A. C. De Silva, and C. U. Edussooriya, “Towards interpretable sleep
+stage classification using cross-modal transformers,”  arXiv preprint
+arXiv:2208.06991 , 2022.
+  [16] 
+E. Eldele, Z. Chen, C. Liu, M. Wu, C.-K. Kwoh, X. Li, and C. Guan, “An
+attention-based deep learning approach for sleep stage classification with
+single-channel eeg,”  IEEE Transactions on Neural Systems and
+Rehabilitation Engineering , vol. 29, pp. 809–818, 2021.
+  [17] 
+M. Perslev, S. Darkner, L. Kempfner, M. Nikolic, P. J. Jennum, and C. Igel,
+“U-sleep: resilient high-frequency sleep staging,”  NPJ digital
+medicine , pp. 1–12, 2021.
+  [18] 
+Z. Jia, Y. Lin, J. Wang, R. Zhou, X. Ning, Y. He, and Y. Zhao, “Graphsleepnet:
+Adaptive spatial-temporal graph convolutional networks for sleep stage
+classification.” in  IJCAI , 2020, pp. 1324–1330.
+  [19] 
+D. Ramachandram and G. W. Taylor, “Deep multimodal learning: A survey on
+recent advances and trends,”  IEEE signal processing magazine ,
+vol. 34, no. 6, pp. 96–108, 2017.
+  [20] 
+D. Lahat, T. Adali, and C. Jutten, “Multimodal data fusion: an overview of
+methods, challenges, and prospects,”  Proceedings of the IEEE , vol.
+103, no. 9, pp. 1449–1477, 2015.
+  [21] 
+S. F. Buck, “A method of estimation of missing values in multivariate data
+suitable for use with an electronic computer,”  Journal of the Royal
+Statistical Society: Series B (Methodological) , vol. 22, no. 2, pp.
+302–306, 1960.
+  [22] 
+D. B. Rubin, “Multiple imputations in sample surveys-a phenomenological
+bayesian approach to nonresponse,” in  Proceedings of the survey
+research methods section of the American Statistical Association ,
+vol. 1. American Statistical
+Association Alexandria, VA, USA, 1978, pp. 20–34.
+  [23] 
+I. R. White, P. Royston, and A. M. Wood, “Multiple imputation using chained
+equations: issues and guidance for practice,”  Statistics in medicine ,
+vol. 30, no. 4, pp. 377–399, 2011.
+  [24] 
+D. J. Stekhoven and P. Bühlmann, “Missforest—non-parametric missing
+value imputation for mixed-type data,”  Bioinformatics , vol. 28,
+no. 1, pp. 112–118, 2012.
+  [25] 
+B. Bischke, P. Helber, F. Koenig, D. Borth, and A. Dengel, “Overcoming missing
+and incomplete modalities with generative adversarial networks for building
+footprint segmentation,” in  2018 International Conference on
+Content-Based Multimedia Indexing (CBMI) . IEEE, 2018, pp. 1–6.
+  [26] 
+W. Lee, J. Lee, and Y. Kim, “Contextual imputation with missing sequence of
+eeg signals using generative adversarial networks,”  IEEE Access ,
+vol. 9, pp. 151 753–151 765, 2021.
+  [27] 
+A. Comas, C. Zhang, Z. Feric, O. Camps, and R. Yu, “Learning disentangled
+representations of videos with missing data,”  Advances in Neural
+Information Processing Systems , vol. 33, pp. 3625–3635, 2020.
+  [28] 
+W. Cao, D. Wang, J. Li, H. Zhou, L. Li, and Y. Li, “Brits: Bidirectional
+recurrent imputation for time series,”  Advances in neural information
+processing systems , vol. 31, 2018.
+  [29] 
+J. Yoon, W. R. Zame, and M. van der Schaar, “Estimating missing data in
+temporal data streams using multi-directional recurrent neural networks,”
+ IEEE Transactions on Biomedical Engineering , vol. 66, no. 5, pp.
+1477–1490, 2018.
+  [30] 
+S. Pachal and A. Achar, “Sequence prediction under missing data : An rnn
+approach without imputation,” 2022.
+  [31] 
+Y. Shen and M. Gao, “Brain tumor segmentation on mri with missing
+modalities,” in  International Conference on Information Processing in
+Medical Imaging . Springer, 2019, pp.
+417–428.
+  [32] 
+H. Nolan, R. Whelan, and R. B. Reilly, “Faster: fully automated statistical
+thresholding for eeg artifact rejection,”  Journal of neuroscience
+methods , vol. 192, no. 1, pp. 152–162, 2010.
+  [33] 
+N. Bigdely-Shamlo, T. Mullen, C. Kothe, K.-M. Su, and K. A. Robbins, “The prep
+pipeline: standardized preprocessing for large-scale eeg analysis,”
+ Frontiers in neuroinformatics , vol. 9, p. 16, 2015.
+  [34] 
+M. Jas, D. A. Engemann, Y. Bekhti, F. Raimondo, and A. Gramfort, “Autoreject:
+Automated artifact rejection for meg and eeg data,”  NeuroImage , vol.
+159, pp. 417–429, 2017.
+  [35] 
+H. Banville, S. U. Wood, C. Aimone, D.-A. Engemann, and A. Gramfort, “Robust
+learning from corrupted eeg with dynamic spatial filtering,”
+ NeuroImage , vol. 251, p. 118994, 2022.
+  [36] 
+P. Atrey, M. Hossain, A. El Saddik, and M. Kankanhalli, “Multimodal fusion for
+multimedia analysis: A survey,”  Multimedia Syst. , vol. 16, pp.
+345–379, 11 2010.
+  [37] 
+L. Breiman, “Bagging predictors,”  Machine learning , vol. 24, no. 2,
+pp. 123–140, 1996.
+  [38] 
+C. Chatzichristos, S. Van Eyndhoven, E. Kofidis, and S. Van Huffel, “Coupled
+tensor decompositions for data fusion,” in  Tensors for data
+processing . Elsevier, 2022, pp.
+341–370.
+  [39] 
+T. Baltrušaitis, C. Ahuja, and L.-P. Morency, “Multimodal machine
+learning: A survey and taxonomy,”  IEEE transactions on pattern
+analysis and machine intelligence , vol. 41, no. 2, pp. 423–443, 2018.
+  [40] 
+C. Hazirbas, L. Ma, C. Domokos, and D. Cremers, “Fusenet: Incorporating depth
+into semantic segmentation via fusion-based cnn architecture,” in
+ Asian conference on computer vision . Springer, 2016, pp. 213–228.
+  [41] 
+Y. Wang, W. Huang, F. Sun, T. Xu, Y. Rong, and J. Huang, “Deep multimodal
+fusion by channel exchanging,”  Advances in Neural Information
+Processing Systems , vol. 33, pp. 4835–4845, 2020.
+  [42] 
+A. Nagrani, S. Yang, A. Arnab, A. Jansen, C. Schmid, and C. Sun, “Attention
+bottlenecks for multimodal fusion,”  Advances in Neural Information
+Processing Systems , vol. 34, pp. 14 200–14 213, 2021.
+  [43] 
+J. Lu, J. Yang, D. Batra, and D. Parikh, “Hierarchical question-image
+co-attention for visual question answering,”  Advances in neural
+information processing systems , vol. 29, 2016.
+  [44] 
+Y.-H. H. Tsai, S. Bai, P. P. Liang, J. Z. Kolter, L.-P. Morency, and
+R. Salakhutdinov, “Multimodal transformer for unaligned multimodal language
+sequences,” in  Proceedings of the conference. Association for
+Computational Linguistics. Meeting , vol. 2019. NIH Public Access, 2019, p. 6558.
+  [45] 
+J. Li, D. Li, C. Xiong, and S. Hoi, “Blip: Bootstrapping language-image
+pre-training for unified vision-language understanding and generation,”
+ arXiv preprint arXiv:2201.12086 , 2022.
+  [46] 
+J. Li, R. Selvaraju, A. Gotmare, S. Joty, C. Xiong, and S. C. H. Hoi, “Align
+before fuse: Vision and language representation learning with momentum
+distillation,”  Advances in neural information processing systems ,
+vol. 34, pp. 9694–9705, 2021.
+  [47] 
+J. Yu, Z. Wang, V. Vasudevan, L. Yeung, M. Seyedhosseini, and Y. Wu, “Coca:
+Contrastive captioners are image-text foundation models,”  arXiv
+preprint arXiv:2205.01917 , 2022.
+  [48] 
+A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez,
+Ł. Kaiser, and I. Polosukhin, “Attention is all you need,”
+ Advances in neural information processing systems , vol. 30, 2017.
+  [49] 
+J. Devlin, M.-W. Chang, K. Lee, and K. Toutanova, “Bert: Pre-training of deep
+bidirectional transformers for language understanding,”  arXiv preprint
+arXiv:1810.04805 , 2018.
+  [50] 
+A. Radford, J. W. Kim, T. Xu, G. Brockman, C. McLeavey, and I. Sutskever,
+“Robust speech recognition via large-scale weak supervision,”  arXiv
+preprint arXiv:2212.04356 , 2022.
+  [51] 
+S. F. Quan, B. V. Howard, C. Iber, J. P. Kiley, F. J. Nieto, G. T. O’Connor,
+D. M. Rapoport, S. Redline, J. Robbins, J. M. Samet  et al. , “The
+sleep heart health study: design, rationale, and methods,”  Sleep , pp.
+1077–1085, 1997.
+  [52] 
+G.-Q. Zhang, L. Cui, R. Mueller, S. Tao, M. Kim, M. Rueschman, S. Mariani,
+D. Mobley, and S. Redline, “The national sleep research resource: towards a
+sleep data commons,”  Journal of the American Medical Informatics
+Association , pp. 1351–1358, 2018.
+  [53] 
+A. Rechtschaffen, “A manual for standardized terminology, techniques and
+scoring system for sleep stages in human subjects,”  Brain information
+service , 1968.
+  [54] 
+A. Radford, J. W. Kim, C. Hallacy, A. Ramesh, G. Goh, S. Agarwal, G. Sastry,
+A. Askell, P. Mishkin, J. Clark  et al. , “Learning transferable visual
+models from natural language supervision,” in  International Conference
+on Machine Learning . PMLR, 2021, pp.
+8748–8763.
+  [55] 
+J. L. Ba, J. R. Kiros, and G. E. Hinton, “Layer normalization,”  arXiv
+preprint arXiv:1607.06450 , 2016.
+  [56] 
+V. Nair and G. E. Hinton, “Rectified linear units improve restricted boltzmann
+machines,” in  Proceedings of the 27th international conference on
+machine learning (ICML-10) , 2010, pp. 807–814.
+  [57] 
+H. Phan, K. P. Lorenzen, E. Heremans, O. Y. Chén, M. C. Tran, P. Koch,
+A. Mertins, M. Baumert, K. Mikkelsen, and M. De Vos, “L-seqsleepnet:
+Whole-cycle long sequence modelling for automatic sleep staging,” 2023.
+  [58] 
+P. Shaw, J. Uszkoreit, and A. Vaswani, “Self-attention with relative position
+representations,”  arXiv preprint arXiv:1803.02155 , 2018.
+  [59] 
+Y. Huang, J. Lin, C. Zhou, H. Yang, and L. Huang, “Modality competition: What
+makes joint training of multi-modal network fail in deep
+learning?(provably),”  arXiv preprint arXiv:2203.12221 , 2022.
+  [60] 
+M. Ma, J. Ren, L. Zhao, D. Testuggine, and X. Peng, “Are multimodal
+transformers robust to missing modality?” in  Proceedings of the
+IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2022, pp.
+18 177–18 186.
+  [61] 
+A. Paszke, S. Gross, S. Chintala, G. Chanan, E. Yang, Z. DeVito, Z. Lin,
+A. Desmaison, L. Antiga, and A. Lerer, “Automatic differentiation in
+pytorch,” in  NIPS-W , 2017.
+  [62] 
+D. P. Kingma and J. Ba, “Adam: A method for stochastic optimization,”
+ arXiv preprint arXiv:1412.6980 , 2014.
+  [63] 
+I. Loshchilov and F. Hutter, “Sgdr: Stochastic gradient descent with warm
+restarts,”  arXiv preprint arXiv:1608.03983 , 2016.
+    Experimental support, please
+     view the build logs 
+    for errors. Generated by
+        L
+         A 
+        T
+         E 
+       xml 
+     .
+     Instructions for reporting errors 
+     We are continuing to improve HTML versions of papers, and your feedback helps enhance accessibility and mobile
+      support. To report errors in the HTML that will help us improve conversion and rendering, choose any of the
+      methods listed below: 
+       Click the "Report Issue"  ( 
+           )  button, located in the page header. 
+      Tip:  You can select the relevant text first, to include it in your report. 
+     Our team has already identified  the following issues . We appreciate your time reviewing and reporting rendering errors we
+      may not have found yet. Your efforts will help us improve the HTML versions for all readers, because disability
+      should not be a barrier to accessing research. Thank you for your continued support in championing open access for
+      all. 
+     Have a free development cycle? Help support accessibility at arXiv! Our collaborators at LaTeXML maintain a  list of packages that need conversion , and welcome  developer contributions . 
+        We gratefully acknowledge support from our   major funders  ,
+          member institutions   ,    ,
+        and all contributors.
+         About   · 
+         Help   · 
+         Contact   · 
+         Subscribe   · 
+         Copyright   · 
+         Privacy   · 
+         Accessibility   · 
+         Operational Status  (opens in new tab)  

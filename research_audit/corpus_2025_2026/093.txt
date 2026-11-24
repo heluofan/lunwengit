@@ -1,0 +1,1133 @@
+=== PDF_PAGE 1 ===
+ֻ43 ज ֻ 5 ௹
+2025 ୍9 ᄅ
+ႋ Ⴈ ॓ ࿐ ࿐ Б
+JOURNAL OF APPLIED SCIENCES—Electronics and Information Engineering
+Vol.43 No.5
+Sept. 2025
+DOI: 10.3969/j.issn.0255-8297.2025.05.010
+૫ཟ၄࿐๭ཞ׈֥ሰѨ৥щ઒თႅҟࡆૡഡ࠹
+ݒӄݷ1,2đ ৙ ૓ 1,2đ ৙ࢭݷ 1,2đ ຦ߋߋ 1,2đ ຦ྍ٣ 1,2
+1. ᇗ౩۽അն࿐ ඔ࿐ა๤࠹࿐ჽđᇗ౩400067
+2. ᇗ౩۽അն࿐ ๤࠹ᇆି࠹ෘაࡓҩᇗ౩൧ᇗׄൌဒ൩đᇗ౩400067
+ᅋ ᅋ ᅋေ ေ ေğ ğ ğෛሢჹӱ၄ਏ֥ॹ෎ؿᅚđߑᆀႅ඲ඔऌ֥νಆܵ৘აԮൻ૫ਢ࿸भ็ᅞbູൌགྷ
+׈ሰѨ৥ა၄࿐๭ཞ֥๤၂ܵ৘აЌૡթԥđิԛਔ၂ᇕᆌ؟ؓଆ෿၄ਏඔऌ֥щ઒თႅҟ
+ࡆૡٚσb൮༵ഡ࠹ਔ၂ᇕࠎႿ UTF-8 щ઒ა໊ᇂඔᇅٳࢳ֥ሳژԱ๭ཞ߄ෘمđࡼ׈ሰѨ
+৥ሇߐູщ઒๭ཞđЌᅰඔऌ֥ႅ඲ྟބνಆྟbఃՑิԛ၂ᇕڿࣉ֥HiNet ॖ୉ຩ઎đࡼ၄
+࿐๭ཞళೆщ઒๭ཞᇏđѩ๙ݖႄೆ Kullback-Leibler (KL) ೛؇ჿඏٳ҃ए৖đิശ๭ཞళ
+ೆაᇗࡹ֥ࣚಒྟބਗ਼Ͽྟbቋުູࣉ၂҄ᄹ఼ᄛૡ๭ཞ֥νಆྟđഡ࠹ਔ၂ᇕࠎႿઆࠠ-ᆞ
+Ⴥ༿ࠁᚧ༢๤֥ Bit ࡆࠩૡෘمđ০Ⴈۚૹۋྟބ٤ཌྟหྟൌགྷ఼ࡆૡЌ޹bൌဒࢲݔі
+ૼđ෮ิٚσ҂ࣇିܔႵིЌᅰඔऌ֥νಆྟđط౏ॖ๝ൈൌགྷ׈ሰѨ৥֥໭෥٠໙ა၄࿐
+๭ཞ֥ۚᇉਈ߫گđູჹӱ၄ਏᇏ؟֥ଆ෿ඔऌνಆܵ৘ิ܂ਔ۷֥ۚЌૡྟb
+ܱ࡯ՍğBit ࠩࠁᚧࡆૡĠUTF-8 щ઒Ġॖ୉ຩ઎ႅཿĠ؟ଆ෿ඔऌĠႅ඲Ќ޹
+ᇏ๭ٳোݼğTP309 ໓ᅣщݼğ0255-8297(2025)05-0828-21
+Design of Encoding-Domain Hidden Encryption for
+Electronic Medical Records in Medical Images
+GUO Changhao1,2, LI Meng 1,2, LI Haojie 1,2,
+WANG Huanhuan1,2, WANG Xinfei 1,2
+1. School of Mathematics and Statistics, Chongqing Technology and Business University,
+Chongqing 400067, China
+2. Chongqing Key Laboratory of Statistical Intelligent Computing and Monitoring,
+Chongqing Technology and Business University, Chongqing 400067, China
+Abstract: With the rapid development of telemedicine, the secure management and trans-
+mission of patient privacy data face signi■cant challenges. To achieve uni■ed management
+and secure storage of electronic medical records (EMRs) and medical images, this pa-
+per proposes an encoding-domain hidden encryption scheme for multimodal medical data.
+Speci■cally, a string-to-image transformation algorithm based on UTF-8 encoding and po-
+sitional numeral decomposition is designed to convert EMRs into encoded images, ensuring
+data privacy and security. To facilitate integrated management of multimodal data, an
+൬۠ರ௹ğ2024-11-12
+ࠎࣁཛଢğᇗ౩൧ሱಖ॓࿐ࣁࠎ૫ഈཛଢ č No.cstc2020jcyj-msxmX0162 Ď Ġ ᇗ౩۽അն࿐࿹࣮ള॓࿹Էྍཛ
+ଢ čNo.yjscxx2024-284-258, No.yjscxx2024-284-253, No.yjscxx2025-269-222 Ď
+๙ྐቔᆀğ৙૓đ ࢝൱đ ࿹࣮ٚཟູ๭ཞࡆૡa ྐ༏ႅҟ؟ބૂุνಆbE-mail: limeng7@ctbu.edu.cn
+
+=== PDF_PAGE 2 ===
+ֻ5 ௹ ݒӄݷđ֩ğ૫ཟ၄࿐๭ཞ׈֥ሰѨ৥щ઒თႅҟࡆૡഡ࠹ 829
+improved HiNet reversible network is introduced to embed medical images into encoded
+images. By incorporating the Kullback-Leibler (KL) divergence to constrain the distribu-
+tion distance, the scheme enhances the accuracy and robustness of image embedding and
+reconstruction. Furthermore, to strengthen the security of the encoded images, a bit-level
+encryption algorithm based on the logic-sine-cosine chaotic system is designed, leveraging
+its high sensitivity and nonlinear characteristics for robust encryption. Experimental re-
+sults demonstrate that the proposed encoding-domain hidden encryption scheme e■ectively
+ensures data security while enabling lossless access to EMRs and high-quality recovery of
+medical images, o■ering enhanced con■dentiality for secure management of multimodal
+data in telemedicine.
+Keywords: Bit-level chaotic encryption, UTF-8 encoding, reversible network steganogra-
+phy, multimodal data, privacy protection
+֒భđ׈ሰѨ৥čelectronic medical records, EMRsĎބ၄࿐๭ཞ๙ݖ܄܋ຩ઎ᄝཌ܋ཚ
+ၘӮູ၂ᇕ౴൝bಖطđᆃᇕ؟ٚҕა֥ଆൔ္ջটਔႅ඲Ќ޹ބඔऌܵ৘֥็ᅞ [1]bູՎđ
+࿹࣮ದჴิԛਔ؟ᇕႅ඲ඔऌЌ޹ٚσđЇওྐ༏ࡆૡ [2] ބ๭ཞႅҟ [3] ֩bࡆૡ࠯ඌ๙ݖ
+ᇂ੹ෘمࡼ૝ૡؓའщ઒ູ໭مᆰࢤ്љ֥ૡ໓đՖطЌᅰඔऌᄝԮൻݖӱᇏ֥νಆĠႅཿ
+࠯ඌᄵ൞০Ⴈ؟ૂุඔऌ֥಺Ⴥྟđࡼ૝ૡؓའࣉྛళೆđ൐ః଴ၛФҳतbᆃུ࠯ඌႵིٝ
+ᆸਔѨದ֥ႅ඲Ф྄੝ࠇذၩ՞ڿbಖطđႮႿ࠯ඌൌགྷܵބ৘ഈ֥अཋđଢభಯթᄝνಆྟ
+҂ቀܵބ৘ࠁ੹֩໙ีb
+܄܋ྐ֥֡ष٢ྟ൐׈ሰ၄ਏඔऌॖି૫ਢ٤م྄੝ބذၩ۾ࠌ֩ڄགđೂޅႵིЌᅰ
+ྐ༏֥թԥνಆྟބԮൻЌૡྟđၘӮູታրࢳथ֥ނྏ໙ีbགྷႵ֥ႅ඲Ќ޹ٚσᇶေऊ
+ࢊႿิۚหקෘمི֥ੱࠇႪ߄หק۬ൔ֥ඔऌЌ޹bೂ໓ང[2] ิԛਔ၂ᇕࠎႿׄקෘمള
+Ӯࠁᚧ྽ਙ֥ࡆૡمٚđିܔႵིิۚࡆૡෘم֥ྟିđࢳथਔଽթ٠໙ི֥֮໙ีb໓ང
+[4] ิԛਔ၂ᇕڿࣉ֥ቋն๡Ⴊ༵ࡆૡෘمđ๙ݖٳ༅ૹۋඋྟࡗ֥ܱ৳ྟđҐႨቋն࿊ᄴ؇
+Ⴊ༵֥مٚิۚਔ׈ሰѨ৥֥େ଀߄ིݔb໓ང [5] ႄೆਔ၂ᇕؓॆྟႅཿٚσđ๙ݖႪ߄ᄛ
+ૡٳ҃đᄹ఼ᄛૡაᄛุᆭࡗ֥ҵၳྟđՖطิശਔႅཿི֥ބݔַॆྟb໓ང [6] ࢲކࡆૡ
+აႅཿ࠯ඌđิԛਔ၂ᇕᆌؓ၄࿐๭ཞ֥ႅ඲Ќ޹ٚσđ๙ݖ෪੻๭ࡆૡაචళೆمཌྷࢲކ
+֥ٚൔđิശਔ၄࿐๭ཞ֥Ќૡྟაॆ՞ڿି৯b
+࣐ܵഈඍمٚିႵིЌ޹၄࿐ඔऌ֥νಆđ֌ಯթᄝਆ۱ᇶေ֥໙ีb໙ี၂൞ೂޅ๝
+ൈൌགྷ׈ሰѨ৥ބ၄࿐๭ཞ֥ܿٓܵ৘bႮႿඔऌ֥ଆ෿ҵၳđ၄ਏඔऌ९ສສࡼ׈ሰѨ৥
+ބ၄࿐๭ཞٳषթԥbᆃؓඔऌ֥๤၂ྟটඪ൞၂ᇕ็ᅞđॖି֝ᇁඔऌ٠໙҂๝҄đᄹࡆਔ
+ྐ༏ܱ৳հ༂֥ॖିྟb໙ีؽ൞ೂޅ࡙ܤЌૡ఼؇აྐ༏֥ປᆜྟbགྷႵ֥ႅ඲Ќ޹ٚσ
+ສສҧᇗႿᄹ఼Ќૡྟđ֌ޭ੻ਔ၄ਏྐ༏ۚົྟބնܿଆ֥ඔऌหྟbᆃུඔऌ؟֥ဢྟ
+ބگᄖྟ൐֤ֆ၂֥ႅ඲Ќ޹Ҧ੻଴ၛ๝ൈ࡙ܤЌૡྟބປᆜྟb
+ູൌགྷ؟ଆ෿၄࿐ඔऌ֥๤၂νಆЌ޹đᆌؓ໙ี၂đࡼ׈ሰѨ৥ބ၄࿐๭ཞವކࣉ
+ྛܵ৘൞၂ᇕႵི֥Ќ޹مٚb֒భđࠎႿധ؇࿐༝֥ႅҟຩ઎đೂࢳ઒ఖ-щ઒ఖຩ઎
+HiDDeN[7]aSteganoGAN[8] ބචҕაᆀॿࡏ StegGAN[9] ֩đູ؟ଆ෿ྐ༏֥ವކิ܂ਔ࠯
+ඌᆦӻbᆃུمٚ๙ݖ࿐༝؟ଆ෿ඔऌ֥ଽᄝܱ༢ބหᆘđିܔൌགྷ҂๝ো྘ඔऌ֥๤၂ܵ
+৘ބνಆЌ޹bಖطđࣇ၇ौႅཿෘمಯ଴ၛಒЌඔऌ֥ಆ૫Ќૡྟđၹູႅཿ࠯ඌᇶေҧᇗ
+Ⴟྐ༏ႅҟđط҂ടࠣඔऌࡆૡބ٠໙॥ᇅbၹՎđࢲކщ઒aࡆૡބႅཿෘمൌགྷ؟ҪՑ֥
+νಆЌ޹đӮູЌᆣ၄ਏඔऌνಆྟ֥ႵིҦ੻b
+ູЌᆣྐ༏֥Ќૡྟđᆌؓ໙ีؽđࠁᚧ༢๤֥҂ॖყҩྟބۚૹۋྟӮູࡆૡෘمഡ
+
+=== PDF_PAGE 3 ===
+830 ႋ Ⴈ ॓ ࿐ ࿐ Б ֻ43 ज
+࠹֥ᇗေࠎԤbࡆૡᇶေЇওᇂ੹ބঔ೛ਆᇕمٚbᇂ੹ࡆૡ๙ݖڿэཞ෍໊ᇂট௥ߊჰ൓
+๭ཞ֥ॢࡗࢲܒĠঔ೛ࡆૡᄵ๙ݖྩڿཞ෍ᆴটࠁཪჰ൓๭ཞ֥ඔᆴྐ༏bಖطđԮ๤֥ཞ෍
+ࡆࠩૡ໭مႵֹི๝ൈڿэཞ෍໊֥ᇂބඔᆴྐ༏đၹՎᄝᄹ఼๭ཞ֥Ќૡྟٚ૫թᄝ၂ק
+֥अཋྟbູՎđॉ੮ҐႨ Bit ࡆࠩૡෘمิۚ۷܂֥νಆྟbᆃᇕمٚିܔ๝ൈྩڿཞ෍֥
+໊ᇂაཞ෍ᆴđՖطᄹ఼ਔඔऌ֥Ќૡྟބॆ۾ࠌି৯b
+ູՎđЧ໓ิԛਔ၂ᇕ૫ཟ׈ሰѨ৥ބ၄࿐๭ཞ֥щ઒თႅҟࡆૡٚσđ๙ݖщ઒-ႅ
+ҟ-ᄜࡆૡ֥مٚđൌགྷ؟ଆ෿၄ਏඔऌ֥๤၂ܵ৘ა؟ҪՑνಆЌ޹bऎุط࿽đ൮༵đູ
+ਔವކ؟ଆ෿ඔऌđҐႨ UTF-8 щ઒࠯ඌࡼ׈ሰѨ৥ሇ߄ູщ઒๭ཞĠఃՑđഡ࠹ਔ၂ᇕڿ
+ࣉ֥ HiNet ॖ୉ຩ઎ [10]đࡼ၄࿐๭ཞళೆщ઒๭ཞᇏđൌགྷॴଆ෿ඔऌི֥ۚᆜކაνಆЌ
+޹Ġቋުđູࣉ၂҄ิശྐ༏֥Ќૡྟđഡ࠹ਔ၂ᇕࠎႿઆࠠ-ᆞჅ༿ࠁᚧ႘ഝ֥ Bit ࠩ໭෥
+ࡆૡٚσđؓᄛૡ๭ཞࣉྛᄜࡆૡҠቔbაԮ๤مٚཌྷбđ෮ิԛ֥ࠎႿщ઒თ֥ྐ༏ႅҟٚ
+مູ၄࿐๭ཞა׈ሰѨ৥ิ܂ਔ۷֥ۚνಆྟĠႮѨ৥щ઒ളӮ֥ᄛૡ๭ཞӯགྷԛোරᄮല
+֥หྟđ൐֤۾ࠌᆀ۷ౠཟႿᆰࣉࢤྛࢳૡطޭ੻၄࿐๭ཞྐ༏֥ႅҟĠՎຓđႅҟᄜࡆૡ֥
+Ҧ੻ିܔႵིյ௥҂๝ଆ෿ඔऌᆭࡗ֥уৈđൌགྷ׈ሰѨ৥ބ၄࿐๭ཞ֥๤၂ܵ৘ა؟ᇗν
+ಆЌ޹bھٚσႵིх૧ਔԮ๤၄ਏඔऌ९ᇏӈ࡮֥ႅ඲྄੝ܵބ৘ࠁ੹ڄགđಆ૫ಒЌਔ
+؟ଆ෿၄ਏඔऌᄝྐ༏ᆞಒྟaթԥνಆྟބԮൻЌૡྟٚ૫֥νಆЌᅰb
+1 ཌྷܱ۽ቔ
+1.1 ࠁᚧࡆૡ
+ࠁᚧࡆૡ൞၂ᇕ০Ⴈࠁᚧ༢๤֥҂ॖყҩྟބૹۋྟđ๙ݖؓඔऌࣉྛگᄖ֥٤ཌྟэ
+ߐটൌགྷྐ༏ࡆૡ֥࠯ඌđՖطิۚඔऌ֥νಆྟބႅ૝ྟbఃເෛࠏྟބۚ؇ૹۋ֥Ԛᆴ
+၇ঠྟ൐֤ࡆૡݖӱऎႵޓ఼֥ॆ۾ࠌྟbοᅶ࠹ෘؓའ֥৬؇҂๝đࠁᚧࡆૡնᇁॖٳູ
+ཞ෍ࡆࠩૡބBit ࡆࠩૡਆᇕمٚb
+ཞ෍ࡆࠩૡᇶေؓཞ෍ࣉྛᇂ੹ބঔ೛Ҡቔটൌགྷࡆૡ [11]b২ೂđ໓ང [12] ิԛਔ၂ᇕ
+ࠎႿॶᇂ੹ބࠁᚧ֥ґ೤๭ཞࡆૡ࠯ඌbھمٚࡼ๭ཞٳࢳູ๙֡ѩࣉ၂҄߃ٳູሰ๭ཞބ
+ॶđ๙ݖྩڿሰ๭ཞބॶᆭࡗ֥ඨ྽აཞ෍ᆴটളӮᇂ੹๭ཞbᄝՎࠎԤഈđ൐Ⴈઆࠠ႘ഝؓ
+ᇂ੹๭ཞࣉྛঔ೛đՖطቋᇔ֤֞ૡ໓๭ཞb໓ང [13] ิԛ၂ᇕࠎႿᄹ఼ࠁᚧ႘ഝ֥๭ཞࡆ
+ૡෘمđھෘم০Ⴈభཟބުཟ֥ࠁކಠ׮ളӮૡᄂđၛൌགྷؓ๭ཞॶ֥ᇂ੹đѩࢲކၳࠇᄎ
+ෘݗބ༐ԩ৘ᄹ఼ࡆૡིݔđՖطཁᇷิശෘم֥Ќૡྟbಖطđཞ෍ࡆࠩૡٚσ๙ӈ଴ၛᄝ
+ᇂ੹ބঔ೛Ҡቔࡗൌགྷ๝҄Ⴊ߄đᆃᄝ၂קӱ؇ഈᄹࡆਔෘم֥گᄖྟđѩิۚਔ࠹ෘषཧb
+Bit ࡆࠩૡᄵ๙ݖ๝ൈڿэཞ෍֥ᆴބ໊ᇂđႵིิۚࡆૡ༢๤֥νಆྟބॆۄಠି৯b
+ཌྷбཞ෍ࡆࠩૡđBit ࡆࠩૡିܔᄝ۷༥৬؇ഈ๝ൈൌགྷᇂ੹ބঔ೛ҠቔđՖطิۚਔࡆૡི
+ބݔིੱbູࣉ၂҄ᄹ఼༢๤֥νಆྟđࠁᚧ༢๤ᇏ֥ҕඔ࿊ᄴބૡᄂੀ֥ෛࠏྟაनᄋྟ
+ᇀܱᇗေbູՎđ໓ང[14] ิԛਔ၂ົJoanS-MuraliP ႘ഝ(one-dimensional JoanS-MuraliP
+mapping, 1D-JSMPM)đऎႵپڶ׮֥෿หྟބਅݺ֥ࠁᚧྛູđିܔളӮۚෛࠏྟބनᄋ
+ྟ֥ૡᄂੀbھ႘ഝ֥ඔ࿐ྙൔູ
+xi+1 = r2(xi − 5)[1 − r(x2i − 5)] mod 1 (1)
+ൔᇏğr ູ༢๤ҕඔđԚ൓ᆴ x0 ∈ (0, 1)b೏༢๤ҕඔ r ∈(0.502, 2 000)đᄵھ႘ഝିܔӁളگ
+ᄖ౏҂ॖყҩ֥ࠁᚧ྽ਙđॖႨႿܒᄯི֥ۚૡᄂੀbՎຓđ໓ང[15] ࠎႿᆞ༿ಠ׮ބઆࠠ႘
+ഝđิԛਔ၂ົઆࠠሱళೆࠁᚧ႘ഝčone-dimensional logical self-embedding chaos mapping,
+
+=== PDF_PAGE 4 ===
+ֻ5 ௹ ݒӄݷđ֩ğ૫ཟ၄࿐๭ཞ׈֥ሰѨ৥щ઒თႅҟࡆૡഡ࠹ 831
+1D-LSECMĎ đఃඔ࿐іղྙൔູ
+yi+1 = α[(1 − sin πyi) + λ][4αyi(1 − yi)][1 − 4αyi(1 − yi)] mod 1 (2)
+ൔᇏğ༢๤ҕඔ α ∈ [5, +∞)Ġλ ∈ [5, +∞)đԚ൓ᆴ y0 ∈ (0, 1)b
+1.2 ॖ୉ຩ઎
+ॖ୉പࣜຩ઎činvertible neural network, INNĎ൞၂ᇕ๙ݖّཟ࠹ෘ߫گൻೆ֥പࣜຩ
+઎ࡏܒđିܔᄝᆞཟԮѬބ୉ཟԮѬᇏིۚ০Ⴈଽթѩࡨഒ࠹ෘषཧb໓ང [16] ൮Ցิԛਔ
+ॖ୉പࣜຩ઎֥ࠎЧࢲܒđھࢲܒႮ೏ۄࢌҭᯒކҪބห֥קэߐݦඔቆӮđ๙ݖഡ࠹චཟ
+႘ഝđ൐ຩ઎֥ૄ၂ҪൻԛିܔႮ༯၂Ҫ֥ൻೆࣉྛّཟ࠹ෘ֤֞bᆃ၂หྟ൐ॖ୉പࣜຩ
+઎ᄝԩ৘ۚົඔऌࠇଽթ൳ཋ֥ӆࣟൈіགྷԛ೤đՖطФܼٗႋႨႿ๭ཞሢ೤a๭ཞ࿢෪ބ
+൪௔ӑٳяੱ [17] ֩ਵთb
+ႮႿఃॖ୉ྟބིۚྟđॖ୉പࣜຩ઎ᄝ๭ཞႅཿᇏ္ᅚགྷԛऍնమ৯b໓ང [18] ൮Ց
+ࡼॖ୉ຩ઎ႋႨႿ؟๭ႅཿđ๙ݖႄೆᇗေྟ႘ഝଆॶᆷ֝ఃႅҟݖӱđՖطႵིᄹ఼ᄛૡ
+๭ཞ֥҂ॖ࡮ྟb໓ང [19] ᄝॖ୉പࣜຩ઎ᇏႄೆॢࡗ๙֡৳ކᇿၩࠏᇅđѩࡼ๭ཞႅҟބ
+߫گ൪ູ၂ؓᯒކ֥ॖ୉ݖӱđႵིิۚਔႅཿෘم֥൪तᇉਈაνಆྟb໓ང [20] ࡼॖ୉
+പࣜຩ઎ႋႨႿ؟ଆ෿၄࿐๭ཞವކđ๙ݖᆞཟݖӱ࿐༝؟ଆ෿іൕđѩᄝ୉ཟݖӱ০Ⴈཬ
+ѯ่ࡱವކຩ઎đൌགྷਔॢࡗ༥ࢫაܱ࡯ეၬ֥޺Ҁᇗܒb
+2 ؟ଆ෿၄࿐ඔऌႅҟࡆૡॿࡏഡ࠹
+Ч໓ิԛਔ၂ᇕࢲކ UTF-8 щ઒aHiNet ॖ୉ຩ઎ބ Bit ࠩؽົࠁᚧࡆૡ֥ႅҟࡆૡ
+ॿࡏđࢲܒೂ๭ 1 ෮ൕbھॿࡏٳູ 3 ۱ࢨ؍ğщ઒aႅҟބࡆૡb൮༵đᄝщ઒ࢨ؍đࠎႿ
+UTF-8 щ઒࠯ඌđࡼ׈ሰѨ৥ XEMRs Ֆ໓Ч۬ൔሇߐູщ઒๭ཞ Xcodeđၛьა၄࿐๭ཞࣉ
+ྛವܵކ৘bᄝႅҟࢨ؍đ๙ݖ HiNet ॖ୉ຩ઎֥ᆞཟݖӱđࡼ၄࿐๭ཞ YCT ళೆщ઒๭ཞ
+ᇏđളӮᄛૡ๭ཞ XstegođՖطЌᆣ၄࿐๭ཞԮൻ֥Ќૡྟބྐ༏թԥ֥ປᆜྟbቋުđᄝࡆ
+ૡࢨ؍đؓᄛૡ๭ཞࣉྛ Bit ࠩؽົࠁᚧࡆૡđၛࣉ၂҄ิۚඔऌ֥νಆྟbࡆૡު֥ૡ໓๭
+ཞ Xcipher ႨႿᄉ؊թԥބඔऌԮൻb֒၄ਏࠏܒ༯ᄛඔऌൈđॖ๙ݖૡᄂ॥ᇅ֥୉ཟҠቔࠆ
+֤߫گ׈֥ሰѨ৥ X ′EMRs ބ၄࿐๭ཞ Y ′CTđՖطൌགྷ׈ሰ၄ਏඔऌ֥νಆթԥބᄝཌ܋ཚb
+і1 ؓЧ໓൐Ⴈ֥ܱ࡯эਈࣉྛਔקၬb
+医学图像
+二维编码
+电子病历 编码图像
+载密图像
+二维混沌系统
+Bit级二维
+混沌加密
+密钥�(a,b,c,d,x0,y0)
+HiNet 正向隐藏
+HiNet
+逆向恢复 恢复的
+编码图像
+恢复的
+电子病历
+编码恢复
+恢复的医学图像
+密文图像
+云空间YCT 
+XEMRs Xcode 
+Xstego
+载密图像
+Xstego
+X'code X'EMRs 
+Y'CT 
+Xcipher 
+密文图像
+Xcipher 
+UTF-8 
+二维混沌系统
+Bit级二维
+混沌解密
+密钥�(a,b,c,d,x0,y0)
+UTF-8 
+๭ 1 ૫ཟ၄࿐ඔऌ֥ႅҟࡆૡॿࡏ
+Figure 1 Hidden encryption framework for medical data
+2.1 ׈ሰѨ৥ؽົщ઒
+ູਔൌགྷ׈ሰѨ৥֥๭ཞ߄թԥၛࠣ؟ଆ෿ඔऌ֥ವܵކ৘đЧ໓ҐႨ UTF-8 щ઒࠯ඌ
+ࡼ׈ሰѨ৥ XEMRs ሇߐູґ೤֥ PNG ๭ཞ XcodebPNG ๭ཞऎႵਅݺ֥ॆ෥ྟބ๙Ⴈྟđ
+
+=== PDF_PAGE 5 ===
+832 ႋ Ⴈ ॓ ࿐ ࿐ Б ֻ43 ज
+і 1 ژݼඪૼ
+Table 1 Symbolic description
+ژݣݼ ၬ
+XEMRs ׈ሰѨ৥
+YCT ၄࿐๭ཞ
+Xcode щ઒๭ཞ
+S щ઒๭ཞԄժ
+Xstego ᄛૡ๭ཞ
+Xcipher ૡ໓๭ཞ
+X ′code ߫گ֥щ઒๭ཞ
+Y ′CT ߫گ֥၄࿐๭ཞ
+X ′EMRs ߫گ׈֥ሰѨ৥
+ၹՎ٤ӈൡކ׈ሰѨ৥֥๭ཞ߄թԥაԮൻb׈ሰѨ৥ XEMRs ൞Ⴎ Q ۱ሳژܒӮ֥ࠢކđః
+ሇߐ֥ऎุ҄ᇧೂ༯ğ
+҄ᇧ 1 ࡼ׈ሰѨ৥ XEMRs ࡆᄛ֞ଽթ֥ߏթᇏđѩ๙ݖ UTF-8 щ઒ࡼૄ۱ሳژሇߐ
+ູ൅ࣉᇅіൕđྙӮ൅ࣉᇅ྽ਙ T = {ti}Qi đఃᇏ ti ֥౼ᆴٓຶູ0～65 535b
+҄ᇧ 2 ູਔડቀ PNG ۬ൔ֥౼ᆴေ౰čཞ෍ٳਈٓຶູ 0～255Ď đࡼૄ۱щ઒ᆴ ti ο
+ᅶၛ256 ູࠎඔ໊֥ᇂඔᇅࣉྛٳࢳđೂൔ(3) ෮ൕğ
+ti = 256ai + bi (3)
+ൔᇏğai ູ໊ۚ༢ඔĠbi ູ໊֮༢ඔđᆃਆ۱༢ඔनູ 0～255 ٓຶଽ֥ᆜඔbಖުđࡼ ai ބ
+bi ܒӮӉ؇ູ Q2 ֥щ઒྽ਙ Cb
+҄ᇧ3 ູਔಒקPNG ๭ཞ֥ॺ؇ބۚ؇đ൮༵۴ऌщ઒྽ਙ C ֥Ӊ؇đ࠹ෘ๭ཞ֥Ԅ
+ժնཬđೂൔ(4) ෮ൕğ
+S =
+■■
+2Q/3
+■
+(4)
+ൔᇏğ⌈ ⌉ ູഈཋݦඔb೏྽ਙӉ؇ 2Q ҂ቀ 3S2 ൈđླေႨᆴ 3čo׈ሰѨ৥ࢲඏpሳژĎؓ
+C ࣉྛแԉđᆰᇀఃӉ֩؇Ⴟ3S2đၛಒЌളӮ֥PNG ๭ཞ֥ປᆜྟb
+҄ᇧ 4 ࡼ C ೡ૭Ӯնཬູ S × S × 3 ֥ PNG ๭ཞđ֤ࠧ֞ Xcodebھ๭ཞ҂ࣇЇݣჰ
+൓׈ሰѨ৥ྐ༏đߎॖၛ๙ݖ୉ݖӱࢳ઒߫گ֤֞ჰ൓໓Чඔऌđၛьࣉྛࣉ၂֥҄ඔऌವ
+ކč২ೂა၄࿐๭ཞ֥ቆކĎb
+2.2 щ઒თ๭ཞႅཿ
+ູЌᅰ၄ਏ๭ཞ֥νಆྟၛࠣൌགྷ؟ଆ෿ྐ༏֥ವܵކ৘đЧ໓ิԛਔ၂ᇕࠎႿщ઒
+თ֥ॖ୉ႅཿຩ઎đೂ๭ 2 ෮ൕđႨႿࡼ၄࿐๭ཞ YCT ళೆщ઒๭ཞ Xcode ᇏbႮႿщ઒
+๭ཞ֥ٳ҃࣍රႿᄮല๭ཞđູิۚႅҟྐ༏֥҂ॖ࡮ྟބ߫گ֥ປᆜྟđႄೆਔ၂ᇕྍ֥
+Kullback-Leibler (KL) ೛؇෥ാݦඔđ๙ݖჿඏ๭ཞؓࡗ֥๤࠹ٳ҃ए৖đࣉ၂҄Ⴊ߄ႅཿ
+ྟିb
+
+=== PDF_PAGE 6 ===
+ֻ5 ௹ ݒӄݷđ֩ğ૫ཟ၄࿐๭ཞ׈֥ሰѨ৥щ઒თႅҟࡆૡഡ࠹ 833
+医学图像
+正向隐藏
+相同参数
+逆向恢复
+丢失信息
+R
+辅助变量
+zYCT 
+编码图像
+Xcode 
+载密图像
+Xstego
+载密图像
+Xstego
+恢复的
+编码图像
+恢复的
+医学图像
+X'code 
+Y'CT 
+DWT IWT 
+IWT 
+IWT 
+IWT 
+IWT 
+IWT DWT 
+φ(·) 
+φ(·) 
+ϕ(·) 
+ρ(·) ρ(·) η(·) 
+η(·) 
+ϕ(·) 
+exp( α(·)) 
+exp( α(·)) 
+exp( α(·)) 
+exp( α(·)) 
+๭ 2 ࠎႿщ઒თ֥ॖ୉ႅཿຩ઎ࢲܒ๭
+Figure 2 Structure of reversible steganographic network based on encoding domain
+2.2.1 ཬѯთႅҟ
+ᄝॢࡗთᆰࢤళೆ૝ૡ๭ཞಸၞႄఏ໕৘ເ႕֩໙ี [21]đູՎđЧ໓ҐႨ৖೛ཬѯэ
+ߐčdiscrete wavelet transform, DWTĎࡼ๭ཞՖॢࡗთሇߐ֞௔ੱთđ๙ݖࡼ๭ཞٳࢳູ҂
+๝ሰջč֮௔ሰջބۚ௔ሰջĎ֥ٚൔটႪ߄ళೆݖӱbۚ௔ሰջၹఃЇݣپڶ֥๭ཞ༥ࢫྐ
+༏đ౏ؓ൪त֥ૹۋྟࢠ֮đӮູ૝ૡྐ༏ళೆ֥৘མ౵თbᆃᇕمٚႵིࡨഒਔళೆྐ༏ؓ
+๭ཞᆜุᇉਈ֥႕ཙđ๝ൈཁᇷิശਔႅཿ๭ཞ֥҂ॖ࡮ྟބਗ਼Ͽྟbॉ੮֞ Haar ཬѯނ֥
+࠹ෘࡥֆྟބٳࢳིݔđЧ໓࿊ᄴ Haar ཬѯނᆳྛ৖೛ཬѯэߐđၛಒЌمི֥ٚۚྟބళ
+ೆྟିb
+2.2.2 ॖ୉ႅҟބ߫گ
+ཬѯэުߐࣉྛඔऌႅҟđႅҟຩ઎֥ࢲܒೂ๭ 2 ෮ൕđఃᇶေႮ w ۱ཌྷ๝ࢲܒ֥ႅҟ
+ॶቆӮbࡼᆞཟݖӱᇏֻ i ۱ႅҟॶ֥ൻೆၛ X (i)code ބ Y (i)CT іൕđૄ۱ႅҟॶЇও 4 োᯒކ
+эߐ [22]đࠧ φ(·)aρ(·)aη(·) ބ ϕ(·)đѩοᅶ༯ਙ܄ൔࣉྛ࠹ෘ
+X (i+1)code = X (i)code ⊙ exp(α(ϕ(Y (i)CT))) + φ(Y (i)CT) (5)
+Y (i+1)CT = Y (i)CT ⊙ exp(α(ρ(X (i+1)code ))) + η(X (i+1)code ) (6)
+ൔᇏğα(·) ູࡼSigmoid ݦඔӰၛ၂۱ӈඔၹሰ֥֤֞ࠗࠃݦඔĠ⊙ іൕׄࠒᄎෘbᄝቋު၂
+۱ႅҟॶުđ෮֥֤֞ X (w)code ބ Y (w)CT ࣜݖཬѯ୉эߐčinverse wavelet transform, IWTĎ đٳ
+љളӮᄛૡ๭ཞ Xstego ބשാྐ༏ Rbఃᇏđשാྐ༏ R Їওשാ֥૝ૡྐ༏ބФ௥ߊ֥ٿ
+૫๭ཞྐ༏bᆃུྐ༏ᄝᆞཟႅҟݖӱၘשാđၹط҂ҕა૝ૡ๭ཞ֥ᇗࡹb୉ཟ߫گݖӱა
+ᆞཟႅҟݖӱ֥ྐ༏ੀ׮ٚཟཌྷّbೂ๭ 2 ෮ൕđ୉ཟ߫گݖӱ֥ൻೆູ Xstego აෛࠏҐဢ
+֥ڣᇹэਈ zbXstego ᇏЇݣਔ߫گ૝ૡ๭ཞ֥сေྐ༏đz Фေ౰ა R ٳ҃ཌྷ๝đၛҀԉש
+ാ֥಺ჅඔऌđՖطิۚᇗࡹࣚ؇b୉ཟ߫گຩ઎֥࠹ෘೂ༯ğ
+z(i) = (z(i+1) − η(X (i+1)stego )) ⊙ exp(−α(ρ(X (i+1)stego ))) (7)
+X (i)stego = (X (i+1)stego − φ(z(i))) ⊙ exp(−α(ϕ(zi))) (8)
+ᄝቋު၂۱߫گॶުđࡼ෮֥֤֞ X (w)stego ބ zw ࣉྛཬѯ୉эߐđՖطࠆ֤߫گ֥၄࿐๭ཞ
+Y ′CT ބщ઒๭ཞ X ′codeb
+2.2.3 שാྐ༏ R ބڣᇹэਈ z
+ᄝॖ୉ႅཿຩ઎ᇏđz ބ R ٳљႨႿڣᇹ߫گ૝ૡྐ༏ބٳ৖಺Ⴥྐ༏bऎุটඪđz ൞
+၂ቆෛࠏҐဢ֥ڣᇹэਈđЇݣᇗࡹ૝ૡ๭ཞ෮ླ֥ܱ࡯ྐ༏đႨႿҀԉשാ֥಺Ⴥඔऌၛ
+
+=== PDF_PAGE 7 ===
+834 ႋ Ⴈ ॓ ࿐ ࿐ Б ֻ43 ज
+ิۚᇗࡹࣚ؇ĠR ႨႿթԥ಺Ⴥྐ༏đఃེջਔ҂ҕა૝ૡ๭ཞߎჰ֥҆ٳඔऌđЌᆣᄛૡ๭
+ཞ֥ປᆜྟა׿৫ྟb๙ݖ z ބ R ֥ࢲކđຩ઎ିܔႵིൌགྷళೆྐ༏ི֥ۚ߫گbᄝ࿞਀
+ݖӱᇏđູಒЌ Y ′CT ބ X ′code ֥ٳ҃ކ৘ၛࠣྐ༏ିФሙಒᇗࡹđຩ઎๙ݖࡹଆ R ა z ֥෥
+ാđၛቋཬ߄ఃٳ҃ᆭࡗ֥ொҵbᆃᇕഡ࠹ಒЌਔྐ༏ళೆაٳ৖ི֥ۚྟđ๝ൈิശਔ૝ૡ
+๭ཞ֥߫گᇉਈބᄛૡ๭ཞ֥ႅཿྟିb
+2.2.4 ෥ാݦඔ
+1ĎKL ೛؇෥ാ
+ॉ੮֞щ઒ᄮലॖିؓ๭ཞళೆބ߫گݖӱᄯӮۄಠđູิۚ๭ཞ֥߫گᇉਈѩಒЌళ
+ೆྐ༏֥ሙಒྟđЧ໓ႄೆ KL ೛؇ჿඏؓ๭ཞؓᆭࡗ֥ۀੱٳ҃ࣉྛࡹଆbऎุط࿽đKL
+೛؇๙ݖ؇ਈళೆ๭ཞაჰ൓๭ཞ֥ۀੱٳ҃ҵၳđၛಒЌਆᆀᄝหᆘഈ֥၂ᇁྟđ๝ൈ൐
+ཌྷؓҵၳԩႿॖ॥ٓຶb๙ݖႄೆھჿඏđຩ઎ିܔႵིࡨഒщ઒ᄮലؓ߫گݖӱ֥႕ཙđՖ
+طࣉ၂҄ิശ๭ཞ֥൪तᇉਈބ૝ૡྐ༏֥ߎჰࣚ؇bᆃᇕمٚ҂ࣇᄹ఼ਔႅཿྟିđߎႪ
+߄ਔళೆა߫گݖӱᇏ๭ཞٳ֥҃໗קྟbKL ೛֥؇࠹ෘمٚೂ༯ğ
+fKL(PCT∥P ′CT) = 0 .5
+N1∑
+i
+PCT(i)lb
+( PCT(i)
+P ′CT(i)
+)
++ 0.5
+N1∑
+i
+P ′CT(i)lb
+( P ′CT(i)
+PCT(i)
+)
+(9)
+fKL(Pcode∥Pstego) = 0 .5
+N1∑
+i
+Pcode(i)lb
+( Pcode(i)
+Pstego(i)
+)
++ 0.5
+N1∑
+i
+Pstego(i)lb
+( Pstego(i)
+Pcode(i)
+)
+(10)
+LKL = fKL(Pcode∥Pstego) + fKL(PCT∥P ′CT) (11)
+ൔᇏğPcodeaPCTaPstego ބ P ′CT ٳљູщ઒๭ཞa၄࿐๭ཞaᄛૡ๭ཞބ߫گ၄࿐๭ཞ֥๭
+ཞཞ෍ٳ҃Ġi ູཞ෍ᆴĠN1 ູॖି֥ཞ෍ᆴሹඔb
+2Ďႅҟ෥ാ
+ູડቀႅҟݖӱᇏᄛૡ๭ཞ֥҂ॖ࡮ྟđ൮༵קၬႅҟ෥ാđࠧ
+Lcon(θ) =
+M1∑
+m=1
+lC(X (m)code, X(m)stego) (12)
+ൔᇏğlC ႨႿޙਈᄛุ๭ཞބᄛૡ๭ཞᆭࡗ֥ҵၳĠM1 ູ࿞਀ဢЧሹඔb
+3Ď߫گ෥ാ
+ູಒЌ߫گݖӱ֥ॖ୉ྟđקၬ߫گ෥ാູ
+Lrev(θ) =
+M1∑
+m=1
+lR(X (m)CT , X′(m)CT ) (13)
+ൔᇏđlR ႨႿޙਈ૝ૡ๭ཞބ߫گ๭ཞᆭࡗ֥ҵၳb
+4Ď֮௔ཬѯ෥ാ
+ູᄹ఼ຩ઎֥ॆႅཿٳ༅ି৯đקၬ֮௔ཬѯ෥ാູ
+Lfreq(θ) =
+M1∑
+n=1
+lF(ℜ(x(n)cover)LL, ℜ(x(n)stego)LL) (14)
+ൔᇏğlF ႨႿޙਈᄛุ๭ཞބᄛૡ๭ཞᄝ֮௔ሰջᆭࡗ֥ҵၳĠℜ(·)LL іൕཬѯٳࢳުิ౼
+֮௔ሰջ֥Ҡቔb
+
+=== PDF_PAGE 8 ===
+ֻ5 ௹ ݒӄݷđ֩ğ૫ཟ၄࿐๭ཞ׈֥ሰѨ৥щ઒თႅҟࡆૡഡ࠹ 835
+5Ďሹ෥ാ
+ሹ෥ാݦඔ൞ഈඍ෮Ⴕ෥ാ֥ሹބđіൕູ
+Ltotal = LKL + Lcon + Lrev + Lfreq (15)
+щ઒თ֥၄࿐๭ཞႅҟЌᆣਔ؟ଆ෿ඔऌ֥๤၂ܵ৘đ๝ൈିܔٝᆸໃࣜ൱ಃ֥٠໙đ
+ՖطႵིᄹ఼၄࿐๭ཞ֥νಆྟb
+2.3 આࠠ-ᆞჅ༿ࠁᚧ༢๤֥ Bit ࡆࠩૡෘم
+2.3.1 ࡆૡބࢳૡሹุॿࡏ
+Ч໓ഡ࠹ਔ၂ᇕࠎႿઆࠠ-ᆞჅ༿ࠁᚧ༢๤֥Bit ࡆࠩૡෘمđၛಒЌᄛૡ๭ཞ֥νಆྟđ
+ٝᆸ؟ଆ෿၄࿐ඔऌᄥ൳ذၩ٠໙ބ྄੝đఃॿࡏࢲܒೂ๭3 ෮ൕbऎุط࿽đھෘم๙ݖؓ
+ᄛૡ๭ཞ၇Ցᆳྛᇂ੹ބঔ೛ҠቔđളӮૡ໓๭ཞđՖطູ׈ሰѨ৥ބ၄࿐๭ཞิ܂චᇗЌ
+޹đࣉ၂҄ᄹ఼ඔऌ֥νಆྟބॆ۾ࠌି৯b
+位平面分解
+载密图像
+一维重排
+图像分解
+密钥�a,b,c,d,x0,y0
+Bit 级置乱
+二维混
+沌系统
+Bit 级扩散
+加密运算 图像恢复
+位平面合成
+位平面分解扩散恢复
+图像分解图像恢复
+位平面恢复位平面合成
+解密图像
+置乱解密
+解密运算
+密文
+图像
+C2C1
+๭ 3 ࠎႿઆࠠ-ᆞჅ༿ࠁᚧ༢๤֥Bit ࡆࠩૡෘم
+Figure 3 Bit-level encryption algorithm based on logic-sine-cosine chaotic system
+2.3.2 ໊௜૫ٳࢳބ၂ົᇗஆ
+಩ޅ၂۱٤ڵᆜඔ׻ॖၛіൕӮ၂۱ؽࣉᇅ྽ਙđࠧ
+N2 =
+n−1∑
+i=0
+b020 + b121 + · · · + bn−12n−1 (16)
+ؓႿ၂Ϯ֥ߧ؇๭ཞđఃߧ؇ᆴ๙ӈᄝ 0～255 ᆭࡗđၹՎૄ۱ཞ෍׻ି๙ݖື၂֥ 8 ໊
+ؽࣉᇅ྽ਙটіൕbᆃ၂หྟູ໊௜૫ٳࢳิ܂ਔॖିđ൐֤๭ཞିܔФ༥ٳູ 8 ۱໊௜૫b
+๭4 ᅚൕਔࡼ၂ږᄛૡ๭ཞٳࢳູ8 ږ໊௜૫֥ݖӱb
+൮༵đࡼ M × N ֥ᄛૡ๭ཞइᆔ A οᅶൔ (17) ҷٳູ 8 ۱໊௜૫đྙӮ၂۱նཬູ
+M × N × 8 ֥೘ົइᆔ Bbइᆔ B ᇏ֥ჭ෍ࣇЇݣ0 ࠇ1bࢤሢđࡼइᆔ B ሇߐູ၂۱8 ໊໭
+ژݼᆜඔো྘֥၂ົ྽ਙ fb၂ົ྽ਙ f ๝ဢ္ࣇЇݣ0 ބ1đః྽ਙӉ؇ູ L = M × N × 8b
+໊௜૫ٳࢳ֥܄ൔູ
+b(i, j, k) =
+| a(i, j)
+2k
+]
+mod 2 , k = 0, 1, · · · , 7 (17)
+
+=== PDF_PAGE 9 ===
+836 ႋ Ⴈ ॓ ࿐ ࿐ Б ֻ43 ज
+83 
+16 
+212
+59 
+189
+87 
+127
+154
+68 
+01010011
+11010100
+00010000
+00111011
+01010111
+10111101
+01111111
+01000100
+10011010
+像素值
+用二进
+制表示
+按位分
+解得到
+8幅子图
+0 0 0
+1 0 0
+0 1 1
+0 1 1
+0 0 0
+0 1 1
+1 0 1
+1 1 1
+0 0 0
+0 0 1
+1 1 1
+0 1 0
+0 1 1
+0 0 0
+0 1 0
+1 1 1
+0 1 0
+0 0 1
+1 1 1
+1 1 0
+1 1 1
+1 1 1
+0 1 0
+0 1 0
+๭ 4 ໊௜૫ٳࢳིݔ๭
+Figure 4 Bit plane decomposition e■ect
+ൔᇏğa(i, j) ބ b(i, j, k) ٳљູइᆔ A ބ B ᄝ [i, j] ԩ֥๭ཞཞ෍ᆴĠ■·■ іൕཟ༯౼ᆜᄎෘb
+2.3.3 ؽົઆࠠ-ᆞჅ༿ࠁᚧ༢๤
+ࠁᚧ༢๤൞၂۱ۚ؇گᄖ֥a٤ཌྟ֥aؓԚ൓่ࡱૹۋ׮֥෿༢๤bູൌགྷ۷ۚӱ֥؇
+๭ཞᇂ੹ބঔ೛ࡆૡđЧࢫิԛਔઆࠠ-ᆞჅ༿ࠁᚧ༢๤đࠧ
+{
+xn+1 = mod( a sin(exp{106bπyn(1 − xn)}), 1)
+yn+1 = mod( c cos(exp{106dπxn+1(1 − yn)}), 1) (18)
+ൔᇏğaabacad ູ༢๤ҕඔĠa, c ∈ (0, ∞)đb, d ∈ [0, 4]b೏༢๤ҕඔ b, d ∈ (3.6, 4)đࠁᚧ༢๤
+ࡼіགྷԛਅݺ֥ࠁᚧྛູbԚ൓ᆴ x0, y0 ∈ (0, 1)bႮҕඔ key = ( a, b, c, d, x0, y0) ๙ݖൔ (18)
+ളӮૡᄂੀ C1 = {x1, x2, · · · , xn} ބ C2 = {y1, y2, · · · , yn}đႨႿᇂ੹ބঔ೛ࡆૡb
+2.3.4 ࠁᚧྟᇉ
+ູ࡟ҩࠁᚧ༢๤֥ྟᇉđ࿊౼॥ᇅҕඔ (a, b, c, d) = (1 , 2π, 1, 2π)đԚ൓ᆴ (x0, y0) =
+(0.325 7, 0.787 5)b๭ 5 ᇏ֥( b)～(d) ٳљіൕؓ bđcđd ೘۱ҕඔࣉྛ 10−3 ಠ׮đ֥֤֞ࠁ
+ᚧ༢๤׮֥෿೛ׄ๭b
+࿊౼Ԛ൓ҕඔ a = 1.231đb = 5.214đc = 7.266đd = 3.258đЌӻ॥ᇅҕඔ x0 = 0.357đy0 =
+0.681 ҂эđٳљؓᆃ 4 ۱ᆴࣉྛ 10−3 նཬ֥ಠ׮đܴҩࠁᚧ྽ਙ X ֥݅ࠖđࢲݔೂ๭ 6 ෮
+ൕbॖၛुԛđࠧ൐4 ۱྽ਙ֥Ԛ൓ҩ൫ᆴᆺႵັཬҵၳđ֌ఃྛູಯಖ൞ປಆ҂๝֥b
+2.3.5 ๭ཞࡆૡބ๭ཞࢳૡ
+1Ď๭ཞBit ࠩᇂ੹
+๙ݖૡᄂੀ C1 = {x1, x2, · · · , xn} ა C ′1 Ӂള֥႘ഝܱ༢đটಒק྽ਙ U = {u1, u2, · · ·,
+un} ֥ჭ෍bᄝՎࠎԤഈđ۴ऌ U ᇏ֥ჭ෍ඨ྽ؓԚ൓֥၂ົ྽ਙ f ࣉྛᇗྍஆਙđ֤֞ྍ
+֥྽ਙ f ′đՖطൌགྷᇂ੹bC1 ა C ′1 ֥ܱ༢ູ
+C ′1 = sorted(C1) (19)
+ൔᇏğsorted(·) іൕؓჭ෍ࣉྛശ྽ஆਙbᇂ੹ު֥྽ਙ f ′ აჰ၂ົ྽ਙ f ᆭࡗ֥ܱ༢ູ
+f ′(k) = f (uk) (20)
+ൔᇏğuk (k = 1, 2, · · · , n) іൕ C ′1 ᇏֻ k ۱ჭ෍ᄝ C1 ᇏ໊֥ᇂb
+
+=== PDF_PAGE 10 ===
+ֻ5 ௹ ݒӄݷđ֩ğ૫ཟ၄࿐๭ཞ׈֥ሰѨ৥щ઒თႅҟࡆૡഡ࠹ 837
+1.0 
+0.8 
+0.6 
+0.4 
+0.2 
+(a) 原始图像
+yn
+xn
+0 0.2 0.4 0.6 0.8 1.0
+1.0 
+0.8 
+0.6 
+0.4 
+0.2 
+(b) 改变参数�b
+yn
+xn
+0 0.2 0.4 0.6 0.8 1.0
+1.0 
+0.8 
+0.6 
+0.4 
+0.2 
+(c) 改变参数�c
+yn
+xn
+0 0.2 0.4 0.6 0.8 1.0
+1.0 
+0.8 
+0.6 
+0.4 
+0.2 
+(d) 改变参数�d
+yn
+xn
+0 0.2 0.4 0.6 0.8 1.0
+๭ 5 ࠁᚧ༢๤೛ׄ๭
+Figure 5 Scatter plot of chaotic system
+(a) 改变参数�a
+迭代次数
+1.0 
+0.8 
+0.6 
+0.4 
+0.2 X
+0 10 20 30 40 
+(b) 改变参数�b
+迭代次数
+1.0 
+0.8 
+0.6 
+0.4 
+0.2 X
+0 10 20 30 40 
+(c) 改变参数�c
+迭代次数
+1.0 
+0.8 
+0.6 
+0.4 
+0.2 X
+0 10 20 30 40 
+(d) 改变参数�d
+迭代次数
+1.0 
+0.8 
+0.6 
+0.4 
+0.2 X
+0 10 20 30 40 
+a=1.231 a=1.230 b=5.214 b=5.215
+c=7.266 c=7.267 d=3.258 d=3.259
+๭ 6 ࠁᚧ༢๤֥ਲૹྟ
+Figure 6 Sensitivity of chaotic system
+
+=== PDF_PAGE 11 ===
+838 ႋ Ⴈ ॓ ࿐ ࿐ Б ֻ43 ज
+2Ď๭ཞBit ࠩঔ೛
+ູิശࡆૡིݔđؓᇂ੹ު֥྽ਙ f ′ ࢲކૡᄂੀ C2 = {y1, y2, · · · , yn} ࣉྛঔ೛bૡᄂ
+ੀ C2 ა vk ᆭࡗ֥ܱ༢ູ
+vk =
+{
+0 C2(k) > 0.5
+1 C2(k) ⩽ 0.5
+(21)
+Ⴎૡᄂੀ C2 οᅶൔ (21) ളӮྍ֥྽ਙ V = {v1, v2, · · · , vn}bV ൞ᆺݣႵ 0 ࠇ 1 ֥ؽࣉᇅ྽
+ਙđ۴ऌ྽ਙ V ؓ྽ਙ f ′ ࣉྛঔ೛đቋު֤֞྽ਙ f ′′bঔ೛Ӂള֥ྍ྽ਙ f ′′ აᇂ੹ު֥྽
+ਙ f ′ ᆭࡗ֥ܱ༢ູ
+f ′(k) = f ′(k) ⊕ f ′′(k − 1) ⊕ vk (22)
+ൔᇏğ⊕ іൕၳࠇᄎෘb
+3Ďࡆૡݖӱ
+൮༵đളӮૡᄂੀ C1 ބ C2ĠఃՑđ۴ऌૡᄂੀ C1 ၛࠣοശ྽ஆਙ֥ૡᄂੀ C ′1 Ӂള႘
+ഝܱ༢đѩοھ႘ഝܱ༢ളӮ྽ਙ U Ġಖުđοᅶ U ᇏ໊֥ᇂؓ၂ົ྽ਙ f ࣉྛᇂ੹֤֞ f ′Ġ
+ࢤሢđࡼૡᄂੀ C2 ሇߐູᆺݣႵ 0 ބ 1 ֥྽ਙ V đѩ০Ⴈ V ؓᇂ੹ު֥ f ′ ࣉྛঔ೛֤֞
+f ′′Ġቋުđࡼ၂ົ྽ਙ f ′′ ໊֥௜૫߫گູइᆔ B′đѩࡼ B′ ކӮູ๭ཞ A′đՖطቋᇔൌགྷૡ
+໓๭ཞ A′ ֥ൻԛbऎุ҄ᇧೂ༯ğ
+҄ᇧ1 Ⴎkey ቔູ॥ᇅҕඔބԚ൓่ࡱđӁളૡᄂੀ C1 ބ C2Ġ
+҄ᇧ2 ࡼᄛૡ๭ཞ A ๙ݖ໊௜૫ٳࢳູ೘ົइᆔ Bđఃնཬູ M × N × 8Ġ
+҄ᇧ3 ࡼ໊௜૫इᆔ B ๙ݖ໭ژݼ8 ໊ᆜඔো྘ሇߐູ၂ົ྽ਙ f Ġ
+҄ᇧ4 Ⴎૡᄂੀ C1 აശ྽ஆਙ֥ૡᄂੀ C ′1 ᆭࡗ႘ഝܱ༢Ӂള྽ਙ U Ġ
+҄ᇧ5 οᅶ྽ਙ U ᇏ֥ඨ྽ؓ f ᇗྍஆ྽aᇂ੹ުളӮ f ′đf ′(k) = f (uk)Ġ
+҄ᇧ6 ࡼૡᄂੀ C2 ሇߐູᆺݣႵ0 ࠇ1 ֥ؽࣉᇅ྽ਙ V Ġ
+҄ᇧ7 οᅶ྽ਙ V ؓ྽ਙ f ′ ࣉྛঔ೛đളӮྍ྽ਙ f ′′Ġ
+҄ᇧ8 ࡼ྽ਙ f ′′ οᅶ໭ژݼ8 ໊ᆜඔো྘ߎჰູ೘ົइᆔ B′Ġ
+҄ᇧ9 ࡼइᆔ B′ οᅶ໊௜૫ކӮູ๭ཞ A′đՖطൌགྷૡ໓๭ཞ A′ ֥ൻԛb
+4Ďࢳૡݖӱ
+ࢳૡݖӱ൞ࡆૡݖӱ֥୉ᄎෘđᆃ৚ླေᇿၩ֥൞ࢳૡඨ྽b൮༵ࡼૡ໓๭ཞٳࢳູ 8
+۱໊௜૫Ġಖު໊ؓ௜૫༵ުࣉྛঔ೛ބᇂ੹ࢳૡđ֤֞၂ົ྽ਙĠࢤሢᄜࡼࢳૡު֥၂ົ྽
+ਙ๙ݖ໭ژݼ8 ໊ᆜඔো྘ൌགྷ໊௜૫߫گĠቋުࣉྛ໊௜૫ކӮđൻԛࢳૡ๭ཞb
+3 ൌဒࢲބݔٳ༅
+ൌဒҐႨ NVIDIA GeForce RTX 4090 ཁवቔູ PyTorch ॿࡏ༯֥ GPUđщӱე࿽
+ູ Python 3.7b࿞਀םս 1 000 Ցđ஻ਈնཬഡᇂູ 16đ࿐༝ੱՖ 10−1 ࢆ֮֞ 10−9đ൐Ⴈ
+Adam[23] Ⴊ߄ෘمbູဒᆣЧ໓ෘمᄝ҂๝၄࿐ਵთᇏ֥๙Ⴈྟđ۴ऌ׈ሰѨ৥ބ၄࿐๭ཞ
+টჷ֥҂๝, Ч໓ᄝ3 ᇕ҂๝֥ଆൔ༯ࣉྛൌဒb
+3.1 ඔऌটჷބඪૼ
+Ч໓൐Ⴈ3 ۱၄࿐ඔऌࠢࣉྛൌဒğྣ҆X ഝཌඔऌࠢNIH Chest X-rays[24]aܠᅼ࡟ҩ
+ඔऌࠢ Bone Fracture[25] ބ൪ຩଇඔऌࠢ iChallenge-PM[26]bఃᇏđྣ҆ X ഝཌඔऌࠢቔູ
+࿞਀ࠢބҩ൫ࠢđܠᅼ࡟ҩބ൪ຩଇඔऌࠢቔູҩ൫ࠢbྣ҆ X ഝཌඔऌࠢЇݣটሱ 30 805
+
+=== PDF_PAGE 12 ===
+ֻ5 ௹ ݒӄݷđ֩ğ૫ཟ၄࿐๭ཞ׈֥ሰѨ৥щ઒თႅҟࡆૡഡ࠹ 839
+଀׿หߑᆀ֥112 120ږྣ҆X ഝཌ๭ཞbܠᅼ࡟ҩඔऌࠢႨႿܠᅼ࡟ҩđݤۂ᥵ܠa࡚҆ބ
+൭຤֩҂๝োљ֥ X ഝཌ๭ཞb൪ຩଇඔऌࠢႮϤ؇նଷაᇏ೶ն࿐ᇏ೶င॓ᇏྏ৳ކईϷ
+֥iChallenge б೗ิ܂đЇݣ1 200۱൳൫ᆀ֥Ѩ৘ྟ࣍൪čpathologic myopia, PMĎငָ൪
+ຩଇ๭ཞb
+3.2 ႅҟࡆૡٚσ֥ᆜุ௟ܙ
+3.2.1 ൪त௟ܙ
+ࡆૡٚσ֥ॖ൪߄ࢲݔೂ๭ 7 ෮ൕb๙ݖؓб߫گ๭ཞა૝ૡ๭ཞđॖၛࣉ၂҄ဒᆣЧ
+໓مٚᄝщ઒თႅཿٚ૫֥ۚ߫گྟିbՎຓđᄝ၂۱ॖौ֥๭ཞૡ઒༢๤ᇏđૡ໓๭ཞႋӯ
+གྷԛनᄋ֥ཞ෍఼؇ٳ҃bᆃᇕनᄋٳ֥҃หྟіૼૡ໓๭ཞᇏթᄝᄮലđّ႘༢๤ؓ๤࠹
+۾ࠌַ֥ॆ৯bЧ໓ҐႨᆰٚ๭ট௟ܙ๭ཞ֥ཞ෍఼֩؇ࠩđࢲݔೂ๭8 ෮ൕbჰ൓๭ཞ֥ཞ
+෍఼؇ٳ҃ӯགྷԛ၂֥קܿੰྟĠૡ໓๭ཞ֥ཞ෍఼؇ٳ҃ᄵཌྷ֒नᄋđ۲۱఼֩؇ࠩഈ֥
+ཞ෍ඔਈࠫެӻ௜bᆃᇕनᄋྟၩ໅ሢૡ໓๭ཞᇏ֥ૄ۱ཞ෍ࠫެཌྷ֩đ۾ࠌᆀ଴ၛՖᇏิ
+౼ႵႨ֥๤࠹ྐ༏đՖطಒЌਔඔऌ֥νಆྟބЌૡྟb
+(a) 电子病历 (b) 病历编码 (c) 医学图像 (d) 载密图像 (e) 密文图像
+(f) 恢复的电子病历 (g) 恢复的病历编码 (h) 恢复的医学图像 (i) 解密图像
+๭ 7 щ઒თႅҟࡆૡٚσ֥ॖ൪߄ࢲݔ
+Figure 7 Visualization results of encoding-domain hidden encryption scheme
+3.2.2 ਈ߄௟ܙ
+ᄝਈ߄௟ܙᇏđЧ໓ၛڂᆴྐᄮбčpeak signal-to-noise ratio, PSNRĎaࢲܒཌྷරྟᆷඔ
+؇ਈčstructural similarity index measure, SSIMĎaनٚ༂ҵčmean square error, MSEĎၛࠣ
+௜नधؓ༂ҵčmean absolute error, MAEĎቔູ௟ܙᆷѓbPSNR ބ SSIM ֥ᆴᄀնđіૼ
+๭ཞᇉਈᄀݺĠཌྷّđMSE ބMAE ֥ᆴᄀཬđᄵіૼ๭ཞᇉਈᄀݺb
+ᄝ҂๝ඔऌࠢഈࣉྛࠎሙбࢠ֥ࢲݔೂі2 ෮ൕđఃᇏቋႪࢲݔࣉྛਔࡆՙbཁಖđЧ໓
+ෘم֥іགྷႪႿࠎႿധ؇࿐༝ SOTA ֥مٚđᄝ෮Ⴕᆷѓഈ׻౼֤ਔቋࡄࢲݔbაՑႪࢲݔ
+ཌྷбđЧ໓ෘم֥PSNR ᄝNIH Chest X-raysඔऌࠢഈิۚਔ7.36dB đᄝBone Fractureඔ
+ऌࠢഈิۚਔ 1.70dB, ᄝ iChallenge-PM ඔऌࠢഈิۚਔ 3.49dB b๝ဢđᄝ SSIMaMAE ބ
+MSE ᆷѓᇏ္ܴҳ֞ਔোර֥Ⴊ൝bᆃၩ໅ሢđࠧ൐ᄝ๭ཞٳ֥҃ࠞ؊౦ঃ༯đЧ໓ෘم၇
+ಖॖၛൌགྷۚᇉਈ֥૝ૡ๭ཞ߫گđՖطЌᆣਔྐ༏Ԯൻ֥ປᆜྟބॖौྟb
+
+=== PDF_PAGE 13 ===
+840 ႋ Ⴈ ॓ ࿐ ࿐ Б ֻ43 ज
+(a) 病历编码
+频数
+像素值
+15 
+10 
+5
+×103
+0 100 200
+(c) 载密图像
+频数
+像素值
+15 
+10 
+5
+×103
+0 100 200
+(e) 恢复的病历编码
+频数
+像素值
+15 
+10 
+5
+×103
+0 100 200
+(f) 恢复的医学图像
+频数
+像素值
+3
+2
+1
+×104
+0 100 200
+(g) 解密图像
+频数
+像素值
+15 
+10 
+5
+×103
+0 100 200
+(d) 密文图像
+频数
+像素值
+10 
+8
+6
+4
+2
+×103
+0 100 200
+(b) 医学图像
+频数
+像素值
+5
+4
+3
+2
+1
+×104
+0 100 200
+๭ 8 щ઒თႅҟࡆૡٚσ֥ᆰٚ๭
+Figure 8 Histograms of encoding-domain hidden encryption scheme
+і 2 Ч໓مٚაؓбمٚᄝ؟۱ඔऌࠢഈ֥๭ཞඔᆴࢲݔ
+Table 2 Imagenumericalresultsoftheproposedmethodandcomparativemethodsonmultiple
+datasets
+مٚ
+૝ૡ-߫گ๭ཞؓ
+NIH Chest X-rays
+(size=1 024)
+Bone Fracture iChallenge-PM
+PSNR/
+dB
+SSIM MAE MSE
+PSNR/
+dB
+SSIM MAE MSE
+PSNR/
+dB
+SSIM MAE MSE
+Baluja[27] 38.16 0.8880 1.36 2.73 39.06 0.8943 1.29 2.27 41.40 0.8635 1.54 2.29
+Rahim[28] 36.31 0.8932 1.49 2.98 41.30 0.8814 1.32 2.91 43.35 0.9346 1.60 2.84
+HiNet[10] 44.16 0.9681 1.93 3.22 48.06 0.9742 1.37 2.19 46.98 0.9563 1.93 2.66
+Ч໓ෘم 51.52 0.9883 1.16 1.64 49.76 0.9776 1.27 1.76 50.47 0.9672 1.31 1.87
+3.2.3 щ઒თႅҟૡ໓֥ਗ਼Ͽྟٳ༅
+Чࢫ๙ݖؓૡ໓๭ཞٳљീࡆҊࡧ۾ࠌaۚථᄮലčၛ NGS іൕĎ۾ࠌބ࢈࿷ᄮലčၛ
+NS&P іൕĎ۾ࠌđ௟ܙෘمᄝ҆ٳྐ༏שാࠇᄮല໪ಙ༯֥߫گି৯đࢲݔೂ๭ 9 ෮ൕbః
+ᇏֻ၂ྛູૡ໓๭ཞđՖቐᇀႷ၇Ցູჰ൓ૡ໓๭ཞaҊࡧ1/8 ֥ૡ໓๭ཞaNGS = 5 × 10−5
+֥ૡ໓๭ཞބ NS&P = 1 × 10−4 ֥ૡ໓๭ཞĠֻؽྛބֻ೘ྛٳљູؓႋ߫گ֥၄࿐๭ཞބ
+׈ሰѨ৥bॖၛुԛđ֒ૡ໓๭ཞᄥ൳۾ࠌൈđ၄࿐๭ཞބ׈ሰѨ৥֥߫گིݔཁᇷ༯ࢆđෘ
+م଴ၛЌᆣྐ༏֥ປᆜྟބሙಒྟbᆃᇶေ൞ၹູෘمࡼႅҟაࡆૡݖӱཌྷࢲކđ෮ၛؓൻ
+ೆඔऌऎႵۚ؇ૹۋྟđ౏ྐ༏ࡗթᄝ఼ᯒކྟđՖط൐ఃॆۄಠ֥ି৯൳֞ཋᇅb
+
+=== PDF_PAGE 14 ===
+ֻ5 ௹ ݒӄݷđ֩ğ૫ཟ၄࿐๭ཞ׈֥ሰѨ৥щ઒თႅҟࡆૡഡ࠹ 841
+编码域隐藏
+的密文图像
+恢复的
+医学图像
+恢复的
+电子病历
+原始 裁剪�1/8 NGS = 5×10−5 NS&P = 1×10−4
+๭ 9 щ઒თႅҟࡆૡٚσᄝ؟ᇕ۾ࠌ༯֥߫گࢲݔ
+Figure 9 Recovery results of the encoding-domain hidden encryption scheme under various
+attacks
+3.3 ࠎႿ KL ೛؇෥ാ֥ཨವൌဒ
+ࡆೆ KL ೛؇෥ാݦඔ֥۲ᆷѓਈ߄ࢲݔೂі 3 ෮ൕbఃᇏđHiNet +KL lossіൕҐႨ
+ࠎႿ KL ೛؇෥ാ֥ HiNet ॖ୉ຩ઎bႮі 3 ॖᆩđཌྷࢠႿჰ൓֥ HiNet ॖ୉ຩ઎đHiNet
++KL loss ຩ઎֥߫گྟିննิۚb
+і 3 щ઒თॖ୉ႅཿຩ઎ܱႿKL ೛֥؇ཨವൌဒࢲݔ
+Table 3 Ablation study results on KL divergence for the encoding-domain reversible stegano-
+graphic network
+مٚ
+૝ૡ-߫گ๭ཞؓ
+NIH Chest X-rays
+(size=1 024)
+Bone Fracture iChallenge-PM
+PSNR/
+dB
+SSIM MAE MSE
+PSNR/
+dB
+SSIM MAE MSE
+PSNR/
+dB
+SSIM MAE MSE
+HiNet[10] 45.25 0.9781 1.53 2.84 48.06 0.9842 1.29 2.13 46.98 0.9672 1.83 2.35
+HiNet+
+KL loss
+51.52 0.9883 1.12 1.52 49.76 0.9976 1.19 1.76 50.47 0.9763 1.26 1.46
+3.4 ࡆૡٚσ֥νಆྟ௟ܙ
+3.4.1 ཌྷܱྟٳ༅
+ᄝνಆࡆૡ֥๭ཞᇏđཌྷਣཞ෍ᆭࡗႋࠫެીႵཌྷܱྟb๭ 10 ູྣ҆ૼ໓๭ཞč๭
+(a)～(c)Ďބૡ໓๭ཞč๭ (d)～(f)Ďᄝඣ௜aԼᆰބؓ࢘ٚཟഈཞ෍֥ཌྷܱྟׄ๭đఃᇏਆ۱
+
+=== PDF_PAGE 15 ===
+842 ႋ Ⴈ ॓ ࿐ ࿐ Б ֻ43 ज
+ޘᇠٳљіൕ (x, y) ԩ֥ཞ෍ᆴބؓႋ֥RGB ๙֡Ġ๭(a) ބ(d) ֥ሺᇠູ (x + 1, y) ԩ֥ཞ
+෍ᆴđ๭(b) ބ(e) ֥ሺᇠູ (x, y + 1) ԩ֥ཞ෍ᆴđ๭(c) ބ(f) ֥ሺᇠູ໊ᇂ (x + 1, y + 1)
+ԩ֥ཞ෍ᆴbॖၛुԛđ๭ᇏཌྷਣཞ෍ӯགྷԛनᄋ֥ٳ҃ሑ෿đіૼ෱ૌᆭࡗ໭ཌྷܱྟbູ۷
+ऎֹุඪૼđі4 ۳ԛਔ۲ᇕ၄࿐๭ཞࠣఃૡ໓๭ཞ֥ཌྷܱ༢ඔb
+(a) 田文水平�
+像素值
+像素值
+通道
+200
+100
+0
+200
+100
+0 R G B
+(b) 田文垂直
+像素值
+像素值
+通道
+200
+100
+0
+200
+100
+0 R G B
+(c) 田文对角
+像素值
+像素值
+通道
+200
+100
+0
+200
+100
+0 R G B
+(d) 密文水平
+像素值
+像素值
+通道
+200
+100
+0
+200
+100
+0 R G B
+(e) 密文垂直
+像素值
+像素值
+通道
+200
+100
+0
+200
+100
+0 R G B
+(f) 密文对角
+像素值
+像素值
+通道
+200
+100
+0
+200
+100
+0 R G B
+๭ 10 ྣ҆ૼ໓ބૡ໓๭ཞᄝඣ௜aԼᆰaؓ࢘ٚཟഈ֥ཞ෍ཌྷܱྟׄ๭
+Figure 10 Pixel correlation point graph of chest plaintext and ciphertext images in horizontal,
+vertical and diagonal directions
+і 4 ҂๝๭ཞᄝඣ௜aԼᆰaؓ࢘ٚཟഈ֥ཌྷܱ༢ඔ
+Table 4 Correlation coe伍cients of di■erent images in horizontal, vertical, and diagonal directions
+๭ཞ
+ૼ໓๭ཞ ૡ໓๭ཞ
+ඣ௜ Լᆰ ؓ࢘ ඣ௜ Լᆰ ؓ࢘
+ྣ҆
+R 0.998 0 0.997 7 0.996 6 0.002 2 0.000 7 −0.002 0
+G 0.998 0 0.997 7 0.996 6 0.002 1 0.001 9 −0.002 4
+B 0.998 0 0.997 7 0.996 6 0.001 5 −0.000 9 0.000 6
+ܠᅼ
+R 0.998 3 0.999 2 0.997 6 −0.007 9 0.000 9 0.000 1
+G 0.998 3 0.999 2 0.997 5 −0.008 5 −0.001 5 0.001 6
+B 0.998 3 0.999 2 0.997 6 −0.007 6 −0.000 4 0.001 7
+൪ຩଇ
+R 0.997 4 0.997 1 0.995 0 0.080 3 −0.001 8 0.000 1
+G 0.997 3 0.997 1 0.995 0 0.081 3 0.000 1 0.000 7
+B 0.997 3 0.997 0 0.995 0 0.082 6 −0.000 5 0.000 7
+
+=== PDF_PAGE 16 ===
+ֻ5 ௹ ݒӄݷđ֩ğ૫ཟ၄࿐๭ཞ׈֥ሰѨ৥щ઒თႅҟࡆૡഡ࠹ 843
+3.4.2 ྐ༏᧦ٳ༅
+ྐ༏᧦൞ޙਈ๭ཞෛࠏྟބ҂ॖყҩྟ֥ܱ࡯ᆷѓb᧦ႨႿ௟ܙ๭ཞᇏߧ؇ᆴٳ֥҃न
+ᄋӱ؇đႨ܄ൔіൕູ
+H(g) = −
+2q−1∑
+i=1
+P (gi)lb(P (gi)) (23)
+ൔᇏğP (gi) іൕߧ؇ࠩ gi ᄝ๭ཞᇏԛགྷ֥ۀੱĠ2q іൕ๭ཞᇏߧ؇ࠩ gi ֥ሹਈđఃᇏ q і
+ൕթԥ๭ཞૄ۱ཞ෍ߧ؇ᆴ෮Ⴈ໊֥ඔb
+ؓႿૡ໓๭ཞđ৘མ֥᧦ᆴႋղ֞ 8bі 5 ਙԛਔ۲ᇕ၄࿐๭ཞ֥ྐ༏᧦ᆴđࠣఃࣜݖ҂
+๝ෘمщ઒ު֥ࢲݔbॖၛुԛđЧ໓ٚσ֥ૡ໓๭ཞᄝ۲۱๙֥֡᧦ᆴनႪႿః෰ෘمđ౏
+۷࣍ࢤ৘མ֥᧦ᆴ 8đіૼਔЧٚσᄝࡆૡݖӱᇏିܔ۷Ⴕֹིյ੹๭ཞ֥ߧ؇ᆴٳ҃đ൐ః
+۷ࡆෛࠏބ҂ॖყҩb
+і 5 ૼ໓აૡ໓๭ཞ֥ྐ༏᧦
+Table 5 Information entropy of plaintext and ciphertext images
+๭ཞ ๙֡ ૼ໓ ૡ໓ ໓ ང[29] ෘم ໓ང[30] ෘم ໓ང[31] ෘم
+ྣ҆
+R 7.834 8 7.999 8 7.997 3 7.997 2 7.997 1
+G 7.834 8 7.999 8 7.997 3 7.997 2 7.997 1
+B 7.834 8 7.999 8 7.997 3 7.997 2 7.997 1
+ܠᅼ
+R 4.099 5 7.999 8 7.997 3 7.997 2 7.997 1
+G 4.099 5 7.999 8 7.997 3 7.997 2 7.997 1
+B 4.099 5 7.999 8 7.997 3 7.997 2 7.997 1
+൪ຩଇ
+R 5.261 9 7.999 8 7.997 3 7.997 2 7.997 1
+G 5.261 9 7.999 8 7.997 3 7.997 2 7.997 1
+B 5.261 9 7.999 8 7.997 3 7.997 2 7.997 1
+3.4.3 ૡᄂॢࡗٳ༅
+ૡᄂॢࡗٳ༅൞௟ܙࡆૡٚσַॆВ৯۾ࠌି৯֥ᇗေ۽ऎbВ৯۾ࠌ๙ݖ༢๤ֹӇ൫
+෮Ⴕॖି֥ૡᄂቆކট௥ࢳࡆૡඔऌbູಒЌࡆૡෘم֥ਗ਼Ͽྟđૡᄂ֥նཬႋቀܔնđၛַ
+პՎো۾ࠌbᆞೂ໓ང[32] ෮ࡹၰ֥đૡᄂ֥նཬᇀഒႋھղ֞ 2100đၛಒЌࡆૡٚσऎСቀ
+ܔ֥ۚνಆྟbЧ໓֥ࡆૡෘمЇݣ 6 ۱νಆૡᄂđૄ۱ૡᄂ֥ࣚ؇ູ 10−15bၹՎđૄ۱ૡ
+ᄂ֥ૡᄂॢࡗູ 1015bሸކᆃུֆ֥׿ૡᄂॢࡗđॖ֤Ч໓෮ิم֥ٚሹૡᄂॢࡗჿູ 2298đ
+ჹնႿ 2100bοᅶ໓ང[32] ֥ѓሙđЧ໓ෘمіགྷԛਅݺ֥ॆВ৯۾ࠌି৯b
+3.4.4 ૡᄂਲૹ؇ٳ༅
+ૡᄂૹۋྟ൞ޙਈࡆૡٚσؓૡᄂ༥ັэ߄ّႋӱ֥؇ᇗေᆷѓb၂۱఼ն֥ࡆૡٚσ
+ႋؓ֒ૄ۱ૡᄂ׻ऎႵ֥ۚ؇ૹۋྟđᆃ൞ಒЌ༢๤ିܔႵַིპຩ઎۾ࠌ֥ܱ࡯෮ᄝbᆃ
+ၩ໅ሢࠧ൐൞ؓࡆૡૡᄂࣉྛࠞఃັཬ֥ྩڿđࢳૡު֥๭ཞ္ႋ֒ԛགྷཁᇷ֥ാᆇđՖط
+ಒЌࡆૡඔऌ֥νಆྟb
+
+=== PDF_PAGE 17 ===
+844 ႋ Ⴈ ॓ ࿐ ࿐ Б ֻ43 ज
+๭11(a) ᅚൕਔ൐Ⴈᆞಒૡᄂࣉྛࢳૡު֥๭ཞbॖၛुԛđ൐Ⴈᆞಒૡᄂॖၛౢ༉ֹ߫
+گჰ൓๭ཞྐ༏bಖطđೂ๭11 ᇏ֥(b)～(g) ෮ൕđ֒ః෰ҕඔЌӻ҂эطࣇؓૡᄂča, b, c,
+d, x0, y0Ďᇏ֥၂۱ҕඔࣉྛັཬ֥ಠ׮ൈđఃࢲݔა൐Ⴈᆞಒૡᄂࢳૡ֥๭ཞࢩಖ҂๝bᄝ
+ࢳૡު֥๭ཞᇏđႵིྐ༏न໭مФя്đᆃ၂ࢲݔԉٳᅚൕਔࡆૡෘمؓૡᄂэ߄֥ۚ؇
+ૹۋྟb
+(a) 正确密钥 (b) 改变密钥�a (c) 改变密钥�b (d) 改变密钥�c (e) 改变密钥�d (f) 改变密钥�x0 (g) 改变密钥�y0
+๭ 11 ڿэ၂۱ֆ໊ૡᄂު֥ࢳૡ๭
+Figure 11 Decryption images after keys changed by one unit
+3.4.5 ҵٳ۾ࠌ
+Ч໓൐Ⴈ๤၂֥௜नэ߄఼؇čuni■ed average changing intensity, UACIĎބཞ෍ඔэ߄
+ੱčnumber of pixel change rate, NPCRĎؓҵٳ۾ࠌࣉྛ௟ܙbఃᇏđNPCR ႨႿޙਈਆږ
+๭ཞᆭࡗཞ෍ࢌߐ֥ඔਈbUACI ႨႿ௟ܙਆږ๭ཞ֥௜न఼؇ҵၳđ࠹ෘ܄ൔູ
+UACI(P1, P2) = 1Ntotal ∑i.j |P1(i, j) − P2(i, j)|255 × 100% (24)
+ൔᇏğP1 ބ P2 ູਆږૡ໓๭ཞӁള֥ҵٳ۾ࠌĠNtotal ູཞ෍ሹඔb֒ NPCR ބ UACI ֥
+ᆴٳљ࣍ࢤቋႪᆴ99.609 4%ބ33.463 5%ൈđࡆૡمٚႵིbі6 ۳ԛਔЧ໓ࡆૡمٚᄝ၄
+࿐๭ཞഈႋႨު֥ NPCR ބ UACI ᆴbॖ࡮đᄝ҂๝֥ඔऌࠢᇏđUACI नᄝ 33.463 5% ڸ
+࣍đඪૼЧ໓ࡆૡෘمିܔሙಒֹّ႘ਆږ๭ཞᄝ௜न఼؇ഈ֥ҵၳb
+і 6 Ч໓م֥ٚNPCR ބUACI
+Table 6 Values of NPCR and UACI for the proposed method %
+๭ཞ ྣ҆ ܠᅼ ൪ຩଇ
+๙֡ R G B R G B R G B
+NPCR 99.605 4 99.592 2 99.601 3 99.609 7 99.598 8 99.605 2 99.614 9 99.598 3 99.610 3
+UACI 33.514 2 33.421 3 33.403 2 33.384 5 33.501 2 33.47 8 33.421 7 33.481 9 33.480 1
+3.4.6 ૼ໓۾ࠌ
+ᄝૡ઒࿐ᇏđթᄝሢ 4 ᇕᇶေ֥໓Ч۾ࠌٚൔđఃᇏ࿊ᄴૼ໓۾ࠌФ൪ູऎႵ۷఼֥۾
+ࠌ൭؍bູҩ൫ࡆૡෘمᄝַპ࿊ᄴૼ໓۾ࠌٚ૫֥ି৯đ࿊౼ਔՂޑ๭ཞބՂϢ๭ཞቔູ
+ჰ൓๭ཞđࡆૡࢲݔೂ๭ 12 ෮ൕbᆴ֤ᇿၩ֥൞đ࣐ܵჰ൓๭ཞऎႵห൹ྟđ֌ఃࡆૡࢲݔ
+აؓ௴๙๭ཞࣉྛࡆૡ෮֥֤ࢲݔᄝ൪तഈѩ໭ૼཁҵၳđᆃၩ໅ሢЧ໓ิԛ֥ࡆૡٚσॖ
+Ⴕַིპ࿊ᄴૼ໓۾ࠌb
+
+=== PDF_PAGE 18 ===
+ֻ5 ௹ ݒӄݷđ֩ğ૫ཟ၄࿐๭ཞ׈֥ሰѨ৥щ઒თႅҟࡆૡഡ࠹ 845
+(a) 纯黑图像 (b) 加密的纯黑图像 (c) 纯白图像 (d) 加密的纯白图像
+๭ 12 ࿊ᄴૼ໓۾ࠌࡆૡ๭
+Figure 12 Chosen plaintext attack encrypted images
+3.4.7 Ҋࡧ۾ࠌ
+ູ௟ܙૡ໓๭ཞؓҊࡧ۾ࠌ֥߫گྟđࣉྛਔ၂༢ਙൌဒb๭ 13 ູ০ႨҊࡧ҂๝նཬ
+֥ૡ໓๭ཞࣉྛૼ໓๭ཞ߫گ֥ࢲݔđఃᇏֻ၂ྛູૡ໓๭ཞđՖቐᇀႷ၇Ցູჰ൓ૡ໓๭
+ཞaҊࡧ 1/16 ֥ૡ໓๭ཞaҊࡧ 1/4 ֥ૡ໓๭ཞބҊࡧ 1/3 ֥ૡ໓๭ཞĠֻؽྛູ০Ⴈֻ၂
+ྛ๭ཞؓႋ߫گ֥ૼ໓๭ཞbॖၛुԛđᄝࢠն֥Ҋࡧാᆇ౦ঃ༯đૼ໓ྐ༏၇ಖିܔЌӻ
+ॖ൪߄ሑ෿đ࣐ܵॖି໭مປಆࣚಒֹ࡟෬ԛૄ၂۱ཞ෍ᆴđ֌ૼ໓๭ཞᇏ֥ܱ࡯ྐ༏ಯಖ
+ౢ༉ॖ࡮bᆃіૼ෮ิԛ֥ࠁᚧࡆૡٚσᄝႋؓ҂๝ඣ௜ބ໊ᇂ֥Ҋࡧ۾ࠌൈđିႵིࡨ౞
+ః႕ཙđЌӻࢠݺ֥߫گྟିbഈඍҊࡧ۾߫ުࠌگ֥֤֞ૼ໓๭ཞđః PSNR նཬٳљູ
+20.198 1a15.746 5 ބ 13.123 7bᆃඪૼđෛሢ۾ࠌӱ֥؇ࡆധđ๭ཞ֥ᇉਈཁᇷ༯ࢆđ߫گི
+ݔᇯࡶэҵbھࢲݔ఼טਔ߫گ࠯ඌᄝ૫ؓҊࡧ۾ࠌൈ֥็ᅞđࣉ၂҄๬ཁਔڿࣉ߫گིݔ
+֥сေྟb
+原始
+田文图像
+密文图像
+裁剪�1/16 裁剪�1/4 裁剪�1/3
+๭ 13 ॆҊࡧ۾ࠌٳ༅
+Figure 13 Anti-cropping attack analysis
+3.4.8 ۚථᄮലބޱ࢈ᄮല۾ࠌ
+Ч໓ࡼۚථᄮല֥नᆴഡקູ 0đႄೆ҂๝ٚҵᆴ֥ۚථᄮലၛࠣ҂๝ૡ֥؇࢈ ࿷ᄮ
+ലࣉྛൌဒđࢲݔೂ๭ 14 ෮ൕbఃᇏֻ၂ྛູૡ໓๭ཞđՖቐᇀႷ၇Ցູჰ൓ૡ໓๭ཞđ
+թᄝۚථᄮലٳљູ 5 × 10−5a5 × 10−4 ބ 5 × 10−3 ֥ૡ໓๭ཞđթᄝ࢈࿷ᄮലٳљູ
+1 × 10−4a1 × 10−3 ބ 1 × 10−2 ֥ૡ໓๭ཞĠֻؽྛູ০Ⴈֻ၂ྛ๭ཞؓႋ߫گ֥ૼ໓๭ཞb
+ॖၛुԛđࠧ൐ᄝ఼ۚථᄮലބ࢈࿷ᄮല֥౦ঃ༯đૼ໓๭ཞ֥หקଆൔಯಖିܔФ߫گԛ
+টđ౏ࢳૡު֥๭ཞЌӻࢠ֥ۚॖ്љ؇bᆃіૼЧ໓෮ิԛ֥ࡆૡ࠯ඌᄝַॆۚථᄮലބ
+࢈࿷ᄮലٚ૫ིݔਅݺb
+ࣜݖۚථᄮലބ࢈࿷ᄮല۾ުࠌđ߫گ๭ཞ֥ PSNR ਈ߄ᆷѓೂі 7 ෮ൕbႮі 7 ॖ
+ᆩđ֒ᄮലࢠཬൈđ߫گ๭ཞ֥ᇉਈཌྷؓࢠݺđPSNR ᆴղ֞ 30.445 9 ބ 31.903 2đᆃၩ໅
+ሢ๭ཞაჰ൓๭ཞᆭࡗ֥ҵၳࢠཬđିܔࢠݺֹЌ਽๭ཞ֥༥ࢫྐ༏bಖطđෛሢᄮല֥ᄹ
+
+=== PDF_PAGE 19 ===
+846 ႋ Ⴈ ॓ ࿐ ࿐ Б ֻ43 ज
+密文图像
+解密图像
+原始
+NGS = 5×10 −5 NGS = 5×10 −3
+NGS = 5×10 −4 NS&P = 1×10−4 NS&P = 1×10−2
+NS&P = 1×10−3
+๭ 14 ࡆೆ҂๝ᄮല֥ࢳૡ๭
+Figure 14 Decrypted images with di■erent noise added
+і 7 ҂๝ᄮല۾߫ުࠌگ๭ཞ֥PSNR ᆴ
+Table 7 PSNR values of recovered images after di■erent noise attacks dB
+ᄮല (NGS = 0.000 5)/
+(NS&P = 0.000 1)
+(NGS = 0.005)/
+(NS&P = 0.001)
+(NGS = 0.05)/
+(NS&P = 0.01)
+ۚථ 30.445 9 25.072 6 20.965 3
+࢈࿷ 31.903 2 25.659 3 19.811 3
+ࡆđPSNR ᆴᇯࡶ༯ࢆđቋ֮ࢆᇀ 20.965 3 ބ 19.811 3đඪૼ๭ཞᇏ֥༥ࢫބᇗေྐ༏ԛགྷਔ
+ཁᇷשാđॖି߶ؓު࿃֥๭ཞٳ༅ބԩ৘۽ቔӁള҂০႕ཙbၹՎđູਔิۚ߫گ๭ཞ֥ᇉ
+ਈބൌႨྟđᆌؓ҂๝ো྘ᄮല֥۾ࠌषؿ۷Ⴕི֥๭ཞ߫گෘمཁ֤Ⴍູᇗေb
+4 ࢲ ე
+Ч໓ิԛਔ၂ᇕ૫ཟ؟ଆ෿၄ਏඔऌ֥щ઒თႅҟࡆૡٚσđᆻᄝൌགྷ׈ሰѨ৥ა၄࿐
+๭ཞ֥๤၂ܵ৘აνಆթԥbھمٚ๙ݖ׿ห֥oщ઒-ႅҟ-ᄜࡆૡpҦ੻đࡼ UTF-8 щ઒a
+໊ᇂඔᇅٳࢳaॖ୉ႅཿຩ઎ބ Bit ࠩؽົࠁᚧࡆૡཌྷࢲކđູ၄࿐ඔऌิ܂೘ᇗνಆЌ޹b
+ऎุط࿽đູൌགྷ؟ଆ෿ඔऌ֥ವܵކ৘đ׈ሰѨ৥൮༵๙ݖ UTF-8 щ઒ބ໊ᇂඔᇅٳࢳФ
+ሇߐູщ઒๭ཞbෛުđഡ࠹ਔщ઒თॖ୉ႅཿຩ઎đࡼ၄࿐๭ཞళೆ֞щ઒๭ཞᇏđಒЌళ
+ೆྐ༏֥ႅ૝ྟbቋުđࠎႿઆࠠ-ᆞჅ༿ࠁᚧ༢๤֥ Bit ࡆࠩૡෘمؓᄛૡ๭ཞࣉྛࡆૡđ
+Ֆطࣉ၂҄Ќᅰ׈ሰѨ৥֥Ќૡྟbഈඍႅҟࡆૡॿࡏູ׈ሰѨ৥ა၄࿐๭ཞ֥ࡆૡ࿹࣮ა
+ൌ࡬षтਔྍ൪࢘đູߑᆀႅ඲ྐ༏֥Ќ޹ิ܂ਔ఼Ⴕ৯֥࠯ඌᆦӪb
+ෙಖൌဒࢲݔіૼЧ໓ิԛ֥مٚିܔູ؟ଆ෿၄ਏඔऌิ܂Ⴕི֥Ќૡྟbಖطđᄝ
+૫ؓҊࡧ۾ࠌބᄮല۾ࠌൈđ߫گᇉਈٚ૫ಯ૫ਢ၂ק็ᅞbՎຓđෙಖࡼ׈ሰѨ৥ሇߐູ๭
+ཞ۬ൔьႿ০Ⴈॖ୉ႅཿຩ઎đ֌ಯթᄝඔऌಸਈݖնၛࠣթԥބԮൻӮЧࢠ֥ۚ໙ีbၹ
+Վđ༯၂֥҄۽ቔࡼՖᄹ఼ؓذၩ՞۾ڿࠌַ֥ॆି৯ೆ൭đ๙ݖࢲކ౞ਈࠩႅཿٚσა໭
+෥ࡆૡ࠯ඌđิۚ૝ૡ๭ཞᄝ܄܋ྐ֡Ԯൻᇏ֥ਗ਼Ͽྟb๝ൈđ္୅ฐ෬ࡼ׈ሰѨ৥ሇߐູ۷
+ཬಸਈ۬ൔ֥ॖିྟđၛࡨ౞ၹళೆ૝ૡྐ༏ջট֥حຓڵքđՖطൌགྷ۷ི֥ۚඔऌႅҟb
+
+=== PDF_PAGE 20 ===
+ֻ5 ௹ ݒӄݷđ֩ğ૫ཟ၄࿐๭ཞ׈֥ሰѨ৥щ઒თႅҟࡆૡഡ࠹ 847
+ҕ ҕ ҕॉ ॉ ॉ໓ ໓ ໓ང ང ང:
+[1] ALAwiDA M, SAMsuDin A, SEn TEh J, et al. A new hybrid digital chaotic system with appli-
+cations in image encryption [J]. Signal Processing, 2019, 160: 45-58.
+[2] BEzERRA J I M, MAchADo G, MoLTER A, et al. A novel simultaneous permutation-di■usion
+image encryption scheme based on a discrete space map [J]. Chaos Solitons & Fractals, 2023,
+168: 113160.
+[3] ჺሬ᧕, ౮Џਟ, ွ᝿, ֩. ૫ཟщ઒ເል֥ਗ਼Ͽ໭ᄛุ๭ ཞႅཿمٚ [J]. ႋႨ ॓࿐࿐ Б, 2024,
+42(3): 469-485.
+YuAn Z Y, Qiu B L, YE Y, et al. A robust coverless image steganography method for coding
+camou■age [J]. Journal of Applied Sciences, 2024, 42(3): 469-485. (in Chinese)
+[4] ᅦڱ༩. ࠎႿ؟ົ๡ٳቆ࠯ඌڿࣉෘم׈ؓ ሰѨ৥ႅ඲ྐ༏࿹࣮ [J]. ࠹ෘࠏႋႨა ೈࡱ, 2024,
+41(2): 86-92.
+ZhAnG F X. Privacy information of electronic medical record based on improved algorithm of
+multi-dimensional bucket grouping technology [J]. Computer Applications and Software, 2024,
+41(2): 86-92. (in Chinese)
+[5] ZhA H Y, ZhAnG W M, Yu N H, et al. Enhancing image steganography via adversarial
+optimization of the stego distribution [J]. Signal Processing, 2023, 212: 109155.
+[6] ᇛଫ, Ӯᐦ, ࡉ૔ਡ, ֩.ࠎ Ⴟ෪੻๭ࡆૡބٳ҃ൔթԥ֥၄࿐๭ཞႅ඲Ќ޹ [J]. ࠹ෘࠏႋႨ, 2023,
+43(10): 3149-3155.
+Zhou N, ChEnG M, JiA M L, et al. Medical image privacy protection based on thumbnail
+encryption and distributed storage [J]. Journal of Computer Applications, 2023, 43(10): 3149-
+3155. (in Chinese)
+[7] Zhu J R, KApLAn R, Johnson J, et al. Hidden: hiding data with deep networks [DB/OL].
+(2018-07-26) [2024-11-12]. Http://arxiv.org/abs/1807.09937.
+[8] ZhAnG K A, CuEsTA-InFAnTE A, Xu L, et al. SteganoGAN: high capacity image steganogra-
+phy with GANs [DB/OL]. (2019-01-30) [2024-11-12]. Http://arxiv.org/abs/1901.03892.
+[9] SinGh B, ShARMA P K, HuDDEDAR S A, et al. StegGAN: hiding image within image us-
+ing conditional generative adversarial networks [J]. Multimedia Tools and Applications, 2022,
+81(28): 40511-40533.
+[10] JinG J P, DEnG X, Xu M , et al. HiNet: deep image hiding by invertible net-
+work [C]//IEEE/CVF International Conference on Computer Vision, 2021: 4713-4722.
+[11] Dou Y Q, Li M. An image encryption algorithm based on a novel 1D chaotic map and com-
+pressive sensing [J]. Multimedia Tools and Applications, 2021, 80(16): 24437-24454.
+[12] Hosny K M, KAMAL S T, DARwish M M, et al. A color image encryption technique using
+block scrambling and chaos [J]. Multimedia Tools and Applications, 2022, 81(1): 505-525.
+[13] ALAwiDA M. A novel chaos-based permutation for image encryption [J]. Journal of King Saud
+University-Computer and Information Sciences, 2023, 35(6): 101595.
+[14] MuThu J S, MuRALi P. A new chaotic map with large chaotic band for a secured image
+cryptosystem [J]. Optik, 2021, 242: 167300.
+[15] WAnG X Y, GuAn N N, YAnG J J, et al. Image encryption algorithm with random scrambling
+based on one-dimensional logistic self-embedding chaotic map [J]. Chaos Solitons & Fractals,
+2021, 150(3): 111117.
+[16] Dinh L, KRuEGER D, BEnGio Y, et al. NICE: non-linear independent components estima-
+tion [DB/OL]. (2014-10-30) [2024-11-12]. Http://arxiv.org/abs/1410.8516.
+[17] VAn DER OuDERAA T F A, WoRRALL D E. Reversible GANs for memory-e伍cient image-
+to-image translation [C]//IEEE/CVF Conference on Computer Vision and Pattern Recognition
+(CVPR), 2019: 4720-4728.
+[18] GuAn Z Y, JinG J P, DEnG X, et al. DeepMIH: deep invertible network for multiple image
+hiding [J]. IEEE Transactions on Pattern Analysis and Machine Intelligence, 2022, 45(1): 372-
+390.
+[19] Li F Y, YAnG S, ZhAnG X P, et al. iSCMIS: spatial-channel attention based deep invert-
+ible network for multi-image steganography [J]. IEEE Transactions on Multimedia, 2024, 26(7):
+3137-3152.
+
+=== PDF_PAGE 21 ===
+848 ႋ Ⴈ ॓ ࿐ ࿐ Б ֻ43 ज
+[20] ᅦዏᢞ, ຦૎. ࠎႿ่ࡱॖ୉പࣜຩ઎؟֥ଆ෿၄࿐๭ཞವކ [J]. ࠹ෘࠏҩਈა॥ᇅ, 2025, 33(1):
+147-162.
+ZhAnG Q N, WAnG M, et al. Multi-modal medical image fusion based on conditional reversible
+neural networks [J]. Computer Measurement & Control, 2025, 33(1): 147-162. (in Chinese)
+[21] WEnG X Y, Li Y Z, Chi L, et al. High-capacity convolutional video steganography with tem-
+poral residual modeling [C]//ACM International Conference on Multimedia Retrieval (ICMR),
+2019: 87-95.
+[22] WAnG X T, Yu K, Wu S X, et al. ESRGAN: enhanced super-resolution generative adversarial
+networks [DB/OL]. (2018-09-17) [2024-11-12]. Http://arxiv.org/abs/1809.00219.
+[23] Hu R W, XiAnG S J. Reversible data hiding by using CNN prediction and adaptive em-
+bedding [J]. IEEE Transactions on Pattern Analysis and Machine Intelligence, 2022, 44(12):
+10196-10208.
+[24] TAnG Y B, TAnG Y X, XiAo J, et al. XLSor: a robust and accurate lung segmentor on chest X-
+rays using criss-cross attention and customized radiorealistic abnormalities generation [DB/OL].
+(2019-04-19) [2024-11-12]. Http://arxiv.org/abs/1904.09229v1.
+[25] SoLBAch M D, TsoTsos J K. Vision-based fallen person detection for the elderly [C]//IEEE
+International Conference on Computer Vision Workshops, 2017: 433-1442.
+[26] HossAin K F, KAMRAn S A, OnG J, et al. Revolutionizingspace health (Swin-FSR): advancing
+super-resolution of fundus images for SANS visual assessment technology [DB/OL]. (2023-08-11)
+[2024-11-12]. Http://arxiv.org/abs/2308.06332.
+[27] BALuJA S. Hiding images in plain sight: deep steganography [C]//31st Annual Conference on
+Neural Information Processing Systems (NIPS), 2017: 2069-2079.
+[28] REhMAn A U, RAhiM R, NADEEM M S, et al. End-to-end trained CNN encode-decoder net-
+works for image steganography [C]//European Conference on Computer Vision (ECCV) Work-
+shops, 2018: 723-729.
+[29] ຦ᄀ, νྍ৅, ീዏዏ, ֩.ࠎ Ⴟ၂۱گࠁᚧ༢๤֥๭ཞࡆૡෘم [J]. گᄖ༢๤აگᄖྟ॓࿐, 2024,
+21(3): 77-84.
+WAnG Y, An X L, Shi Q Q, et al. Image encryption algorithm based on a complex chaotic
+system [J]. Complex Systems and Complexity Science, 2024, 21(3): 77-84. (in Chinese)
+[30] ຦ᄀ, νྍ৅, ീዏዏ, ֩.ࠎ Ⴟ၂۱ඹົӑࠁᚧ༢๤֥๭ཞࡆૡෘم [J]. ࠹ෘࠏٟᆇ, 2024, 41(4):
+237-244, 259.
+WAnG Y, An X L, Shi Q Q, et al. Image encryption algorithm based on a four-dimensional
+hyper chaotic system [J]. Computer Simulation, 2024, 41(4): 237-244, 259. (in Chinese)
+[31] ീዏዏ, ᅦঢ়. ࠎႿ܋թ་ႄሰ֥๭ཞࡆૡෘم [J]. ފКഽٓն࿐࿐Б (ሱಖ॓࿐ϱ), 2022, 46(3):
+239-250.
+Shi Q Q, ZhAnG L. Image encryption algorithm based on coexisting attractor [J]. Journal of
+Hebei Normal University (Natural Science), 2022, 46(3): 239-250. (in Chinese)
+[32] Li S, ALvAREz G. Some basic cryptographic requirements for chaos-based cryptosystems [J].
+International Journal of Bifurcation and Chaos, 2006, 16(8): 2129-2151.
+(щࠠğᅦ ङ)

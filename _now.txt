@@ -1,0 +1,15 @@
+﻿==== raw
+5.8G	/data/heluofan/picai/workdir
+996
+
+==== gpu
+0, 28893 MiB
+1, 0 MiB
+2, 0 MiB
+3, 0 MiB
+4, 14699 MiB
+5, 0 MiB
+6, 0 MiB
+7, 0 MiB
+
+===

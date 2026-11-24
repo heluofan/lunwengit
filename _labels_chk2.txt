@@ -1,0 +1,40 @@
+$ tail -2 /data/heluofan/picai/dl_v2.log
+[   30s]   0.63/25.02 GB   2.5%  inst=1.60 avg=21.64 MB/s ETA=19 min
+[   45s]   0.65/25.02 GB   2.6%  inst=0.93 avg=14.74 MB/s ETA=28 min
+
+$ ls /data/heluofan/picai/repos/picai_labels/picai_labels-main
+additional_resources
+anatomical_delineations
+clinical_information
+csPCa_lesion_delineations
+LICENSE
+README.md
+
+$ ls /data/heluofan/picai/repos/picai_labels/picai_labels-main/csPCa_lesion_delineations
+AI
+human_expert
+
+$ for d in original resampled Pooch25; do echo -n "$d="; ls /data/heluofan/picai/repos/picai_labels/picai_labels-main/csPCa_lesion_delineations/human_expert/$d/*.nii.gz 2>/dev/null | wc -l; done
+original=1295
+resampled=1295
+Pooch25=205
+
+$ ls /data/heluofan/picai/repos/picai_labels/picai_labels-main/csPCa_lesion_delineations/human_expert/Pooch25 | head -3
+10008_1000008.nii.gz
+10013_1000013.nii.gz
+10029_1000029.nii.gz
+
+$ du -sh /data/heluofan/picai/repos/picai_labels/picai_labels-main/*
+24K	/data/heluofan/picai/repos/picai_labels/picai_labels-main/additional_resources
+87M	/data/heluofan/picai/repos/picai_labels/picai_labels-main/anatomical_delineations
+100K	/data/heluofan/picai/repos/picai_labels/picai_labels-main/clinical_information
+52M	/data/heluofan/picai/repos/picai_labels/picai_labels-main/csPCa_lesion_delineations
+20K	/data/heluofan/picai/repos/picai_labels/picai_labels-main/LICENSE
+20K	/data/heluofan/picai/repos/picai_labels/picai_labels-main/README.md
+
+$ ls /data/heluofan/picai/repos/picai_labels/picai_labels-main/anatomical_delineations 2>/dev/null | head
+whole_gland
+zonal_pz_tz
+
+$ ls /data/heluofan/picai/repos/picai_labels/picai_labels-main/clinical_information 2>/dev/null
+marksheet.csv

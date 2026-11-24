@@ -1,0 +1,655 @@
+=== PDF_PAGE 1 ===
+ 
+ 
+·论　著·
+基于医学分割大模型与融合影像组学的
+多模态磁共振成像肝脏病变分类
+刘云鹏1，文成当智2，朱家陆1，王艺澎1，牛俊民1，干开丰3
+1. 宁波工程学院 信息与计算科学专业（浙江宁波  315000）
+2. 青海民族大学 药学院（西宁  810000）
+3. 宁波大学附属李惠利医院（浙江宁波  315000）
+【摘要】  为提高多模态磁共振成像（MRI）肝脏病变的分割与分类性能，提出一种融合医学分割大模型与影
+像组学的分割与分类框架。首先将MedSAM2与VISTA3D互补微调，利用空间门控融合生成病灶掩膜；随后结
+合M3D自动提取的深层语义特征与手工影像组学特征，通过同模态对齐、跨模态交互和稀疏选择获得融合表
+征，并配合阴性采样，采用极端梯度提升算法（XGBoost）完成病变分类。在LLD-MMRI2023公开数据的验证集
+上，分割戴斯系数为0.90；分类F1值和Kappa系数分别为0.837和0.792，较公开最好结果相对提高8.27%和
+7.57%。消融实验表明，双模型联合微调、空间先验约束及多模态特征融合有助于提高性能。该方法实现了分割
+大模型、深层语义与影像组学的协同建模，为多模态MRI肝脏病变分割与分类提供了技术方案。
+【关键词】  医学分割大模型；磁共振成像；影像组学；多模态融合；肝脏病变分类
+Liver lesion classification in multi-modal magnetic resonance imaging via medical
+foundation segmentation models and radiomics integration
+LIU Yunpeng 1,  WENCHENG Dangzhi 2,  ZHU Jialu 1,  WANG Yipeng 1,  NIU Junmin 1,  GAN Kaifeng 3
+1. Information and Computing Science, Ningbo University of Technology, Ningbo, Zhejiang 315000, P. R. China
+2. School of Pharmacy, Qinghai Minzu University, Xining 810000, P. R. China
+3. Li Huili Hospital Affiliated to Ningbo University, Ningbo, Zhejiang 315000, P. R. China
+Corresponding author: WENCHENG Dangzhi, Email: 503534641@qq.com
+【Abstract】 This study proposes a framework integrating medical foundation segmentation models and radiomics
+for liver lesion segmentation and classification in multi-modal magnetic resonance imaging (MRI). MedSAM2 and
+VISTA3D are complementarily fine-tuned and combined through spatial gated fusion to generate lesion masks. Deep
+semantic features extracted by M3D are integrated with handcrafted radiomics features through within-modality
+alignment, cross-modal interaction, and sparse selection. Negative sampling and an extreme gradient boosting (XGBoost)
+classifier are then used for lesion classification. On the validation set of the public LLD-MMRI2023 dataset, the framework
+achieved a Dice coefficient of 0.90, an F1 score of 0.837, and a Cohen’s Kappa of 0.792. The latter two metrics represented
+relative improvements of 8.27% and 7.57% over the best known public results. Ablation experiments demonstrated the
+contributions of joint fine-tuning, spatial priors, and multi-modal feature fusion. The proposed framework combines
+foundation segmentation models, deep semantic features, and radiomics to support liver lesion segmentation and
+classification in multi-modal MRI.
+【Key words】 Medical foundation segmentation models; Magnetic resonance imaging; Radiomics; Multi-modal
+fusion; Liver lesion classification
+ 0    引言
+多模态磁共振成像（magnetic resonance ima-
+ging，MRI）能够从血流动力学和组织信号等方面
+揭示肝脏病灶差异，为病变识别提供互补信息。然
+而，病灶形态多样、信噪比低及跨期图像对齐困 
+ 
+ 
+DOI：10.7507/1001-5515.202505005
+基金项目：国家自然科学基金（82460845）；宁波市公益类科技计划项目（2021S105）；宁波市自然科学基金（2023J182）；
+宁波市科技项目（2023Z228，2023Z213，2024Z126，2024Z202，2024Z119）
+通信作者：文成当智，Email：503534641@qq.com
+• 1018 • Journal of Biomedical Engineering, Oct. 2026, Vol. 43, No.5
+   http://www.biomedeng.cn
+
+=== PDF_PAGE 2 ===
+难，增加了自动分割与分类难度。深度学习已广泛
+用于肝脏及肿瘤分割、分类一体化建模和影像特征
+提取[1-4]，但现有研究多以单一模态或单一任务为
+中心，对不同MRI序列的互补价值、分割误差向下
+游分类的传递以及小样本类别不平衡问题考虑不
+足。因此，如何在保持分割精度的同时利用多模态
+信息，并通过可靠掩膜增强病灶表征，是本研究关
+注的问题。
+医学分割大模型为病灶区域定位提供了新思
+路。MedSAM及其后续研究通过提示式分割与预
+训练迁移，提高了模型在不同器官和病灶中的泛化
+能力[5-7]；三维模型则进一步加强对体数据结构的
+表达[8]。这些方法可减少对大规模逐像素标注数据
+的依赖，但分割掩膜仍需与疾病分类目标及影像特
+征结合，才能用于不同肝脏病变亚型的细粒度识
+别。影像组学通过形态、灰度、边界和纹理等可量
+化指标描述病灶表型[9-10]，其特征稳定性与感兴趣
+区域（region of interest，ROI）勾画质量密切相关，
+因而分割质量和分类建模需要协同考虑。
+M3D等多模态医学大模型可自动学习三维影
+像的高维语义特征[11]，与手工影像组学提供的显式
+表型信息形成互补。相关研究采用支持向量机、随
+机森林与集成学习开展肝细胞癌病理分级、组织区
+分及可解释预测[12-15]，说明高维影像组学适合与机
+器学习分类器结合。SDR-Former等方法通过双分
+辨率和多期影像改善病灶分类表现[16]，但对体素级
+掩膜如何减少背景干扰、稳定特征提取并支持跨序
+列融合的分析仍有拓展空间。
+基于上述问题，本文以LLD-MMRI2023公开
+数据[17]为研究对象，构建医学分割大模型与融合
+影像组学相结合的多模态MRI肝脏病变分析框
+架。研究思路是先通过MedSAM2与VISTA3D互
+补微调获得病灶空间约束，再融合手工影像组学
+与M3D深层语义特征，采用极端梯度提升算法
+（extreme gradient boosting，XGBoost）完成病变分
+类。研究目的为考察双模型空间融合、联合微调及
+跨模态特征交互对分割与分类性能的贡献，为多模
+态MRI肝脏病变辅助诊断提供方法依据。
+ 1    模型与方法
+ 1.1    系统概述
+系统首先整合MedSAM2与VISTA3D的互补
+优势，构建融合分割模型，并通过级联方式完成肝
+脏与病变区域分割。7种病变区域作为阳性样本，
+通过阴性采样获取阴性样本；随后结合M3D自动
+提取与手工提取获取影像组学特征，经特征对齐、
+交互与选择后，使用XGBoost进行训练、调优和病
+变分类。整体框架如图1所示。
+该框架围绕同一病灶在不同MRI序列中的信
+号差异进行设计。分割阶段利用双模型联合微调
+获得跨序列一致的病灶ROI，减少强化机制、弥散
+或T2信号差异导致的关注区域漂移；特征阶段对
+各序列分别执行掩膜感知裁剪、归一化与M3D轻
+量化适配，保留序列特异性；融合阶段通过同模态
+特征对齐与跨模态Transformer学习互补关系，将
+病灶空间一致性、模态特异性表征和序列间交互贯
+穿于建模过程。
+ 1.2    医学分割大模型的技术互补
+本文将双模型融合前移到特征学习与任务微
+调阶段，通过共享掩膜监督、可学习空间门控和联
+合解冻微调，使两个分支在同一分割目标下协同优
+化。分割框架如图2所示。
+ 1.2.1    融合框架描述　MedSAM2与VISTA3D并
+行处理输入影像。MedSAM2分支学习全局上下文
+与跨切片连续性，捕捉复杂病灶的整体结构；
+VISTA3D分支通过三维结构编码提取局部几何与
+边界细节，侧重小病灶和模糊边界的精细分割。两
+路特征经过融合模块统一生成病灶掩膜。
+两路特征经1 × 1 × 1卷积完成通道对齐，再输
+入空间门控模块，生成位置相关权重α(x)与β(x)，
+满足α(x) + β(x) = 1。融合特征定义为：
+FFFfusion(xxx) = α(xxx)  FFFMedSAM(xxx) + β(xxx)  FFFVISTA(xxx) (1)
+ 
+式中，FMedSAM与FVISTA分别为两个分支对齐
+后的特征，x为空间位置。α(x)与β(x)通过反向传
+播学习，自适应调节不同位置的分支贡献。融合特
+征与两个分支的浅层边界特征级联，由融合解码器
+输出最终掩膜。该机制在病灶主体区域利用全局
+先验，在边界过渡区域加强局部几何细节，使权重
+随病灶形态和模态信号变化而调整。
+ 1.2.2    互补微调策略　互补微调分为3个阶段。第
+一阶段为独立域适配：MedSAM2使用多期
+MRI切片序列与病灶掩膜，更新高层语义编码块及
+掩膜解码器，以学习全局位置、候选区域和跨层连
+续性；VISTA3D使用三维子块，更新中高层编码
+块与边界相关解码层，以强化局部结构、小病灶和
+模糊边界。两个分支分别以戴斯系数（Dice coe-
+fficient，DC）损失、加权交叉熵和边界损失优化，避
+免联合训练初期由单一分支主导。
+第二阶段为融合层热启动：冻结两个主干网
+生物医学工程学杂志  2026年10月第43卷第5期 • 1019 •
+http://www.biomedeng.cn 
+
+=== PDF_PAGE 3 ===
+络，仅训练通道对齐层、空间门控层和融合解码
+器，使融合模块学习不同特征尺度的匹配关系以及
+各空间位置的贡献分配，为后续联合优化提供稳定
+初始化。
+第三阶段为联合解冻微调：逐步解冻MedSAM2
+高层语义编码块、VISTA3D高层三维编码块及融
+合解码器，以较小学习率进行端到端优化。两个分
+支围绕同一肝脏病变分割目标重新分工：MedSAM2
+提供病灶候选区域和全局上下文，VISTA3D提供
+三维局部精修和边界校正，融合模块学习二者的空
+间可信度分布，使全局定位、局部边界与融合决策
+相互约束。总损失定义为：
+Ltotal = λ1LMedSAM + λ2LVISTA + λ3Lfusion +
+λ4Lboundary + λ5Lconsistency
+(2)
+ 
+式中，LMedSAM与LVISTA为分支监督损失，
+Lfusion为融合输出的分割损失，Lboundary约束病灶边
+界连续性，Lconsistency约束高置信区域中融合输出与
+分支输出的一致性；λ1至λ5用于平衡各项贡献。
+加权交叉熵通过正负类权重缓解类别不平衡，具体
+损失定义与分阶段训练过程参见附件1。
+ 1.3    影像组学特征提取与融合
+ 1.3.1    基于单序列MRI的M3D微调　利用分割模
+型生成目标序列的病灶二值掩膜，在掩膜外保留
+5像素边距，裁剪并重采样至96 × 96 × 96体素。经
+刚性配准与Nyúl直方图匹配后进行z-score归一
+ 
+MedSAM2
+VISTA3D
+互补分割模型
+MedSAM2
+VISTA3D
+互补分割模型
+像素属于肝脏
+的概率图
+像素属于肝脏
+病变的概率图
+M3D多模态大
+模型自动学习
+影像组学特征
+特征融合
+特征选择肝血管瘤 肝脓肿 肝囊肿局灶性结节性增生 肝转移
+肝内胆管癌 肝细胞癌
+正常 8种预测结果 XGBoost
+分类模型
+固定算法手工
+提取影像组学
+特征
+ 
+ 
+图 1　基于医学分割大模型与融合影像组学的多模态MRI肝脏病变分割与分类整体框架
+Fig.1　Overall framework for multi-modal MRI liver lesion segmentation and classification based on medical foundation segmentation
+models and integrated radiomics
+ 
+并行子网络 特征融合层
+MedSAM2 VISTA3D 通道对齐
+1×1×1 Conv 融合特征Ffusion（x）
+3D MRI 输入
+（H×W×D×C）
+3D Conv Block
+（k=3×3×3）
+3D Conv Block
+（k=1×1×1） 空间门控 浅层边界特征级联
+3D Conv Block
+（k=3×3×3）
+3D Conv Block
+（k=3×3×3）预处理：
+尺寸统一/归一化 融合解码器
+全局上下文模块 局部特征增强模块
+融合输出
+病灶掩膜概率图边界精修 最终掩膜
+实线箭头：主流程
+虚线箭头：损失监督 最终优化目标 Ltotal 二值分割掩码
+（H×W×D×1）
+ 
+ 
+图 2　MedSAM2与VISTA3D互补微调及空间门控融合的医学大模型分割框架
+Fig.2　Medical foundation model segmentation framework with complementary fine-tuning and spatial gated fusion of MedSAM2 and
+VISTA3D
+• 1020 • Journal of Biomedical Engineering, Oct. 2026, Vol. 43, No.5
+   http://www.biomedeng.cn
+
+=== PDF_PAGE 4 ===
+化，以统一输入尺度并保持跨病例强度一致。数据
+增强包括三维弹性形变、伽马噪声和掩膜感知混
+合，在病灶结构约束下增加样本扰动。
+M3D采用轻量化微调：冻结Swin-Transformer
+编码器前70%的权重，仅在最后两层插入秩为8的
+低秩适配（low-rank adaptation，LoRA），兼顾迁移
+效率与新域适配。在共享编码器后并行设置分割
+损失和交叉熵损失，先独立优化以稳定边界学习，
+再进行联合优化。各MRI序列分别执行该流程，
+保留模态特异性。
+分割损失与交叉熵损失分别约束空间定位和
+类别判别。分割监督使编码器关注病灶体素及其
+边界，减少背景肝实质、血管和运动伪影的干扰；
+交叉熵监督使特征表达病变类别差异。分割掩膜
+提供的位置、形状和边界信息构成空间先验，使模
+型在池化和分类时优先编码ROI内及邻域的有效
+信号。先独立优化分割分支可稳定边界学习，后期
+联合优化则将空间定位与类别语义统一到同一特
+征空间中。
+冻结编码器前70%的权重，是为了保留边缘、
+纹理和局部梯度等可迁移的低层表征，降低小样本
+任务中完全更新带来的遗忘与过拟合风险。最后
+两层更接近任务语义空间，承担病灶类型、序列特
+异性信号和局部解剖上下文的判别表达，因此在后
+层插入LoRA，以较少可训练参数完成新域适配。
+秩为8的设置兼顾显存消耗、参数效率与表达能
+力，相较全量微调可减少梯度存储和训练开销，同
+时保留序列特异性调整能力。
+ 1.3.2    影像组学特征自动提取　从微调后的
+M3D提取四层特征金字塔，在每层执行掩膜加权
+平均池化，仅聚合ROI内的深层语义，减少非病灶
+背景干扰。第l层池化向量计算如下：
+FFFl =
+∑
+i;j;kMMMijkFFFl(i; j; k)∑
+i;j;kMMMijk
+(3)
+ 
+式中，i、j、k为空间体素索引，Mijk为病灶二值
+掩膜，Fl(i,j,k)为对应位置的深层特征；分母表示
+ROI有效体素数，计算中可加入极小常数ε以避免
+分母为0。将四层池化向量按通道级联并进行z-
+score标准化，得到每个序列的1 024维深层影像组
+学特征。多尺度池化兼顾浅层局部纹理和深层语
+义表达，使每个MRI序列形成固定维度的病灶表
+征，供后续融合使用。
+ 1.3.3    多模态MRI影像组学特征融合　对每个
+MRI序列分别提取手工影像组学特征xm,h和
+M3D深层特征xm,d，其中m = 1，···，8。手工特征描
+述病灶形态、灰度、边界和纹理，深层特征提供高
+维语义表征。两类特征经z-score归一化后，输入
+双支路深度典型相关自编码器（deep canonically
+correlated autoencoder，DCCAE），由编码器fh与
+fd分别压缩至32维。融合流程如图3所示。
+DCCAE以相关性和重构误差共同约束两类表
+征。相关性项促进同一模态中手工特征与深层特
+征在嵌入空间对齐，重构项保留各自的有效信息，
+优化目标见式(4)。
+LDCCAE = –corr(fh(xxxm,h); fd(xxxm,d)) +
+λ(∥xxxm,h–gh ◦ fh(xxxm,h)∥22 +
+∥xxxm,d–gd ◦ fd(xxxm,d)∥22)
+(4)
+ 
+ 
+八个MRI序列：NC/AP/PVP/DP/DWI/HBP/OP/T2
+掩膜感知 ROI 裁剪与标准化
+跨模态共享病灶空间
+手工影像组学特征
+形状/统计/纹理/小波等
+DCCAE
+特征对齐
+M3D 深层语义特征
+LoRA 微调的模态特异性特征
+跨模态 Transformer
+模态类型嵌入+位置编码+[CLS]
+RBF 随机特征映射+组套索
+最终稀疏融合特征向量→XGBoost
+ 
+ 
+图 3　融合手工影像组学特征与M3D深层语义特征的多模态MRI特征对齐、交互与稀疏选择流程
+Fig.3　Multi-modal MRI feature alignment, interaction, and sparse selection process integrating handcrafted radiomics features and M3D
+deep semantic features
+生物医学工程学杂志  2026年10月第43卷第5期 • 1021 •
+http://www.biomedeng.cn 
+
+=== PDF_PAGE 5 ===
+其中，fh与fd为两路编码器，gh与gd为对应解
+码器，λ平衡相关性与重构约束。相关性最大化使
+不同来源的表征围绕同一病灶语义进行匹配，重构
+约束避免压缩过程丢失各自包含的信息。两路嵌
+入的均值作为模态级向量zm。
+将8个模态向量与可学习聚合标记[CLS]组成
+序列，加入模态类型嵌入和固定位置编码后，输入
+6层多头自注意力Transformer。取[CLS]输出为跨
+模态语义向量zattn，使不同MRI序列之间的一阶与
+高阶交互汇集为统一表征。模态类型嵌入区分不
+同序列的信号来源，位置编码保持输入序列结构，
+自注意力据此学习不同病例中各模态的贡献。
+Transformer通过自注意力学习动态强化、弥
+散受限、T2信号及延迟强化等互补信息，并根据病
+例特征调整模态贡献。随后使用随机傅里叶特征
+近似径向基函数（radial basis function，RBF）核映
+射，默认映射维度为256，将映射结果与zattn拼接，
+经组套索稀疏选择得到zfusion。该流程依次完成特
+征分布对齐、序列交互、非线性增强及冗余抑制，
+具体增强及融合计算过程参见附件2。
+ 2    实验与讨论
+ 2.1    实验环境
+实验采用GeForce RTX 4090图形处理器（24 GB
+显存）、Intel Xeon Gold 6248中央处理器、256 GB
+内存及4 TB固态硬盘，操作系统为Ubuntu 22.04
+LTS，使用PyTorch 2.1.0和MONAI 1.3.0。预训练
+模型加载、轻量化微调和影像增强分别结合
+Transformers、LoRA及TorchIO实现，具体软硬件
+配置与训练实施细节参见附件3。
+ 2.2    数据集
+LLD-MMRI2023数据集[17]包含7种肝脏病
+变，其中良性类型为肝血管瘤、肝脓肿、肝囊肿和
+局灶性结节性增生，恶性类型为肝内胆管癌、肝转
+移瘤和肝细胞癌。每个病变包含8个MRI扫描相
+位：平扫期、动脉期、门静脉期、延迟期、扩散加权
+成像、平衡期、相位抵消期和T2加权成像。各相
+位图像已对齐，以保持病变位置一致。实验采用训
+练集316例、验证集78例。
+ 2.3    分割实验
+分割标注来自公开的LLD-MMRI-MedSAM2
+数据集[18-19]。该数据集通过MedSAM2人机协同流
+程生成体素级掩膜，并由放射科专家审核。训练
+时，每轮随机抽取280例，每例裁取4个160 ×
+160 × 80体素子块，重叠25%；采用z-score归一化
+和随机翻转。AdamW初始学习率为1 × 10−4，权重
+衰减为1 × 10−5，批量大小为每个图形处理器一个
+子块；以余弦退火调整学习率，最多训练200轮，
+验证DC损失连续15轮未下降时早停，并保存最
+优权重。
+采用敏感度、阳性预测值（positive predictive
+value，PPV）和DC评价分割性能，分别反映病灶检
+出、预测阳性准确性和区域重叠程度。本文方法
+与MedSAM2、VISTA3D、Swin UNETR[20]、nnU-
+Net[21]及SegResNet[22]的验证集平均结果见表1。
+表1显示，本文方法在敏感度、PPV和DC上
+均取得最高结果，说明病灶检出、预测精度和区域
+重叠达到较好平衡。传统卷积及层次化Transfor-
+mer模型能够提取局部纹理与上下文，但弱对比、
+小体积病灶及模糊边界仍影响分割。VISTA3D的
+三维结构感知有助于边界定位，MedSAM2的全局
+建模进一步提高定位稳定性；双模型融合将全局
+感知与边界细化结合，在保持较高敏感度的同时维
+持PPV，减少漏检和误分割对后续ROI提取的
+影响。
+选取恶性肝细胞癌和良性肝血管瘤，对比专家
+标注（ground truth，GT）、本文方法及两个单模型
+的局部分割。图4展示动脉期、门静脉期、延迟期
+与扩散加权序列的代表性结果；M为MedSAM2，
+V为VISTA3D。图像仅显示病灶邻域，以便观察轮
+廓差异。
+图4显示，本文方法在多数序列中保持较完整
+的病灶结构与边界，在延迟期和扩散加权期等边缘
+模糊区域能够较好地保留轮廓并抑制伪影干扰。
+MedSAM2的整体结构较稳定，VISTA3D对高对比
+区域具有较好的局部刻画能力，但在弱对比区域可
+能出现轮廓缺失或分割不连续。融合策略结合全
+局感知与局部几何细节，抑制模态间灰度漂移带来
+的不确定性，使小体积病灶和模糊边界得到较稳定
+的识别。具体八序列完整分割结果参见附件4。
+ 2.4    分类实验
+所有特征工程和分类模型调参均在训练集内
+部完成，验证集用于最终分类性能评估。针对7种
+病灶与阴性样本构成的八类任务，采用XGBoost进
+行建模，结合贝叶斯超参数优化、分层分组五折交
+叉验证与多类焦点损失优化分类器。调参与训练
+由Optuna和Ray Tune自动实现，选定配置后在全
+量训练集上复训，并报告验证集结果。
+XGBoost适合处理融合后的中高维结构化特
+征，其选择主要基于样本规模与特征结构。手工纹
+• 1022 • Journal of Biomedical Engineering, Oct. 2026, Vol. 43, No.5
+   http://www.biomedeng.cn
+
+=== PDF_PAGE 6 ===
+理、形态特征和大模型语义特征共同构成输入，树
+模型通过分裂机制捕获不同模态、不同特征组之间
+的非线性组合关系，不要求特征满足线性可分或独
+立同分布假设。内置正则化、列采样与样本采样能
+够限制模型复杂度，缓解特征拼接后的冗余与过拟
+合。基于增益、覆盖度及夏普利加性解释（Shapley
+additive explanations，SHAP）等解释方法，还可追
+踪关键模态和影像组学特征。训练中根据类别分
+布设置样本权重，配合多类焦点损失，加强对少数
+类及难分类样本的关注。
+分类结果见表2。本文F1值和Kappa系数分
+别为0.837和0.792，较公开验证榜单[23]最优方法
+wang-techman分别相对提高8.27%和7.57%。
+F1值的提高反映精确率与召回率的综合改善，
+Kappa系数的提高表明预测与真实类别的一致性增
+强。两项指标的同步改善说明，掩膜约束下的手工
+与深层特征互补，有助于增强小样本多模态病变分
+类的判别能力。
+ 
+肝细胞癌（HCC） 肝血管瘤（ HH）
+动脉期 门静脉期 延迟期 扩散加权 动脉期 门静脉期 延迟期 扩散加权
+GT
+本文
+M
+V
+ 
+ 
+图 4　肝细胞癌与肝血管瘤代表性MRI序列的局部分割对比
+Fig.4　Local segmentation comparison of representative MRI sequences for hepatocellular carcinoma (HCC) and hepatic hemangioma
+(HH)
+ 
+表 1　分割性能比较
+Tab.1　Comparison of segmentation performance 
+方法 敏感度↑ PPV↑ DC↑
+本文 0.90 0.89 0.90
+MedSAM2[6] 0.88 0.87 0.88
+VISTA3D[8] 0.86 0.84 0.85
+Swin UNETR[20] 0.84 0.83 0.83
+nnU-Net[21] 0.82 0.81 0.80
+SegResNet[22] 0.82 0.79 0.81
+注：加粗数字表示最优结果；↑表示该指标越大越好
+ 
+表 2　分类性能比较
+Tab.2　Comparison of classification performance 
+方法 F1值↑ Kappa系数↑
+本文 0.837 0.792
+wang-techman 0.773 0.736
+NPUBXY 0.762 0.716
+jingxinqiushi 0.760 0.717
+SH AI lab 0.731 0.714
+WorkingisAllyouneed 0.729 0.699
+注：加粗数字表示最优结果；↑表示该指标越大越好
+生物医学工程学杂志  2026年10月第43卷第5期 • 1023 •
+http://www.biomedeng.cn 
+
+=== PDF_PAGE 7 ===
+ 2.5    消融实验与分析
+消融实验保持训练集和验证集划分、预处理流
+程、训练轮次及主要超参数一致，仅替换或移除待
+考察模块。从分割和多模态影像组学融合两个层
+面，分别分析双模型互补微调、空间先验以及特征
+对齐和序列交互对性能的贡献。
+分割消融依次比较单模型、简单加权或拼接、
+可学习门控、联合微调及加入空间先验的设置。结
+果显示，单模型的DC均为0.84，难以同时兼顾全
+局定位与局部细节；简单加权或拼接后升至0.86，
+说明简单融合能够利用两路信息的互补性，但缺乏
+对不同空间区域和病灶形态的自适应判断。引入
+门控后敏感度进一步提高，但DC未继续增加，说
+明空间贡献分配有助于增强检出能力，但仍不足以
+协调两路模型在特征表达和边界响应上的差异。
+双模型联合微调后DC增至0.88，表明统一训
+练目标能够加强全局语义定位与三维局部结构表
+达的协同，缓解分支之间的特征不一致。进一步加
+入空间先验后DC达到0.90，病灶位置与边界约束
+使模型减少对背景肝实质、血管及伪影的关注，提
+升了病灶主体和边界过渡区域的恢复质量。两项
+设置的连续改善，说明联合优化和空间约束在分割
+过程中具有互补作用。分割与微调模块消融的完
+整结果参见附件5。
+多模态特征融合消融实验比较了手工影像组
+学、M3D深层特征、两者直接拼接、DCCAE对齐、
+去除跨模态Transformer及完整模型，结果见
+表3。单独使用M3D特征优于单独使用手工特
+征，说明高维语义能够补充传统特征的表达；直接
+拼接可进一步改善性能，体现两类表征的互补性，
+但尚未解决量纲、分布和语义层级差异。
+在直接拼接基础上引入DCCAE，F1值和
+Kappa系数分别提高0.018和0.020。相关性约束促
+进两类特征对齐，重构约束保留有效信息，从而减
+小特征空间不一致带来的干扰。保留DCCAE、
+RBF映射与组套索而去除Transformer时，性能继
+续改善，说明非线性表达和稀疏选择有助于抑制冗
+余，但序列间互补关系尚未得到充分利用。
+完整模型相较去除跨模态Transformer的设
+置，F1值与Kappa系数均提高0.019，说明显式序
+列交互具有实际贡献。与直接拼接相比，完整方法
+通过同模态特征对齐、跨模态交互和非线性稀疏选
+择逐级增强表征，而不是仅增加特征维度。该结果
+与不同MRI序列反映强化模式、弥散信号及组织
+对比的互补特点一致。
+两组消融共同表明，分割阶段的增益来自联合
+微调与空间先验约束下的全局—局部互补，分类阶
+段的增益来自手工和深层特征对齐、序列交互及稀
+疏选择。各环节将可靠定位与多模态判别连接起
+来，可使分割掩膜对下游特征提取和分类发挥约束
+作用。
+ 3    结论与展望
+本文提出融合医学分割大模型与影像组学的
+多模态MRI肝脏病变分析框架，通过MedSAM2和
+VISTA3D的空间门控与互补微调生成病灶掩膜，
+结合M3D深层语义、手工影像组学以及跨模态特
+征融合完成分类。LLD-MMRI2023验证集结果和
+消融实验表明，联合微调、空间先验与分层融合能
+够协同改善分割及分类性能。该研究为多模态小
+样本场景中的病灶识别提供了技术路径，并探索了
+医学大模型在影像结构化表达中的应用潜力。
+未来将探索适应复杂病灶类型与病理演化的动
+态融合策略，构建基于联邦学习或隐私保护机制的
+多机构协同训练框架，并将系统嵌入医师工作流开
+展人机协同，推动多模态医学影像分析的临床应用。
+ 重要声明
+ 利益冲突声明：本文全体作者均声明不存在利益冲突。
+ 作者贡献声明：刘云鹏负责系统整体设计、核心算法
+实现与论文撰写，文成当智负责相关辅助算法实现，干开
+丰负责医学指导，朱家陆、王艺澎负责数据整理与测试，
+ 
+表 3　多模态影像组学融合与分类模块消融实验
+Tab.3　Ablation study of multimodal radiomics fusion and classification modules 
+实验设置 手工影像组学 M3D深层特征 DCCAE 跨模态Transformer RBF+组套索 F1值↑ Kappa系数↑
+仅手工影像组学 √ — — — — 0.746 0.681
+仅M3D深层特征 — √ — — — 0.768 0.712
+手工+M3D直接拼接 √ √ — — — 0.789 0.741
+手工+M3D+DCCAE √ √ √ — — 0.807 0.761
+去除跨模态Transformer √ √ √ — √ 0.818 0.773
+完整融合模型 √ √ √ √ √ 0.837 0.792
+注：加粗数字表示最优结果；↑表示该指标越大越好
+• 1024 • Journal of Biomedical Engineering, Oct. 2026, Vol. 43, No.5
+   http://www.biomedeng.cn
+
+=== PDF_PAGE 8 ===
+牛俊民负责数据与文档整理。
+本文附件见本刊网站的电子版本（biomedeng.cn）。
+参考文献 
+ Gul S, Khan M S, Bibi A, et al. Deep learning techniques for
+liver and liver tumor segmentation: a review[J]. Comput Biol
+Med, 2022, 147: 105620.
+[1]
+ Saha Roy S, Roy S, Mukherjee P, et al. An automated liver
+tumour segmentation and classification model by deep learning
+based approaches[J]. Comput Methods Biomech Biomed Eng
+Imaging Vis, 2023, 11(3): 638-650.
+[2]
+ Saumiya S, Franklin S W. Unified automated deep learning
+framework  for  segmentation  and  classification  of  liver
+tumors[J]. J Supercomput, 2024, 80(2): 2347-2380.
+[3]
+ Malik M H, Ghous H, Rashid T, et al. Feature extraction-based
+liver tumor classification using machine learning and deep
+learning methods of computed tomography images[J]. Cogent
+Eng, 2024, 11(1): 2338994.
+[4]
+ Ma J, He Y, Li F, et al. Segment anything in medical images[J].
+Nat Commun, 2024, 15(1): 654.
+[5]
+ Zhu J, Hamdi A, Qi Y, et al. Medical SAM 2: segment medical
+images as video via segment anything model 2[PP/OL]. arXiv
+(2024-12-04) [2025-03-05]. https://doi.org/10.48550/arXiv.
+2408.00874.
+[6]
+ Ma J, Li F, Kim S, et al. Efficient MedSAMs: segment anything
+in medical images on laptop[PP/OL]. arXiv (2024-12-20) [2025-
+03-05]. https://doi.org/10.48550/arXiv.2412.16085.
+[7]
+ Zhu Z, Ma X, Chen Y, et al. 3D-VISTA: pre-trained transformer
+for  3D  vision  and  text  alignment[C]//2023  IEEE/CVF
+International Conference on Computer Vision (ICCV). Paris:
+IEEE, 2023: 2911-2921.
+[8]
+ Zossou V B S, Gnangnon F H R, Biaou O, et al. Radiomics-
+based classification of tumor and healthy liver on computed
+tomography images[J]. Cancers, 2024, 16(6): 1158.
+[9]
+ Xie X Y, Chen R. Research progress of MRI-based radiomics in
+hepatocellular carcinoma[J]. Front Oncol, 2025, 15: 1420599.
+[10]
+ Bai F, Du Y, Huang T, et al. M3D: advancing 3D medical image
+analysis with multi-modal large language models[PP/OL]. arXiv
+(2024-03-31) [2025-03-05]. https://doi.org/10.48550/arXiv.
+2404.00578.
+[11]
+ Mao B, Zhang L, Ning P, et al. Preoperative prediction for[12]
+pathological grade of hepatocellular carcinoma via machine
+learning-based radiomics[J]. Eur Radiol, 2020, 30(12): 6924-
+6932.
+ Wu C, Du X, Zhang Y, et al. Five machine learning-based
+radiomics models for preoperative prediction of histological
+grade in hepatocellular carcinoma[J]. J Cancer Res Clin Oncol,
+2023, 149(16): 15103-15112.
+[13]
+ Zhang H W, Huang D L, Wang Y R, et al. CT radiomics based
+on different machine learning models for classifying gross
+tumor  volume  and  normal  liver  tissue  in  hepatocellular
+carcinoma[J]. Cancer Imaging, 2024, 24(1): 20.
+[14]
+ Li J, Zou L, Ma H, et al. Interpretable machine learning based on
+CT-derived extracellular volume fraction to predict pathological
+grading of hepatocellular carcinoma[J]. Abdom Radiol, 2024,
+49(10): 3383-3396.
+[15]
+ Lou M, Ying H, Liu X, et al. SDR-Former: a siamese dual-
+resolution transformer for liver lesion classification using 3D
+multi-phase imaging[J]. Neural Netw, 2025, 185: 107228.
+[16]
+ LMMMEng. LLD-MMRI2023[EB/OL]. (2023) [2025-03-05].
+https://github.com/LMMMEng/LLD-MMRI2023.
+[17]
+ Bowang-lab.  MedSAM2[EB/OL].  (2025)  [2025-03-05].
+https://github.com/bowang-lab/MedSAM2.
+[18]
+ Wang Lab. LLD-MMRI-MedSAM2[EB/OL]. (2025) [2025-03-
+05].  https://huggingface.co/datasets/wanglab/LLD-MMRI-
+MedSAM2.
+[19]
+ Hatamizadeh A, Nath V, Tang Y, et al. Swin UNETR: Swin
+transformers for semantic segmentation of brain tumors in MRI
+images[C]//Brainlesion: Glioma, Multiple Sclerosis, Stroke and
+Traumatic Brain Injuries. Cham: Springer, 2022: 272-284.
+[20]
+ Isensee F, Jaeger P F, Kohl S A A, et al. nnU-Net: a self-
+configuring method for deep learning-based biomedical image
+segmentation[J]. Nat Methods, 2021, 18(2): 203-211.
+[21]
+ Myronenko  A.  3D  MRI  brain  tumor  segmentation  using
+autoencoder regularization[C]//Brainlesion: Glioma, Multiple
+Sclerosis, Stroke and Traumatic Brain Injuries. Cham: Springer,
+2019: 311-320.
+[22]
+ LMMMEng. LLD-MMRI2023 validation leaderboard[EB/OL].
+(2023) [2025-03-05]. https://github.com/LMMMEng/LLD-
+MMRI2023/blob/main/assets/validation_leaderboard.md.
+[23]
+收稿日期：2025-05-06    修回日期：2026-09-27
+ 本文编辑：李蓓兰
+生物医学工程学杂志  2026年10月第43卷第5期 • 1025 •
+http://www.biomedeng.cn 

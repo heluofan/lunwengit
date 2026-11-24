@@ -1,0 +1,1953 @@
+=== PDF_PAGE 1 ===
+第 11 期
+2025 年 11 月
+电 子 学 报
+ACTA ELECTRONICA SINICA
+Vol. 53    No.11
+Nov.    2025
+SM
+3
+RNet：一种基于空间 Mamba 的
+模态缺失鲁棒病灶分割网络
+贾熹滨
+1
+，杨川旭
+1
+，范 超
+1
+，郑依鸣
+1
+，杨正汉
+2
+，杨大为
+2
+，徐 辉
+2
+（1. 北京工业大学计算机学院 ，北京 100124；2. 首都医科大学附属北京友谊医院 ，北京 100050）
+摘　 要：　 多 模 态 医 学 图 像 分 割 能 够 充 分 利 用MRI（Magnetic Resonance Imaging ）不 同 序 列（如 T1、T1ce、T2、
+FLAIR）之间丰富的信息互补特性 ，在脑肿瘤等复杂病灶分割任务中获得远超单模态的精度与鲁棒性 . 然而，现有绝大
+多数方法均建立在“所有模态推理时完整可用 ”的强假设之上 ，而在真实临床场景中 ，由于患者运动 、扫描协议差异 、设
+备限制或历史数据缺失等原因 ，经常出现一个或多个模态不可用的情况 ，导致这些方法在模态缺失时性能大幅衰减 ，
+极大限制了其在实际诊疗中的可落地性 . 为此，本文提出了一种基于空间 Mamba 的全新模态缺失鲁棒病灶分割网络
+（Spatial Mamba based Missing Modality Robust lesion segmentation Network ，SM
+3
+RNet） ，从编码、融合到解码阶段系统性地
+解决了任意模态组合下性能稳定的核心难题 . SM
+3
+RNet 设计了基于 Mamba 的多分支空间特征编码器 （Mamba-based 
+Multi-branch Spatial Feature Encoder ，SME） ，实现了线性计算复杂度下对三维医学数据的全局上下文建模 ；进一步 ，为
+确保部分模态缺失时病灶分割性能的稳定性 ，提取并利用模态共有的可判别特征 ，SM
+3
+RNet 提出了一种基于多视角注
+意力机制引导的跨模态特征融合方法 （Multi-view Attention -guided Cross-modal feature Fusion ，MACF） ，通过多视角的交
+互与注意力机制 ，动态增强模态间共有的语义特征贡献 、自适应地协同不同模态组合 ，提升融合的鲁棒性 ，有效缓解模
+态缺失导致的性能衰减 ；此外，SM
+3
+RNet 在跳跃连接中集成了并行的空间和通道双流注意力机制 （Dual Stream attention 
+Decoder，DSD）从两个维度协同优化融合特征表示 ，增加病灶辨识度 ，强化边缘细节恢复能力 ，从而在最终分割图上获
+得更高的准确率和完整性 . 在国际权威的 BraTS2020 和 BraTS2018 数据集上进行的大量对比与消融实验充分验证了
+所提方法的优越性 ：在所有模态完备时 ，SM
+3
+RNet 的 Dice 等指标优于现有方法 ，在随机缺失模态的环境下 ，仍能超越当
+前专门处理模态缺失的先进方法 ，展现出较强的鲁棒性和临床部署潜力 ，为临床实用的多模态医学图像分割提供了高
+效、可靠的新范式 .
+关键词：　多模态；医学图像；语义分割；模态缺失；Mamba；注意力机制
+基金项目：　国家自然科学基金（No.62171298，No.82372043，No.82071876，No.82371904，No.62476015）
+中图分类号 ：　TP391  　文献标识码 ：　A  　 文章编号：　0372-2112(2025)11-3943-13
+电子学报 URL:http://www.ejournal.org.cn　　　 　 DOI:10.12263/DZXB.20250677
+SM
+3
+RNet: Spatial Mamba Based Missing Modality 
+Robust Lesion Segmentation Network
+JIA Xi-bin
+1
+, YANG Chuan-xu
+1
+, FAN Chao
+1
+, ZHENG Yi-ming
+1
+, YANG Zheng-han
+2
+, YANG Da-wei
+2
+, XU Hui
+2
+(1. School of Computer Science , Beijing University of Technology , Beijing, 100124, China; 
+2. Beijing Friendship Hospital , Capital Medical University , Beijing 100050, China)
+Abstract:　Multi-modal medical image segmentation can fully exploit the rich complementary information across dif ⁃
+ferent magnetic resonance imaging (MRI) sequences (e.g., T 1, T 1ce, T 2, FLAIR ), achieving markedly superior accuracy 
+and robustness compared to single -modality approaches in complex lesion segmentation tasks such as brain tumors . Howev⁃
+er, the vast majority of existing methods rely on the strong assumption that all modalities are fully available during infer ⁃
+ence, whereas in real -world clinical practice , one or several modalities are frequently missing due to patient motion , hetero⁃
+geneous scanning protocols , equipment constraints , or absent historical data , causing drastic performance degradation and 
+severely limiting practical deployability . To address this critical challenge , we propose a novel spatial Mamba -based miss ⁃
+ing-modality-robust lesion segmentation network , termed spatial Mamba -based missing modality robust lesion segmenta ⁃
+  收稿日期：2025-08-04；录用日期：2025-11-19；责任编辑：覃怀银
+
+=== PDF_PAGE 2 ===
+电 子 学 报 2025 年
+tion network (SM
+3
+RNet), which systematically ensures stable performance across arbitrary modality combinations from en ⁃
+coding to decoding stages . SM
+3
+RNet first introduces a Mamba -based multi -branch spatial feature encoder (SME) that as ⁃
+signs an independent Mamba branch to each modality and performs efficient bidirectional long -range dependency modeling 
+along the x, y, and z axes, realizing global contextual modeling of 3D medical volumes with only linear computational and 
+memory complexity , far surpassing the quadratic burden of Transformer -based alternatives . To maintain segmentation sta ⁃
+bility when partial modalities are absent , SM
+3
+RNet extracts and leverages discriminative features shared across modalities 
+through a multi -view attention -guided cross -modal feature fusion module (MACF); by simultaneously operating from chan ⁃
+nel, spatial , and inter -modality perspectives , MACF dynamically amplifies the contribution of shared semantic features , 
+adaptively coordinates varying modality combinations via attention mechanisms , and effectively alleviates performance 
+drops caused by missing modalities . Furthermore , a parallel dual -stream attention decoder (DSD) is integrated into skip con ⁃
+nections to synergistically refine multi -scale fused features from both spatial and channel dimensions , significantly enhanc ⁃
+ing lesion discriminability and boundary detail recovery , thereby yielding superior accuracy and completeness in the final 
+segmentation maps . Extensive comparative and ablation experiments conducted on the internationally authoritative 
+BraTS2020 and BraTS 2018 datasets comprehensively validate the superiority of the proposed method : When all modalities 
+are complete , SM
+3
+RNet outperforms existing methods in metrics such as Dice . In environments with randomly missing mo ⁃
+dalities, it still surpasses state -of-the-art methods specifically designed to handle missing modalities . This demonstrates 
+strong robustness and significant potential for clinical deployment , providing an efficient and reliable novel paradigm for 
+clinically practical multi -modal medical image segmentation .
+Key words:　multi-modal; medical image; semantic segmentation ; missing modalities; Mamba; attentional mechanisms
+Foundation Item (s):　 National Natural Science Foundation of China (No. 62171298, No . 82372043, No . 82071876, 
+No.82371904, No.62476015)
+1　引言
+基于深度学习的医学图像分割方法已广泛应用于
+精准诊断和治疗规划中 ，成为医学图像分析中的重要
+研究方向［1~5］. 在临床核磁共振影像检查中 ，数据通常
+包括多模态影像序列 ，从不同视角提供肿瘤发现和区
+域定位信息 ，例如，T1 序列突出肿瘤边界 ，T2 序列显现
+液体区域 ，而 FLAIR 则抑制液体信号 ，增强病灶的显著
+性［6］. 通过融合不同模态（如 T1、T2、T1ce、FLAIR）的互
+补信息，有助于提升肿瘤的分割性能 . 受该临床影像判
+读经验启发 ，基于多模态的病灶分割方法取得了显著
+进展，通过高效提取局部特征和细粒度细节 ，为复杂医
+学图像中的纹理与结构建模提供了坚实基础 ，同时通
+过全局上下文建模和长程依赖捕捉 ，显著增强了跨模
+态特征的深度整合能力 . 这些方法在局部与全局信息
+的融合上实现互补 ，极大地推动了多模态分割在特征
+融合深度与广度上的发展 . 然而，在实际临床环境中 ，
+模态缺失是一个常见现象 ，如由成本限制 、院间设备差
+异或患者个体因素引起 ，导致输入信息不完整 ，严重削
+弱模型的分割性能 ［7］. 这种情况会导致部分特征信息
+丢失，从而显著削弱病灶分割能力 . 为应对模态缺失带
+来的多模态融合分割模型性能下降问题 ，U-HVED［8］尝
+试在潜在特征空间中合成缺失模态的特征 ，但生成模
+态的质量难以保障 ；U-HeMIS［9］通过统计现有模态特征
+实现信息共享 ，但在模态间差异显著时效果较差 . 此
+外，mmFormer［10］和 M3AE［11］等方法通过动态加权和预
+训练公共模态增强模型的鲁棒性 ，但仍面临超参数依
+赖性强和预训练模态效果不稳定的影响 . 因此，设计能
+够高效利用多模态特征且在模态缺失条件下仍具备优
+异分割性能的模型 ，已成为当前医学图像分割领域亟
+待解决的重要课题 .
+要实现上述模态缺失条件下的鲁棒多模态分割 ，
+模型的表征学习与融合能力是关键基础 . 当前主流方
+法 多 数 基 于 卷 积 神 经 网 络（Convolutional Neural Net ⁃
+work，CNN）［12］和 Transformer［13］. CNN 凭 借 其 优 异 的 局
+部特征提取能力 ，能有效捕捉图像细节 ，是经典的医学
+图像分割模型 . 然而，其有限的感受野制约了其对模态
+间全局依赖关系的建模能力 ，而全局关系理解对高效
+融合互补信息和理解病灶整体结构至关重要 ，尤其是
+在输入模态不完整时 . Transformer 通过自注意力机制
+能够有效建模长程依赖关系 ，在多模态特征融合和全
+局信息整合方面展现出显著优势 . 但其计算复杂度高
+昂，在处理高分辨率三维医学图像时对硬件资源要求
+较高，限制了其在资源受限或快速响应的临床场景 （常
+伴随模态缺失 ）下的应用潜力 . 近年来 ，Mamba 模型［14］
+作为一种基于状态空间模型 （State Space Model ，SSM）
+的新型架构 ，凭借其选择性状态机制和线性复杂度优
+势，在长序列建模任务中表现优异 ，并从自然语言处理
+成功跨界到计算机视觉 . Mamba 能灵活整合局部细节
+和全局上下文信息 ，在全局建模能力上优于 CNN，同时
+计算效率高于 Transformer ，为构建高效鲁棒的模型提
+3944
+
+=== PDF_PAGE 3 ===
+第 11 期 贾熹滨等：SM3RNet：一种基于空间 Mamba 的模态缺失鲁棒病灶分割网络
+供 了 新 的 可 能 . 然 而 ，当 前 基 于 Mamba 的 分 割 模
+型［15~20］研究多聚 焦于单模态数据 ，或仅在输入层对多
+模 态 数 据 进 行 简 单 的 通 道 拼 接（Concatenation） ，未 能
+深入探索和设计适用于多模态场景 ，特别是能有效挖
+掘模态间互补信息并适应模态缺失动态变化的融合
+机制 . 因此 ，Mamba 架构在多模态医学图像分割 ，尤其
+是应对模态缺失挑战方面的潜力尚未得 到充分发掘 .
+针对模态缺失带来的多模态融合分割模型性能下
+的挑战 ，本文提出了一种基于空间 Mamba 的模态缺失
+鲁棒病灶分割网络（Spatial Mamba based Missing Modal ⁃
+ity Robust lesion segmentation Network ，SM3RNet） ，旨 在
+有效提取并融合不完整模态信息以实现精准分割 . 为
+解决部分模态不可用的问题 ，本研究采用逐模态独立
+处理的策略 ，通过多分支结构分别提取单一模态的特
+征 . 这种方式确保了在部分模态缺失的情况下 ，网络仍
+能充分利用可用模态信息生成有效的特征表示 ；同时，
+本文引入了一种基于注意力机制的动态融合策略来处
+理模态缺失导致的特征融合难题 ，该策略利用深层特
+征蕴含的丰富上下文信息 ，通过多视角交互挖掘不同
+模态间的互补性和潜在关联 ；另外，为了进一步提升分
+割精度 ，本研究设计了一种双流解码机制 ，结合通道注
+意力和空间注意力 ，优化解码过程中的特征表达能力 .
+这种方法有效处理模态缺失带来的复杂性 ，确保分割
+结果的准确性和一致性 .
+本文的主要贡献如下 ：
+（1）提出了一种基于空间 Mamba 的模态缺失鲁棒
+病灶分割网络（SM3RNet）. 其核心创新在于设计了多视
+角 跨 模 态 特 征 融 合 模 块（Multi-view Attention -guided 
+Cross-modal Feature fusion ，MACF） ，该模块通过注意力
+机制深度挖掘模态间互补信息 ，显著提升了在模态缺
+失或不均衡条件下的特征融合鲁棒性与分割精度 .
+（2）设计了空间 Mamba 编码器（Mamba-based Multi-
+branch Spatial Feature Encoder ，SME）. 通过引入空间卷
+积模块（Spatial Convolutional Module ，SCM）增强单模态
+上下文表征 ，并构建三维状态空间选择结构（Spatiotem⁃
+poral Selective scan 3D，SS3D）实现逐模态独立的长距
+离空间依赖建模 . 该设计确保了网络在任意模态子集
+输入下均能提取判别性特征 .
+（3）提出了双流注意力解码器（Dual Stream attention 
+Decoder，DSD）. 利用并行的通道与空间注意力机制，在解
+码阶段动态筛选并强化关键模态特征及目标区域信息 ，
+有效应对了模态缺失带来的特征选择与重建挑战.
+2　相关工作
+2. 1　多模态语义分割
+多模态医学图像语义分割的核心挑战在于高效融
+合不同模态的互补信息 . 现有主流方法主要基于以下
+三类架构 .
+基于 CNN 的方法 . 以 U-Net［12］及其众多改进（如 U-
+Net++［21］、Attention U -Net［22］、3D U-Net［23］、V-Net［24］、Re⁃
+sidual 3D U-Net［25］、nnU-Net［26］）为代表 ，凭借其强大的
+局部特征提取能力在医学图像分割领域长期占据主导
+地位 . 然而，CNN 固有的感受野限制使其难以有效建模
+模态间的长程依赖关系和全局上下文信息 ，在多模态
+特征深度融合以及对输入模态不完整 （如模态缺失）的
+鲁棒性方面存在明显不足 .
+基 于 Transformer［ 13 ］的 方 法 . 如 TransBTS［ 27 ］、
+UNETR［28］等，利用自注意力机制突破了感受野限制 ，显
+著提升了全局建模 和 跨 模 态 特 征 融 合 能 力. 尽 管 如
+此，Transformer 高昂的计算复杂度（尤其在处理高分辨
+率三维数据时 ）和较大的内存需求 ，使其在资源受限
+的实际临床环境下面临挑战 . 同时 ，其在局部细节恢
+复上的相对劣势 ，以及直接应用于模态缺失动态输入
+时的灵活性不足 ，也限制了其在模态缺失环境下的 实
+用性 .
+基于 Mamba 的方法 . 作为一种新型架构 ，Mamba
+基于选择性状态空间模型 ，在建模长序列依赖方面展
+示出媲美 Transformer 的性能 ，同时保持了接近线性的
+计 算 复 杂 度. 初 步 探 索 如U-Mamba［16］、VM-UNet［18］、
+SegMamba［29］等，尝试将 Mamba 应用于医学图像分割 ，
+验证了其在整合局部细节与全局信息上的潜力 ，尤其
+在 三 维 数 据 处 理 效 率 上 优 势 明 显. 然 而，当 前 基 于
+Mamba 的分割模型［15~20］研究主要聚焦于单模态数据或
+采用简单的多模态通道拼接策略 ，尚未系统探索其内
+在机制在多模态特征深度融合中的有效性 ，更缺乏针
+对模态缺失这一关键挑战的鲁棒性设计 .
+综上所述 ，尽管现有 CNN、Transformer 乃至新兴的
+Mamba 架构在多模态分割任务上都取得了一定进展 ，
+但在高效融合多模态互补信息 ，特别是应对临床中普
+遍存在的模态缺失问题时 ，仍存在显著的局限性 . 这促
+使研究者们提出一系列专门针对模态缺失问题的分割
+方法 .
+2. 2　模态缺失环境下的分割方法
+针对模态缺失的挑战 ，研究者们提出多种应对策
+略 . U-HeMIS［9］：通过计算可用模态特征的均值和方差
+实现信息嵌入和共享 ，提升模型对模态缺失的容忍度 .
+但其基于统计特征的方法在模态间差异显著或缺失模
+态组合复杂时 ，融合效果有限 . U-HVED［8］：引入多模态
+变分自动编码器 ，将模态缺失处理建模为变分推断过
+程，生成缺失模态的特征表示进行补偿 . 该方法高度依
+赖于生成特征的质量 ，潜在空间中生成的特征可能失
+真或引入噪声 ，影响最终分割精度 . mmFormer［10］：利用
+3945
+
+=== PDF_PAGE 4 ===
+电 子 学 报 2025 年
+动态加权机制自适融合可用模态特征 ，通过超参数控
+制适应不同模态缺失情况 . 其性能对超参数设置敏感 ，
+且动态融合模块的设计和训练复杂度较高 ，在实际应
+用中调优困难 . M3AE［11］：设计了两阶段训练框架 ，第一
+阶段学习一个公共模态表示以替代缺失模态 ，第二阶
+段通过自提炼微调增强鲁棒性 . 该方法的训练流程复
+杂，两阶段训练耗时且对公共模态表示的学习效果不
+稳定，影响了模型的泛化能力 .
+尽管这些方法在特定的条件下提升了模型对模态
+缺失的鲁棒性 ，但它们普遍面临生成质量不可控 ，模型
+设计/训练复杂度高 、对特定条件（如超参数、训练策略）
+依赖性强等问题 ，限制了其在复杂多变的真实临床环
+境中的广泛适用性和部署效率 . 因此，探索更高效 、稳
+定且易于部署的模态缺失鲁棒分割方法仍是该领域的
+重要研究方向 .
+3　方法
+针对临 床 实 际 情 况 中 可 能 出 现 的 模 态 缺 失、可
+用 模 态 数 量 不 固 定 的 情 况，克 服 病 灶 与 周 边 组 织 对
+比 度 低 带 来 的 病 灶 可 判 别 特 征 学 习 难，本 文 提 出了
+一种基于空间 Mamba 的模态缺失鲁棒病灶分割网络
+（SM3RNet）.
+3. 1　网络概览
+如图 1①所示 ，SM3RNet 由多分支结构参数共享的
+空间 Mamba 编码器（SME） 、浅层卷积特征融合（Shallow 
+Convolutional Fusion ，SCF） 、多视角注意力引导的跨模
+态特征融合模块（MACF）以及并行的空间注意力和通
+道注意力机制的双流解码器（DSD）组成 . SM3RNet 利用
+Mamba 模型对复杂图像特征表示优势 ，结合三维空间
+信息增强病灶辨识性能 ，构建基于空间 Mamba 的多分
+支参数共享的编码结构 . 为提升模态缺失下特征的鲁
+棒性，SM3RNet 设计了基于多视角注意力机制引导的跨
+模态特征融合策略 ，动态整合不同模态组合下的互补
+信息，增强重要的模态共性特征学习 ，生成更具模态组
+合差异适应性的融合特征表示 . 此外 ，受 CBAM［30］的
+启发 ，网络设计采用了并行的通道注意力和空间注意
+力机制的双流解码器 ，协同优化对融合特征的空间定
+位和语义理解 ，提升对病灶分辨能力 ，同时缓解模态
+缺失场景下造成的信息损失 . 最后 ，为进一步提升分
+割性能 ，在解码器的每一层引入了辅助监督信号 ，通
+过正则化作用进一步提升模型的分割性能 . 下面将对
+各模块的设计与实现细节进 行详细说明 .
+3. 2　空间 Mamba 编码器
+空间 Mamba 编码器（SME）的基本结构如图 1②所
+示，旨在提取每个输入模态的局部和全局信息进行特
+征 建 模 . 本 文 所 采 用 的 完 整 模 态 集 合 ，记 为 M=
+{T2T1FlairT1ce}. 给定的单模态输入 xÎ R( )1´ D´ H´ W ，
+其中输入尺寸大小为 D´ H´ W.
+在所提出的空间 Mamba 编码器中 ，设计了一个空
+间卷积模块（SCM） ，该模块采用双支路结构 ，利用不同
+大小的卷积核捕捉多尺度局部空间信息 ，增强空间特
+征表示，具体计算方式如式（1）所示：
+SCM( x) = x+ Conv1´ 1´ 1(Conv1´ 1´ 1( x) + Conv3´ 3´ 3( x))
+（1）
+图 1　SM3RNet 网络整体架构图
+3946
+
+=== PDF_PAGE 5 ===
+第 11 期 贾熹滨等：SM3RNet：一种基于空间 Mamba 的模态缺失鲁棒病灶分割网络
+其中 ，x 代表该模块输入的 3D 特征 ；Conv 代表卷积块 ，
+这里包括两种 3D 卷积核，即：1× 1× 1，3× 3× 3.
+在建立了空间特征表示之后 ，通过 Mamba 模块进
+行特征挖掘 ，包括全局信息和局部信息 ，该结构借鉴了
+VM-Unet［18］中的 VSS Block 模块，主要由两条支路组成 ：
+第一条支路中 ，输入依次经过线性层和激活函数处理 ；
+第二条支路则包含线性层 、深度可分离卷积和激活函
+数处理后 ，进一步送入三维选择性扫描模块 （SS3D）以
+提取高级特征 . 接着，通过层归一化对两条支路的特征
+进行归一化处理 ，并对第一条支路的输出进行逐元素
+相乘，以融合两条路径的特征 . 最终，通过线性层对融
+合特征进行混合 ，并与输入残差相加 ，生成 Mamba 模块
+的输出结果 . 该模块默认使用 SiLU 作为激活函数 .
+Mamba 模 块 的 核 心 组 件 是 三 维 选 择 性 扫 描 模
+块（SS3D） ，这 是 对 原 始 二 维 选 择 性 扫 描 模 块（Spatio⁃
+temporal Selective scan 2D，SS2D）在三维数据上的扩展 ，
+如图 1②所示 . 针对体积数据（H× W× D）的空间连续
+性，SS3D 模块通过在四个主要方向 ：前向（forward，f） 、
+后向（backword，b） 、交叉正向（cross-forward，cf） 、交叉反
+向（cross-backword，cb） ，对特征序列进行扫描建模 ，其
+计算方式如式（2）所示：
+SS3D( x) = mamba( xf) + mamba( xb)
+                      +mamba( xcf) + mamba( xcb)
+（2）
+其中 ，mamba 代表指定方向上应用的一维选择性状态
+空间模型操作 ；x 代表输入特征 . 该机制高效捕获了三
+维空间的长程依赖关系 .
+Mamba 模 块 的 输 出 通 过 多 层 感 知 机（MuLtilayer 
+Perceptron，MLP）进一步非线性变换，生成该模态的最终
+编码特征 . 对于输入中每个可用模态 ，SME 的对应分支
+均独立执行上述流程（SCM→ Mamba Module→ MLP） ，
+输出其模态专属特征 . 这些模态 特征将作为特征融合
+模块的输入 ，进行跨模态信息整合 ，最终送入双流解码
+器 DSD 完成分割任务 .
+3. 3　基于多视角注意力机制引导的跨模态特征融
+合模块
+针对模态缺失的问题 ，本文提出了基于多视角注
+意力 机制的跨模态特征融合 模块 ，结构如图 1③所示 .
+在四个模态的编码分支中 ，实线表示可用模态 ，虚线表
+示缺失模态 . 通过一组掩码 mask 控制输入数据中可用
+模态的数量 ，并利用空间 Mamba 编码器提取每个可用
+模态的特征 . 在下采样之后 ，考虑到深层特征通常包含
+更丰富的语义信息的特点 ，我们设计采用了分级特征
+融合策略 ：浅层卷积特征融合（SCF）和基于多视角注意
+力机制引导的跨模态特征融合（MACF），如图 1③所示 .
+对于浅层高分辨率特征 Fi，其中 i< 4，为了证明我
+们的方法拥有面向模态缺失的鲁棒性 ，我们仅采用简
+单地将特征逐元素对应位置相加再进行卷积的轻量级
+融合方案进行融合 ，如式（3）所示 ，这样既能充分考虑
+到每个模态的信息 ，又可以方便后续作为跳跃连接进
+行解码，兼顾效率和信息完整性 .
+SCF(mask,F) = (Conv(∑i= 1
+4
+maski × Fi)) ,
+                                   maski ∈ {0,1}
+（3）
+其中，F 代表每个模态提取的特征 . mask 是一个取值仅
+为 0 或 1 的参数 ，用来控制当次特征融合的模态数量 ；
+mask 为 0 代表当前模态不存在 ，不参与融合 ；mask 为 1
+代表当前模态存在 ，参与融合 .
+对于深层富含语义信息的特征 F4，为了挖掘特征
+中的语义信息 ，增强多模态共有语义特征贡献 ，以降低
+由于部分模态缺失导致的性能下降 . 采用如图 1③的基
+于多视角注意力机制引导的跨模态特征融合模块 . 首
+先，将每个模态的特征在通道维度上进行拼接 . 融合过
+程主要分为两部分 ：第一部分是针对三个视角计算自
+注意力（Self-Attention，SA） ，如图 2 所示 .
+水平视角（Multi-Head Attention horizontal，MHAh）. 在水
+平方向的平面内计算各点间的注意力 ，专注于捕捉相
+同高度上的特征相关性 .
+垂 直 视 角（Multi-Head Attention vertical，MHAv）. 在 垂
+直方向上计算各点之间的注意力 ，相较于水平注意力 ，
+更关注特征图在垂直方向上的关联和依赖性 .
+窗口视角（Multi-Head Attention windowed，MHAw）. 在每
+个局部窗口内计算点之间的注意力 ，用于捕捉局部区
+域的特征关系 .
+将上述三个视角下的注意力得分相加 ，并赋权到
+输入特征上 ，从而获得融合了三个视角加权信息的特
+征 . 具体计算过程如式（4） ：
+SA( x) = MHAh( x) + MHAv( x) + MHAw( x) （4）
+其中，x∈ R( )N× C 代表每个视角自注意力的输入特征 ；N
+表示归一化后的序列长度 ；C 表示嵌入维度 . 第一部分
+最终得到的加权特征将作为 Q（Query，Q）参与第二部
+分交叉注意力的计算 .
+第 二 部 分 的 计 算 属 于 一 个 交 叉 注 意 力（Cross-
+图 2　多视角注意力
+3947
+
+=== PDF_PAGE 6 ===
+电 子 学 报 2025 年
+Attention ，CA） ，其 中 的 Q 来 自 第 一 部 分 的 输 出FSA ， 
+K（Key，K）和 V（Value，V）来自原始的输入特征 Fori，即：
+Q= FSAWq ,K= ForiWk ,V= ForiWv （5）
+其中 ，Wq ,Wk ,Wv ∈ R( )C× d 是权重矩阵 ；d= 384 是 Q、 K、 
+V 的维度 . 交叉注意力的计算如下 ：
+CA( FSA ,Fori) = FSA + Softmax( QK Td )V （6）
+通过第二部分交叉注意力得到的结果用F 4out 表示，其
+在融合了三个视角注意力的加权信息后 ，进一步增强了
+输入特征，为后续的解码任务提供更丰富的语义信息.
+3. 4　双流注意力解码器
+对于解码任务 ，受 CBAM［30］启发，网络进一步引入
+残 差 思 想，同 时 设 计 了 并 行 的 残 差 通 道 注 意 力（Re⁃
+sidual Channel Attention ，RCA）和残差空间注意力 （Re⁃
+sidual Spatial Attention ，RSA）机制的双流解码器（DSD） ，
+旨在缓解模态缺失场景下串行获取注意力图造成的信
+息损失及偏置 ；其中，通道注意力动态评估并加权各模
+态特征通道的重要性 ，空间注意力聚焦于目标区域的
+显著空间特征 . 通过并行的方式 ，在空间和通道维度协
+同优化融合特征 ，双注意力协同作用下 ，实现在模态缺
+失条件下对融合特征的精细化选择与重建 . 如图 1④所
+示，解码器分为上下两部分 ：上半部分为残差通道注意
+力模块，下半部分为残差空间注意力模块 . 两部分的输
+入均由下层特征的上采样结果与同层跳跃连接的特征
+组成，融合这些特征以实现更精细的解码 . 具体计算方
+法如下：
+RCA( F iskip ,F i+ 1out ) = Conv( F i+ 1out ) + Conv( F i+ 1out )
+                                      ×Sigmoid(GAP( F iskip + Conv( F i+ 1out )))
+（7）
+RSA( F iskip ,F i+ 1out ) = Conv( F i+ 1out ) + Conv( F i+ 1out )
+                                      ×Sigmoid(Conv( F iskip + Conv( F i+ 1out )))
+（8）
+DSD( F iskip ,F i+ 1out ) = Conv(RCA( F iskip ,F i+ 1out ))
+                                      +RSA( F iskip ,F i+ 1out ) （9）
+其中 ，i∈ {0,1,2,3}代表特征的层数 ；RCA 代表残差通
+道注意力 ；RSA 代表残差空间注意力 ；GAP（Global Av ⁃
+erage Pooling）代表全局平均池化 ；F iskip 代表同层特征的
+跳跃连接 ；F i+ 1out 代表下一层特征 ，该层解码器的输出用
+F iout 来表示 .
+在网络的最终阶段 ，通过一个卷积分割头生成预
+测的分割图 ，网络采用交叉熵损失（Cross-Entropy Loss）
+和 Dice Loss 的加权和作为损失函数进行训练 . 为进一
+步约束解码过程 ，提升特征表达能力 ，我们在训练阶段
+引入深度监督（Deep Supervision）对每一层解码特征进
+行辅助正则 . 最终的损失函数式如式（10） ：
+Ltotal = LCE + LDice （10）
+其中，LCE 是交叉熵损失 ；LDice 是 Dice 损失 .
+4　实验结果与分析
+4. 1　数据集
+我 们 的 实 验 在 两 个 公 开 的 脑 肿 瘤 语 义 分 割 数 据
+集——BraTS2020 和 BraTS2018 上对所提出的方法进行
+了评估 .
+BraTS2020 数 据 集. 该 数 据 集 包 含369 例 多 模 态
+MRI 扫描序列 ，包括四种模态 ：T2、T1、Flair 和 T1ce. 这
+些图像经过标准化的预处理流程 ，包括配准到相同的
+解剖模板 、重新采样到一致的分辨率 ，以及头皮剥离处
+理 . 分割掩码提供三个主要的标签 ：整个肿瘤（Whole 
+Tumor） 、肿瘤核心（Tumor Core）以及增强肿瘤（Enhanc⁃
+ing Tumor）.
+BraTS2018 数 据 集. 该 数 据 集 包 含285 例 多 模 态
+MRI 扫描序列，同样涵盖 T2、T1、Flair 和 T1ce 四种模态，
+并提供与 BraTS2020 一致的三个分割标签 .
+以上数据集的注释均由一到四名放射科医生依据统
+一的注释协议手动标注，确保了标注的高质量和一致性.
+4. 2　实验设置
+我们使用 PyTorch 框架实现了模型 ，并在两张 RTX 
+4090D GPU 上完成实验 . 我们采用 AdamW 优化器 ，初
+始学习率设置为 1× 10-3，并应用“余弦退火 ”策略动态
+调整学习率 ，以提高训练的收敛性和稳定性 . 我们将两
+个数据集均按照 7∶1∶2 的比例划分为训练集 、验证集和
+测试集，由于 GPU 显存空间的限制 ，我们将训练集和验
+证集的数据随机裁剪到 128× 128× 128 的大小 ，为了提
+升模型的泛化能力 ，我们在训练时应用了随机旋转和
+随机噪声数据增强策略 . 网络训练的批次大小 （Batch 
+size）设置为 2，训练 400 轮（epoch）. 在测试阶段 ，我们采
+用一个滑动窗口的机制来生成输入图像的最终分割预
+测，以平衡内存消耗与分割性能 .
+4. 3　模态完备环境下的实验结果
+我们在 BraTS2020 数据集上也进行了基于模态完
+备数据训练网络的实验 ，并与当前领域内表现优异的
+分割方法进行对比 ，这些方法涵盖了基于 CNN、Trans⁃
+former 和 Mamba 架构的最新技术 . 进一步 ，为了深入分
+析我们提出的关键模块对性能的具体贡献 ，我们利用
+模 态 完 备 的 环 境 设 计 了 消 融 实 验，分 别 评 估 了 空 间
+Mamba 编码器 、基于多视角注意力机制引导的跨模态
+特征融合模块和双流注意力解码器的作用 .
+（1）对比实验
+我们将所提出的方法与多种优秀的多模态语义分
+3948
+
+=== PDF_PAGE 7 ===
+第 11 期 贾熹滨等：SM3RNet：一种基于空间 Mamba 的模态缺失鲁棒病灶分割网络
+割方法进行了对比 ，表 1 展示了各方法在三个评估指标
+WT（Whole Tumor ，WT） 、TC（Tumor Core ，TC） 、ET（En⁃
+hancing Tumor ，ET）上的 Dice 分数及其平均值 . 从结果
+可以看出 ，我们的方法在 WT 和 TC 指标上表现最佳 ，分
+别达到了 91.30% 和 89.47%，验证了 SME 在三维长程依
+赖建模的优势 ，其选择性扫描机制 （SS3D）显著提升肿
+瘤整体区域的识别能力 ，同时也体现出 MACF 通过多视
+角注意力（水平/垂直/窗口）有效融合多模态语义信息 ，
+增强对肿瘤核心区域的鉴别力 ；在 ET 指标上的 Dice 分
+数排名第二 ，仅比排名第一的 nnUNet 低 0.64%，但综合
+性能，我们的方法以 86.67% 位居首位，证明并行解码器
+DSD 与特征融合模块 MACF 的协同设计在复杂解剖结
+构分割中更具普遍性 .
+（2）消融实验
+我们在 BraTS2020 数据集上进行了消融实验 ，进一
+步验证网络中每个模块的有效性 . 实验以 Residual 3D 
+U-Net 作为基准网络（baseline） ，逐步替换或增加模块以
+评估其对分割性能的贡献 . 实验结果如表 2 所示 . 从表
+中可以看出 ，Residual 3D U-Net 的性能最差 ，WT 上的
+Dice 分数仅为 82.46%，平均 Dice 分数为 76.85%. 当编码
+器替换为空间 Mamba 编码器后 ，WT 的 Dice 分数提升至
+85.40%，平均 Dice 分数提升至 80.10%，增长了 5.3 个百
+分点 ，这表明空间 Mamba 编码器（SME）在三维全局建
+模方面的优势 ，其状态空间机制能够有效捕获长程空
+间 依 赖. 进 一 步 将 解 码 器 替 换 为 双 流 注 意 力 解 码 器
+（DSD）后，Dice 分数提升至 90.87%. 与此同时 ，采用多
+视角跨模态融合模块（MACF）替代传统融合方式 ，Dice
+分数也提升至 90.72%. 这些结果验证了双流注意力解
+码器和多视角跨模态特征融合模块对分割性能的协同
+增强作用 . 值得注意的是 ，双流注意力解码器对性能的
+提升（约 0.15%）略高于多视角跨模态特征融合模块 .
+我们认为其本质源于特征粒度的差异 ，解码器的输入
+包含了下层特征的上采样和同层特征的跳跃连接 ，使
+其可以具备更丰富的特征选择空间 ，从而产生更大的
+提升潜力 ，而深层融合模块仅作用于网络最深层的特
+征，信息跨度相对较窄 ，因此双流注意力解码器对网络
+性能的提升更为显著 . 当加入所有模块之后 ，即为我们
+所提出的网络 SM3RNet，实验结果达到最优 ，充分验证
+了整体架构在三维医学图像分割中的有效性 .
+（3）可视化
+为验证我们所提出方法在三维解剖结构感知上的
+有效性 ，我们在 BraTS2020 数据集上进行了可视化实
+验 . 实验结果如图 3 所示 . 我们可以看到相较于 Seg⁃
+Mamba，本方法更具优势 ：在案例 a 中，SegMamba 在非
+肿瘤区域产生了假阳性预测 ，而本方法精准抑制误检 .
+这归因于 DSD 的空间注意力机制 ，其通过残差空间注
+意力模块动语 态聚焦真实病灶区域 ，有效抑制噪声 . 类
+似的情况也出现在案例 b 和案例 c 中，SegMamba 没有正
+确预测出应该被标记为 WT 的区域，而我们的网络完 整
+捕获不规则肿瘤边界 ，这得益于 SME 的 SS3D 通过四向
+表 2　BraTS2020 数据集上模态完备环境下消融实验结果     单位:%
+方法
+Baseline
+Baseline + SME
+Baseline + SME + DSD
+Baseline + SME + MACF
+Baseline + SME + MACF + DSD
+Dice Score
+Whole 
+tumor
+82.46
+85.40
+90.87
+90.72
+91.30
+Tumor 
+core
+76.47
+81.25
+87.58
+86.88
+89.47
+Enhanc⁃
+ing tumor
+71.63
+73.66
+77.40
+78.07
+79.25
+Aver⁃
+age
+76.85
+80.10
+85.28
+85.22
+86.67
+注：加粗表示最优结果 .
+图 3　模态完备环境下分割结果可视化
+表 1　BraTS2020 数据集上模态完备环境下不同模型的分割结果对比
+单位:%
+方法
+3D U-Net[23]
+V-Net[24]
+Attention U-Net[22]
+Residual 3D U-Net[25]
+TransBTS[27]
+UNETR[28]
+UNeXt[31]
+nnUNet[26]
+SegMamba[29]
+Ours
+Dice Score
+Whole 
+tumor
+84.11
+86.11
+90.50
+82.46
+90.09
+89.90
+88.70
+91.24
+89.81
+91.30
+Tumor 
+core
+79.06
+77.90
+79.60
+76.47
+81.73
+84.20
+81.37
+85.06
+85.41
+89.47
+Enhancing 
+tumor
+68.76
+68.97
+68.97
+71.63
+78.73
+78.80
+76.49
+79.89
+77.07
+79.25
+Average
+77.31
+77.66
+82.00
+76.85
+83.52
+84.30
+82.19
+85.40
+84.10
+86.67
+注：加粗表示最优结果 ，下划线表示次优结果 .
+3949
+
+=== PDF_PAGE 8 ===
+电 子 学 报 2025 年
+扫 描 建 模长 程 空 间 连 续 性. 另 外，在 案 例d 中 ，Seg⁃
+Mamba 在微小 ET 区域出现过分割 ，而本方法精准控制
+增强边界 ，说明多视角 注意力融合可以有效融合 互补
+信号 .
+4. 4　模态缺失环境下的实验结果
+我们分别在 BraTS2020 和 BrsTS2018 数据集上评估
+了我们的方法在模态缺失环境下病灶分割性能 . 模态
+缺失通过使用一组掩码参数 SUBSETS_MODALITIES 来
+控制，掩码是一个长度等于所有模态数量的数组 ，每个
+元 素 的 值 为True 或 False，其 中 True 表 示 当 前 模 态 存
+在，False 表示当前模态缺失 . 在训练过程中 ，我们随机
+选择不同的模态组合 ，以模拟不同的模态缺失情况 ；在
+测试时 ，我们根据不同的模态组合 ，分别评估每种情况
+下网络的分割性能 . 通过这种方法 ，验证我们所提出病
+灶分割模型在面对不同模态组合的适应性和鲁棒性 ，
+并分析其在实际应用中对不同模态缺失情景下的处理
+能力 .
+对 比 实 验 在 BraTS2020 数 据 集 上 ，我 们 与 U-
+HeMIS［9］、U-HVEN［8］、mmFormer［10］、M3AE［11］、HIOF［32］
+以及 GIN［33］等处理模态缺失的方法进行了对比实验 .
+结 果 如 表3 所 示，在 15 种 模 态 组 合 下，本 文 方 法 在
+Whole Tumor（WT）分割的 Dice 分数上 ，11 项最优 ，4 项
+次优 ；在 Tumor Core（TC）分割上 ，11 项最优 ，4 项次优 ；
+在 Enhancing Tumor（ET）分割上，8 项最优，7 项次优 . 此
+外，我们在 BraTS2018 数据集上也与上述方法进行了对
+比 . 结果如表 4 所示，在 15 种模态组合中 ，本文方法在
+WT 上 7 项表现最佳 ，在 TC 上 7 项最佳 ，在 ET 上 6 项最
+佳 . 即使在未取得最优结果的组合中 ，本文方法也基本
+位列第二或第三 ，这体现本文方法在模态缺失环境下
+也拥有强大的竞争力 . 值得注意的是 ，如表 4 所示 ，在
+可 用 模 态 数 量 较 少 的 情 况 下，本 文 方 法 性 能 略 逊 于
+M3AE. 我们认为这源于本文方法更侧重于充分利用现
+有模态信息而非生成缺失模态 ，因此在模态严重缺失
+时，虽然效果略弱于生成式方法 （如 M3AE）. 但本文方
+法有效避免了生成式方法带来的计算复杂性高和训练
+难度问题 ，具有折中性能与复杂度的整体优势 . 综上，
+实验结果充分验证了所提方法在模态缺失条件下的整
+体稳定性和鲁棒性 .
+表 3　BraTS2020 数据集上缺失环境下对比结果
+Modality
+T2
+√
+×
+×
+×
+√
+√
+√
+×
+×
+×
+√
+√
+√
+×
+√
+Mean
+Modality
+T2
+√
+×
+×
+×
+√
+√
+√
+T1
+×
+√
+×
+×
+√
+×
+×
+√
+√
+×
+√
+√
+×
+√
+√
+T1
+×
+√
+×
+×
+√
+×
+×
+F
+×
+×
+√
+×
+×
+√
+×
+√
+×
+√
+√
+×
+√
+√
+√
+F
+×
+×
+√
+×
+×
+√
+×
+T1c
+×
+×
+×
+√
+×
+×
+√
+×
+√
+√
+×
+√
+√
+√
+√
+T1c
+×
+×
+×
+√
+×
+×
+√
+Whole tumor
+U-HeMIS
+79.85
+63.01
+52.29
+64.58
+82.31
+81.56
+84.45
+65.29
+72.50
+69.37
+83.03
+85.19
+84.64
+73.31
+85.19
+75.10
+Tumor core
+U-HeMIS
+54.22
+42.42
+24.97
+69.41
+56.38
+55.89
+77.60
+U-HVED
+80.75
+54.93
+82.69
+68.54
+81.58
+87.40
+83.37
+85.01
+71.58
+86.13
+88.07
+84.27
+88.33
+87.10
+88.81
+81.24
+U-HVED
+57.43
+36.73
+51.15
+73.01
+59.29
+61.87
+77.85
+mmFormer
+83.07
+74.37
+82.40
+74.25
+84.00
+85.82
+84.05
+84.61
+77.98
+84.54
+86.22
+84.64
+86.11
+85.34
+86.38
+82.92
+mmFormer
+69.18
+61.17
+66.19
+77.96
+70.90
+71.55
+80.79
+M3AE
+86.09
+76.71
+86.53
+77.05
+87.20
+89.25
+87.37
+89.38
+78.11
+89.48
+90.42
+88.61
+90.18
+89.99
+90.56
+86.25
+M3AE
+70.27
+66.00
+68.34
+81.39
+72.54
+74.95
+83.01
+HIOF
+81.70
+66.97
+82.50
+72.35
+83.71
+85.01
+83.12
+86.95
+76.28
+88.07
+88.01
+85.57
+88.86
+88.39
+89.11
+83.14
+HIOF
+59.74
+50.83
+60.07
+79.39
+64.88
+66.49
+83.42
+Ours
+85.39
+78.82
+88.68
+78.33
+87.86
+90.07
+87.31
+89.82
+81.75
+90.74
+90.37
+88.08
+91.39
+91.02
+91.50
+87.41
+Ours
+69.38
+65.86
+69.00
+84.50
+73.04
+75.37
+86.67
+3950
+
+=== PDF_PAGE 9 ===
+第 11 期 贾熹滨等：SM3RNet：一种基于空间 Mamba 的模态缺失鲁棒病灶分割网络
+Modality
+×
+×
+×
+√
+√
+√
+×
+√
+Mean
+Modality
+T2
+√
+×
+×
+×
+√
+√
+√
+×
+×
+×
+√
+√
+√
+×
+√
+Mean
+√
+√
+×
+√
+√
+×
+√
+√
+T1
+×
+√
+×
+×
+√
+×
+×
+√
+√
+×
+√
+√
+×
+√
+√
+√
+×
+√
+√
+×
+√
+√
+√
+F
+×
+×
+√
+×
+×
+√
+×
+√
+×
+√
+√
+×
+√
+√
+√
+×
+√
+√
+×
+√
+√
+√
+√
+T1c
+×
+×
+×
+√
+×
+×
+√
+×
+√
+√
+×
+√
+√
+√
+√
+Tumor core
+41.58
+75.59
+70.86
+57.40
+79.05
+77.69
+75.07
+78.58
+65.45
+Enhancing tumor
+U-HeMIS
+31.43
+16.53
+9.00
+63.24
+28.58
+28.91
+70.30
+13.99
+70.71
+68.31
+29.53
+71.67
+71.36
+70.80
+71.49
+47.73
+55.10
+75.59
+76.86
+64.46
+79.99
+78.68
+79.51
+80.40
+67.19
+U-HVED
+28.70
+12.33
+20.87
+66.59
+28.73
+30.48
+68.74
+22.53
+67.82
+69.53
+30.60
+69.74
+69.84
+71.00
+70.50
+48.55
+69.58
+79.93
+80.36
+70.02
+81.12
+81.31
+80.18
+81.22
+74.90
+mmFormer
+45.61
+33.97
+40.47
+68.91
+45.92
+48.09
+70.72
+43.63
+71.10
+69.81
+48.38
+70.06
+71.60
+70.08
+71.34
+58.02
+73.82
+82.39
+82.01
+75.09
+84.06
+83.06
+82.44
+84.40
+77.56
+M3AE
+45.97
+39.93
+40.49
+72.43
+46.63
+47.30
+76.81
+43.20
+75.42
+74.66
+43.19
+77.40
+77.08
+75.94
+78.00
+61.30
+66.29
+82.23
+83.87
+68.13
+84.06
+84.92
+84.78
+84.38
+73.54
+HIOF
+42.28
+26.27
+37.88
+76.64
+44.83
+46.06
+77.25
+42.56
+77.09
+77.67
+77.24
+77.24
+78.46
+76.77
+78.17
+62.43
+72.94
+87.54
+87.92
+74.59
+88.26
+88.44
+89.11
+88.86
+80.09
+Ours
+45.56
+38.01
+40.56
+72.65
+46.60
+49.35
+77.37
+45.41
+77.23
+78.23
+49.59
+77.55
+78.27
+78.16
+78.03
+62.17
+续表
+注：√表示模态存在 ；×表示模态缺失 ；F 表示 Flair；T1c 表示 T1ce；加粗表示最优结果 ；下划线表示次优结果 .
+表 4　BraTS2018 数据集上缺失环境下对比实验结果
+T2
+√
+×
+×
+×
+√
+√
+√
+×
+×
+×
+√
+√
+√
+×
+T1
+×
+√
+×
+×
+√
+×
+×
+√
+√
+×
+√
+√
+×
+√
+F
+×
+×
+√
+×
+×
+√
+×
+√
+×
+√
+√
+×
+√
+√
+T1c
+×
+×
+×
+√
+×
+×
+√
+×
+√
+√
+×
+√
+√
+√
+U-HeMIS
+80.96
+57.62
+52.48
+61.53
+82.41
+82.95
+82.48
+64.62
+68.47
+68.99
+83.43
+83.94
+83.85
+72.31
+U-HVED
+79.83
+49.51
+84.39
+53.62
+81.56
+87.58
+81.32
+85.71
+64.22
+85.93
+88.07
+82.32
+88.09
+86.72
+mmFormer
+81.15
+67.52
+86.10
+72.22
+82.20
+87.59
+82.99
+87.06
+74.42
+87.30
+87.75
+82.71
+88.14
+87.33
+M3AE
+84.80
+74.40
+88.70
+75.80
+86.70
+89.90
+86.30
+89.00
+77.20
+89.70
+89.90
+85.70
+90.20
+88.90
+HIOF
+85.74
+79.14
+87.15
+80.79
+86.30
+90.75
+85.62
+89.49
+81.92
+88.53
+89.96
+87.90
+88.84
+88.98
+Ours
+89.70
+74.98
+88.39
+76.11
+89.97
+90.29
+90.90
+87.45
+78.25
+88.78
+90.37
+90.90
+91.11
+87.03
+Modality Whole tumor
+3951
+
+=== PDF_PAGE 10 ===
+电 子 学 报 2025 年
+√
+Mean
+Modality
+T2
+√
+×
+×
+×
+√
+√
+√
+×
+×
+×
+√
+√
+√
+×
+√
+Mean
+Modality
+T2
+√
+×
+×
+×
+√
+√
+√
+×
+×
+×
+√
+√
+√
+×
+√
+Mean
+√
+T1
+×
+√
+×
+×
+√
+×
+×
+√
+√
+×
+√
+√
+×
+√
+√
+T1
+×
+√
+×
+×
+√
+×
+×
+√
+√
+×
+√
+√
+×
+√
+√
+√
+F
+×
+×
+√
+×
+×
+√
+×
+√
+×
+√
+√
+×
+√
+√
+√
+F
+×
+×
+√
+×
+×
+√
+×
+√
+×
+√
+√
+×
+√
+√
+√
+√
+T1c
+×
+×
+×
+√
+×
+×
+√
+×
+√
+√
+×
+√
+√
+√
+√
+T1c
+×
+×
+×
+√
+×
+×
+√
+×
+√
+√
+×
+√
+√
+√
+√
+84.74
+74.05
+Tumor core
+U-HeMIS
+57.20
+37.39
+26.06
+65.29
+60.92
+57.68
+76.64
+41.12
+72.46
+71.49
+60.32
+78.96
+77.53
+76.01
+79.48
+62.57
+Enhancing tumor
+U-HeMIS
+25.63
+10.16
+11.78
+62.02
+32.39
+30.22
+67.83
+10.71
+68.47
+66.10
+31.07
+69.92
+68.72
+68.54
+70.24
+46.10
+88.46
+79.16
+U-HVED
+54.57
+33.90
+57.90
+59.59
+56.26
+62.70
+73.92
+61.14
+67.55
+75.07
+63.14
+75.28
+76.75
+77.05
+77.71
+64.84
+U-HVED
+22.82
+8.60
+23.80
+57.64
+24.29
+32.31
+67.83
+27.96
+64.22
+68.36
+32.34
+67.75
+68.93
+68.60
+69.03
+46.76
+89.64
+82.94
+mmFormer
+64.20
+56.55
+61.21
+75.41
+69.42
+69.75
+78.61
+65.91
+78.59
+77.88
+71.52
+80.39
+79.55
+76.01
+85.78
+72.97
+mmFormer
+43.05
+32.53
+39.33
+72.60
+44.99
+47.52
+74.51
+43.96
+74.42
+75.07
+47.70
+74.75
+75.67
+75.47
+77.61
+59.85
+90.10
+85.80
+M3AE
+69.40
+66.10
+66.40
+82.90
+71.80
+70.90
+84.20
+70.80
+83.40
+84.40
+72.70
+84.40
+84.60
+84.10
+84.50
+77.40
+M3AE
+47.60
+37.10
+35.60
+73.70
+48.70
+45.40
+75.30
+41.20
+74.70
+75.00
+44.80
+75.40
+73.80
+74.00
+75.50
+59.90
+90.14
+86.75
+HIOF
+70.02
+72.03
+67.82
+84.69
+73.65
+71.90
+83.88
+72.48
+84.36
+83.15
+74.15
+83.77
+83.27
+84.56
+85.09
+78.32
+HIOF
+42.76
+42.31
+43.86
+77.89
+48.64
+46.05
+76.68
+43.85
+75.30
+76.44
+44.53
+76.20
+75.80
+76.23
+77.98
+61.63
+91.08
+87.02
+Ours
+69.35
+66.30
+66.15
+84.42
+70.09
+70.71
+87.65
+69.51
+85.74
+85.73
+71.99
+87.89
+86.63
+86.50
+87.49
+78.41
+Ours
+35.26
+29.18
+35.84
+74.06
+45.60
+45.55
+76.27
+40.87
+75.77
+76.63
+44.10
+78.71
+78.22
+77.40
+78.56
+60.13
+续表
+Modality Whole tumor
+注：√表示模态存在 ；×表示模态缺失 ；F 表示 Flair；T1c 表示 T1ce；加粗表示最优结果 ；下划线表示次优结果 .
+对比实验结果表明 ，本文方法在模态缺失的情况
+下依然展现出较强的鲁棒性 . 具体而言 ，所提出的网络
+能够在模态数量受限时 ，有效地提取现有模态中的病
+灶语义分割本征信息 ，确保分割精度和性能稳定性 . 通
+过采用不同的融合策略 ，网络能够根据各层特征的特
+点实现高效融合 ，并结合空间与通道双重注意力机制
+进一步优化特征表达 ，从而确保分割结果在多种模态
+组合下的稳定性和可靠性 . 这证明了本文方法能够在
+面对模态缺失时 ，依然维持较高的分割精度 ，具备很好
+的适应能力 .
+可视化 . 为了进一步验证我们方法在模态缺失环
+境下的鲁棒性 ，在 BraTS2020 和 BraTS2018 数据集上，针
+3952
+
+=== PDF_PAGE 11 ===
+第 11 期 贾熹滨等：SM3RNet：一种基于空间 Mamba 的模态缺失鲁棒病灶分割网络
+对多种模态组合情况 ，进行了可视化实验 . 实验结果如
+图 4 所示，从可视化结果中可以看出 ，随着可用模态数
+量的减少 ，模型的预测结果依然能够保持较好的病灶
+区域完整性 ，即使在仅剩一个可用模态的情况下 ，模型
+仍然能够产生非常可观的预测结果 . 以上结果充分说
+明 SME 通过状态选择性空间建模 ，有效维持单模态特
+征表示质量 、得益于多视角注意力 MACF 建立的跨模态
+语义记忆以及并行残差注意力 DSD 显著抑制了模态缺
+失导致的边缘破碎化 . 这证明了我们的方法在模态缺
+失的情况下展现出较强的鲁棒性 ，能够在一定程度上
+维持分割结果的稳定性 ，并有效应对模态缺失所带来
+的挑战 .
+5　结论
+本文提出了一种基于空间 Mamba 的模态缺失鲁棒
+病灶分割网络 ——SM3RNet. 该网络基于 Mamba 架构 ，
+构建多分支的空间 Mamba 编码器 ，自适应处理任意模
+态组合输入 ，利用三维选择性扫描机制实现长程依赖
+建模 ，并设计基于多视角注意力机制引导的跨模态特
+征融合模块进行特征融合 ，强化多模态共有语义特征
+贡献 ，维持模态缺失下的特征完整性 ；此外 ，网络设计
+了结合空间和通道并行的双重注意力机制解码器 ，从
+两个维度协同优化融合特征表示 . 我们在 BraTS2020
+和 BraTS2018 数据集上对该方法进行了验证 ，实验结果
+表明 ，SM3RNet 不仅在模态完备环境下表现优异 ，即使
+在模态缺失的情况下 ，仍能够保持出色的分割性能 ，展
+现出较强的鲁棒性 . 未来，我们计划将 SM3RNet 扩展应
+用于模态数量更多且模态间差异更大的任务 ，以进一
+步验证其有效性和适用性 .
+参考文献
+［1］ LITJENS G , KOOI T , BEJNORDI B E , et al . A survey on 
+deep learning in medical image analysis [J]. Medical Image 
+Analysis, 2017, 42: 60-88.
+［2］ SHEN D G , WU G R , SUK H I . Deep learning in medical 
+image analysis [J]. Annual Review of Biomedical Engineer ⁃
+ing, 2017, 19: 221-248.
+［3］ XING Z H , YU L Q , WAN L , et al . NestedFormer : Nest ⁃
+ed modality -aware transformer for Brain tumor segmenta ⁃
+tion[C]//Medical Image Computing and Computer Assist ⁃
+ed Intervention - MICCAI 2022. Cham : Springer , 2022: 
+140-150.
+［4］ 周新民 , 熊智谋 , 史长发 , 等 . 基于多尺度卷积调制的医
+学图像分割[J]. 电子学报, 2024, 52(9): 3159-3171.
+ZHOU X M , XIONG Z M , SHI C F , et al . Medical im ⁃
+age segmentation based on multi -scale convolution 
+modulation[J]. Acta Electronica Sinica , 2024, 52(9): 3159-
+3171. (in Chinese)
+［5］ 雷涛, 张峻铭 , 杜晓刚 , 等 . 基于混洗特征编码与门控解
+码 的 医 学 图 像 分 割 网 络[J]. 电 子 学 报, 2024, 52(12): 
+4142-4152.
+LEI T , ZHANG J M , DU X G , et al . Medical image seg ⁃
+mentation network based on shuffled feature encoding and 
+gated decoding [J]. Acta Electronica Sinica , 2024, 52(12): 
+4142-4152. (in Chinese)
+［6］ MENZE B H , JAKAB A , BAUER S , et al. The multimod al 
+brain tumor image segmentation benchmark (BRATS) [J]. 
+IEEE Transactions on Medical Imaging , 2015, 34(10): 
+1993-2024.
+［7］ DING Y H , YU X, YANG Y . RFNet: Region-aware fusion 
+network for incomplete multi -modal brain tumor segmenta ⁃
+tion[C]//2021 IEEE/CVF International Conference on 
+Computer Vision . Piscataway: IEEE, 2022: 3955-3964.
+［8］ DORENT R , JOUTARD S , MODAT M , et al . Hetero -
+modal variational encoder -decoder for joint modality com ⁃
+pletion and segmentation [C]//Medical Image Computing 
+and Computer Assisted Intervention - MICCAI 2019. 
+Cham: Springer, 2019: 74-82.
+［9］ HAVAEI M , GUIZARD N , CHAPADOS N , et al. HeMIS: 
+Hetero-modal image segmentation [C]//Medical Image 
+Computing and Computer -Assisted Intervention - MICCAI 
+2016. Cham: Springer, 2016: 469-477.
+［10］ ZHANG Y, HE N J, YANG J W , et al. mmFormer: Multi⁃
+modal medical transformer for incomplete multimodal 
+learning of brain tumor segmentation [C]//Medical Image 
+Computing and Computer Assisted Intervention - MIC ⁃
+CAI 2022. Cham: Springer, 2022: 107-117.
+［11］ LIU H, WEI D , LU D H , et al. M3AE: Multimodal repre ⁃
+sentation learning for brain tumor segmentation with 
+missing modalities [J]. Proceedings of the AAAI Confer ⁃
+ence on Artificial Intelligence , 2023, 37(2): 1657-1665.
+图 4　模态缺失环境下分割结果可视化
+3953
+
+=== PDF_PAGE 12 ===
+电 子 学 报 2025 年
+［12］ RONNEBERGER O , FISCHER P , BROX T. U-Net: Con⁃
+volutional networks for biomedical image segmenta ⁃
+tion[C]//Medical Image Computing and Computer -Assist⁃
+ed Intervention - MICCAI 2015. Cham : Springer , 2015: 
+234-241.
+［13］ VASWANI A , SHAZEER N , PARMAR N , et al . Atten ⁃
+tion is all you need [EB/OL]. (2023-08-02) [2025-10-10]. 
+https://arxiv.org/abs/1706.03762.
+［14］ GU A , DAO T . Mamba : Linear -time sequence modeling 
+with selective state spaces [EB/OL]. (2024-05-31) [2025-
+10-10]. https://arXiv.org/abs/2312.00752.
+［15］ LIU J R , YANG H , ZHOU H Y , et al . Swin -UMamba: 
+Mamba-based UNet with ImageNet -based pretraining [C]//
+Medical Image Computing and Computer Assisted Inter ⁃
+vention - MICCAI 2024. New York: ACM, 2024: 615-625.
+［16］ MA J , LI F F , WANG B . U -mamba: Enhancing long -
+range dependency for biomedical image segmentation [EB/
+OL]. (2024-01-09)[2025-11-10]. https ://arXiv .org/abs/
+2401.04722.
+［17］ ZHU L H , LIAO B C , ZHANG Q , et al . Vision Mamba : 
+Efficient visual representation learning with bidirectional 
+state space model [EB/OL]. (2024-11-14) [2025-10-10]. 
+https://arXiv.org/abs/2401.09417.
+［18］ RUAN J , XIANG S . VM-UNet: Vision Mamba UNet for 
+medical image segmentation [EB/OL]. (2024-05-28)[2025-
+11-10]. https://arXiv.org/abs/2402.15604.
+［19］ LIAO W B , ZHU Y H , WANG X Y , et al. LightM-UNet: 
+Mamba assists in lightweight UNet for medical image 
+segmentation[EB/OL]. (2024-03-11)[2025-11-10]. https://
+arXiv.org/abs/2403.05246.
+［20］ FAN C , YU H Y , HUANG Y , et al . SliceMamba with 
+neural architecture search for medical image segmenta ⁃
+tion[J]. IEEE Journal of Biomedical and Health Informat ⁃
+ics, 2025, 29(10): 7446-7458.
+［21］ ZHOU Z W , RAHMAN SIDDIQUEE M M , TAJ ⁃
+BAKHSH N , et al . UNet++ : A nested U -Net architecture 
+for medical image segmentation [C]//Deep Learning in 
+Medical Image Analysis and Multimodal Learning for 
+Clinical Decision Support . Cham: Springer, 2018: 3-11.
+［22］ OKTAY O , SCHLEMPER J , LE FOLGOC L , et al . At ⁃
+tention U -Net: Learning where to look for the pancre ⁃
+as[EB/OL]. (2018-05-20) [2025-11-10]. https ://arXiv. org/
+abs/1804.03999.
+［23］ ÇIÇEK Ö, ABDULKADIR A , LIENKAMP S S , et al. 3D 
+U-Net: Learning dense volumetric segmentation from 
+sparse annotation [C]//Medical Image Computing and 
+Computer-Assisted Intervention - MICCAI 2016. Cham : 
+Springer, 2016: 424-432.
+［24］ MILLETARI F , NAVAB N , AHMADI S A . V-net: Fully 
+convolutional neural networks for volumetric medical im ⁃
+age segmentation [C]//2016 Fourth International Confer ⁃
+ence on 3D Vision. Piscataway: IEEE, 2016: 565-571.
+［25］ ALOM M Z , YAKOPCIC C , HASAN M , et al. Recurrent 
+residual U -Net for medical image segmentation [J]. Jour ⁃
+nal of Medical Imaging , 2019, 6(1): 014006.
+［26］ ISENSEE F , PETERSEN J , KLEIN A , et al . Abstract : 
+NnU-Net: Self-adapting framework for U -net-based medi⁃
+cal image segmentation [M]//Bildverarbeitung für die 
+Medizin 2019. Wiesbaden : Springer Fachmedien Wies ⁃
+baden, 2019: 22.
+［27］ WANG W X, CHEN C, DING M, et al. TransBTS: Multi⁃
+modal brain tumor segmentation using transformer [C]//
+Medical Image Computing and Computer Assisted Inter ⁃
+vention - MICCAI 2021. Cham: Springer, 2021: 109-119.
+［28］ HATAMIZADEH A , TANG Y C , NATH V , et al . UNE ⁃
+TR: Transformers for 3D medical image segmentation [C]//
+2022 IEEE/CVF Winter Conference on Applications of 
+Computer Vision . Piscataway: IEEE, 2022: 1748-1758.
+［29］ XING Z H , YE T , YANG Y J , et al . SegMamba : Long -
+range sequential modeling Mamba for 3D medical image 
+segmentation[C]//Medical Image Computing and Com ⁃
+puter Assisted Intervention - MICCAI 2024. Cham : 
+Springer, 2024: 578-588.
+［30］ WOO S , PARK J , LEE J Y , et al . CBAM : Convolutional 
+block attention module [C]//Computer Vision - ECCV 
+2018. Cham: Springer, 2018: 3-19.
+［31］ VALANARASU J M J , PATEL V M . UNeXt : MLP -
+based rapid medical image segmentation network [C]//
+Medical Image Computing and Computer Assisted Inter ⁃
+vention - MICCAI 2022. Cham: Springer, 2022: 23-33.
+［32］ LIU F, ZHANG Y D , LU T , et al . Hierarchical in -out fu⁃
+sion for incomplete multimodal brain tumor segmenta ⁃
+tion[J]. Scientific Reports , 2025, 15: 23017.
+［33］ XIONG Y Z , DU H W , ZHANG D K . A guided -learning 
+network for brain tumor segmentation with missing mo ⁃
+dalities[C]//Proceedings of the 2025 2nd International 
+Conference on Generative Artificial Intelligence and In ⁃
+formation Security . New York: ACM, 2025: 219-225.
+3954
+
+=== PDF_PAGE 13 ===
+第 11 期 贾熹滨等：SM3RNet：一种基于空间 Mamba 的模态缺失鲁棒病灶分割网络
+作者简介：
+贾熹滨    女，1969 年 11 月出生于山西省太
+原市 . 现为北京工业大学计算机学院教授 . 主
+要研究方向为计算机视觉 、多模态深度学习 、智
+能医学影像 、情感计算、行为识别 .
+E-mail: jiaxibin@bjut.edu.cn
+杨川旭    男，2001 年 8 月 出 生 于 黑 龙 江 省
+哈尔滨市 . 现为北京工业大学硕士研究生 . 主
+要研究方向为计算机视觉和多模态医学图像分
+割 .  
+E-mail: ycx_shiroi@emails .bjut.edu.cn
+范 超    男，1994 年 2 月 出 生 于 安 徽 省 安
+庆市 . 现为北京工业大学博士研究生 . 主要研
+究方向为医学图像分析 .
+E-mail: chao.fancripac@gmail .com
+郑依鸣    男，2001 年 6 月 出 生 于 湖 北 省 黄
+冈市 . 毕业于北京工业大学 . 主要研究方向为
+半监督医学图像分割 .
+E-mail: 1746257500@qq.com
+杨正汉    男，1968 年 9 月出生于浙江省衢州
+市 . 现为北京友谊医院放射科主任 . 主要研究方
+向为腹部疾病的影像诊断、肝细胞癌及癌前病变的
+早期影像诊断以及新MRI 技术的开发与应用.
+E-mail: zhenghanyang@263.net
+杨大为    男，1983 年 4 月出生于湖南省岳阳
+市 . 现为北京友谊医院放射科主任助理 . 主要研
+究方向为肝脏疾病的影像诊断及相关研究 .
+E-mail: dawei-yang@vip.163.com
+徐 辉    男，1978 年 12 月出生于山东省德
+州市 . 现为北京友谊医院放射科主任医师. 主要研
+究方向为深度学习在肝脏疾病诊断中的应用.
+E-mail: mr_xuhui@163.com
+3955

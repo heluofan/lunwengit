@@ -1,0 +1,942 @@
+=== PDF_PAGE 1 ===
+微生物学通报
+Microbiology China
+tongbao@im.ac.cn
+http://journals.im.ac.cn/wswxtbcn
+基于“图谱赋能+智能伴学+数智评价”的现代工科
+微生物学智慧课程生态系统的构建与实践
+谢晖 1，付凯元 2，朱守平 1，任子琪 1，陈雪利 1*
+1 西安电子科技大学 生命科学技术学院，陕西 西安 710126
+2 西安电子科技大学研究生院，陕西 西安 710126
+谢晖, 付凯元, 朱守平, 任子琪, 陈雪利．基于“图谱赋能+智能伴学+数智评价”的现代工科微生物学智慧课程生态系统的构建与
+实践[J]．微生物学通报, 2026, 53(4): 1754-1771．
+XIE Hui , FU Kaiyuan , ZHU Shouping , REN Ziqi , CHEN Xueli . Construction and practice of a modern smart course ecosystem of 
+Modern Engineering Microbiology based on graph empowerment+intelligent companion learning+digital intelligence evaluation [J]. 
+Microbiology China, 2026, 53(4): 1754-1771.
+摘 要 ： 在教育数字化转型和智能赋能高等教育背景下 ，本课程团队针对电子信息特色的现代
+工科微生物课程内容体系 、师-生-机三元深度交互优化以及全周期精准实时评价 3 个核心问题进
+行了深入探索 ，构建了一个集成 “图谱赋能 +智能伴学 +数智评价 ”功能的智慧课程生态系统 。该
+系统以微生物学基础理论为基石 ，利用知识 -问题-育人多维度图谱将复杂的概念 、机制 、工程问
+题及价值观目标可视化和逻辑化 ，实现了课程内容的结构化导航 。通过深度融合生物医学工程专
+业人才培养方案中的跨学科核心知识关联 ，强化了学习目标的达成 。此外，开发了一种基于海量
+数字化资源训练迭代而成的智能助教系统 ，提供个性化学习路径和即时反馈 ，有效增强了学生对
+课程内容的掌握 。自主研发的三全育人多模态数智评价系统能够全程追踪并可视化学生的学习成
+效，实现精准指导 。经过多轮教学实践迭代 ，结果显示学生的知识点掌握度 、自主学习投入度及
+学习成绩均有显著提升 。这一智慧课程生态系统的建设不仅提升了教学效率 ，促进了学生主动学
+习与批判思维的发展 ，还公平公正地量化了学生的全过程学习成效 ，为培养具有医工交叉背景的
+新工科生物医学工程拔尖创新人才奠定了坚实的基础 。
+关键词 ：现代工科微生物学 ；多元图谱 ；伴学智能体 ；智能评价
+■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+■■■■■■■■
+■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+■■■■■■■■
+高校教改纵横
+Apr. 20, 2026, 53(4): 1754-1771
+CSTR: 32113.14.j.MC.251309
+DOI: 10.13344/j.microbiol.china.251309
+Copyright ©2026 Microbiology China All Rights Reserved
+资助项目 ：全国教育科学规划一般项目 (ZTB250519)；西安电子科技大学名师培育项目 (MS251501)
+This work was supported by the General Project of National Educational Science Planning (ZTB250519) and the Xidian University 
+Distinguished Teacher Training Program (MS251501).
+*Corresponding author. E-mail: xlchen@xidian.edu.cn
+Received: 2025-12-17; Accepted: 2026-03-03; Published online: 2026-03-13
+
+=== PDF_PAGE 2 ===
+谢晖 等 | 基于 “图谱赋能 +智能伴学 +数智评价 ”的现代工科微生物学智慧课程生态系统的构建 ...
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+Construction and practice of a modern smart course ecosystem 
+of Modern Engineering Microbiology based on graph 
+empowerment+intelligent companion learning+digital 
+intelligence evaluation
+XIE Hui1, FU Kaiyuan2, ZHU Shouping1, REN Ziqi1, CHEN Xueli1*
+1 School of Life Science and Technology, Xidian University, Xi’an 710126, Shaanxi, China
+2 Graduate School, Xidian University, Xi’an 710126, Shaanxi, China
+Abstract: In the context of digital transformation in education and intelligent empowerment of 
+higher education , our course team has conducted in-depth exploration on three core issues : the 
+content system of Modern Engineering Microbiology with electronic information characteristics , 
+the optimization of teacher-student-machine deep interaction , and the full-cycle accurate real-time 
+evaluation. We have built a smart course ecosystem that integrates graph empowerment , intelligent 
+companion learning , and digital intelligence evaluation . The system is based on the fundamental 
+theory of microbiology and utilizes a multidimensional graph encompassing knowledge , problem, 
+and education to visualize and logicalize complex concepts , mechanisms , engineering problems , 
+and value goals , achieving structured navigation of course contents . Through the deep 
+incorporation of interdisciplinary core knowledge connections in the talent training program for 
+biomedical engineering, the achievement of learning objectives has been strengthened . In addition, 
+we have developed an intelligent teaching assistant system based on massive digital resource 
+training iterations to provide personalized learning paths and instant feedback , effectively 
+enhancing students ’ mastery of course contents . The independently developed multimodal digital 
+intelligence evaluation system for comprehensive education can track and visualize students ’ 
+learning outcomes throughout the process , achieving precise guidance . After multiple iterations of 
+teaching practice, the results show that students ’ mastery of knowledge points , engagement in self-
+directed learning, and academic performance have all significantly improved . The construction of 
+this intelligent course ecosystem not only improves teaching efficiency and fosters students ’ active 
+learning and critical thinking, but also fairly and justly quantifies the learning outcomes of students 
+throughout the entire process , laying a solid foundation for cultivating outstanding innovative 
+talents in biomedical engineering in the context of emerging engineering education.
+Keywords: Modern Engineering Microbiology ; multidimensional graph ; intelligent agents of 
+companion learning; intelligent evaluation
+近年来 ，以生成式人工智能为代表的智能
+技术迅猛发展 ，其在高等教育教学领域的应用
+也日益广泛 ，正以前所未有的深度和广度推动
+传统教育模式的系统性变革 [1]。2025 年初 ，国
+产大模型 DeepSeek 的发布 ，进一步降低了 AI
+在各级各类教育教学场景中的应用门槛 ，为国
+内教育界开展智能化教学探索提供了有力支撑 。
+在微生物学这一基础且关键的学科领域 ，如何
+1755
+
+=== PDF_PAGE 3 ===
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+微生物学通报 Microbiol. China
+有效融合新兴智能技术 以提高教学质量 ，已成
+为广大微生物学课程教师关注的焦点议题 [2]。当
+前，具有电子信息特色的高校在生物医学工程
+(后文简称：医工)专业微生物学教学中面临多重
+挑战：(1) 如何建构新工科背景 、融合电子信息
+特色的跨学科课程内容体系 ；(2) 如何研发面向
+课程知识域的科学伴学智能体助教 ，并将其有
+机嵌入教学全流程 ，实现人机协同育人 ；(3) 如
+何建立高效 、精准、全过程的学习效果评价机
+制，实现教学反馈的实时化与个性化 。在此背
+景下，本研究提出并实践构建 “图谱赋能 +智能
+伴学+数智评价 ”三位一体的现代工科微生物学
+智慧课程生态系统 。通过强化课程内容的跨学
+科关联 、创新智能体驱动的教学组织模式 ，以
+及实施多维度数智化学习评价 ，系统推进教学
+改革，旨在培养兼具医工交叉视野 、创新思维
+与实践能力的拔尖创新人才 。本研究立足我国
+微生物学教学数字化 、智能化转型的实际需求 ，
+深入融合现代智能信息技术优势 ，不仅为医工
+类专业微生物学课程改革提供可复制 、可推广
+的实践范式 ，也为新工科背景下基础课程的智
+慧化建设提供理论支撑与参考路径。
+1　　课程基本情况及特色介绍课程基本情况及特色介绍
+现代工科微生物学课程 (后文统称“课程”)是
+我校生物医学工程专业必修核心课 ，由于课程
+整合联通培养方案先修后修课程大量数理类 、
+计算机类核心知识 ，也是医工专业培养方案中
+唯一生物类必修课程 。本课程于大三年级上学
+期开设，80 学时，5 学分(理论线上 16 学时，理
+论线下 32 学时 ，线下实验 24 学时 ，线上实验
+16 学时)，班级人数在 40−50 人之间。课程以微
+生物学经典知识体系为基础 ，结合我校电子信
+息学科优势 ，以微生物经典知识框架为基础 ，
+通过跨学科核心知识点关联重构 ，深度融合前
+沿数据科学 、计算机科学 、人工智能等跨学科
+内容。以培养具备跨学科创新型医工领域优秀
+人才及未来领军人才为主要目标(图 1)。
+2　　电电子信息特色高校医工专业子信息特色高校医工专业
+微生物学智慧课程建设的挑战与微生物学智慧课程建设的挑战与
+应对应对
+2.1　如何建设课程的交叉内容体系
+我校生物医学工程专业授予工学学士学位 ，
+因此在培养方案中更加注重工科课程的建设 [3]。
+因此，在工科课程为主的培养方案中 ，微生物
+学课程的内容安排则需要考虑融入更多的跨学
+科的知识和技能 。我校医工专业学生在专业课
+程学习阶段涉及大量数学 、计算机等工科类知
+识，部分学生由于前期基础不扎实 、兴趣度及
+学习能力等多方面原因导致无法跟上专业课程
+内容进度 。他们通常是由于缺乏有效的学习手
+段，不知从何补起 ，导致出现 “越学越糊涂 ”最
+终放弃课程学习 。因此，基于“语义网络 ”(知识
+图谱)技术有效串联微生物学与培养方案中其他
+跨学科课程核心知识点的逻辑关系 ，成为了解
+决学生个性化学习需求的有效途径。
+2.2　如何建设科学智能体助教并有机融
+入教学组织全流程
+现今 ，随着各类生成式人工智能的广泛出
+现，学生在课业压力等因素影响下 ，常在缺乏
+教师科学引导的情况下 ，直接依赖搜索引擎或
+大语言模型等工具获取作业答案 ，不仅削弱了
+学习过程中的深度思考 ，也对课程教学质量造
+成显著冲击 。在此背景下 ，如何将传统微生物
+学课程的教学组织有效转型为兼具在线灵活性 、
+线下高互动性与学生高参与度的混合式学习模
+式，已成为教学改革的核心挑战之一 [4]。另外，
+生成式人工智能若加以合理引导 ，也可称为提
+升教学效能的重要资源 。因此，亟需探索如何
+基于课程需求 ，构建专业适配度高 、具备学科
+认知能力的专业 AI 助教(课程智能体 )，并将其
+1756
+
+=== PDF_PAGE 4 ===
+谢晖 等 | 基于 “图谱赋能 +智能伴学 +数智评价 ”的现代工科微生物学智慧课程生态系统的构建 ...
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+图1　课程在培养方案中的重要关系及课程特色培养目标
+Figure 1　The important relationship and characteristics of courses in the training program and the training objectives of course features.
+1757
+
+=== PDF_PAGE 5 ===
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+微生物学通报 Microbiol. China
+有机融入教学设计 、实施与评价的全流程 。同
+时，通过规范化的线上 线下教学组织机制 ，引
+导学生科学 、合理地使用专业 AI 助教，进而提
+升混合式教学的整体成效 ，是当前值得深入实
+践与系统研究的关键课题[5-6]。
+2.3　如何高效精准开展课程的过程学习
+效果评价
+在教育数字化浪潮的不断驱动下 ，传统的
+考核评价方式已不适用于高质量人才培养 。因
+此，如何有效利用数据分析等技术对学生的学
+习过程和结果进行综合评价成为课程质量保障
+的重要挑战 。虽然多元评价的出现一定程度上
+解决了上述问题 ，但是评价维度主要集中在应
+试、出勤、线上学习完成率等表层数据 ，难以
+全面反映学生的真实学习成效 。在实际应用中 ，
+上述评价方式在班级人数不同 、评价权重缺乏
+科学依据 、成绩真实性难保障 、教师评阅负担
+重，以及评价结果精准度不足等方面 ，依然面
+临挑战 。随着教育数字化转型的不断完善 ，越
+来越多的课程过程数据也逐步趋于完善 。因此，
+如何基于全过程学习数据 ，融合科学的智能分
+析技术 ，实现对课程学习成效的高效 、精准 、
+动态评价 ，不仅成为保障课程教学质量的关键
+环节，更是支撑医工复合型人才培养体系的重
+要任务[7]。
+3　　基于基于““图谱赋能图谱赋能+智能伴学智能伴学+数数
+智评价智评价 ”” 的现代工科微生物学智的现代工科微生物学智
+慧课程生态系统构建慧课程生态系统构建
+针对上述 3 个问题与挑战 ，课程团队通过
+10 余年的本科生持续课程培养及多轮次数智化
+教学案例场景建设实践探索[8]，结合西安电子科
+技大学计算机及信息工程领域优势 ，通过智慧
+手段，构建全方位 、互动式、智能化的 “图谱赋
+能+智能伴学+数智评价”智慧课程教学与学习模
+式开展了相关探索和实践 ，较好地解决了上述
+问题(图 2)。
+3.1　医工融合导向的微生物跨学科课程
+立体化图谱构建
+通过优化培养方案中生物类 、计算机类及
+信息类课程知识点 ，课程团队打破了原有 “知识
+图谱”的单一知识维度 ，系统性建设了医工交叉
+特色“知识-问题-育人”立体化图谱。相较于传统
+单一维度的知识图谱 ，立体化图谱优势在于实
+现了知识 、问题与育人的多维融合 。它不仅呈
+现知识间的关联 ，更通过 “问题 ”维度引导医工
+交叉的实践应用 ，强化解决实际问题的能力 ；
+同时融入 “育人 ”维度，将价值塑造 、能力培养
+与知识传授有机结合 ，使学习更具针对性和综
+合性。这种多维立体结构可以更好地打破知识
+孤岛，促进跨学科交叉 ，提升教学的系统性和
+育人效果 。结合团队主编新工科教材框架 ，整
+合近 10 年建立的各类数字资源为学生提供个性
+化分级支持 ，并将资源匹配入跨学科智能知识
+图谱支持学生个性化学习需求 。本课程立体化
+图谱建设依托我校 “智课平台 ”完成(由于国内主
+流智慧教学平台均基本具备上述功能 ，因此本
+方法为通用方法 )，建设主要方法及流程如图 3
+所示。
+在跨学科知识图谱建设层面 ，团队基于现
+代工科微生物学的核心章节知识点为基础建设 。
+如微生物的分类 、结构、生长繁殖 、代谢、遗
+传、环境、进化，以及与人类健康和疾病的关
+系(免疫)。以上述概念作为课程知识图谱的基础
+知识节点 ，也是链接其他培养方案课程群核心
+知识的关键 。同时，将工程学原理和技术 ，如
+生物工程 、生物信息学 、微流控技术等与上述
+微生物学基础知识相结合 ，将上述技术在知识
+图谱中作为连接现代工科微生物学理论与实践
+应用的桥梁 。随后突出微生物学相关内容在疾
+病诊断 、治疗和预防中的应用 ，如疫苗开发 、
+抗生素耐药性研究等内容。
+在项目导向问题图谱建设层面 ，课程主要
+结合微生物学实践技能及相关工程实践展开 ，
+1758
+
+=== PDF_PAGE 6 ===
+谢晖 等 | 基于 “图谱赋能 +智能伴学 +数智评价 ”的现代工科微生物学智慧课程生态系统的构建 ...
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+如微生物培养 、分子生物学技术 、免疫药物研
+发设计在微生物学实验中的应用 ，通过案例研
+究导向构建系统化项目导向问题图谱 ，将微生
+物学知识应用于解决实际研究问题及工程问题
+中，如环境工程中的污水处理 、食品安全检测 、
+免疫预防治疗等。
+图2　聚焦问题与挑战的现代工科微生物学智慧课程生态系统建设框架
+Figure 2　Construction of ecosystem of Modern Engineering Microbiology smart course focusing on problems 
+and challenges.
+1759
+
+=== PDF_PAGE 7 ===
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+微生物学通报 Microbiol. China
+图3　课程立体化图谱关联及建设方法
+Figure 3　Multidimensional graph association and construction approach.
+1760
+
+=== PDF_PAGE 8 ===
+谢晖 等 | 基于 “图谱赋能 +智能伴学 +数智评价 ”的现代工科微生物学智慧课程生态系统的构建 ...
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+在体系化育人图谱建设层面 ，课程内容紧
+密结合教育部 2020 年颁布的 《高等学校课程思
+政建设指导纲要》 [9]中理工类课程育人要求，以
+学生课程学习过程中的情感变化和价值输出为
+核心观测点 ，建立了基于课程学习情感变化的
+“交叉难寻-理实渐明-主动求变-个性探寻医工认
+同-锐意创新 ”的长效性渐进式微生物课程育人
+体 系， 并 配 套 建 设 系 统 化 课 程 思 政 育 人 图 谱
+紧密 关联课程知识点及能力点 (图 4)，以实现学
+生情感与课程深化的同步演进 。例如，首章以
+前沿交叉内容激发探索意愿 、建立挑战认同 ；
+第 2 章、第 3 章通过理实结合 ，助学生掌握交
+叉方法 ，实现 “ 理实渐明 ” 。进入应用模块后 ，
+学生通过自主项目主动求变 。终章借助融通性
+前沿专题 ，引导学生形成负责的研究态度与系
+统创新意识 ，强化科技服务健康的使命感 。情
+感目标依托各章知识载体 ，随课程递进从兴趣 、
+认同深化至伦理反思与责任担当 ，实现了思政
+教育与专业内容的深度融合 ，在知识传授中完
+成价值塑造。
+3.2　基于工科项目研究导向的微生物学
+伴学智能体构建与应用
+基于课程团队 10 余年来积累建设的海量数
+字资源，开展课程伴学智能体专业知识库构建 。
+先后整合包含课程教材 、国外优秀影印版教材 、
+教学大纲 、教学设计 、教学 PPT、工程案例 、
+思政案例 、课程核心知识技能强相关的前沿进
+展文献资料 、MOOC 视频、拓展微课视频等资
+源，全面建立包含理论 、实验、案例研究的知
+识库，为课程伴学智能体提供内容支持 。同时
+深度结合工科技术与现代工科微生物学强关联
+内容，提供跨学科内容的学习资源和实践项目 ，
+促进伴学智能体的跨学科知识融合能力。
+基于团队近年来智慧教学经验 ，语料库建
+设往往是伴学智能体建设的第一步 ，高效准确
+的伴学智能体反馈机制是其 “去幻觉化 ”的关键
+环节。根据其问题解决情况 ，师生可直接在我
+校“智课平台 ”的伴学智能体问题交互文字下方
+“点赞 ”或者 “点踩 ”。同时通过在线轻量化问卷
+(3−5 题)等形式收集师生交互内容 、功能和使用
+流程的真实反馈 。团队定期组织任课教师参与
+知识库的审查 ，确保内容的准确性和专业性 。
+根据师生反馈和学科发展 ，每学期更新和补充
+语料库中的专业知识资源。为进一步降低“AI 幻
+觉”问题，团队在伴学智能体逻辑强化层面 ，教
+师协同学生通过课程中的案例研究 、跨学科问
+题解决等方式 ，检验逻辑推理的正确性 。教师
+端同时阶段性分析学生的学习路径 、交互记录
+及交互具体内容等 ，优化学习推荐逻辑 。随后
+根据课程实际情况和学生学习负担 ，建立简洁、
+高效、易落地且科学的伴学智能体使用原则及
+要求，促进学生对问题的深度思考和批判性思
+维养成，杜绝学生的盲目和无脑使用(图 5)。
+课程团队充分利用伴学智能体开展互动式
+教学活动 ，如在线讨论 、小组合作 、全周期项
+目导向问题解决等任务 ，增强师-生-机之间的有
+效互动 。例如课程设计大量基于前沿问题引导
+的学习活动 ，鼓励学生通过伴学智能体探索问
+题并协助提供解决方案 ，教师提供指导和反馈 。
+再如在课程组织中引入虚拟专家 、科学家角色
+扮演和智能导学 ，教师则扮演学生同伴角色 ，
+提供实时反馈 ，共同向“专家”发起质疑和挑战 。
+经大量应用和迭代 ，课程团队基于我校 “智课平
+台 ” 建 设 的 伴 学 智 能 体 在 逻 辑 性 ( 已 整 合
+DeepSeek 深度思考模型)、专业性和灵活性上与
+ChatGPT 基本持平 ，基本满足学生的课程高阶
+性学习需求 。伴学智能体通过主讲教师可交互
+数字人分身予以呈现 ，使学生在随时随地的交
+互和学习过程中更具亲切感(图 5)。
+3.3　自主研发全过程智能评价平台保障
+智慧课程教学质量
+针对课程多元评价精准性和实时性等问题 ，
+课程团队结合科研方向优势 ，依托我校智课平
+台及高等教育智慧教育平台的巨大受众量 ，开
+1761
+
+=== PDF_PAGE 9 ===
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+微生物学通报 Microbiol. China
+图4　课程内容及立体化图谱框架
+Figure 4　Course content and three-dimensional atlas framework.
+1762
+
+=== PDF_PAGE 10 ===
+谢晖 等 | 基于 “图谱赋能 +智能伴学 +数智评价 ”的现代工科微生物学智慧课程生态系统的构建 ...
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+图5　课程伴学智能体助教建设及教学组织应用流程
+Figure 5　Construction of AI agent and application process of teaching organization.
+1763
+
+=== PDF_PAGE 11 ===
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+微生物学通报 Microbiol. China
+展了以智能技术 赋能课程学习评价改革 。基于
+学生在线学习 “行为-轨迹-能力 ”数据多模态特
+征[8] (含知识图谱学习 、伴学智能体交互 、虚拟
+仿真学习数据等 )，探索建立全过程在线学习智
+能评价模型 (图 6)。智能评价平台目前具备全过
+程学习效果实时评价模块 (匹配度 93.3%)、期末
+成绩超前预测模块 (误差 3.3 分)、学业智能预警
+模块(准确度 99.67%)、五维学科学习能力智能
+肖像(分类准确度 83.1%)、学业发展潜能评估模
+块(认可度 86.7%)等多个功能 ，成为学校及各类
+课程平台数字教育新生态的重要组成部分 。平
+台目前已拓展应用于学校 30 余门智慧平台上线
+课程及校内 200 余门课程的过程性评价 ，大量
+课程已将评价结果纳入平时成绩占比[7]。
+4　　““图谱赋能图谱赋能+智能伴学智能伴学+数智评数智评
+价价””的智慧课程组织案例的智慧课程组织案例
+4.1　教学单元介绍
+课程面向我校生物医学工程专业本科生开
+设，学生已在已修课程中具备较为完备的数学 、
+计算机及生物学基础知识技能 。授课班级人数
+40−60 人(本行政班为 54 人，为生物医学工程大
+类的“生命智能英才班 ”本硕一贯制学生 )，以课
+程第 10 章第 4、5 节“疫苗研发与免疫应答 ”混
+合式教学组织案例做简要介绍 (本单元计划学时
+4 学时，2 学时线下 ，1 学时线上个性化图谱学
+习及 1 学时线上虚拟仿真实训)。
+4.2　教学单元目标
+本节课程为第 10 章“感染与免疫 ”的重难点
+内容，同时也是学生重点开展创新能力培养和
+免疫学综合知识及能力应用的重要内容 ，直接
+支撑课程中免疫制药 +生物信息 +人工智能融合
+的能力目标达成 。近年来 ，免疫应答与疫苗的
+研发成为科学界关注的焦点 ，各类前沿技术助
+力免疫药物研发可加快药物的整体落地进程 。
+在上述背景下 ，本教学案例旨在通过 “ 图谱赋
+能+智能伴学+数智评价”的立体化教学模式 ，帮
+助学生深入理解掌握免疫系统的应答机制与疫
+苗的研发过程 。要求学生能够准确阐述疫苗作
+用的基本原理 ，明确区分不同类型的疫苗 。深
+度理解免疫应答的基本过程及其在疫苗保护中
+的作用 。独立开展基于分子特征的跨学科交叉
+疫苗研发的初步研发方案制定。
+4.3　智慧教学总体设计实施
+基于上述“学情-教情-课情”分析，本单元课
+程采用 “线上-线下-拓展 ”的三阶递进式教学模
+式，深度融合智能技术与科研实践 ，形成“知识
+建 构- 协 作 探 究- 虚 实 融 合” 的 闭 环 教 学 体 系
+(表 1)。教学实施过程如下。
+4.3.1　线上个性化知识图谱学习
+学生依托西电智课平台完成 1 学时自主探
+究，通过教学单元相关知识图谱的知识点部署
+视频资源 、案例资源与疫苗研发测试题构建核
+心知识框架 ，结合前沿文献拓展学科视野 。从
+知识图谱的学习路径来看 ，基础较为薄弱学生
+的图谱学习路径为 “建立免疫系统核心框架 ，理
+解基础药物研发流程 ”，总体学习路径为 ：免疫
+系统基础的抗原 -抗体相互作用 →免疫应答三阶
+段→免疫药物研发基础 →生物信息学工具查询
+抗体序列的路径完成图谱学习 ；基础适中学生
+图谱学习路径为 “掌握免疫调控网络 ，免疫药物
+智能研发关键环节 ”，总体学习路径为 ：免疫机
+制的免疫检查点调控 →智能药物技术的抗体人
+源化算法→交叉实践，如使用 AlphaFold 预测抗
+原表位结构的路径完成图谱学习 ；对于部分基
+础较好且需求更高的学生的图谱学习路径为 “解
+决复杂免疫问题 ，开发新型智能药物算法 ”，总
+体学习路径为 ：微生物组与免疫机制关系 →抗
+体亲和力与强化学习学科交叉 →肿瘤免疫治疗
+响应预测模型构建初探的路径完成图谱学习 。
+结合知识图谱内容 ，学生可进一步开展本章节
+相关内容的问题学习 (问题图谱辅助)。学生可通
+1764
+
+=== PDF_PAGE 12 ===
+谢晖 等 | 基于 “图谱赋能 +智能伴学 +数智评价 ”的现代工科微生物学智慧课程生态系统的构建 ...
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+图6　团队自主研发智能评价平台总体技术路线   LSTM：长短期记忆网络；CNN：卷积神经网络；CLB：可配置逻辑块。
+Figure 6　 Overall technical roadmap of the team ’s self-developed intelligent evaluation platform . LSTM: Long short-term memory ; CNN : 
+Convolutional neural networks; CLB: Configurable logic blocks.
+1765
+
+=== PDF_PAGE 13 ===
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+微生物学通报 Microbiol. China
+表1　微生物免疫药物研发内容教学设计
+Table 1　Teaching organizational process for immune drug development content
+阶段
+Stage
+线上个性化
+知识图谱
+学习
+Online 
+personalized 
+knowledge 
+graph 
+learning
+线下强交互
+智慧学习
+Offline 
+high-
+interaction 
+smart 
+learning
+线上沉浸式
+虚拟仿真
+实操
+Online 
+immersive 
+virtual 
+simulation 
+practical 
+training
+学时
+Teaching 
+hour
+1
+(线上)
+One 
+(online)
+2
+(线下)
+Two 
+(face-to-
+face)
+1
+(线上)
+One 
+(online)
+学习任务/内容
+Learning tasks/
+Content
+基于不同需求及学习
+路径的知识点视频、
+案例、测试题目、疫苗
+研发拓展视频、前沿
+文献、诊断性测试
+Knowledge point 
+videos, case studies, 
+assessment questions, 
+vaccine development 
+extension videos, 
+cutting-edge 
+literature, and 
+diagnostic tests 
+tailored to diverse 
+requirements and 
+learning pathways
+免疫应答机制；
+疫苗类型特点与
+优劣势分析；
+疫苗研发流程；
+智能赋能药物研发
+Immune response 
+mechanisms; 
+analysis of vaccine 
+types: characteristics 
+and advantages/
+disadvantages; 
+vaccine development 
+process; 
+intelligent 
+empowerment of 
+drug research and 
+development
+病毒灭活模拟；
+疫苗制备实验；
+免疫应答机制测试；
+学科交叉前沿拓展
+Virus inactivation 
+simulation; 
+vaccine preparation 
+experiment;
+immune response 
+mechanism testing; 
+frontiers in 
+interdisciplinary 
+research
+学生活动
+Student activity
+个性化学习路径
+规划；
+与伴学智能体互动
+答疑；
+分享互动内容至研
+讨社区
+Personalised 
+learning path 
+planning;
+interactive Q&A 
+with learning 
+companions;
+share interactive 
+content to 
+discussion 
+communities
+小组讨论与成果
+展示；
+提问与深入思考
+选择阶段性综合研
+讨问题(3 选1)
+Group discussion 
+and presentation of 
+outcomes; 
+questions and in-
+depth reflection 
+Select one of the 
+following 
+comprehensive 
+discussion topics 
+for the current 
+phase
+虚拟仿真实验
+操作；
+完成在线测试；
+接收个性化改进
+建议
+Virtual simulation 
+experiment 
+operation;
+complete the online 
+test;
+receive 
+personalised 
+improvement 
+suggestions
+教师活动
+Teacher activity
+发布学习任务
+调整线下课程
+安排
+Release learning 
+assignments and 
+adjust in-person 
+course schedules
+重难点引导讲解；
+组织研讨与答疑；
+布置分层项目任
+务(高阶/中阶/
+基础)
+Key points and 
+difficulties 
+guidance and 
+explanation;
+organisation of 
+seminars and 
+Q&A; sessions
+assignment of 
+tiered project 
+tasks (advanced/
+intermediate
+foundational)
+实验过程并
+指导；
+提供学习建议；
+设计拔高拓展
+内容
+Experimental 
+procedure and 
+guidance;
+provide study 
+advice;
+design elevation 
+and extension 
+content
+平台/工具
+Platform/Tool
+西 电 智 课 平 台；
+课 程 智 能 助 教；
+智 能 评 价 系 统
+Xidian smart 
+course 
+platform; 
+course 
+intelligent 
+teaching 
+assistant;
+intelligent 
+evaluation 
+system
+智能助教；
+智能技术赋能
+工具，如学习
+通移动端
+Smart 
+teaching 
+assistant;
+technology-
+enabled tools, 
+such as the 
+learning pass 
+mobile 
+application
+虚 拟 仿 真 平 台；
+课 程 智 能 助 教；
+智 能 评 价 系 统
+Virtual 
+simulation 
+platform;
+course 
+intelligent 
+teaching 
+assistant;
+intelligent 
+evaluation 
+system
+评价与反馈
+Evaluation and 
+feedback
+生成个人/班级学习
+效果评分；
+学习能力雷达图
+推送；
+智能肖像与学习轨
+迹分析
+Generate personal/
+class learning 
+effectiveness ratings;
+learning ability radar 
+chart notification;
+intelligent portrait 
+and learning 
+trajectory analysis
+小组研讨成果评价；
+项目任务难度与成
+绩关联
+Evaluation of group 
+discussion outcomes;
+project task difficulty 
+correlates with 
+performance
+实验操作实时分析；
+在线测试结果反馈；
+个性化学习建议与
+学科交叉拓展方向
+推送
+Real-time analysis of 
+experimental 
+procedures;
+online test results 
+feedback;
+personalised learning 
+recommendations 
+and interdisciplinary 
+expansion pathways
+1766
+
+=== PDF_PAGE 14 ===
+谢晖 等 | 基于 “图谱赋能 +智能伴学 +数智评价 ”的现代工科微生物学智慧课程生态系统的构建 ...
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+过伴学智 能体协助解决相关疑难问题减轻学习
+负担。教师基于自研三全育人智能评价系统输
+出的学习能力雷达图与轨迹分析 ，动态优化线
+下课程组织。
+4.3.2　线下强交互智慧研讨
+线下课堂主要聚焦疫苗研发全流程的理论
+基础到实践创新展开 。师生围绕免疫应答机制
+解析、疫苗类型优劣势对比及智能药物研发方
+案 3 个核心议题开展讨论 。教师通过 “ 智课平
+台”任务引擎推送免疫应答机制解析 、疫苗类型
+优劣势对比及智能药物研发方案 3 类研讨问题 ，
+学生基于智课平台移动端通过分组讨论完成对
+标 3 条图谱学习路径的三选一综合问题讨论或
+深度探究 ，其间允许学生参考教师数字人分身
+伴学智能体的建议和内容进行二次加工优化 ，
+通过 “学在西电 ”移动端高效分享研讨结果 ，教
+师针对性选取研讨结果投屏展示并进行针对性
+讲评，讲评后学生通过移动端平台生生互评打
+分(去掉 1 个最高分和 1 个最低分的算术平方根，
+如有学生打分多次出现离群值 ，则扣除该生本
+环节表现得分 ，确保全员投入参与 ，避免过多
+不可信的生生互评情况出现，影响评价真实性)。
+针对不同学习情况的学生 ，教师在课后指导及
+线上教学中结合课程伴学智能体实施 “师-生-机”
+三端分层教学 ，针对高阶/中阶/基础能力群体设
+计课后差异化项目任务 ，通过实时交互工具捕
+捉研讨动态 ，强化学生的批判性思维与协作创
+新能力。
+4.3.3　线上沉浸式虚拟仿真实操
+在课后的线上学时中 ，学生在元宇宙虚拟
+仿真实训平台开展 1 学时进阶实训 ，完成病毒
+灭活模拟 、疫苗制备工艺优化及免疫应答机制
+测试全流程操作 。三全育人评价系统通过平台
+实验数据 、操作轨迹 、反应时间等实时分析生
+成评价及反馈 ，精准推送个性化学习与改进策
+略。教师同步监控实验进程 ，结合智能评价及
+学生画像动态优化调整后续教学设计内容。
+案例通过智能评价系统贯穿三阶段学习轨
+迹，形成 “数据驱动诊断 -智能分层干预 -虚实协
+同提升 ”的特色育人路径 ，凸显 “精准化知识内
+化-高阶思维锻造 -跨学科工程实践 ”的课程交叉
+融合培养目标。
+5　　课程成效及结果分析课程成效及结果分析
+基于 “图谱赋能 +智能伴学 +数智评价 ”的现
+代工科微生物学智慧课程生态系统建设及应用 ，
+在近年来的育人过程中初步取得了一定的成效。
+5.1　多元图谱夯实学生知识基础
+在知识掌握层面 ，立体化图谱的构建使得
+核心知识点以网络化的形式呈现 ，并有机关联
+了学生的先修课程核心知识点 ，有助于学生建
+立系统的知识结构和学科大局观 。在学生的学
+习效率提升层面 ，通过图谱的视觉化呈现 ，学
+生能够根据自身理解和掌握情况建立适合自身
+学习起点和学习的路径 ，更快速地吸收和理解
+复杂概念及前沿问题 ，减少了学习时间 ，提升
+了学习效率 。基于 2019 年到 2025 年章节测试
+和期末闭卷测试知识相关掌握情况统计分析 ，
+学 生 对 知 识 的 掌 握 较 混 合 式 学 习 中 增 加 了
+36.5% (图 7)。
+5.2　智能伴学激发自主学习热情
+经 3 届学生结课后轻量化问卷调研显示 ，
+学生普遍对伴学智能体 (教师数字人分身 )的 AI
+幻觉、专业问题解决 、项目导向方案协同生成 、
+文献检索 、知识聚类等功能的应用较为满意 。
+伴学智能体还可根据学生的学习习惯和能力提
+供个性化学习资源 ，提高了学习效率 。如图 8
+所 示 ， 学 生 对 课 程 整 体 组 织 满 意 度 达 到 了
+96.7%。系统提供的自主学习工具和资源增强了
+学生的自主学习能力 。同时，学生自主学习时
+间较传统混合式学习增加 47.3%。同时学生的学
+习互动增强 ，智能助教协同和在线讨论增加了
+1767
+
+=== PDF_PAGE 15 ===
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+微生物学通报 Microbiol. China
+图7　知识图谱赋能前后学生各维度核心知识掌握率统计   2019−2021为赋能前；2022−2025为赋能后。
+Figure 7　Statistics on the mastery rate of core knowledge in various dimensions by students before and after the 
+empowerment of the knowledge graph . 2019−2021 is before empowerment ; 2022−2025 is after comprehensive 
+application.
+图8　基于智能伴学体助教的学生自主学习数据统计
+Figure 8　 Statistics of student self directed learning data based on intelligent companion physical education 
+teaching assistant.
+1768
+
+=== PDF_PAGE 16 ===
+谢晖 等 | 基于 “图谱赋能 +智能伴学 +数智评价 ”的现代工科微生物学智慧课程生态系统的构建 ...
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+师生之间的互动 ，提高了学生的参与度 。尤其
+是基于西电智课平台移动端课堂交互参与相关
+数据统计 ，学生的线下课堂 互动频率显著提升
+约 30%。
+5.3　数智评价保障精准教学组织
+团队自主研发的全过程数智评价系统为学
+生线上线下学习提供了实时精准反馈 ，帮助学
+生及时调整学习策略 ，使得学生能够更快地优
+化学习路径和学习策略 。教师通过分析学生的
+学习数据 ，优化教学内容和方法 。通过数据分
+析，教师能够更准确地评估学生的学习成果 ，
+为学生的进一步发展提供指导 。学生成绩的分
+布更加合理，近 3 年整体优良率提高 18.4%，平
+均分提升 7.66 分(图 9)。
+5.4　现代工科微生物学智慧课程综合成
+效及结果分析
+通过现代工科微生物学智慧教学生态系统
+的试点和全面实践阶段 (2022−2025)，学生的理
+论知识掌握和实践能力均得到了显著提升 ，为
+后续学习和工作打下了坚实基础 。学生在课程
+中培养的创新思维和科研能力在后续的科研项
+目中得到了体现 ，学生在课程完成后 ，基于伴
+学智能体协助的全周期课程项目导向持续开展
+的科研项目 、竞赛项目等数量和质量均有提升
+(图 10)。同时，课程建设体系已被推广至多个工
+科高校生物医学工程大类专业试点 。课程负责
+人先后在教育部全国教师教学发展研讨会 、全
+国电子信息人才培养大会 、全国生物化学年会 、
+全国教育终身学习交流研讨会 、全国高校思政
+课程数智化建设研讨会 (唯一非思政课程教师报
+告)、陕西省数智化教育发展研讨会等全国全省
+重要会议中做主题及专题报告 ，并获多方积极
+评价。
+综上所述 ，“ 图谱赋能 +智能伴学 +数智评
+价”的立体化现代工科微生物学智慧课程生态系
+统在提升教学成效 、培养学生能力 、优化教学
+模式等方面取得了显著成果 ，为高等教育教学
+改革提供了有益的经验和参考。
+6　　现代工科微生物学智慧课程现代工科微生物学智慧课程
+建设改革反思与展望建设改革反思与展望
+未来 ，现代工科微生物学课程团队将进一
+步整合生物信息学 、计算生物学等跨学科知识 ，
+为学生提供更加全面和深入的学习体验 。同时
+图9　2019−2025年期间学生章节随机测试、课中测试、期末考核成绩趋势图
+Figure 9　 Trend chart of student chapter random test , in class test , and final assessment scores from 2019 to 
+2025.
+1769
+
+=== PDF_PAGE 17 ===
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+微生物学通报 Microbiol. China
+利用虚拟现实和增强现实技术 ，创建更加沉浸
+式的学习环境 ，使学生能够更加直观地理解和
+应用课程知识和方法技能 。然而数智化的本质
+终归是技术 ，任何教学创新及改革都不是海量
+新技术的堆砌 ，也不能违背高等教育的基本规
+律，更不能背离学生中心的育人本质 。现代工
+科微生物学团队也将通过不断反思和改进 ，未
+来的 “图谱赋能 +智能伴学 +数智评价 ”的现代工
+科微生物学智慧课程生态系统将更加完善 ，为
+更多学生的学习和培养提供支持和帮助。
+作者贡献声明
+谢晖：课程主讲，总体改革实施，文章撰写，数
+据分析，获取基金；付凯元：方法论，评价优化，获
+取基金；朱守平：执行调研，提供材料，提供资源 ；
+任子琪：执行调研，软件程序，教学追踪；陈雪利：
+监督指导，稿件润色修改，方案设计，项目管理。
+作者利益冲突公开声明
+作者声明绝无任何可能会影响本文所报告工作的
+已知经济利益或个人关系。
+REFERENCES
+[1] 周景文, 刘松, 刘龙, 李江华, 堵国成, 陈坚 . 多学科交叉
+发酵工程复合型研究生培养 [J]. 生物工程学报 , 2021, 
+37(2): 689-695.
+Zhou JW , Liu S , Liu L , Li JH , Du GC , Chen J . 
+Interdisciplinary education of fermentation engineering 
+graduates[J]. Chinese Journal of Biotechnology , 2021, 
+37(2): 689-695 (in Chinese).
+[2] 彭丽华, 王萍, 黄祯磊, 李雪云, 金慧 . 从技术预见到生
+态重塑: 高等教育变革与人工智能的共生演进 : 《2024
+地平线报告(教与学版)》之要点审视[J]. 远程教育杂志, 
+2024, 42(3): 3-10, 31.
+图10　2019−2025年期间学生基于课程项目导向开展课程相关后续拓展创新出成果产出统计
+Figure 10　Statistics on the output of students ’ subsequent expansion and innovation based on course project 
+orientation during the period of 2019−2024.
+1770
+
+=== PDF_PAGE 18 ===
+谢晖 等 | 基于 “图谱赋能 +智能伴学 +数智评价 ”的现代工科微生物学智慧课程生态系统的构建 ...
+Tel: 010-64807511; E-mail: tongbao@im .ac.cn; http://journals.im.ac.cn/wswxtbcn
+Peng LH , Wang P , Huang ZL , Li XY , Jin H . From 
+technology foresight to ecological reshaping : the 
+symbiotic evolution of higher education transformation 
+and artificial untelligence : a review of the key points of 
+the 2024 Horizon Report (Teaching and Learning 
+Edition) [J]. Journal of Distance Education , 2024, 42(3): 
+3-10, 31 (in Chinese).
+[3] 王莉淋, 何燕, 杨娟 . 大数据背景下高校生态环境课程
+线上线下混合式教学改革创新研究 : 评《新时代生态文
+明建设思想概论》[J]. 教育发展研究, 2021, 41(20): 85.
+Wang LL, He Y , Yang J . Research on the innovation of 
+online and offline blended teaching reform of ecological 
+environment courses in colleges and universities under 
+the background of big data : review of An Introduction to 
+the Thought of Ecological Civilization Construction in 
+the New Era [J]. Research in Educational Development , 
+2021, 41(20): 85 (in Chinese).
+[4] Yang Q , Liang C . A second-classroom personalized 
+learning path recommendation system based on large 
+language model technology [J]. Applied Sciences , 2025, 
+15(14): 7655-7655.
+[5] 谢欣榕 . 大语言模型在科技动态情报感知中的应用效
+果评估研究[J]. 情报理论与实践, 2025, 48(S1): 111-115.
+Xie XR. Research on the application effect evaluation of 
+large language models in the perception of scientific and 
+technological dynamic intelligence [J]. Information 
+Studies: Theory & Application, 2025, 48(S1): 111-115 (in 
+Chinese).
+[6] Sharma S , Mittal P , Kumar M , Bhardwaj V . The role of 
+large language models in personalized learning : a 
+systematic review of educational impact [J]. Discover 
+Sustainability, 2025, 6(1): 243-243.
+[7] Fayzullaev NS , Eshnazarova G . The integration of 
+problematic teaching method and innovation in 
+education[J]. Academicia : An International 
+Multidisciplinary Research Journal, 2019, 9(1): 60-65.
+[8] 谢晖, 朱守平, 刘鹏, 陈雪利 . 大语言模型 +智能评价的
+“双智”赋能现代工科微生物学混合式课程教学研究与
+实践[J]. 微生物学通报, 2025, 52(1): 445-456.
+Xie H, Zhu SP, Liu P, Chen XL. Research and practice on 
+the blended teaching of Modern Engineering 
+Microbiology empowered by large language model and 
+intelligent evaluation [J]. Microbiology China , 2025, 
+52(1): 445-456 (in Chinese).
+[9] 教育部 . 教育部关于印发《高等学校课程思政建设指导
+纲要》的通知[Z]. 教高[2020]3 号 .
+Ministry of Education . Notice of the Ministry of 
+Education on Issuing the Guidelines for Curriculum-
+Based Ideological and Political Construction in Higher 
+Education Institutions[Z]. JG[2020]3 (in Chinese).
+1771

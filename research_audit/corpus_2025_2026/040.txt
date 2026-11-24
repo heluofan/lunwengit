@@ -1,0 +1,1176 @@
+=== PDF_PAGE 1 ===
+ 
+引用格式：沈瑜, 袁祯, 刘佳英, 等. 基于双阶段注意力机制与可逆变换的医学图像融合[J]. 浙江大学学报(工学版), 2026, 60(12): 2602−2612.
+Citation: Shen Yu, Yuan Zhen, Liu Jiaying, et al. Medical image fusion based on dual-stage attention mechanism and invertible transformation [J]. Journal of Zhejiang
+University (Engineering Science), 2026, 60(12): 2602−2612.
+基于双阶段注意力机制与可逆变换的医学图像融合
+沈瑜，袁祯，刘佳英，白珊，强振凯
+(兰州交通大学 电子与信息工程学院 甘肃 兰州 730070)
+摘  要：针对现有医学图像融合方法中全局信息易丢失、互补信息融合不充分及融合图像对比度与清晰度差的问
+题，提出基于双阶段注意力机制（DSAM）与可逆变换的新型融合方法. 在小波分解后的低频与高频分支中引入双
+阶段注意力模块，分别用于增强浅层全局特征与深层局部特征. 采用可逆瓶颈残差耦合模块（IBRC Block）实现双
+向可逆的互补信息整合. 通过多模态特征加权融合单元（MM_FWFU）完成特征整合. 通过边缘细节增强网络
+（EDEN）提升融合图像的细节清晰度和边缘对比度. 实验结果表明，所提方法在标准差（SD）、平均梯度（AG）、相
+关系数（CC）和多尺度结构相似性（MS-SSIM）等指标上较9种主流方法中的最优值分别提升了1.99%、13.75%、
+0.34%和0.10%. 利用所提方法，能够有效地保留源图像的深层局部特征，融合结果的轮廓清晰，对比度高，细节信
+息充分，且具有较强的泛化能力.
+关键词： 医学图像融合；双阶段注意力机制(DSAM)；可逆瓶颈残差；边缘细节增强
+中图分类号： TP 391           文献标志码： A           文章编号： 1008−973X（2026）12−2602−11
+DOI: 10.3785/j.issn.1008-973X.2026.12.006
+Medical image fusion based on dual-stage attention mechanism and
+invertible transformation
+SHEN Yu,  YUAN Zhen,  LIU Jiaying,  BAI Shan,  QIANG Zhenkai
+(School of Electronic and Information Engineering, Lanzhou Jiaotong University, Lanzhou 730070, China)
+Abstract: A new fusion method based on a dual-stage attention mechanism (DSAM) and invertible transformation was
+proposed aiming at the problem that existing medical image fusion methods suffer from the loss of global information,
+insufficient complementary information integration, and poor contrast and clarity of fused images. A DSAM was
+introduced into the low-frequency and high-frequency branches after wavelet decomposition in order to enhance
+shallow global features and deep local features, respectively. An IBRC Block was employed to achieve bidirectional
+and invertible integration of complementary information. A multi-modal feature weighted fusion unit (MM_FWFU)
+was used to complete feature aggregation. An edge detail enhancement network (EDEN) was applied to improve the
+detail clarity and edge contrast of the fused images. The experimental results demonstrated that the proposed method
+achieved improvements of 1.99%, 13.75%, 0.34% and 0.10% in standard deviation (SD), average gradient (AG),
+correlation coefficient (CC) and multi-scale structural similarity index measure (MS-SSIM), respectively, compared
+with the best-performing results among nine state-of-the-art methods. The proposed method effectively preserved deep
+local features from the source images, producing fused images with clear contours, high contrast and rich detail
+information, and exhibited strong generalization capability.
+Keywords: medical image fusion; dual-stage attention mechanism (DSAM); invertible bottleneck residual;
+edge detail enhancement
+收稿日期：2025−09−16.            网址：https://www.zjujournals.com/eng/CN/10.3785/j.issn.1008-973X.2026.12.006
+基金项目：国家自然科学基金资助项目（62241106，61861025）;  甘肃省重点研发计划资助项目（甘科计[2024]10号-24YFGA037）；甘肃省
+科技专员专项资助项目（甘科计[2023]18号-23CXGA0008）；“智慧天路”建设重大专项资助项目（2023QZzhtl1102）；兰州局集
+团公司科技研究开发计划资助项目（LZJKY2025107-1）；中国国家铁路集团有限公司重点课题（N2023X050）；兰州交通大学重
+点研发资助项目（LZJTU-ZDYF2305）.
+作者简介：沈瑜（1982—），女，教授，博导，从事医学图像融合研究. orcid.org/0000-0001-5396-9657. E-mail：18609311366@163.com
+第  60 卷第  12 期 
+   2026 年  12 月 
+浙    江    大    学    学    报 (工学版) 
+Journal of Zhejiang University (Engineering Science) 
+Vol.60  No.12
+Dec.  2026  
+
+=== PDF_PAGE 2 ===
+多模态医学图像可以分为2类：结构图像，如
+磁共振图像（MRI）和计算机断层成像（CT）；功能
+图像，如正电子发射计算机断层成像（PET）和单光
+子发射计算机断层成像（SPECT）[1]. 单一图像信息
+有限，难以满足临床需求，需要整合多模态信息，
+以获得兼具结构清晰度与功能细节的高质量融合
+图像，有助于病情的诊断与治疗方案的制定[2].
+医学图像融合方法可以分为传统融合方法与
+基于深度学习的融合方法. 传统方法如小波变换[3]、
+非下采样轮廓波变换[4]、主成分分析[5]等通过设计
+特定的融合规则实现特征的分解与重构，但在处
+理复杂图像特征时表现有限. 近年来，基于深度学
+习的融合方法显著提升了融合效果，主流方法包
+括CNN、Transformer和INN等. Wang等[6]采用多
+输入CNN结构，提出针对乳腺癌检测的跨模态融
+合方法，有效提升了软组织的分辨能力. Xie等[7]提
+出轻量级跨模态Transformer的适应性融合方法，
+通过多轴注意力机制提升局部和全局特征交互，
+解决特征难以充分整合的问题. 这些方法存在以下
+局限：CNN的正向推理不可逆，局部感受野导致其
+全局建模能力不足，可能在融合过程中丢失全局
+信息；Transformer计算复杂度高，对大规模数据依
+赖较强，且捕获边缘、纹理与梯度等局部细节的能
+力有限. 针对这些问题，部分研究引入可逆神经网
+络（INN），实现信息的无损映射与重构. Wang等[8]
+提出新的网络结构iVAN，该模型采用可逆网络架
+构，支持双向推理与多种输入输出映射，增强了模
+型的灵活性. Zhao等[9]将INN结构应用于细节卷
+积神经网络编码器中，从共享特征中提取高频细
+节特征，通过可逆设计确保信息在编码过程中不
+丢失. INN通常对细节的敏感度不足，特别是在纹
+理表达与局部对比度增强方面表现有限. 小波变换
+具备优秀的频域分解能力，能够有效区分高频纹
+理信息与低频结构信息，可以弥补INN在高频细
+节表达方面的不足.
+针对上述问题，本文提出基于双阶段注意力机
+制与可逆变换的多模态医学图像融合方法.
+（1） 提出新型融合框架：基于双阶段注意力与
+可逆变换的医学图像融合网络，通过双阶段注意
+力与可逆耦合的协同设计实现互补信息的动态双
+向整合.
+（2） 设计双阶段注意力可逆网络（dual-atten-
+tion invertible network, DAIN），在改进的双阶段注意
+力机制基础上，结合可逆结构与瓶颈残差耦合机
+制，增强浅层全局特征与深层局部细节的表达能
+力，并实现低频特征的无损传递与高效融合.
+（3） 构建纹理-对比多尺度融合模块（texture-
+contrast multiscale fusion block, TCMFB），在完成多
+模态特征加权融合的同时，引入高频残差信息与
+边缘引导机制，有效提升融合图像的纹理清晰度
+与边缘对比度，实现低频结构与高频纹理的协
+同优化. 
+1   方法简介 
+1.1    网络总体框架
+IA
+IB
+设计基于双阶段注意力机制与可逆变换的多
+模态医学图像融合算法. 该模型由双阶段注意力可
+逆网络和纹理-对比多尺度融合模块2部分构成，
+模型结构如图1所示. 采用二维Haar小波变换进
+行下采样，将源图像对   、   初步分解为高频特征
+ 
+DSAM-H
+DWT
+DWT
+LF
+IA
+IF
+IB HF
+HF
+DSAM-H
+DSAM-LL IBRC Block
+DAIN
+DAIN
+DAIN
+IBRC BlockDSAM-LL
+HFA0
+LFA0
+0
+0 0
+0 0
+HFB0
+LFA0
+LFB0
+ˆ
+LFBˆ
+[LFA, LFB]
+[HFA, HFB]
+ˆ ˆ
+TCMFB
+R
+H
+8
+W
+8×
+R
+H
+4
+W
+4×
+R
+H
+2
+W
+2×
+DAIN
+高频特征分量 低频特征分量
+纹理−对比多尺度融合模块双阶段注意力可逆网络 TCMFB
+DSAM IBRC Block双阶段注意力模块 可逆瓶颈残差耦合模块
+ 
+ 
+图 1    基于双阶段注意力机制与可逆变换的多模态医学图像融合网络
+Fig.1    Multi-modal medical image fusion network based on dual-stage attention mechanism and invertible transformation
+第 12 期 沈瑜 , 等：基于双阶段注意力机制与可逆变换的医学图像融合 2603
+
+=== PDF_PAGE 3 ===
+HF
+LF
+HF
+LF
+HFi
+LFi
+L ˆFi
+[L ˆFiA; L ˆFiB]
+[HFiA; HFiB]
+IF
+  与低频特征   . 将   和   输入双阶段注意力
+模块，得到增强后的深层局部特征   与浅层全局
+特征   . 通过可逆瓶颈残差耦合模块（invertible
+bottleneck residual coupling block, IBRC Block）对处理
+过的低频特征进行整合，得到   . 重复执行上述
+过程多次，获得不同层次的低频信息，逐步增强特
+征适应性和特征表达能力. 将不同尺度下DAIN处
+理后的结果   与   输入TCMFB中，
+获得最终的融合图像   . 
+1.2    双阶段注意力可逆网络 
+LFiA
+LFiB
+LF0A = IA，
+LF0B = IB
+L ˆFiA
+L ˆFiB
+L ˆFiA
+L ˆFiB
+HFi+1 = [HLi+1; LHi+1; HHi+1]
+LFi+1 = LLi+1
+1.2.1   下采样　采用二维Haar小波变换完成下采样，
+设第i层的低频分量为   和   （其中  
+  ）. 经过DAIN后的输出为   和   ，通过
+对   和   进行分解，获得第i+1层的高、低频分
+别为   和   [10].
+上述过程的变换公式如下：
+[LLi+1(p; q) LHi+1(p; q)
+HLi+1(p; q) HHi+1(p; q)
+]
+= T MTT: (1)
+ 
+式中：T为变换矩阵，
+T = 1p
+2
+[1 1
+1  1
+]
+；
+ 
+M =
+[
+L ˆFi(2p   1; 2q   1) L ˆFi(2p   1; 2q)
+L ˆFi(2p; 2q   1) L ˆFi(2p; 2q)
+]
+；
+ 
+p = 0; 1; 2; …; H=2i+1   1，
+ 
+q = 0; 1; 2; …; W=2i+1   1，i = 0; 1; 2，
+ 
+其中，H、W分别为图像的高度和宽度.
+DAIN的每一层仅将前一层经DWT处理后的
+H  W
+(H=2)  (W=2)
+(H=4)  (W=4)
+(H=8)  (W=8)
+低频分量作为输入，而高频分量与对应层的低频分
+量一同保留. 上述过程递归3次，分别生成不同尺
+度下的特征表示，即从原始   到   、
+  和   . 各尺度输出的高频与低
+频分量统一输入TCMFB，以实现特征的整合与优化. 
+1.2.2   双阶段注意力模块　医学图像融合要兼顾
+低频全局信息与高频局部信息，但卷积操作感受
+野有限，易导致全局特征表达不充分. 不同模态的
+输入特征在不同通道中的重要性存在差异，不加
+区分地处理可能使病灶边缘、组织纹理及结构轮
+廓等重要信息被掩盖. 设计双阶段注意力模块，详
+细结构如图2所示.
+F 2 RBCHW
+
+!c 2 RBC11
+F′
+F′
+
+!s 2 RB1HW
+F′
+ˆF 2 RBCHW
+将小波变换处理后的特征图   作
+为输入，通过通道全局平均池化和全局最大池化
+分别捕获特征图的空间统计信息，经多层感知机
+（MLP）的“降维- ReLU激活-升维”后得到平均输出
+和最大输出. 将两者相加，再经Sigmoid激活函数
+对加权结果进行归一化，引入权重因子   用于缩放
+通道注意力输出. 将生成的一维通道注意力
+  与输入的特征图相乘，得到经通道注
+意力调节后的中间特征图   .    通过空间全局平
+均池化和全局最大池化，将2个池化结果拼接为二
+维向量，再进行大小为9×9、7×7和5×5的多尺度卷
+积，以捕获不同尺度间的空间上下文信息. 引入缩
+放因子   对输出进行缩放，经Sigmoid激活后生成
+空间注意力   ，再与中间特征图   相
+乘后得到输出特征图   . 具体的计算过
+程如下.
+ 
+输入特征图
+ 线性变换层
+ ReLU
+Sigmoid
+通道权重
+通道注意力Conv 9×9 Conv 7×7 Conv 5×5 BN
+空间权重
+逐元素相乘
+输入 MLP
+平均输出
+平均输出
+最大输出
+最大输出
+ 
+空间全局最大池化
+空间全局最大池化
+空间全局最大池化
+空间全局最大池化
+ 输出
+C
+通道全局平均池化
+通道全局平均池化
+通道全局最大池化
+通道全局最大池化
+F'
+F'
+ 
+ 
+图 2    双阶段注意力模块
+Fig.2    Dual-stage attention module
+2604 浙          江          大          学          学          报（工学版） 第 60 卷
+
+=== PDF_PAGE 4 ===
+F′ = !c(F) 
+ F;
+ˆF = !s(F′) 
+ F′:
+}
+(2)
+ 
+!c(F) = f  fWMLP2  ReLUfWMLP1
+Concat [GAP(F); GMP(F)]ggg;
+!s(F′) = f  Concat [SGAP(F′); SGMP(F′)]g:
+■
+|■
+|■ (3)
+ 
+
+
+和
+GAP()
+SGAP()
+GMP()
+SGMP()
+!c(F)
+!s(F′)
+F′
+ˆF
+式中：   表示逐元素乘法，   为Sigmoid激活函数，
+  为权重因子，   和   分别表示通道
+和空间的全局平均池化，   和   分别表
+示通道和空间的全局最大池化，   、   分别
+为通道注意力和空间注意力权重，WMLP1、WMLP2分
+别为MLP1、MLP2的权重，   为通道加权后的特征
+图，   为最终输出的特征图. 
+1.2.3   可逆瓶颈残差耦合模块　特征在非线性变
+换过程中存在信息丢失的风险，由于信息流是单
+向传递，浅层与深层特征的融合比例容易失衡，从
+而影响融合图像的完整性. 设计可逆瓶颈残差耦合
+模块，利用残差连接和双向变换特性，实现特征信
+息的无损双向映射，详细结构如图3所示. 在经过DWT
+和DSAM增强后获得的分解图像中，高频部分仅
+包含源图像的轮廓细节与边缘纹理信息，这些高
+频分量将在后续进行加权融合. 大部分信息集中于
+低频部分，因此该模块仅作用于分解后的低频部分.
+该模块基于可逆神经网络实现，并集成了3个
+φm 2 RB(in1+in2)HW
+φm;1 2 RBin1HW
+φm;2 2 RBin2HW
+in1 + in2 = C
+φm;2
+RCB1(φm;1)
+y1
+y1
+RCB2
+e()
+y1
+RCB3
+φm;1
+残差卷积块（residual convolution blocks, RCBs）. 将
+输入张量   沿通道维度拆分为
+2个子张量，即   和   ，
+总通道数为   （其中in1、in2为输入的通
+道数）.    通过残差连接与   的输出相加
+并生成   . 将   输入   后，通过指数变换函数
+  生成缩放因子，同时将   输入   生成偏移
+量. 将   与缩放因子的变换函数相乘，再与偏移
+量相加，完成正向变换. 反向过程通过逆运算恢复
+原输入. 每个残差卷积块均由“升维-深度卷积-降
+维”结构构成，采用Conv 1×1、Conv 3×3、BN和
+ReLU层，实现浅层特征的初步融合并保证输入与
+输出维度的一致性，最终嵌入3层DAIN中. 正向
+与逆向的完整实现过程如下：
+e(s) = exp fclamp  2  [sigmoid(s)   0:5]g;
+y1 = φm;2 + RCB1(φm;1);
+y2 = φm;1  e(RCB2(y1)) + RCB3(y1);
+φm;1 = (y2   t)=e(RCB2(y1));
+φm;2 = y1   RCB1f(y2   t)=e(RCB2(y1))g:
+■
+||||||■
+||||||■ (4)
+ 
+s
+y1
+RCB2
+e()
+s
+t
+y1
+RCB3
+clamp
+式中：   为   输入   时生成的缩放因子，   为
+基于缩放因子   的指数变换函数，   为   输入  
+时生成的偏移量，   为用于控制缩放因子动态
+范围的超参数.
+  
+RCB2
+RCB1
+RCB3
+[1, c] [1, c]
+[c+1, C] [c+1, C]
+1×1 Block
+1×1 Block
+3×3 Block
+3×3 Block
+…
+Conv 1×1 Conv 3×3 BN ReLU
+φm
+φm, 1 φm+1, 1
+φm+1
+φm+1, 2
+φm+2
+φm, 2
+ 
+ 
+图 3    可逆瓶颈残差耦合模块
+Fig.3    Invertible bottleneck residual coupling block  
+1.3    纹理-对比多尺度融合模块
+针对融合图像常存在对比度不足且细节纹理
+模糊的问题，提出纹理-对比多尺度融合模块. 该模
+块由多模态特征加权融合单元（MM-FWFU）和边
+缘细节增强网络（EDEN）组成，能够有效整合深层
+局部特征，增强融合结果中边缘纹理与结构细节
+的清晰度，详细结构如图4所示. MM-FWFU通过
+IF
+权重图对多模态特征进行加权融合. 将初步生成的
+融合特征在3个尺度上分别输入EDEN，通过不同
+核大小的卷积层增强纹理、梯度和对比度. 通过逆
+小波变换和上采样进行逐步的加权融合，输出融
+合图像   . 
+1.3.1   多模态特征加权融合单元　设计多模态特
+征加权融合单元，利用动态生成的权重图自适应
+第 12 期 沈瑜 , 等：基于双阶段注意力机制与可逆变换的医学图像融合 2605
+
+=== PDF_PAGE 5 ===
+!LF
+!HF
+LFi
+HFi
+地平衡高频和低频分量，通过多尺度结构分层融
+合不同频率的特征. 分别沿通道维度拼接2个模态
+的低频和高频分量，使用1×1卷积对拼接后的特征
+进行降维和特征提取. 应用Sigmoid激活函数对卷
+积输出进行非线性变换，分别生成低频与高频分
+量的动态权重图   和   . 这些权重图通过自适
+应机制平衡各模态，确保融合过程能够根据输入
+特征的特性动态调整权重分配. 将输入分量与对应
+的权重图相乘，再将加权结果相加，生成最终的融
+合输出   和   . 具体的实现过程如下.
+!LF = [Conv11Concat(LFiA; LFiB)];
+!HF = [Conv11Concat(HFiA; HFiB)]:
+}
+(5)
+ 
+LFi = !LF  LFiA + (1   !LF)  LFiB;
+HFi = !HF  HFiA + (1   !HF)  HFiB:
+}
+(6)
+ 
+
+Conv11
+Concat()
+LFiA、LFiB
+HFiA、HFiB
+i
+LFi
+HFi
+i
+式中：   为Sigmoid激活函数，用于将卷积非线性输
+出映射到[0,1.0]；   表示1×1卷积操作；  
+表示沿通道维度拼接；   和   分
+别为不同模态在第   层的小波分解的低频和高频分
+量；   和   分别为第   层融合后的低频和高频分量. 
+1.3.2   边缘细节增强网络（EDEN）　设计边缘细
+节增强网络，引入Laplacian算子作为预处理步骤，
+通过二阶梯度提取并增强边缘和纹理变化，弥补
+传统方法在梯度提取方面的局限性. 通过多尺度卷
+积捕获从局部到全局的上下文信息，提升对比度
+和纹理清晰度，增强病理特征的可视化效果.
+F
+该模块由梯度预处理和增强网络两部分组成.
+在初始阶段，MM-FWFU输出的融合特征   进入
+∇2 F
+F
+Laplacian算子模块，通过二阶微分算子提取梯度特
+征   ，突出图像的边缘和纹理变化，再与原始特
+征   在通道维度进行拼接，生成增强的输入特征集.
+增强网络分为以下3个步骤. 1）对不同尺度下的拼
+接后特征使用3×3卷积处理，提取并优化梯度信
+息. 2）将这些卷积输出通过通道拼接后传递至后续
+处理层，在该层，特征被分配至4个平行分支，分
+别使用3×3、5×5、7×7和9×9大小的卷积核处理，以
+增强对比度并突出纹理细节，并在每个分支后接
+入ReLU和BN，确保特征表达的稳定性和非线性.
+3）各分支输出通过通道拼接，利用1×1大小的卷积
+核进行最终的特征融合，生成增强后的输出特征图. 
+1.3.3   逆小波变换与上采样　在EDEN的后处理阶
+段，通过逆小波变换与上采样操作，将多尺度特征
+重构并生成最终的融合结果. 将逆小波变换应用于
+每一层的增强子带，例如在第3层，融合后的子带
+被输入IWT模块中，将特征恢复至上一层的分辨
+率，生成初步的特征重构图，这一过程在第2层和
+第1层依次重复. 通过上采样操作逐步放大较低分
+辨率的特征图，生成最终的融合图像. 具体的实现
+过程如下：
+IFi = IWT( ˆFi); i = 1; 2; 3;
+IF′1 = IF1 + Conv11[Up(IF2)];
+IF′0 = IF0 + Conv11[Up(IF1)];
+IF = BN(IF′0):
+■
+|||■
+|||■ (7)
+ 
+IF
+Conv11
+Up
+式中：IWT表示逆小波变换，   表示经IWT后得到
+的特征，   表示1×1卷积操作，   表示上采
+样操作，BN表示批归一化.
+ 
+MM-FWFM
+MM-FWFM
+MM-FWFM
+EDEN
+EDEN
+EDEN
+IWT
+IWT
+IWT
+HF2
+F2c U
+Uc
+c
+c
+U
+c
+c
+c
+c
+c
+F1
+F0
+F2 IF2
+IF1 IF1
+IF0
+F1
+F0
+LF2
+HF1
+LF1
+HF0
+LF0
+ˆ
+ˆ
+ˆ IF
+'
+IF0
+F'
+'
+2 2
+2 2
+[LFA, LFB]
+[HFA, HFB]
+ˆ ˆ
+1 1
+1 1
+[LFA, LFB]
+[HFA, HFB]
+iHFA
+HFi
+1
+1
+LFi
+F
+∇2F
+iLFA
+iHFB
+ˆ ˆ
+0 0
+0 0
+[LFA, LFB]
+[HFA, HFB]
+ˆ
+ˆ
+iLFBˆ
+ˆ
+多模态特征加权融合单元 (MM-FWFU)
+权重图
+权重图
+边缘细节增强网络 (EDEN)
+IWT
+Subtraction
+Sigmoid
+Conv 1×1 Conv 9×9 ReLU
+Conv 3×3 Conv 5×5 Conv 7×7
+BN
+逆小波变换 上采样 相加操作
+拼接操作 拉普拉斯算子 拼接操作
+ 
+ 
+图 4    纹理-对比多尺度融合模块
+Fig.4    Texture-contrast multi-scale fusion module
+2606 浙          江          大          学          学          报（工学版） 第 60 卷
+
+=== PDF_PAGE 6 ===
+第1层的特征分量包含最基础的全局信息且
+低频信息较完整，因此该阶段仅对第2层和第3层
+进行上采样操作并使用1×1卷积进行特征映射，随
+后直接与第1层的特征分量融合，避免了低频信息
+的过度平滑. 
+1.4    损失函数
+从梯度、结构、亮度和色度4个维度来构建损
+失函数. 总损失函数的定义为
+Ltotal = !1LSSIM + !2Lgrad + !3Llum + !4Lcolor: (8)
+ 
+Ltotal
+!1
+!2
+!3
+!4
+式中：   为总损失；   、   、   和   为4个子损
+失函数的权重，用来平衡4个子损失之间的关系.
+LSSIM
+Lgrad
+Llum
+IY
+Lcolor
+ICb
+ICr
+IY
+ICb
+ICr 2 RHW1
+在伪彩色图像中，颜色信息分布于3个不同的
+通道. 若直接将其用于结构、梯度、亮度和色度的
+计算而忽略通道间的协同关系，则会导致色彩失
+真、色度信息计算不准确、梯度方向不一致以及多
+通道之间信息冗余等问题. 为了提升模型对颜色的
+恢复能力并减少颜色通道对其他损失项的干扰，
+在计算损失函数时，须将源图像和融合图像转化
+至感知更合理的色彩空间YCbCr. 其中，   、
+  和   仅基于亮度通道   计算，   则依赖
+  和   ，   、   、   . 
+1.4.1   结构损失　结构相似性损失是基于感知一
+致性的图像质量评价损失函数，用于衡量图像在
+结构、亮度和对比度等方面的相似程度. SSIM是
+衡量结构相似性的指标，最初由Wang等[11]提出，
+用于评价图像质量，数学定义如下：
+SSIM(IF; I) = (2IF I + C1)(2IF I + C2)(2IF + 2I + C1)(2IF + 2I + C2) : (9)
+ 
+I
+IF
+I
+IF
+IF I
+IF
+I
+C1
+C2
+式中：   和   分别为源图像与融合图像的均值；
+  和   分别为源图像与融合图像的标准差；  
+为   与   的协方差；   和   为稳定因子，用于增强
+数值稳定性并避免分母为0，通常设置为0.000 01
+和0.000 09.
+由于融合功能图像与结构图像时，功能图像的
+信息分布集中且区域较小，结构图像提供全图的
+结构信息，若计算全图损失来约束模型训练，将导
+致融合结果偏向于信息量较少的图像. 对SSIM函
+数进行改进，优先对信息量较大的区域计算结构
+相似性损失. 该损失函数能够有效避免模型向有效
+区域较少的图像偏移，计算公式为
+LSSIM = 1   SSIMst(IYF ; IYA; IYB ): (10)
+ 
+IYF
+IYA、IYB
+式中：   为融合图像，   为输入的源图像，
+SSIMst(IYF ; IYA; IYB ) =
+1
+N
+N∑
+M=1
+SSIM(IYF;M; S (IYA;M; IYB;M)): (11)
+ 
+S (IYA;M; IYB;M) =
+{
+IYA;M; st (IYA;M) > st (IYB;M);
+IYB;M; st (IYA;M) < st (IYB;M): (12)
+ 
+IYF;M
+IYA;M
+IYB;M
+S (IYA;M; IYB;M)
+st (IYA;M)
+st (IYB;M)
+IYA;M、IYB;M
+式中：   、   和   分别为融合图像和不同模
+态源图像第M个图像块的Y通道值，  
+表示选取第M个图像块中标准差较大的源图像
+块，   、   分别为   的标准差. 
+1.4.2   梯度损失　梯度损失主要用于衡量图像之
+间的边缘、纹理和细节信息差异，以更好地保留丰
+富的数据特征，如Ma等[12]基于源图像对和融合图
+像计算梯度损失. 可逆网络在初始融合阶段保留了
+大量的信息，因此本文采用的梯度损失函数仅基
+于融合图像本身进行计算，计算公式如下：
+Lgrad = 1   ∥∇IYF ∥=(1 + ∥∇IYF ∥); (13)
+ 
+‖‖‖∇IYF ‖‖‖ = 1HW (||||||Kx 
+ IYF
+||||||
+1
++
+||||||Ky 
+ IYF
+||||||
+1
+)
+: (14)
+ 
+∥∇IYF ∥
+1 + ∥∇IYF ∥
+Kx
+Ky
+
+jjjj1
+式中：   为融合图像在亮度通道上的梯度幅
+值；   为归一化因子，用于控制梯度幅度，
+避免梯度爆炸；   、   分别为水平与垂直方向的
+Sobel算子，用于提取图像的边缘信息；   为卷积操
+作；   为L1范数，表示对每个像素点梯度的绝对
+值求和. 
+1.4.3   亮度损失　亮度损失通过均方误差量化融
+合图像亮度通道与2幅源图像亮度通道之间的像
+素级差异，计算公式如下：
+Llum = MSE(IYF ; IYA) + !  MSE(IYF ; IYB ): (15)
+ 
+MSE (IYF ; IY) = 1BHW B∑i=1 H∑j=1 W∑k=1 (IYF i; j;k   IYi; j;k)2: (16)
+ 
+MSE(IYF ; IY)
+IYA 2 RB1HW
+IYB 2 RB1HW
+!
+! = 0:01
+式中：   为均方误差；   和
+  分别为不同源图像的亮度通道；   为
+加权因子，用于平衡2幅模态图像之间的关系，经
+多次实验验证，设置为   . 
+1.4.4   色度损失　色度损失旨在保留功能性图像
+的色度信息. 针对功能性图像的色度通道计算，通
+过均方误差量化融合图像的色度通道和2幅源图
+像色度通道之间的像素级差异，计算公式如下：
+Lcolor = MSE(ICbF ; ICbA ) + MSE(ICrF ; ICrB ): (17)
+ 
+MSE(ICbF ; ICb)
+MSE(ICrF ; ICr)
+ICb、ICr 2 RB1HW
+式中：   和   为均方误差，
+  为色度通道. 
+第 12 期 沈瑜 , 等：基于双阶段注意力机制与可逆变换的医学图像融合 2607
+
+=== PDF_PAGE 7 ===
+2   实验与分析 
+2.1    数据集
+120 像素  120 像素
+对比试验中的训练集和测试集均选用哈佛医
+学院公开的人类脑部图像数据集. 该数据集包含
+MRI、PET与SPECT等多种模态的脑部疾病相关配
+准图像对，图像覆盖面包括冠状面、矢状面和横断
+面，因此该数据集广泛用于脑部疾病诊断、图像处
+理和机器学习研究. 本文选用其中的540对图像，
+训练集、验证集与测试集的比例为8∶1∶1，并在训
+练过程中对数据进行归一化处理. 为了增强数据集
+的多样性，对每一对图像进行20次随机重叠裁剪，
+裁剪区域从原始图像中随机选取，确保裁剪区域
+之间存在部分重叠，最终生成10 800对大小为
+  的图像补丁. 在测试阶段，采用
+3种病例各18对进行实验，分别为“转移性支气管
+癌”MRI-SPECT融合、“轻度阿尔茨海默病”MRI-
+PET融合和“神经胶质瘤”MRI-SPECT融合. 
+2.2    实验环境与设置
+3:162  10 5
+1 = 0:5
+2 = 0:999
+!1 = 3
+!2 = 1:5
+!3 = 1
+!4 = 1
+实验在Windows11操作系统上完成，硬件环境
+配置为Intel（R） Core（TM） i5-13600KF和NVIDIA
+GeForce RTX 3090. 模型的算法实现基于PyTorch框
+架，代码环境为Python 3.8.10和PyTorch 1.8.1. 在训
+练过程中，采用Adam优化器，初始学习率设为
+  ，每200轮衰减一次，衰减因子设为
+0.5；动量参数   ，   ；批量大小设为
+16；模型训练总轮数设为500轮，每10轮使用验证
+集进行一次验证，每50轮保存一次检查点. 为了稳
+定训练过程，经多次实验验证，损失函数中的超参
+数设置为   ，   ，   ，   . 
+2.3    实验结果对比 
+2.3.1   主观评价对比　为了验证所提算法的有效
+性，选择CNP[13]、NSST[14]、BSAFusion[15]、MAEE[16]、
+MBHFuse[17]、EMMA[18]、CrossFuse[19]、FATFusion[20]、
+SwinFusion[12]、CDDFuse[9]、MATR[21]等11种
+SOTA算法进行对比分析，可视化结果如图5所示.
+如图5~7所示分别为所提方法与其他经典算
+法在“转移性支气管癌”MRI-SPECT融合、“阿尔茨
+海默病”MRI-PET融合及“神经胶质瘤”MRI-
+SPECT融合任务中的可视化对比结果，并附带差
+异显著区域的放大视图. 从结果可以看出，在第
+1个病例中，图5（c）、（d）出现了严重色彩失真. 图5（e）、
+（f）、（h）、（k）虽然能够较好地反映病灶区域与纹
+理信息，但融合图像整体偏暗且对比度低. 图5（j）
+在下方区域产生了紫色块效应，有明显的色彩失
+真. 图5（i）色度保留较差，且在病灶区域引入了色
+彩伪影. 图5（g）、（m）融合结果亮度较高，但未能
+很好地保留源图像中的纹理信息，且病灶区域较
+暗. 图5（l）虽然提取到较多的细节信息，但在病灶
+区域中引入了色彩伪影. 利用所提方法，更充分地
+保留了MRI的细节纹理信息和SPECT的功能信
+息，能够更清晰地显示病灶区域，融合质量更优.
+在第2个病例中，图6（c）、（d）的亮度与色度
+信息保留较差. 图6（g）、（i）、（l）、（m）虽然较多地
+保留了来自源图像的亮度与色度信息，但丢失了
+大量的纹理细节与软组织信息. 图6（e）、（j）、（k）
+纹理对比度有所增强，但色彩还原不足，且图6（j）
+出现了源图像中不存在的暗块. 图6（f）、（h）所示
+的图像中部分MRI信息不够清晰，且PET信息偏
+暗. 所提方法在纹理细节保持、色彩还原和互补融
+合方面表现更优，融合结果更好地保留了MRI中
+的结构和软组织信息以及PET中的功能信息与亮
+度特征，整体图像的对比度与结构清晰度更强.
+在第3个病例中，图7（c）、（d）整体亮度偏低，
+亮度保留能力较差. 图7（e）、（k）未能有效地保留
+来自源图像的颜色信息，无法准确地反映组织代
+谢情况. 图7（g）、（h）中功能信息较模糊，且丢失
+了部分细节. 图7（f）、（l）、（m）色度信息还原较为
+理想，但MRI的结构特征存在偏暗或偏亮的问题.
+图7（i）的融合结果出现伪彩色且亮度分布不均.
+图7（j）中，MRI特征对比度偏高，颜色较深. 综合
+而言，所提方法呈现更均匀的亮度分布，颜色过渡
+自然，避免了过亮或过暗区域，且保留了更多的结
+构细节. 
+2.3.2   客观评价对比　选取标准差（SD）、空间频
+率（SF）、平均梯度（AG）、相关系数（CC）、结构内
+容差异（SCD）、峰值信噪比（PSNR）、视觉信息保
+真度（VIF）和多尺度结构相似性（MS-SSIM） 共
+8种客观指标，评价融合结果. 其中SD、SF和
+AG用于衡量融合图像的清晰度和细节丰富性，数
+值越大表明融合图像的细节信息和对比度越好.
+CC、SCD和MS-SSIM用于评估融合图像与源图像
+间的相关性和结构信息保留能力，数值越接近1或
+越大，表明结构相似性更强，互补特征保留更充分.
+PSNR和VIF反映图像的整体视觉保真度，数值越
+大或越接近1，表明融合效果更佳. 所提方法与
+11种经典算法的指标对比结果见表1. 其中，加粗
+表示最优值，下划线表示次优值.
+从表1可以看出，所提方法在SF、CC和MS-
+SSIM上表现最佳. 在“转移性支气管癌”MRI-
+SPECT融合任务中，SD、SF、CC与MS-SSIM分别
+较次优方法提升了1.99%、13.75%、0.34%和0.10%.
+2608 浙          江          大          学          学          报（工学版） 第 60 卷
+
+=== PDF_PAGE 8 ===
+ 
+(h) SwinFusion (i) MAEE (j) BSAFusion (k) FATFusion (1) MBHFuse (m) CrossFuse (n) 本文方法
+(a) MRI (b) SPECT (c) CNP (d) NSST (e) MATR (f) CDDFuse (g) EMMA
+ 
+ 
+图 5    “转移性支气管癌”MRI-SPECT融合结果对比
+Fig.5    Comparison of MRI-SPECT fusion result for “metastatic bronchial carcinoma”
+ 
+(h) SwinFusion (i) MAEE (j) BSAFusion (k) FATFusion (1) MBHFuse (m) CrossFuse (n) 本文方法
+(a) MRI (b) SPECT (c) CNP (d) NSST (e) MATR (f) CDDFuse (g) EMMA
+ 
+ 
+图 6    “阿尔茨海默病”MRI-PET融合结果对比
+Fig.6    Comparison of MRI-PET fusion result for Alzheimer's disease
+ 
+(h) SwinFusion (i) MAEE (j) BSAFusion (k) FATFusion (1) MBHFuse (m) CrossFuse (n) 本文方法
+(a) MRI (b) SPECT (c) CNP (d) NSST (e) MATR (f) CDDFuse (g) EMMA
+ 
+ 
+图 7    “神经胶质瘤”MRI-SPECT融合结果对比
+Fig.7    Comparison of MRI-SPECT fusion result for “Glioma”
+第 12 期 沈瑜 , 等：基于双阶段注意力机制与可逆变换的医学图像融合 2609
+
+=== PDF_PAGE 9 ===
+在“轻度阿尔茨海默病”MRI-PET融合任务中，SF、
+AG、CC和MS-SSIM分别较次优方法提升了
+5.67%、4.63%、0.93%和1.13%. 在“神经胶质瘤”
+MRI-SPECT融合任务中，SF、CC、SCD和MS-
+SSIM分别较次优方法提升了11.31%、5.27%、
+1.42%和0.89%. 具体而言，SF与AG越高，图像的
+纹理与边缘信息清晰度越高；CC越高，融合图像
+与源图像之间的线性相关性越强；MS-SSIM越高，
+图像结构信息保留能力越强. 在第2组实验中，所
+提方法在SD与SCD上表现稍弱，原因如下：
+MATR方法采用多模态引导注意力，结构保持性较
+好；CDDFuse采用密集连接，保留空间一致性；
+SwinFusion借助Transformer扩大感受野以保留全
+局结构，但这些措施会导致边缘信息弱化或细节
+模糊，且丢失部分高频信息. MBHFuse和BSAFu-
+sion分别通过高频平衡机制和保护滤波来增强信
+息平衡，但会牺牲整体视觉对比度. 与其他方法相
+比，本文方法通过增强浅层全局特征与深层局部
+特征，双向整合互补信息，并突出边缘与细节表
+现，从而提升纹理清晰度和亮度层次，虽然SD/SCD
+未达到最优，但整体视觉保真度及其他指标更均
+衡，避免了“结构强但细节弱”的问题.
+ 
+表 1   各病例融合图像的客观评价结果
+Tab.1    Objective evaluation result of fused images for each case
+ 
+病例 方法 SD SF AG CC SCD PSNR/dB VIF MS-SSIM
+病例1
+CNP 43.691 2 13.435 2 2.514 6 0.751 3 0.360 4 14.793 1 0.306 2 0.603 6
+NSST 44.691 5 15.236 4 3.623 5 0.779 2 0.406 2 15.364 2 0.406 5 0.593 1
+MATR 45.000 9 13.421 8 3.714 0 0.858 5 0.303 3 17.802 2 0.638 1 0.262 4
+CDDFuse 55.030 4 15.644 7 4.147 2 0.864 0 1.058 6 19.378 3 0.895 7 0.806 1
+EMMA 63.945 4 12.599 2 3.384 9 0.901 8 1.703 6 18.228 5 0.526 7 0.814 8
+SwinFusion 52.073 6 16.023 9 4.356 1 0.868 4 0.598 6 18.563 2 0.693 1 0.281 3
+MMAE 58.286 5 13.439 9 3.369 7 0.895 5 1.423 0 19.976 9 0.624 7 0.816 4
+BSAFusion 66.880 0 18.183 0 4.790 9 0.863 2 1.403 7 16.459 9 0.542 3 0.391 1
+FATFusion 31.544 6 22.504 2 5.381 2 0.799 0 1.750 8 12.230 1 0.149 4 0.617 9
+MBHFuse 67.671 2 17.500 6 4.409 3 0.906 7 1.790 1 16.895 8 0.540 2 0.395 9
+CrossFuse 66.474 5 11.223 9 2.903 5 0.908 3 1.693 9 14.806 2 0.556 4 0.226 1
+本文方法 69.020 6 25.599 6 5.255 8 0.909 8 0.650 0 17.538 5 0.766 6 0.817 2
+病例2
+CNP 45.279 0 29.445 0 4.937 3 0.692 7 0.872 7 10.124 6 0.319 1 0.596 1
+NSST 39.230 3 16.259 8 5.224 8 0.723 4 0.399 2 12.819 7 0.225 7 0.206 0
+MATR 45.425 9 23.930 3 6.278 7 0.687 3 0.280 3 14.014 1 0.628 3 0.235 8
+CDDFuse 65.207 1 29.454 7 7.643 1 0.789 6 1.638 4 15.513 1 0.662 9 0.753 6
+EMMA 72.931 4 20.997 6 6.207 9 0.780 4 1.730 0 14.235 5 0.528 4 0.733 5
+SwinFusion 59.215 0 30.044 5 8.012 9 0.770 9 1.459 3 15.067 3 0.600 2 0.252 4
+MMAE 70.848 2 25.298 2 6.752 2 0.783 4 1.629 8 14.763 3 0.623 5 0.746 3
+BSAFusion 66.870 8 33.334 5 8.460 1 0.742 9 1.403 9 14.271 4 0.534 3 0.332 1
+FATFusion 56.579 0 30.324 4 7.743 4 0.726 8 1.380 4 15.162 9 0.719 6 0.755 5
+MBHFuse 73.266 3 31.879 0 7.937 0 0.788 8 1.694 2 14.099 4 0.616 6 0.314 7
+CrossFuse 67.862 2 13.973 7 4.194 4 0.756 5 1.603 2 13.588 1 0.546 4 0.196 2
+本文方法 67.144 5 35.222 4 8.851 6 0.796 4 1.617 3 15.215 4 0.659 5 0.762 1
+病例3
+CNP 43.824 9 16.348 5 3.579 3 0.701 4 0.858 9 11.582 9 0.385 3 0.571 5
+NSST 40.578 2 13.194 3 3.683 9 0.661 9 0.492 8 12.346 2 0.412 3 0.481 2
+MATR 50.110 3 16.346 9 4.616 3 0.647 5 0.578 6 13.592 9 0.743 8 0.250 4
+CDDFuse 58.760 0 19.555 7 5.317 1 0.668 0 1.071 4 15.022 9 0.858 8 0.763 0
+EMMA 59.540 0 17.286 3 5.007 6 0.703 8 1.396 5 14.558 6 0.624 3 0.733 5
+SwinFusion 56.126 8 19.807 8 5.539 8 0.689 0 1.177 1 14.467 7 0.860 7 0.261 9
+MMAE 57.468 5 17.699 6 4.908 5 0.707 9 1.456 7 15.277 4 0.733 5 0.757 6
+BSAFusion 62.485 6 22.464 8 6.640 7 0.665 9 1.163 4 13.720 3 0.687 0 0.430 4
+FATFusion 67.891 7 22.179 3 6.030 3 0.650 7 1.175 3 13.498 0 0.862 4 0.752 8
+MBHFuse 58.241 6 20.257 9 5.560 3 0.705 3 1.394 7 14.712 6 0.833 6 0.315 2
+CrossFuse 39.081 0 11.351 7 3.195 8 0.748 0 1.187 8 15.559 2 0.665 8 0.193 6
+本文方法 65.052 1 25.005 3 6.057 7 0.789 6 1.663 7 14.761 4 0.809 8 0.769 8
+2610 浙          江          大          学          学          报（工学版） 第 60 卷
+
+=== PDF_PAGE 10 ===
+如表2所示为本文方法与其他基于深度学习
+的融合方法的效率对比实验结果. 其中，Sm为模型
+大小，FLOPs为每秒浮点运算次数，tt为推理时间.
+从表2可以看出，所提方法在FLOPs和单张图片处
+理时间上表现最优，分别为0.208×109和0.039 s，模
+型大小为次优. 总体而言，所提方法兼具低存储开
+销与低计算量，在临床诊断辅助和实际部署上具
+有良好的可行性.
+  
+表 2    模型大小、FLOPs与推理时间的比较
+Tab.2    Comparison of model size, FLOPs and inference time
+ 
+方法 设备 Sm/kB FLOPs/109 tt/s
+MATR GPU 86 1 .948 0.046
+CDDFuse GPU 4 712 39 .166 0.050
+EMMA GPU 6 043 8 .862 0.048
+SwinFusion GPU 7 747 127 .461 2.386
+MMAE GPU 9 142 0 .327 1.313
+BSAFusion GPU 39 348 51 .432 0.270
+FATFusion GPU 30 438 88 .930 2.724
+MBHFuse GPU 1 202 0 .737 0.513
+CrossFuse GPU 4 914 5 .037 1.180
+本文方法 GPU 1 137 0 .208 0.039
+  
+2.4    消融实验
+为了验证所提方法中DSAM、IBRC Block和
+EDEN的有效性，设计8组消融实验. 第1~3组分别
+去掉DSAM、IBRC Block和EDEN，其余结构保留.
+第4~6组分别只保留DSAM、IBRC Block和EDEN，
+其余结构去除. 第7、8组分别为三者全部去除或全
+部保留. 实验结果如图8与表3所示.
+从图8可以看出，移除DSAM后融合图像的细
+节保留能力下降，且VIF显著下降，表明该模块有
+助于提升细节与纹理的表达能力. 将INN结构替
+换为普通卷积后，信息损失增加，模态间的协同性
+减弱，色彩保真度降低，使得PSNR与MS-SSIM下
+降，表明该模块能够实现信息的无损传输. 在移除
+EDEN后，融合图像的结构细节与纹理清晰度显著
+退化，且对比度变差，表明该模块能够提高图像的
+对比度与纹理清晰度. 当去除所有模块时，融合图
+像在色度、亮度、纹理与结构等方面均表现不佳，
+客观指标均低于其他模型，表明基础融合模型存
+在明显的缺陷. 最后一组实验加入了所有模块，结
+合DSAM的特征选择、INN结构的信息整合以及
+EDEN的细节与结构优化，实现了最佳性能，与不
+含任何模块的配置相比，各项指标分别提升了
+17.26%、3.41%、8.14%、30.28%、11.84%和37.61%，
+验证了3个模块的有效性.
+  
+(a) MRI (b) SPECT (c) 去掉
+DSAM
+(d) 去掉
+IBRC Block
+(e) 去掉
+EDEN
+(f) 只保留
+DSAM
+(g) 只保留
+IBRC Block
+(h) 只保留
+EDEN
+(i) 全部去除 (j) 全部保留
+ 
+ 
+图 8    消融实验的主观对比
+Fig.8    Subjective comparison of ablation experiment
+  
+表 3    消融实验的客观比较
+Tab.3    Objective comparison of ablation experiment
+ 
+方法
+SD SF AG CC PSNR/dB SCD VIF MS-SSIMDSAM IBRC EDEN
+— √ √ 62.222 2 19.706 1 5.105 3 0.903 1 18.637 6 1.777 1 0.598 4 0.801 2
+√ — √ 64.230 3 19.855 6 5.352 1 0.895 3 18.117 4 1.852 8 0.622 7 0.775 1
+√ √ — 61.972 8 19.607 1 5.120 6 0.881 4 19.305 1 1.751 5 0.647 2 0.800 7
+√ — — 53.156 9 19.439 0 4.248 8 0.893 9 11.283 5 1.328 7 0.285 7 0.802 9
+— √ — 62.953 7 16.733 8 4.251 2 0.826 1 18.135 9 1.777 6 0.257 9 0.336 7
+— — √ 58.462 4 16.251 4 5.263 4 0.834 2 16.454 3 1.234 5 0.462 4 0.467 2
+— — — 56.490 0 20.253 1 5.030 6 0.705 3 15.575 3 1.667 2 0.066 3 0.589 0
+√ √ √ 66.244 9 20.944 7 5.440 2 0.918 9 19.329 5 1.864 6 0.846 9 0.810 5
+  
+3   结　语
+针对医学图像融合中全局信息丢失、互补信
+息融合不充分及图像对比度与清晰度差的问题，
+提出新的融合框架——基于双阶段注意力机制与
+可逆变换的多模态医学图像融合方法. 所提方法通
+过双阶段注意力模块与可逆瓶颈残差耦合模块的
+协同设计，实现多模态信息的动态双向整合. 可逆
+结构保证了低频特征在多尺度传递过程中的信息
+无损，并与瓶颈残差耦合机制共同实现高效融合，
+第 12 期 沈瑜 , 等：基于双阶段注意力机制与可逆变换的医学图像融合 2611
+
+=== PDF_PAGE 11 ===
+显著提升了多模态特征的完整性和互补性. 采用纹
+理-对比多尺度融合模块，引入高频残差与边缘引
+导机制，实现低频结构与高频纹理的联合优化.
+引入亮度、结构、梯度与色度4种损失函数，
+约束融合过程中的结构保持与细节完整性. 实验结
+果表明，所提方法在SD、SF、CC和MS-SSIM等客
+观指标上均优于次优方法，提升幅度分别为
+1.99%、13.75%、0.34%和0.10%. 在主观评价中，所
+提方法有效保留了图像的结构纹理信息与边缘特
+征，更好地融合了功能图像中的亮度及代谢信息，
+融合图像层次感更丰富，病灶区域更清晰，具备良
+好的视觉观感.
+尽管所提方法在结构保持、细节增强与对比
+度提升等方面已取得优于现有方法的表现，但仍
+存在值得进一步探索的方向. 未来研究可以扩展至
+针对轻度非配准及形变的融合框架，提升该方法
+在真实临床场景中的适用性. 此外，可以进一步探
+索与病灶分割、诊断预测与辅助诊断等下游任务
+相联合优化的任务驱动融合范式，使融合不再仅
+仅追求视觉质量，而是直接服务于临床判别.
+ 
+参考文献(References):
+ 沈瑜, 白珊, 魏子易, 等. 基于跨模态感知和空频交叉的医学图
+像融合[J]. 中国激光, 2025, 52(9): 0810001.
+Shen  Yu,  Bai  Shan,  Wei  Ziyi,  et  al.  Medical  image  fusion
+network  for  Cross-Modality  perception  and  Spatial-Frequency
+interaction  [J].  Chinese  Journal  of  Lasers,  2025,  52(9):
+0810001.
+[1]
+ 沈瑜, 刘佳英, 闫佳荣, 等. 基于局部与全局信息协同的双分支
+多模态医学图像融合[J]. 光学学报, 2025, 45(8): 117–131.
+Shen Yu, Liu Jiaying, Yan Jiarong, et al. Dual-branch multimodal
+medical  image  fusion  based  on  local  and  global  information
+collaboration [J]. Acta Optica Sinica, 2025, 45(8): 117–131.
+[2]
+ Qiang  Z,  Shen  Y,  Yuan  Y,  et  al.  DWSFusion:  dual  weight
+supervision for lightweight infrared and visible image fusion [J].
+Pattern Recognition, 2026, 179: 113520.
+[3]
+ Satyanarayana  V,  Mohanaiah  P.  Multimodal  medical  image
+fusion  in  NSST  domain  in  coupled  neural  systems  [J].
+International Journal of Computational Intelligence Systems,
+2025, 18(1): 111.
+[4]
+ 沈瑜, 强振凯, 魏子易, 等. 基于深度学习的红外与可见光图像
+融 合 综 述 : 发 展 与 展 望 [J]. 控 制 与 决 策 , 2025, 40(6):
+1793–1806.
+Shen Yu, Qiang Zhenkai, Wei Ziyi, et al. Review of infrared and
+visible image fusion based on deep learning: developments and
+prospects [J]. Control and Decision, 2025, 40(6): 1793–1806.
+[5]
+ Wang  Y  M,  Wang  C  Y,  Liu  K  Y,  et  al.  CNN-based  cross-
+modality  fusion  for  enhanced  breast  cancer  detection  using
+mammography and ultrasound [J]. Tomography, 2024, 10(12):
+2038–2057.
+[6]
+ Xie X Y, Zhang X Z, Tang X L, et al. MACTFusion: lightweight
+cross transformer for adaptive multimodal medical image fusion
+[J].  IEEE  Journal  of  Biomedical  and  Health  Informatics,
+2025, 29(5): 3317–3328.
+[7]
+ Wang Y H, Liu R R, Li Z H, et al. Variable augmented network
+for invertible modality synthesis and fusion [J]. IEEE Journal of
+Biomedical and Health Informatics, 2023, 27(6): 2898–2909.
+[8]
+ Zhao Z X, Bai H W, Zhang J S, et al. CDDFuse: correlation-
+driven  dual-branch  feature  decomposition  for  multi-modality
+image fusion [C]//Proceedings  of  the  IEEE/CVF  Conference
+on  Computer  Vision  and  Pattern  Recognition.  Vancouver:
+IEEE, 2023: 5906–5916.
+[9]
+ He D, He X P, Xiang H L, et al. Wavelet transform-based two-
+stream convolutional networks for face anti-spoofing [J]. Journal
+of Electronic Imaging, 2023, 32(1): 013015.
+[10]
+ Wang  Z,  Simoncelli  E  P,  Bovik  A  C.  Multiscale  structural
+similarity for image quality assessment [C]//Proceedings  of  the
+37th  Asilomar  Conference  on  Signals,  Systems  and
+Computers. Pacific Grove: IEEE, 2004: 1398–1402.
+[11]
+ Ma J Y, Tang L F, Fan F, et al. SwinFusion: cross-domain long-
+range learning for general image fusion via swin transformer [J].
+IEEE/CAA  Journal  of  Automatica  Sinica,  2022,  9(7):
+1200–1217.
+[12]
+ Li B, Peng H, Luo X H, et al. Medical image fusion method based
+on coupled neural P systems in nonsubsampled shearlet transform
+domain [J]. International  Journal  of  Neural  Systems, 2021,
+31(1): 2050050.
+[13]
+ Kong W W, Zhang L J, Lei Y. Novel fusion method for visible
+light and infrared images based on NSST-SF-PCNN [J]. Infrared
+Physics and Technology, 2014, 65: 103–112.
+[14]
+ Li H, Su D, Cai Q, et al. BSAFusion: a bidirectional stepwise
+feature alignment network for unaligned medical image fusion
+[J].  Proceedings  of  the  AAAI  Conference  on  Artificial
+Intelligence, 2025, 39(5): 4725–4733.
+[15]
+ Wang X X, Fang L X, Zhao J L, et al. MMAE: a universal image
+fusion  method  via  mask  attention  mechanism  [J].  Pattern
+Recognition, 2025, 158: 111041.
+[16]
+ Sun Y C, Dong M L, Yu M X, et al. MBHFuse: a multi- branch
+heterogeneous global and local infrared and visible image fusion
+with differential convolutional amplification features [J]. Optics
+and Laser Technology, 2025, 181: 111666.
+[17]
+ Zhao Z, Bai H, Zhang J, et al. Equivariant multi-modality image
+fusion  [C]//Proceedings  of  the  IEEE/CVF  Conference  on
+Computer  Vision  and  Pattern  Recognition.  Seattle:  IEEE,
+2024: 25912–25921.
+[18]
+ Li H, Wu X J. CrossFuse: a novel cross attention mechanism
+based  infrared  and  visible  image  fusion  approach  [J].
+Information Fusion, 2024, 103: 102147.
+[19]
+ Tang  W,  He  F  Z.  FATFusion:  a  functional–anatomical
+transformer  for  medical  image  fusion  [J].  Information
+Processing and Management, 2024, 61(4): 103687.
+[20]
+ Tang W, He F Z, Liu Y, et al. MATR: multimodal medical image
+fusion  via  multiscale  adaptive  transformer  [J].  IEEE
+Transactions on Image Processing, 2022, 31: 5134–5149.
+[21]
+2612 浙          江          大          学          学          报（工学版） 第 60 卷

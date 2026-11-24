@@ -1,0 +1,1279 @@
+=== PDF_PAGE 1 ===
+医学影像中的生成技术
+潘永生 1， 马豪杰2， 夏勇1，2，3*， 张艳宁1
+1.  西北工业大学计算机学院空天地海一体化大数据应用技术国家工程实验室， 西安 710129 ； 
+2.  西北工业大学宁波研究院， 宁波 315048 ； 3.  西北工业大学深圳研究院， 深圳 518057
+摘 要： 医学影像是一种利用各种成像技术捕捉人体内部结构和功能的医学诊断方法。这些技术可以提供关于人
+体解剖、 生理和病理状态的视觉信息， 在疾病诊断、 治疗和预后预测中发挥着重要作用。由于不同类型或子类型的
+医学影像反映患者身体的不同信息， 在医疗诊断时往往需要多种不同类型或子类型的医学影像来获取更加全面的
+信息， 从而提高诊断准确率。然而在现实生活中， 多模态影像数据获取面临采集时间长、 费用高以及可能增加辐射
+剂量等困难。因此， 学者期待能够使用图像处理技术进行跨模态医学影像合成， 即使用某一种或一些模态的医学影
+像生成另一种或一些模态的医学影像。本文主要介绍医学图像领域中跨模态图像合成技术和跨模态医学影像合成
+的应用。跨模态医学影像合成虽然能为多模态影像诊断带来便利， 但也存在一些技术挑战。例如合成影像和真实
+影像在诊断性能上具有明显差异， 从而导致合成影像的临床失效问题， 隐私和伦理问题会导致高质量多模态医学影
+像数据获取成本高的问题。同时， 由于不同模态的影像数据在分辨率、 对比度和图像质量上存在一定差异， 这种差
+异会影响生成模型在生成过程中的一致性。如何解决不同模态之间的数据不一致性也是跨模态医学影像合成面临
+的挑战， 研究者大多从模型本身入手， 通过提高模型的表示能力或设计针对具体任务的约束条件来提高合成影像的
+质量， 所开发的跨模态医学影像合成技术已应用于影像采集、 重建、 配准、 分割、 检测和诊断等环节， 给许多问题带来
+新的解决思路和方法。
+关键词： 人工智能； 医学影像； 跨模态图像生成； 深度学习； 人工智能内容生成 （AIGC）
+Application of content generation in medical images
+Pan　Yongsheng1， Ma　Haojie2， Xia　Yong1，2，3*， Zhang 　Yanning1
+1.  National Engineering Laboratory for Integrated Aero-Space-Ground-Ocean Big Data Application Technology ， School of Computer 
+Science， Northwestern Polytechnical University ， Xi’an 710129 ， China； 2.  Ningbo Institute of Northwestern Polytechnical University， 
+Ningbo 315048 ， China； 3.  Research and Development Institute of Northwestern Polytechnical University in 
+Shenzhen， Shenzhen 518057 ， China
+Abstract： Medical imaging ， a crucial tool for medical actions ， utilizes various imaging techniques to capture the internal 
+中图法分类号：TP391. 4  文献标识码： A  文章编号： 1006-8961（2025）06-1985-16
+论文引用格式：Pan Y S， Ma H J ， Xia Y and Zhang Y N.  2025.  Application of content generation in medical images.  Journal of Image and Graphics， 
+30（6） ：1985-2000（潘永生， 马豪杰， 夏勇， 张艳宁 .  2025.  医学影像中的生成技术 .  中国图象图形学报， 30（6） ：1985-2000） ［DOI：10. 11834/
+jig. 240459］
+收稿日期：2024-08-05；修回日期：2024-09-06；预印本日期：2024-09-13
+ * 通信作者：夏勇 yxia@nwpu.edu.cn
+基金项目：国家重点研发计划资助 （2022YFC2009903 ，2022YFC2009900） ； 国家自然科学基金项目 （6240012686，62171377，62401475） ； 中央
+高校基本科研业务费专项资金项目 （D5000230376） ； 宁波市医学影像临床医学研究中心项目 （2021L003， 2022LYKFZD06） ； 深圳市科技计划项
+目 （JCYJ20220530161616036）
+Supported by ：National Key R&D Program of China （2022YFC2009903 ，2022YFC2009900） ； National Natural Science Foundation of China
+（6
+240012686，62171377， 62401475） ；Fundamental Research Funds for the Central Universities （D5000230376） ；Ningbo Clinical Research Center for 
+Medical Imaging （2021L003， 2022LYKFZD06） ；Shenzhen Science and Technology Program （JCYJ20220530161616036）
+1985
+
+=== PDF_PAGE 2 ===
+Vol. 30，No. 6，Jun. 2025
+structure and function of the human body.  Common types of medical images include magnetic resonance imaging （MRI） ， 
+computed tomography （CT） ， positron emission tomography （PET） ， plain X -rays， ultrasound ， and optical imaging.  The 
+information obtained from these images varies due to differences in imaging principles.  For example ， MRI uses a strong 
+magnetic field and radio waves to obtain images of the inside of the body and provides good information about soft tissues.  
+CT uses X -rays and computerized processing to create images of cross -sections of internal body structures and is primarily 
+used to image high -electron-density tissues （e. g.， bone） ； however ， its capability to contrast soft tissues is somewhat lim‐
+ited.  PET uses tracers labeled by radioisotopes to observe biological processes and functional activities within the body to 
+image specific biological functions.  At the same time ， depending on the differences in imaging parameters and tracers ， 
+medical images of the same imaging type may also differ from different subtypes ， such as T1 - and T2 -weighted MRI 
+sequences， FDG-PET， and A β-PET.  These medical imaging techniques provide visual information about the anatomical ， 
+physiological， and pathological states of the human body and play an important role in disease diagnosis ， treatment ， and 
+prognosis prediction.  Medical images of the same type or subtype are referred to as single modality ， and medical images 
+that contain different modalities are referred to as multiple modalities.  Given that various types or subtypes of medical 
+images respond to different information about the patients ’ body ， multiple types/subtypes of medical images are often 
+acquired to obtain more comprehensive information to improve diagnostic accuracy.  However ， multimodal image data 
+acquisition faces difficulties such as long acquisition time ， high cost ， and possible increase in radiation dose.  Therefore ， 
+generative techniques should be used for cross -modal medical image synthesis ， that is ， using medical images of one or 
+some modalities to generate medical images of another or some other modalities.  Although cross -modal medical image syn‐
+thesis can facilitate multimodal image diagnosis ， some technical challenges exist.  For example ， some information that can 
+be captured in the target modality does not exist in the source modality due to different imaging principles of various imag‐
+ing modalities.  In this case， synthesized images of the target modality lack certain information ， creating significant dispari‐
+ties in diagnostic performance between synthesized and real images ， which leads to the problem of clinical failure.  At the 
+same time ， privacy and ethical issues also contribute to the high cost of acquiring high -quality multimodal medical image 
+data and the problem of missing data in cross -modal medical image synthesis.  In addition ， differences in resolution ， con‐
+trast， and image quality between different modalities affect the consistency of image generation models during the genera‐
+tion process.  Addressing these inconsistencies in data across different modalities poses a significant challenge for cross -
+modal medical image synthesis.  The computational complexity and generalization ability of the model also need to be con‐
+sidered， as cross -modal medical image synthesis often requires complex models and many computational resources ， which 
+may limit the usefulness and scalability of cross -modal medical image synthesis methods.  In addition to the training data 
+that the model has already seen ， whether the model can perform well on new or other different datasets should be consid‐
+ered.  Most researchers start from the model itself and improve the quality of the synthesized images by improving the repre‐
+sentation ability of the model or designing task -specific constraints.  These developed cross-modal medical image synthesis 
+techniques have been applied to image acquisition ， reconstruction ， alignment ， segmentation ， detection ， and diagnosis ， 
+bringing new ideas and methods to solve many problems.  This paper focuses on cross -modal image synthesis techniques 
+and applications in the field of medical imaging.  We will introduce existing cross -modal medical image synthesis tech‐
+niques from three aspects ： traditional synthesis methods ， deep learning -based synthesis methods ， and task -driven synthe‐
+sis methods.  Traditional synthesis methods usually divide an image into multiple small blocks and encode each block into a 
+representation vector.  This is done by establishing a mapping between the paired block representation vectors of different 
+modalities and then generating the corresponding target modality block based on the encoding of the source modality block.  
+The random forest -based approach treats image synthesis as a regression problem ， assuming that the value of the target 
+modal block or its central region is the dependent variable of the source modal block.  This relationship can be obtained 
+through a regression model.  Dictionary learning-based methods assume that there exists a dictionary for each modality ， that 
+each image block can be obtained from a sparse representation of the elements in the dictionary ， and that the image blocks 
+corresponding to different modalities have the same dictionary encoding.  Compared with traditional methods ， deep 
+learning-based cross -modal image synthesis methods can directly use large -scale parametric models to build mappings from 
+source modal images to target modal images in an end -to-end manner.  These methods automatically extract the representa‐
+1986
+
+=== PDF_PAGE 3 ===
+第 30 卷 / 第 6 期 / 2025 年 6 月 潘永生，马豪杰，夏勇，张艳宁  / 医学影像中的生成技术
+tion features of an image or an image block in a data -driven manner without manually design the representation features.  
+Given their ease of implementation and superior performance ， deep learning -based techniques have become the leading 
+method in cross -modal image synthesis.  In this paper ， we introduce them from simple CNN -based approach ， encoder -
+decoder network -based approach ， generative adversarial network approach ， and diffusion model -based approach.  Task-
+oriented cross -modal image synthesis methods consider that the synthesis task has a specific task bias and form a task -
+specific bias by adding a task -related design on the basis of a generalized technique.  In this manner ， the synthesized image 
+preserves more information that contributes to the task and achieves a performance enhancement on the specific task.  Such 
+synthesis methods are presented in three categories ： task -oriented biases ， biases formed through network models ， and 
+image synthesis embedded in task models.  Finally， we present the application scenarios of cross -modal medical image syn‐
+thesis techniques and their application under their typical advantageous tasks.
+Key words ： artificial intelligence ； medical imaging ； cross -modal image synthesis ； deep learning ； artificial intelligence 
+generated content（AIGC）
+0　引 言
+医学影像可以提供关于人体解剖、 生理和病理
+状态的视觉信息， 在疾病诊断、 治疗和预后预测中发
+挥 着 重 要 的 作 用 （Elangovan 和 Jeyaseelan ，2016 ；
+施俊 等，2020） 。常见的医学影像类型包括磁共振
+影像 （magnetic resonance imaging ， MRI） 、 计算机断
+层成像 （computed tomography ， CT） 、 正电子发射成像
+（positron emission tomography ， PET） 、X 光平片、 光学
+成像等， 如图1 所示。
+由于成像原理的差异， 这些影像获取的信息有
+所不同， 例如 MRI 是通过使用强磁场和无线电波来
+获取身体内部的图像， 能很好地提供有关软组织的
+信息 （Vijayalaxmi 等，2015） ，CT 使用 X 射线和计算机
+处理技术创建人体内部结构的横截面的图像， 主要
+用于成像高电子密度组织 （如骨骼） ， 但也可以提供
+一 定 程 度 的 软 组 织 对 比 度 （Villarraga-Gómez 等 ，
+2019） ，PET 利用被放射性同位素标记的示踪剂来观
+察人体内部的生物过程和功能活动， 从而成像特定
+的生物学功能。同时， 根据成像参数和所用试剂的
+差异， 同一种成像类型的医学影像也会存在差异， 甚
+至形成不同的子类型。例如 MRI 就包括 T1 加权序
+列 、T2 加 权 序 列 等 （Tanitame 等 ，2017） ，PET 包 括 
+FDG-PET、Aβ-PET 等 （Pérez-Grijalba 等，2019） 。
+医学影像中同一类型或子类型的影像称为同一
+模态， 同时包含不同模态的医学影像则称为多模态
+影像 （Fard 等，2021） 。相较于单模态影像， 多模态医
+学影像能够同时包含不同模态数据间的多元化信息
+（罗娜 等，2022） 。因此， 往往需要多模态影像来获
+取更加全面的信息， 从而提高诊断准确率。然而在
+现实生活中， 采集多模态影像数据获取面临着时间
+长、 费用高、 可能增加辐射剂量等困难。人们期待能
+够使用图像处理技术进行跨模态医学影像合成， 即
+使用某一种 （ 或一些 ） 模态的医学影像去生成另一种
+（或一些） 模态的医学影像 （Pan 等，2020） 。而人工
+智 能 内 容 生 成 （artificial intelligence generated con‐
+tent， AIGC） 能够根据给定的提示进行高效的图像生
+图 1　多种模态的医学影像
+Fig. 1　Medical images of various modalities
+1987
+
+=== PDF_PAGE 4 ===
+Vol. 30，No. 6，Jun. 2025
+成和编辑任务， 因此许多科研工作者纷纷尝试使用
+人工智能生成技术进行跨模态图像生成来解决多模
+态影像缺失问题。
+AIGC 是指利用复杂的算法、 模型和规则， 从大
+规模数据集中学习映射规律， 从而使模型能够创造
+出所需内容的人工智能技术 （Cao 等，2023；Foo 等，
+2025；Di，2024） 。AIGC 技术涵盖多个领域， 根据生
+成目标数据的形式可分为文本生成、 音频生成、 图像
+生成和视频生成。其中文本生成技术可用于新闻报
+道、 媒体、 营销文案创作、 与用户进行文本交互聊天机
+器人等 （Di，2024；Ren 等，2023） 。音频生成技术可用
+于将文本转换为语音的语音合成 （ 语音播报 ） 和将输
+入语音或文本转换成具有目标说话者特征语音的语
+音克隆 （智能配音） 等 （Borsos 等，2023；Božić 和 Hor‐
+vat，2024） 。图像生成技术可根据规则或描述进行艺
+术创作、 将信息以更便于观察的影像形式呈现等任
+务 （Singh 和 Raza，2021；Frolov 等，2021） 。视频生成
+技术可用于编辑视频内容、 制作宣传片和广告片以
+及数字人控制等 （Li 等，2018；Bhagwatkar 等，2020） 。
+AIGC 技术中的生成模型主要分为单模态生成
+模型和多模态生成模型。单模态生成模型指输入和
+输出属于同一种模态， 如聊天机器人的输入为文本
+输出也为文本， 图像编辑输入为图像输出也为图像。
+单模态生成模型在设计和实现上更简单， 且由于其
+专注于一种模态的数据可以更深入地学习该模态的
+特征， 使得单模态生成模型在性能上往往高于多模
+态生成模型。但是单模态生成模型无法利用不同模
+态之间的互补信息， 且有很强的数据依赖性， 使得单
+模态生成模型的泛化能力很差。多模态模型生成的
+目标是通过从数据中学习不同模态间的关联性来建
+立统一的表示空间， 能够融合来自不同模态的互补
+信息， 从而提高模型的准确性和泛化能力。这种关
+联性有时是非常复杂的， 特别是不同模态之间面临
+语义对齐挑战的时候， 因此多模态表示空间与单模
+态相比更难学习， 通常需要大量的、 多样化的数据来
+训练模型。
+本文主要围绕跨模态图像合成介绍 AIGC 技术
+在医学图像领域中的应用。
+1　问题与挑战
+跨模态生成是基于模态之间的语义一致性， 实
+现不同模态数据形式上的相互转换， 有助于提高不
+同模态间的迁移能力 （ 刘华峰 等，2023） 。其虽然能
+为多模态影像诊断带来便利， 但也存在一些技术挑
+战， 例如临床失效问题， 即合成影像和真实影像在诊
+断性能上具有明显的差异 （Pan 等，2022） 。这是因
+为， 各类影像模态的成像原理不同， 目标模态能采集
+的某些信息在源模态影像中并不存在， 导致合成的
+目标模态影像依然不具有这些信息。同时， 合成模
+型受到自身表示能力的限制， 会产生一定信息损失，
+特别当其训练过程受到约束条件的偏置化引导时，
+将在合成影像中产生与偏置相关的信息损失。其
+次， 受限于隐私和伦理问题， 高质量的多模态医学影
+像数据获取成本高。这导致在跨模态医学影像合成
+中经常会面临数据缺失的问题。例如， 在阿尔茨海
+默病神经影像 （Alzheimer’s disease neuroimaging ini‐
+tiative，ADNI-1） 数据库 （Jack 等，2008） 中， 有800 多
+名受试者有基线 MRI 扫描， 但只有400 受试者有基
+线 PET 数据。由于不同模态的影像数据在分辨率、
+对比度和图像质量上存在一定的差异， 这种差异会
+影响生成模型在生成过程中的一致性， 如何解决不
+同模态之间的数据不一致性也是跨模态医学影像合
+成所需要面临的挑战。除此之外， 模型的计算复杂
+性和泛化能力也需要考虑到， 由于跨模态医学影像
+合成往往需要复杂的模型和大量的计算资源， 可能
+会限制跨模态医学影像合成方法的实用性和可扩展
+性。同时除了模型已经见过的训练数据之外， 也应
+该考虑模型能否在新的或其他不同的数据集上拥有
+不错的性能。
+当前， 研究者大多从模型本身入手， 通过提高模
+型的表示能力或设计针对具体任务的约束条件来提
+高合成影像的质量， 所开发的跨模态医学影像合成
+技术已应用于影像采集、 重建、 配准、 分割、 检测和诊
+断等环节， 给许多问题带来了新的解决思路和方法。
+2　跨模态影像合成技术现状
+2010 年以来， 跨模态影像合成受到研究者越来
+越多的关注， 产生了许多合成方法。本文将这些方
+法大致分为 3 类， 包括传统合成方法、 基于深度学习
+的合成方法和任务驱动的合成方法。
+2. 1　问题陈述
+为方便介绍， 本文以两个模态为例介绍跨模态
+1988
+
+=== PDF_PAGE 5 ===
+第 30 卷 / 第 6 期 / 2025 年 6 月 潘永生，马豪杰，夏勇，张艳宁  / 医学影像中的生成技术
+图像合成方法。设 X = {x1，⋯，xM }是源模态中的 M
+幅图像，Y = {y1，⋅ ⋅ ⋅，yN }是目标模态中的 N 幅图像，
+当 M 和 N 足够大时，X 和 Y 可近似源模态和目标模
+态图像服从的分布。跨模态图像合成假设存在一种
+映射 G：X → Y， 具体为
+∀ x ∼ X, ∃ y ∼ Y  s.t. G ( x) =  y （1）
+式中，x 表示源模态图像，y 表示目标模态图像， 映射
+G 可以通过某种优化方法由给定的数据 X 和 Y 近似
+地估计出来， 此时其约束条件被松弛为某一种优化
+目标 R， 即
+G̑  =  arg min
+G
+ R( x, y ; G )     s.t. x ∈ X, y ∈ Y （2）
+目前所有的图像合成技术均围绕映射模型 （G）
+和优化目标 （R） 的设计展开， 两个方面相辅相成、 齐
+头并进。其中典型的映射模型有字典学习、 随机森
+林、 卷积网络和Transformer 等， 优化目标有平均绝对
+误差、 结构相似性和对抗损失， 特征一致性等。
+2. 2　传统跨模态影像合成方法
+这类方法通常将影像划分成多个小块， 并将每
+个块编码成一个表示向量， 通过建立不同模态的配
+对的块表示向量之间的映射， 再根据源模态块的编
+码产生对应的目标模态块。主要关注表示向量的设
+计和映射模型的建立， 模型的求解过程以类似 “数据
+检索” 的方式进行， 优化目标通常使用平均均方误差
+等容易计算的指标。这类方法包括字典学习随机森
+林等。
+基于字典学习的方法 （Huang 等，2018） 假设每
+个模态存在一个字典， 每个图像块均可由字典中元
+素的稀疏表示得到， 不同模态对应的图像块具有相
+同的字典编码。进行跨模态影像合成时， 为不同的
+模态设置统一的编码和不同的字典， 并根据稀疏表
+示原理通过最小化联合重建误差来求解字典和编
+码。设对应于模态 X、Y 的字典分别为 ΦX、ΦY， x、y
+在 ΦX、ΦY 上的编码系数 （ 即表示向量 ） 分别为Ax、Ay，
+它们之间的关系为 x = ΦX Ax 和 y = ΦY Ay。由于只
+有 x、y 是已知量，ΦX、ΦY 和 Ax、Ay 可由稀疏表示最小
+化重建误差求得， 即
+min
+ΦX ,Ax
+  x -  ΦX Ax
+2
+F
+ +  λ Ax 0 , ∀x ∈ X （3）
+min
+ΦY ,Ay
+  y -  ΦY Ay
+2
+F
+ +  λ Ay 0 , ∀y ∈ Y （4）
+式中，  ∙ F 是 Frobenius 范数， ∙ 0 是 L0-范数并通常
+被松弛为 L1-范数，λ 是平衡稀疏性和重建误差的权
+重参数 （Wang 等，2020） 。如此，x、y 便可由其编码
+Ax、Ay 表示，x 和 y 的映射简化为 Ax、Ay 的变换关系。
+在此基础上可直接令 Ax = Ay = A 来联立求解一个相
+同的编码， 即
+min
+ΦX ,ΦY ,A
+  x -  ΦX A
+2
+F
+ + y -  ΦY A
+2
+F
++  λ A 1
+s.t.  x ∈ X, y ∈  Y （5）
+也可通过求解额外的模态对应的投影变换 PX 和 PY，
+使得 Ax、Ay 在投影空间上具有相同的投影， 即
+ arg min
+PX ,PY
+  PX Ax - PY Ay
+s.t.  ΦX Ax ∈ X, ΦY Ay ∈ Y （6）
+在应用时， 两者均需要先固定ΦX、ΦY， 并根据
+式 （3） 求出Ax， 然后令Â y = Ax 或 Â y = P-1Y PX Ax， 得出
+ŷ = ΦY Â y。
+基于随机森林的方法 （Jog 等，2017） 将影像合成
+视为回归问题， 假设目标模态块 （或其中心点/中心
+区域 ） 的值是源模态块的因变量， 并且这种关系可以
+通过回归模型得到。这类方法需要首先使用其他方
+法编码每个图像块， 因此非常受编码方式的影响。
+为了提高表示能力， 随机森林使用的表示向量通常
+是由多个尺度的多种简单特征组合而成的， 如空间
+位置、 离散傅里叶系数、 类haar 特征和平均亮度等。
+随机森林回归器由一组回归树组成， 每个回归树都
+是在训练集上随机选取的一个子集上学习得到的。
+其中树的每个内部节点选择一个特征来划分传入的
+训练样本来最大化信息增益， 最终每棵树根据树中
+每个节点的划分将特征空间划分为多个区域。每个
+叶子节点的样本数小于限定的数量或限定的值时，
+其输出值为该节点所有样本目标值的平均或中值。
+在应用时， 每一棵树均对输入的表示向量进行回归，
+最终的回归结果由所有树的结果通过某种加权平均
+方式产生。
+2. 3　基于深度学习的跨模态影像合成方法
+随着深度学习的发展， 跨模态影像合成研究已
+逐渐转移到深度学习框架中。从简单卷积神经网络
+（convolutional neural network ， CNN） 到 变 分 自 编 码
+网络 （variational auto -encoder， VAE） 、U-Net、 生成对
+抗网络 （generative adversarial network ， GAN） 和扩散
+模型等， 深度学习的各种技术都在跨模态医学影像
+合成中有所应用。与传统方法相比， 此类方法可以
+直接使用大规模的参数化模型以端到端的方式建立
+从源模态影像到目标模态影像的映射， 并以数据驱
+1989
+
+=== PDF_PAGE 6 ===
+Vol. 30，No. 6，Jun. 2025
+动的方式自动提取图像 （块） 的表示特征， 而不需要
+手工设计表示特征。由于其便于实现和性能优越，
+基于深度学习的跨模态影像合成技术目前已经占据
+了主导地位。
+2. 3. 1　基于简单 CNN 的方法
+基于简单  CNN 的方法早期常采用与传统方法
+类似的策略， 首先将图像划分成一系列的小块， 并使
+用每个源模态图像块预测目标模态图像块的中心值
+或中心区域的值。不同的是， 这些方法通过堆叠多
+个卷积层来构建映射模型， 并将特征提取和回归预
+测集成在一起， 使用误差反向传播算法来优化模型
+参数。由于其数据驱动的学习方式， 这些方法在训
+练样本充足的情况下能够达到比传统方法更好的性
+能。但是， 这些方法的表示能力受到参数量和结构
+复杂性的限制 （如使用的卷积层数量和卷积核大
+小） 。因此， 早期的CNN 方法通常沿着增加模型复
+杂度的方向发展。 Li 等人 （2014） 只使用两层卷积建
+立 MRI 和 PET 之间的映射，Nie 等人 （2016） 使用4 层
+卷 积 建 立MRI 和 CT 之 间 的 映 射 ， 而Xiang 等 人
+（2017） 则进一步串联3 个 4 层的卷积网络 （ 共12 层 ）
+建立 T1-MRI 和低剂量 PET 到高剂量 PET 的映射。
+然而， 增加卷积层的个数在增强表示能力的同时也
+会增加计算复杂度； 同时， 由于依然需要逐块甚至逐
+像素计算目标值， 这些方法的计算效率并不比传统
+方法更具优势。
+2. 3. 2　基于编解码网络的方法
+这类方法假设源模态和目标模态的影像在某一
+隐空间中存在共享的中间编码， 因此其通常包含一
+个编码器和一个解码器， 编码器将源模态图像 （块）
+转换成中间编码， 解码器将中间编码解码成目标模
+态图像 （ 块 ） （Liu 等，2017） 。编码器通常采用多个带
+下采样的卷积网络来压缩源模态图像中的信息， 解
+码器则采用多个带上采样的卷积网络来将压缩的信
+息恢复为目标模态图像。这类方法的优点是可以同
+时输出一个较大区域甚至整幅图像， 不但避免了简
+单 CNN 方法中的逐像素计算， 减少了计算代价， 也
+有助于保留结构性信息， 使合成图像具有更好的视
+觉效果。然而， 这是一个 “有损压缩” 过程， 存在信息
+丢失问题。例如，VAE 模型常采用均值和方差的组
+合作为中间编码， 虽然保留了源模态图像中的统计
+信息， 但同时抑制了个体化信息。有两种策略可以
+补偿损失的信息。一种是简化编码器和解码器的结
+构来减少信息损失， 并在编解码之间增加额外的特
+征转换单元 （ 如加入多个残差模块 ） 来增强信息转换
+能力 （Pan 等，2020；Pan 和 Xia，2021） 。另一种是使
+用跳跃连接将编码器的中间特征同时作为解码器的
+输 入 来 补 偿 缺 失 的 信 息 （Pan 和 Xia，2021；Isensee
+等，2021） 。需要注意的是， 一般的编解码结构可以
+适用于配对或非配对的图像， 而带跳跃连接的结构
+则只有在配对的图像上才有良好的性能 （Yang 等，
+2020a） 。图2 给出了用于影像生成的编解码网络及
+其变形的结构示意图。
+2. 3. 3　生成对抗网络的方法
+简单 CNN 和编解码网络一般使用确定性的简
+单优化目标， 如平均绝对误差 （mean absolute error ， 
+MAE） 、 均方误差 （mean squared error ， MSE） 等， 从而
+会引入确定性偏置， 即合成网络的优化方向始终朝
+向优化目标， 导致与优化目标相背的信息传输被抑
+制， 使得合成的图像在被抑制的信息方面呈现出平
+均的效果， 虽然在MSE、 峰值信噪比 （peak signal -to-
+noise ratio ， PSNR） 和结构相似性 （structural similar‐
+ity，SSIM） 等指标上表现优异， 但看起来却非常模
+糊。为了克服这种确定性偏置的不利影响， 出现了
+基于 GAN 的影像合成技术 （Fard 等，2021） 。与前述
+的确定性目标不同，GAN 使用一个判别网络 ——判
+别器 （discriminator，D） 来指导生成网络——生成器
+（generator，G） 的学习过程： 通过交替训练生成器和
+判别器， 使两个网络以相互竞争的方式同步提高各
+自的能力， 最终 （在理想情况下） 达到纳什均衡。这
+个过程中， 生成器逐渐生成具有真实图像特征的合
+成图像， 判别器不断提高对合成图像的鉴别能力。
+图 2　编码网络及其变形
+Fig. 2　Coding network and its variants （ （a） variational 
+auto-encoder； （b） with skip-connections； （c） with translation 
+blocks； （d） with both skip-connections and translation blocks ）
+1990
+
+=== PDF_PAGE 7 ===
+第 30 卷 / 第 6 期 / 2025 年 6 月 潘永生，马豪杰，夏勇，张艳宁  / 医学影像中的生成技术
+假设将真实样本和合成样本输入判别器 D 时的判别
+标签分别为 1 和 0， 那么GAN 的中的 D 和 G 通过不断
+迭代如下两个优化过程求解， 具体为
+max 
+D
+Ex ∼ X,y ∼ Y[ log(D( y)) + log(1 -D(G( x)))]  （7）
+min
+G
+Ex ∼ Y[ log(1 -D(G( x)))] （8）
+式中，x 表示源模态图像，y 表示目标模态图像，X 为
+源模态图像集合，Y 为目标模态图像集合。
+相比于确定性的优化目标， 判别器D 的存在使
+得 GAN 可以直接优化似然度本身， 而不是MAE 等
+对数似然的下界。 D 的不断更新相当于不断变换生
+成网络 G 的优化目标， 因此避免了引入确定性约束。
+由于需要训练两个网络，GAN 在训练时相比于其他
+方法需要更多的计算时间和空间， 但在应用时只需
+要运行生成网络， 其时间复杂度和其他深度学习方
+法是接近的。
+作为一种学习策略， 任何可微的模型都可以用
+于构建判别器和生成器， 但常用于影像合成的GAN
+通常使用图 2 中的一种结构作为生成器， 而判别器
+则主要使用图 3（a） 所示的多层卷积结构。
+训练 GAN 的理想状态是达到纳什均衡， 这有时
+可以用梯度下降法或其衍生算法做到， 但大部分时
+候是做不到的。目前尚无方法确保能达到纳什均
+衡， 所以相比于使用确定性优化目标的方法，GAN
+的训练是不稳定的。为此， 确定性优化目标不得不
+被重新考虑进来， 如加入MAE、SSIM 等。也可以使
+用感知损失 （perceptual loss） 提高GAN 的稳定性， 但
+感知损失依赖额外的网络来提取中间特征， 并且只
+能在不同模态的配对图像上计算。如果在固定参数
+的预训练网络上计算， 感知损失实际上相当于非常
+多但有限的确定性优化目标的组合， 仍然会引入一
+定程度的确定性偏置。如果直接在判别网络上计算
+感知损失， 也可以增强GAN 的稳定性， 此时多层感
+知损失也称为特征匹配损失 （Wang 等，2018） 。图3
+给出了不同约束目标的对比示意图， 通过组合不同
+的约束目标可以得到 GAN 的不同变形。
+2. 3. 4　基于扩散模型 （diffusion model） 的方法
+扩散模型是一种基于概率的生成模型， 与GAN
+不稳定的训练过程相比， 扩散模型具有更加简单的
+网络结构和更加稳定的训练过程。同时， 扩散模型
+能够生成高质量、 逼真的图像， 有效避免了GAN 中
+的模式崩溃问题。扩散模型可以看做是一个参数化
+的马尔可夫链， 使用变分推理进行训练， 在有限时间
+后产生与数据相匹配的样本 （Ho 等，2020） 。其主要
+包括两个阶段： 正向扩散阶段和逆向扩散阶段。正
+向扩散阶段是一个给原图逐步增加噪声的阶段。给
+定一个分布 q( x) 和采样次数 t = 1，⋯，T， 正向扩散
+阶段可以通过高斯转换 q( xt) = q( |xt xt - 1)添加高斯
+噪声生成一系列的中间变量 x1，x2，⋯，xT， 其中的高
+斯转换定义为
+q( |xt xt - 1) = N ( xt ; 1 -βt xt - 1, βt I) （9）
+式中， βt ∈ (0， 1) 是超参数，N 表示高斯分布，I 为单
+位矩阵。利用概率链规则和马尔可夫性质， 可以得
+到中间变量 x1，x2，⋅ ⋅ ⋅，xT 基于 x0 的联合分布， 具体为
+q( x1, x2,⋅ ⋅ ⋅,|xT x0) = ∏
+t = 1
+T
+q( ) |xt xt - 1 （10）
+进一步， 可以直接根据初始状态得到t 时的状
+态， 具体为
+q( |xt x0) = N ( xt ; αˉt x0 , (1 -αˉt) I) （11）
+式中，αt = 1 -βt，αˉt = ∏
+s = 0
+t
+αs。由此对于给定的 x0， 其
+图 3　不同约束目标的对比图
+Fig. 3　Comparison for different constraint objectives 
+（ （a） discriminator network ； （b） constraint on network output ； 
+（c） discriminator-independent constraint ； 
+（d） constraint on intermediate features ）
+1991
+
+=== PDF_PAGE 8 ===
+Vol. 30，No. 6，Jun. 2025
+t 时 的 一 个 样 本xt 可 以 通 过 采 样 一 个 高 斯 噪 声
+ε ∈ (0， 1)并添加到 x0 上得到， 具体为
+xt = αˉt x0 + 1 -αˉt ε （12）
+这个加噪的过程可以使用网络模型来预测添加
+的噪声， 其优化目标为
+∇θ
+
+
+   ε - εθ( )αˉt x0 + 1 -αˉt ε, t
+2
+（13）
+式中，ε ∼ N (0， 1)为高斯噪声，εθ 为噪声预测模型，
+θ 为模型参数。这使得马尔可夫链可以通过去除噪
+声来从非结构化噪声向量生成新的数据样本。
+逆扩散过程的高斯转换为
+p( xt - 1| xt ) = N ( xt - 1; μθ( xt , t) , ∑θ ( )xt , t ) （14）
+由此过程， 可得
+xt - 1 = μθ( xt , t) + ∑
+θ
+( )xt , t z =
+1
+αt (
+xt - βt
+1 -αˉt
+εθ( xt , t)) + σt z （15）
+式中，z 为服从 N (0， 1)的高斯噪声， 通过T 次迭代去
+噪， 逆向扩散过程便可从xt 得到去噪后的图像 x0。
+基础的扩散模型推理时间一般较长， 这可以通过一
+些快速扩散方法来降低模型推理时间 （ Özbey 等，
+2023） ， 但这些快速方法通常不能提高生成图像的
+质量。
+基本的扩散模型的信息输入只有噪声， 因此在
+应对跨模态转换时需要进行一些改进来加入其他模
+态的信息。其中最简单的思路是通过将其他模态信
+息作为条件直接集成到去噪过程中， 从而建立一个
+条件扩散模型。如将其他模态数据送入到一个可训
+练或已经预训练好的条件特异性编码器中得到对应
+的条件嵌入向量， 将得到的嵌入向量和训练过程中
+模型提取的特征混合来融合不同模态的信息。沿着
+这 种 思 路 ，Lyu 和 Wang（2022） 结 合 条 件 扩 散 模 型
+（Ho 等，2020） 和得分匹配模型 （Song 等，2021） 来实
+现医学成像中 CT 和 MRI 图像之间的转换。为了使
+扩散模型在有限的计算资源上进行训练， 同时保持
+其质量和灵活性，Rombach 等人 （2022） 通过将图像
+转移到潜空间并在潜空间中对特征进行前向扩散和
+逆向扩散过程 （ 其中， 图像和潜空间的转换则需要学
+习一个自编码模型 ） 来保证两个空间在感知上等价。
+另一种思路是通过适当的监督来指导反向去噪
+过程， 或以较低的成本对已经训练好的扩散模型进
+行微调， 从而避免重新训练新的扩散模型。在这条
+思路上，Dhariwal 和 Nichol（2021） 将分类器网络的优
+化步骤作为条件信息纳入采样过程来增强预训练的
+扩散模型， 不过生成图像的质量受限于分类器的性
+能。Zhu 等人 （2023） 在二维切片自编码器网络中引
+入一个由一系列二维断层组成的网络， 并利用三维
+数据对该网络进行微调， 使得二维扩散模型能够扩
+展到其对应的三维立体影像。
+从原理上可以看出， 扩散模型相比于其他模型
+的特点在于增加了生成影像数据的多样性和视觉保
+真度， 而不是提高生成图像的有用性， 因此可以预计
+在对于以诊断为目的跨模态医学影像生成上无法表
+现出相对其他模型的显著优势。其中一个特点是越
+复杂的扩散模型越无法生成与目标一致的影像。
+2. 4　面向任务的跨模态影像合成方法
+许多跨模态影像合成技术并没有考虑具体问题
+的特点。因此， 有的方法可能会产生 “幻觉” ， 即倾向
+于合成训练数据中显著存在的图像模式， 但该模式
+可能并不是下游任务所需要的 （Cohen 等，2018） 。
+为了解决该问题， 需要在通用技术的基础上添加与
+任务相关的设计， 形成对具体任务的偏置， 使合成的
+图像保存更多有助于任务的信息， 在具体任务上取
+得性能提升。前述感知损失就是一种这样的设计，
+其目的是为了平衡合成图像中的空间结构、 形状与
+颜色、 纹理等的保持与丢失。在医学影像合成中， 更
+多的是需要合成的影像对后续的诊断、 分割和配准
+等任务有所帮助， 这通常很难通过通用的合成方法
+实现， 因为这些方法实际上主要包含与具体任务无
+关的偏置， 这种无关偏置主导了模型的学习过程， 使
+朝向具体任务的偏置得到抑制， 进而产生 “无用” 的
+合成影像。这也是合成的医学影像在实际应用中很
+难得到认可的一个重要原因。为了提高合成的影像
+的 “有用性” ， 针对具体问题设计专门的合成模型是
+一种有效的手段。因此， 产生了一系列面向任务的
+影像合成方法 （Pan 等，2021a，2022） 。
+2. 4. 1　面向任务的偏置
+设某种图像合成模型的驱动目标 R 可以分解为
+与任务相关的部分 Rr 和与任务无关的部分 Ri， 即
+R( x,y ; G) = Rr( x,y ; G) + Ri( x,y ; G) （16）
+式中，Rr 正交于 Ri， 使用梯度下降算法时， 对应的图
+1992
+
+=== PDF_PAGE 9 ===
+第 30 卷 / 第 6 期 / 2025 年 6 月 潘永生，马豪杰，夏勇，张艳宁  / 医学影像中的生成技术
+像合成模型的优化方向为
+∂R
+∂G = ∂Rr∂G + ∂Ri∂G （17）
+同样地，∂Rr
+∂G 正交于 ∂Ri∂G 。由此可以看出， 当   ∂Ri∂G >
+0 时， 优化方向会偏向任务无关的方向， 合成模型合
+成的图像相对于任务的价值降低； 当   ∂Ri∂G ≫    ∂Rr∂G
+时， 优化方向朝向与任务无关的方向， 此时合成的图
+像完全没有价值。在 Cohen 等人 （2018） 给出的例子
+中，GAN 合成的影像虽然看起来更加真实， 但在一
+些问题下甚至不如只使用 MAE 损失有用， 原因就在
+于判别器的优化方向在任务无关的方向上的分量大
+于在任务相关方向上的分量。因此， 如果需要将合
+成的影像用于某一下游任务， 必须突出任务相关的
+分量。为了增加任务相关方向的优化分量， 最直接
+的做法就是使用具体的任务模型作为影像合成目
+标， 即让合成影像具有与真实影像在一个任务相关
+模型上相近的输出。设 F: X → Y 是面向某一任务
+（如分割、 分类、 配准等） 的方法模型， 其输入为合成
+模型 G 的目标模态 y ∈ Y， 输出为y 对应的任务标签
+f， 该模型的求解目标为Rs( y, f ; F) : f = F( y)， 那么
+将 Rf( x, y ; G) = Rs(G( x) , f ; F) 加入到合成模型的
+优化目标中， 形成扩展的优化目标， 具体为
+R͂ ( x, y ; G) = Rr( x, y ; G) + Ri( x, y ; G) + Rf( x, y ; G)
+（18）
+式中，R͂ 表示扩展的优化目标，Rf 表示任务相关的目
+标， 通过对上述公式求偏导即可产生一个面向任务
+的偏置 ∂Rf
+∂G 。实验表明， 这样的偏置可以显著提高
+合成模型对任务的适用性， 将合成的影像用于训练
+对下游任务有一定的帮助。比如在风格转换任务
+中， 使用多尺度结构相似性约束作为优化目标， 可以
+显著改善图像超分辨和去噪后的失真 （即提高了结
+构相似性） （Malhotra 等，2021） ； 在从其他模态合成
+CT 影像的任务中， 使用阈值分割约束即可提高合成
+的 CT 影像中不同组织 （骨头、 软组织、 脂肪和气体
+等 ） 间的差异性 （Liu 等，2017） 。
+2. 4. 2　通过网络模型形成偏置
+对于很多实际问题， 往往需要使用一个复杂的
+模型来得到近似的解决方案。例如， 用一个卷积网
+络来进行病灶分割、 生存期预测等。尽管这些模型
+很可能无法达到足够好的性能， 但只要它们产生的
+结果与真实结果之间的误差在可接受范围， 依然可
+以用它们来为影像合成模型产生面向任务的偏置。
+同时， 除了上述Rf( x， y；G) = Rs(G( x)， f； F) 的偏
+置目标外， 还可以通过替换其中的F 得到偏置目标
+的另一种形式：Rf( x， y；G) = Rs( y，F(G( x))；F)。
+与前一种形式相比， 这种形式不需要引入训练样本
+的监督信息， 故而在求解合成模型时可以保持与原
+来相同的数据量。此外， 如果任务模型过于复杂， 还
+可以使用图 3（d） 的方式， 通过提取任务模型中间层
+的特征， 并使用特征一致性约束来减少计算量。在
+之前的工作中， 使用的大都是这样一种形式 （Pan
+等，2021a，2022；Pan 和 Xia，2021） 。需要注意的是，
+根据网络的特点， 浅层的特征对任务的表达能力通
+常弱于深层的特征， 因此使用浅层的特征形成的对
+任务的偏置通常也要比深层的特征弱一些。
+2. 4. 3　嵌入任务模型中的影像合成
+虽然使用与任务相关的偏置能够使合成的影像
+更加适合该任务， 但并不总是容易得到一个好的任
+务模型。因此也希望合成的影像能帮助提高任务模
+型的性能 （Pan 等，2021a） 。此时可以通过优化如下
+模 型 来 利 用 从X 合 成 的 图 像 提 高 任 务 模 型F， 具
+体为
+min 
+F
+Rs(G( x) , f ; F) , x ∈ X （19）
+此时，Y 中的图像也可以通过下式同时加入到对 F
+的优化中， 具体为
+min 
+F
+Rs( y, f ; F) , y ∈ Y （20）
+此时的合成模型 G 通过优化下式得到， 以使其产生
+对任务的偏置， 具体为
+min 
+G
+R͂ ( x, y ; G) （21）
+在优化过程中，F 和 G 的求解联合进行， 其中Rf
+项可以根据目标模态图像和标签的数量选择。这个
+模型为许多任务提供了新的解决思路。以跨模态配
+准为例， 同模态 （如T1-MRI 和 T1-MRI） 之间的配准
+已经有许多成熟的工具， 但跨模态 （如FDG-PET 和
+T1-MRI） 的配准 （F） 依然是一个具有挑战的课题。
+在 这 个 问 题 上 ， 可 以 根 据 FDG -PET 合 成T1-MRI
+（Yang 等，2020b） ， 进而用同模态配准方法得到配准
+参数， 再应用于FDG-PET； 也可以根据T1-MRI 合成 
+FDG-PET（G） ，进而通过联合求解 F 和 G 得到 F DG-
+1993
+
+=== PDF_PAGE 10 ===
+Vol. 30，No. 6，Jun. 2025
+PET 和 T1-MRI 之间的模型。
+另外， 有的任务模型期望同时使用多种模态来
+达到更好的性能 （Pan 等，2021a；Wei 等，2021） ， 但其
+中部分训练样本只有其中一种模态的影像 （X） ， 也
+即是另一种模态图像 （Y） 缺失了， 此时我们希望使
+用合成模型 （G） 来合成缺失的影像， 并同时提高多
+模态任务模型 （记为R͂ s( x，y，f；F)，f = F( x，y)） ， 这
+种情况依然可以通过联合优化 F 和 G 实现， 只需要
+将此时的优化目标改为
+Rf( x, y ; G) = R͂ s( x,G( x) , f ;  F) （22）
+以阿尔茨海默病的诊断为例， 通常认为同时使
+用 MRI 和 PET 是达到更好性能的有效手段， 但许多
+样本没有采集 PET 影像。因此， 多模态 MRI-PET 诊
+断模型面临数据缺失的问题。使用上述方法便可补
+全缺失数据， 利用所有的样本训练多模态诊断模型。
+3　跨模态医学影像合成的应用
+跨模态影像合成技术在成像、 重建、 配准、 分割、
+预测、 诊断等医学影像智能计算的各个任务中都有
+应用， 同时也涉及到 MRI、PET、CT 和 X-光平片等影
+像模态。在成像过程中， 受到患者条件或设备的限
+制， 会存在一些模态的影像难以获得或获得到的影
+像质量不佳。在这种情况下， 跨模态影像合成技术
+可以通过合成高质量的影像来辅助医生进行更准确
+的诊断。在医学影像的重建过程中， 使用跨模态影
+像合成技术合成的影像可以用于三维结构的重建，
+提供更全面的解剖信息。同时， 跨模态影像合成技
+术在影像配准中也十分重要， 它能够将来自不同模
+态的医学影像精确对齐， 以便于比较和分析。此外，
+在分割任务中， 跨模态影像合成技术合成的影像可
+以提供额外的对比度或特征， 帮助算法更准确地识
+别和分割出感兴趣的区域。在疾病的发展预测和诊
+断中， 跨模态影像合成技术可以结合不同模态的优
+势， 提供更全面的疾病特征。例如，PET 影像可以提
+供关于代谢活动的信息， 而MRI 可以提供详细的解
+剖结构信息， 两者的合成影像可以为医生提供更全
+面的诊断依据。
+当前， 跨模态医学影像合成的应用场景包括但
+不限于影像转换、 数据扩充、 数据统一、 隐私保护和
+可信智能等。在机器学习模型的训练中， 数据的多
+样性和数量对模型性能有重要影响。跨模态影像合
+成技术可以通过生成新的合成影像来扩充数据集，
+提高模型的泛化能力。同时， 它还可以帮助实现不
+同模态数据的统一， 简化数据处理流程。而在医学
+研究和数据分析中， 保护患者隐私至关重要。跨模
+态影像合成技术可以创建去标识化的合成影像， 用
+于研究和分析， 而不泄露患者的个人信息。
+本节将从影像转换的应用领域和典型的优势任
+务两个方面对跨模态医学影像的应用进行介绍。
+3. 1　影像转换的应用领域
+传统的医学影像合成方法通常都受限于其特定
+的转换模式， 即仅能在特定的模态之间实现影像转
+换。而跨模态医学影像合成不仅限于合成特定的模
+态， 还能够实现任意缺失模态的合成， 具有更高的灵
+活性。同时跨模态医学影像合成技术相较于传统的
+医学影像合成方法能够合成更加高质量的医学影
+像。跨模态医学影像合成技术在影像转换领域的应
+用逐渐显现出其在提高诊断准确性、 优化治疗计划
+和加速临床研究中的潜力。从影像转换的目的来
+说， 这些应用大致可以分为影像替代和影像补全两
+类。而从影像转换数据的角度来看， 这些应用又可
+以大致分为不同模态之间的图像转换和同一模态
+的两种不同成像参数之间的转换。如不同模态之
+间的图像转换方法有使用 CT 影像合成 MR 影像， 同
+一模态的不同对比度成像之间的转换方法有使用
+T1WI 影像合成 T2WI 影像。本节从两种不同的角
+度介绍跨模态医学影像合成技术在影像转换领域
+的应用。
+3. 1. 1　影像的等效替代
+由于不同的模态影像可能存在互补的信息， 在
+现实诊断中往往需要获取全面的影像数据。而由于
+设备的可用性、 患者自身的条件和成像成本等问题，
+导致某些模态的数据可能难以获得。为了解决这一
+问题， 可以采用影像的等效替代方法， 可以尝试利用
+其他可获得模态的影像合成出该模态的影像。例
+如，PET 成像通常依赖 CT 影像进行辐射衰减校正，
+但在 PET/MRI 设备中无法采集 CT 影像， 此时可以
+利用 MRI 影像或未校正的 PET 影像合成 CT 影像， 用
+以完成 PET 校正 （Bahrami 等，2020） 。同时， 有些模
+态的影像采集过程需要依赖耗费高或耗时长的成像
+方式，难以在临床中广泛的使用。例 如 ， 脑血容量
+（cerebral blood volume ， CBV） 是评价颅内占位性病
+1994
+
+=== PDF_PAGE 11 ===
+第 30 卷 / 第 6 期 / 2025 年 6 月 潘永生，马豪杰，夏勇，张艳宁  / 医学影像中的生成技术
+变最有用的参数， 但 CBV 的测量依赖于血流灌注成
+像技术， 存在成像时间长、 成本高、 给患者带来极大
+不适等明显缺点。考虑到 CBV 影像中的信息可能
+也部分存在于其他 MRI 序列中， 可以尝试利用多个
+MRI 序列来合成 CBV 影像， 从而获得一个近似的结
+果 （Pan 等，2021b） 。
+3. 1. 2　缺失影像的补全
+对于有些任务， 使用多种模态的影像相互配合，
+可以达到更好的精度。例如， 同时使用 MRI 和 PET 
+影像可以建立更加准确的阿尔茨海默病诊断模型
+（Pan 等，2021a，2022） ， 同时使用多种 MRI 序列可以
+提升胶质瘤分割精度， 以便显现更加完整的病灶面
+貌 （Jia 等，2020） 。但由于病人意愿或条件限制等原
+因， 数据不完整的情况非常普遍。这时， 可以通过影
+像合成技术使用已有模态的影像合成缺失模态的影
+像， 从而利用所有的样本来训练模型， 并可以将该模
+型应用于可能存在缺失模态影像的样本上。需要注
+意的是， 影像替代和影像补全虽然技术上是相似的，
+但在目的上有着本质的区别。前者假设源模态包含
+目标模态的完整信息， 希望挖掘源模态与目标模态
+的共有信息， 并将这种信息以目标模态的模式呈现
+出来。后者则假设不同模态中的信息是互补的， 希
+望合成的目标模态影像在共有信息的基础上呈现出
+与已有模态影像互补的信息， 只有这样合成影像才
+能在下游任务中发挥正向的作用。例如， 在CT 影像
+中， 不同组织通常对应不同的HU（Hounsfiled unit）
+值， 因此在使用MRI 影像合成 CT 影像时， 希望MRI 
+影像所反映的组织分布信息以 HU 值的形式呈现。
+而在脑肿瘤的分割中， 不同模态的影像都只有肿瘤
+区域的一部分信息， 合成的影像只有提供本模态特
+有的与其他模态互补的信息， 才能提高分割精度。
+这是很难做到的， 即便使用面向任务的合成技术也
+很难满足期待， 多模态模型性能的提升通常是得益
+于样本数量的增加或数据多样性的提高。
+3. 1. 3　多源数据的统一化
+医学影像通常呈现出多样化的特点， 即使同一
+种模态的影像， 也可能存在分辨率、 噪声和数值分布
+等方面较大的差异。不同的医疗机构、 研究中心可
+能因为使用的设备、 成像协议和数据记录标准的不
+同， 也会导致所得到的相同类型的数据在数据格式
+和质量上存在差异。而这些因为成像设备、 成像协
+议等导致的数据分布上存在差异的数据集称为跨中
+心数据集。受到跨中心数据集异质性的影响， 在将
+训练数据集上获得的模型应用于跨中心数据时， 其
+性能会出现难以预测的下降。如果将这种富含多样
+性的影像视为广义的多模态影像， 就可以使用跨模
+态影像合成技术将多中心的数据变成统一的风格，
+从 而 提 高 任 务 模 型 跨 中 心 的 迁 移 能 力 （Lei 等 ，
+2022） 。有时在某一模态上的标注比其他模态容易，
+如果能够建立不同模态的对应关系， 则可以更容易
+地 获 得 在 所 有 模 态 上 的 标 注 （Taleb 等 ，2021；
+Yamashita 等，2021；Su 等，2023） 。比如， 在多模态和
+多序列的医学图像上只需要在一种模态或序列上的
+标注就可以训练全模态 /全序列的分割模型 （Su 等，
+2023） ， 将非医学图像的风格应用于组织病理学图像
+则 可 能 提 高 图 像 分 类 方 法 在 肿 瘤 分 类 上 的 能 力
+（Yamashita 等，2021） 。
+3. 2　典型的优势任务
+医学影像的生成主要目的是提升医学影像处理
+流程中各个任务的性能， 包括成像、 重建、 配准和分
+割等。本节将围绕这几个典型的优势任务介绍跨模
+态医学影像的应用。
+3. 2. 1　成像
+医学影像领域的成像任务是指通过各种成像技
+术获取人体内部结构和功能的信号以便于进行诊
+断、 治疗活动。有时因为患者状况或技术设备的限
+制， 某些医学影像难以获得或获得到的影像质量不
+佳， 在这种情况下使用跨模态影像合成技术则有可
+能创造出高质量的图像， 帮助医生做出更精确的诊
+断。例如 MRI 的多序列配合能得到更充分的疾病信
+息， 但由于采集时间较长或采集条件受限， 只能采集
+厚层的或不完整的多序列数据， 如果某些序列能够
+使用其他序列生成出来， 则可以节省时间， 采集更高
+质量的影像数据 （Han 等，2018） 。MRI 引导放疗仍
+然需要 CT 图像来计算剂量分布， 而MRI 和 CT 要使
+用两个设备分开采集， 显著延长了诊疗周期， 如果使
+用 MRI 或其他模态的影像生成与之配对的 CT 影像
+则 可 以 获 得 配 对 的MRI/CT 数 据 ， 缩 减 诊 疗 流 程
+（Armanious 等 ，2019；Touati 等 ，2021；Dovletov 等 ，
+2022；Zhou 等，2023） 。
+3. 2. 2　重建
+医学影像重建中可以通过深度学习技术来提高
+低质量的图像， 从而降低噪声， 提高图像的清晰度、
+对比度和分辨率。跨模态医学影像合成技术在图像
+1995
+
+=== PDF_PAGE 12 ===
+Vol. 30，No. 6，Jun. 2025
+重建领域的应用主要在于实现局部图像修复和加速
+图像重建， 从而生产高质量的临床使用的医疗图像，
+同时降低成本和患者风险。例如， 使用传统的滤波
+反投影算法进行 CT 影像重建会由于 X 射线视场
+（Field of view ，FOV） 受限出现严重的截断伪影， 此时
+可以使用生成网络从截断的正弦图获取扩展的正弦
+图来改善重建图像的质量 （Ketola 等，2021） 。MRI
+扫描时间较长且对时间分辨率要求高， 快速成像模
+式采集的降采样的 MRI 质量较差， 此时可以通过生
+成技术来估计缺失的 K 空间样本来保持重建影像在
+解剖学意义上的质量 （Shaul 等，2020） 。MRI 和 CT
+影像的分辨率受到成像设备和采集条件的限制， 其
+质量可能无法满足诊疗的精确性， 此时可以使用生
+成技术实现影像的超分辨， 从而为临床诊疗提供更
+可靠和有效的基础 （Xiao 等，2023） 。CT、PET 影像存
+在辐射危害， 但低剂量影像通常含有明显的噪声和
+伪影， 此时可以使用生成技术从低剂量的CT/PET 影
+像生成标准剂量的 CT/PET， 使得低剂量情况下可以
+重建出与标准剂量一致的影像 （Zhang 等，2021；Xu
+等，2017） ， 从而保证诊断结果的一致性。
+3. 2. 3　配准
+医学图像配准是指通过计算和应用空间变换将
+不同时间或不同条件下获取的医学图像精确对齐，
+使它们在解剖结构和功能特征上相互匹配， 从而便
+于医生进行比较分析、 疾病监测、 治疗规划和手术导
+航。传统的配准方法通过优化均方误差、 归一化互
+信息等目标函数来迭代优化变形场， 在三维的医学
+影像上非常耗时。对于配准问题可以使用生成技术
+获得配准后的图像和相应的变形场， 从而避免了耗
+时的多次迭代 （Mahapatra 等，2018） 。同时， 由于传
+统配准的迭代方式和扩散模型的采样相似， 因此可
+以 用 扩 散 模 型 来 模 拟 配 准 的 形 变 过 程 （Kim 等 ，
+2022） ， 虽然这种模拟没有速度上的优势， 但其可学
+习方式有望获得更强的配准能力。传统的配准算法
+在跨模态影像上常常效果不佳甚至失败， 如果能使
+用跨模态生成技术将不同模态的影像转变成相同模
+态的影像， 则有望提高跨模态配准的成功率以及配
+准精度 （Song 等，2022） 。
+3. 2. 4　分割
+医学图像分割是医学图像处理中的一个关键步
+骤， 其目的是将图像划分为不同的区域或对象， 分离
+出特定的解剖结构 （ 如器官、 血管和肿瘤等 ） ， 以便进
+一步分析和研究。现有的分割方法可能存在标注数
+据不足、 分割精度受限等问题。这些问题在一些场
+景下有望通过跨模态医学影像合成技术解决。例如
+将有分割标注的模态转换为无分割标注的模态， 产
+生适用于无分割标注模态的训练数据集， 从而在没
+有目标模态影像的手动标注的情况下， 训练用于目
+标成像模态的分割网络 （Huo 等，2019） 。某些分割
+任务特定的模态影像上才能达到较好的精度， 此时
+也可以将其他模态影像转换成目标模态， 从而获得
+更好的结果 （Zhou 等，2019） 。某些疾病在增强影像
+上比普通影像上更明显， 此时可以从增强影像上生
+成普通影像， 并通过对比增强影像和生成的普通影
+像获得病灶区域 （Liu 等，2022） 。
+4　结语与展望
+本文介绍人工智能内容生成技术在医学影像领
+域的跨模态合成问题上的方法及其应用。首先介绍
+该项研究的意义和技术难点， 然后回顾相关技术的
+发展和应用场景。目前， 跨模态医学影像合成已得
+到广泛研究， 并在医学影像智能计算的诸多方向中
+有所应用， 给许多问题的解决带来新思路。但是现
+有的跨模态医学影像合成技术仍面临许多亟待解决
+的问题：1） 虽然合成的影像质量在不断提高， 但当前
+技术合成的影像和真实影像仍然存在较大差异， 面
+临明显的临床失效风险；2） 现有的跨模态生成模型
+网络结构仍然有较大改进空间， 如基于U-Net 的跨
+模态合成模型受限于固定的感受野， 导致捕获的信
+息有限， 基于扩散模型的合成技术由于引入随机噪
+声经常会破坏输入图像的原始数据分布和空间结
+构；3） 与自然图像相比， 一些医学影像数据收集十分
+困难， 跨模态医学影像合成技术经常面临数据集过
+小的问题。展望未来， 跨模态医学影像生成可能在
+以下方向发展：1） 受限于医学影像数据量小的问题，
+将无监督学习或小样本学习的思路引入到生成模型
+的训练中；2） 将各种各样的应用目标融入合成模型
+的设计中， 从而产生面向特定应用的生成模型。其
+中， 如何融入目标任务相关的知识、 如何设计与目标
+任务相关的模型、 如何对影像合成模型进行专业化
+的改进等， 都值得进一步深入研究。
+1996
+
+=== PDF_PAGE 13 ===
+第 30 卷 / 第 6 期 / 2025 年 6 月 潘永生，马豪杰，夏勇，张艳宁  / 医学影像中的生成技术
+参考文献 （References）
+Armanious K ， Jiang C M ， Abdulatif S ， Küstner T ， Gatidis S and Yang 
+B. 2019. Unsupervised medical image translation using cycle -
+MedGAN//Proceedings of the 27th European Signal Processing Con‐
+ference. A Coruna ， Spain： IEEE： 1-5 ［DOI： 10.23919/EUSIPCO.
+2019.8902799］
+Bahrami A ， Karimian A ， Fatemizadeh E ， Arabi H and Zaidi H. 2020. 
+A new deep convolutional neural network design with efficient 
+learning capability ： application to CT image synthesis from MRI. 
+Medical Physics ， 47（10） ： 5158-5171 ［DOI： 10.1002/mp.14418］
+Bhagwatkar R ， Bachu S ， Fitter K ， Kulkarni A and Chiddarwar S. 2020. 
+A review of video generation approaches//Proceedings of 2020 Inter‐
+national Conference on Power ， Instrumentation ， Control and Com‐
+puting （PICC）. Thrissur ， India ： IEEE ： 1 -5 ［DOI： 10.1109/
+PICC51425.2020.9362485］
+Borsos Z ， Marinier R ， Vincent D ， Kharitonov E ， Pietquin O ， Sharifi 
+M， Roblek D ， Teboul O ， Grangier D ， Tagliasacchi M and Zeghi‐
+dour N. 2023. AudioLM ： a language modeling approach to audio 
+generation. IEEE/ACM Transactions on Audio ， Speech ， and Lan‐
+guage Processing ， 31 ： 2523 -2533 ［DOI： 10.1109/TASLP. 2023.
+3288409］
+Božić M and Horvat M. 2024. A survey of deep learning audio generation 
+methods ［EB/OL］. ［2024-08-05］. 
+https://arxiv.org/pdf/2406.00146.pdf
+Cao Y H ， Li S Y ， Liu Y X ， Yan Z L ， Dai Y T ， Yu P S and Sun L C. 
+2023. A comprehensive survey of AI -generated content （AIGC） ： a 
+history of generative AI from GAN to chatGPT. arXiv preprint 
+arXiv： 2303.04226 ［DOI： 10.48550/arXiv.2303.04226］
+Cohen J P ， Luck M and Honari S. 2018. Distribution matching losses 
+can hallucinate features in medical image translation//Proceedings 
+of the 21st International Conference on Medical Image Computing 
+and Computer Assisted Intervention — MICCAI 2018. Granada ， 
+Spain： Springer： 529-536 ［DOI： 10.1007/978-3-030-00928-1_60］
+Dhariwal P and Nichol A. 2021. Diffusion models beat GANs on image 
+synthesis//Proceedings of the 35th International Conference on Neu‐
+ral Information Processing Systems. Online ： Curran Associates 
+Inc.： 8780-8794
+Di J. 2024. Principles of AIGC technology and its application in new 
+media micro -video creation. Applied Mathematics and Nonlinear 
+Sciences， 9（1） ： 1-13 ［DOI： 10.2478/amns-2024-1393］
+Dovletov G ， Pham D D ， Lörcks S ， Pauli J ， Gratz M and Quick H H. 
+2022. Grad -CAM guided U -N et for MRI -based pseudo -CT synthe‐
+sis//Proceedings of the 44th Annual International Conference of the 
+IEEE Engineering in Medicine and Biology Society （EMBC）. 
+Glasgow， United Kingdom ： IEEE ： 2071 -2075 ［DOI： 10.1109/
+EMBC48229.2022.9871994］
+Elangovan A and Jeyaseelan T. 2016. Medical imaging modalities ： a sur‐
+vey//Proceedings of 2016 International Conference on Emerging 
+Trends in Engineering ， Technology and Science （ICETETS）. 
+Pudukkottai， India ： IEEE ： 1 -4 ［DOI： 10.1109/ICETETS. 2016.
+7603066］
+Fard A S ， Reutens D C and Vegh V. 2021. CNNs and GANs in MRI -
+based cross -modality medical image estimation ［EB/OL］. ［2024-
+08-05］. https://arxiv.org/pdf/2106.02198.pdf
+Foo L G ， Rahmani H and Liu J. 2025. AI -generated content （AIGC） for 
+various data modalities ： a survey ［EB/OL］. ［2024-08-05］. 
+https://arxiv.org/pdf/2308.14177.pdf
+Frolov S， Hinz T， Raue F， Hees J and Dengel A. 2021. Adversarial text -
+to-image synthesis ： a review. Neural Networks ， 144 ： 187 -209 
+［DOI： 10.1016/j.neunet.2021.07.019］
+Han C ， Hayashi H ， Rundo L ， Araki R ， Shimoda W ， Muramatsu S ， 
+Furukawa Y ， Mauri G and Nakayama H. 2018. GAN -based syn‐
+thetic brain MR image generation//Proceedings of the 15th IEEE 
+International Symposium on Biomedical Imaging （ISBI 2018 ）. 
+Washington， USA ： IEEE ： 734 -738 ［DOI： 10.1109/ISBI. 2018.
+8363678］
+Ho J， Jain A and Abbeel P. 2020. Denoising diffusion probabilistic mod‐
+els//Proceedings of the 34th International Conference on Neural 
+Information Processing Systems. Vancouver ， Canada： Curran Asso‐
+ciates Inc.： 6840-6851
+Huang Y W， Shao L and Frangi A F. 2018. Cross -modality image synthe‐
+sis via weakly coupled and geometry co -regularized joint dictionary 
+learning. IEEE Transactions on Medical Imaging ， 37（3） ： 815-827 
+［DOI： 10.1109/TMI.2017.2781192］
+Huo Y K ， Xu Z B ， Moon H ， Bao S X ， Assad A ， Moyo T K ， Savona M 
+R， Abramson R G and Landman B A. 2019. SynSeg -Net： synthetic 
+segmentation without target modality ground truth. IEEE Transac‐
+tions on Medical Imaging ， 38（4） ： 1016-1025 ［DOI： 10.1109/TMI.
+2018.2876633］
+Isensee F ， Jaeger P F ， Kohl S A A ， Petersen J and Maier -Hein K H. 
+20
+21. nnU -Net： a self -configuring method for deep learning -based 
+biomedical image segmentation. Nature Methods ， 18（2） ： 203-211 
+［DOI： 10.1038/s41592 -020-01008-z］
+Jack C R Jr， Bernstein M A ， Fox N C， Thompson P， Alexander G ， Har‐
+vey D ， Borowski B ， Britson P J ， Whitwell J L ， Ward C ， Dale A 
+M， Felmlee J P ， Gunter J L ， Hill D L G ， Killiany R ， Schuff N ， 
+Fox-Bosetti S ， Lin C ， Studholme C ， DeCarli C S ， Krueger G ， 
+Ward H A ， Metzger G J ， Scott K T ， Mallozzi R ， Blezek D ， Levy 
+J， Debbins J P ， Fleisher A S ， Albert M ， Green R ， Bartzokis G ， 
+Glover G ， Mugler J and Weiner M W. 2008. The Alzheimer ’s dis‐
+ease neuroimaging initiative （ADNI）： MRI methods. Journal of 
+Magnetic Resonance Imaging ， 27（4） ： 685 -691 ［DOI： 10.1002/
+jmri.21049］
+Jia H Z ， Xia Y ， Cai W D and Huang H. 2020. Learning high -resolution 
+and efficient non -local features for brain glioma segmentation in 
+1997
+
+=== PDF_PAGE 14 ===
+Vol. 30，No. 6，Jun. 2025
+MR images//Proceedings of the 23rd International Conference on 
+Medical Image Computing and Computer Assisted Intervention — 
+MICCAI 2020. Lima ， Peru ： Springer ： 480 -490 ［DOI： 10.1007/
+978-3-030-59719-1_47］
+Jog A， Carass A ， Roy S ， Pham D L and Prince J L. 2017. Random for‐
+est regression for magnetic resonance image synthesis. Medical 
+Image Analysis ， 35 ： 475 -488 ［DOI： 10.1016/j. media. 2016.
+08.009］
+Ketola J H J ， Heino H ， Juntunen M A K ， Nieminen M T ， Siltanen S 
+and Inkinen S I. 2021. Generative adversarial networks improve 
+interior computed tomography angiography reconstruction. Biomedi‐
+cal Physics and Engineering Express ， 7（6） ： #065041 ［DOI： 10.
+1088/2057-1976/ac31cb］
+Kim B ， Han I and Ye J C. 2022. DiffuseMorph ： unsupervised deform‐
+able image registration using diffusion model//Proceedings of the 
+17th European Conference on Computer Vision. Tel Aviv ， Israel ： 
+Springer： 347-364 ［DOI： 10.1007/978-3-031-19821-2_20］
+Lei H J ， Liu W X ， Xie H ， Zhao B J ， Yue G H and Lei B Y. 2022. 
+Unsupervised domain adaptation based image synthesis and feature 
+alignment for joint optic disc and cup segmentation. IEEE Journal 
+of Biomedical and Health Informatics ， 26（1） ： 90 -102 ［DOI： 10.
+1109/JBHI.2021.3085770］
+Li R J ， Zhang W L ， Suk H I ， Wang L ， Li J ， Shen D G and Ji S W. 
+2014. Deep learning based imaging data completion for improved 
+brain disease diagnosis//Proceedings of the 17th International Con‐
+ference on Medical Image Computing and Computer -Assisted Inter‐
+vention. Boston ， USA ： Springer ： 305 -312 ［DOI： 10.1007/978 -3-
+319-10443-0_39］
+Li Y T， Min M， Shen D H ， Carlson D and Carin L. 2018. Video genera‐
+tion from text//Proceedings of the 32nd AAAI Conference on Artifi‐
+cial Intelligence. New Orleans ， USA ： AAAI ： 7065 -7072 ［DOI： 
+10.1609/aaai.v32i1.12233］
+Liu H F ， Chen J J ， Li L， Bao B K ， Li Z C ， Liu J Y and Nie L Q. 2023. 
+Cross-modal representation learning and generation. Journal of 
+Image and Graphics ， 28（6） ： 1608 -1629 （刘华峰 ， 陈静静 ， 李
+亮， 鲍秉坤， 李泽超， 刘家瑛， 聂礼强 . 2023. 跨模态表征与生
+成 技 术. 中 国 图 象 图 形 学 报 ， 28（6） ： 1608 -1629） ［DOI： 10.
+11
+834/jig.230035］
+Liu M Y ， Breuel T and Kautz J. 2017. Unsupervised image -to-image 
+translation networks//Proceedings of the 31st International Confer‐
+ence on Neural Information Processing Systems. Long Beach ， 
+USA： Curran Associates Inc. ： 700-708
+Liu Y， Mu F H ， Shi Y ， Cheng J ， Li C and Chen X. 2022. Brain tumor 
+segmentation in multimodal MRI via pixel -level and feature -level 
+image fusion. Frontiers in Neuroscience ， 16： #1000587 ［DOI： 10.
+3389/fnins.2022.1000587］
+Luo N， Song M ， Yang Z Y and Jiang T Z. 2022. Survey on cross -modal 
+fusion based on brain atlas data. Journal of Image and Graphics ， 
+27（6） ： 2036-2056 （ 罗娜， 宋明， 杨正宜， 蒋田仔 . 2022. 跨模态
+脑图谱数据融合研究进展 . 中国图象图形学报， 27（6） ： 2036-
+2056） ［DOI： 10.11834/jig.220036.］
+Lyu Q and Wang G. 2022. Conversion between CT and MRI images 
+using diffusion and score -matching models ［EB/OL］. ［2024-08-
+05］. https://arxiv.org/pdf/2209.12104.pdf
+Mahapatra D ， Antony B ， Sedai S and Garnavi R. 2018. Deformable 
+medical image registration using generative adversarial networks//
+The 15th IEEE International Symposium on Biomedical Imaging. 
+Washington， USA ： IEEE ： 1449 -1453 ［DOI： 10.1109/ISBI. 2018.
+8363845］
+Malhotra R ， Sharma K ， Kumar K and Rath N. 2021. Integrating SSIM 
+in GANs to generate high -quality brain MRI images//Proceedings of 
+2021 International Conference on Data Engineering and Communi‐
+cation Technology. Singapore ，Singapore： Springer ： 419 -426 
+［DOI10.1007/978 -981-16-0081-4_42］
+Nie D， Cao X H ， Gao Y Z ， Wang L and Shen D G. 2016. Estimating CT 
+image from MRI data using 3D fully convolutional networks//Pro‐
+ceedings of the 1st International Workshop on Deep Learning and 
+Data Labeling for Medical Applications ， DLMIA 2016. Athens ， 
+Greece： Springer： 170-178 ［DOI： 10.1007/978-3-319-46976-8_18］
+Özbey M ， Dalmaz O ， Dar S U H ， Bedel H A ， Özturk Ş ， Güngör A and 
+Çukur T. 2023. Unsupervised medical image translation with adver‐
+sarial diffusion models ［EB/OL］. ［2024-08-05］. 
+https://arxiv.org/pdf/2207.08208.pdf
+Pan Y S ， Chen Y T ， Shen D G and Xia Y. 2021a. Collaborative image 
+synthesis and disease diagnosis for classification of neurodegenera‐
+tive disorders with incomplete multi -modal neuroimages//Proceed‐
+ings of the 24th International Conference on Medical Image Com‐
+puting and Computer Assisted Intervention. Strasbourg ， France ： 
+Springer： 480-489 ［D OI ： 10.1007/978-3-030-87240-3_46］
+Pan Y S ， Huang J Y ， Wang B ， Zhao P ， Liu Y C and Xia Y. 2021b. 
+Cerebral blood volume prediction based on multi -modality magnetic 
+resonance imaging//Proceedings of the 6th International Workshop 
+on Simulation and Synthesis in Medical Imaging. Strasbourg ， 
+France： Springer： 121-130 ［DOI： 10.1007/978-3-030-87592-3_12］
+Pan Y S ， Liu M X ， Lian C F ， Xia Y and Shen D G. 2020. Spatially -
+constrained fisher representation for brain disease identification 
+with incomplete multi -modal neuroimages. IEEE Transactions on 
+Medical Imaging ， 39（9） ： 2965 -2975 ［DOI： 10.1109/TMI. 2020.
+2983085］
+Pan Y S ， Liu M X ， Xia Y and Shen D G. 2022. Disease -image-specific 
+learning for diagnosis -oriented neuroimage synthesis with incom‐
+plete multi -modality data. IEEE Transactions on Pattern Analysis 
+and Machine Intelligence ， 44（10） ： 6839 -6853 ［DOI： 10.1109/
+TPAMI.2021.3091214］
+Pan Y S and Xia Y. 2021. Ultimate reconstruction ： understand your 
+bones from orthogonal views//2021 IEEE 18th International Sympo‐
+sium on Biomedical Imaging （ISBI）. Nice ， France ： IEEE ： 1155 -
+1158 ［DOI： 10.1109/ISBI48211.2021.9433758 ］
+1998
+
+=== PDF_PAGE 15 ===
+第 30 卷 / 第 6 期 / 2025 年 6 月 潘永生，马豪杰，夏勇，张艳宁  / 医学影像中的生成技术
+Pérez-Grijalba V ， Arbizu J ， Romero J ， Prieto E ， Pesini P ， Sarasa L ， 
+Guillen F ， Monleóonl ， San -Jos Fl ， MartJnez -Lage P ， Munuera J ， 
+Hern􀅡ndez I ， Buendíuen ， Sotolongo -Grau O ， Alegret M ， Ruiz A ， 
+T rraga L ， Boada M ， Sarasa M ， and The AB255 Study Group. 
+2019. Plasma A β42/40 ratio alone or combined with FDG -PET can 
+accurately predict amyloid -PET positivity ： a cross -sectional analy‐
+sis from the AB255 Study. Alzheimer ’s Research and Therapy ， 
+11（1） ： #96 ［DOI： 10.1186/s13195 -019-0549-1］
+Ren X F ， Tong L L ， Zeng J and Zhang C. 2023. AIGC scenario analysis 
+and research on technology roadmap of Internet industry applica‐
+tion. China Communications ， 20（10） ： 292 -304 ［DOI： 10.23919/
+JCC.fa.2023-0359.202310］
+Rombach R ， Blattmann A ， Lorenz D ， Esser P and Ommer B. 2022. 
+High-resolution image synthesis with latent diffusion models//Pro‐
+ceedings of 2022 IEEE/CVF Conference on Computer Vision and 
+Pattern Recognition. New Orleans ， USA ： IEEE ： 10674 -10685 
+［DOI： 10.1109/CVPR52688.2022.01042 ］
+Shaul R ， David I ， Shitrit O and Riklin Raviv T. 2020. Subsampled 
+brain MRI reconstruction by generative adversarial neural net‐
+works. Medical Image Analysis ， 65 ： #101747 ［DOI： 10.1016/j.
+media.2020.101747］
+Shi J， Wang L L ， Wang S S ， Chen Y X ， Wang Q ， Wei D M ， Liang S 
+J， Peng J L ， Yi J J ， Liu S F ， Ni D ， Wang M L ， Zhang D Q and 
+Shen D G. 2020. Applications of deep learning in medical imaging ： 
+a survey. Journal of Image and Graphics ， 25（10） ： 1953 -1981 
+（ 施俊， 汪琳琳， 王珊珊， 陈艳霞， 王乾， 魏冬铭， 梁淑君， 彭佳
+林， 易佳锦， 刘盛锋， 倪东， 王明亮， 张道强， 沈定刚 . 2020. 深
+度 学 习 在 医 学 影 像 中 的 应 用 综 述. 中 国 图 象 图 形 学 报 ， 
+25（10） ： 1953-1981） ［DOI： 10.11834/jig.200255］
+Singh N K and Raza K. 2021. Medical image generation using generative 
+adversarial networks ： a review//Patgiri R ， Biswas A and Roy P ， 
+eds. Health Informatics ： A Computational Perspective in Health‐
+care. Singapore ： Springer ： 77 -96 ［DOI： 10.1007/978 -981-15-
+9735-0_5］
+So
+ng X R ， Chao H Q ， Xu X A ， Guo H T ， Xu S ， Turkbey B ， Wood B 
+J， Sanford T ， Wang G and Yan P K. 2022. Cross -modal attention 
+for multi -modal image registration. Medical Image Analysis ， 82 ： 
+#102612 ［DOI： 10.1016/j.media.2022.102612］
+Song Y ， Sohl-Dickstein J ， Kingma D P ， Kumar A ， Ermon S and Poole 
+B. 2021. Score -based generative modeling through stochastic differ‐
+ential equations ［EB/OL］. ［2024-08-05］. 
+https://arxiv.org/pdf/2011.13456.pdf
+Su Z X ， Yao K ， Yang X ， Huang K Z ， Wang Q F and Sun J. 2023. 
+Rethinking data augmentation for single -source domain generaliza‐
+tion in medical image segmentation//Proceedings of the 37th AAAI 
+Conference on Artificial Intelligence. Washington ， USA ： AAAI ： 
+2366-2374 ［DOI： 10.1609/aaai.v37i2.25332］
+Taleb A ， Lippert C ， Klein T and Nabi M. 2021. Multimodal self -
+supervised learning for medical image analysis//Proceedings of the 
+27th International Conference on Information Processing in Medical 
+Imaging. Virtual Event ： Springer ： 661-673 ［DOI： 10.1007/978 -3-
+030-78191-0_51］
+Tanitame N ， Tanitame K and Awai K. 2017. Clinical utility of optimized 
+three-dimensional T1 -， T2-， and T2* -weighted sequences in spinal 
+magnetic resonance imaging. Japanese Journal of Radiology ， 
+35（4） ： 135-144 ［DOI： 10.1007/s11604 -017-0621-3］
+Touati R ， Le W T and Kadoury S. 2021. A feature invariant generative 
+adversarial network for head and neck MRI/CT image synthesis. 
+Physics in Medicine and Biology ， 66（9）： #095001 ［DOI： 10.
+1088/1361-6560/abf1bb］
+Vijayalaxmi， Fatahi M and Speck O. 2015. Magnetic resonance imaging 
+（MRI）： a review of genetic damage investigations. Mutation 
+Research/Reviews in Mutation Research ， 764 ： 51 -63 ［DOI： 10.
+1016/j.mrrev.2015.02.002］
+Villarraga-Gómez H ， Herazo E L and Smith S T. 2019. X -ray computed 
+tomography： from medical imaging to dimensional metrology. Preci‐
+sion Engineering ， 60 ： 544 -569 ［DOI： 10.1016/j. precisioneng.
+2019.06.007］
+Wang S Y ， Wu W W ， Feng J ， Liu F L and Yu H Y. 2020. Low -dose 
+spectral CT reconstruction based on image -gradient L 0-norm and 
+adaptive spectral PICCS. Physics in Medicine and Biology ， 65（24） ：  
+#245005 ［DOI： 10.1088/1361-6560/aba7cf］
+Wang T C ， Liu M Y ， Zhu J Y ， Tao A ， Kautz J and Catanzaro B. 2018. 
+High-resolution image synthesis and semantic manipulation with 
+conditional GANs//Proceedings of 2018 IEEE/CVF Conference on 
+Computer Vision and Pattern Recognition. Salt Lake City ， USA ： 
+IEEE： 8798-8807 ［DOI： 10.1109/CVPR.2018.00917］
+Wei J， Pan Y ， Xia Y S and Shen D G. 2021. Learning to synthesize 7T 
+MRI from 3T MRI with few data by deformable augmentation//12th 
+International Workshop on Machine Learning in Medical Imaging. 
+Strasbourg， France ： Springer ： 70 -79 ［DOI： 10.1007/978 -3-030-
+87589-3_8］
+Xiang L ， Qiao Y ， Nie D ， An L ， Lin W L ， Wang Q and Shen D G. 
+2017. Deep auto -context convolutional neural networks for standard -
+dose PET image estimation from low -dose PET/MRI. Neurocomput‐
+ing， 267： 406-416 ［DOI： 10.1016/j.neucom.2017.06.048］
+Xiao Y Y ， Chen C X ， Wang L， Yu J， Fu X， Zou Y， Lin Z and Wang K 
+P. 2023. A novel hybrid generative adversarial network for CT and 
+MRI super -resolution reconstruction. Physics in Medicine and Biol‐
+ogy， 68（13） ： #135007 ［DOI： 10.1088/1361-6560/acdc7e］
+Xu J S， Gong E H ， Pauly J and Zaharchuk G. 2017. 200× low -dose PET 
+reconstruction using deep learning ［EB/OL］. ［2024-08-05］. 
+https://arxiv.org/pdf/1712.04119.pdf
+Yamashita R ， Long J ， Banda S ， Shen J and Rubin D L. 2021. Learning 
+domain-agnostic visual representation for computational pathology 
+using medically -irrelevant style transfer augmentation. IEEE Trans‐
+actions on Medical Imaging ， 40（12） ： 3945-3954 ［DOI： 10.1109/
+TMI.2021.3101985］
+1999
+
+=== PDF_PAGE 16 ===
+Vol. 30，No. 6，Jun. 2025
+Yang H， Qian P J and Fan C. 2020a. An indirect multimodal image reg‐
+istration and completion method guided by image synthesis. Compu‐
+tational and Mathematical Methods in Medicine ， 2020 ： #2684851 
+［DOI： 10.1155/2020/2684851］
+Yang Q Y， Li N N， Zhao Z X ， Fan X Y ， Chang E I C and Xu Y. 2020b. 
+MRI cross -modality image -to-image translation. Scientific Reports ， 
+10（1） ： #3753 ［DOI： 10.1038/s41598 -020-60520-6］
+Zhang Y K ， Hu D L ， Zhao Q L ， Quan G T ， Liu J ， Liu Q G ， Zhang Y ， 
+Coatrieux G ， Chen Y and Yu H Y. 2021. CLEAR ： comprehensive 
+learning enabled adversarial reconstruction for subtle structure 
+enhanced low -dose CT imaging. IEEE Transactions on Medical 
+Imaging， 40（11） ： 3089-3101 ［DOI： 10.1109/TMI.2021.3097808］
+Zhou T X ， Ruan S and Canu S. 2019. A review ： deep learning for medi‐
+cal image segmentation using multi -modality fusion. Array ， 3 -4： 
+#100004 ［DOI： 10.1016/j.array.2019.100004］
+Zhou X R ， Cai W W ， Cai J J ， Xiao F， Qi M K ， Liu J W ， Zhou L H ， Li 
+Y B and Song T. 2023. Multimodality MRI synchronous construc‐
+tion based deep learning framework for MRI -guided radiotherapy 
+synthetic CT generation. Computers in Biology and Medicine ， 162： 
+#107054 ［DOI： 10.1016/j.compbiomed.2023.107054 ］
+Zhu L T ， Xue Z Y ， Jin Z C ， Liu X ， He J Z ， Liu Z W and Yu L Q. 
+2023. Make -a-volume： leveraging latent diffusion models for cross -
+modality 3D brain MRI synthesis ［EB/OL］. ［2024-08-05］. 
+https://arxiv.org/pdf/2307.10094.pdf
+作者简介
+潘永生， 男， 教授， 主要研究方向为医学影像健康计算、 跨模
+态影像生成、 模式识别与机器学习。
+E-mail： yspan@nwpu.edu.cn
+夏勇， 通信作者， 男， 教授， 主要研究方向为医学影像健康计
+算、 跨模态影像生成、 模式识别与机器学习。
+E-mail：yxia@nwpu.edu.cn
+马豪杰， 男， 硕士研究生， 主要研究方向为计算机视觉、 跨模
+态影像生成、 模式识别与机器学习。
+E-mail：a2233539443@gmail.com
+张艳宁， 女， 教授， 主要研究方向为图像处理与计算机视觉、
+模式识别与人工智能、 机器学习。
+E-mail：ynzhang@nwpu.edu.cn
+2000

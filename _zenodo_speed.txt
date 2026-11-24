@@ -1,0 +1,12 @@
+== single 8MB ==
+start=0 code=206 bytes=8388608 time=33.50s speed=0.24MB/s
+== 8 parallel x 8MB ==
+wall=36.41s total=64.0MB aggregate=1.76MB/s
+  start=0 code=206 bytes=8356056 time=29.0s
+  start=8388608 code=206 bytes=8388608 time=29.5s
+  start=16777216 code=206 bytes=8388608 time=22.0s
+  start=25165824 code=206 bytes=8388608 time=31.5s
+  start=33554432 code=206 bytes=8387504 time=36.4s
+  start=41943040 code=206 bytes=8388608 time=26.6s
+  start=50331648 code=206 bytes=8388608 time=27.1s
+  start=58720256 code=206 bytes=8388608 time=21.1s

@@ -1,0 +1,37 @@
+==== proc
+2
+---
+heluofan  705613       1 99 09:51 ?        00:02:00 /data/heluofan/picai/venv_v1/bin/python /data/heluofan/picai/venv_v1/bin/nnUNet_plan_and_preprocess -t 2201 -pl2d None -pl3d ExperimentPlanner3D_v21 --verify_dataset_integrity -tl 16 -tf 16
+heluofan  706274  706273  0 09:53 ?        00:00:00 bash -c pgrep -f nnUNet_plan_and_preprocess | wc -l; echo '---'; ps -ef | grep '[n]nUNet_plan' | head -2
+
+==== log
+581 /data/heluofan/picai/plan.log
+checking case 10536_1000546
+checking case 10537_1000547
+checking case 10538_1000548
+checking case 10539_1000549
+checking case 10540_1000550
+checking case 10540_1000551
+checking case 10541_1000552
+checking case 10542_1000553
+checking case 10543_1000554
+checking case 10544_1000555
+checking case 10545_1000556
+checking case 10546_1000557
+checking case 10547_1000558
+checking case 10548_1000559
+checking case 10548_1000560
+checking case 10549_1000561
+checking case 10550_1000562
+checking case 10551_1000563
+checking case 10552_1000564
+checking case 10553_1000565
+checking case 10554_1000566
+checking case 10555_1000567
+checking case 10556_1000568
+checking case 10557_1000569
+checking case 10558_1000570
+
+==== dirs
+4.0K	/data/heluofan/picai/workdir/nnUNet_preprocessed
+4.0K	/data/heluofan/picai/workdir/nnUNet_cropped_data

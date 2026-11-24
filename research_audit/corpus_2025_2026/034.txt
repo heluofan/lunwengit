@@ -1,0 +1,525 @@
+=== PDF_PAGE 1 ===
+《中华骨与关节外科杂志 》 2025 年 1 月 第 18 卷 第 1 期 Chin J Bone Joint Surg , Vol.18, No.1, Jan. 2025
+基于人工智能深度学习的 CT-MRI多模态影像自动融合分割技术
+在前交叉韧带重建术前规划中的应用
+于浩淼 1,2，董继祥 1，李海鹏 1，王明新 1，王龙 1，王耀霆 1，葛毅 3，刘星宇 3，张逸凌 3，李春宝 1
+【摘要】 目的：探讨基于人工智能（AI）深度学习算法的 CT-MRI 多模态影像自动融合分割技术 ，开发并构建前交叉韧带重建术
+（ACLR）术前自动规划系统的可行性 ，以实现 ACLR 高效准确的术前规划 。方法：通过中国人民解放军总医院第四医学中心影像
+中心得到 2023 年 4 月至 2024 年 1 月就诊的 200 例前交叉韧带（ACL） 、后交叉韧带（PCL）及半月板正常的膝关节疼痛患者的膝关
+节 CT 和 MRI 影像，由运动医学专业医师对骨皮质 、ACL、PCL、半月板等结构进行手工标注 ，并使用 AI 深度学习算法对标注图像
+进行学习 ，构建 CT-MRI多模态影像自动融合分割系统 。基于 CT-MRI配准融合图像 ，再次使用 AI 深度学习技术 ，强化 ACLR 股
+骨、胫骨骨道内外口关键点位的识别 ，构建 ACLR 术前自动规划系统 。招募 12 例 ACL 损伤患者并使用其 CT 影像，3D 打印技术打
+印其假骨模型并使用 ACLR 术前自动规划系统对胫骨及股骨骨道位置进行规划 ，以此为依据在假骨模型上钻取骨道 ，并对股
+骨和胫骨骨道长度 、关节腔内间距的差异进行统计学分析 。结果：CT 及 MRI 多模态影像融合分割后可形成包含骨骼及软组织
+结构的个体化 3D 膝关节模型 ，多模态影像融合精度 Dice 指数为 0.864。ACLR 术前自动规划系统进行术前规划的平均时间为
+（3.0±0.5）min。假骨模拟手术中股骨骨道 、胫骨骨道长度及关节腔内间距与术前规划的差异均无统计学意义 （P 均＞ 0.05） 。
+结论：基于 AI 深度学习的 CT-MRI多模态影像自动融合分割技术的 ACLR 术前自动规划系统更为智能 、快速、精准，可显著提高
+ACLR 术前规划能力，有望降低 ACLR 术后并发症，提升手术效果。
+【关键词】 前交叉韧带重建术 ；人工智能；多模态影像融合 ；术前规划
+【中图分类号】  R687
+【文献标志码】  A
+【文章编号】 2095-9958（2025）01-0027-09
+DOI:10.3969/j.issn.2095-9958.2025.01.05
+Application of artificial intelligence deep learning-based multimodal CT-MRI images 
+automatic fusion and segmentation in preoperative planning for anterior cruciate 
+ligament reconstruction
+YU Haomiao1,2, DONG Jixiang1, LI Haipeng1, WANG Mingxin1, WANG Long1, WANG Yaoting1, GE Yi3, LIU Xingyu3, 
+ZHANG Yiling3, LI Chunbao1
+1. Department of Sports Medicine , Senior Department of Orthopaedics , the Fourth Medical Center of Chinese PLA General Hospital , 
+Beijing 100089, China; 2.Orthopaedic Center, Beijing Friendship Hospital , Capital Medical University , Beijing 100050, China; 3.School 
+of Biomedical Engineering , Tsinghua University, Beijing 100084, China
+Corresponding Author: ZHANG Yiling, LI Chunbao
+YU Haomiao and DONG Jixiang contributed this article .
+【【Abstract】】 Objective: To explore the feasibility of developing and constructing an automatic preoperative planning system for anterior 
+cruciate ligament reconstruction (ACLR) based on artificial intelligence (AI) deep learning algorithm and multimodal CT-MRI images 
+· 数字骨科 ·
+【作者单位】 1. 中国人民解放军总医院第四医学中心骨科医学部运动医学科 ，北京 100089；2. 首都医科大学附属北京友谊医院骨科中心 ，北京 
+100050；3. 清华大学生物医学工程学院 ，北京 100084
+【通信作者】 张逸凌，E-mail：ylzhang@changmugu .com；李春宝，E-mail：lichunbao301@163.com
+【共同第一作者】 董继祥
+【引用格式】 于浩淼, 董继祥, 李海鹏, 等 . 基于人工智能深度学习的 CT-MRI 多模态影像自动融合分割技术在前交叉韧带重建术前规划中的应用
+[J]. 中华骨与关节外科杂志 , 2025, 18(1): 27-35.
+27
+
+=== PDF_PAGE 2 ===
+《中华骨与关节外科杂志 》 2025 年 1 月 第 18 卷 第 1 期 Chin J Bone Joint Surg , Vol.18, No.1, Jan. 2025
+automatic fusion and segmentation , in order to achieve efficient and accurate preoperative planning for ACLR . Methods:CT and MRI 
+images of the knee joints from 200 patients with normal anterior cruciate ligament (ACL), posterior cruciate ligaments (PCL), and 
+meniscus admitted from April 2023 to January 2024 were obtained from the imaging center of the Fourth Medical Center of Chinese 
+PLA General Hospital . Sports medicine specialists manually annotated structures such as the cortical bone , ACL, PCL, and meniscus , 
+and used AI deep learning algorithm to learn the annotated images to build a multimodal CT-MRI image automatic fusion and 
+segmentation system . Based on the CT-MRI registration and fusion images , AI deep learning technology was further applied to enhance 
+the identification of key points at the entry and exit of the femoral and tibial tunnels in ACLR , constructing an automatic preoperative  
+planning system for ACLR . Twelve patients with ACL injuries were recruited , and their CT images were used to guide the creation of 
+pseudo bone models using 3D printing technology . The ACLR automatic preoperative planning system was used to plan the positions of 
+tibial and femoral tunnel . which were then drilled on the pseudo bone models . Statistical analysis was performed to assess the 
+differences in the lengths of the femoral and tibial tunnel and intra-articular spacing . Results: The CT-MRI multimodal image fusion 
+and segmentation generated an individualized 3D knee joint model containing bone and soft tissue structures , with the Dice index of 
+multimodal image fusion accuracy was 0.864. The mean time for preoperative planning using the ACLR automatic preoperative 
+planning system was (3.0±0.5) min . In the pseudo-bone experiments , the differences between the planned and actual lengths of the 
+femoral and tibial tunnels , as well as the intra-articular spacing , were not statistically significant (all P>0.05). Conclusions: The ACLR 
+automatic preoperative planning system based on AI deep learning and  multimodal CT-MRI images fusion and segmentation is more 
+intelligent, rapid , and more accurate . It significantly enhances the preoperative planning ability of ACLR , and potentially reducing 
+postoperative complications and revision rate , and improving surgical outcomes .
+【Key word】 Anterior Cruciate Ligament Reconstruction ; Artificial Intelligence; Multimodal Image Fusion ; Preoperative Planning
+膝关节是人体结构中最复杂 、最容易发生损伤
+的关节 ，其包括韧带 、软骨 、半月板 、软骨下骨 、肌肉
+等 组 织 结 构 [1]。 前 交 叉 韧 带 （anterior cruciate 
+ligament, ACL）损伤是最常见的运动损伤之一 ，约占
+膝关节韧带损伤的 70%，且损伤后基本无法自愈 ，易
+导致关节不稳而使关节反复损伤 ，在损伤后期可能
+导致严重的骨关节炎 ，严重者会因此致残 [2-3]。
+前 交 叉 韧 带 重 建 术（anterior cruciate ligament 
+reconstruction, ACLR）的失败率为 10%~40%，二次手
+术率约为 10%[4-5]，ACLR 失败病例中 73.5% 是由韧带
+重建骨道位置不正确导致的 ，而骨道位置的选择主
+要取决于医师根据 MRI 影像和术中观察的经验 ，重
+建点选择的标准化难以统一 、重复性差 ，且关节镜手
+术视野有限 ，经常会造成重建骨道位置的偏差 ，从而
+导致骨道位置不良 [6]。因此，通过良好的术前规划来
+确 定 准 确 的 解 剖 位 点 和 精 确 的 骨 道 位 置，是 降 低
+ACLR 失败率、提高手术效果的关键 。
+多模态影像融合技术是通过融合 CT、MRI 等多
+种成像以满足图像互补的影像学技术 ，通过图像预
+处理 、配准 、融合和融合结果评价 [7-8]，将不同模态的
+图像信息融合汇总至 1 幅 3D 图像中 ，可进一步提升
+图像显示的精准性 ，目前已应用于颅内肿瘤 、椎管内
+病变 、肝脏肿瘤 、乳腺肿瘤等手术的术前规划 [9-10]，但
+在 ACLR 中的应用鲜见 。
+人工智能（artificial intelligence , AI）深度学习的
+图像自动分割系统具有自动 、快速、精准和自我学习
+完善的优势 ，目前在膝关节置换术 、髋关节置换术等
+骨科手术中有非常广泛且成熟的应用 [11-12]，可精确地
+识别解剖位点 ，匹配所需假体型号 ，并对截骨角度 、
+深度及软组织平衡进行高效准确的术前规划指导 。
+但目前在 ACLR 中尚无有效的 AI 术前规划系统 。
+本研究基于 CT、MRI 的多模态影像融合技术 ，结
+合 AI 深度学习技术 ，构建 ACLR 术前规划的图像自
+动分割系统 ，实现快速 、准确的解剖位点识别 ，精确
+的骨道位置匹配 ，从而提升手术疗效 。
+1   资料与方法
+1.1   一般资料
+纳入标准 ：①因膝关节疼痛就诊并行 MRI 检查，
+MRI 显示无明显 ACL、后交叉韧带（posterior cruciate 
+ligament, PCL）及半月板损伤 ；②无明显外伤史 ；③无
+膝关节手术史 ；④无明显膝骨关节病 。排除标准 ：
+①MRI 显示存在半月板 、ACL、PCL 或软骨损伤的患
+者；②股骨或胫骨骨折患者 ；③患有滑膜软骨瘤病 、
+28
+
+=== PDF_PAGE 3 ===
+《中华骨与关节外科杂志 》 2025 年 1 月 第 18 卷 第 1 期 Chin J Bone Joint Surg , Vol.18, No.1, Jan. 2025
+色素沉着绒毛结节性滑膜炎等疾病的患者 。
+根据上述纳入与排除标准 ，前瞻性纳入 2023 年
+4 月至 2024 年 1 月于中国人民解放军总医院第四医学
+中心就诊的 200 例膝关节疼痛患者 。年龄 18~50 岁，
+平均（29.5±7.2）岁；男 162 例，女 38 例；左膝 74 例，右膝
+126例。
+本研究经 中国人民解放军总医院第四医学中心
+医学伦理委员会 审核通过（2021KY031-HS001） ，参
+与研究的患者均签署知情同意书 。
+1.2   研究方法
+1.2.1   CT、MRI 多模态影像数据库的建立 、解剖结构
+的标注及多模态影像融合
+CT、MRI 影像数据库的建立 ：通过中国人民解放
+军总医院第四医学中心影像中心收集 200 例 ACL、
+PCL 及半月板正常的患者的膝关节 CT 及 MRI 影像
+数据。CT 及 MRI 扫描范围为膝关节上 20 cm 至膝关
+节下 10 cm，CT 层厚 0.625 mm，MRI 层厚 4 mm。
+解 剖 结 构 标 注：将 膝 关 节 CT 图 像 数 据 导 入
+Mimics 21.0 软件，对膝关节股骨 、胫骨、髌骨、腓骨进
+行逐层手动标注 。MRI 图像使用 ITK-SNAP 3.8.0 软
+件进行图像标注 ，对股骨和胫骨的皮质骨及松质骨 、
+ACL、PCL、内外侧半月板进行标注。
+手动标注工作由 2 名关节外科医师或住院医师
+共同完成 ，初审及修改工作由 2 名主治医师完成 ，最
+终标注结果由 1 名主任医师审核确认 。将手动标注
+的 CT 及 MRI 数据集作为标准数据集 。
+使用基于变形场与非刚性配准的 CT 和 MRI 医
+学图像融合算法进行图像的自适应融合 ，其神经网
+络使用双 UNet 结构 ，见图 1。同时在解码层进行变
+形场模块与非刚性配准融合模块进行 CT 和 MRI 图
+像的信息交互与融合 ，最终输出变形场配准矩阵 。
+按照 7∶2∶1 比例将所有标准数据集中的样本随
+机分为训练集 、验证集和测试集 。将训练集中的数
+据输入模型中进行迭代训练 ，迭代训练完成后利用
+验证集进行模型评估 。待整个模型训练完成后 ，根
+据模型对测试集的预测结果与对验证集的评估结果
+选取最佳模型 ，见图 2。选用 ANTs 3.0 配准软件中常
+见的 Affine、SyN 与深度学习算法 VoxelMorph 进行对
+比，并使用 Dice 及 IoU 两个参数客观评价网络模型 。
+1.2.2   基于多尺度信息融合的膝关节分割的方法
+基于 UNet 网络结构 ，使用 CSSA 模块对编码层
+进 行 多 尺 度 的 信 息 融 合 后 再 对 各 个 编 码 层 与 多 尺
+度 、多 空 间、多 通 道 的 融 合 特 征 图 进 行 注 意 力 门
+（attention gate , AG）操作 ，然后与解码层进行 Concat
+操作 ，见图 3。与以往分割算法不同的是 ，在得到编
+码层后需要同时进行多尺度 、多空间与多通道的信
+息融合 ，并对编码层进行 AG 操作 ，从而得到最终的
+编码层特征图 。
+1.2.3   基于 CT-MRI 配准融合图像及深度学习技术
+的股骨胫骨骨道关键位点识别
+基于 CT-MRI 配准融合后的图像 ，由临床医师对
+股骨骨道内口（Ideal 点）[13]、股骨骨道外口 、胫骨骨道
+图 1   双 UNet 网络结构示意图
+    移动图像移动图像    
+    固定图像固定图像   
+    预测结果预测结果  
+29
+
+=== PDF_PAGE 4 ===
+《中华骨与关节外科杂志》 2025 年 1 月 第 18 卷 第 1 期 Chin J Bone Joint Surg, Vol.18, No.1, Jan. 2025
+内口、 胫骨骨道外口进行标定。为保证移植物术后
+具备良好的等长性和等张性， 骨道内口中心标定的
+依 据 参 考 Parkar 等[14] 和 Lertwanich 等[15] 研 究 中 的
+Ideal 点。ACL 的股骨附着点位于股骨外侧髁深 −浅
+（D-S） 距离的29% 和高−低 （H-L） 距离的35%， 而胫骨
+附着点位于胫骨平台内−外 （M-L） 距离的48% 和前−后
+（A-P） 距离的38%。临床医师标定好位点后， 由AI 进
+行参考并通过神经网络进一步训练， 见图 4A。在网
+络结构的设计中使用 3D-Hrnet 网络结构作为特征进
+行膝关节关键点检测， 从高分辨率特征图开始作为
+第 1 阶段逐步增加高分辨率到低分辨率的特征图， 并
+将多分辨率特征图并行连接传递， 见图 4B。输入数
+据为 CT-MRI 配准融合后的图像数据和对应的骨骼
+分割结果， 将CT-MRI 配准融合后的图像数据和骨骼
+分割结果结合， 以增强CT-MRI 配准融合数据中的骨
+骼边缘。将合并后的数据输入到 3D-Hrnet 网络中，
+采用 Heatmap 的形式回归预测关键点以增强点识别
+的准确性。取每张热力图中最大概率值点为最终要
+识别的关键点。
+1.2.4   基于患者 3D 打印假骨模型的 AI 智能术前规
+划、 术中测量与精准度验证
+选取 ACL 损伤患者 12 例。术前使用基于多模
+态影像融合的 AI 训练模型进行股骨和胫骨骨道位置
+的术前规划， 见图5。根据患者的 CT 影像对患者进
+行包含规划骨道位点的局部股骨或胫骨假骨模型的
+3D 打印， 以此模型对手术进行指导， 见图6。之后再
+使用 AI 训练模型对股骨骨道长度、 胫骨骨道长度及
+关节腔内间距 （ 屈膝0°） 进行预估， 见图7A。
+术前规划完成后， 根据患者术前的 CT 影像， 进
+行完整的股骨和胫骨的 3D 打印， 以此制备假骨模型，
+并在假骨模型上模拟前交叉韧带重建手术， 依据 AI
+模型规划的位置分别钻取股骨骨道和胫骨骨道。手
+图 2   CT 和 MRI 配准融合模型训练的流程图
+  A. 整体网络结构示意图；B. 多尺度、 多空间与多通道特征融合模块示意图。
+图 3   膝关节分割网络示意图
+A B
+最大池化最大池化  上采样上采样  33××33 卷积卷积++批归一化批归一化+Relu+Relu ConvConv 卷积卷积++批归一化批归一化+Relu+Relu拼接拼接 注意力门机制注意力门机制
+30
+
+=== PDF_PAGE 5 ===
+《中华骨与关节外科杂志 》 2025 年 1 月 第 18 卷 第 1 期 Chin J Bone Joint Surg , Vol.18, No.1, Jan. 2025
+A. 股骨骨道内口位置 ；B. 股骨骨道外口位置 ；C. 胫骨骨道内口位置 ；D. 胫骨骨道外口位置 。
+图 6   根据 AI 术前规划指导手术操作的 3D 打印模型（包含骨道位置）
+A. 膝关节关键点检测网络流程图 ；B.3D-Hrnet 关键点检测网络结构图 。
+图 4   基于 AI 深度学习技术的股骨胫骨骨道关键位点识别过程示意图
+A. 股骨骨道内口位置 ；B. 股骨骨道外口位置 ；C. 胫骨骨道内口位置 ；D. 胫骨骨道外口位置 。
+图 5   AI术前规划的骨道位置
+B
+A CB D
+A CB D
+A
+    关键点识别
+下采样   
+上采样   
+31
+
+=== PDF_PAGE 6 ===
+《中华骨与关节外科杂志 》 2025 年 1 月 第 18 卷 第 1 期 Chin J Bone Joint Surg , Vol.18, No.1, Jan. 2025
+术中对股骨侧骨道 、胫骨侧骨道 、关节腔内间距（屈
+膝 0°）进行测量 ，见图 7B~7D，并将测量结果与 AI 术
+前规划数据的差异值进行统计学分析 。
+2   结果
+2.1   多模态影像融合个体化 3D 模型的构建
+CT 和 MRI 配准融合后最终形成包括骨及软组
+织结构的个体化 3D 动态解剖模型 ，其配准算法的精
+度较高 ，可将 MRI 三维分割图像中的 ACL、PCL、内
+外侧半月板与 CT 图像分割图像准确地配准在同一
+个坐标下。其效果图如图 8 所示。
+2.2   CT-MRI 影像融合的配准效果评价
+选 用 ANTs 3.0 配 准 软 件 中 常 见 的Affine、SyN
+与 深 度学习算法 VoxelMorph 进行对比 ，并使用 Dice
+及 IoU 两个参数客观评价网络模型。Dice 临床意义主
+要体现在对配准后固定图像与移动图像映射在固定
+图像坐标系下后二者区域的覆盖程度上 ，IoU 临床意
+义在于评价二者在解剖结构边界和空间匹配的精度
+高低。在实际应用中 ，结合 Dice 和 IoU 的评估结果 ，
+可以更全面地指导模型改进和临床任务的选择 ，其值
+越接近 1 说明配准的效果越好。见表 1、表 2。
+2.3   股骨胫骨骨道关键位点识别效果
+在测试集上测试点识别结果的平均误差为 2 个
+像素点 ，见图 9。训练后的 ACLR 术前自动规划系统
+进行术前规划的时间为（3.0±0.5）min。
+2.4   假骨模拟手术中 AI 术前规划与术后股骨 、胫骨
+骨道长度及关节腔内间距（屈膝 0°）的差异分析
+12 例患者 AI 术前规划和假骨模拟手术后实测的
+股骨骨道长度 、胫骨骨道长度和关节腔内间距 （屈膝
+0°）比较，差异均无统计学意义（P 均＞0.05） ，见表 3。
+3   讨论
+ACLR 术前自动规划系统首次实现以 CT 和 MRI
+多模态自动融合影像分割技术为基础 ，使用 AI 深度
+学习技术建立图像自动分割系统 。通过对真实病例
+的 术 前 规 划 以 及 使 用 假 骨 模 型 术 前 规 划 的 术 中 验
+证，本研究证实该系统可自动 、快速 、精准地完成术
+前规划 ，识别正确的解剖位点并且匹配精确地骨道
+A CB D
+A.AI 术前规划预估的骨道位置与长度 （ab 段为股骨骨道长度 ，cd 段为胫骨骨道长度 ，ac 段为屈膝 0°时关节腔内间
+距） ；B. 假骨手术中根据 AI 术前规划模型进行 3D 打印模型上股骨骨道的钻取与长度测量 ；C. 胫骨骨道的钻取与长度
+测量；D. 屈膝 0°时关节腔内间距的测量 。
+图 7   骨道长度、关节腔内间距长度的术前预估与术中测量
+A. 原始 CT 图；B. 原始 MRI 图；C.CT 与 MRI 进行配准后形成的 MRI 图；D.CT 与 MR 的 MASK 使用形变矩阵进行融合的三维效果图 （蓝色所示为
+ACL，黄色所示为 PCL，粉色所示为外侧半月板 ，青色所示为内侧半月板 ，红色所示为股骨及胫骨骨质） 。
+图 8   CT 及 MRI 多模态融合形成的 3D 动态解剖模型
+A CB D
+32
+
+=== PDF_PAGE 7 ===
+《中华骨与关节外科杂志 》 2025 年 1 月 第 18 卷 第 1 期 Chin J Bone Joint Surg , Vol.18, No.1, Jan. 2025
+位置，从而提高手术效果 。
+造成 ACLR 术后移植物再撕裂的原因有很多 ，如
+再次受到创伤 、移植物过细 、胫骨后倾角过大等 [16-19]，
+但通过大样本的 meta 分析显示 ，手术技术原因导致
+的骨道位置不佳仍占据最主要因素 ，其中股骨骨道
+位置不佳占翻修原因的 63%，而胫骨骨道位置不佳占
+7%[20]。因此，对于股骨 、胫骨骨道位置的精准定位仍
+是避免 ACLR 术后翻修的关键因素 。
+膝关节的解剖结构较为复杂 ，不仅包括骨性标
+志，还包括韧带 、软骨 、半月板 、软骨下骨 、肌肉等众
+多组织结构 ，且 ACL 的解剖位点存在一定的个体差
+异，干骺端的关节内畸形 、胫骨后倾角的变异 、关节
+的松弛程度以及合并的半月板及侧副韧带损伤都有
+可能对 ACL 的等长性及等张性产生影响 ，仅依赖 CT
+三维重建进行经验性的位点标注可能无法获得良好
+的术后移植物状态 ，增加移植物再撕裂的可能 。因
+此 ，本 研 究 采 用CT-MRI 多 模 态 融 合 的3D 重 建 技
+术，对骨性和软组织标志同时进行标注 ，结果发现
+CT-MRI 多模态融合技术获取的解剖位点更为个体
+化，更接近于患者原有的解剖学特征 ，其等长性及等
+张性更好 。CT-MRI 融合技术在指导外科手术中有
+较为成熟的应用 ，廖正俭等 [21]使用术前 CT 与 MRI 等
+多模态图像资料重建出所需的 3D 可视化复合虚拟模
+型并 3D 打印出实体化模型 ，利用该模型制定手术预
+案、指导术中操作 ，可为中央区窦镰旁肿瘤手术提供
+全面直观的立体解剖信息 ，提高手术安全性并取得更
+好预后 。但目前多模态融合技术在运动医学领域的
+研究较少 。Feng 等[22]使用 CT-MRI 融合技术对 20 名
+健康成人的 PCL 解剖位点进行研究 ，并获得个体化
+的解剖学数据 ，从而指导术中对 PCL 重建位点的定
+位，但缺乏针对 ACL 的数据。
+基于 AI 深度学习的术前规划系统在 ACLR 中尚
+无应用，本研究通过开发双 UNet 配准融合网络 ，实现
+CT 和 MRI 影像融合 ，初步搭建了 AI 辅助 ACLR 术前
+自动规划系统 。通过搭建深度学习卷积神经网络对
+ACLR 术前的 CT-MRI 融合影像进行精准分割 ，并构
+建了可视化交互界面 。由于使用的数据基本为含有
+病变的数据 ，模型对复杂病例与复杂区域的鲁棒性
+相对比较好 。同时，在模型设计过程中 ，非刚性配准
+融合模块融合了多模态特征定位病灶的总体位置 ，
+变形场模块精确捕捉病灶及周围组织的形变关系 ，
+变形场模块和非刚性配准融合模块的联合使用可以
+将更多的细节信息用于多模态的配准 ，因此配准更
+加准确 。本研究在假骨模型术中进行验证后 ，术前
+规划时间仅为 （3.0±0.5）min。既往研究认为移植物
+表 3   AI术前规划与术后测量的股骨 、胫骨骨道长度及关节腔内间距的比较（n=12，x±s，mm）
+项目
+股骨骨道长度
+胫骨骨道长度
+关节腔内间距（屈膝 0°）
+AI 术前规划
+37.61±1.28
+37.91±1.26
+27.49±1.01
+假骨模拟手术后实测
+37.58±1.06
+37.14±1.50
+26.95±0.67
+t 值
+0.060
+1.568
+1.780
+P 值
+0.952
+0.127
+0.085
+表 1   模型配准评价结果
+算法
+ANTs(Affine)
+ANTs(SyN)
+VoxelMorph
+ACLR 术前自动规划系统算法
+Dice
+0.678
+0.794
+0.823
+0.864
+IoU
+0.514
+0.659
+0.699
+0.761
+表 2   模型在不同部位的配准评价结果
+部位
+股骨
+胫骨
+Dice
+0.876
+0.853
+IoU
+0.780
+0.743
+A B
+A. 背面观；B. 正面观。
+图 9   膝关节骨道规划点识别结果
+33
+
+=== PDF_PAGE 8 ===
+《中华骨与关节外科杂志 》 2025 年 1 月 第 18 卷 第 1 期 Chin J Bone Joint Surg , Vol.18, No.1, Jan. 2025
+的等长性变化小于 2 mm 为临床可接受范围 [23-24]，本
+研究结果显示 ，股骨骨道长度 、胫骨骨道长度及关节
+腔内间距的术前规划与真实测量的差异均无统计学
+意义，差异的来源更可能来自于手术操作 ，进一步说
+明基于 AI 深度学习的 ACLR 术前自动规划系统具有
+较高的精准度 、一致性和可靠性 ，能够有效保证移植
+物的等长性及等张性 。
+机器人辅助下 ACLR 相关研究的目的也是降低
+重建骨道位点偏差 。Yang 等[24] 基于 CT 三维重建影
+像在尸体标本上进行了机器人辅助 ACLR，可获得比
+传统手术更精确的骨道位点 。Zhang 等[25] 针对骨骺
+未 闭 的 ACL 损 伤 青 少 年 患 者 使 用 机 器 人 辅 助
+ACLR，可以得到更准确的骨道位置 ，避免损伤骨骺 。
+Cho 等[26]使用 MRI 作为导航参考并进行机器人辅助
+ACLR，其最终误差小于 2 mm，同样获得了较为满意
+的结果 。机器人辅助 ACLR 在骨道钻取的位置上拥
+有更高的操作一致性和可重复性 ，但其设备昂贵 ，同
+时在术前规划方面依赖于人工定位 ，而人工定位仍
+存在一定的主观性和偏倚性 。本研究结果显示了 AI
+在 ACLR 重建位点选择方面的高度精确性和一致性 ，
+设想将 AI 术前规划与机器人辅助 ACLR 相结合可进
+一步提高精准度 ，得到更准确 、更一致的定位效果 ，
+这也将是后续拟进一步开展的研究 。
+本研究仍存在一定的局限性 。第一 ，本研究的
+手术样本量较小 ，可能会导致结果出现一些偏差 。
+第二 ，本研究采用假骨手术模拟 ACLR，尽管假骨采
+用 根 据 真 实 病 例CT 影 像 进 行3D 打 印 的 方 式 来 制
+备，但由于缺乏韧带 、半月板等软组织结构的限制 ，
+与 真 实 病 例 手 术 相 比 仍 会 有 所 偏 差，有 待 在 真 实
+ACL 损伤患者中进行手术规划以进一步评估 ACLR
+术前自动规划系统的精确性 。第三 ，本研究是在 AI
+规划指导下的手动操作 ，会相应存在一些误差 。后
+续有待将 AI 术前规划与机器人辅助 ACLR 相结合 ，
+以进一步降低手术偏差 。
+4   结论
+ACLR 术前自动规划系统是以 CT 和 MRI 多模态
+影像融合为基础的 AI 深度学习术前规划系统 ，可显
+著提高 ACLR 的术前规划能力 ，有效解决现阶段术前
+规 划 效 率 低、骨 道 定 位 不 准 确 等 问 题，从 而 降 低
+ACLR 术后并发症 ，提升手术效果 。总而言之 ，笔者
+团队认为此技术具有良好的临床应用前景 ，将通过
+后续的临床研究进行进一步验证 。
+【利益冲突】 所有作者均声明不存在利益冲突
+参 考 文 献
+[1] Whittaker JL , Losciale JM , Juhl CB , et al . Risk factors for 
+knee osteoarthritis after traumatic knee injury : a systematic 
+review and meta-analysis of randomised controlled trials 
+and cohort studies for the OPTIKNEE Consensus [J].  Br J 
+Sports Med, 2022, 56(24): 1406-1421.
+[2] Liu Y, Li C , Ma N , et al .  Proprioceptive and clinical out ‐
+comes after remnant preserved anterior cruciate ligament re ‐
+construction: assessment with minimal confounding factors
+[J]. Orthop Surg, 2022, 14(1): 44-54.
+[3] Hong IS , Pierpoint LA , Hellwinkel JE , et al . Clinical out ‐
+comes after ACL reconstruction in soccer (football, futbol ) 
+players: a systematic review and meta-analysis [J]. Sports 
+Health, 2023, 15(6): 788-804.
+[4] Haybäck G , Raas C , Rosenberger R . Failure rates of com ‐
+mon grafts used in ACL reconstructions : a systematic re ‐
+view of studies published in the last decade [J]. Arch Orthop 
+Trauma Surg, 2022, 142(11): 3293-3299.
+[5] 王云鹭, 李锡勇, 刘伦, 等 . 前交叉韧带重建术后移植物愈
+合的研究进展[J].  实用骨科杂志, 2023, 29(1): 47-51.
+[6] Diquattro E, Jahnke S , Traina F, et al. ACL surgery: reasons 
+for failure and management [J]. EFORT Open Rev , 2023, 8
+(5): 319-330.
+[7] 陆莉霞, 邹俊忠, 郭玉成, 等 . 多模态融合的膝关节损伤预
+测[J]. 计算机工程与应用 , 2021, 57(9): 225-232.
+[8] Azam MA, Khan KB, Salahuddin S , et al. A review on mul‐
+timodal medical image fusion : compendious analysis of 
+medical modalities , multimodal databases , fusion tech ‐
+niques and quality metrics [J]. Comput Biol Med , 2022
+(144): 105253.
+[9] Fang D , Yang C , Zhou H , et al . Effects of CT/MRI image 
+fusion on cerebrovascular protection , postoperative compli ‐
+cations, and limb functional recovery in patients with ante ‐
+rior and middle skull base tumors : based on a retrospective 
+cohort study [J]. Contrast Media Mol Imaging , 2022, 2022: 
+7855576.
+[10] 靳能皓, 孟凡皓, 乔波, 等 . 多模态图像自动配准融合技术
+联合手术机器人在面侧深区肿瘤诊疗中的应用 [J]. 中国
+34
+
+=== PDF_PAGE 9 ===
+《中华骨与关节外科杂志 》 2025 年 1 月 第 18 卷 第 1 期 Chin J Bone Joint Surg , Vol.18, No.1, Jan. 2025
+医学影像学杂志 , 2023, 31(6): 572-576.
+[11] 吴东, 刘星宇, 张逸凌, 等 . 人工智能辅助全髋关节置换术
+三维规划系统的研发及临床应用研究 [J]. 中国修复重建
+外科杂志,  2020, 34(9): 1077-1084.
+[12] Gurung B , Liu P , Harris PDR , et al . Artificial intelligence 
+for image analysis in total hip and total knee arthroplasty : a 
+scoping review[J]. Bone Joint J, 2022, 104-B(8): 929-937.
+[13] Pearle AD, McAllister D , Howell SM . Rationale for strate ‐
+gic graft placement in anterior cruciate ligament reconstruc ‐
+tion: IDEAL femoral tunnel position [J]. Am J Orthop 
+(Belle Mead NJ), 2015, 44(6): 253-258.
+[14] Parkar AP, Adriaensen M , Vindfeld S , et al . The anatomic 
+centers of the femoral and tibia l insertions of the anterior 
+cruciate ligament : a systematic review of imaging and ca ‐
+daveric studies reporting normal center locations [J]. Am J 
+Sports Med, 2017, 45(9): 2180-2188.
+[15] Lertwanich P , Martins CA , Asai S , et al . Anterior cruciate 
+ligament tunnel position measure ment reliability on 3-di‐
+mensional reconstructed computed tomography [J]. Arthros‐
+copy, 2011, 27(3): 391-398.
+[16] Li X, Yan L, Li D , et al . Failure modes after anterior cruci ‐
+ate ligament reconstruction : a systematic review and meta-
+analysis[J]. Int Orthop, 2023, 47(3): 719-734.
+[17] Keuning MC , Robben BJ , Brouwer RW , et al . Young men 
+are at higher risk of failure after ACL hamstring reconstruc ‐
+tions: a retrospective multivariate analysis [J]. BMC Muscu ‐
+loskelet Disord, 2022, 23(1): 598.
+[18] Wang Y, Liu X , Xiang L , et al . Risk factors of anterior cru ‐
+ciate ligament accumulated damage among young male pa ‐
+tients undergoing routine exercise [J]. Orthop Surg, 2022, 14
+(6): 1109-1114.
+[19] 李春宝, 刘玉杰, 冯勇, 等 . 前十字韧带双束重建的临床生
+物力学研究进展 [J]. 中华骨科杂志 , 2013, 33(12): 1240-
+1247.
+[20] Diquattro E, Jahnke S , Traina F, et al. ACL surgery: reasons 
+for failure and management [J]. EFORT Open Rev , 2023, 8
+(5): 319-330.
+[21] 廖正俭 , 陈忠仪 , 刘宇清 , 等 . 多模态图像融合联合 3D 打
+印在中央区窦镰旁肿瘤手术中的应用效果 [J]. 河南医学
+研究, 2022, 31(15): 2689-2692.
+[22] Feng K , Wang T , Tang J , et al . Application of CT-MRI 
+fusion-based three-dimensional reconstruction technique in 
+the anatomic study of posterior cruciate ligament [J].  Or ‐
+thop Surg, 2022, 14(11): 2845-2853.
+[23] Hefzy MS , Grood ES , Noyes FR . Factors affecting the re ‐
+gion of most isometric femoral attachments . Part Ⅱ : The 
+anterior cruciate ligament [J]. Am J Sports Med , 1989, 17
+(2): 208-216.
+[24] Yang G, Liu D, Zhou G, et al. Robot-assisted anterior cruci ‐
+ate ligament reconstruction based on three-dimensional im ‐
+ages[J]. J Orthop Surg Res , 2024, 19(1): 246.
+[25] Zhang L , Liang Q , Zhao Z , et al . Robot-assisted all-
+epiphyseal anterior cruciate ligament reconstruction in skel ‐
+etally immature patients : a retrospective study [J]. Int Or ‐
+thop, 2023, 47(2): 429-435.
+[26] Cho WJ , Kim JM , Kim DE , et al . Accuracy of the femoral 
+tunnel position in robot-assisted anterior cruciate ligament 
+reconstruction using a magnetic resonance imaging-based 
+navigation system : a preliminary report [J]. Int J Med Ro ‐
+bot, 2018, 14(5): e1933.
+【收稿日期：2024-07-20】
+【本文编辑：孙维】
+35

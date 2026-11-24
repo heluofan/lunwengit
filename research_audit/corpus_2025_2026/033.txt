@@ -1,0 +1,973 @@
+=== PDF_PAGE 1 ===
+临床放射学杂志 2025 年第 44 卷第 8 期
+◁肌肉骨骼影像学 ▷
+基于不完整多模态医学图像的深度学习模型在原发性
+骨肿瘤分类中的应用
+赵祥成，　 宋丽文，　 李传璞，　 陈夏晴，　 谢卓耀，　 叶　强，　 阳　维，　 赵英华
+*
+【摘要】  目的 探讨基于 X 线平片、CT 平扫和 MRI 平扫的不完整多模态医学图像联合临床资料的深度学习 （DL）
+模型对良性 、中间型和恶性原发性骨肿瘤（PBT）的鉴别诊断价值 。方法 回顾性搜集经病理确诊为 PBT 的 1305 例
+患者数据 ，包括不完整多模态医学图像和临床资料 。基于 EfficientNet 网络分别构建 DL 以及 DL 临床模型用于将
+PBT 分类为良性、中间型和恶性 。结果 基于不完整多模态医学图像与临床资料构建的 DL 临床模型在内部测试集
+上的微平均受试者工作特征曲线下面积为 0.816，准确度为 64.7%，微平均敏感度为 64.7%，微平均特异度为 82.3%，
+分类性能优于仅基于不完整多模态医学图像构建的 DL 模型。DL 临床模型在外部测试集上的微平均曲线下面积为
+0.768，准确度为 60.3%。结论 基于不完整多模态医学图像联合临床资料的 DL 临床模型 ，对于良性 、中间型和恶
+性 PBT 具有较好的分类能力 ，有望成为临床辅助诊断工具应用于实际临床实践中具有不同模态成像图像的患者 。
+【关键词】 　原发性骨肿瘤　深度学习　不完整多模态医学图像　临床资料　分类
+Application of Deep Learning Model Based on Incomplete Multimodal 
+Medical Images in Classifying Primary Bone Tumors
+ZHAO Xiangcheng ，SONG Liwen，LI Chuanpu，et al.
+Department of Radiology ，The Third Affiliated Hospital of Southern Medical University ，Guangzhou，
+Guangdong Province 510630，P.R.China
+【Abstract】 Objective To explore the application of the deep learning （DL） model based on incomplete multimodal 
+medical images from X‑ray ， CT plain scan ， and MRI plain scan combined with clinical data to classify primary bone tu ‑
+mors （PBTs） as benign ， intermediate ， and malignant . Methods In this retrospective study ， the data of 1305 patients 
+with histopathologically confirmed PBTs were collected ， including incomplete multimodal medical images and clinical 
+data. Based on the EfficientNet network ， DL and DL Clinical models were constructed to classify PBT as benign ， interme‑
+diate， or malignant . Results The classification performance of the DL Clinical model built based on incomplete multi ‑
+modal medical images and clinical data achieved a micro‑average AUC of 0.816， an accuracy of 64.7%， a micro‑average 
+sensitivity of 64.7%， and a micro‑average specificity of 82.3% on the internal test set ， which were better than that of the 
+DL model built based solely on incomplete multimodal medical images . The DL Clinical model gained a micro ‑ average 
+本研究系国家自然科学基金项目（编号：81871510，82172014） ；广东省自然科学基金项目（编号：2023A030313574）
+作者单位：510630 广州，南方医科大学第三附属医院放射科（赵祥成、宋丽文、陈夏晴、谢卓耀、叶　强、赵英华） ；510515　广州，南方医科
+大学生物医学工程学院（李传璞、阳 维） ；*通讯作者
+24 陈玉兰 ，钱银锋 ，董江宁 ，等 . 基于 3.0T MRI 对卵泡膜纤维瘤与
+阔 韧 带 平 滑 肌 瘤 的 鉴 别 诊 断［J］. 实 用 医 学 杂 志，2020，36：
+2428‑2432.
+25 李艳，胡宁，郑晔，等 .18 例卵巢纤维瘤的 MRI 表现与误诊分析
+［J］. 中国医疗器械信息 ，2021，27： 54‑56.
+（收稿：2025-03-10 修回：2025-04-23）
+（本文编辑：袁燕平）
+·· 1521
+DOI:10.13437/j.cnki.jcr.2025.08.034
+
+=== PDF_PAGE 2 ===
+临床放射学杂志 2025 年第 44 卷第 8 期
+AUC of 0.768 and an accuracy of 60.3% on the external test set . Conclusion We successfully constructed and validated 
+the DL Clinical model based on incomplete multimodal medical images from X‑ray ， CT plain scan ， and MRI plain scan 
+combined with clinical data ， which had great performance for classifying PBTs as benign ， intermediate ， and malignant . 
+The DL Clinical model can be applied to patients with different imaging modalities in actual clinical practice ， which is ex ‑
+pected to be used as a clinical auxiliary diagnostic tool .
+【Key words】 Primary bone tumor  Deep learning  Incomplete multimodal medical images  Clinical data  Classifi‑
+cation
+原发性骨肿瘤（primary bone tumor ，PBT）的准确
+分 类 对 于 指 导 治 疗 决 策 和 改 善 患 者 预 后 至 关 重
+要
+［1］
+。目前 ，包括 X 线、CT 和 MRI 在内的无创医学
+影像技术已被广泛用于 PBT 的诊断
+［1，2］
+。根据美国
+国 立 综 合 癌 症 网 络（national comprehensive cancer 
+network，NCCN）发布的骨肿瘤临床实践指南 ，PBT
+的综合诊断通常需要通过结合多种模态医学图像
+以提供更丰富的信息对病变进行综合评估
+［1］
+。然
+而，在临床实践中 ，由于设备稀缺及费用高昂等问
+题，并非所有的患者都能同时接受多种影像学检
+查，即患者只具有不完整的多模态医学图像 ，这可
+能会限制放射科医师对 PBT 进行分类的能力 ，特别
+是对于那些具有相似影像学表现的 PBT。
+近年来 ，深度学习（deep learning ，DL）在骨肿瘤
+影像诊断中的作用越来越明显 ，具有重要的临床应
+用价值
+［3~5］
+。以往的研究基于患者的单模态医学图
+像训练骨肿瘤分类模型
+［3，5，6］
+。然而，这些模型不仅
+不能充分利用患者其他模态检查图像提供的成像
+信息 ，并且不可用于无选定模态图像的患者 ，临床
+实用性和推广性受到制约
+［3~5，7］
+。本研究基于 PBT 患
+者的 X 线平片、CT 平扫和 MRI 平扫的不完整多模态
+医学图像构建 DL 模型 ，并进一步联合临床资料开
+发 DL 临床模型对 PBT 进行准确分类 ，以期为患者制
+定临床治疗决策提供有力的支持 ，最终改善患者的
+预后。
+1 资料与方法
+1.1 研究对象
+本回顾性研究纳入了 2010 年 1 月至 2022 年 12
+月期间在南方医科大学第三附属医院以及珠江医
+院的 PBT 患者，并搜集他们治疗前的临床资料和影
+像学检查图像 。纳入标准 ： （1）经组织病理学诊断
+为 PBT； （2）在治疗前接受过 X 线、CT 或 MRI 成像扫
+描。排除标准 ： （1）缺乏可用临床资料者 ； （2）复发
+的 PBT 患者； （3）图像质量不佳者 ，由两名经验丰富
+的放射科医师（分别拥有 13 年和 31 年工作经验）评
+定。最后，共纳入南方医科大学第三附属医院 1043
+例 PBT 患者（内部数据集 ：良性 604 例，中间型 176
+例，恶性 263 例） ；搜集的不完整多模态医学图像包
+括 X 线平片（n=850） 、CT 平扫（n=658）和 MRI 平扫（n
+=547） （包括常规 T1WI 及常规 T2WI） 。纳入珠江医
+院 262 例 PBT 患者（外部数据集 ：良性 148 例，中间
+型 52 例，恶性 62 例） ；搜集的不完整多模态医学图
+像包括 X 线平片（n = 233） 、CT 平扫（n = 163）和 MRI
+（n = 75） ［包括 T1WI、T2WI 和 T2 加权成像抑脂 （T2 ‑
+weighted imaging with fat suppression ，T2WI FS） ］ 。患
+者具体的成像模态分布见表 1。分析患者的 X 线平
+片正侧位 、髌骨及跟骨的轴位检查图像 （如果有的
+话） 。主要使用  T1WI 和 T2WI（如果有 ） ；当患者的
+MRI 扫描缺乏 T2WI 序列时（n=45） ，采用 T2WI FS 作
+为替代方案以模拟真实临床实践中的医学图像数
+据分布 。搜集患者的临床资料 ，包括性别 、年龄、部
+位、病理性骨折 、白细胞 、血红蛋白 、碱性磷酸酶以
+及症状和体征（红肿充血 、肿胀、发热、疼痛、运动障
+碍、可触及肿块） 。 本回顾性研究经南方医科大学
+第三附属医院伦理评审委员会批准 。所有访问的
+患者数据均符合数据相关隐私保护 ，且所有患者免
+签知情同意书 。
+成像模态分布
+X‑ray 
+CT 
+MRI
+X‑ray + CT
+X‑ray + MRI
+CT + MRI
+X‑ray + CT + MRI
+内部/外部数据集
+良性
+（604/148）
+162/43
+70/14
+10/0
+129/64
+69/11
+25/1
+139/15
+中间型
+（176/52）
+31/21
+8/7
+7/0
+30/8
+31/5
+6/3
+63/8
+恶性
+（263/62）
+17/9
+28/2
+12/0
+21/19
+46/10
+27/1
+112/21
+总计
+（1043/262）
+210/73
+106/24
+29/0
+180/90
+146/26
+58/5
+314/44
+表 1 内部/外部数据集患者的成像模态分布
+　　注：数据均为患者人数
+1.2 图像分割
+所有图像均以原始尺寸和分辨率下载并存储
+为医学数字成像和通信 （digital imaging and commu ‑
+nications in medicine ，DICOM）文件 ，存储文件中受
+·· 1522
+
+=== PDF_PAGE 3 ===
+临床放射学杂志 2025 年第 44 卷第 8 期
+保护的患者隐私相关健康信息已被删除 。使用 ITK
+‑SNAP（Version 3.8.0）软件对搜集的图像进行手动
+分割，并以 NIFTI 格式储存
+［8］
+。由两名均具有 3 年骨
+肌影像诊断经验的医师在未知患者的病理诊断结
+果和临床资料的情况下独立完成覆盖整个肿瘤实
+体 的 矩 形 感 兴 趣 区（rectangular region of interest ，
+RROI）的勾画过程 。所有结果最终由一名具有 31
+年资深骨肌影像诊断经验的医师审核 ，以确认最终
+的 RROI。
+1.3 数据集构建与划分
+采用分层随机抽样法和 5 折交叉验证 ，将来自
+南方医科大学第三附属医院的患者按 7∶1∶2 的比例
+分为训练集 、验证集和内部测试集 。首先 ，将所有
+患者根据其所具有的成像模态分为不同的层 ，然后
+按 7∶1∶2 的比例从每个层中随机抽取患者 。然后，
+将每个分层中选取的患者合并起来 ，分别得到整个
+数 据 集 的 训 练 集（70%） 、验 证 集（10%）和 测 试 集
+（20%） 。为了提高测试集的统计意义 ，进行 5 折交
+叉验证 。在 5 折交叉验证过程中 ，上述选择重复 5
+次，以确保每次被选取的测试集都没有相互重叠的
+患者。每一折训练一个单独的模型 ，并获得测试集
+的预测结果 。最后，汇总 5 折测试集的预测结果 ，得
+出模型在整个数据集测试集上的总体性能 。来自
+珠江医院的患者用作独立的外部测试集 。
+1.4 DL 分类模型的构建
+本研究构建两种 DL 分类模型，用以将 PBT 分为
+良性、中间型和恶性 ，研究流程如图 1 所示。在模型
+训练阶段 ，先对图像进行数据增强 ，包括图像随机
+翻转、随机旋转（从-30°到 30°）和随机仿射变换 ，以
+提高模型的泛化性能 。所有图像均采用标准分数
+（Z‑score）归一化处理 。使用 EfficientNet 网络利用
+不完整多模态医学图像和临床资料分别训练 DL 以
+及 DL 临床模型 。DL 模型采用了受  ResNet
+［9］
+启发的
+3 个编码器来提取图像的特征 ，其中 CT 和 MRI 编码
+器都有 1 个三维卷积模块和 3 个三维残差块 ，X 线平
+片编码器包括 1 个二维卷积模块和 3 个二维残差
+块。分别针对 CT 和 MRI 训练了 2 个 3D EfficientNet
+模型，并针对 X 线平片训练了 1 个 2D EfficientNet 模
+型
+［10］
+。在模型的测试阶段 ，根据患者可用的成像模
+态选择合适的模型 ，并通过平均集合法合并每种可
+用的成像模态模型的输出结果 。临床资料对分类
+起着重要作用 ，为了提升模型对 PBT 分类的准确
+性，进一步将临床资料整合到通过在 DL 模型中加
+入临床资料开发了 DL 临床分类模型（图 2） 。鉴于
+患者成像方式（X 线平片、CT 平扫、MRI 平扫、X 线平
+片+ CT 平扫 、X 线平片 +MRI 平扫 、CT 平扫 +MRI 平
+扫或 X 线平片 +CT 平扫+MRI 平扫）及发病部位（躯
+干骨或颅骨 、四肢）的差异 ，对模型性能进行分层分
+析。使用 Adam 优化器对模型进行优化 ，batch 为 
+12，学习率为 1×10
+‑4
+，一共训练 500 轮次。由于存在
+数据类别不平衡的问题 ，故将 Focal Loss 作为模型的
+训练目标 。所有模型均使用开源软件  Python（3.8.3 
+版）中 的 PyTorch （1.11.0 版）和 11 GB 内 存 的 
+NVIDIA RTX 2080Ti GPU 实现。
+1.5 评价指标
+使用受试者工作特性（receiver operating charac ‑
+teristic，ROC）曲 线 并 计 算 曲 线 下 面 积（area under 
+the Curve，AUC） 、准确度、敏感度和特异度来评价模
+型的分类性能。计算公式如下 ： 
+准确度 = TP +  TNTP +  TN +  FP +  FN
+敏感度 = TPTP +  FN
+特异度 = TN TN +  FP
+其中 ，真阳性（true positive ，TP）是指正确分类
+的正样本数 ；真阴性（true negative ，TN）是指正确分
+类的负样本数 ；假阳性（false positive ，FP）是指被错
+误的标记为正样本的负样本数 ；假阴性（false nega ‑
+tive，FN）是指被错误的标记为负样本的正样本数 。
+ROC 曲线是以敏感度为纵坐标 ，特异度为横坐标绘
+制的曲线 。AUC 为 ROC 曲线与坐标轴围成的面积
+数值。
+基于数据集的不平衡数据 （内部数据集 ：良性
+604 例，中间型 176 例以及恶性 263 例；外部数据集 ：
+良性 148 例，中间型 52 例以及恶性 62 例） ，采用微平
+均法计算 AUC、敏敢度和特异度进行评估 。微平均
+值的计算公式 ：
+微平均值 = ∑i = 1
+N
+TPi
+∑i = 1
+N
+(TPi + FNi )
+× ∑i = 1
+N
+TNi
+∑i = 1
+N
+(TNi + FPi )
+其中 ，N 为类别数 ，TPi 为第  i 类的真阳性数 ，
+TNi 为第 i 类的真阴性数 ，FPi 为第 i 类的假阳性数 ，
+FNi 为第 i 类的假阴性数 。
+1.6 统计学方法
+采用 SPSS（23.0 版，IBM，Armonk，NY）和 Python
+（3.8.3 版）进行统计学分析 。M（Q1，Q3）和例（%）分
+别用于描述连续和分类变量 。Kruskal‐Wallis 检验和
+卡方检验用于确定临床特征之间的显著差异 。De‐
+Long 检验用于比较模型间的 AUC 值差异 。模型间
+的准确度比较采用 McNemar 检验进行统计学分析 。
+双侧检验，取 α=0.05。
+·· 1523
+
+=== PDF_PAGE 4 ===
+临床放射学杂志 2025 年第 44 卷第 8 期
+2 结果
+2.1 基本资料
+纳入所有患者的临床资料汇总见表 2。比较良
+性、中间型和恶性  PBT 组，在年龄、部位、白细胞、血
+红蛋白、碱性磷酸酶 、症状和体征（包括肿胀 、发热、
+疼痛、运动障碍 、可触及肿块）方面均存在显著差异
+（均 P<0.05） ，而良性 、中间型和恶性组之间性别构
+成、病理性骨折及体征（红肿充血）的差异均无统计
+学意义（均 P>0.05） 。
+2.2 DL 分类模型的性能
+为验证不完整多模态医学图像和临床资料的
+结合在 PBT 分类中的有效性 ，并且评估不同 DL 模型
+的分类性能 ，将 DL 以及 DL 临床模型的分类结果进
+行比较（表 3、4） 。结果显示 ，在内部测试集上基于
+不完整多模态医学图像与临床资料构建的 DL 临床
+模型的微平均 AUC（0.816）和微平均特异度（82.3%）
+均高于基于不完整多模态医学图像构建的 DL 模型
+（微平均 AUC：0.774；微平均特异度 ：80.7%） 。De‐
+Long 和 McNemar 检验结果显示 ，DL 和 DL 临床模型
+的 AUC 以及准确度之间差异存在统计学意义 （均 P
+<0.001） 。对三分类结果的每个子类进行分析 ，DL
+临床模型对良性 、中间型和恶性 PBT 分类的 AUC 分
+别 为0.779、0.700、0.760，均 高 于DL 模 型（0.705、
+0.609、0.717） （表 3） 。2 个模型的 ROC 曲线对比见
+图 2。在外部测试集上 ，DL 临床模型表现出比 DL
+模型更高的微平均 AUC：0.768 vs.0.747，P<0.001。
+DL 临床模型对良性 、中间型和恶性  PBT 分类的
+AUC 分别为 0.705、0.691、0.707，均高于 DL 模型（表
+4） 。因此 ，本研究选择了 DL 临床模型进行后续
+分析。
+此外，观察到 DL 临床模型在按成像方式分布
+以及病灶部位分层的不同患者亚组中表现出不同
+的分类性能 。在内部测试集 ，对于具有不同模态
+成 像 图 像 的 患 者，DL 临 床 模 型 获 得 了 从0.754~
+0.909 的微平均 AUC 和 56.4%~78.1% 的准确度（表
+5） 。DL 临床模型在只具有 X 线平片的患者中取得
+了最高的微平均 AUC。在具有两种模态成像图像
+（X 线平片 +CT、X 线平片 +MRI 或 CT+MRI）的患者
+亚组中 ，DL 临床模型在具有 X 线平片 +CT 的患者
+中获得了最高的微平均 AUC，为 0.834。对于同时
+具有 3 种模态成像图像 （X 线平片 +CT+MRI）的患
+者，DL 临床模型的微平均 AUC 为 0.754。在外部测
+试集上 ，DL 临床模型在具有不同模态成像图像的
+患者亚组中获得了  0.220~0.866 的微平均
+AUC（表 6） 。DL 临床模型对于 X 线平片
++CT 患者获得了最高的微平均 AUC。根
+据肿瘤的部位进行分层时 ，DL 临床模型
+在 内 部 和 外 部 测 试 集 对 位 于 四 肢 骨 的
+PBT（微平均 AUC：0.829 和 0.817）获得了较
+好的表现 ，高于位于躯干骨或颅骨的 PBT
+（微平均 AUC：0.730 和 0.561） （表 7） 。
+3 讨论
+PBT 相对罕见 ，约占所有恶性肿瘤的
+0.2%，年发病率约 1/10 万，其中恶性 PBT
+是 20 岁以下个体癌症相关死亡的第三大
+　临床资料
+年龄（岁）
+性别
+男
+女
+发病部位
+躯干骨或颅骨
+四肢骨
+病理性骨折†
+白细胞†
+血红蛋白†
+碱性磷酸酶†
+症状和体征†
+红肿充血
+肿胀
+发热
+疼痛
+运动障碍
+可触及肿块
+良性
+（n=752）
+16（10，29）
+468（62.2）
+284 （37.8）
+72 （9.6）
+680 （90.4）
+125 （16.6）
+56 （7.4）
+109 （14.5）
+58 （7.7）
+7 （0.9）
+163 （21.7）
+7 （0.9）
+341 （45.3）
+269 （35.8）
+292 （38.8）
+中间型
+（n=228）
+29（12，45）
+128（56.1）
+100 （43.9）
+47 （20.6）
+181 （79.4）
+41 （18.0）
+30 （13.2）
+49 （21.5）
+17 （7.5）
+4 （1.8）
+81 （35.5）
+5 （2.2）
+161 （70.6）
+106 （46.5）
+46 （20.2）
+恶性
+（n=325）
+25（15，48）
+197（60.6）
+128 （39.4）
+77 （23.7）
+248 （76.3）
+52 （16.0）
+46 （14.2）
+105 （32.3）
+80 （24.6）
+7 （2.2）
+143 （44.0）
+24 （7.4）
+241 （74.2）
+162 （49.8）
+126 （38.8）
+H/χ2值
+84.95 
+2.73 
+42.21
+0.39 
+14.04 
+45.05
+67.10
+2.78 
+58.78 
+35.56 
+97.89 
+21.82 
+28.52 
+P 值
+<0.001*
+0.255
+<0.001*
+0.824
+<0.001*
+<0.001*
+<0.001*
+0.249
+<0.001*
+<0.001*
+<0.001*
+<0.001*
+<0.001*
+表 2　纳入患者的一般资料及临床资料比较
+　　注：数据以 M（Q1，Q3）和例（%）表示。 “*”表示 P<0.05，视为差异具有
+统计学意义； “†”数值代表相应指标的异常结果计数
+模型
+DL 模型†
+良性
+中间型
+恶性
+DL 临床模型†
+良性
+中间型
+恶性
+P 值
+（DL vs.DL 临床模型）
+AUC（95% CI）
+0.774 （0.756， 0.791）
+0.705 （0.672，0.737）
+0.609 （0.560， 0.653）
+0.717 （0.678， 0.754）
+0.816 （0.800， 0.832）
+0.779 （0.750， 0.807）
+0.700 （0.653， 0.743）
+0.760 （0.725， 0.792）
+<0.001*
+准确度（%）
+61.4
+66.2
+81.5
+75.0
+64.7
+70.5
+82.4
+76.4
+<0.001*
+敏感度（%）
+61.4
+62.3
+52.0
+62.9
+64.7
+67.0
+55.1
+65.2
+/
+特异度（%）
+80.7
+37.8
+96.4
+87.2
+82.3
+45.2
+96.2
+87.6
+/
+表 3 DL 模型在内部测试集中的分类表现
+注： “*”表示 P < 0.05，差异具有统计学意义 ； “†”代表采用微平均法计算 AUC、敏
+感度和特异度
+·· 1524
+
+=== PDF_PAGE 5 ===
+临床放射学杂志 2025 年第 44 卷第 8 期
+原因
+［11］
+。PBT 的生物学行为差异很大 ，世界卫生组
+织发布的骨肿瘤分类标准将骨肿瘤分为良性 、中间
+型和恶性 ，不同的分类需要不同的治疗方法
+［1，12，13］
+。
+对许多良性  PBT 来说，肿瘤病灶内切除或刮除是最
+合适的治疗方法 。中间型 PBT 具有破坏性生长且
+易复发等特点 ，因此需要采取更彻底的干
+预措施 ，如局部广泛切除 。恶性 PBT 通
+常需要联合多学科治疗方法 ，包括化疗 、
+放疗、广泛切除或截肢
+［12］
+。PBT 的准确分
+类对确保其有效且成功治疗至关重要
+［1］
+。
+在本研究中 ，笔者利用 PBT 患者的 X 线平
+片、CT 平扫和 MRI 平扫的不完整多模态
+医学图像构建 DL 模型进行分类预测 。结
+果显示，结合了不完整多模态医学图像以
+及临床资料构建的 DL 临床模型较仅基于
+不完整多模态医学图像的 DL 模型取得了
+更优的分类性能 。通过对 PBT 患者的准
+确分类，可以为临床治疗决策提供有力的
+支持。
+人 工 智 能（artificial Intelligence ，AI）
+尤其是 DL 在骨肿瘤影像学诊断中的应用
+是目前研究的热点
+［14］
+。为了更好地实现
+骨肿瘤的准确分类 ，众多学者做出了许多
+努力
+［3，4，6，15，16］
+。He 等
+［4］
+首次开发了一个基
+于 卷 积 神 经 网 络 的DL 模 型，利 用 来 自
+1356 例经病理证实的 PBT 患者的 2899 幅
+术前 X 线平片对 PBT 进行分类 。同样 ，
+von Schacky 等
+［3］
+开发并验证了一种多任
+务 DL 模 型，用 于 同 时 在X 线 平 片 上 对
+PBT 进行包围盒放置 、分割和分类 ，对恶
+性 PBT 的诊断准确度达到 80.2%。模型的
+分类性能超过了放射科住院医师 ，并可与
+专业的放射科医师相媲美 。此外，一个基
+于常规 MRI 和患者人口统计学特征使用
+EfficientNet‑B 0 架构和逻辑回归模型构建
+的 DL 模 型 也 被 用 于 区 分 良 性 和 恶 性
+PBT，AUC 达到了 0.82
+［6］
+。这些发现可能
+有助于开发计算机辅助诊断工具 ，减少不
+必要的活检 。然而，这些研究都依赖于单
+一模态 ，而本研究基于不完整多模态 （X
+线/CT/MRI 任意组合）的联合分析 ，更贴合
+临床实际 ，减少了选择偏倚问题 ，且能充
+分利用患者的整体成像信息
+［16］
+。此外，不
+同于 von Schack 等
+［3］
+仅用影像数据 ，本研
+究创新性融合临床指标 （如碱性磷酸酶 、
+症状体征） ，显著提高了模型的 AUC。
+大多数研究构建的具有出色性能的机器学习
+或 DL 模型并不能保证在临床实践中得到采用 ，部
+署用于临床的模型比预期少得多
+［17］
+。本研究建立
+了用于 PBT 分类的 DL 模型，成功地利用临床实践中
+模型
+DL 模型†
+良性
+中间型
+恶性
+DL 临床模型†
+良性
+中间型
+恶性
+P 值
+（DL vs.DL 临床模型）
+AUC（95% CI）
+0.747 （0.708， 0.783）
+0.691 （0.624， 0.755）
+0.589 （0.503， 0.679）
+0.695 （0.617， 0.769）
+0.768 （0.733， 0.803）
+0.705 （0.642， 0.767）
+0.691 （0.612， 0.767）
+0.707 （0.630， 0.777）
+<0.001*
+准确度（%）
+61.1
+63.0
+80.2
+79.0
+60.3
+65.3
+79.0
+76.3
+<0.001*
+敏感度（%）
+61.1
+58.3
+52.9
+60.7
+60.3
+61.7
+55.1
+60.0
+/
+特异度（%）
+80.5
+21.9
+98.1
+95.5
+80.2
+34.2
+94.8
+91.0
+/
+表 4 DL 模型在外部测试集中的分类表现
+注： “*”表示 P < 0.05，差异具有统计学意义 ； “†”代表采用微平均法计算 AUC、敏
+感度和特异度
+成像模态分布
+X‑ray
+CT
+MRI
+X‑ray + CT
+X‑ray + MRI
+CT + MRI
+X‑ray + CT + MRI
+AUC†（95% CI）
+0.909 （0.882， 0.932）
+0.837 （0.787， 0.883）
+0.770 （0.626， 0.894）
+0.834 （0.792， 0.870）
+0.799 （0.755， 0.842）
+0.798 （0.722， 0.863）
+0.754 （0.720， 0.788）
+准确度（%）
+78.1
+69.5
+68.0
+65.6
+60.0
+56.4
+56.7
+敏感度†（%）
+78.1
+69.5
+68.0
+65.6
+60.0
+56.4
+56.7
+特异度†（%）
+89.0
+84.8
+84.0
+82.8
+80.0
+78.2
+78.4
+表 5 按患者的成像方式分布分层的 DL 临床模型在内部测试集中的分类性能
+注： “†”代表采用微平均法计算 AUC、敏感度和特异度
+成像模态分布
+X‑ray
+CT
+X‑ray + CT
+X‑ray + MRI
+CT + MRI
+X‑ray + CT + MRI
+AUC†（95% CI）
+0.815 （0.752， 0.872）
+0.705 （0.571， 0.825）
+0.866 （0.818， 0.911）
+0.645 （0.514， 0.768）
+0.220 （0， 0.556）
+0.665 （0.563， 0.755）
+准确度（%）
+67.1
+45.8
+73.3
+42.3
+20.0
+45.5
+敏感度†（%）
+67.1
+45.8
+73.3
+42.3
+20.0
+45.5
+特异度†（%）
+83.6
+72.9
+86.7
+71.2
+60.0
+72.7
+表 6 按患者的成像方式分布分层的 DL 临床模型在外部测试集中的分类性能
+注： “†”代表采用微平均法计算 AUC、敏感度和特异度
+发病部位
+内部测试集
+躯干骨或颅骨
+四肢骨
+外部测试集
+躯干骨或颅骨
+四肢骨
+AUC†（95% CI）
+0.730 （0.678， 0.781）
+0.829 （0.812， 0.846）
+0.561 （0.468， 0.658）
+0.817 （0.784， 0.850）
+准确度（%）
+54.9
+66.3
+36.0
+66.0
+敏感度†（%）
+54.9
+66.3
+36.0
+66.0
+特异度†（%）
+77.5
+83.1
+68.0
+83.0
+表 7　按肿瘤部位分层的 DL 临床模型在内部和外部测试集中的分类性能
+注： “†”代表采用微平均法计算 AUC、敏感度和特异度
+·· 1525
+
+=== PDF_PAGE 6 ===
+临床放射学杂志 2025 年第 44 卷第 8 期
+患者的不完整多模态医学图像构建模型用于分类 ，
+达到了较好的结果 。此外，还整合了对 PBT 患者具
+有辅助诊断作用的临床资料开发了 DL 临床模型 ，
+对 PBT 患者有更强的分类能力 。DL 临床模型的特
+征融合方式考虑了影像数据和临床资料的互补性 ：
+影像特征能够提供解剖学和组织病理学信息 ，而临
+床资料（如血红蛋白 、白细胞 、碱性磷酸酶等 ）则反
+映了患者的病理生理状态 。联合这些特征后 ，DL+
+临床模型能够更全面地表征原发性骨肿瘤的特性 。
+在现有研究的基础上 ，本研究的优势是开发的 DL
+临床模型可以充分利用患者的数据对大多数 PBT
+患者进行分类 ，适用于 X 线平片 、CT 平扫和 MRI 平
+扫任何可用模态的组合子集（如患者具有 X 线平片、
+CT 平扫、MRI 平扫、X 线平片 + CT 平扫、X 线平片 + 
+MRI 平扫 、CT 平扫 + MRI 平扫或 X 线平片  + CT 平
+扫 + MRI 平扫） 。DL 临床模型可以
+更好地部署到真实的临床场景中 ，使
+PBT 的计算机辅助诊断成为可能 ，帮
+助医师及时 、早期的诊断 PBT，从而
+有可能指导临床决策并改善患者预
+后。本研究使用的图像均为平扫图
+像，未使用增强图像 ，原因是回顾性
+数据中有许多未进行增强扫描的病
+例数 ，若强制纳入将大幅减少样本
+量，影响模型泛化性 。此外，增强效
+果受对比剂类型 、注射时机等变量影
+响，可能引入额外噪声 。尽管 DL 临
+床模型已实现对 X 线、CT 和 MRI 的
+不完全多模态图像的处理 ，但未来可
+考虑整合更多影像检查方法 ，如放射
+性骨显像，以进一步开发更加鲁棒的
+模型。总之，本研究为对临床实践中
+具有不完整多模态图像的患者进行
+诊断提供了一种有前途的工具 ，并揭
+示了 DL 在推进个性化诊断工具方面
+的潜力。
+在 本 研 究 中，DL 临 床 模 型 在 
+PBT 分类方面表现出令人满意的性
+能 ，与 之 前 研 究 中 建 立 的 模 型 相
+当
+［3，6，7］
+。由于许多 PBT 较罕见或表
+现不典型，准确诊断需要较长时间专
+业经验的积累的放射科医师 ，对于经
+验不足的放射科医师来说尤为困难 。
+能够识别 PBT 的计算机辅助诊断工
+具对于减少进一步的侵入性检查和
+患者焦虑情绪非常有价值 。本研究结果显示 DL 临
+床模型在内部测试集对良性 PBT 分类具有较优的
+预测能力（AUC：0.779） ，尤其是具有特征性影像学
+表现（如边缘锐利 ，具有较薄的硬化边）的良性 PBT。
+此外 ，DL 临床模型在恶性 PBT 的分类中表现良好
+（AUC：0.760） ，这可能是因为 DL 临床模型能够检测
+出帮助诊断恶性  PBT 的关键线索 ，如骨质破坏（包
+括病理性骨折） 、骨膜反应和软组织肿块等 。同时，
+由于中间型 PBT 没有特异性影像学征象 ，有时同时
+表现出良性和恶性 PBT 的成像表现 ，DL 临床模型对
+中间型 PBT 仅表现出一般的性能 （AUC：0.700） ，特
+别是当中间型 PBT 患者只有 X 线平片时
+［12］
+。在对具
+有不同模态成像图像的患者进行的分层分析中 ，DL
+临床模型在内部测试集对仅有 X 线平片的患者亚组
+取得了最佳分类效果 ，这可能是因为他们中包含过
+图 1 研究流程图 图 2A~D DL 模型在内部和外部测试集的 ROC 曲线
+·· 1526
+
+=== PDF_PAGE 7 ===
+临床放射学杂志 2025 年第 44 卷第 8 期
+高比例的较容易诊断的骨软骨瘤
+［18，19］
+。对于具有两
+种模态成像图像的患者亚组 ，DL 临床模型对具有 X
+线平片 +CT 的患者表现最佳 ，这可能是因为 CT 较
+MRI 能够更好地检测和分析 PBT 特征性影像学表
+现，如基质矿化和骨膜反应
+［20］
+。X 线平片是 PBT 的
+主要成像方式 。CT 和 MRI 可作为补充 ，为诊断提供
+更多信息
+［21］
+。然而 ，对于同时具有 X 线平片 +CT+
+MRI 3 种模态成像图像的患者 ，结果一般（微平均
+AUC：0.754） ，原因可能是同时具有 3 种模态成像图
+像的患者亚组包括了较多种类且罕见的 PBT 组织
+学亚型 ，如尤文肉瘤和未分化多形性肉瘤等 ，这些
+PBT 很难鉴别 。在外部测试集 ，虽然 MRI 的比例
+（28.6%）显著低于内部测试集 （52.4%） ，并且使用
+T2WI FS 作为 T2WI 的替代方案 ，但 DL 临床模型的性
+能仅呈现小幅下降 。这些结果表明 ，DL 临床的模型
+具有适应成像方式的变化的潜力 ，并且证明其在不
+同的数据集上具有较强的泛化能力 。然而，由于外
+部测试集上的患者数量有限 ，该模型在按成像方式
+分布的不同患者亚组的分层分析结果不太显著 。
+特别是对于外部测试集中只有 5 例患者的 CT+MRI
+亚组 ，分层分析结果不可信 。因此 ，需要更大的数
+据集来进一步验证模型在现实临床实践环境中的
+分类性能。此外，DL 临床模型在内部和外部测试集
+对位于四肢骨的 PBT 的表现优于位于躯干骨或颅
+骨的 PBT。这可以解释为 DL 模型训练的位于躯干
+骨或颅骨的 PBT 样本量较小 ，因为大多数 PBT 好发
+于四肢
+［12］
+。并且可能是因为位于解剖结构较复杂
+部位的 PBT 成像时组织器官重叠较多 ，且位于躯干
+骨或颅骨的 PBT 成像表现较不典型 ，诊断更具挑战
+性
+［18，22，23］
+。总之，DL 临床的模型可以作为帮助放射
+科医师提高诊断的有效工具 ，在临床应用方面可能
+具有广阔的前景 。
+本研究还存在一定的局限性 。首先，仅将 PBT
+分类为良性 、中间型和恶性 ，尚未能实现对肿瘤亚
+型的分类 ，未来需要进一步探讨 。其次，由于 DL 的
+“黑匣子 ”特性 ，没有解释本研究模型 ，这可能会阻
+碍其临床应用
+［24］
+。未来的工作将使用梯度类激活
+映射等可视化方法来解释并更深入地了解我们模
+型的预测 。此外，在本研究的基础上进一步构建一
+个可以利用不同成像模态图像内部和之间的信息
+的 DL 模型，更好的模拟不完整多模态临床场景 ，将
+是未来的研究重点 。
+总而言之 ，本研究成功建立并验证了 DL 临床
+模型，该模型利用 PBT 患者的 X 线平片 、CT 平扫和  
+MRI 平扫的不完整多模态医学图像以及临床资料
+将 PBT 分为良性 、中间型或恶性 ，从而指导临床治
+疗决策并改善患者的预后 。DL 临床模型可应用到
+临床实践对具有不同模态成像图像的患者进行分
+类，具有较好的临床实用性和推广性 ，有望为计算
+机辅助诊断领域带来新的启发 。
+参考文献
+1 Network NCC . NCCN clinical practice guidelines in oncology 
+（NCCN Guidelines®） ： bone cancer.Version 1.2024.2023.
+2 Casali PG ，Abecassis N ，Aro HT ，et al.Soft tissue and visceral sar ‑
+comas： ESMO‑EURACAN clinical practice guidelines for diagno ‑
+sis，treatment and follow ‑ up［J］. Annals of Oncology ，2018，29：
+iv268‑iv269.
+3 von Schacky CE ，Wilhelm NJ ，Schafer VS ，et al . Multitask deep 
+learning for segmentation and classification of primary bone tumors 
+on radiographs［J］.Radiology，2021，301：398‑406.
+4 He Y，Pan I，Bao B，et al.Deep learning‑based classification of pri ‑
+mary bone tumors on radiographs ：a preliminary study ［J］. EBio‑
+Medicine，2020，62：103121.
+5 Liu R，Pan D，Xu Y，et al.A deep learning‑machine learning fusion 
+approach for the classification of benign ，malignant，and intermedi ‑
+ate bone tumors［J］.Eur Radiol，2022，32：1371‑1383.
+6 Eweje FR ，Bao B ，Wu J ，et al . Deep learning for classification of 
+bone lesions on routine MRI［J］.EBio Medicine ，2021，68：103402.
+7 Li J，Li S，Li X，et al.Primary bone tumor detection and classifica ‑
+tion in full‑field bone radiographs via YOLO deep learning model
+［J］.Eur Radiol，2023，33：4237‑4248.
+8 Yushkevich PA ，Piven J ，Hazlett HC ，et al.User‑guided 3D active 
+contour segmentation of anatomical structures ：  significantly im ‑
+proved efficiency and reliability ［J］.Neuroimage，2006，31：1116 ‑
+1128.
+9 He K ，Zhang X ，Ren S ，et al . Identity mappings in deep residual 
+networks［C］//： Computer Vision ‑ ECCV 2016： 14th European 
+Conference，Amsterdam，The Netherlands ，Part IV 14，2016，
+Springer.
+10 Tan M ，Le Q . Efficientnet：rethinking model scaling for convolu ‑
+tional neural networks［C］//： International Conference on Machine 
+Learning，2019，PMLR.
+11 Siegel RL ，Miller KD ，Wagle NS ，et al.Cancer statistics ，2023［J］.
+Ca Cancer J Clin ，2023，73：17‑48.
+12 Picci P，Manfrini M，Donati DM，et al.Diagnosis of musculoskeletal 
+tumors and tumor‑like conditions ： clinical，radiological and histo ‑
+logical correlations‑the Rizzoli case archive［R］.Springer，2020.
+13 Sbaraglia M ，Dei Tos AP ，Pedeutour F . WHO classification of tu ‑
+mours editorial boards soft tissue and bone tumours ［J］. Atypical 
+Lipomatous Tumor/Well Differentiated Liposarcoma ，5th ed .； 
+IARC Press： Lyon，France，2020.
+14 孙扬，龚龙，刘巍峰 . 人工智能在骨肿瘤诊疗领域中的应用研究
+进展［J］. 中华骨科杂志 ，2023，43：1050‑1056.
+·· 1527
+
+=== PDF_PAGE 8 ===
+临床放射学杂志 2025 年第 44 卷第 8 期
+◁儿科影像学▷
+先天性颈部囊性病变的产前 MRI 与产后 CT 表现
+陈文俊，　刘春花，　杨朝湘
+*
+【摘要】 　目的　探讨先天性颈部囊性病变产前 MRI 和产后 CT 的影像学特点 。方法　回顾性分析经产后病理证
+实的 6 例淋巴管瘤 、6 例先天性梨状窝瘘及 1 例结肠 ‑胰腺异位囊肿胎儿期及新生儿期影像资料 ，观察其 MRI 及 CT
+表现。结果  6 例淋巴管瘤产前 MRI 表现为沿组织间隙侵袭性生长不规则形囊性病变 ，囊内分隔不明显 ，2 例产后
+CT 发现病灶内部多发分隔形成 ，增强扫描分隔可见轻度强化 。6 例先天性梨状窝瘘产前 MRI 表现为左侧颈前三角
+区胸锁乳突肌深面不规则形单囊病变 ，病灶内侧部分形态变薄并延伸至气道后方 ，产后 CT 显示 6 例均与甲状腺左
+侧叶关系密切 ，囊性内见气液平面形成 ，3 例见甲状腺侧叶后缘形态不规整 。1 例结肠‑胰腺异位囊肿产前 MRI 表现
+为右侧颈部咽旁间隙内单房厚壁囊性占位 ，颈部气道受压变窄 ，位置左移，产后 CT 显示病灶内无明显积气 ，增强扫
+描囊壁明显环形强化 。结论　淋巴管瘤、先天性梨状窝瘘及结肠 ‑胰腺异位囊肿产前 MRI 与产后 CT 表现具特征性 ，
+仔细观察病变的发生部位 、生长方式以及与甲状腺侧叶的关系有助于诊断及鉴别诊断 。
+【关键词】  颈部囊性病变 磁共振成像 体层摄影术，X 线计算机
+Prenatal MRI and Postnatal CT Manifestations of Congenital 
+Cystic Neck Lesions
+CHEN Wenjun ，LIU Chunhua，YANG Chaoxiang
+Department of Radiology ，Guangdong Women and Children Hospital ，
+Guangzhou，Guangdong Province 510010，P.R.China
+【Abstract】　Objective　To investigate the imaging characteristics of prenatal MRI and postnatal CT in congenital cystic 
+neck lesions . Methods The imaging data of 6 cases of lymphangioma ， 6 cases of congenital pyriform sinus fistula and 1 
+case of colon pancreas ectopic cyst in fetal and neonatal period confirmed by pathology after delivery were retrospectively 
+作者单位：510010 广州，广东省妇幼保健院放射科 ；*通讯作者
+15 Yin P，Mao N，Chen H，et al.Machine and deep learning based ra ‑
+diomics models for preoperative prediction of benign and malig ‑
+nant sacral tumors［J］.Front Oncol，2020，10：564725.
+16 Fritz B ，Yi PH ，Kijowski R ，et al.Radiomics and deep learning for 
+disease detection in musculoskeletal radiology ：an overview of 
+novel MRI‑ and CT‑based approaches ［J］.Invest Radiol ，2023，58：
+3‑13.
+17 Nwanosike EM ，Conway BR ，Merchant HA ，et al.Potential applica ‑
+tions and performance of machine learning techniques and algo ‑
+rithms in clinical practice ：a systematic review ［J］. International 
+Journal of Medical Informatics ，2022，159：104679.
+18 Hakim DN ，Pelly T ，Kulendran M ，et al . Benign tumours of the 
+bone：a review［J］.J Bone Oncol，2015，4：37‑41.
+19 Pontes I ，Leao RV ，Lobo C ，et al .Imaging of solitary and multiple 
+osteochondromas ：from head to toe ‑ a review［J］. Clin Imaging ，
+2023，103：109989.
+20 Bestic JM ，Wessell DE ，Beaman FD ，et al . ACR appropriateness 
+griteria（R） primary bone tumors ［J］.J Am Coll Radiol ，2020，17：
+S226‑S238.
+21 Ghatge S ，Chavan P . The study of protocol for imaging of primary 
+bone tumours at tertiary care center［J］.Pain，2022，18：36.
+22 Ariyaratne S ，Jenko N，Iyengar KP，et al.Primary benign neoplasms 
+of the spine［J］.Diagnostics，2023，13：2006.
+23 Ropper AE ，Cahill KS ，Hanna JW ，et al.Primary vertebral tumors ： 
+a review of epidemiologic ，histological and imaging findings ，part 
+II：locally aggressive and malignant tumors ［J］. Neurosurgery，
+2012，70：211‑219.
+24 陈园琼 ，邹北骥 ，张美华 ，等 . 医学影像处理的深度学习可解释
+性研究进展［J］. 浙江大学学报（理学版） ，2021，48：18‑29.
+（收稿：2024-11-29 修回：2025-04-21）
+（本文编辑：袁燕平）
+·· 1528

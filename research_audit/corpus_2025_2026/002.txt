@@ -1,0 +1,1124 @@
+=== PDF_PAGE 1 ===
+0410004 -1
+第 55 卷第  4 期
+2026  年 4 月
+Vol.55 No.4
+April  2026
+光 子 学 报
+ACTA PHOTONICA SINICA
+HFDFusion ：面向多模态图像融合的特征层次
+分解方法
+卢亚洲
+1，3
+，程志远
+1，2
+，李艳
+1，2
+，胡佳豪
+1，3
+，唐强
+1，3
+（1 中国科学院西安光学精密机械研究所 ，西安  710119）
+（2 中国科学院空间精密测量技术重点实验室 ，西安  710119）
+（3 中国科学院大学 ，北京  100049）
+摘 要 ：为 解 决 传 统 卷 积 神 经 网 络 在 长 距 离 上 下 文 建 模 能 力 上 的 不 足，提 出 了 面 向 多 模 态 图 像 融 合 的
+特 征 层 次 分 解 融 合 方 法（HFDFusion ） 。该 方 法 以 高 低 频 特 征 层 次 分 解 为 核 心，采 用 Swin Transformer 
+作为浅层编码器 ，提取跨模态浅层特征 ，并设计了两个核心模块 ：多尺度注意力块 （MAB）与双向特征转
+换模块（BFTM） 。多尺度注意力块通过多尺度扩张感受野捕获低频全局特征 ，双向特征转换模块则通
+过 可 逆 特 征 交 互 注 意 力 机 制 增 强 高 频 局 部 细 节。最 后，通 过 Swin Transformer 的 融 合 层 作 为 解 码 器 将
+全局特征与细节特征融合 ，从而生成融合图像 。在红外与可见光图像融合和医学图像融合等多个任务
+上的实验表明 ，特征层次分解融合方法在保留模态特有结构和提升图像清晰度方面优于现有方法 。
+关键词 ：图像融合 ；像素重排 ；高低频特征分解 ；多尺度注意力 ；双向特征转换
+中图分类号 ：TP391    文献标识码 ：A doi：10.3788 /gzxb 20265504 .0410004
+0 引言
+多模态图像融合（Multimodal Image Fusion ，MMIF）是计算机视觉与图像处理领域的关键技术 ，其核心目
+标是将多源图像（如红外与可见光图像 ）中的互补信息融合为单一 、更具信息量与全面性的表征
+［1-2］
+。理想的融
+合图像需保留各模态的关键结构并提升视觉清晰度
+［3］
+，例如在红外与可见光融合任务中 ，需同时保留红外图像
+的热辐射目标与可见光图像的精细纹理细节 。这类融合表征能够为目标检测 、监控安防 、医学诊断等下游任务
+提供性能支撑 。
+传统多模态图像融合方法可大致分为三类 ：基于多尺度变换的方法
+［4］
+、基于稀疏表示的方法
+［5］
+和基于子空间的
+方法
+［6］
+。这些方法通常先将源图像映射至对应变换域 ，分解为相应的分解系数 ，再根据人工设计的规则对系数进行
+融合，最后重建融合图像 。这些方法为该领域打下重要基础 ，性能却主要受限于人工设计的融合规则 。人工设计
+的融合规则大多难以充分描述不同模态之间复杂的互补关系 ，造成全局一致性不够 、局部细节模糊的问题 。
+近年来 ，卷积神经网络（CNN）在多模态图像融合领域占据主导地位并取得显著进展
+［7-8］
+。得益于其局部
+性与平移不变性 ，CNN 在提取局部特征与精细纹理方面表现出极高的有效性 。早期方法通常采用预训练网
+络（如 VGG）作为特征提取器 ，再基于提取的特征设计融合策略
+［5］
+；近年来的端到端框架则包括自编码器
+［9］
+、生
+成对抗网络（GANs）
+［10］
+ 以及配备任务特定损失函数的复杂网络结构 （如 DenseFuse
+ ［9］
+、FusionGAN
+ ［10］
+） ，进一步
+提升了融合性能 。然而 ，由于感受野有限 （尤其是浅层网络 ） ，CNN 难以捕捉高质量的全局上下文信息 ，因此
+无法有效建模长距离依赖关系与维持全局结构一致性 。此外 ，通过池化与步长卷积实现的空间下采样操作会
+丢弃融合任务中至关重要的高频空间细节 ，这些细节是保留多模态互补信息的核心
+［11］
+，导致许多基于 CNN 的
+引 用 格 式： LU Yazhou ， CHENG Zhiyuan ， LI Yan ， et al . HFDFusion ： Hierarchical Feature Decomposition Method for 
+Multimodal Image Fusion ［J］. Acta Photonica Sinica ， 2026 ， 55（4） ：0410004
+卢亚洲 ，程志远 ，李艳 ，等 . HFDFusion ：面向多模态图像融合的特征层次分解方法 ［J］. 光子学报 ，2026 ，55（4） ：0410004
+基金项目 ：国家自然科学基金 （N61875257 ） ， 陕西省自然科学基金  (2017 JM6035 )
+第一作者 ：卢亚洲 ，luyazhou 23@mails .ucas .ac.cn
+通讯作者 ：程志远 ，czy@opt .ac.cn；李艳 ，liyan@opt .ac.cn；
+收稿日期 ：2025  ‒ 12 ‒ 07；录用日期 ：2026  ‒ 01 ‒ 12
+http: // www. photon. ac. cn
+
+=== PDF_PAGE 2 ===
+光 子 学 报
+0410004 -2
+融合方法存在全局一致性不足或局部细节模糊的问题 ，未能充分挖掘多模态图像的互补特性 。
+与此同时 ，Transformer 架构
+［12］
+在计算机视觉中的应用为克服上述缺陷提供了新思路 。最初为自然语言处理
+设计的 Transformer ，通过自注意力机制从初始阶段即能捕获全局依赖关系 ，其改进版本如 Vision Transformer
+［13］
+与 Swin Transformer
+［14］
+在图像分类与密集预测任务中展现出卓越性能 。最新研究已开始探索纯 Transformer 架
+构与 CNN -Transformer 混合模型，以利用自注意力机制在融合任务中对全局上下文建模的独特优势
+［15］
+。
+在多模态图像中 ，不同模态的信息往往呈现出不同的分布特性 ，其中一个显著特点便是信息主要集中
+在不同频段 。例如 ，红外图像主要反映物体的热辐射信息 ，其低频成分往往包含目标物体的整体热分布特
+征，而高频成分则相对较少 ；可见光图像则侧重于物体的光学反射信息 ，其高频成分包含丰富的纹理 、边缘
+等细节信息 。这种不同模态信息在不同频段的分布差异 ，使得在融合过程中需要针对不同频段的特征进行
+有针对性的处理 。若采用统一的处理方式 ，难以充分挖掘和利用各模态在不同频段的独特信息 ，可能导致
+融合结果无法有效保留各模态的关键特征 ，影响融合图像的质量和性能 。
+为了解决上述问题 ，本文提出一种面向多模态图像融合的特征层次分解方法 HFDFusion 。一个有效的融
+合框架需要同时建模全局上下文信息与精细局部细节 ，因此本文首先采用 Swin Transformer
+［16］
+提取跨模态的浅
+层特征 ，充分利用其擅长捕捉长距离依赖关系的优势 。在此基础上 ，特征学习过程被分解为两条专用路径 ，分
+别聚焦于低频特征保留与高频特征增强 ，第一个核心组件是多尺度注意力块 ，用于处理低频全局特征 ，该模块
+通过引入多尺度扩张率来有效扩大感受野 ，并借助长距离注意力机制捕获丰富的上下文信息 。第二个核心组
+件是双向特征转换模块 ，专门用于处理高频局部细节 ，该模块通过双向特征交互机制 ，在非线性转换过程中增
+强并保留那些原本可能被抑制的细粒度纹理与边缘信息 。最后，集成于 Swin Transformer 框架中的融合层 ，将
+经过处理的全局特征与局部细节特征进行结合 ，从而重建出高质量的融合图像 。本文在红外和可见光图像融
+合（Infrared -Visible Image Fusion ，IVF）以及医学图像融合 （Medical Image Fusion ，MIF）两大代表性任务上开
+展了定性和定量实验 ，结果验证了所提方法的有效性 ，并表明其在多模态图像融合任务中具备优异的性能 。
+1 HFDFusion 网络框架
+本节详细介绍  HFDFusion 的整体网络框架和各组成模块的具体架构 。该网络包含三个核心模块 ：用于低频
+特 征 提 取 的 基 础 编 码 器（MAB） 、用 于 高 频 特 征 提 取 的 细 节 编 码 器（BFTM） ，以 及 具 备 双 重 功 能 的 Swin 
+Transformer 。Swin Transformer
+［16］
+一方面作为浅层编码器提取底层特征 ，另一方面作为解码器重建融合图像 。本
+方法的核心要点在于特征层次分解 ，即将特征划分为低频全局信息与高频局部细节两个层次 ，并分别交由专用模块
+处理。这种层次化分解机制，让网络能够精准融合不同频段的互补信息，在确保结构一致性的同时强化细节表现。
+HFDFusion 的整体网络框架如图 1 所示 ，本文以红外与可见光图像融合 （IVF）任务为代表性案例 ，阐述
+该框架的工作原理 。
+图 1　HFDFusion 的整体网络框架 。训练阶段 Ⅰ展示源图像重建流程 ；训练阶段 Ⅱ展示融合图像生成流程
+Fig.1　Overall architecture of HFDFusion network . Training Stage Ⅰ illustrates the reconstruction of the source images ， and 
+Training Stage Ⅱ illustrates the generation of the fused images
+
+=== PDF_PAGE 3 ===
+卢亚洲 ，等：HFDFusion ：面向多模态图像融合的特征层次分解方法
+0410004 -3
+1.1　编码器
+首先定义配对输入图像 ：I ∈ R
+H × W
+表示红外图像 ，V ∈ R
+H × W × 3
+表示可见光图像 （其中 H、W 分别为图像
+的高度和宽度 ，3 对应可见光图像的 RGB 三通道） 。HFDFusion 的特征提取模块包含三个独立编码器 ：基于
+Swin Transformer 的跨模态浅层特征编码器 （S） 、基于  MAB 的低频编码器 （M）以及基于  BFTM 的高频编
+码器（B） 。MAB 与 BFTM 模块协同工作 ，构成混合式长短距离编码器 ，共同实现多尺度特征提取 。
+1.1.1　浅层特征编码器
+跨模态浅层编码器采用  Swin Transformer 架构 ，其功能是从红外图像和可见光图像中分别提取浅层特
+征（F
+I
+s 与 F
+V
+s ） 。该过程定义为
+F
+I
+s = S ( I )，F
+V
+s = S (V ) （1）
+有效的图像融合需满足一项核心要求 ，保留可见光模态的纹理细节与红外模态的热目标信息 。然而 ，
+卷 积 神 经 网 络（CNN）受 限 于 感 受 野 有 限 的 固 有 特 性，难 以 有 效 建 模 长 距 离 依 赖 关 系。 相 比 之 下，Swin 
+Transformer 通过移位窗口机制 （shifted window mechanism ） ，借助循环移位掩码 （cyclic shifting masks ）实现
+跨窗口信息交互 ，使每个像素的表征能够整合全局上下文信息 ，从而缓解融合图像中目标与背景间的语义
+不一致性 。此外 ，Swin Transformer 的基于窗口的自注意力操作 ，其功能类似卷积神经网络 （CNN）中的局
+部特征提取 ，既能保留输入图像的结构信息 ，又能捕捉更广泛的上下文关联 。
+1.1.2　低频编码器
+低频编码器基于  MAB 实现 ，如图 2 所示 。该模块用于从共享浅层特征 F
+I
+s 和 F
+V
+s 中提取低频基础特征
+（记为 F
+I
+m 和 F
+V
+m ，其中 F
+I
+m 为红外图像低频基础特征 ，F
+V
+m 为可见光图像低频基础特征 ） ，过程定义为
+F
+I
+m = M ( F
+I
+s )， F
+V
+m = M ( F
+V
+s ) （2）
+为高效提取长距离依赖特征 ，MAB 通过为并行卷积层分配不同扩张率 ，构建多尺度感受野 。该设计能
+够在多个空间尺度下精准捕捉低频结构信息 ，同时在建模输入图像长距离依赖关系的过程中保留局部细
+节。经过多尺度卷积后 ，通道注意力模块
+［17］
+捕捉通道间的长距离统计关联 ，而空间注意力模块
+［18］
+则定位低
+频结构的空间分布 ，该过程如图 3 所示 。
+MAB 的计算过程定义为
+M
+1
+I = Conv3 *LayerNorm ( F
+I
+S ) （3）
+M
+2
+I = CAT [ Conv3，1 ( )M
+1
+I ，Conv3，3 ( )M
+1
+I ，Conv3，5 ( )M
+1
+I ，M
+1
+I ] （4）
+F
+I
+m = Spatial*Channel*M
+2
+I （5）
+式中 ，LayerNorm 表示层归一化 ；Convk，t 表示扩张卷积 （k 为卷积核大小 ，t 为扩张率 ） ；CAT 表示通道维度拼
+图 2　多尺度注意力块 （MAB）的结构
+Fig. 2　Structure of the Multi -Scale Attention Block （MAB））
+
+=== PDF_PAGE 4 ===
+光 子 学 报
+0410004 -4
+接；Spatial 和 Channel 分别对应空间注意力模块与通道注意力模块 ；*表示顺序计算操作 。
+通过这种设计 ，MAB 促进了特征的不同频率分量与空间维度之间的交互 ，进而它能够对输入图像中的
+低频结构信息进行更全面的表征 ，并为后续的融合提供更丰富的基础特征 。
+1.1.3　高频编码器
+高频编码器采用 BFTM 实现 ，用于从共享浅层特征 F
+I
+s 和 F
+V
+s 中提取高频细节特征 （记为 F
+I
+b 和 F
+V
+b ，其中
+F
+I
+b 为红外图像高频细节特征 ，F
+V
+b 为可见光图像高频细节特征 ） ，过程定义为
+F
+I
+b = B ( F
+I
+s )， F
+V
+b = B ( F
+V
+s ) （6）
+高频细节特征中的边缘与纹理信息是决定图像融合质量的关键 ，应尽可能完整保留 。BFTM 通过构建
+“输入 -输出特征互生成 ”机制 ，最大化输入信息的保留率 。为此 ，本文采用集成仿射耦合层的  BFTM 结构 ，
+以像素重排注意力块 （PAB）作为核心特征提取单元 （如图 4 所示） 。PAB 的定义为
+P
+1
+I = Conv3 ( F
+I
+s ) *PixelShuffle （7）
+P
+I
+b = Conv3 * [ P
+1
+I ⊙Spatial ( )P
+1
+I ⊙Channel ( )P
+1
+I ] （8）
+式中 ，⊙ 表示哈达玛积 。利用卷积操作对输入特征图的通道数进行扩展后 ，借助像素重排 （PixelShuffle ）实
+现上采样 ，在不引入额外参数的情况下提高了特征的空间分辨率 ，同时也增强了模型捕捉高频细节的能力 ，
+在此基础上应用通道注意力和空间注意力来执行特征选择 。
+空间注意力通过计算通道维度的均值与最大值提取全局上下文信息 ，再利用大核卷积层结合激活函数
+对空间响应图进行重新校准 ，进而突出信息最丰富的空间区域 。通道注意力通过自适应最大池化层 ，为特
+征图中每个空间位置分配权重 ，该过程能够增强局部细节区域的特征响应 ，同时抑制噪声及无关信息 。通
+过卷积操作提取高频细节特征后 ，将所得特征图的分辨率恢复至与输入浅层特征一致 ，确保后续融合过程
+的特征维度兼容性 。
+BFTM 的完整特征交互过程定义为
+图 3　通道注意力机制的结构和空间注意力机制的结构
+Fig. 3　Structure of the channel attention mechanism and structure of the spatial attention mechanism
+图 4　像素重排注意力块 （PAB）的结构
+Fig.4　Structure of the Pixel rearrangement Attention Block （PAB）
+
+=== PDF_PAGE 5 ===
+卢亚洲 ，等：HFDFusion ：面向多模态图像融合的特征层次分解方法
+0410004 -5
+Φ
+B
+I，k[1，C ] = Split [ Φ
+B
+I，k[ c + 1：C ]，Φ
+B
+I，k[1：c ] ] （9）
+Φ
+B
+I，k[1：C ] = Φ
+B
+I，k[1：C ] ⊙exp (PAB (Φ
+B
+I，k[ c + 1：C ] ) ) + PAB (Φ
+B
+I，k[ c + 1：C ] ) （10）
+Φ
+B
+I，k[ c + 1：C ] = Φ
+B
+I，k[ c + 1：C ] ⊙exp (PAB (Φ
+B
+I，k[1：c ] ) ) + PAB (Φ
+B
+I，k[1：c ] ) （11）
+Φ
+B
+I，k + 1[1，C ] = CAT{Φ
+B
+I，k[ c + 1：C ]，Φ
+B
+I，k[1：c ] } （12）
+式中 ，Φ
+B
+I，k[1∶ C ] 表示第 k 个可逆层输入特征的第 1 至第 c 个通道 ；下标 I 对应红外图像 ，Split 是通道维度的
+拆分操作 ，exp 为指数转换 。
+如图 5 所示 。将上述表达式中的下标 I 替换为 V，即可同理得到可见光图像对应的映射关系 。BFTM 
+通过双向特征转换构建特征交互机制 ，该机制能够在非线性转换过程中实现不同分支高频细节的互补增
+强。此外 ，通过通道拼接重组跨通道信息 ，进一步提升细节特征的完整性与表征能力 。HFDFusion 通过在
+不同层级堆叠多个  BFTM 模块 ，构建渐进式高频特征提取链 。通过该分层设计 ，HFDFusion 能够捕捉包括
+细微纹理在内的局部细节 ，同时借助残差连接与指数转换保留特征的空间结构信息 。最终 ，该网络为图像
+融合提供了丰富且精准的高频细节表征 ，显著提升了融合图像的清晰度与细节丰富度 。
+1.2　解码器
+HFDFusion 的解码器（D）以融合后的低频与高频特征为输入 ，通过特征整合与重建生成融合图像 。在
+训练阶段  Ⅰ 与训练阶段  Ⅱ 中，解码器承担两项任务 ：原始图像重建与融合图像生成 。
+训练阶段  Ⅰ：解码器的输入由单一模态内的低频与高频特征拼接而成 ，输出为该模态的原始图像重建
+结果 。该重建过程用于优化编码器的特征提取能力 ，过程定义为
+I  = D {CAT [ F Im，F Ib ] }， V  = D {CAT [ F Vm，F Vb ] } （13）
+式中 ，F
+I
+m、F
+I
+b、F
+V
+m 及 F
+V
+b 分别表示单一模态的低频与高频特征 ；I  和 V  对应重建的红外图像与可见光图像 。
+训练阶段  Ⅱ：解码器的输入由跨模态的低频与高频融合特征拼接而成 ，随后解码器生成融合图像
+F = D {CAT [ Fm ( F
+I
+m，F
+V
+m )，Fb ( F
+I
+b，F
+V
+b ) ]} （14）
+式中 ，F 表示融合图像输出 ；Fm， Fb 分别表示低频 /高频跨模态融合函数 ，D 为解码器 。
+两阶段训练的核心关联在于参数的继承与针对性优化 ，第 I 阶段通过单模态图像重建任务 ，预训练跨模态
+浅层编码器 、低频编码器与高频编码器 。此阶段重点在于使这些模块掌握提取模态特异性特征的能力 ：MAB
+专注于捕捉全局低频结构 ，BFTM 则负责提取精细的高频细节 ，同时也完成了解码器参数的初步初始化 。
+阶段  Ⅱ 以阶段 Ⅰ 的训练参数为基础 ，为了在适应新任务时维持已学习到的特征提取能力 ，对部分核心参
+数进行了冻结 。具体包括浅层编码器的底层注意力权重 ，以及 MAB 和 BFTM 中的关键卷积与注意力参数 。仅
+对编码器顶层的少量适配参数进行微调 ，从而在稳定保留模态关键信息的前提下 ，引入必要的跨模态调节能力 。
+与此同时 ，解码器与跨模态特征融合层的所有参数都参与第  Ⅱ 阶段的完整训练 。模型通过融合生成任务 ，
+学习如何有效整合来自不同模态的低频与高频信息 ，实现特征的互补与高质量重建 。这一策略在确保特征提取
+能力不退化的同时 ，降低了跨模态融合的整体优化难度 ，形成了从特征学习到特征融合的递进式优化路径 。
+解码器采用 Swin Transformer 作为基本单元 ，其目的是与同样基于 Swin Transformer 的跨模态浅层编
+码器保持架构一致性 。采用统一的 Transformer 架构不仅能减少模块间的特征适配损失 ，还能确保贯穿从
+特征提取到重建的整个流程中 ，全局注意力行为与长距离依赖建模的一致性 。
+图 5　双向特征转换模块 （BFTM）的结构
+Fig. 5　Structure of the Bidirectional Feature Transformation Module （BFTM）
+
+=== PDF_PAGE 6 ===
+光 子 学 报
+0410004 -6
+1.3　损失函数
+训练过程的阶段 Ⅰ中，将配对的红外图像 Ⅰ与可见光图像 V 输入浅层特征编码器 ，提取浅层特征 F
+I
+s 和
+F
+V
+s 。随后利用基础编码器 （MAB）与细节编码器 （BFTM） ，分别提取两种模态的低频基础特征 F
+I
+m、F
+V
+m 与高
+频细节特征 F
+I
+b、F
+V
+b 。接下来 ，将单模态的低频与高频特征 Fm、Fb 沿通道维度拼接后输入解码器 ，由解码器重
+建原始红外图像与可见光图像 ，分别记为 I  和 V  。
+阶段 Ⅰ的总损失 LI 定义为
+LI = λ1 L
+v
+I + λ2 L
+g
+I + λ3 L
+i
+I （15）
+式中
+L
+v
+I = ‖ ‖I  - I
+1
++ SSIM ( I ，I ) （16）
+L
+i
+I = ‖ ‖V  - V
+1
++ SSIM (V  ，V ) （17）
+L
+g
+I = ‖ ‖∇V  - ∇V
+1
+（18）
+式中，λ1、 λ2、 λ3 为权重参数 ，‖ ‖⋅ 1 表示 L1 范数损失 ，SSIM［19］代表结构相似性指数 。∇ 是通过 Sobel 滤波器实现的
+梯度算子，用于保持融合输出的边缘清晰度
+［20］
+。该损失函数确保原始图像信息在编码与解码阶段全程得到保留 。
+在训练过程的阶段 Ⅱ中，将配对的红外图像 （I）与可见光图像（V）输入预训练的编码器 ，得到其分解特征 。
+随后，分解后的基础特征与细节特征通过融合层进行融合 ，所得融合特征被输入解码器 ，以生成融合图像（F） 。
+阶段 Ⅱ的总损失定义为
+LII = α1 L
+v
+II + α2 L
+f
+II + α3 L
+i
+II （19）
+式中 ，
+L
+v
+II = ‖ ‖F - V 1 + SSIM ( F，V ) （20）
+L
+i
+II = ‖ ‖F - I 1 + SSIM ( F，I ) （21）
+L
+f
+II = α3 L1 + α4 Lgrad （22）
+L1 = 1HW | F - max ( I，V ) |2 （23）
+Lgrad = 1HW || ∇F - max ( )|| ∇I ， || ∇V 2 （24）
+式中 ，α1、α2、α3、α4 为权重参数 。
+2 实验结果与分析
+2.1　数据集和评价指标
+为验证 HFDFusion 的有效性 ，红外与可见光图像融合 （IVF）实验采用 M3FD
+［21］
+、MSRS
+［22］
+、RoadScene
+［23］
+三 个 主 流 基 准 数 据 集，训 练 集 与 测 试 集 划 分 如 下：训 练 阶 段 使 用MSRS 训 练 集（1 083 对） 、M3FD 数 据 集
+（240 对）及 RoadScene 数 据 集（222 对） ；测 试 阶 段 选 用MSRS 测 试 集（361 对） 、RoadScene 测 试 集（50 对）和
+M3FD 测试集（60 对） 。这些数据集涵盖了多样化的场景与复杂光照条件 ，如 MSRS 数据集包括城市 、乡村 、
+森林等不同地形 ，覆盖晴天 、阴天 、雾霾等多种天气条件 ；M3FD 数据集侧重于评估不同光照条件下的多模
+态图像融合 ，重点考察焦点信息的保留与整合能力 ；RoadScene 数据集专注于交通道路场景 ，涵盖道路 、车
+辆、行人等元素 ，包含不同天气及昼夜光照条件 。
+在医学图像融合 （MIF）实验中 ，从哈佛医学网站
+［24］
+收集了一个包含 286 对已配准的多模态图像数据集 ，
+该数据集覆盖了不同解剖部位与疾病表征 ，模态包括提供精细解剖结构信息的  MRI ，以及反映代谢与功能
+信息的  PET 与 SPECT ，从而为融合模型提供了丰富的互补性信息源 。其中  130 对用于模型训练 ，测试集
+则细致划分 42 对 MRI -PET 图像及 73 对 MRI -SPECT 图像 ，来系统评估模型在不同融合任务上的泛化能
+力。该实验的训练策略与评价指标均与红外与可见光图像融合实验保持一致 。
+为定量评估融合结果 ，实验采用八个定量评价指标 ：熵（EN） 、标准差（SD） 、互信息（MI） 、视觉信息保真
+度（VIF） 、边缘保持质量指数 （Qabf） 、结构相似性指数 （SSIM） 、空间频率（SF）及平均梯度 （AG）
+［25］
+，数值越
+
+=== PDF_PAGE 7 ===
+卢亚洲 ，等：HFDFusion ：面向多模态图像融合的特征层次分解方法
+0410004 -7
+高表示融合性能越好 。实验中 ，将 HFDFusion 与多种代表性方法进行对比 ，包括  DIDFuse
+［26］
+、U2Fusion
+［27］
+、
+FGAN
+［12］
+、ITF
+［28］
+、CDD
+［29］
+及 PIA
+［22］
+。
+2.2　实验设置
+所有实验均在配备两块  NVIDIA GeForce RTX 3090  GPU 的设备上完成 。所使用的模型整体总参数量为
+2.125 M，这一设计在保证模型性能的同时 ，有效控制了计算资源的消耗 。在数据预处理阶段 ，将训练样本随机裁
+剪为 128×128 的图像块 。训练总轮次（epoch）设定为 120 轮，其中阶段Ⅰ训练 40 轮，阶段 Ⅱ 训练 80 轮；批次大小
+（batch size）设置为 14。优化器采用  Adam 优化器
+［30］
+，初始学习率设为 10-4，每训练 20 轮，学习率衰减为当前值的
+0.5倍。在上述实验设置下 ，模型推理速度表现良好 ，推理时间可达 0.54FPS，能够满足一定的实时性需求 。
+2.3　红外与可见光图像融合 （IVF）实验分析
+为系统验证所提方法在红外与可见光图像融合任务中的综合性能 ，从定性与定量两个维度展开实验分析。
+2.3.1　定性分析
+定性对比结果如图 6、7、8 所示 。在红外与可见光图像融合任务中 ，本文所提方法展现出更优的融合性
+能，其能够精准地融合红外图像中的关键热目标与可见光图像中的重要结构及纹理细节 。特别值得注意的
+是，红外图像暗区域中的目标在融合结果中得到清晰保留 ，并与背景形成显著对比 ，从而更有利于目标识
+别。此外 ，该方法生成的融合图像还保留了可见光图像在低照度条件下难以观测的背景细节 ，为全面理解
+场景提供了有效的上下文信息 。
+图 6　RoadScene 数据集融合效果对比
+Fig. 6　Comparison of fused images on the RoadScene dataset
+图 7　M3FD 数据集融合效果对比
+Fig. 7　Comparison of fused images on the M 3FD dataset
+图 8　MSRS 数据集融合效果对比
+Fig. 8　Comparison of fused images on the MSRS dataset
+
+=== PDF_PAGE 8 ===
+光 子 学 报
+0410004 -8
+2.3.2　定量分析
+采用八项评价指标对融合结果进行了定量分析 ，相应结果见表 1 至表 3，其中最优值进行黑色加粗显示 。
+所提方法在 EN、SD、VIF 、Qabf 、SF、AG 六项指标上于三个数据集均取得最优值 ，在 MI 和 SSIM 两个指标上
+也表现优秀 。说明该方法在不同条件与不同目标类型下均具有良好适应性 。尤其在融合质量的核心指标
+与融合有效性的评价指标上 ，本方法表现出明显优势 ，进一步验证了其有效性和可 靠性。
+2.4　医学图像融合 （MIF）的实验分析
+医学图像融合 （MIF）通过整合多模态图像信息 ，以弥补单一影像的不足 。磁共振成像（MRI）能提供高
+分辨率的解剖信息 ，清晰显示器官形态与组织边界 ，但对代谢等功能状态反映不足 ；正电子发射断层显像
+（PET）和单光子发射计算机断层显像 （SPECT）能敏感捕捉功能代谢 ，却缺乏精细的解剖定位 。二者融合能
+生成一幅兼具清晰解剖结构和明确功能信息的影像 ，既为病灶精确定位与治疗规划提供依据 ，也为疾病定
+性与疗效评估提供支持 。
+如图 9 展示了六组磁共振 -正电子发射断层显像 （MRI -PET）融合结果 。视觉结果表明 ，HFDFusion 在
+融合过程中保留了 MRI 模态中的解剖结构 ，融合图像清晰呈现人体解剖形态 ，为临床医生提供了准确且详
+细的形态学信息 ，该信息对疾病的定位与诊断具有重要价值 。在 PET 模态信息保留方面 ，HFDFusion 的性
+能优于其他对比方法 ，有效保留了 MRI -PET 图像的颜色特征 ，尤其是用于表征高代谢活性区域的颜色细
+表 1　RoadScene 数据集定量对比实验结果
+Table 1　Quantitative comparison results of experiments on the RoadScene dataset
+Method
+FGAN
+U2F
+ITF
+PIA
+DID
+CDD
+Ours
+EN
+7.09
+6.61
+6.32
+7.13
+7.33
+7.32
+7.37
+SD
+38.34
+28.06
+24.71
+44.82
+46.88
+47.05
+49.69
+MI
+2.25
+2.62
+2.60
+2.29
+3.88
+3.55
+3.05
+VIF
+0.69
+0.49
+0.42
+0.62
+0.60
+0.69
+0.72
+Q
+abf
+0.49
+0.33
+0.21
+0.52
+0.47
+0.58
+0.59
+SSIM
+0.76
+0.85
+0.65
+0.93
+0.88
+0.97
+0.93
+SF
+11.83
+7.56
+4.84
+14.10
+13.92
+15.28
+16.66
+AG
+5.14
+3.03
+1.98
+5.20
+5.37
+5.60
+6.27
+表 2　M3FD 数据集定量对比实验结果
+Table 2　Quantitative comparison results of experiments on the M 3FD dataset
+Method
+FGAN
+U2F
+ITF
+PIA
+DID
+CDD
+Ours
+EN
+5.63
+5.92
+5.88
+6.57
+4.08
+6.68
+6.70
+SD
+15.01
+23.50
+25.53
+42.13
+29.96
+42.68
+42.96
+MI
+1.20
+2.46
+2.75
+4.57
+2.23
+4.26
+4.45
+VIF
+0.75
+0.60
+0.56
+0.98
+0.30
+1.05
+1.06
+Q
+abf
+0.19
+0.30
+0.25
+0.68
+0.20
+0.70
+0.77
+SSIM
+0.20
+0.75
+0.67
+0.98
+0.23
+1.01
+1.02
+SF
+7.73
+5.75
+4.93
+11.49
+9.64
+11.55
+11.68
+AG
+3.11
+1.94
+1.72
+3.76
+2.00
+3.71
+3.85
+表 3　MSRS 数据集定量对比实验结果
+Table 3　Quantitative comparison results of experiments on the MSRS dataset
+Method
+FGAN
+U2F
+ITF
+PIA
+DID
+CDD
+Ours
+EN
+6.44
+6.34
+6.05
+6.70
+4.27
+6.75
+6.83
+SD
+31.06
+24.74
+21.4
+35.45
+31.49
+36.11
+36.74
+MI
+2.73
+3.08
+3.05
+4.70
+3.39
+3.47
+3.95
+VIF
+0.75
+0.57
+0.45
+0.82
+0.71
+0.87
+0.89
+Q
+abf
+0.52
+0.36
+0.19
+0.65
+0.48
+0.65
+0.67
+SSIM
+0.64
+0.88
+0.71
+0.95
+0.81
+1.01
+0.99
+SF
+12.5
+6.82
+4.74
+13.46
+12.52
+13.52
+13.96
+AG
+4.24
+2.29
+1.67
+4.29
+4.07
+4.13
+4.47
+
+=== PDF_PAGE 9 ===
+卢亚洲 ，等：HFDFusion ：面向多模态图像融合的特征层次分解方法
+0410004 -9
+节 。 这 种 精 准 的 颜 色 保 留 有 助 于 临 床 医 生 区 分 病 变 区 域 与 正 常 组 织，进 而 为 疾 病 诊 断 提 供 了 更 可 靠 的
+依据 。
+此外 ，对医学图像融合结果的客观指标分析结果在表 4 和表 5 中列出 ，其中展示了 8 种定量评估指标的
+结果 。数据显示 ，HFDFusion 在客观指标分析中具有显著优势 。尽管该方法并非在所有指标上均取得最高
+分，但在全部 8 项指标中始终位列前两名 ，这体现了其在医学图像融合方面稳定且可靠的性能 。
+具体而言 ，HFDFusion 在融合过程中有效平衡了多项评价准则 ，既保留了具有诊断价值的结构细节 ，又
+维持了临床关键区域的对比度 ，同时保留了各模态的专属信息 。最后使得融合图像满足了临床诊断的严格
+要求 。
+2.5　消融实验
+HFDFusion 在 MRI -SPECT 数据集上的消融实验结果如表 6 所示 ，所用评价指标包括熵 （EN） 、标准差
+（SD） 、空间频率（SF）及互信息（MI） 。为验证引导式训练策略及核心模块的有效性 ，针对三个关键组件开展
+了单独的消融实验 ：两阶段训练策略 、多尺度注意力块 （MAB）与双向特征转换模块 （BFTM） ，并通过上述指
+标对融合性能进行定量分析 。
+图 9　MRI -PET 数据集融合效果对比
+Fig. 9　Comparison of fused images on the MRI -PET dataset
+表 4　MRI -PET 数据集定量对比实验结果
+Table 4　Quantitative comparison results of experiments on the MRI -PET dataset
+Method
+FGAN
+U2F
+ITF
+PIA
+DID
+CDD
+Ours
+EN
+6.16
+4.22
+4.22
+4.48
+3.57
+4.53
+4.82
+SD
+37.90
+47.26
+47.10
+72.80
+55.11
+69.08
+75.86
+MI
+1.94
+2.44
+2.38
+2.74
+2.48
+2.72
+2.76
+VIF
+0.45
+0.44
+0.46
+0.68
+0.36
+0.64
+0.69
+Q
+abf
+0.56
+0.29
+0.19
+0.68
+0.30
+0.66
+0.70
+SSIM
+0.30
+0.33
+0.34
+0.47
+0.27
+0.49
+0.493
+SF
+21.14
+12.94
+9.59
+26.06
+21.13
+30.75
+29.94
+AG
+6.80
+3.91
+3.23
+7.53
+5.14
+8.31
+8.27
+表 5　MRI -SPECT 数据集定量对比实验结果
+Table 5　Quantitative comparison results of experiments on the MRI -SPECT dataset
+Method
+FGAN
+U2F
+ITF
+PIA
+DID
+CDD
+Ours
+EN
+5.91
+3.87
+3.81
+4.07
+3.27
+4.39
+4.52
+SD
+33.04
+40.19
+42.38
+59.60
+41.88
+69.20
+65.67
+MI
+1.88
+2.56
+2.52
+2.78
+2.44
+2.74
+2.84
+VIF
+0.53
+0.52
+0.47
+0.63
+0.34
+0.67
+0.75
+Q
+abf
+0.66
+0.34
+0.17
+0.69
+0.30
+0.71
+0.75
+SSIM
+0.30
+0.34
+0.30
+0.43
+0.24
+0.40
+0.46
+SF
+17.49
+10.07
+6.87
+19.11
+13.85
+23.26
+21.8
+AG
+5.16
+2.75
+2.01
+4.92
+2.97
+5.90
+5.62
+
+=== PDF_PAGE 10 ===
+光 子 学 报
+0410004 -10
+将 MAB 模 块 改 为BFTM 模 块，基 础 特 征 和 细 节 特 征 均 由BFTM 模 块 负 责 提 取，实 验 结 果 表 明，尽 管
+MAB 模 块 在 特 征 提 取 能 力 上 略 优 于BFTM 模 块，但 单 独 使 用BFTM 模 块 的 性 能 仍 显 著 低 于 同 时 使 用
+MAB 和 BFTM 模块的完整 HFDFusion 模型 。将 BFTM 模块替换为 MAB 模块后 ，模型性能进一步劣化 ，且
+表现不及单一 BFTM 模块的配置 。这一结果印证融合任务中仅依赖单一模块 （MAB 或 BFTM）会导致显著
+的信息损失 ，难以充分挖掘模态间的互补信息 。此外 ，本研究移除了两阶段训练策略 ，直接对编码器 、解码
+器及融合层进行训练 ，结果显示模型性能显著下降 。这充分验证了两阶段训练策略能够降低优化难度 、提
+升训练效果 。
+将浅层编码器与解码器中的  Swin Transformer 替换为常规  CNN 网络时 ，各项评价指标均出现下降 ，
+EN 降至 4.19，MI 仅为 1.59，SF 也回落至 15.36。若将其替换为其他  Transformer 架构 ，虽 SF 小幅提升至
+18.35，但 EN 、SD 与 MI 的整体表现仍不及采用  Swin Transformer 的模型 。该结果说明 ， Swin Transformer 
+在本图像融合任务中对模态特征的浅层编码与解码具备更优适配性 ，而更换为其他网络结构会削弱特征的
+初始表征能力 。
+综上所述 ，消融实验证实了 HFDFusion 网络的三项关键设计合理性 ：其一 ，Swin Transformer 是浅层编
+解码器的适宜选择 ；其二 ，两阶段训练策略是实现稳定高效优化的重要保障 ；其三 ，MAB 模块与  BFTM 模块
+的协同使用是最大化融合性能的核心前提 。
+2.6　特征可视化分析
+为进一步验证  MAB 与 BFTM 在特征层次分解中的功能差异 ，我们对两模块的输出特征进行可视化 。
+图 10 给出了原始输入图像以及  BFTM 输出的高频响应热力图和  MAB 输出的低频响应热力图 。
+从图 10（b）可以看出 ，BFTM 模块的特征热力图则表现出明显的局部细节响应 ，如边缘 、纹理等高频信
+息。而图 10（c）中 MAB 模块的特征热力图呈现出较为平滑的响应 ，主要对应大范围的结构区域 （如建筑物
+轮廓 、道路区域 ） ，这与低频全局结构信息的特点相符 。
+这一可视化结果直观地证实了本文所提出的双路径特征提取机制的有效性 ：MAB 模块确实专注于提
+取低频全局结构信息 ，而 BFTM 模块则专注于提取高频局部细节信息 。这种特征层次分解策略有助于更精
+准地融合多模态图像的互补信息 。
+3 结论
+本文提出的 HFDFusion 方法解决了传统卷积神经网络 （CNN）在多模态图像融合任务中存在的全局信
+息提取不足与高频细节丢失问题 。该方法通过多尺度注意力模块 （MAB）与双向特征转换模块 （BFTM）的
+表 6　MRI -SPECT 数据集上的消融实验结果
+Table 6　Ablation experiment results on the MRI -SPECT dataset
+Model
+MAB to BFTM
+BFTM to MAB
+One stage
+To cnn
+To TF
+Ours
+EN
+3.28
+4.27
+4.45
+4.19
+4.41
+4.52
+SD
+59.42
+55.79
+62.36
+58.0
+51.75
+65.67
+SF
+17.24
+20.77
+14.6
+15.36
+18.35
+21.8
+MI
+1.88
+1.78
+1.7
+1.59
+1.87
+2.84
+图 10　特征响应热力图 。 （a）原始图像 ； （b）高频热力图 ； （c）低频热力图
+Fig.10　Feature response heatmaps . （a） Original image ； （b） High -frequency heatmap ； （c） Low -frequency heatmap
+
+=== PDF_PAGE 11 ===
+卢亚洲 ，等：HFDFusion ：面向多模态图像融合的特征层次分解方法
+0410004 -11
+创新性设计实现上述目标 ：MAB 模块采用多尺度感受野捕获低频全局特征 ，同时 BFTM 模块通过双向特
+征交互机制增强高频细节的表征能力 。将上述模块与  Swin Transformer 相结合后 ，能够高效融合全局与局
+部特征 。在红外与可见光图像融合和医学图像融合任务上的实验结果表明 ，HFDFusion 方法在多个数据集
+上的性能优于现有对比方法 ，验证了其在多模态图像融合领域的先进性与实用价值 。
+参考文献
+［1］ ARCHANA R ， JEEVARAJ P E . Deep learning models for digital image processing ： a review ［J］. Artificial Intelligence 
+Review ， 2024 ， 57（1） ： 11.
+［2］ WANG X ， FANG L ， ZHAO J ， et al . MMAE ： A universal image fusion method via mask attention mechanism ［J］. 
+Pattern Recognition ， 2025 ， 158 ： 111041 .
+［3］ JEONG J ， KIM S ， PAN L ， et al . Reducing the workload of medical diagnosis through   artificial intelligence ： A narrative 
+review［J］. Medicine ， 2025 ， 104（6） ： 41470 .
+［4］ RAMARAO G ， BINDU C H ， MURTHY T . Convolutional laplacian gaussian pyramid approach multimodal medical 
+image fusion［J］. Multimedia Tools and Applications ， 2025 ， 84（20） ： 22401 -22423 .
+［5］ ZHANG Zhouyu ， CAO Yunfeng ， DING Meng ， et al . Infrared and visible image fusion using multilayer convolutional 
+sparse representation ［J］. Journal of Harbin Institute of Technology ， 2021 ， 53（12） ： 51.
+张 洲 宇， 曹 云 峰， 丁 萌， 等 . 采 用 多 层 卷 积 稀 疏 表 示 的 红 外 与 可 见 光 图 像 融 合［J］. 哈 尔 滨 工 业 大 学 学 报， 2021 ， 
+53（12） ： 51
+［6］ ZHU J ， WANG H ， XU Y ， et al . Self -learning hyperspectral and multispectral image fusion via adaptive residual guided 
+subspace diffusion model ［C］. Proceedings of the Computer Vision and Pattern Recognition Conference ， 2025 ： 17862 -
+17871 .
+［7］ CHEN H ， WEI W ， LI H ， GAO J ， et al . Image fusion and denoising of optical coherence tomography based on resnet and 
+truncated huber filter ［J］. The Journal of Supercomputing ， 2025 ， 81（12） ： 1214 .
+［8］ WANG Enlong ， LI Jiawei ， LEI Jia ， et al . Deep learning -based infrared and visible image fusion ： a survey ［J］. Journal of 
+Frontiers of Computer Science & Technology ， 2024 ， 18 （4） ： 899 -915.
+王恩龙 ， 李嘉伟 ， 雷佳 ， 等 . 基于深度学习的红外可见光图像融合综述 ［J］. 计算机科学与探索 ， 2024 ， 18（4） ： 899 -915.
+［9］ LI H ， WU X J . Densefuse ： A fusion approach to infrared and visible images ［J］. IEEE Transactions on Image Processing ， 
+2018 ， 28（5） ： 2614 -2623 .
+［10］ MA J ， YU W ， LIANG P ， et al . FusionGAN ： A generative adversarial network for infrared and visible image fusion ［J］. 
+Information Fusion ， 2019 ， 48： 11-26.
+［11］ XU Y ， WANG Z ， WU S ， et al . MPCT ： A medical image fusion method based on multi -scale pyramid convolution and 
+transformer［J］. Biomedical Signal Processing and Control ， 2025 ， 101 ： 107129 .
+［12］ YIN Haitao ， ZHOU Changsheng . Cross -fusion Transformer -based infrared and visible image fusion method ［J］. Laser & 
+Optoelectronics Progress ， 2025 ， 62 （6） ： 0637002 .
+尹海涛 ， 周昌盛 . 基于交叉融合 Transformer 的红外与可见光图像融合方法 ［J］. 激光与光电子学进展 ， 2025 ， 62（6） ： 
+0637002 .
+［13］ DOSOVITSKIY A . An image is worth 16x16 words ： Transformers for image recognition at scale ［EB/OL］. arXiv ：
+2010 .11929 ， （2020） ［2025 -12-1］. https ：//arxiv .org/abs/ 2010 .11929 .
+［14］ JIANG S ， YU S . Refined multi -focus image fusion using multi -scale neural network with spswin autoencoder -based 
+matting［J］. Expert Systems with Applications ， 2025 ， 276 ： 126980 .
+［15］ MA J ， TANG L ， FAN F ， et al . SwinFusion ： Cross -domain long -range learning for general image fusion via swin 
+transformer［J］. IEEE/CAA Journal of Automatica Sinica ， 2022 ， 9（7） ： 1200 -1217 .
+［16］ LIU Z ， LIN Y ， CAO Y ， et al . Swin transformer ： Hierarchical vision transformer using shifted windows ［C］. Proceedings 
+of the IEEE/CVF International Conference on Computer Vision ， 2021 ： 10012 -10022 .
+［17］ WANG Q ， WU B ， ZHU P ， et al . ECA -Net ： Efficient channel attention for deep convolutional neural networks ［C］. 
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ， 2020 ： 11534 -11542 .
+［18］ ZHU X ， CHENG D ， ZHANG Z ， et al . An empirical study of spatial attention mechanisms in deep networks ［C］. 
+Proceedings of the IEEE/CVF International Conference on Computer Vision ， 2019 ： 6688 -6697 .
+［19］ LI C ， YANG X ， CHU B ， et al . A new image fusion quality assessment method based on contourlet and ssim ［C］. 2010  
+3rd International Conference on Computer Science and Information Technology ， IEEE ， 2010 ， vol. 5： 246 -249.
+［20］ LUO Y ， LUO Z . Infrared and visible image fusion algorithm based on improved residual swin transformer and sobel 
+operators［J］. IEEE Access ， 2024 ， 12： 82134 -82145 .
+［21］ LIU J Y ， FAN X ， HUANG Z B ， et al . Target -aware dual adversarial learning and a multi -scenario multi -modality 
+benchmark to fuse infrared and visible for object detection ［C］. IEEE/CVF Conference on Computer Vision and Pattern 
+Recognition （CVPR） ， 2022 ， New Orleans ： IEEE ， 5792 -5801 .
+
+=== PDF_PAGE 12 ===
+光 子 学 报
+0410004 -12
+［22］ TANG L ， YUAN J ， ZHANG H ， et al . PIAFusion ： A progressive infrared and visible image fusion network based on 
+illumination aware ［J］. Information Fusion ， 2022 ， 83： 79-92.
+［23］ ALVAREZ J M ， GEVERS T ， LECUN Y ， et al . Road scene segmentation from a single image ［C］. 2012  European 
+Conference on Computer Vision ， Florence ： ECCV ， 2012 ： 376.
+［24］ Harvard Medical Website ［EB/OL］. http ：//www .med .harvard .edu/aanlib/home .html .
+［25］ MA J ， MA Y ， LI C . Infrared and visible image fusion methods and applications ： A survey［J］. Information Fusion ， 2019 ， 
+45： 153 -178.
+［26］ ZHAO Z X ， XU S ， ZHANG C X ， et al . DIDFuse ： deep image decomposition for infrared and visible image fusion ［EB/
+OL］. （2020 -03-20） ［2025 -12-1］.https ：//arxiv .org/abs/ 2003 .09210 v3.
+［27］ XU H ， MA J Y ， JIANG J J ， et al . U 2Fusion ： a unified unsupervised image fusion network ［J］. IEEE Transactions on 
+Pattern Analysis and Machine Intelligence ， 2022 ， 44 （1） ： 502 -518.
+［28］ TANG W ， HE F ， LIU Y . ITFuse ： An interactive transformer for infrared and visible image fusion ［J］. Pattern 
+Recognition ， 2024 ， 156 ： 110822 .
+［29］ ZHAO Z X ， BAI H W ， ZHANG J S ， et al . CDDFuse ： Correlation -driven dual -branch feature decomposition for 
+multi -modality image fusion ［C］. 2023  IEEE/CVF Conference on Computer Vision and Pattern Recognition （CVPR） ， 
+Vancouver ， BC ， Canada ： IEEE Press ， 2023 ： 5906 -5916 .
+［30］ ISMAIL A R ， AZARY M Z R ， HITAM N A . Evaluating adan vs . adam ： an analysis of optimizer performance in deep 
+learning［C］. International Symposium on Intelligent Computing Systems ， Springer ， 2024 ： 251 -263.
+HFDFusion ： Hierarchical Feature Decomposition Method for 
+Multimodal Image Fusion
+LU Yazhou
+1，3
+， CHENG  Zhiyuan
+1，2
+， LI Yan
+1，2
+， HU  Jiahao
+1，3
+， TANG  Qiang
+1，3
+（1 Xi´an Institute of Optics and Precision Mechanics of CAS ， Xi´an 710119 ，China）
+（2 CAS Key Laboratory of Space Precision Measurement Technology ， Xi´an 710119 ，China）
+（3 University of Chinese Academy of Sciences ， Beijing 100049 ，China）
+Abstract： Multimodal image fusion aims to integrate information from heterogeneous imaging modalities 
+while preserving modality -specific cues and enhancing complementary details such as edges ， textures ， and 
+contrast . However ， many existing methods either rely on hand -crafted fusion rules that are hard to 
+generalize ， or employ convolutional backbones whose limited receptive fields and downsampling operations 
+weaken long -range dependency modeling and suppress high -frequency details ， often resulting in structural 
+inconsistency and blurred textures . To address these issues ， we propose HFDFusion ， a Hierarchical 
+Feature Decomposition Method for Multimodal Image Fusion that enhances local details while maintaining 
+global consistency .
+HFDFusion is built on a Swin Transformer backbone and employs a dual -path feature extraction 
+design . Specifically ， the Swin Transformer -based cross -modal shallow encoder captures global contextual 
+representations . Then ， a Multi -scale Attention Block （MAB） and a Bidirectional Feature Transformation 
+Module （BFTM） are introduced to capture low -frequency global structures and high -frequency local 
+details ， respectively . MAB enlarges the receptive field via dilated convolutions and combines channel and 
+spatial attention to emphasize structural information . Meanwhile ， BFTM enhances fine details using a Pixel 
+Attention Block （PAB） and affine coupling layers . A Swin Transformer -based fusion layer subsequently 
+aggregates global and local features to generate the fused image . Training follows a two -stage strategy ： 
+Stage Ⅰ pretrains the encoders with modality -specific reconstruction tasks to strengthen feature extraction ， 
+and Stage Ⅱ optimizes cross -modal fusion under an image reconstruction objective .
+Extensive experiments were conducted on infrared -visible （IR-VIS） fusion and Medical Image 
+Fusion （MIF） to evaluate the effectiveness of HFDFusion . For IR -VIS fusion ， we used the M 3FD， 
+MSRS ， and RoadScene datasets ； for MIF ， we used 286 multimodal image pairs from the Harvard 
+Medical School website ， covering MRI -PET and MRI -SPECT fusion . Six representative methods were 
+selected as baselines for comparison ， and performance was assessed using eight quantitative metrics and 
+qualitative visual comparisons . HFDFusion consistently outperformed competing methods across both 
+
+=== PDF_PAGE 13 ===
+卢亚洲 ，等：HFDFusion ：面向多模态图像融合的特征层次分解方法
+0410004 -13
+        Foundation item： National Natural Science Foundation of China （61875257 ） ， Natural Science Foundation of Shaanxi Province （2017 JM6035）
+tasks . On RoadScene ， it achieved the best scores on key metrics （entropy ： 7.37， standard deviation ： 
+49.69， and spatial frequency ： 16.66） ， effectively integrating infrared thermal targets with visible textures . 
+For MIF ， HFDFusion preserved fine MRI anatomical structures and recovered PET/SPECT metabolic 
+color information ， ranking among the top two methods across all metrics . Ablation studies further validated 
+the proposed designs ： the two -stage training strategy eased optimization ， the MAB -BFTM combination 
+produced complementary low -and high -frequency representations ， and removing any core component or 
+training stage caused a substantial performance drop .
+Overall ， HFDFusion addresses high -frequency detail loss and insufficient capture of global 
+information ， which are common in CNN -based fusion methods ， by explicitly decomposing and 
+coordinating low -and high -frequency representations through MAB and BFTM . The experimental 
+evidence indicates strong generalization and practical potential for both infrared -visible fusion and medical 
+image fusion . These results suggest that HFDFusion offers an efficient and effective solution for 
+multimodal image fusion with broad applicability .
+Key words ： Image fusion ； Pixel shuffle ； High -low frequency decomposition ； Multi -scale attention ； 
+Bidirectional feature transformation
+OCIS Codes：  100.0118 ；  100.2000 ； 100.3010
+CSTR： 32255 .14.gzxb 20265504 .0410004

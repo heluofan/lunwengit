@@ -1,0 +1,1359 @@
+=== PDF_PAGE 1 ===
+计算机科学与探索
+Journal of Frontiers of Computer Science and Technology
+1673-9418/2025/19(08)-2043-14
+doi: 10.3778/j.issn.1673-9418.2409076
+大语言模型 GPT 在医疗文本中的应用综述
+田崇腾，刘 静，王晓燕，李 明
++
+山东中医药大学 医学信息工程学院，济南 250355
++ 通信作者 E-mail: 80500285@qq.com
+摘 要：医疗文本是医学知识记录与传递的重要载体 ，但随着医疗数据的迅猛增长 ，传统的人工处理方式已难以满
+足日益增长的效率与准确性需求。近年来，以 GPT 为代表的大语言模型在自然语言处理领域取得突破，具备强大的
+语言理解与生成能力，为高效处理医疗文本提供了新思路。介绍了大语言模型 GPT 的核心技术原理，并重点分析其
+在医疗数据处理、辅助医患沟通、医学教育支持、疾病预防管理以及多模态综合应用等五大领域中的实际应用 ；系统
+总结了大语言模型 GPT 在医疗文本处理方面所展现出的信息整合效率高、医学知识储备丰富等方面的优势；深入探
+讨了其在实际应用中暴露的问题 ，并给出了具有可行性的解决思路与技术优化方向 ；结合当前技术发展趋势 ，展望
+了大语言模型在医疗领域的未来应用前景。
+关键词：大语言模型；医疗文本；GPT；自然语言处理
+文献标志码：A 中图分类号：TP391
+Review of Application of Large Language Models GPT in Medical Text
+TIAN Chongteng, LIU Jing, W ANG Xiaoyan, LI Ming
++
+College of Medical Information Engineering, Shandong University of Traditional Chinese Medicine, Jinan250355, China
+Abstract: Medical texts serve as a crucial medium for recording and conveying medical knowledge. However, with the
+rapid growth of medical data, traditional manual processing methods are increasingly unable to meet the demands for efficiency
+and accuracy. In recent years, large language models, represented by GPT (generative pre-trained transformer), have made
+significant breakthroughs in the field of natural language processing. With their powerful language understanding
+and generation capabilities, they offer new approaches for the efficient processing of medical texts. This paper introduces
+the core technical principles of GPT and focuses on its practical applications in five key areas: medical data processing,
+doctor-patient communication assistance, medical education support, disease prevention and management, and multimodal
+integration. It systematically summarizes the advantages GPT exhibits in medical text processing, particularly its high
+efficiency in information integration and rich medical knowledge base. Furthermore, this paper explores the challenges
+exposed in real-world applications, proposing feasible solutions and directions for technical optimization. Based on current
+technological trends, it also envisions the prospects of large language models in healthcare domain.
+Key words: large language models; medical text; GPT; natural language processing
+基金项目：国家自然科学基金面上项目 （82174528 ） ；山东省研究生教育优质课程和教学资源库建设项目 （SDYKC 20047 ，
+SDYAL2022041） ；教育部产学合作协同育人项目（220606121142949） 。
+This work was supported by the General Program of National Natural Science Foundation of China ( 82174528), the Graduate Education
+Quality Course and Teaching Resource Library Construction Project of Shandong Province (SDYKC 20047, SDY AL2022041), and the
+Industry-University Cooperation and Collaborative Education Project of Ministry of Education ( 220606121142949).
+收稿日期：2024-09-24 修回日期：2025-01-20
+
+=== PDF_PAGE 2 ===
+Journal of Frontiers of Computer Science and Technology 计算机科学与探索 2025, 19(8)
+医疗文本 是指涉及医学和健康领域的各种书面记
+录，包括临床记录、研究报告、医疗保健政策文件等。具
+体来说，医疗文本可以帮助医护人员实施个性化治疗方
+案、跟踪病人的健康状况、支持医学研究的发展，以及指
+导公共健康政策的制定
+[1]
+。在当今数字化和信息化的时
+代，医疗文本的数据量呈爆炸性增长 ，传统的处理和利
+用方法已经无法满足信息管理和分析的需求。因此，如
+何有效地处理、分析和利用医疗文本数据成为医学界面
+临的重要挑战之一。
+在自然语言处理（natural language processing ，NLP）
+领域
+[2]
+，大语言模型（large language models ，LLM）
+[3]
+毫无
+疑问是一种被广泛应用的代表 。它们基于深度学习技
+术
+[4]
+，特别是深度神经网络
+[5]
+，可以处理和生成自然语言
+文本。这些模型通常由数百万到数十亿甚至数百亿个参
+数组成，使得它们能够学习并理解大规模的语言数据 。
+在此领域，国内许多团队进行了研究并取得了丰硕的成
+果，例如悟道、华为的盘古和百度的文心一言等模 型
+[6]
+。
+国外的主要研究有 Open AI 实验室的 GPT（generative
+pre-trained transformer）系列
+[7]
+、谷歌团队的 Gemini
+[8]
+和微
+软公司的 Bing Chat
+[9]
+等模型。其中，悟道模型主打大规
+模参数训练 ，侧重多模态处理和自然语言生成 ，尤其在
+中文理解和生成任务中表现出色；盘古模型在广泛领域
+内展现了高效处理能力，尤其注重模型训练的自主性和
+可扩展性 ，具备更好的企业级应用潜力 ；文心一言则结
+合了知识图谱 ，在中文处理及特定领域应用上具有优
+势。与这些国内模型相比，GPT 系列模型具有显著的生
+成优势和较强的迁移学习能力，特别是在复杂任务中的
+表现更为优异。GPT 在国际化多语言支持方面领先，并
+且在医疗文本处理中的应用具有广泛的研究基础和丰
+富的实践经验 。整体来看 ，国内模型在中文本土化 、特
+定领域应用和知识图谱集成方面有一定优势 ，而 GPT
+则在跨语言、多任务和生成能力上展现了更强的通用性
+与应用广度。
+医学领域作为人工智能的重要应用领域之一 ，也在
+GPT 的引领下迎来了新的机遇 。它们不仅可以帮助理
+解医疗文本中复杂的语义信息，还可以自动化地分析大
+规模文本数据 ，提高信息提取的准确性和效率 ，从而为
+临床决策、医学研究和健康政策制定提供更深入的洞见
+和支持
+[10]
+。因此，当前迫切需要总结 GPT 在医疗文本中
+的发展现状 ，以便为研究人员提供参考 ，从而开发出更
+为高效的模型。Haupt 等人
+[11]
+讨论了 GPT 在多种医学场
+景下的作用 ，涵盖了皮肤病 、放射学和心血管疾病等多
+个领域；Landschaft 等人
+[12]
+概括论述了 GPT 在心脏病和
+糖尿病等医疗文献综述生成中的应用 ；Wang等人
+[13]
+研
+究了 GPT 在电子病历自动化生成中的效果 ，特别是在
+慢性病管理方面取得了显著成果。然而，他们的研究只
+关注少量的疾病类型 ，也未对其进行详细分类探究 ，对
+未来的发展方向和突破缺乏明确把握，因此尚不能全面
+评述 GPT 在医学文本的应用 。为了解决上述问题 ，并
+给医疗文本相关研究领域的未来工作提供参考，本文主
+要从 GPT 原理的介绍以及 GPT 在数据处理、医患沟通、
+医学教育、疾病预防和多模态等五大领域的应用情况进
+行阐述，总结分析其优缺点，指出目前存在的问题，并对
+未来的发展趋势进行展望。
+1 GPT 原理介绍
+GPT 是一种基于 Transformer 架构
+[14]
+的预训练语言
+模型，其结构如图 1 所示。GPT 主要使用了 Transformer
+的编码器部分 ，主要用于生成式任务 ，如文本生成和语
+境理解。2018 年，OpenAI 推出了首个版本 GPT-1，通过
+大规模无监督学习，展示了在多种语言任务上的强大语
+言生成和理解能力 。GPT 模型的核心思想是在预训练
+阶段学习大量文本数据的语言模式和结构，然后通过微
+调来适应特定任务，进一步提升性能和适应性。尤其是
+2022 年 11月发布的ChatGPT，其对话交互和生成能力引
+起了广泛关注 ，展现了 GPT 在双向交互任务中的优越
+性。2023 年 3 月，GPT-4 的发布进一步巩固了其在 NLP
+领域的领先地位，目前已经拥有超过 1 亿的活跃用户
+[15]
+，
+GPT 系列也无异于成为LLM 的代表模型
+[16]
+。因此，下文
+主要围绕ChatGPT、GPT-4 以及其他衍生模型进行研究。
+1.1 强化学习技术
+人类反馈强化学习技术（reinforcement learning from
+human feedback ，RLHF）
+[17]
+是指 ChatGPT 通过与人类互
+动，从用户反馈中不断改进自身的回答质量。在这种框
+架下，ChatGPT 能够分析用户的反馈 ，了解哪些回答更
+图 1 GPT 的 Transformer架构
+Fig.1 Transformer architecture of GPT
+2044
+
+=== PDF_PAGE 3 ===
+田崇腾 等：大语言模型 GPT 在医疗文本中的应用综述
+符合用户 的期望，进而调整自身的策略和参数 ，以优化
+生成的答复。这种基于人类反馈的强化学习方法，使模
+型可以在外部反馈的指导下进行纠正和改进，从而逐步
+提高回答的准确性和用户互动体验。
+1.2 上下文学习
+GPT 采用了自注意力机制 （self-attention） ，这意味
+着在处理每个词或标记时，模型都能够同时考虑到输入
+序列中其他位置的信息
+[18]
+。通过自注意力机制 ，GPT 能
+够在一个句子或段落中建立单词之间的关联，捕捉到长
+距离的依赖关系 。这种方式使 GPT 能够理解更广泛 、
+更复杂的上下文语境，而不仅仅局限于固定窗口或有限
+的上下文长度 。因此，GPT 能够更好地处理多轮对话 ，
+并在对话交互中保持语境的连贯性 ，从而产生更加智
+能、自然的回答 。这种上下文学习的能力使 GPT 在各
+种对话场景中表现出色，包括问答系统、聊天机器人等。
+1.3 TAMER框架
+评估式强化人工训练代理（training an agent manually
+via evaluative reinforcement ，TAMER）框架
+[19]
+是一种人
+机 协 作 学 习 方 法，也 可 以 应 用 在NLP 的 训 练 中。在
+TAMER框架下 ，ChatGPT 可以从人类用户的示例中学
+习，并通过不断的人机交互，从用户的实时反馈中改进自
+身的回答质量 。这种框架可以使得 ChatGPT 的学习更
+加高效，适应性更强 ，同时也使得用户能参与到模型的
+培训过程中 ，提供更直接的指导 。如图 2 所示，TAMER
+方法通过奖励信号的方式 ，利用人类标注者的知识来
+训练智能 Agent ，以促进其快速收敛 。与之不同的是 ，
+TAMER 不 要 求 标 注 者 拥 有 专 业 领 域 知 识 或 编 程 技
+能，因此降低了语料成本 。通过将 TAMER与强化学习
+（reinforcement learning，RL）相结合，借助人类标注者的
+反 馈，可 以 增 强 马 尔 可 夫 决 策 过 程（Markov decision
+process，MDP）中的奖励信号，从而提高 RL 的效率。
+1.4 GPT 的训练流程
+以 ChatGPT 为例，其训练过程通常分为三个主要阶
+段，涵盖了监督学习和强化学习两个关键技术领域。
+（1）训练监督策略模型。ChatGPT 首先通过监督学
+习的方式进行训练。大量的对话数据被准备好，其中包
+含了用户的输入和 ChatGPT 应该生成的预期输出 。这
+些数据被用来训练模型的初始策略模型 。监督学习的
+目的是教会 ChatGPT 生成与人类示范相似的回答 。通
+过最小化生成回答与示范回答之间的差异，模型学会了
+在给定输入时生成合理的输出 。这个阶段通常使用最
+小化误差的方法，例如交叉熵损失来优化模型。
+（2）训练奖励模型（reward model ，RM）
+[20]
+。在监督
+策略模型训练完成后 ，ChatGPT 进入到强化学习的阶
+段。如图 3 所示 ，ChatGPT 的回答被提供给人类评价
+者，评价者会为每个回答提供一个奖励信号。这个奖励
+信号可以是简单的二元值（好或坏）或更复杂的连续值
+（表示回答质量的分数 ） 。ChatGPT 使用这些奖励信号
+来训练 RM，也就是理解回答质量的模型 。这个模型被
+用来为 ChatGPT 生成的回答提供强化学习的奖励信号。
+（3）近 端 策 略 优 化（proximal policy optimization ，
+PPO）
+[21]
+。一旦 RM 训练好，ChatGPT 便使用强化学习算
+法 PPO 来进一步优化生成策略，能在不破坏模型原始能
+力的前提下，提高生成回答的质量。PPO 算法会在训练
+过程中动态地调整策略 ，使得生成的回答更符合预期 ，
+从而提高了 ChatGPT 的性能。
+通过这三个阶段，ChatGPT 得以在监督学习和强化
+学习的框架下 ，不断优化其生成策略 ，使其能够生成更
+加准确、合理和人类化的回答。这种结合了监督学习和
+强化学习的训练方法，使得 ChatGPT 在对话生成领域取
+得了显著的进展。
+2 GPT 在医疗文本中的应用
+近年来，医学领域发展迅速 ，但同时也出现了 一系
+图 2 TAMER架构在强化学习中的应用
+Fig.2 Application of T AMER framework in reinforcementlearning
+图 3 强化学习下的 ChatGPT
+Fig.3 ChatGPT under reinforcement learning
+2045
+
+=== PDF_PAGE 4 ===
+Journal of Frontiers of Computer Science and Technology 计算机科学与探索 2025, 19(8)
+列亟待解决的问题。首先，包括诊断错误、治疗错误、资
+源浪费、工作流程效率低下和不公平在内的问题 ，使世
+界各地的医疗保健系统都在与不断上升的成本作斗
+争。其次，由于医学知识和技术的复杂性及其不断发展
+的特点，医生需要投入大量的时间和精力来获取 、更新
+和维护他们的专业知识和技能
+[22]
+。然而，医务人员的工
+作强度高 ，学习时间成本高 ，因此培训一名合格医务人
+员所需的时间相对较长。最后，医疗技术的发展产生了
+大量的数据 ，研究人员很难完成清洗 、挖掘和分析过
+程。将 GPT 等文本处理技术应用于医疗行业可能是一
+个很好的解决方案，也是提高医疗行业成本效益和效率
+的新机遇。
+2.1 医疗文本数据处理
+当前的医疗记录存在可用性不足的问题，评估患者
+时，有人担心关键信息可能隐藏在病历中 ，难以轻松获
+取。LLM 作为医生的助手 ，可以帮助提供者找到这些
+关键信息，从而节省时间并改善护理服务 。有研究者
+[23]
+探索了将 NLP 技术应用于神经学数据处理的可能性 ，
+结果表明 ，该技术在保障数据安全的前提下 ，能够显著
+提升临床护理工作的效率和效果 。为了补充 GPT 的牙
+科知识 ，Sirrianni 等人
+[24]
+在 37 万份牙科医疗笔记上对
+GPT-2 和 GPT-Neo 模型进行微调 ，其验证范围包括名
+称、缩写、临床术语 、标点符号等 。具体而言 ，他们将数
+据集按照 8∶1∶1 的比例划分为训练集 、验证集和测试
+集，并根据模型的准确度和损失值来评估模型性能。随
+后，研究者将这些 GPT 模型与非 GPT 预训练的神经网
+络模型 XLNet 进行了比较。结果表明，GPT 模型在各项
+指标上均远超 XLNet，并且在绘制医学表格方面表现尤
+为出色 。类似地 ，Waisberg 等人
+[25]
+在私人数据集上对
+GPT-4 进行微调后发现 ，该模型不仅能够为术后患者撰
+写出院总结，还能提取并分析视网膜血管图像以检测病
+变情况，展现出一定的医学图像数据分析能力 。图 4 展
+示了 GPT-4 在总结医患对话并分析患者情况的过程 。
+与仅处理医疗记录的研究不同，Chen 等人
+[26]
+将其应用于
+处理更为复杂的数据，发现它不仅能够处理和分析大量
+细胞相关数据，还能辅助设计实验流程，优化培养条件，
+从而提高实验效率，在干细胞研究中展现出显著优势。
+为提高模型预测的准确率 ，GPT 模型的应用正在
+逐步向工程化和链式思维 （chain of thought ，CoT）策略
+方向发展 ，以增强其在复杂任务中的表现 。例如 ，在
+MEDIQA-CORR 2024 的任务中 ，研究团队
+[27]
+使用 GPT
+模型进行了自动检测和纠正临床笔记中的医疗错误的
+实验。他们结合了少样本的上下文学习和 CoT 提示来
+提升模型的推理能力，并通过推理和理由构建提升模型
+对医学错误的理解和纠正能力 。Guan 等人
+[28]
+通过引入
+知识图谱作为辅助提示信息 ，帮助 GPT 理解医学术语
+间的关系 。同时，强化学习增强的 CoT 样本选择策略 ，
+可以根据每个医疗报告动态选择最相关的推理链 ，优化
+模型在少样本任务中的表现。为提高模型回答的质量，
+Balkus 等人
+[29]
+利用 GPT 自生成的额外训练示例来增 强
+小规模数据集，并比较了增加训练集大小的分类端点与
+通过遗传算法优化提示的完成端点，从而显著提高了短
+图 4 GPT-4 总结分析患者情况
+Fig.4 GPT-4 summarizing and analyzing patient 's condition
+2046
+
+=== PDF_PAGE 5 ===
+田崇腾 等：大语言模型 GPT 在医疗文本中的应用综述
+文本分类的准确性。W ada等人
+[30]
+首先将 GPT -4 Turbo 的
+诊断结果由单一答案改为提供 5 个候选选项。随后，他
+们引入了 90%的置信度阈值，即仅在模型对某一诊断结
+果的置信度超过 90%时才予以采纳，从而有效降低了错
+误诊断的发生率。通过这种方法，显著降低了模型的误
+诊率至 14.1%，诊断的准确率从 55.1%提高到 72.9%。
+然而，虽然这种方法提高了准确性 ，但也减少了模型的
+响应案例数，表明在实际应用中需要进一步优化这些策
+略，以在准确性和实用性之间找到平衡 。Giuffrè等人
+[31]
+研究发现 ，GPT 在处理不同格式的文本数据时（包括结
+构化和非结构化数据） ，其准确率存在显著差异 。具体
+而言，当提示信息中的数据格式更加复杂和结构化时 ，
+模型能够更好地理解和处理信息，从而显著提高了其诊
+断和预测的准确性。
+然而，在 GPT 的使用过程中可能会产生如图 5 所示
+的幻觉（hallucinations）现象
+[32]
+，具体来讲就是模型会产
+生虚假、捏造的信息 ，消息的输出没有任何已知事实的
+支持 。目前的难点是幻觉往往就在不经意间产生 ，如
+Lee 等人
+[33]
+在应用GPT-4 生成的医疗记录中无意发现，一
+位患者的身体质量指数（body mass index，BMI）为 14.8。
+然而，记录中没有足够信息表明 BMI 是能够计算出来
+的，这将会误导医生的判断 。Chelli 等人
+[34]
+探究了 LLM
+在自动化医学文献搜索和系统综述合成方面的潜力 ，研
+究者对 471 篇医学文献进行了测试 。若文献的作者 、题
+目和出版年份中有一项不对应 ，即被判定为产生幻觉 。
+结 果 显 示，GPT -4 和 Gemini 的 幻 觉 率 分 别 为28.6%和
+91.4%。由于较高的幻觉率 ，LLM 难以胜任医学文献检
+索的重任。因此，减少 LLM产生幻觉的概率成为处理医
+疗文本数据的关键因素。许多研究者已经开始着手进行
+改进和优化，以提高其准确性和可靠性。Sovrano等人
+[35]
+提出了 ExplatoryGPT模型，其结合了自动过滤冗余信息
+的 Y AI（explanatory artificial intelligence）机制，能有效避免
+过于宽泛、脱离上下文的解释，从而减少模型产生幻觉。
+为了最大程度降低模型精炼文本时产生的幻觉 ，Shakil
+等人
+[36]
+先用 DistilBERT模型生成初始文本，然后用 T5 模
+型对文本内容进行精炼整合，最后应用增强混合技术以
+确保可读性和简洁性之间的平衡。Jahanbakhsh等人
+[37]
+设
+计了一套基于GPTpower的医学问答系统，其改变了模型
+原有的提示策略，并显著增加了提示信息的接受度。实
+验结果显示，在 25 亿个文档提示下 ，该系统产生幻觉的
+概率较GPT -4 减少了约20%，有效解决了幻觉问题。
+由上述分析可知 ，相较于人工处理医学数据 ，GPT
+能灵活有效地汇总整合关键信息，并通过在不同下游任
+务中的微调，展现出较好的适应能力 。然而，由于 LLM
+普遍存在传递错误信息的倾向，幻觉也可能在没有引起
+质疑的情况下持续传递。因此，减少模型产生幻觉的次
+数，提高模型的可用性，也是当前研究中的一个关键点。
+2.2 辅助医患沟通
+LLM 可以模拟医生高效地与患者进行沟通对话 ，
+例如在手术前，它可以为患者提供手术信息和术前准备
+建议，这可能会减少他们的恐惧 ，对治疗结果产生积极
+的影响 。对此，Ayers等人
+[38]
+为了评估 ChatGPT 的回答
+对精神病患者的反应程度 ，选择了 195 个患者和认证医
+生在在线论坛上进行匿名交流 ，然后报告 78.6%的评估
+者更喜欢 ChatGPT 的回应，其原因是 ChatGPT 的回答质
+量更高，更容易引起患者的共鸣 。通常，精神疾病的诊
+断和治疗通过问卷调查和访谈进行 。因此 ，医生的态
+度、情绪以及周围环境将会对结果产生影响 。ChatGPT
+的引入将优化这一过程，从而实现更为准确的诊断结果
+和更优越的治疗效果 。Gordon 等人
+[39]
+研究设计了 22 类
+患者常问的放射学影像问题，比较了有简明提示和无提
+示两种情况下的回答效果 ，并使用 χ
+2
+检验和配对 t 检验
+进行统计分析 。4 名放射科专家评估后发现 ，有用户提
+示的回答更为准确。这表明在医患沟通过程中，优化信
+息获取方式对于提升 GPT 在医疗交互中的表现至关重
+要。为此 ，Liu 等人
+[40]
+提出了一种 P-Tuning 微调方法 。
+图 5 GPT-4 产生幻觉
+Fig.5 GPT-4 generating hallucinations
+2047
+
+=== PDF_PAGE 6 ===
+Journal of Frontiers of Computer Science and Technology 计算机科学与探索 2025, 19(8)
+该方法引入了连续的提示嵌入 Pi ，包括输入标记 x 和标
+签 y，形成一个模板序列 。通过更新这些嵌入 Pi ，可以
+优化任务特定的损失函数，从而改善模型性能。为了评
+估 ChatGPT 对胃肠道健康知识的掌握程度 ，Lee 等人
+[41]
+向 ChatGPT 询问了 8 个关于结肠镜检查的常见问题 ，并
+将答案提交给 4 位胃肠病专家进行评分 。结果发现，其
+生成的答案不仅是准确的，甚至还能给出一些出乎意料
+的方案。如图 6 所示，GPT-4 还能够与临床医生进行互
+动交流，提供在分析和诊断患者症状时的辅助建议。数
+据隐私性在一定程度上阻碍了模型与患者之间的进一
+步沟通 。为了解决这一问题 ，Liu 等人
+[42]
+提出了一种基
+于 GPT-4 模型的去标识化框架 DeID-GPT，该框架能够
+自动识别并去除医疗文本中的标识性信息 。与现有的
+常用医疗文本去标识化方法相比 ，DeID-GPT 在掩盖医
+疗文本中的私人信息的同时，能够保持原始文本的结构
+和意义 ，展现了更高的准确性和显著的可靠性 。Zeng
+等人
+[43]
+提出了SecureGPT框架，通过设计一系列隐私保护
+协议（如 M2A、Softmax和 GELU）实现GPT的多方隐私保
+护推理，并在 SecureNLP基础上优化了非线性函数的处
+理，其在运行时间上相比现有方法提升了最多100倍。
+GPT 还可以为需要心理支持的人提供安慰和倾听，
+回答关于焦虑、抑郁、孤独等情感方面的问题，为用户提
+供心理健康建议和鼓励 。一些研究者为了评估 GPT 在
+心理健康方面的表现进行了相关研究，Levkovich 等人
+[44]
+将 GPT-4 与心理健康专业人员在评估病人挫败感程度
+上的表现进行了对比研究 。结果显示，GPT-4 在评估患
+者自杀倾向的准确性上与专家最为接近，但在评估患者
+痛苦程度方面仍存在较大差距。Hadar-Shoval 等人
+[45]
+研
+究了 ChatGPT 在评估边缘性和分裂性人格障碍患者情
+绪波动方面的表现，其总体上能及时发现情绪激动的患
+者并给予基本安慰需求 。相似地，有研究者
+[46]
+发现尽管
+ChatGPT 能够区分双相情感障碍的不同阶段 ，但在深入
+分析其根本原因方面仍存在困难 。他们具体的研究内
+容如表 1 所示，ChatGPT 整体上与心理健康专业人员的
+评估较接近，然而在深层次分析病症方面存在一些局限
+性，甚至可能引发一些偏见。
+由上述分析可知，GPT 在辅助医患沟通中展现了广
+泛应用潜力 ，从术前咨询到复杂医学问题的解释 ，能够
+有效提升患者的医疗体验 ，减少焦虑 ，同时在精神和心
+理健康支持方面表现尤为出色。然而，GPT 在深入分析
+表 1 ChatGPT 在心理健康领域的应用情况
+Table 1 Application of ChatGPT in field of mental health
+文献
+Levkovich 等人
+[44]
+Hadar-Shoval 等人
+[45]
+Parker 等人
+[46]
+方法
+ChatGPT 评估病人表现出挫败感的
+行为程度（1~7，7 最高)，随后与 379
+名心理健康专业人员提供的评估程
+度进行对比
+ChatGPT 分别从边缘型人格障碍患
+者和分裂型人格障碍患者的对话中
+评价其情绪的波动
+检验 ChatGPT 对双相情感障碍的临
+床表现反应的准确性
+对象
+自杀倾向的程度
+自杀意念的程度
+心里痛苦的程度
+心理韧性的程度
+边缘型人格障碍患者
+分裂型人格障碍患者
+双相情感障碍患者
+结果
+ChatGPT：4.0，专业人员：4.1
+ChatGPT：6.0，专业人员：5.4
+ChatGPT：7.0，专业人员：6.2
+ChatGPT：2.3，专业人员：3.4
+能较好洞察患者的情绪波动，在情绪激动时给予适当的宽慰
+受到相关偏见的影响，部分对话过度认为患者情绪高涨
+有识别症状描述、辨别类型（Ⅰ类、Ⅱ类）的能力，但无法更深
+层次地分析病症
+图 6 GPT-4 与临床医生进行交流
+Fig.6 GPT-4 communicating with clinical doctors
+2048
+
+=== PDF_PAGE 7 ===
+田崇腾 等：大语言模型 GPT 在医疗文本中的应用综述
+病因和获取关键信息方面仍有局限，未来需要进一步优
+化和微调。随着技术的进步，GPT 有望在更多医疗场景
+中提供高效 、便捷的沟通支持 ，提升医疗服务的质量与
+可及性。
+2.3 医学教育支持
+LLM 具有提供广泛医学教育支持的能力 ，包括解
+答医学问题 、提供基础知识 、辅助考试以及语言翻译等
+功能。这有助于医学生、医生和其他从业者获取便捷的
+医学信息，提高知识水平和临床技能，同时了解医学领域
+的新进展 。如图 7 所示，GPT-4 在美国执业医师资格考
+试（United States medical licensing examination，USMLE）
+[47]
+的测试中 ，尽管模型的训练依赖于公开的互联网信息 ，
+仍取得了令人满意的准确率。问题的题型包括单选题、
+多选题以及简答题（非选择题） ，考察的知识范围广泛 ，
+涵盖医学综合知识。Gilson 等人
+[48]
+在 AMBOSS 知识平台
+测试了GPT-4 在回答流行病学问题的表现。文献[49-51]
+则分别研究了麻醉学 、药学、牙体牙髓学领域的知识问
+答。为了确保研究的严谨性 ，他们在 GPT 回答医学问
+题后让专家进行评价 。上述研究的具体内容总结如
+表 2 所示，其中准确率（accuracy）表示 GPT 回答问题的
+表 2 ChatGPT 在医学教育领域的应用情况
+Table 2 Application of ChatGPT in field of medical education
+文献
+Kung 等人
+[47]
+Gilson 等人
+[48]
+Johnson 等人
+[49]
+Huang 等人
+[50]
+Suárez 等人
+[51]
+Lai 等人
+[52]
+来源
+USMLE
+AMBOSS
+NBME
+V anderbilt University
+Medical Center
+—
+European Society of
+Endodontology
+UK Medical Licensing
+Assessment
+题量/道
+119
+102
+122
+6 000
+189
+180
+104
+25
+91
+191
+题型
+简答
+单选
+多选
+—
+选择
+简答
+选择
+—
+判断
+单选
+领域
+医学综合知识
+医学综合知识
+医学综合知识
+流行病学
+医学综合知识
+麻醉学等
+医学综合知识
+患者用药教育
+牙体牙髓病学
+医学综合知识
+方法
+删除选项，改为可变的疑问短语
+单项选择题，只有一个正确答案
+多项选择题，有至少两个准确答案
+关于医学方面的逻辑推理题目
+关于医学方面的逻辑推理题目
+专业医生分析每个问题，给出准确度评分
+（1~6）和完整性评分（1~3）
+ChatGPT：单独回答每个问题
+5 位临床医师：回答一样的问题
+题目难度分为 3 个级别，随后两位牙髓专
+家根据答案的解释进行评价
+测试 GPT-4 的 3 次回答后取平均值
+专家评价结果
+准确度
+0.69
+0.61
+0.66
+0.44
+0.64
+4.4
+4.9
+0.62
+0.92
+0.57
+0.78
+完整性
+—
+—
+—
+—
+0.91
+2.4
+2.7
+—
+—
+—
+—
+图 7 GPT-4 回答 USMLE 问题的示例
+Fig.7 Example of GPT-4 answering USMLE questions
+2049
+
+=== PDF_PAGE 8 ===
+Journal of Frontiers of Computer Science and Technology 计算机科学与探索 2025, 19(8)
+正确程度，具体指正确回答问题的数量与总回答数量之
+比；完整性（completeness）是评估 GPT 回答问题时是否
+包含了问题的所有关键信息，确保回答全面而不遗漏重
+要方面的指标。
+然而，GPT 的医学教育支持功能并不仅限于考试和
+知识问答的能力。近年来，研究者们还探索了其在医学
+教学中的更广泛应用 。GPT-4 及其衍生模型逐渐被用
+于医学教学场景中的个性化学习辅导 、案例教学辅助 、
+临床模拟练习以及学生与教师之间的互动优化。例如，
+GPT-4 可以为医学教师提供教学材料建议或生成有针
+对性的教学案例，帮助教师设计符合不同学习水平的教
+学内容
+[53]
+。同时，对于非母语的医学学生来说，GPT-4 的
+多语言支持功能能够协助其理解专业术语和医学知识 ，
+从而打破语言障碍 ，提高学习效果
+[54]
+。在医学教学的互
+动和沟通方面，GPT-4 同样展现了巨大潜力 。通过生成
+详细的解释和反馈，GPT-4 可以充当虚拟助教，帮助学生
+解决疑问 ，并及时提供知识巩固的建议 。一些研究
+[55-56]
+表明，GPT-4 在模拟医患对话和临床场景中能够帮助学
+生增强实际操作能力 ，特别是在诊断 、病历记录和病患
+沟通技巧方面 ，提供了有力的支持 。此外，结合虚拟现
+实 和 增 强 现 实 技 术 的 模 型 应 用，也 正 在 探 索 如 何 将
+GPT-4 用于创建沉浸式医学培训环境
+[57]
+。
+由上述分析可见 ，GPT-4 不仅能够在知识问答和考
+试辅助中提供支持，还可以通过其智能化能力优化医学
+教学活动、教学资源的利用以及师生之间的互动。尽管
+在某些特定领域的表现仍有待提升，但其在医学教育中
+的广泛应用潜力无疑具有重要价值 。未来研究可以继
+续探索如何通过模型微调和领域知识补充 ，提高 GPT-4
+在复杂医学场景中的表现，以便更好地满足医学教育的
+多样化需求。
+2.4 疾病预防
+传染性疾病 ，尤其像流感 ，通常具有难以预防的特
+点。这种疾病的本质源于病原体的变异性和传播途径
+的复杂性 ，即使采取了一定的预防措施 ，也难以完全百
+分之百地防止疾病的发生和传播
+[58]
+。GPT 可以通过提
+供及时、准确的健康信息 ，帮助人们更好地了解疾病的
+特点、传播途径和预防方法。它可以回答关于疾病预防
+的常见问题 ，向公众传达健康教育信息 ，提醒人们采取
+正确的预防措施 ，从而降低感染的风险 。Hasnain
+[59]
+将
+ChatGPT 应用于巴基斯坦猴痘感染流行的研究 ，结果表
+明它可以帮助提问者确定关于猴痘感染的关键信息 ，包
+括 症 状、感 染 途 径、后 果 和 当 前 流 行 情 况。类 似 地，
+Howard 等人
+[60]
+基于一组特定的感染场景对 GPT-4 进行
+了抗菌建议的测试 。尽管其中 80%的回复提供了合理
+的建议，与当前医学知识相符 ，包括针对细菌耐药性的
+考虑、个体差异的因素等 。然而，少数其他的回答表现
+不够理想 ，未能充分考虑到最新的研究数据 ，忽略了某
+些 新 发 现 的 抗 菌 药 物 的 效 果 或 变 异 体 的 特 殊 情 况。
+Pereyra 等人
+[61]
+研究评估了 ChatGPT 在结直肠癌筛查预
+防建议的可行性 。研究测试了多个结直肠癌筛查和监
+测的临床案例 ，结果显示 ChatGPT 的平均正确率约为
+45%，且在不同会话中有 4 道问题的回答存在不一致
+性。与使用已验证的结直肠癌筛查移动应用程序的医
+生相比 ，ChatGPT 的平均正确答案数量显著较低 ，表明
+其在作为结直肠预防的辅助工具仍需进一步改进 。肥
+胖已经成为全球性健康问题，而一些患者可能不适合传
+统的治疗方法 。Arslan
+[62]
+研究表明 ，ChatGPT 能够提供
+关于营养计划、锻炼计划和心理支持等个性化建议。通
+过这种方式，可以根据患者的个体需求制定个性化的治
+疗计划，从而实现更有效的治疗方法。随着基因组学的
+进展和 AI 技术的引入 ，Zahra 等人
+[63]
+发现医学治疗可以
+根据每个患者的基因信息和病史进行个性化定制 。特
+别是在药物反应和复杂疾病（如癌症和遗传疾病）的研
+究中，AI 显著提高了诊断精度 、疾病预测和药物研发的
+效率。此外，结合可穿戴技术的实时健康监测 ，进一步
+推动了个性化医学的发展，帮助实现早期疾病检测和更
+好的健康管理 。Patrinos 等人
+[64]
+通过识别患有特定疾病
+或处于高风险状态的个体，使医疗保健提供者能够制定
+个性化的预防策略，如调整生活方式和实施针对性筛查
+计划，从而有效预防或延缓疾病的发生。
+由上述分析可知，GPT 在疾病预防中能够满足基本
+需求，在经济受限情况下（如流行病暴发期和高感染率
+的面诊环境）效益较高 。然而，GPT 通常考虑的是一般
+情况，不同的用户提示可能导致生成的建议不一致。因
+此，在定制个性化方案时需要充分考虑多种因素。
+2.5 多模态数据在医疗文本中的综合应用
+文本与其他模态数据的结合在医疗领域中具有重
+要的意义。通过整合文本信息与医学图像、声音或其他
+模态数据 ，可以实现更全面 、多维度的患者信息获取与
+分析。这种综合性数据的利用，不仅能够提供更精确的
+诊断和治疗方案 ，还能够支持个性化医疗决策的制定 。
+例如，结合病历文本与影像学图像可以帮助医生更准确
+地识别病变部位；结合语音数据与心电图可以增强心脏
+病患者的监测和管理。因此，跨模态数据的整合不仅拓
+展了医疗信息的深度和广度，还促进了医学科研和临床
+实践的进步与创新。
+GPT-4V（GPT-4 for vision）是在 GPT-4 的基础上增
+加了处理视觉任务的版本，其融合了视觉模型的部分模
+2050
+
+=== PDF_PAGE 9 ===
+田崇腾 等：大语言模型 GPT 在医疗文本中的应用综述
+块，能够结合文本和图像来理解用户的输入。在医学图
+像领域 ，研究人员对其进行了探索和评估 。Wu 等人
+[65]
+全面研究了 GPT-4V 在医学图像中的应用能力 ，他们的
+评估范围涵盖了头颈部 、心脏、胸部和骨骼肌肉等 17 个
+部位 ，成像模态包括 X 射线（X-ray） 、计算机断层扫描
+（computed tomography ，CT）和 磁 共 振 成 像（magnetic
+resonance imaging ，MRI）等 8 种模态 。结果表明 ，GPT-
+4V 能够很好地区分医学图像的模态 ，并能够生成一份
+简要的诊断报告 。例如，它能识别肺部 CT 图像中的结
+节数量或 X-ray 图像中的骨折情况 。然而，由于它尚无
+法提供具体的医学建议 ，现阶段 GPT-4V 更多用于辅助
+医生的诊断工作 ，而非替代医生的临床决策 。Y ang等
+人
+[66]
+测试了 GPT-4V 在带有医学图像问题的考试中表
+现，并发现其成绩高于及格线 ，特别是在耳鼻喉科和免
+疫学方面表现优异 。虽然在急诊医学和肿瘤学中对
+MRI 图像的理解存在偏差 ，但通过医生的提示调整后 ，
+准确率得到了显著提升 。Brin 等人
+[67]
+则发现 GPT-4V 对
+不同成像模态的识别准确度存在较大差异 。CT 和 X-
+ray 图像的识别诊断准确度在 87.6%至 97.0%之间，而模
+糊的超声图像识别诊断准确度仅为 9.1%。
+阿尔茨海默症（alzheimer's disease ，AD）是一种导
+致记忆、思维和行为逐渐恶化的神经退行性疾病 ，因此
+照顾此类患者非常困难 ，而将 GPT 应用于语音助手可
+以显著提高护理效率和患者生活质量 。Zaman 等人
+[68]
+开发了一款基于 GPT 微调的语音助手 ，护理人员可以
+通过它与患者在线互动 ，从而减轻了时间和资源的限
+制。Dai 等人
+[69]
+将 GPT 模型结合到语音助手上后 ，大幅
+度减轻了照顾 AD 患者的负担，尤其是在与阿尔茨海默
+症患者日常互动和监护方面。Runde 等人
+[70]
+将 GPT-4 应
+用于 AD 的语音诊断中，通过 Rev AI 转录服务处理的自
+发性语音转录文本 。研究结果表明，GPT-4 嵌入有助于
+提高检测 AD 分类准确性 ，为未来实施自动 AD 检测系
+统奠定了基础。
+由上述分析可知，GPT 可识别出 MRI、CT 等模态的
+医学图像 ，并能对部分图像中的病灶进行识别检测 ，但
+在模糊图像的识别几乎完全失败 。将 GPT 作为照顾
+AD 的语音助手效果显著，减轻了护理人员的负担，未来
+可开发其识别心跳等复杂声音数据的功能。这也表明，
+GPT 结合图像和声音等多模态数据有着更广泛的潜在
+应用价值。
+2.6 GPT 在医疗文本应用中的总结
+综上所述 ，目前 GPT 在医疗文本领域的应用具有
+多方面的优点 ： （1）快速处理医疗文本数据 。GPT 能够
+迅速分析和处理大量的医疗文本，减少医务人员的工作
+负担，从而提高医疗行业的工作效率 ，尤其在高负荷的
+医疗环境中，能够显著节省时间和人力资源。 （2）丰富的
+医学知识储备。GPT 涵盖了免疫学、肿瘤学、心脏病学、
+神经科学 、感染病学 、遗传学 、精神病学等多个医学领
+域，能够解答大多数医学问题 ，满足医学教育和知识普
+及的基本需求，助力医生和学生快速获取相关领域的最
+新信息 。 （3）全天候服务 。GPT 提供 24 小时不间断服
+务，用户无需考虑时间和地域的限制 ，能够在任何时候
+获取医学咨询 ，减少了信息差距 ，特别适用于偏远地区
+和紧急情况下的医疗支持 。 （4）辅助医患沟通 。GPT 在
+与患者沟通时 ，能够使用适当的措辞 ，有效缓解患者的
+情绪，尤其在面对情绪激动或焦虑的患者时 ，能够提供
+更加温和和有效的沟通方式 ，从而促进医患关系的和
+谐。 （5）支持多模态数据融合 。GPT 能够结合医学图像
+数据，如 X 光、CT、MRI 等，通过分类和识别不同模态的
+图像，进行初步的病灶检测和诊断 ，辅助医生提供更准
+确的诊断支持。
+然而，尽管 GPT 在医疗文本领域展现出诸多优势 ，
+它也面临一些亟待解决的问题 ： （1）局限于基础医学问
+题。GPT 目前主要能够解答基础的医学问题，在进行更
+深入的病理分析或复杂的诊断时，仍然存在一定的局限
+性，无法替代专业医生的深入判断 。 （2）真实性难以判
+断。GPT 的回答虽然快速，但其输出内容的真实性难以
+直接验证 ，尤其是在答案错误时 ，模型往往会给出看似
+合理但实际上错误的解释 ，可能误导用户 ，特别是在缺
+乏足够医学背景知识的情况下 。 （3）幻觉现象的发生 。
+GPT 在生成答案时，可能会产生幻觉现象，即输出不真实
+或与实际情况不符的内容，而这种错误往往难以被用户
+及时发现，这对医疗场景中的决策支持构成了潜在风险。
+当 GPT 在医疗文本领域表现不佳时 ，进行适当优
+化可以显著提升其性能 。这些优化措施从模型的准确
+率、减少产生幻觉 、优化提示策略以及保护隐私策略进
+行调整，从而更好地适应医疗领域的特定需求。GPT 在
+处理医疗文本时存在以下特点：
+（1）在提高回答准确率的改进方面 ，通过优化提示
+策略、数据增强和调整置信度等方法可以显著提升模型
+的准确性。例如，文献[30]探索了不同置信度阈值的应
+用，以减少误诊率，从而有效提高模型的准确性。
+（2）在减少幻觉生成的改进中 ，采用过滤冗余信息
+和精炼文本内容等方法 ，能够大幅降低 GPT 生成幻觉
+的概率 ，进而提高回答的准确度 。例如，文献[35]通过
+结合自动过滤冗余信息的 Y AI机制，避免了模型产生脱
+离上下文的解释，显著提升了其可靠性。
+（3）在增强 GPT 融合其他模态数据的改进中 ，结合
+2051
+
+=== PDF_PAGE 10 ===
+Journal of Frontiers of Computer Science and Technology 计算机科学与探索 2025, 19(8)
+图像模型 、语音助手等技术 ，可以扩展 GPT 的应用范
+围，突破仅依赖文本信息的局限 。例如，文献[65-67]通
+过改进的 GPT-4V 模型，成功地处理了医学图像，推动了
+GPT 在多模态数据处理上的应用。
+（4）在优化提示策略的改进方面，采用 CoT 提示、融
+合知识图谱以及限制提示完整性等方法，有效提升了模
+型的性能。例如，文献[27]通过融合少样本上下文学习
+和 CoT 提示，增强了模型的推理能力 ，从而提高了其在
+复杂任务中的表现。
+（5）在保护隐私的改进中 ，通过集成去标识化框架
+和设计隐私保护协议等措施，可以在确保隐私安全的同
+时有效应用模型 。例如 ，文献 [42]提出了去标识化框
+架，能够自动识别并去除医疗文本中的标识性信息 ，从
+而提高了隐私保护效果。
+3 讨论与展望
+从机器学习到深度学习的演进 ，特别是 LLM 的出
+现，标志着深度学习进入了新的时代 。这些 LLM 如
+GPT 通过海量数据的训练，能够生成高质量的自然语言
+文本，不仅在语言理解和生成任务中表现出色 ，也在医
+疗文本领域取得显著成就
+[71- 74]
+。它们能够分析医疗文
+档、诊断报告以及研究论文，帮助医疗专业人员更快速、
+准确地获取信息，极大地推动了医疗智能化的进程。虽
+然 GPT 在医学领域有着巨大的应用潜力 ，但也存在一
+些问题亟需解决，现将研究难点归纳如下：
+（1）难以解决的医学伦理问题 。首先，缺乏建立相
+应问责制度的现状使得当 LLM 产生错误导致医疗事故
+时责任归属问题尤为突出。其次，医学数据的敏感性增
+加了在 LLM 的训练和应用中隐私泄露的风险 。患者的
+病历、病情描述等信息可能用于模型训练 ，如何有效防
+止信息滥用和泄露 ，并在模型应用中保护这些数据 ，是
+一项极具挑战性的任务 。最后，医学数据中存在种族 、
+性别、宗教和性取向等差异 ，导致在 LLM 的设计和训练
+中难以避免引入偏见和不公正 。这些模型必须确保不
+歧视任何群体，然而现实中的社会偏见和不平等可能已
+经影响了医学数据的质量和代表性。
+（2）透明性和可解释性。GPT 在医学决策过程中的
+透明度至关重要，用户应该能够清晰理解为何特定的决
+策被作出 。尤其考虑到当前 LLM 的“黑箱”性质，用户
+对其生成输出的机制知之甚少 。这种不透明性使得医
+学 专 家 和 患 者 无 法 追 踪 模 型 的 决 策 逻 辑，也 无 法 对
+LLM 的输出进行验证和修正 ，不能有效避免模型的错
+误指导医学实践。
+（3）模型复杂度高。GPT 的模型复杂性限制了其在
+服务医学领域的适应性。由于其设计的庞大参数规模，
+GPT 的训练目前面临显存需求高、训练时间长和能源消
+耗大的挑战 。这不仅对研究者的实验条件提出了苛刻
+的要求，也大大增加了研究成本和时间投入 。首先，虽
+然当前的高性能计算资源不断进步 ，但要满足 GPT 训
+练所需的显存要求 ，仍需高端的 GPU 集群，这对许多研
+究机构来说是一项巨大的经济负担。其次，GPT 的训练
+时间非常长。在医学领域，数据集往往庞大且复杂，训练
+一个高效且准确的 GPT 模型可能需要数周甚至数月的
+时间，这极大地延缓了研究进程和成果应用。最后，GPT
+模型的能源消耗问题也不容忽视。大规模的模型训练需
+要消耗大量的电力，这不仅增加了经济成本，还对环境造
+成了不利影响。因此，简化模型结构以降低这些成本，同
+时保持性能，成为当前研究中的一个重要难点。
+（4）医学数据获取困难 。医学数据包括病历记录 、
+影像数据、生物标本分析等，它们的获取受到法律法规、
+隐私保护措施以及技术访问限制的严格管控 。由于医
+疗信息的敏感性和隐私问题，医学数据的收集和使用必
+须遵循严格的伦理标准和法律法规，这增加了获取数据
+的复杂性和成本。因此，解决医学数据获取的难题是推
+动医学研究和医疗创新的关键一步。
+通过对当前的难点进行研究分析 ，本文将 GPT 在
+医疗文本中的未来研究方向主要归纳为以下几点：
+（1）加强保护隐私 。为了提高隐私保护 ，未来可以
+采取多种技术措施 。首先，文献[42]的去标识化技术可
+以自动识别并去除医疗文本中的个人信息，确保患者隐
+私不被泄露 。其次 ，通过加密计算和安全多方计算技
+术，可以在不泄露数据内容的前提下 ，进行模型训练和
+推理，从而保护患者的敏感信息 。此外，联邦学习
+[75]
+可
+以使模型在本地进行训练而不需要将数据上传至服务
+器，从而避免数据泄露的风险。为了进一步增强隐私保
+护，差分隐私技术可以加入噪声干扰 ，确保数据在进行
+统计分析时不暴露个体信息
+[76]
+。
+（2）开发模型解释和可视化工具 。首先，特征重要
+性分析和梯度类似性分析可以帮助揭示模型在作出决
+策时所依赖的关键特征，从而直观地展示模型如何基于
+输入数据作出预测。其次，局部解释方法如 LIME（local
+interpretable model-agnostic explanations）和 SHAP（Shapley
+additive explanations）可以针对特定输入样本，提供局部
+的模型解释 ，帮助理解模型如何在单个案例中进行决
+策，这对于医学应用尤为重要 ，因为医生需要了解模型
+在 具 体 病 例 中 的 判 断 依 据。 此 外，生 成 式 对 抗 网 络
+（generative adversarial network ，GAN）等生成模型的解
+释方法能够分析和解释 GPT 生成的医学文本或图像
+[77]
+，
+2052
+
+=== PDF_PAGE 11 ===
+田崇腾 等：大语言模型 GPT 在医疗文本中的应用综述
+帮助医生理解 模型在生成诊断建议或医学报告时的
+逻 辑和推理过程 。最后 ，集成多种解释技术 ，如结合
+LIME、SHAP 和 GAN 的优点，能够提升模型的整体解释
+能力和可信度，确保模型的决策过程透明、可追溯，从而
+提高其在医学领域应用的可靠性与可接受性。
+（3）压缩模型。为了降低计算和存储成本的同时保
+持性能的关键技术，可尝试采用以下方法 ：参数剪枝
+[78]
+，
+即删除模型中不重要的权重或神经元 ；量化，将参数和
+计算操作转换为较低位宽的表示 ；低秩近似
+[79]
+，通过矩
+阵分解减少参数数量；知识蒸馏
+[80-81]
+，利用一个较大且准
+确的模型（teacher 模型）的知识来训练一个更小、更高效
+的模型（student 模型） 。这些技术使得模型在应用于资
+源受限的环境中能够更高效地运行，同时保持其预测能
+力和功能。
+（4）扩大医疗应用领域。GPT 不仅能够与患者沟通
+和处理医疗记录，还能在偏远地区等医疗资源匮乏的地
+方发挥重要作用。例如，GPT 可以协助医生制定远程诊
+疗计划 ，监测患者生命体征数据 ，实现远程医疗监护 。
+借助生物传感器和可穿戴设备，医生能够实时获取患者
+的健康数据 ，从而提高偏远地区居民的医疗服务可及
+性，促进健康平等 ，减少因医疗资源不足而导致的健康
+差距。
+（5）跨模态融合发展。GPT 的应用不应局限于文本
+数据的处理，还应进一步结合图像、声音、视频等多种信
+息因素
+[82-83]
+。如图 8 所示，未来大模型的发展将逐步提
+升其在各个领域的通用性。通过整合视频数据，GPT 能
+够帮助医生分析患者的运动状态、手术过程中的操作技
+术等关键信息 ，提供更全面 、准确的医疗决策支持 。同
+时，结合生物传感器采集的生理参数数据和遥测数据
+（如地理位置和环境因素） ，GPT 可以实时监测患者的健
+康状况，评估环境对健康的潜在影响。这种多模态数据
+的融合不仅增强了 GPT 在医学领域的应用能力 ，还为
+个性化治疗和健康管理提供了新的可能性，进一步推动
+了医疗服务智能化和高效化的发展
+[84-87]
+。
+（6）个性化精准治疗 。GPT 在个性化医学诊疗中
+的未来应用前景广阔。通过利用大量患者特定数据，包
+括病史、基因信息和治疗反应 ，GPT 有望成为个性化医
+疗的重要工具 。它能够根据个体的健康状况提供量身
+定制的治疗建议 ，预测患者的治疗效果 ，并在实时决策
+支持中发挥作用。此外，GPT 还可以与可穿戴设备和健
+康监测系统结合 ，实时调整治疗方案 ，以适应患者的变
+化。随着模型在准确性和对复杂医学情境理解方面的
+不断提升 ，GPT 有望在提供更加精准 、高效和个性化的
+医疗干预上发挥重要作用。
+4 结束语
+作为新一代深度学习模型，GPT 在医疗文本领域展
+现出巨大的潜力。尽管目前其发展仍处于初期阶段，但
+随着技术的不断进步和应用场景的持续扩展，GPT 及其
+衍生模型将有望在医疗智能化方面取得突破性进展 。
+这种进展不仅体现在提高医疗文本的分析与理解上 ，还
+包括在临床决策支持、疾病预测和个性化治疗方案制定
+等方面的应用。通过不断优化和完善，GPT 将助力实现
+更加智能化和个性化的医疗服务，从而大幅提升医疗行
+业的整体效率和患者的健康管理水平，为现代医疗提供
+新的解决方案和技术支持。
+参考文献：
+[1] MOOR M, BANERJEE O, ABAD Z S H, et al. Foundation
+models for generalist medical artificial intelligence[J]. Nature,
+2023, 616(7956): 259-265.
+[2] CHOWDHARY K R. Natural language processing[M]//
+Fundamentals of artificial intelligence. New Delhi: Springe r
+India, 2020: 603-649.
+[3] THIRUNA VUKARASU A J, TING D S J, ELANGOV AN
+K, et al. Large language models in medicine[J]. Nature
+Medicine, 2023, 29(8): 1930-1940.
+[4] LECUN Y , BENGIO Y , HINTON G. Deep learning[J]. Nature,
+2015, 521(7553): 436-444.
+[5] SAMEK W, MONTAVON G, LAPUSCHKIN S, et al.
+Explaining deep neural networks and beyond: a review of
+methods and applications[J]. Proceedings of the IEEE, 2021,
+109(3): 247-278.
+[6] ZENG W, REN X Z, SU T, et al. PanGu- α: large-scale
+autoregressive pretrained Chinese language models with auto-
+parallel computation[EB/OL].[2024-07-19]. https://arxiv.org/
+abs/2104.12369.
+[7] MANN D L. Artificial intelligence discusses the role of artificial
+intelligence in translational medicine: a JACC: basic to
+图 8 未来大模型的发展趋势
+Fig.8 Development trends of foundation models in the future
+2053
+
+=== PDF_PAGE 12 ===
+Journal of Frontiers of Computer Science and Technology 计算机科学与探索 2025, 19(8)
+translational science interview with ChatGPT[J]. JACC Basic
+to Translational Science, 2023, 8(2): 221-223.
+[8] TEAM G, ANIL R, BORGEAUD S, et al. Gemini: a family
+of highly capable multimodal models[EB/OL]. [2024-07-19].
+https://arxiv.org/abs/2312.11805.
+[9] KELL Y D, CHEN Y M, CORNWELL S E, et al. Bing chat:
+the future of search engines?[J]. Proceedings of the Association
+for Information Science and Technology, 2023, 60(1): 1007-
+1009.
+[10] 孔祥溢, 王任直. 人工智能及在医疗领域的应用 [J]. 医学
+信息学杂志, 2016, 37(11): 2-5.
+KONG X Y , WANG R Z. Artificial intelligence and its
+application in medical field[J]. Journal of Medical Informatics,
+2016, 37(11): 2-5.
+[11] HAUPT C E, MARKS M. AI-generated medical advice-GPT
+and beyond[J]. JAMA, 2023, 329(16): 1349-1350.
+[12] LANDSCHAFT A, ANTWEILER D, MACKAY S, et al.
+Implementation and evaluation of an additional GPT -4-based
+reviewer in PRISMA- based medical systematic literature
+reviews[J]. International Journal of Medical Informatics,2024,
+189: 105531.
+[13] WANG H Y , WU W Z, DOU Z, et al. Performance and
+exploration of ChatGPT in medical examination, records and
+education in Chinese: pave the way for medical AI[J]. Inter -
+national Journal of Medical Informatics,2023, 177: 105173.
+[14] V ASW ANI A, SHAZEER N, PARMAR N, et al. Attention
+is all you need[C]//Advances in Neural Information Processing
+Systems 30, 2017: 5998-6008.
+[15] BUBECK S, CHANDRASEKARAN V , ELDAN R, et al.
+Sparks of artificial general intelligence: early experiments
+with GPT -4[EB/OL]. [2024-07-19]. https://arxiv.org/abs/2303.
+12712.
+[16] CARV ALKO J. GPT- a paradigm shift for the twenty- first
+century[EB/OL]. [2024-07-19]. https://www.techrxiv.org/doi/
+full/10.36227/techrxiv.23690874.
+[17] KNOX W B, STONE P . Augmenting reinforcement learning
+with human feedback[C]//Proceedings of the ICML W orkshop
+on New Developments in Imitation Learning, 2011.
+[18] DAI D M, SUN Y T, DONG L, et al. Why can GPT learn
+in-context? Language models implicitly perform gradient
+descent as meta-optimizers[EB/OL]. [ 2024-07-19]. https://
+arxiv.org/abs/2212.10559.
+[19] KNOX W B, STONE P . Interactively shaping agents via
+human reinforcement: the T AMER framework[C]//Proceedings
+of the 5th International Conference on Knowledge Capture.
+New Y ork: ACM,2009: 9-16.
+[20] LEIKE J, KRUEGER D, EVERITT T, et al. Scalable agent
+alignment via reward modeling: a research direction[EB/
+OL]. [2024-07-20]. https://arxiv.org/abs/1811.07871.
+[21] SCHULMAN J, WOLSKI F , DHARIW AL P , et al. Proximal
+policy optimization algorithms[EB/OL]. [2024-07-20]. https://
+arxiv.org/abs/1707.06347.
+[22] YUAN D, RASTOGI E, NAIK G, et al. A continued pre -
+trained LLM approach for automatic medical note genera -
+tion[EB/OL]. [2024-07-20]. https://arxiv.org/abs/2403.09057.
+[23] GE W D, RICE H J, SHEIKH I S, et al. Improving neurology
+clinical care with natural language processing tools[J]. Neurol-
+ogy, 2023, 101(22): 1010-1018.
+[24] SIRRIANNI J, SEZGIN E, CLAMAN D, et al. Medical text
+prediction and suggestion using generative pretrained trans -
+former models with dental medical notes[J]. Methods of
+Information in Medicine, 2022, 61(5/6): 195-200.
+[25] W AISBERG E, ONG J, MASALKHI M, et al. GPT -4: a new
+era of artificial intelligence in medicine[J]. Irish Journal of
+Medical Science (1971-), 2023, 192(6): 3197-3200.
+[26] CHEN L, LI H, SU Y Q, et al. Using a google web search
+analysis to assess the utility of ChatGPT in stem cell therapy
+[J]. Stem Cells Translational Medicine, 2024, 13(1): 60-68.
+[27] WU Z L, HASAN A, WU J G, et al. Chain-of-though (CoT)
+prompting strategies for medical error detection and correc -
+tion[EB/OL]. [2024-07-20]. https://arxiv.org/abs/2406.09103.
+[28] GUAN Z H, WU Z H, LIU Z L, et al. CohortGPT: an enhanced
+GPT for participant recruitment in clinical study[EB/OL].
+[2024-07-20]. https://arxiv.org/abs/2307.11346.
+[29] BALKUS S V , Y AN D H. Improving short text classification
+with augmented data using GPT- 3[J]. Natural Language
+Engineering, 2024, 30(5): 943-972.
+[30] W ADA A, AKASHI T , SHIH G, et al. Optimizing GPT -4 turbo
+diagnostic accuracy in neuroradiology through prompt engi -
+neering and confidence thresholds[J]. Diagnostics, 2024, 14
+(14): 1541.
+[31] GIUFFRÈ M, MASUTTI F , GULOTT A M, et al. Optimizing
+AI performance for autoimmune hepatitis guidelines: a case
+study on enhanced GPT model accuracy[J]. Digestive and
+Liver Disease, 2024, 56: S28.
+[32] SALV AGNO M, TACCONE F S, GERLI A G. Artificial
+intelligence hallucinations[J]. Critical Care,2023, 27(1): 180.
+[33] LEE P , BUBECK S, PETRO J. Benefits, limits, and risks of
+GPT -4 as an AI chatbot for medicine[J]. New England Journal
+of Medicine, 2023, 388(13): 1233-1239.
+[34] CHELLI M, DESCAMPS J, LA VOUÉ V , et al. Hallucination
+rates and reference accuracy of ChatGPT and bard for system-
+atic reviews: comparative analysis[J]. Journal of Medical Inter-
+net Research, 2024, 26: e53164.
+[35] SOVRANO F , ASHLEY K, BACCHELLI A. Toward eliminat-
+ing hallucinations: GPT - based explanatory AI for intelligent
+textbooks and documentation[C]//CEUR Workshop Proceed-
+ings, 2023: 54-65.
+[36] SHAKIL H, ORTIZ Z, FORBES G C. Utilizing GPT to
+enhance text summarization: a strategy to minimize halluci -
+nations[EB/OL]. [ 2024- 07- 20]. https://arxiv.org/abs/ 2405.
+04039.
+[37] JAHANBAKHSH K, HAJIABADI M, GAGRANI V , et al.
+Beyond hallucination: building a reliable question answering &
+explanation system with GPT s[C]//Proceedings of the NeurIPS'
+23 Workshop on Generative AI for Education, 2023.
+[38] AYERS J W, POLIAK A, DREDZE M, et al. Comparing
+physician and artificial intelligence chatbot responses to patient
+questions posted to a public social media forum[J]. JAMA
+Internal Medicine, 2023, 183(6): 589-596.
+2054
+
+=== PDF_PAGE 13 ===
+田崇腾 等：大语言模型 GPT 在医疗文本中的应用综述
+[39] GORDON E B, TOWBIN A J, WINGROVE P , et al. Enhanc-
+ing patient communication with Chat- GPT in radiology:
+evaluating the efficacy and readability of answers to common
+imaging-related questions[J]. Journal of the American College
+of Radiology, 2024, 21(2): 353-359.
+[40] LIU X, ZHENG Y , DU Z, et al. GPT understands, too[EB/
+OL]. [2024-07-20]. https://arxiv.org/abs/2103.10385.
+[41] LEE T C, ST ALLER K, BOTOMAN V , et al. ChatGPT answers
+common patient questions about colonoscopy[J]. Gastroen -
+terology, 2023, 165(2): 509-511.
+[42] LIU Z L, HUANG Y , YU X W, et al. DeID-GPT: zero-shot
+medical text de-identification by GPT- 4[EB/OL]. [2024-07-
+20]. https://arxiv.org/abs/2303.11032.
+[43] ZENG C K, HE D B, FENG Q, et al. SecureGPT: a frame -
+work for multi- party privacy- preserving transformer infer -
+ence in GPT[J]. IEEE Transactions on Information Foren -
+sics and Security, 2024, 19: 9480-9493.
+[44] LEVKOVICH I, EL YOSEPH Z. Suicide risk assessments
+through the eyes of ChatGPT -3.5 versus ChatGPT -4: vignette
+study[J]. JMIR Mental Health, 2023, 10: e51232.
+[45] HADAR-SHOV AL D, ELYOSEPH Z, LVOVSKY M. The
+plasticity of ChatGPT's mentalizing abilities: personalization
+for personality structures[J]. Frontiers in Psychiatry, 2023,
+14: 1234397.
+[46] PARKER G, SPOELMA M J. A chat about bipolar disorder
+[J]. Bipolar Disorders, 2024, 26(3): 249.
+[47] KUNG T H, CHEA THAM M, MEDENILLA A, et al. Per -
+formance of ChatGPT on USMLE: potential for AI-assisted
+medical education using large language models[J]. PLoS
+Digital Health, 2023, 2(2): e0000198.
+[48] GILSON A, SAFRANEK C W, HUANG T, et al. How does
+ChatGPT perform on the United States medical licensing
+examination (USMLE)? The implications of large language
+models for medical education and knowledge assessment[J].
+JMIR Medical Education, 2023, 9: e45312.
+[49] JOHNSON D, GOODMAN R, P A TRINEL Y J, et al. Assessing
+the accuracy and reliability of AI-generated medical responses:
+an evaluation of the Chat-GPT model[EB/OL]. [2024-07-20].
+https://pmc.ncbi.nlm.nih.gov/articles/PMC10002821/.
+[50] HUANG X, ESTAU D, LIU X, et al. Evaluating the perfor -
+mance of ChatGPT in clinical pharmacy: a comparative study
+of ChatGPT and clinical pharmacists[J]. British Journal of
+Clinical Pharmacology, 2024, 90(1): 232-238.
+[51] SUÁREZ A, DÍAZ-FLORES GARCÍA V , ALGAR J, et al.
+Unveiling the ChatGPT phenomenon: evaluating the consis -
+tency and accuracy of endodontic question answers[J]. Interna-
+tional Endodontic Journal, 2024, 57(1): 108-113.
+[52] LAI U H, WU K S, HSU T Y , et al. Evaluating the perfor -
+mance of ChatGPT -4 on the United Kingdom medical licens-
+ing assessment[J]. Frontiers in Medicine,2023, 10: 1240915.
+[53] T ACK A, PIECH C. The AI teacher test: measuring the peda-
+gogical ability of blender and GPT -3 in educational dialogues
+[EB/OL]. [2024-07-20]. https://arxiv.org/abs/2205.07540.
+[54] AMIN M Y M. AI and chat GPT in language teaching: enhanc-
+ing EFL classroom support and transforming assessment
+techniques[J]. International Journal of Higher Education
+Pedagogies, 2023, 4(4): 1-15.
+[55] W ANG J D, Y AO Z H, Y ANG Z C, et al. NoteChat: a dataset
+of synthetic doctor-patient conversations conditioned on clinical
+notes[EB/OL]. [2024-07-20]. https://arxiv.org/abs/2310.15959.
+[56] BEN ABACHA A, YIM W W , ADAMS G, et al. Overview of
+the MEDIQA-chat 2023 shared tasks on the summarization &
+generation of doctor- patient conversations[C]//Proceedings
+of the 5th Clinical Natural Language Processing Workshop.
+Stroudsburg: ACL, 2023: 503-513.
+[57] RHODES G A, HUANG S H. Augmented and virtual reality
+in the world of GPT text and image creations: AI, metaverse,
+and art[M]//Augmented and virtual reality in the metaverse.
+Cham: Springer, 2024: 227-246.
+[58] 袁方, 任海玲, 赵梦, 等. 我国传染病预警监测模型研究进
+展综述[J]. 价值工程, 2023, 42(33): 162-165.
+YUAN F, REN H L, ZHAO M, et al. Review of research
+progress on early warning and monitoring models for infec -
+tious diseases in China[J]. V alue Engineering, 2023, 42(33):
+162-165.
+[59] HASNAIN M. ChatGPT applications and challenges in con -
+trolling monkey pox in Pakistan[J]. Annals of Biomedical
+Engineering, 2023, 51(9): 1889-1891.
+[60] HOW ARD A, HOPE W, GERADA A. ChatGPT and antimi-
+crobial advice: the end of the consulting infection doctor?
+[J]. The Lancet Infectious Diseases, 2023, 23(4): 405-406.
+[61] PEREYRA L, SCHLOTTMANN F, STEINBERG L, et al.
+Colorectal cancer prevention: is chat generative pretrained
+transformer (Chat GPT) ready to assist physicians in deter -
+mining appropriate screening and surveillance recommen da-
+tions?[J]. Journal of Clinical Gastroenterology, 2024, 58(10):
+1022-1027.
+[62] ARSLAN S. Exploring the potential of chat GPT in person -
+alized obesity treatment[J]. Annals of Biomedical Engineer -
+ing, 2023, 51(9): 1887-1888.
+[63] ZAHRA M A, AL- TAHER A, ALQUHAIDAN M, et al.
+The synergy of artificial intelligence and personalized medi -
+cine for the enhanced diagnosis, treatment, and prevention
+of disease[J]. Drug Metabolism and Personalized Therapy,
+2024, 39(2): 47-58.
+[64] PA TRINOS G P , SARHANGI N, SARRAMI B, et al. Using
+ChatGPT to predict the future of personalized medicine[J].
+The Pharmacogenomics Journal, 2023, 23(6): 178-184.
+[65] WU C Y , LEI J Y , ZHENG Q Y , et al. Can GPT- 4V (ision)
+serve medical applications? Case studies on GPT- 4V for
+multimodal medical diagnosis[EB/OL]. [2024-07-19]. https://
+arxiv.org/abs/2310.09909.
+[66] Y ANG Z, Y AO Z, T ASMIN M, et al. Performance of multimodal
+GPT-4V on USMLE with image: potential for imaging diag -
+nostic support with explanations[EB/OL]. [ 2024 -07-19].
+https://www .medrxiv .org/content/10.1101/2023.10.26.23297629v3.
+[67] BRIN D, SORIN V , BARASH Y , et al. Assessing GPT- 4
+multimodal performance in radiological image analysis[J].
+European Radiology, 2025, 35(4): 1959-1965.
+[68] ZAMAN K T, HASAN W U, LI J, et al. Empowering care -
+2055
+
+=== PDF_PAGE 14 ===
+Journal of Frontiers of Computer Science and Technology 计算机科学与探索 2025, 19(8)
+givers of Alzheimer's disease and related dementias (ADRD)
+with a GPT -powered voice assistant: leveraging peer insights
+from social media[C]//Proceedings of the 2023 IEEE Sym -
+posium on Computers and Communications. Piscataway:
+IEEE, 2023: 1-7.
+[69] DAI H X, LI Y W, LIU Z L, et al. AD-AutoGPT: an autono -
+mous GPT for Alzheimer 's disease infodemiology[EB/OL].
+[2024-07-19]. https://arxiv.org/abs/2306.10095.
+[70] RUNDE B S, ALAPA TI A, BAZAN N G. The optimization
+of a natural language processing approach for the automatic
+detection of Alzheimer 's disease using GPT embeddings[J].
+Brain Sciences, 2024, 14(3): 211.
+[71] WU C Y , LIN Z H, FANG W L, et al. A medical diagnostic
+assistant based on LLM[C]//Proceedings of the 2024 China
+Health Information Processing Conference. Singapore: Springer,
+2024: 135-147.
+[72] ULLAH E, PARW ANI A, BAIG M M, et al. Challenges
+and barriers of using large language models (LLM) such
+as ChatGPT for diagnostic medicine with a focus on digital
+pathology-a recent scoping review[J]. Diagnostic Pathology,
+2024, 19(1): 43.
+[73] SCHERBAKOV D, HUBIG N, JANSARI V , et al. The
+emergence of large language models (LLM) as a tool in
+literature reviews: an LLM automated systematic review
+[EB/OL]. [2024-09-22]. https://arxiv.org/abs/2409.04600.
+[74] HALTAUFDERHEIDE J, RANISCH R. The ethics of Chat -
+GPT in medicine and healthcare: a systematic review on large
+language models (LLMs) [J]. NPJ Digital Medicine, 2024,
+7: 183.
+[75] PENG L, LUO G X, ZHOU S C, et al. An in-depth evaluation
+of federated learning on biomedical natural language processing
+for information extraction[J]. NPJ Digital Medicine, 2024,
+7: 127.
+[76] SONG Y P , ZHANG J H, TIAN Z L, et al. LLM-based privacy
+data augmentation guided by knowledge distillation with a
+distribution tutor for medical text classification[EB/OL].
+[2024-07-20]. https://arxiv.org/abs/2402.16515.
+[77] MILETIC M, SARIY AR M. Assessing the potentials of LLMs
+and GANs as state-of-the-art tabular synthetic data generation
+methods[C]//Proceedings of the2024 International Conference
+on Privacy in Statistical Databases. Cham: Springer, 2024:
+374-389.
+[78] BLALOCK D, ORTIZ J J G, FRANKLE J, et al. What is
+the state of neural network pruning?[EB/OL]. [ 2024-07-20].
+https://arxiv.org/abs/2003.03033.
+[79] SONG L, CHEN Y K, Y ANG S, et al. Low-rank approxima -
+tion for sparse attention in multi-modal LLMs[C]//Proceed -
+ings of the 2024 IEEE/CVF Conference on Computer Vision
+and Pattern Recognition. Piscataway: IEEE, 2024: 13763-
+13773.
+[80] XU X H, LI M, TAO C Y , et al. A survey on knowledge
+distillation of large language models[EB/OL]. [ 2024-07-20].
+https://arxiv.org/abs/2402.13116.
+[81] GOU J P , YU B S, MAYBANK S J, et al. Knowledge distil -
+lation: a survey[J]. International Journal of Computer Vision,
+2021, 129(6): 1789-1819.
+[82] KUMAR A, NASEER M, NARAY AN S, et al. Multi-modal
+generation via cross-modal in-context learning[EB/OL].
+[2024-07-19]. https://arxiv.org/abs/2405.18304.
+[83] LI Y , SONG Z C, GONG Z J, et al. Multimodal growth and
+development assessment model[EB/OL].[2024-10-20]. https://
+arxiv.org/abs/2410.13647.
+[84] LIU Y S, WU Z Q, CHEN B Z, et al. Medical cross-modal
+prompt hashing with robust noisy correspondence learning
+[C]//Proceedings of the 2024 International Conference on
+Medical Image Computing and Computer Assisted Intervention.
+Cham: Springer, 2024: 250-261.
+[85] W ANG P Y , ZHANG H Q, YUAN Y X. MCPL: multi-modal
+collaborative prompt learning for medical vision-language
+model[J]. IEEE Transactions on Medical Imaging, 2024, 43
+(12): 4224-4235.
+[86] HUANG H Y , ZHENG O, W ANG D D, et al. ChatGPT for
+shaping the future of dentistry: the potential of multi-modal
+large language model[J]. International Journal of Oral Science,
+2023, 15: 29.
+[87] YAN Q, DUAN J W, WANG J X. Multi- modal concept
+alignment pre-training for generative medical visual question
+answering[C]//Findings of the Association for Computational
+Linguistics: ACL2024. Stroudsburg: ACL,2024: 5378-5389.
+田崇腾（2001—） ，男，山东菏泽人 ，硕士研究
+生，主要研究方向为医疗健康大数据。
+TIAN Chongteng, born in 2001, M.S. candidate.
+His research interest is healthcare big data.
+刘静（1980—） ，女，山东济南人 ，硕士 ，教授 ，
+主要研究方向为医学图像处理与分析 、深度
+学习等。
+LIU Jing , born in 1980, M.S., professor. Her
+research interests include medical image processing
+and analysis, deep learning, etc.
+王晓燕（1979—） ，女，山东诸城人 ，博士，副教
+授，硕士生导师 ，主要研究方向为中医药智能
+化、医疗健康大数据。
+W ANG Xiaoyan, born in 1979, Ph.D., associate
+professor, M.S. supervisor. Her research interests
+include the intelligence of traditional Chinese
+medicine and healthcare big data.
+李明（1978—） ，男，山东淄博人，硕士，教授，主
+要研究方向为中医药智能化。
+LI Ming , born in 1978 , M.S., professor. His
+research interest is the intelligence of traditional
+Chinese medicine.
+2056

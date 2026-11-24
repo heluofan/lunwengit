@@ -1,0 +1,122 @@
+from pathlib import Path
+p=Path(r'C:\lunwen\output\选方向_EEG-fNIRS_2026-11-22');p.mkdir(parents=True,exist_ok=True)
+t='''# 新方向任务卡：短观测窗下的EEG–fNIRS认知任务识别
+
+日期：2026-11-22。遵循桌面《论文选题SOP_重塑版.md》。原始核查材料：C:/lunwen/research_audit/new_direction_20261122/。
+
+## 本轮选择与范围
+
+选择“互补预测”路线：EEG（脑电）与fNIRS（近红外脑血氧信号）的认知任务识别，先做同一公开数据集的Word Generation（WG，词语生成）与Baseline（BL，休息）二分类。
+研究设置限定为：在未见被试上、同一可用观测时长下，改善融合分类效果。首轮固定5秒和10秒两个观测预算，观察起点、是否包含提示阶段在预注册清单中统一；更短时长仅在有实际依据后扩展。跨被试是评测方式，观测时长是本轮主要研究变量，不再同时扩展病种、缺模态和跨库泛化。
+暂定工作题名：《面向短时认知任务识别的脑电—近红外信号融合方法》。题名里的具体改进机制在先导实验之后确定。
+这是脑机接口的离线算法研究，不是临床疾病诊断、卒中疗效评估或实际在线BCI系统验证。健康志愿者数据不支持患者诊断结论。
+
+选择理由：双模态同步采集、任务与标签清楚；官方数据可直接取得；已有真实数据预处理和近期网络计算实测；小网络、常规信号处理适合单张5090，且不需要新设备、医院或新增专家标注。它不是无人研究的冷门。当前证据支持进入先导实验，不支持保证改进或录用。
+
+## 数据验收：本次实际做了什么
+
+数据：Simultaneous acquisition of EEG and NIRS during cognitive tasks for an open access dataset，柏林大学官方源，使用Dataset C的WG/BL。
+官方入口：https://doc.ml.tu-berlin.de/simultaneous_EEG_NIRS/
+来源标识：https://doi.org/10.14279/depositonce-5830
+
+官方总数据包含26名健康被试。每人60个WG/BL试次，3个会话；每类30次。总计1560试次不是1560名被试。EF-Net把每试次切成6个重叠窗，形成9360窗；这些窗口绝不能当独立样本跨集合随机拆分。
+
+直接下载不需要登录、CITI培训或导师背书。官方MATLAB压缩包：
+- EEG/EEG_01-26_MATLAB.zip：6,091,239,135字节；已读取ZIP目录，260项。
+- NIRS/NIRS_01-26_MATLAB.zip：797,840,805字节；已读取ZIP目录，234项。
+两个包涵盖多个任务，不是都必须下载；本次通过标准HTTP Range从官方ZIP中只提取VP001的WG信号、标签与布置坐标，共约96MB。没有完整下载全库，不声称26人均已逐一检查。
+
+真实样本解析：
+- EEG：371283×30，200Hz，60个事件；30 WG+30 BL。
+- fNIRS：20107×36（HbO，另有同结构HbR），10Hz，60个事件；30 WG+30 BL。拼接HbO/HbR后才是72列，不应写成72个独立光学测量位置。
+- 信号数值均有限值。不同设备事件时间基准不同，必须各自按对应mrk提取，再按试次身份配对；不能按原始数组相同行号或直接相减时间戳同步。
+- EEG通道表含HEOG与VEOG。它们是眼电，不应在新方法中默默当成脑皮层通道；复现时记录作者输入，正式主实验统一各方法的通道集合，并做剔除眼电的敏感性比较。
+
+已调用EF-Net官方data_preprocess.py的extract_subj_dep，只将输入文件路径解析指向已下载样本，得到：EEG [360,500,30,1]、fNIRS [360,25,72,1]、标签[360,2]，每类180窗，所有数值有限。这证明一个真实被试的公开数据能够接入公开预处理，不等于分类训练已经完成。
+
+使用权说明：官方开放发布与下载可用已核；本轮未逐条完成原始数据许可条款归档，不以期刊文章的CC许可代替数据许可。正式使用、派生数据发布前阅读并保存数据记录中的使用与引用条件。
+
+## 两篇完整论文构成的任务地图
+
+1. EF-Net: Mental State Recognition by Analyzing Multimodal EEG-fNIRS via CNN，Sensors，2024，DOI10.3390/s24061889。
+已读全文、下载作者仓库并检查预处理、模型和subject-independent notebook。
+输入：EEG+HbO/HbR；输出WG/BL。数据为上述26人Dataset C。方法为双分支CNN融合，比较单模态、机器学习与深度方法。作者报告跨被试F1为65.05%，不能与同被试99.36%直接比较。它提供跨被试任务的参考起点，不能把65.05%当已复现成绩或当前SOTA。
+作者代码：https://github.com/DL4mHealth/EF-Net
+代码注意：原notebook以名为test的数据集选择val_accuracy最佳权重。正式实验应设置独立内部验证被试，最终测试被试不参与早停或选模型；修改评估协议后不承诺数值与原文完全一致。代码为TensorFlow，5090原样运行未验证。
+
+2. Decoupled Bidirectional Spatio-Temporal Fusion Network for Hybrid EEG-fNIRS Cognitive Task Classification，Brain Sciences，2026，DOI10.3390/brainsci16020241。
+已读全文、下载并检查model.py、preprocessing.py、train.py。
+输入EEG+HbO/HbR；输出MA、MI或WG任务类别。方法BiSTF-Net包括双向跨模态引导、自适应时间对齐、对称交叉注意融合。论文WG准确率84.99%采用每被试内部10折，不是跨被试成绩；不能拿它和EF-Net跨被试65.05%算差距。
+作者代码：https://github.com/zc701/BiSTF-Net
+实测：保持模型定义不变，只省去模型文件顶部与模型计算无关的训练/绘图库导入，在CPU上完成随机输入的前向与反向。777412参数，输入EEG [2,16,16,600,1]、fNIRS [2,11,16,16,30,2]，输出[2,2]，有限损失及梯度。
+边界：这是模型计算验收，非完整训练验收。原训练入口device未定义，路径硬编码；preprocessing最终npz字段与train.py读取的中间字段不一致；训练循环用test_loader选最优权重。需要整理独立适配入口及内部验证划分，不应包装成原样开箱可跑。上述工程修复不算论文创新。
+
+## 为什么选“观测预算”，而不是泛泛加融合模块
+
+代码显示BiSTF-Net为一个3秒EEG窗构造11个按秒移位的3秒fNIRS候选窗，以选择血流响应延迟。第一个窗口默认从相对事件3秒开始：EEG使用3至6秒，而fNIRS候选覆盖3至16秒；后续滑窗覆盖更晚时间。
+这是合理的离线设计，不是标签泄漏或违规，但它的结果不能直接解释为观察3秒就能做出的判断。EF-Net使用相同固定时间段配对两个信号，公开跨被试结果仍有限。
+
+因此首轮问题是：在各方法都只能读取截止到同一时刻的信号时，哪些方法能把慢血流信息用好，融合相对充分训练的EEG-only是否仍有优势？若短窗时一方不可靠，加入它是否损害已有判别？
+前一句的数据读取时间范围是代码事实；后面的融合失效及其原因是待验证假设。不能预先声称已证明某方法短窗失败，也不能把短窗方法天然难度当贡献。
+
+不预定动态门控、时间对齐、蒸馏、Mamba或三个模块。先获得统一预算下的对照曲线，再只处理一个具体瓶颈。如果简单充分训练、单模态或已有方法已经解决所观察问题，就换瓶颈，不把基线不足包装成新方法收益。
+
+## 第一次撞车核查：明确的已有工作
+
+检索源：OpenAlex/Crossref、PubMed/EuropePMC、PMC全文、公开作者仓库；2023至2026年并沿EF-Net的73条OpenAlex后续引用筛读相关条目。不是73篇都逐篇读过，更不是73篇都做WG。查询含EEG fNIRS word generation subject independent、hybrid EEG fNIRS early classification latency、EEG fNIRS short time window classification、跨模态蒸馏相关组合。查询结果和元数据已落盘。
+
+- EF-Net，Sensors2024：全文/代码已核；直接跨被试参考。
+- STA-Net: Spatial–temporal alignment network for hybrid EEG-fNIRS decoding，Information Fusion2025，DOI10.1016/j.inffus.2025.103023：仓库及README已核，TensorFlow2.10版本依赖，不能宣称时间对齐没人做。此轮未读全文。
+- Multimodal MBC-ATT: cross-modality attentional fusion of EEG-fNIRS for cognitive state decoding，Frontiers in Human Neuroscience2025，DOI10.3389/fnhum.2025.1660532：全文已读相关数据、方法、实验；WG/n-back与跨模态注意已有研究，本轮未找到完整训练仓库。
+- BiSTF-Net，Brain Sciences2026：全文和模型计算已验收。时间延迟、自适应跨模态交互均不是空白。
+- MGFNet: A Multi-Granularity Fusion Network with Coupling-Guided Sparse Routing for Hybrid EEG-fNIRS Decoding，Sensors2026，DOI10.3390/s26113402：全文已读；已做样本级耦合路由及EEG人工加噪鲁棒性。原文明确是within-subject offline，跨被试/跨会话/在线仍为未来工作。但不能据此宣称所有跨被试问题无人做。
+- STeCANet: spatio-temporal cross attention network for brain computer interface systems using EEG-fNIRS signals，Journal of Neural Engineering2026，DOI10.1088/1741-2552/ae2954：正式摘要已核，直接覆盖WG跨会话/跨被试、时间对齐、自适应融合和对抗训练。全文与代码未验收，是必须继续查的直接竞争；不能把“跨被试”本身当创新，也不能默默省略该工作。
+- Rethinking Delayed Hemodynamic Responses for fNIRS Classification，TNSRE2023，DOI10.1109/tnsre.2023.3330911：正式摘要和官方代码地址已核；fNIRSNet考虑血流延迟，只有498参数，说明“更深更大”不能代替充分的单模态强对照。全文此轮未读。
+- EFRM，Computers in Biology and Medicine2025，DOI10.1016/j.compbiomed.2025.111292：公开仓库及预训练/微调说明已核，但1250小时预训练不是本任务的必要起点，权重与WG迁移设置未验收。不要要求独立学生重训基础模型才允许起步。
+- EPECT，Mathematics2026，DOI10.3390/math14132416：仓库明确只是代码片段，不作为完整可跑主基线。
+
+竞争判断：EEG-fNIRS融合已经有持续竞争，本次没有可靠证据能称整个领域“不热门”。避开泛泛运动想象刷榜/情绪识别/基础模型训练，收敛到一个公开WG任务上的观测预算与融合收益，目的是控制可执行范围，不是靠换一个标题证明低竞争。尚不能确认“短观测预算+跨被试WG”的机制创新；那属于第二次撞车核查，而非当前的既成发现。
+
+## 首轮可执行方案
+
+阶段1：数据与协议（先不设计新模块）
+1. 批量提取26人的WG文件，核对试次与类别、采样率、时间基准及通道。保留subject_id、session_id、trial_id、window_end，不把重叠窗当独立对象。
+2. 整理BiSTF-Net PyTorch数据入口与内部验证；保留原文件，只新增适配器和修复记录。先原观察范围复现可运行训练，再实现固定预算的数据读取。若协议改变，明示为统一重跑，不宣称论文数字复现。
+3. 各方法使用同一5秒/10秒输入可见范围，测试被试不参与归一化拟合、早停或超参数选择。若只做离线短窗分析，应如实表述；若主张在线，滤波和归一化也必须因果、不能读取截止时刻后的样本。
+
+阶段2：建立强对照
+- EEG-only：EEGNet等领域成熟模型，加充分训练的基础CNN；最终选验证表现强者。
+- fNIRS-only：fNIRSNet及基础CNN；不能只放VGG/ResNet自然图像网络而忽略小型专用模型。
+- 两个单模态模型的概率后融合和特征拼接。
+- 直接融合基线BiSTF-Net与EF-Net；STA-Net、STeCANet用于差异表和可复现强对照补齐，无法完整重跑时明确限制，不把摘要中的分数混进统一实验结果。
+
+正式采用外层按被试分组的评价，内部也按被试验证。可先固定20人开发/6人完全隔离测试用于一次管线验证，完成协议锁定后改为预先定义的被试级外层交叉验证；这两套结果分别报告，不能用固定测试集挑算法再把同一批人宣称为从未参与开发的最终测试。更稳妥是先仅用少量开发被试调管线，其余人留待锁定外层方案后使用。
+报告被试宏平均F1、balanced accuracy、每被试分布、试次级汇总、观测等待时间、参数/推理成本。以被试而非重叠窗作不确定性统计单位。26人是明显的小样本限制，不能靠9360窗掩盖；不能预先保证1至2点差异具有统计说服力。
+
+阶段3：确定瓶颈与改进
+只在训练内部验证上分析：时间预算变化的收益、融合新增错误、受试者间差异及单模态可靠性。选择一个主要矛盾。形成机制后再查跨任务同机制，明确与STeCANet、MGFNet、延迟对齐和跨模态蒸馏等工作的差异，再做消融。没有可验证差异就不写算法论文。
+
+先导实验的去留依据不是固定涨点门槛：若数据/协议无法稳定跑通、充分单模态一直优于所有融合且没有可利用互补证据、直接强工作已完整覆盖拟解决问题而又无可核查差异，就暂停该瓶颈。若只是没有达到论文高分，先排查设置，不立即换整个方向。
+
+## 实际验收边界
+
+已完成：官方数据目录与单被试配对文件下载；真实MAT解析；官方EF-Net单被试预处理；BiSTF模型随机输入前向/反向；两篇任务全文及多个直接竞争初核。
+未完成：全库质量验收、完整训练、5090显存/吞吐测试、统一协议性能比较、可验证涨点、具体机制创新核查、目标期刊当前目录与投稿范围逐刊验收。
+
+结论：可以开始这个明确任务的基线先导实验。不是已经完成所有训练前核查，也不是已经有可投稿成果。最大的剩余研究风险是26位健康被试的泛化证据，以及已有直接强工作；不承诺“最容易北大核心”或发表概率。
+
+## 核心来源
+
+- 数据：https://doc.ml.tu-berlin.de/simultaneous_EEG_NIRS/
+- EF-Net全文：https://pmc.ncbi.nlm.nih.gov/articles/PMC10974548/
+- EF-Net代码：https://github.com/DL4mHealth/EF-Net
+- BiSTF-Net全文：https://pmc.ncbi.nlm.nih.gov/articles/PMC12938437/
+- BiSTF-Net代码：https://github.com/zc701/BiSTF-Net
+- MGFNet全文：https://pmc.ncbi.nlm.nih.gov/articles/PMC13259229/
+- MBC-ATT全文：https://pmc.ncbi.nlm.nih.gov/articles/PMC12504385/
+- STeCANet：https://doi.org/10.1088/1741-2552/ae2954
+- fNIRSNet：https://github.com/wzhlearning/fNIRSNet
+
+本轮没有选择的方向：口腔照片+临床元数据，数据实际要求机构邮件和研究负责人信息、训练仓库不完整；VitalDB低血压预测虽数据API公开，但本轮没有核实足够完整的非侵入多信号训练基线，不替代本轮主选。上述状态不等于这些领域不可研究。
+'''
+(p/'任务卡_数据实测_代码验收_撞车核查.md').write_text(t,'utf-8');print(p/'任务卡_数据实测_代码验收_撞车核查.md')

@@ -1,0 +1,783 @@
+=== PDF_PAGE 1 ===
+第 37 卷 第 3 期 计算机辅助设计与图形学学报  Vo l . 3 7 No.3 
+2025 年 3 月 Journal of Computer-Aided Design & Computer Graphics Mar. 2025 
+                    
+收稿日期 : 2023-06-17; 修回日期 : 2024-01-31. 基金项目 : 国家自然科学基金 (62102151, 61972157, 72192821); 上海扬帆项目
+(21YF1411200); 上海市科技重大专项 (2021SHZDZX0102); CCF- 腾讯犀牛鸟基金 (RAGR20230101); 统计与数据科学前沿理论及应用
+教育部重点实验室 (华东师范大学 )开放研究基金 (KLATASDS2305); 中央高校基础科研基金 (KLATASDS2305). 王楠 (1993—), 女, 博
+士, CCF 会员, 主要研究方向为计算机视觉、深度学习 ; 林绍辉 (1989—), 男, 博士, 研究员 , 博士生导师 , 论文通信作者 , CCF 会员, 
+主要研究方向为计算机视觉、 机器学习 ; 齐福霖 (2000—), 女, 硕士研究生 , 主要研究方向为计算机视觉、 深度学习 ; 陈玉珑 (1992—), 
+女, 博士 , 主要研究方向为多媒体设计、媒体传播 ; 李珂 (1991—), 男, 硕士 , 研究员 , 主要研究方向为计算机视觉、多模态学习 ; 
+沈云航 (1991—), 男, 博士, 研究员 , 主要研究方向为计算机视觉、多模态学习 ; 马利庄 (1963—), 男, 博士, 教授, 博士生导师 , CCF
+会员, 主要研究方向为计算机视觉、深度学习 . 
+ 
+基于自监督学习的医学影像异常检测 
+王楠1), 林绍辉1,2)* , 齐福霖1), 陈玉珑3), 李珂4), 沈云航4), 马利庄3) 
+1) (华东师范大学计算机科学与技术学院   上海  200062) 
+2) (华东师范大学统计与数据科学前沿理论及应用教育部重点实验室   上海  200062)  
+3) (上海交通大学电子信息与电气工程学院   上海  200240) 
+4) (上海腾讯优图实验室   上海  200233)  
+(shlin@cs.ecnu.edu.cn) 
+摘  要: 自监督学习 (SSL) 可以很好地捕捉关于不同概念的通用知识 , 有利于各种下游任务 . 针对自监督学习方法没
+有充分利用医学图像的多模态特征等问题 , 提出一种考虑医学图像多模态互补信息的自监督学习方法 ——SLeM. 该
+方法首先将单个模态的图像均匀地划分为 4 个块, 使用这些块随机组合构建多模态图像 , 不同的多模态图像被分配
+不同的标签 , 使得多模态特征可以通过分类任务来学习 ; 为了提取不同大小肿瘤的特征 , 在学习到的多模态特征后
+加入上下文融合块 ; 通过简单的微调将学到的特征转移到下游的多模态医学图像分割任务中 . 在公开数据集 BraTS 
+2019 和 CHAOS 上与 JiGen, Taleb 以及 Supervoxel 等具有代表性的多模态方法对比及消融实验结果表明 , 所提方法在
+整个肿瘤区域的分割准确度提升了 2.03 个百分点 , 在肿瘤核心区域的分割准确度提升了 3.92 个百分点 , 在肿瘤增强
+区域的分割准确度提升了 1.75 个百分点 , 并在视觉方面有较好的效果 , 明显优于其他方法 . 
+关键词 : 自监督学习 ; 多模态融合 ; 医学图像分割 ; 特征提取 ; 多尺度卷积  
+中图法分类号 : TP391.41      DOI: 10.3724/SP.J.1089.2023-00339 
+Self-Supervised Learning for Multi-Modal Medical Image Segmentation 
+Wang Nan1), Lin Shaohui 1,2)*, Qi Fulin 1), Chen Yulong3), Li Ke 4), Shen Yunhang4), and Ma Lizhuang 3) 
+1) (School of Computer Science and Technology, East China Normal University, Shanghai  200062) 
+2) (Key Laboratory of Frontier Theory and Application of Statistics and Data Science, Ministry of Education, East China Normal University,  
+  Shanghai  200062) 
+3) (School of Electronic Information Electrical Engineering, Shanghai Jiao Tong University, Shanghai  200240) 
+4) (Tencent YouTu, Shanghai  200233) 
+Abstract: Self-supervised learning (SSL) can capture gene ric knowledge about different concepts, thereby 
+beneficial for various downstream image analysis tasks. To address the shortcomings of underutilized 
+multi-modal features in self-supervised learning methods for medical images, a self-supervised learning 
+method considering multi-modal complementary information is proposed, named SLeM. This method first 
+divides the four modalities into four blocks uniformly, these blocks are used to construct multi-modal images 
+by randomly combining them, different multi-modal images are assigned different labels, and the multi- 
+modal feature representations can be learned by the cl assification task. The learned multi-modal features are 
+
+=== PDF_PAGE 2 ===
+第 3 期 王楠, 等: 基于自监督学习的医学影像异常检测  475  
+ 
+     
+      
+followed by a contextual fusion block (CFB), which extr acts features from tumors of various sizes. Finally, 
+we transfer the learned representation to the downstr eam multi-modal medical image segmentation task via 
+simple fine-tuning. Experiments c onducted on public datasets BraTS a nd CHAOS were compared with mul-
+timodel baselines, including methods based on JiGen, Ta leb and Supervoxel, etc. The results show that the 
+segmentation accuracy of whole tumor, tumor core a nd enhanced tumor are improved by 2.03 percentage 
+points, 3.92 percentage points and 1.75 percentage points, respectively. Meanwhile, the visual effect ob-
+tained by this method is also significantly better than others. 
+ 
+Key words:  self-supervised learning; multi-model fusion; medical image segmentation; feature extract; multi- 
+scale convolution  
+多种成像模式已被广泛用于现代医学诊断中 , 
+而多成像模式产生的多视图医学图像是现代医学
+诊断的基本技术之一 [1]. 近年来生成对抗网络
+(generative adversarial network, GAN) [2]、卷积神经
+网络 (convolutional neural network, CNN) [3] 和
+U-Net[4] 已被用于多视图医学图像分割 , 它们都是
+通过数据注释进行监督学习 ; 但在对所有多视图
+医学图像进行标注时 , 存在成本过高、劳动强度大 , 
+以及隐私泄露问题 . 
+自监督学习 (self-supervised learning, SSL) [5]由
+于能够减少注释数据集的成本而受到欢迎 , 它通
+过设计和解决数据本身的代理任务来学习特征表
+示; 之后, 学习到的特征表示将被转移 , 以提高下
+游任务的性能 [6]. Spitzer 等[7]从三维脑磁共振成像
+中切割二维斑块 , 并预测这些斑块之间的距离作
+为监督信号来设计一个代理任务 ; Tajbakhsh 等[8]把
+旋转和重建作为代理任务 , 然后将学到的特征转
+移到肺叶分割和结节检测任务 : 但这些方法利用
+医学图像的单一视图特征 , 限制了捕捉重要的跨
+视图互补信息的能力 . 众所周知 , 多视图医学图像
+包含丰富的表征 , 因此自监督方法也可用于多视
+图医学图像 . Chen 等[9] 等应用一种基于上下文恢
+复的自监督方法分割多视图 MRI 图像中的脑肿
+瘤, 并使用学到的特征表示提升多视图医学分割
+的性能. 值得注意的是 , 解决拼图任务是一个广泛
+使用的自监督任务 [10] , 它采用空间背景学习有效
+的数据表示 . 尽管这些方法已经取得了很好的效
+果, 但是通常需要大量内存和计算资源 ; 同样, 自
+监督任务的复杂性也受到固定集合大小的限制 . 
+本文提出一种自监督的多视图拼图分类方法 , 
+首先对不同视图的图像进行分割 (T1, T2, T1ce, 
+Flair), 从不同的视图中提取分割块 , 并将它们组
+合成新的图像 , 分类标签被分配给不同的组合 . 然
+后多视图特征表示可以通过分类任务来学习 ; 最
+后在自监督任务学习到的特征后加入上下文融合
+(context fusing block, CFB) 模块, 以更好地获得多
+尺度信息 , 学习到的特征可以转移到下游的分割
+任务中. 
+1  相关工作 
+1.1  基于医学影像的自监督方法  
+在 SSL 中 , 网络框架包括多种 CNN[3,11] , 
+GAN[2,12] 和 U-Net[4,13] . 为了处理有缺陷的注释数
+据, 研究人员利用 CNN 从未标记的数据中获得有
+用的信息 . Jamaludin 等[14] 的研究表明 , 单独的纵
+向扫描可以作为训练 CNN 进行自监督的一种形
+式, 预训练的 CNN 在监督分类任务上的性能优于
+从头开始训练的网络 . 当前, GAN 作为一种新的
+SSL 范式受到越来越多的关注 . Hu 等[15] 使用元数
+据的学习方法 , 并提出一个基于 SSL 方法的 GAN
+框架; Cao 等[16] 提出一种自监督的协作学习方法 , 
+它可用于合成缺失的模态 . 医学图像的不同模态
+可以提供互补信息以使医生做出准确的临床决策 . 
+基于 U-Net 的方法被广泛用于处理医学图像 [17] , 
+该框架也适用于自监督任务 . Matzkin 等[13] 从 CT
+中提取一个二元颅骨标签作为一项自监督的任务 , 
+旨在将颅骨后期萎缩与患者结果联系起来 . 然而 , 
+这些方法仅依赖于单个图像模态 , 限制了它们捕
+获重要的跨模态互补信息的能力 . 与上述方法相
+比, 本文 (简称 SleM) 方法用跨模态方法提高下游
+任务的性能 . 此外, 利用融合图像能够解决多模态
+样本稀少但跨模态信息必不可少的问题 . 
+1.2  基于多模态的医学影像自监督方法  
+当前 , 自监督方法已被应用于多模态医学图
+像, 首先解决预定义的任务以学习模式之间的特
+
+=== PDF_PAGE 3 ===
+476 计算机辅助设计与图形学学报  第 37 卷 
+ 
+     
+      
+征表示 , 然后通过微调转移到下游任务 [18]. Maha-
+patra 等[19] 使用自监督将其分割图通过语义引导来
+获得特征 . 然后, 利用循环 GAN 跨域传输图像外
+观. Aleb 等[20] 提出一种利用多模态拼图的自监督
+方法, 通过训练 U-Net 学习表示对不同的下游任务
+进行微调 . 基于上下文的自监督方法中 , 对于细粒
+度较小的部分 , Zhang 等[21] 定义一个代理任务 , 对
+从传统的 3D CT 和 MRI 中提取的 2D 切片进行排序, 
+预训练任务为细粒度身体部分的识别 . 此外, 利用
+上下文信息可以提高模型的泛化能力 . Roth 等[22]将
+身体的不同部分分类为自监督任务来训练 ConvNet, 
+它可以应用于解剖特定分类的医学图像 ; Noroozi
+等[23] 选择一个固定的排列集大小定义分类任务的
+复杂性. 另一方面 , 通过将预训练任务定义为置换
+矩阵推理 , 强制其在所有可能的置换中找到应用
+的置换 . 但是, 上述方法侧重于特征层面 , 当域差
+异高时可能会失败 . 相反, SLeM 在数据层面而不
+是特征级别结合成像模态 , 可以处理较大的模态
+差异, 从而实现更好的模态混淆 . 
+2  本文方法  
+本文提出一种基于多模态医学影像的自监督
+方法, 包括预训练任务和主要任务 , 其中预训练任
+务是多视图分类任务 , 主要任务是脑部肿瘤和肝
+脏的分割 , 其框架如图 1 所示. 
+2.1  基于医学影像的自监督方法  
+SLeM 采用类似 U-Net 的网络结构 , 包括编码
+器和解码器 2 部分. 受到 Y-Net[24] 的启发, SLeM 采
+用高效的空间金字塔 (efficient spatial pyramid, 
+ESP)[25] 模块, 以及带有归一化和 ReLU 的常规卷
+积层作为编码器的主要网络结构 . ESP 是一个高效
+的网络模块 , 包含具有点式卷积和扩张卷积 . 点式
+卷积有助于减少计算量 , 而扩张卷积可以对特征
+图进行重采样 , 以便从较大的有效感受野中学习
+特征表示 . 对于解码器 , 金字塔空间池化 (pyramid 
+spatial pooling, PSP) 模块和 CFB 是解码器中的主
+要模块. PSP 得益于对全局信息的提取 , 将像素级
+的特征扩展到设计的全局金字塔中 , 因此其结合
+了局部和全局特征 , 使最终的预测更加可靠 . CFB
+使用密集反卷积和残差多核池化 (residual multi- 
+kernel pooling, RMP) 模块, 从目标对象的动态变化
+中提取丰富的特征 , 实际上, 动态变化经常存在于
+多视图的医学图像中 . 此外, CFB 还弥补了传统池
+化方法在图像分割中图像信息损失的问题 . 
+CFB 模块用于有效地密集分割 , 其结构如图 2
+所示. 首先向 4 个级联分支注入多尺度的空洞卷
+积, 然后使用 RMP 模块捕捉更广泛和更深入的特
+征表示 . CFB 中包含一个类似空洞金字塔池化
+(atrous spatial py ramid pooling, ASPP) 模块和一个
+RMP 模块, 可以提取更丰富的语义特征信息 . 其
+中, 类似 ASPP 模块的灵感来自 ASPP[26], 利用 4  
+ 
+ 
+图 1  本文方法框架  
+
+=== PDF_PAGE 4 ===
+第 3 期 王楠, 等: 基于自监督学习的医学影像异常检测  477  
+ 
+     
+      
+ 
+图 2  CFB 示意图 
+ 
+个平行分支生成高层次的语义特征图 , 空洞卷积
+的数量从 1 到 1, 3 和 5, 每个分支的感受野分别为
+3, 7, 9 和 19. 与 ASPP 不同, SLeM 的 4 个平行分支
+使用了更多的较小比率的空洞卷积 , 在每个分支
+中, 除了感受野为 3 的分支, 还应用 11× 的带有线
+性激活的空洞卷积 . 此外, 还提出一个由 4 个平行
+分支组成的 RMP 模块, 特征图首先被输入到 RMP
+模块中; 将输出结果与原始特征图合并 , 产生类似
+ASPP 模块的输出 . RMP 包含 4 种不同核大小的集
+合运算 (即 22× , 33× , 55× 和 66× ), 将 11× 的卷
+积(输出通道数为 1)和双线性上采样 , 提取全局背
+景信息, 所有上采样的特征图都与原始特征图相连
+接, 作为残差多核模块的输出 ; 最后, CFB 的输出
+由类似 ASPP 和 RMP 模块的输出特征图融合而成 . 
+2.2  自监督的多视图分类  
+多视图拼图已被广泛地用于自监督的代理任
+务[5]. 但这个任务需要大量的分割拼图以及大的优
+化空间, 导致优化困难 , 因此对于下游的分割任务
+不能很好地学习特征表示 . SLeM 设计了一个新的
+代理任务 , 把随机组合的多视图的拼图作为输入 , 
+并对这些输入进行分类 . 首先将所有视图 M 的三
+维序列的 MRI 图像转换成二维图像切片 , 然后对
+每个视图进行切片 , 切片数量设置为 M . 例如 , 
+如果 4M = , SLeM 把原始图像分成 4 份. 新的组合
+图像由 4 个视图的切片构成 , SLeM 将不同顺序组
+合的图片设定为不同的类别 . 例如, BraTS 2019 数
+据集有 4 个视图, 包括 T1, T2, T1ce 和 Flair. 同一
+时间内, SLeM 将 4 个视图的分割块结合起来 , 形
+成新的图像 , 总共有 24( 432× × )类, 多视图大脑
+重组图像情况如图 3 所示, 只显示 8 类. 其中, 类
+别 1 重组顺序为 Flair, T2, T1ce, T1; 类别 2 重组顺
+序为 Flair, T1, T1ce, T2; 类别 3 重组顺序为 Flair, 
+T2, T1, T1ce; 类别 4 重组顺序为 T1ce, T1, Flair, 
+T2; 类别 5 重组顺序为 T1ce, Flair, T2, T1; 类别 6
+重组顺序为 T1, Flair, T1ce, T2; 类别 7 重组顺序为
+T2, T1, Flair, Tice; 类别 8 重组顺序为 T2, T1ce, T1
+和 Flair. 同样地, 对于 CHAOS 肝脏数据集 , 多视
+图重组的图像如图 4 所示, 其中, 多视图包含 T1 
+MRI 和 T2 MRI, 共有 2 种类型的重组图像 . 值得
+注意的是 , 所有的视图都必须应用到视图组合中 . 
+SLeM 将具有相同视图顺序组合的新图像设置为
+同一类别 , 即类别只与每部分使用的视图顺序有  
+ 
+a. 类别 1 b. 类别 2 c. 类别 3 d. 类别 4 
+e. 类别 5 f. 类别 6 g. 类别 7 h. 类别 8 
+图 3  多视图大脑重组图像示意图  
+ 
+ 
+a. 类别 1 
+ 
+b. 类别 2 
+图 4  多视图肝脏重组图像示意图  
+
+=== PDF_PAGE 5 ===
+478 计算机辅助设计与图形学学报  第 37 卷 
+ 
+     
+      
+关. 同样, 在 CHAOS 数据集[27] 中构建具有 2 种视
+图组合的新图像 . 最后 , 收集每个组合图像 ix 和
+相应的类别标签 iy , 构建一个训练数据集
+{} 1,
+N
+ii ixy = , 类别数为 M! , 该训练集用于预训练编
+码器网络 . 
+本文方法包含整个限制性图像类别的标签 , 
+但没有实例级的标签 , 该方法鼓励模型混淆 4 种视
+图, 并因此获得数据与视图无关的表示 . 通过多视
+图自监督分类任务 , SLeM 已经实现了多种成像方
+法在数据层面的混淆 , 因此, 数据可以将跨模态的
+不同概念的互补信息相结合 . 最后, 学习跨视图表
+征可以更准确地解决下游的主要任务 . 基于多视
+图分类的 SSL 有 2 个步骤: 生成用于训练的输入图
+像和学习多视图之间的特征关系 . 给出一个数据
+集 MjXχ = , 有 ()YF χ= . 其中 , χ 表示组合后的
+图像; MjX 表示第 M 个模态的第 j 个分块. 
+SLeM 为分类任务定义了多模视图交叉熵损
+失函数, 公式为 
+() ()
+11
+ln , ,
+00
+1,l n P r l n NK ik ik
+iL
+LY P y p YP N
+--
+==
+=- =- ΣΣ . 
+其中 , ()F · 表示自监督的网络 ; K 表示样本标签
+的数量 ; 第 i 个样本被预测为第 k 个标签值的概率
+为 ,ikp , 定义 (),, Pr 1ik ikpt == ; Y 表示样本的标签 ; 
+P 表示预测的标签 ; N 表示图像的总数 . 
+2.3  主要任务 : 脑部肿瘤和肝脏的分割  
+受到文献 [28]的启发 , 使用预训练能学习到更
+稳健的特征表示 . 因此, 预训练的编码器可以直接
+微调后应用于目标分割任务 , 减少随机初始化对
+分割任务的影响 . 当网络对预训练任务进行自我
+训练后, 将其转移到一个新的任务上 , 即对脑瘤和
+肝脏进行精确分割 . 为此, SLeM 可以简单地将自
+监督任务 (分类 )的网络分类层替换为分割任务的
+网络层 , 减少数据注释的成本 ; 此外, 冻结在自监
+督任务中学到的权重 , 只对编码器和任务输出进
+行微调. 
+U-Net[29] 是 SLeM 分割任务中的一个优越的编
+码器-解码器网络 , 因此, SLeM 是 U-Net 的实例化 , 
+并进行了有针对性的修改 . SLeM 包含编码网络和
+解码网络 ; 编码网络由编码块和步进为 33× 的卷
+积层组成 , 只有第 1 层是 77× 的标准卷积层 (步进
+为 2); SLeM 中的解码网络包含解码块和双线性上
+采样操作 ; 经过编码网络和解码网络后 , 将多任务
+损失函数定义为分割任务的多视图交叉熵损失函
+数, 公式为 
+() ()
+seg
+() () () ()
+seg seg seg seg seg
+1
+ˆ ˆln 1 ln 1
+N
+ii i i
+i
+Ly y yy
+=
+=- + - -Σ . 
+其中, segN 表示总的样本量, i 表示样本 segy 的标签. 
+3  实验结果与分析  
+(1) 数据集. 使用 BraTS 2019 [30] 和 CHAOS[27]
+这 2 个公开的数据集来验证本文方法的有效性 .  
+BraTS 2019 数据集是脑瘤分割的标准数据集 , 
+包含 259 名高等级胶质细胞瘤患者和 76 名低等级
+胶质细胞瘤患者 ; 每名患者有 T1, T2, T1ce 和 Flair
+这 4 种图像视图 ; 该数据集只提供训练集的真实标
+签. 实验中, 使用 4 种视图的数据 , 每个数据有整
+个肿瘤 (whole tumor, WT) 、肿瘤核心 (tumor core, 
+TC)、增强型肿瘤(enhanced tumor, ET) 和无肿瘤背
+景 4 个不同的脑瘤类别 . 训练网络之前 , 图像的强
+度通过 z-score 归一化, 以减少不同受试者的图像
+强度变化 , 每个视图的数据被归一化为零均值和
+单位标准差 . 
+CHAOS 数据集是肝脏分割的标准数据集, 包括
+40 个含有 T1 和 T2 这 2 个视图的图像序列, 其中, 20
+个图像序列用于训练 , 其余的用于测试 ; 该数据集
+由 CT 和 MRI 多视图数据组成. SLeM 只在肝脏分割
+任务上测试该方法. 腹部的各种器官在 MRI 扫描中
+都有注释, 但在 CT 扫描中没有, 因此除了肝脏之外, 
+其他器官的分割不在本文的讨论范围之内. 
+(2) 实施细节 . 在自监督分类过程中 , 批量大
+小设置为 16, 总训练次数设置为 500. 在医学图像
+分割阶段 , 将批量大小和总训练次数分别设置为
+64 和 500. 这 2 个阶段的模型使用 Adam 优化器进
+行训练, 固定的学习率为 10−3. 通常, 在分类和分
+割过程中 , 输入被随机裁剪成块 , 并通过随机水平
+翻转和归一化产生固定的 384 384× 分块. 实验在 2
+个 NVIDIA 2080Ti GPU 上进行. 
+(3) 评价指标 . SLeM 使用多种性能测量方法 , 
+包括 DiceS , Hausdorff 距离(Hausdorff distance, HD)
+和准确度 ACC 进行定量分析 , 它们是被广泛用于
+医学图像分割的标准 . DiceS 测量目标区域上 2 个
+样本之间的重叠 , 计算公式为  
+()Dice
+2, PTSP T PT·= +∩ . 
+其中, P 和 T 分别表示预测的区域和真实的标签区
+域. DiceS 越大, 分割性能就越好 . SLeM 采用 DiceS
+
+=== PDF_PAGE 6 ===
+第 3 期 王楠, 等: 基于自监督学习的医学影像异常检测  479  
+ 
+     
+      
+评估 BraTS 2019 数据集上的 WT, TC 和 ET, 以及
+CHAOS 数据集上肝区域的分割性能 . 
+使用 HD 计算分割边界之间的距离 , 即计算预
+测标签表面 (predicted label, PL) 上的所有点与真实
+标签(ground truth, GT) 上的点之间的最小平方距离
+() ,dp t 的最高值 , 公式为 
+() () (){}HD PL,GT sup inf , , sup inf ,tt pppp ttdp t dp t∈∂ ∈∂∈∂ ∈∂= . 
+同样地 , 正确识别样本与总样本的比率 ACC
+计算公式为  
+TP+TNACC TP+TN+FP+FN= . 
+其中 , 真阳性 (true positive, TP) 和真阴性 (true 
+negative, TN) 分别表示正确分类为阳性和阴性的数
+量; 假阳性(false positive, FP) 和假阴性 (false nega-
+tive, FN) 分别表示假阳性和假阴性的数量 . 
+3.1  实验结果  
+除了单模态对比方法外 , 下列方法都利用多视
+图数据. 与所有方法使用相同的训练和测试数据集 , 
+SLeM 采用 5 折交叉验证的评价策略平均随机变化并
+计算 p 值, 该方法对 DiceS 的数值进行单边双样本 t
+检验. JiGen [10]是一种多任务技术 , 将拼图解决方案
+作为领域泛化的预训练任务来执行 ; Supervoxel [11]
+用图像修复作为自监督的代理任务 , 使用基于监督
+的掩码创建图像来进行图像修复 , 同时在主要任务
+中关注要分割的区域; Taleb [20]使用 Sinkhorn 算子进
+行多视图的跨模态生成; Weng等[31]利用多源视图的
+图像作为一个集合体来预测分割掩码 , 与本文方
+法使用预训练的策略相比 , 该方法需要更多的计
+算时间和资源 ; 2D RC [32]是一种自监督的方法 , 利
+用三维拼图作为代理任务 ; TransBTS [33]采用多视图
+MRI 进行脑瘤分割, 使用三维 CNN 模拟局部环境信
+息, 并利用 Transformer 学习全局语义关联 ; Models 
+Genesis[34] 是一种三维自监督的方法 , 采用多种图
+像重建任务学习未标记的扫描结果 , 为了更好地
+进行比较 , 使用该方法的二维版本 ( 简称为 2D 
+MG). 与 2D MG 和 2D RC 相比, SLeM 能更好地利
+用模态之间的互补特征 . 与原始图像相比 , 上述方
+法生成的图像可能会造成失真 , 影响分割任务的分
+割性能. 本文提出的预训练是分类任务 , 可有效地
+避免该问题 . 从头开始训练表示对于所有的自监
+督技术 , 在下游工作上从头开始训练的模型是一
+个逻辑基线 . 与直接学习目标任务相反 , 这个基线
+让人了解到自监督预训练的优势 . 单视图用于处
+理单个输入模态时研究预训练策略对该任务的影
+响. 这项实验旨在模拟人类专家检查脑部数据的
+现实情况 , 因为不同的视图有特定的突出显示肿
+瘤的区域 . 例如, Flair 经常用于评估整个肿瘤区域 , 
+T2 通常用于检查肿瘤核心 , T1ce 强调增强的肿瘤
+区域. 在评估这些结果时 , 该方法为每个任务选择
+最佳视图 . 
+(1) 脑部肿瘤的分割结果 . Dice 是针对 WT, TC
+和 ET 提出的. SLeM 对所有方法的训练集进行 5
+折交叉验证评估 . 表 1 所示为所有方法在 BraTS 数
+据集上 WT, TC 和 ET 的分割结果对比 . 可以看出 , 
+JiGen[10] 使用拼图任务作为自监督训练的任务 , 
+SLeM 优于该方法 , 证明在数据层面的模态混淆优
+于在特征层面的模态混淆 ; Supervoxel [11]使用图像
+修复作为自监督代理任务 , SLeM 使用多模态分类
+作为自监督任务优于该方法 , 与 Supervoxel 相比, 
+SLeM 的 WT, TC 和 ET 分别提升了 2.03 个百分点, 
+3.92 个百分点和 1.75 个百分点; SLeM 也取得了比多
+视图方法 Taleb[20]和 TransBTS[33]更好的性能. 实验结
+果验证了本文提出的多视图融合设计的有效性. 
+ 
+表 1  在 BraTS 数据集上脑部肿瘤的分割结果对比  
+方法 WT/% TC/% ET/% p 
+JiGen[10]  88.15 83.32  78.75  5.0×10 –4
+Supervoxel [11] 87.76 80.94  78.68  4.1×10 –2
+Isensee 等[17]  88.42 83.73 78.92 4.6×10 –2
+Taleb[20]  89.74  84.48  79.65   
+Weng 等[31]  89.05 82.24 75.90 2.6×10 –3
+2D RC[32]  87.16 82.92 78.38 1.4×10 –2
+TransBTS [33]  87.03 81.15 78.36 5.0×10 –8
+2D MG[34]  88.82 83.60 79.21 7.6×10 –2
+从头开始训练  80.46 79.52 70.00 3.5×10 –5
+SLeM( 单视图 ) 87.21 82.35  78.43  3.9×10 –3
+SLeM( 多视图 ) 89.79 84.86 80.43  
+注. 加粗数值表示最优值 , 下划线表示次优值 .  
+ 
+(2) 肝脏分割结果 . CHAOS 数据集中 , 对具有
+挑战性的肝脏分割问题进行评估 . 除了单模态方
+法外, 下列所有对比方法都使用多视图数据 . 从头
+开始训练肝脏分割任务 , 将 SLeM 与从头开始训练
+的模型进行比较 . 单视图表示该方法还使用单视
+图数据分析 , SLeM 选择 CT, 因为它更普遍 . 与脑
+瘤分割类似 , 将 SLeM 与 JiGen[10] 多任务策略进行
+对比 . Taleb [20] 与多视图生成的方法进行对比 . 2D 
+RC[32] 和 2D MG [34] 也是在多视图的肝脏数据上使
+用这 2 种策略. MSSA [35] 使用自注意机制捕捉丰富
+的上下文依赖关系 , 能够将局部特征与其相应的
+全局依赖关系结合起来 . 表 2 所示为 CHAOS 数据
+
+=== PDF_PAGE 7 ===
+480 计算机辅助设计与图形学学报  第 37 卷 
+ 
+     
+      
+集上肝脏分割的结果对比 . 可以看出 , 与单模态方
+法相比, SLeM 的性能提高 2.18 个百分点, 表明多视
+图任务的有效性 ; JiGen[10]取得了良好的表现 , SLeM
+的结果仍然比 JiGen[10]提升了 2.7 个百分点, 表明
+SLeM 可以提取丰富的特征用于一般医学图像的分
+割; 与 Taleb[20]相比, 在相同的输入模态下 , SLeM
+可以学习更好的多视图表示 ; SLeM 的结果优于 2D 
+RC[32]和 2D MG [34], 证明了其预训练方法的有效性 ; 
+MSSA[35] 也采用了多视图结构 , 其差异表明 , 使用
+自注意力和上下文提取模块可提高分割的性能 . 
+(3) 定性结果 . SLeM 与对比方法在 2 个数据集
+上的分割结果如图 5 所示 , 其中 , 绿色部分表示
+WT, 黄色和红色区域表示 TC, 红色区域表示 ET, 
+红色虚线框表示 SLeM 优于其他方法的区域 . 从图
+5a 中可以看出 : (i) SLeM 在坏死预测的非增强类的
+大小和位置的预测是较为准确的 ; 在增强肿瘤的
+局部细节方面表现更好 , 并减少了每个体素的错误
+分类. 实验结果证明 , SLeM 取得了较高的分割精
+度. (ii) 与 Supervoxel[11]和 TransBTS[33] 的比较中 , 
+SLeM 在坏死预测的非增强类较为准确 , 可以取得
+较为稳定的分割结果 . 图 5b 中, 肝脏的真实标签用
+白色标记. 可以看出, SLeM 生成的结果比 V-Net[36]
+的表现略好, 生成的分割结果也比 Taleb 有更准确
+的边界, 证明了 SLeM 在特征学习方面的有效性 . 
+ 
+表 2  在 CHAOS 数据集上肝脏的分割结果对比  
+方法 S Dice /% p 
+JiGen[10]  93.18 2.1×10 –2 
+Taleb[20]  95.10   
+2D RC[32]  94.15 4.9×10 –2 
+2D MG[34]  95.01 3.8×10 –1 
+MSSA[35]  86.75  
+从头开始训练  89.83 1.4×10 –2 
+SLeM( 单视图 ) 93.70 3.1×10 –5 
+SLeM( 多视图 ) 95.88   
+注. 加粗数值表示最优值 , 下划线表示次优值 . 
+ 
+3.2  消融实验  
+为了验证 SLeM 的有效性 , 对不同的组件进行
+消融实验 , 包括 SSL, RMP 和 CFB, 结果如表 3 所
+示, 其中, 基础的模型是 2D-CNN U-Net. 
+ 
+ 
+  
+ 原始图像  标签 U-Net [4]  Supervoxel [11] SLeM 原始图像   标签 V-Net [36]  MMSA [35] SLeM 
+ a. 脑部肿瘤分割结果  b. 肝脏分割结果  
+ 
+图 5  3 种方法在 2 个数据集上的分割结果  
+ 
+表 3  在 2 个数据集上消融实验结果对比  
+BraTS CHAOS 
+SDice /%↑ HD/mm ↓ SSL RMP CFB 
+WT TC ET WT TC ET 
+SDice /%↑ ACC/% ↑ 
+× × × 83.87(1.25) 78.44(1.35) 73.85(2.15) 5.85(1.05) 6.01(1.23) 6.70(1.37) 85.96(1.32) 87.23(1.56)
+× √ × 84.90(2.77) 81.63(1.01) 76.21(1.41) 5.17(1.28) 5.03(1.24) 5.83(1.65) 89.90 (0.88) 90.35(0.72)
+× × √ 85.60(1.74) 82.36(1.93) 77.47(2.56) 5.05(1.57) 4.99(1.85) 5.09(1.38) 90.24(3.75) 91.47(2.79)
+√ × × 85.74(1.30) 81.56(2.53) 77.82(2.59) 4.73(1.69) 5.21(2.17) 4.25(2.07) 90.01(3.19) 91.23(2.13)
+√ √ × 87.11(3.12) 83.90 (1.62) 78.77(2.22) 3.43(2.50) 4.03 (1.36) 3.47(1.59) 92.90(2.48) 93.56(3.00)
+√ × √ 87.56 (2.01) 83.29(1.32) 78.95 (2.00) 3.22 (2.31) 4.41(1.54) 3.13 (1.68) 93.28 (1.22) 94.13 (1.65)
+√ √ √ 89.79(2.71) 84.86(1.75) 80.43(2.99) 2.01(1.09) 3.75(1.32) 2.05(1.66) 95.88(1.87) 95.11(2.56)
+注. 加粗数值表示最优值 , 下划线表示次优值 ; 括号内数值表示标准差 ; ↑表示数值越大越好 , ↓表示数值越小越好 . 
+
+=== PDF_PAGE 8 ===
+第 3 期 王楠, 等: 基于自监督学习的医学影像异常检测  481  
+ 
+     
+      
+(1) SSL 的有效性 . 使用双样本 t 检验进行显
+著性检验 . 从表 3 可以看出 , 与基础模型相比 , 添
+加 SSL 之后(如第 4 行)实现了显著的性能改进 , 特
+别是在 BraTS 上, WT, TC 和 ET 分别增加了 1.87 
+(p=0.09), 3.12( p=0.35)和 3.97(p=0.85)个百分点 ; 与
+其他组合相比, SSL 和 CFB 的组合(最后一行)取得最
+好的结果, 表明 SLeM 对多视图特征建模的有效性. 
+(2) RMP 的有效性 . 从表 3 可以看出 , 与基础
+模型相比 , RMP 可以检测不同大小的目标 , 并获得
+上下文信息以提高分割性能 . 例如, 在 CHAOS 数
+据集上, 加入 RMP(即第 2 行)后, 比基础模型提高
+了 3.12(p=1.12)个百分点; 与基线模型相比 , RMP+ 
+SSL 在 BraTS 数据集上也增加了至少 3.24(p=0.85)
+个百分点 ; 最后, 与基础模型相比 , RMP+SSL 的组
+合还实现了更好的 HD. 值得注意的是 , RMP 与其
+他模块的组合对结果很重要 , 也证明了空洞卷积
+对性能的改进 . 
+(3) CFB 的有效性 . 从表 3 可以看出 , 与基础
+模型相比 , 加入 CFB 后, SLeM 在 BraTS 数据集上
+WT 提升了 1.73(p=0.17) 个百分点 ; SSL+CFB+RMP 
+(即 SLeM)显著地提升了 HD(WT, TC, ET 分别降低
+3.83 mm, 2.26  mm, 4.65  mm). 因此, 通过不同的感
+受野和级联分支 , CFB 可以提高网络分割的性能 . 
+图 6 和图 7 所示分别为 2 个数据集上消融实验
+的可视化结果 , 包括未添加 SSL、未 添 加RMP、未
+添加 CFB, 以及 SLeM. 从图 6 可以看出 , 如果未
+添加 SSL, SLeM 不能对坏死和非增强的肿瘤核心
+(红色区域 )产生良好的结果 , 意味着将自监督任务
+设置为与模态无关的表示是合理的 ; 在未添加
+RMP 的情况下 , SLeM 在增强型肿瘤 (黄色区域 )的
+表现略差 , 意味着 RMP 将有助于捕捉更多的高级
+特征并保留更多的空间信息 ; 当未添加 CFB 时, 
+SLeM 在边缘(如绿色区域表示的瘤周水肿 )的分割
+结果并不理想 . 实验结果表明 , CFB 是捕捉多视图
+数据丰富特征信息的重要模块 . 
+3.3  不同标签率下的实验结果  
+通过比较 2 个下游分割任务的性能 , 评估自监
+督任务如何提高训练模型的数据效率 , 以更好地  
+ 
+ 
+ a. 原始图像  b. 标签 c. 未添加 SSL d. 未添加 RMP e. 未添加 CFB f. SLeM 
+图 6  BraTS 数据集上消融实验的可视化结果  
+ 
+ 
+ a. 原始图像  b. 标签 c. 未添加 SSL d. 未添加 RMP e. 未添加 CFB f. SLeM 
+图 7  CHAOS 数据集上消融实验的可视化结果  
+
+=== PDF_PAGE 9 ===
+482 计算机辅助设计与图形学学报  第 37 卷 
+ 
+     
+      
+了解不同标签率的影响 . 从[1%, 5%, 10%, 20%, 
+50%, 100%] 内改变总分割训练集的训练子集大小 , 
+结果分别如图 8 和图 9 所示; 然后在这些子集上对
+该模型进行微调 ; 最后微调多视图模型和单模态 , 
+并与从零开始训练的模型进行比较 . 其中, 对于每
+个任务, BraTS 数据集使用的模态是 Flair, CHAOS
+数据集使用的模态是 CT. 从图 8 和图 9 可以看出 , 
+在只有少量的训练样本 (如 1%和 5%) 的情况下 , 
+SLeM 就能产生比单视图数据更好的结果 , 验证了
+多视图融合的可靠性 ; 在低数据率的情况下 (如
+10%和 20%), SLeM 可以获得相对从头开始训练的
+模型更好的结果 , 表明一般无监督特征适用于相
+关的医学成像任务 . 
+ 
+ 
+图 8  BraTS 数据集上不同标签率的结果  
+ 
+ 
+图 9  CHAOS 数据集上不同标签率的结果  
+ 
+3.4  局限性讨论  
+尽管 SLeM 在实验中已经获得了优越的分割
+性能, 但是其仍存在局限性 . 
+(1) 实时分割 . SLeM 虽然可以显著地减少计算
+时间, 但在实时分割方面仍有差距 , 原因是所提出
+的模型中存在多尺度融合和参数冗余 . 未来将探索
+一种基于 Transformer 的架构对局部到全局特征进
+行建模, 并研究模型压缩方法来减少参数冗余 . 
+(2) 性能提升 . 三维医学图像通常存在空间信
+息, 但在 SLeM 中尚未被利用 . 未来将利用三维数
+据的空间信息 , 进一步提高医学图像分割性能 . 
+4  结  语 
+本文使用一个多视图分类作为自监督任务 , 
+通过对目标域的简单微调可以解决下游的医学图
+像分割任务 ; 进一步降低了医学图像分割所需的
+人工标注成本 , 在一些多视图样本下的实验结果
+也证明了这个优势 ; 最后, 自监督的分类任务可以
+通过学习多视图表示的丰富性提高分割的准确性 . 
+今后将把多视图自监督方法扩展到三维环境中 , 
+相信本文方法可以学习到更丰富的特征表示 . 
+参考文献(References):  
+[1] Zhou T X, Ruan S, Canu S. A review: deep learning for medi-
+cal image segmentation using multi-modality fusion[J]. Array, 
+2019, 3-4: Article No.100004  
+[2] Zhou T, Li Q, Lu H L, et al. GAN review: models and medical 
+image fusion applications[J]. Information Fusion, 2023, 91: 
+134-148 
+[3] Georgescu M I, Ionescu R T, Miron A I, et al . Multimodal 
+multi-head convolutional attention with various kernel sizes for 
+medical image super-resoluti on[C] //Proceedings of the 
+IEEE/CVF Winter Conference on Applications of Computer 
+Vision. Los Alamitos: IEEE Computer Society Press, 2023: 
+2195-2205  
+[4] Liu Z A, Cheng Y Z, Tan T, et al. MimicNet: mimicking man-
+ual delineation of human expert  for brain tumor segmentation 
+from multimodal MRIs[J]. Applied Soft Computing, 2023, 143: 
+Article No.110394  
+[5] Chaitanya K, Erdil E, Karani N, et al . Local contrastive loss 
+with pseudo-label based self-t raining for semi-supervised 
+medical image segmentation[J]. Medical Image Analysis, 2023, 
+87: Article No.102792  
+[6] Ericsson L, Gouk H, Hospedales T M. How well do self- su-
+pervised models transfer?[C] //Proceedings of the IEEE/CVF 
+Conference on Computer Vision and Pattern Recognition. Los 
+Alamitos: IEEE Computer Society Press, 2021: 5414-5423  
+[7] Spitzer H, Kiwitz K, Amunts K, et al. Improving cytoarchitec-
+tonic segmentation of human brain areas with self-supervised 
+siamese networks[C] //Proceedings of the 21st International 
+Conference on Medical Image Computing and Computer- As-
+sisted Intervention. Heidelberg: Springer, 2018: 663-671  
+[8] Tajbakhsh N, Hu Y F, Cao J L, et al. Surrogate supervision for 
+medical image analysis: effective deep learning from limited 
+quantities of labeled data[C] //Proceedings of the IEEE 16th 
+International Symposium on Biom edical Imaging. Los Alami-
+tos: IEEE Computer Society Press, 2019: 1251-1255  
+[9] Chen L, Bentley P, Mori K, et al. Self-supervised learning for 
+medical image analysis using image context restoration[J]. 
+Medical Image Analysis, 2019, 58: Article No.101539  
+[10] Carlucci F M, D’Innocente A, Bucci S, et al. Domain generali-
+
+=== PDF_PAGE 10 ===
+第 3 期 王楠, 等: 基于自监督学习的医学影像异常检测  483  
+ 
+     
+      
+zation by solving jigsaw puzzles[C] //Proceedings of the 
+IEEE/CVF Conference on Computer Vision and Pattern Rec-
+ognition. Los Alamitos: IEEE Computer Society Press, 2019: 
+2229-2238  
+[11] Kayal S, Chen S, de Bruijne M. Region-of-interest guided su-
+pervoxel inpainting for self-supervision[C] //Proceedings of the 
+23rd International Conference on Medical Image Computing 
+and Computer-Assisted Intervention. Heidelberg: Springer, 
+2022: 500-509  
+[12] Widya A R, Monno Y , Okutomi M, et al. Self-supervised mo-
+nocular depth estimation in gastroendoscopy using 
+GAN-augmented images[C] //Proceedings of SPIE 11596, 
+Medical Imaging 2021: Image Pr ocessing. Bellingham: Society 
+of Photo-Optical Instrumentation Engineers, 2021: 319-328  
+[13] Matzkin F, Newcombe V , Stevenson S, et al . Self-supervised 
+skull reconstruction in brain CT images with decompressive 
+craniectomy[C] //Proceedings of the 23rd International Con-
+ference on Medical Image Computing and Computer-Assisted 
+Intervention. Heidelberg: Springer, 2020: 390-399  
+[14] Jamaludin A, Kadir T, Zisserman A. Self-supervised learning 
+for spinal MRIs[C] //Proceedings  of the 3rd International 
+Workshop on Deep Learning in Medical Image Analysis. Hei-
+delberg: Springer, 2017: 294-302  
+[15] Hu S Y , Wang S H, Weng W H, et al. Self-supervised pretrain-
+ing with DICOM metadata in ultrasound imaging[C] 
+//Proceedings of the 5th Machine Learning for Healthcare 
+Conference. Michigan: PMLR, 2020: 732-749  
+[16] Cao B, Zhang H, Wang N N, et al. Auto-GAN: self-supervised 
+collaborative learning for me dical image synthesis[C] 
+//Proceedings of the 34th AAAI Conference on Artificial Intel-
+ligence. Palo Alto: AAAI Press, 2020: 10486-10493  
+[17] Isensee F, Jaeger P F, Kohl S A A, et al . nnU-Net: a 
+self-configuring method for deep  learning-based biomedical 
+image segmentation[J]. Nature Methods, 2021, 18(2): 203-211  
+[18] Asano Y M, Patrick M, Rupprecht C, et al. Labelling unlabelled 
+videos from scratch with multi-modal self-supervision[C] 
+//Proceedings of the 34th International Conference on Neural 
+Information Processing Systems. Vancouver: Curran Associates 
+Inc, 2020: 4660-4671  
+[19] Mahapatra D, Bozorgtabar B, Thiran J P, et al . Structure pre-
+serving stain normalization of hi stopathology images using self 
+supervised semantic guidance[C] //Proceedings of the 23rd In-
+ternational Conference on Medical Image Computing and 
+Computer-Assisted Intervention.  Heidelberg: Springer, 2020: 
+309-319  
+[20] Aleb A, Lippert C, Klein T, et al. Multimodal self-supervised 
+learning for medical image analysis[C] //Proceedings of the 
+27th International Conference on Information Processing in 
+Medical Imaging. Heidelberg: Springer, 2021: 661-673  
+[21] Zhang P Y , Wang F S, Zheng Y F. Self supervised deep repre-
+sentation learning for fine-gra ined body part recognition[C] 
+//Proceedings of the IEEE 14th International Symposium on 
+Biomedical Imaging. Los Alamitos: IEEE Computer Society 
+Press, 2017: 578-582  
+[22] Roth H R, Lee C T, Shin H C, et al. Anatomy-specific classifi-
+cation of medical images using deep convolutional nets[C] 
+//Proceedings of the IEEE 12th International Symposium on 
+Biomedical Imaging. Los Alamitos: IEEE Computer Society 
+Press, 2015: 101-104  
+[23] Noroozi M, Favaro P. Unsupervised learning of visual repre-
+sentations by solving jigsaw puzzles[C] //Proceedings of the 
+14th European Conference on Computer Vision. Heidelberg: 
+Springer, 2016: 69-84  
+[24] Mehta S, Mercan E, Bartlett J, et al. Y-Net: joint segmentation 
+and classification for diagnosis  of breast biopsy images[C] 
+//Proceedings of the 21st International Conference on Medical 
+Image Computing and Computer-Assisted Intervention. Hei-
+delberg: Springer, 2018: 893-901  
+[25] Mehta S, Rastegari M, Caspi A, et al. ESPNet: efficient spatial 
+pyramid of dilated convolutions for semantic segmentation[C] 
+//Proceedings of the 15th European Conference on Computer 
+Vision. Heidelberg: Springer, 2018: 552-568  
+[26] Chen L C, Papandreou G , Kokkinos I, et al. DeepLab: semantic 
+image segmentation with deep convolutional nets, atrous con-
+volution, and fully connected CRFs[J]. IEEE Transactions on 
+Pattern Analysis and Mach ine Intelligence, 2018, 40(4): 
+834-848  
+[27] Kavur A E, Gezer N S, Bar ış M, et al . CHAOS chal-
+lenge-combined (CT-MR) health y abdominal organ segmenta-
+tion[J]. Medical Image Analysis, 2021, 69: Article No.101950  
+[28] Deng J, Berg A C, Li K, et al. What does classifying more than 
+10, 000 image categories tell us?[ C] //Proceedings of the 11th 
+European Conference on Computer Vision. Heidelberg: 
+Springer, 2010: 71-84  
+[29] Ronneberger O, Fischer P, Brox T. U-Net: convolutional net-
+works for biomedical image segmentation[C] //Proceedings of 
+the 18th International Conference on Medical Image Comput-
+ing and Computer-Assisted Interv ention. Heidelberg: Springer, 
+2015: 234-241  
+[30] Bakas S, Reyes M, Jakab A, et al. Identifying the best machine 
+learning algorithms for brain tumor segmentation, progression 
+assessment, and overall survival prediction in the BRA TS chal-
+lenge[OL]. [2023-06-17]. https://arxiv.org/abs/1811.02629  
+[31] Weng Y T, Chan H W, Huang T Y . Automatic segmentation of 
+brain tumor from 3D MR imag es using SegNet, U-Net, and 
+PSP-Net[C] //Proceedings of the 5th International MICCAI 
+Brainlesion Workshop. Heidelberg: Springer, 2020: 226-233 
+[32] Zhuang X R, Li Y X, Hu Y F, et al . Self-supervised feature 
+learning for 3D medical images by playing a rubik’s cube[C] 
+//Proceedings of the 22nd Intern ational Conference on Medical 
+Image Computing and Computer-Assisted Intervention. Hei-
+delberg: Springer, 2019: 420-428  
+[33] Wang W X, Chen C, Ding M, et al . TransBTS: multimodal 
+brain tumor segmentation using transformer[C] //Proceedings 
+of the 24th International Conference on Medical Image Com-
+puting and Computer-Assisted Intervention. Heidelberg: 
+Springer, 2021: 109-119  
+[34] Zhou Z W, Sodha V , Rahman Siddiquee M, et al. Models gene-
+sis: generic autodidactic mode ls for 3D medical image analy-
+sis[C] //Proceedings of the 22nd International Conference on 
+Medical Image Computing and Computer-Assisted Interven-
+tion. Heidelberg: Springer, 2019: 384-393  
+[35] Sinha A, Dolz J. Multi-scale self-guided attention for medical 
+image segmentation[J]. IEEE Journal of Biomedical and Health 
+Informatics, 2021, 25(1): 121-130  
+[36] Milletari F, Navab N, Ahmadi  S A. V-Net: fully convolutional 
+neural networks for volumetric medical image segmentation[C] 
+//Proceedings of the Fourth International Conference on 3D Vi-
+sion. Los Alamitos: IEEE Computer Society Press, 2016: 
+565-571 
+ 

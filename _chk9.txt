@@ -1,0 +1,8 @@
+﻿original nii.gz = 1295
+resampled nii.gz = 1295
+Pooch25 files = 207
+Pooch25 示例 = 10008_1000008, 10013_1000013, 10029_1000029, 10036_1000036, 10044_1000044
+Pooch25 与 original 重叠 = 0
+并集 = 1502
+Pooch25 落在1500清单内 = 205
+Pooch25 不在清单内 = 2 : README - Copy.md,README.md

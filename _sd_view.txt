@@ -1,0 +1,31 @@
+﻿python.exe : Traceback (most recent call last):
+所在位置 行:445 字符: 32
++ ... ofan@2026"; & "C:\Users\Administrator\.workbuddy\binaries\python\vers ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last) 
+   ::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "C:\Users\Administrator\.workbuddy\binaries\python\versions\3.12.10\Lib\
+site-packages\paramiko\channel.py", line 697, in recv
+    out = self.in_buffer.read(nbytes, self.timeout)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\.workbuddy\binaries\python\versions\3.12.10\Lib\
+site-packages\paramiko\buffered_pipe.py", line 154, in read
+    raise PipeTimeout()
+paramiko.buffered_pipe.PipeTimeout
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\lunwen\_start_dl.py", line 44, in <module>
+    main()
+  File "C:\lunwen\_start_dl.py", line 34, in main
+    log.append(o.read().decode("utf-8", "replace"))
+               ^^^^^^^^
+  File "C:\Users\Administrator\.workbuddy\binaries\python\versions\3.12.10\Lib\
+site-packages\paramiko\file.py", line 184, in read
+    new_data = self._read(self._DEFAULT_BUFSIZE)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\.workbuddy\binaries\python\versions\3.12.10\Lib\
+site-packages\paramiko\channel.py", line 1

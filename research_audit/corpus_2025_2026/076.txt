@@ -1,0 +1,652 @@
+=== PDF_PAGE 1 ===
+  电 子 测 量 技 术
+ELECTRONIC MEASUREMENT TECHNOLOGY
+第48卷 第11期
+2025年6月 
+DOI:10.19651/j.cnki.emt.2517965
+混合边缘保护和照度显著决策的医学图像融合 *
+彭彤彪 田妮莉 潘 晴
+(广东工业大学信息工程学院 广州 510006)
+摘 要:多模态医学图像融合是一种整合不同模态有效 特 征 信 息、服 务 于 临 床 诊 疗 的 计 算 机 辅 助 诊 断 技 术。 针 对 现
+有多模态医学图像融合方法存在边缘特征保留和显著能量 感 知 缺 陷 问 题,提 出 一 种 基 于 混 合 多 尺 度 边 缘 保 护 和 深 度
+图像先验照度显著决策的医学图像融合算法。首先,利用截断 Huber滤波(THF)分解源 图 像 获 取 显 著 能 量 层 和 粗 尺
+度细节层,再使用多级分解潜在低秩表示(MDLatLRR)平滑显 著 能 量 层 获 取 细 尺 度 细 节 层;其 次,在 基 础 层 上 使 用 基
+于深度图像先验生成照度图决策的融合规则以提高融合图像的视觉感知效果;针对复杂尺度边缘细节层,通 过 计 算 高
+频核能映射得到修正权重从而融合细节层;最后线性重构分量得到最终的融合结果。实验表明,本文方法在 主 观 视 觉
+上优于其他对比方法,在 QW 、QP 和QAB/F 客观指标上分别平均提高了6.42%、16.33%和12.58%。
+关键词:医学图像融合;截断 Huber滤波;多级分解潜在低秩;照度显著决策;高频核能映射
+中图分类号:TN391.41  文献标识码:A  国家标准学科分类代码:520.60
+Medicalimagefusionbasedonhybridedgepreservationand
+illuminationsaliencydecision
+PengTongbiao TianNili PanQing
+(SchoolofInformationEngineering,GuangdongUniversityofTechnology,Guangzhou510006,China)
+Abstract:Multimodal medicalimagefusionisacomputer-aideddiagnostictechniquedesignedtointegrateeffective
+featureinformationfrom differentmodalities,servingclinicaldiagnosisandtreatment.Toaddressthedeficienciesin
+edgefeaturepreservationandsaliencyenergyperceptioninexisting multimodalmedicalimagefusion methods,this
+paperproposesamedicalimagefusionalgorithm basedonhybrid multi-scaleedgepreservationanddeepimageprior-
+guidedilluminationsaliencydecision.First,thetruncated Huberfilter (THF)isutilizedtodecomposethesource
+imagesinto a saliency energy layer and a coarse-scale detaillayer.Multi-level decomposition latentlow-rank
+representation (MDLatLRR)isthenappliedtosmooththesaliencyenergylayerandextractfine-scaledetaillayers.
+Second,forthebaselayer,afusionrulebasedonillumination mapdecisionguidedbydeepimagepriorisusedto
+enhancethevisualperceptionofthefusedimage.Forcomplexscaleedgedetaillayers,high-frequencynuclearenergy
+mappingisemployedtocalculatecorrectionweightsforfusingthedetaillayers.Finally,thefusionresultisobtainedby
+linearlyreconstructingthecomponents.Experimentsdemonstratethattheproposedmethodoutperformsotherstate-of-
+the-artmethodsintermsofsubjectivevisualquality.Moreover,itachievesaverageimprovementsof6.42%,16.33%,
+and12.58%intheobjectivemetricsQW ,QP ,andQAB/F ,respectively.
+Keywords:medicalimagefusion;truncated Huberfilter;multi-leveldecompositionoflatentlowrank;illumination 
+saliencydecision;highfrequencykernelenergymapping
+ 收稿日期:2025-01-19
+*基金项目:国家自然科学基金(61901123)项目资助
+0 引  言
+  基于不同传感器和成像原理的医学图像技术广 泛应 用
+于临床诊断,有效提高了诊断准确性,从而降低误 诊率。尽
+管现代医学成像技术 多 样 化 发 展,单 模 态 图 像 因 受 限 于 成
+像机制,通常仅能呈现骨骼或组织器官的某一特定 特征,难
+以同时提供解剖与功能信息
+[1]。多模态医学图 像融 合通 过
+整合不同模态图像的 优 势 与 互 补 信 息,能 够 有 效 消 除 冗 余
+并生成更清晰、可靠的融合图像。在临床应用中,它 对医 生
+快速而全面地掌握病理情况具有重要意义
+[2-4]。
+·661·
+
+=== PDF_PAGE 2 ===
+彭彤彪 等:混合边缘保护和照度显著决策的医学图像融合 第11期
+现有的多模 态 医 学 图 像 融 合 方 法 主 要 包 括 基 于 变 换
+域、边缘保护、稀疏表示和深度学习的策略。基于多 尺度 变
+换的方法符合人类视 觉 系 统 从 粗 到 细 的 认 知 特 点,在 图 像
+融合领域得 到 了 广 泛 应 用。 常 见 的 方 法 包 括 离 散 小 波 变
+换
+[5]、双 树 复 小 波 变 换 [6] 和 非 下 采 样 轮 廓 波 变 换
+(nonsubsampledcontourlettransformation,NSCT)[7]。这
+些方法依赖特定的数 学 变 换 对 图 像 进 行 多 尺 度 分 解,并 通
+过特定的融合规则实 现 信 息 整 合。 然 而,由 于 这 类 方 法 通
+常采用固定的变换核,其 对 不 同 模 态 之 间 信 息 权 重 的 自 适
+应调整能力有限,难以 准 确 感 知 并 强 化 显 著 区 域 的 能 量 特
+征。尤其在对比度差异 较 大 的 模 态 图 像 融 合 过 程 中,高 频
+细节可能被削弱,或模态间能量信息分配不均,从而 影响 融
+合图像的病变表现力。
+除了变换域方法,基 于 边 缘 保 护 滤 波 的 多 尺 度 分 解 策
+略因其较低的 计 算 成 本 和 较 强 的 边 缘 保 持 能 力 得 到 了 关
+注。例如,Pei等 [8]采用引导滤波将源图像分解为结 构信 息
+层和细节纹理层,并结 合 拉 普 拉 斯 金 字 塔 和 稀 疏 表 示 进 行
+融合。虽然该方法在一 定 程 度 上 增 强 了 局 部 细 节,但 在 复
+杂病灶区域,模态间的能量传递可能不够充分,导致 关键 组
+织的显著性表 达 不 足。Jie等 [9]提 出 的 基 于 多 字 典 学 习 的
+融合策略,通过提取全局结构和边缘信息来提升融合 质量。
+然而,由于不同模态图像的能量分布呈空间异质性,该方 法
+在某些情况下难以精 准 感 知 并 强 化 显 著 区 域 的 信 息,可 能
+导致局部病灶的特征弱化。
+基于稀疏表示的方法通过训练过完备字典学习 源图 像
+的特征表达,并利用融 合 规 则 对 系 数 进 行 组 合 以 重 构 融 合
+图像。康家银等 [10]提 出 通 过 非 下 采 样 剪 切 波 分 解 和 稀 疏
+表示融合图像,采 用 构 造 局 部 自 适 应 字 典 融 合 低 频 分 量。
+然而,该方法在不同模 态 的 能 量 感 知 和 边 缘 细 节 保 持 方 面
+存在一定局限,尤其在结构复杂或对比度变化剧烈的 区域,
+容易出现信息 丢 失 或 能 量 弱 化 的 现 象。Li等 [11]提 出 的 低
+秩表示方法在信息保 持 和 计 算 效 率 方 面 有 所 提 升,但 在 面
+对非均匀照度变化的 图 像 时,仍 可 能 无 法 准 确 识 别 和 强 化
+显著信息,影响病变区域的视觉表达。
+深度学习方法在医学图像融合领域展现出了强 大的 特
+征提取能 力,大 量 网 络 模 型 被 应 用 到 图 像 融 合 中 [12]。 例
+如,EMFusion[13]和 VIF-Net[14]通 过 不 同 层 次 特 征 的 隐 式
+提取与可学习的融合 策 略 相 结 合,得 到 了 视 觉 质 量 良 好 的
+结果。DCIF-GAN[15]提出了双 耦 合 交 互 式 融 合 算 法,弥 补
+了现有生成对抗网络 训 练 不 稳 定、上 下 文 语 义 信 息 提 取 不
+足的缺点。由于深度模型的特征提取方式依赖大量 数据 学
+习,某些情况下可能难 以 精 准 捕 捉 医 学 图 像 中 特 定 的 病 变
+显著区域,导致融合后的能量表达不均衡 [16]。
+因此,针对现有医学 图 像 融 合 方 法 存 在 的 边 缘 特 征 保
+留和显著能量感知缺 陷 问 题,本 文 提 出 了 一 种 基 于 混 合 多
+尺度边缘保护和深度图像先验照度显著决策的医学 图像 融
+合算法。在特征提取阶 段,通 过 THF 和 MDLatLRR 混 合
+分解保留模态图像的 边 缘 特 征 和 全 局 结 构;在 基 础 层 融 合
+中,基于照度显著性决策筛选基础层像素,以增强显 著能 量
+感知;细节层融合则通过高频核能映射计算修正权 重,实 现
+边缘加权交互。最后,线性重构预融合分量得到融合结果。
+1 相关原理
+1.1 截断 Huber滤波
+  为了提高有效信 息 提 取 的 精 度,对 源 图 像 进 行 基 于 截
+断 Huber惩罚函数的结构 保 护 平 滑 滤 波(truncated Huber
+filter,THF)处理,通过调节参数来灵活调整不同的平滑性
+质。截断 Huber惩罚函数的定义可表示为:
+hT (z)=
+h(z), |z|≤a
+a- b2 , |z|>a{  s.t.b ≤a (1)
+其中,a 和b 是常 数,a 的 值可以 适当 地控 制是 否 锐 化
+边缘,h(·)是 Huber惩罚函数,定义如下:
+h(z)=
+1
+2bz
+2, |z|<b
+|z|- b2 , |z|≥b
+ì
+î
+íï
+ïï
+ï
+(2)
+很明显,hT (·)具有高度的灵活性,这使得它能够在不
+同的参数设置下产生不同的惩罚行为。假设ξ 是一 个极 小
+的值,Im 为输入强度最大值,若设置a=ξ,b>Im ,在这种
+情况下hT (·)将趋近于L1 范数,表现出不锐化边缘的边缘
+保留惩罚性质。此外,保持a =ξ 不 变,令b <Im 可 以 使
+hT (·)锐化边缘。类似地,在满足a=b>Im 和a=b<Im
+条件下,hT (·)可以灵敏地在 L2 范数和截断的 L2 范数 之
+间切换。
+这样一个具有灵活特点的模型可以有效地构造 高效 的
+目标函数,从而实现多功能平滑 处理。当 给定 输 入 图 像IF
+和IG 时,平滑后的输出图像u 可通过求解以下目标函数的
+最小解获得:
+Eu(u)= ∑
+p
+∑
+q∈Φd (p)
+ω
+s
+p,qhT (up -IF q )+
+ρ∑
+p
+∑
+q∈Φs(p)
+ω
+s
+p,qω
+IG
+p,qhT (up -uq) (3)
+其中,Φd(p)是以p 为中心的 (2rd+1)×(2rd+1)的
+方块,Φs(p)是以p 为中心但不包括像素p 的 (2rs +1)×
+(2rs +1)方块,ρ 是调节整体平滑强度的参数。ωsp,q 是空间
+高斯核,ωIGp,q 是引导权重,公式如下:
+ω
+s
+p,q =exp(|p -q|
+2
+2σ
+2 ) (4)
+ω
+IG
+p,q = 1|IGp -IGq |α +δ (5)
+其中,将σ =rd 固定为数据项,将σ =rs 固 定 为 平 滑
+项。α 用于调节对IG 中边缘 的灵 敏 度,常 数δ = 10-3 。滤
+波的过程表示为:
+{u,u-}= THF(IF ,IG )
+u
+-
+=IF -u{ (6)
+·761·
+
+=== PDF_PAGE 3 ===
+ 第48卷 电 子 测 量 技 术
+1.2 多级分解潜在低秩表示
+  潜在低秩表示(LatLRR)是低秩表示的扩展 方法,通 过
+引入 潜 在 空 间 以 实 现 对 数 据 隐 含 特 性 建 模,如 式 (7)
+所示
+[17]。
+min
+Z,L,E
+‖Z‖ * + ‖L‖ * +λ‖E‖1
+s.t.X = XZ +LX +E{ (7)
+式中:Z 是 低 秩 系 数 矩 阵;L 为 显 著 系 数 投 影 矩 阵;E 为 稀
+疏噪声矩阵;‖‖ * 用于计算核范数,λ 是用于控制权重平
+衡的正则化参数。
+多级分解潜在低秩表示(MDLatLRR)在 LatLRR 的基
+础上进一步扩展到多 视 图 场 景,提 升 了 对 冗 余 数 据 的 处 理
+能力和噪声的敏感性,分解模型如图1所示。
+图1 多级分解潜在低秩表示模型
+Fig.1 MDLatLRR model
+式(8)描 述 了 MDLatLRR 分 解 源 图 像 的 过 程,其 中
+P(I)指图像分 块 后 的 列 向 量 重 构 矩 阵;R(V)是 由 低 秩 成
+分重建的显著图像;BjLrr 和DjLrr 代表第j 次 迭代分 解获 得
+的基础低秩层和细尺度细节层,* 为卷积运算。
+B
+0
+Lrr =I
+V = L*P(I),Vj = L*P(BjLrr)
+D
+j
+Lrr =R(Vj),BjLrr =R(Vj),j = [1,2,…,J]
+ì
+î
+íï
+ïï
+ï
+(8)
+1.3 基于深度图像先验的改进照度显著决策
+  深度图像先 验(deepimageprior,DIP)是 一 种 利 用 U
+形深度卷积网络建立随机噪声输入到目标输出之间 非线 性
+映射的 降 噪 模 型,经 过 多 次 迭 代 训 练 实 现 降 噪 效 果 [18]。
+DIP的随机输入z 随网络参数θ 更新输出fθ(z),y 为监 督
+参考的噪声图像,优化过程可表示为:
+θ^=argmin
+θ
+L(fθ(z),y) (9)
+通常,DIP 采用均方误差(meansquareerror,MSE)作
+为fθ(z)和y 的约束损失L(fθ(z),y)。考虑到现有绝对
+最大值策略在基础层图像融合中易于受局部高频噪 点和 伪
+影干扰导致图像质量下降,为保证显著图的光滑性,本文 在
+MSE 基 础 上 引 入 了 L1 范 数 损 失 和 总 变 分 损 失 (total
+variation,TV)对生成的照度显著图进行约束,如式(10)所
+示。α =0.5为平滑调节因子,▽ 为梯度算子,照度 显著 决
+策图生成模型如图2所示。
+L = LMSE +L1 +αLTV
+LMSE (fθ(z),y)= ‖fθ(z)-y‖2
+L1(fθ(z),y)= ‖fθ(z)-y‖1
+LTV (fθ(z))= ‖▽fθ(z)‖1
+ì
+î
+íï
+ï
+ïï
+ï
+(10)
+图2 DIP 照度显著决策图生成模型
+Fig.2 DIPilluminationsignificancedecisiongraphgenerationmodel
+2 所提融合算法
+  本文提出的医学 图 像 融 合 框 架 如 图 3 所 示,不 同 模 态
+源 图像I1 和I2,经过 THF 和 MDLatLRR 组成的混合多尺
+度边缘保护滤波分解后得到粗尺度 细节 层 {D1,D2}、细 尺
+度 细 节 层 {Dj1,Lrr,Dj2,Lrr,j = 1,2,3,4}和 低 秩 基 础 层
+{B41,Lrr,B42,Lrr}。
+然后,基于深度图像 先 验 照 度 显 著 图 决 策 进 行 像 素 筛
+选以融合基础层;对于由粗细尺度组成的复杂细节 层融 合,
+根据不同模态图像的 细 节 层 核 能 映 射 计 算 修 正 系 数,实 现
+对边缘分量的加权融合;最后线性组合各预融合分量,得 到
+最终的融合结果。
+图3 融合算法框架
+Fig.3 Fusionalgorithmframework
+2.1 混合多尺度边缘保护
+  截断 Huber滤波对边缘细节 敏 感,而 多 级 分 解 潜 在 低
+秩表示则具有较强的结构感知和降噪能力。为了在 保留 源
+图像完整结构的同时 尽 可 能 多 地 提 取 细 节 信 息,提 出 了 结
+合 THF 和 MDLatLRR 对 源 图 像 进 行 分 解。 源 图 像 分 解
+·861·
+
+=== PDF_PAGE 4 ===
+彭彤彪 等:混合边缘保护和照度显著决策的医学图像融合 第11期
+过程表示为:
+{D1,D2,I1 -D1,I2 -D2}= THF(I1,I2) (11)
+{B41,Lrr,{Dj1,Lrr}}= MDLatLRR(I1 -D1) (12)
+{B42,Lrr,{Dj2,Lrr}}= MDLatLRR(I2 -D2) (13)
+2.2 低秩基础层融合
+  基础层包含源图 像 中 丰 富 的 对 比 度 和 背 景 信 息,这 些
+关键信息为融合图像提供了更高的视觉质量。由于 现有 方
+法中得到广泛应用的绝对最大值策略在关注局部显 著能 量
+时难以忽略光晕区域 和 噪 声 带 来 的 感 知 缺 陷,从 而 导 致 融
+合图像质量下降。为此,本 文 提 出 基 于 DIP 照 度 显 著 决 策
+的方法融合低秩基础 层 分 量,根 据 迭 代 生 成 的 显 著 图 对 低
+秩分量进行像素筛选,决策过程表示为:
+FB (i,j)= B
+4
+1,Lrr(i,j), DIPt1(i,j)> DIPt2(i,j)
+B
+4
+2,Lrr(i,j), DIPt1(i,j)≤ DIPt2(i,j){
+(14)
+式中:DIPt1 和 DIPt2 是由随机噪声经历t 轮迭代后生成的
+照度显著图。
+2.3 复杂尺度细节层融合
+  在 医 学 成 像 中 ,细 节 信 息 的 表 达 质 量 对 于 准 确 定 位
+病 灶 起 着 至 关 重 要 的 作 用 。 为 了 更 精 确 地 展 现 器 官 和
+组 织 中 的 细 微 解 剖 结 构 与 纤 维 化 特 征 ,本 文 提 出 了 一 种
+高 频 核 能 映 射 加 权 修 正 的 细 节 层 融 合 规 则 ,具 体 融 合 步
+骤 如 下 :
+步骤 1)提 取 复 杂 尺 度 细 节 层 的 局 部 高 频 核 能。
+式(15)为 核 能 算 子 的 定 义,将 单 个 细 节 层 分 量 D 划 分 为l
+个同等大小的m ×m 小区域Dml 以获取局部核能,再重 建
+为细节层能量矩阵。re(·)表 示 从 局 部 小 区 域 重 构 回 全 局
+图像的算子,‖·‖ * 用 于 计 算 矩 阵 奇 异 值 总 和。 核 能 提
+取尺寸因子 m 的取值如式(17)所 示,根 据待 融合图 像的 局
+部梯度方差VG 和数据集均值Vmean 和标准差Vstd 等细节特
+征自适应调整。
+Nu(D)=re(‖Dm1,m2,… ,ml‖ * ) (15)
+N
+j
+D1 = Nu(Dj1,Lrr),NjD2 = Nu(Dj2,Lrr) (16)
+m =16+tanh(2×VG -Vmean
+Vstd
+) (17)
+步骤2)构 建 高 频 核 能 映 射 生 成 修 正 融 合 系 数 矩 阵
+ω
+j
+χ ,通过系数加权引导细节层分量融合 FD 。
+ω
+j
+χ =
+[Nj1]β
+[Nj1]β + [Nj2]β,χ ∈ {1,2} (18)
+FD = ∑
+4
+j=0
+(ωj1Dj1,Lrr +ωj2Dj2,Lrr) (19)
+2.4 融合图像重建
+  预融合后的基础层和细节层分量根据式(19)线 性组 合
+重建得到最终的融合结果。
+F = FB +FD (20)
+3 实验与结果分析
+3.1 实验设置
+  本文选用哈佛医学院公开医学图像数据集3种 脑部 疾
+病的 11 对 MRI&SPECT 和 多 模 态 腹 部 数 据 集 中 12 对
+CT&PET、8对 MR-T1&MR-T2作 为 测 试 图 像 进 行 对 比,
+图像分辨率为256×256。DIP 照度显著图的迭代次数为 T
+轮。采用8种常用指标 客 观 度 量 融 合 结 果,分 别 为 互 信 息
+(QMI)[19]、图 像 标 准 差 (QSD)[20]、基 于 Peilla的 结 构 相 似 度
+(QW )[21]、相 位 一 致 性 (QP)[22]、空 间 频 率 (QSF)、对 比 度
+(CON)[23]、平 均 梯 度 (QAG )和 边 缘 保 持 融 合 性 能 度 量
+(QAB/F)[24],所有指标数值的增大对应于融合性能的提升。
+为验证所提算法的有 效 性,本 文 与 7 种 先 进 融 合 方 法
+进行了比较,包括非下采 样 轮 廓 波 变 换 (NSCT)、多 尺 度 变
+换(MSMG)[25]、非监督增 强 型 融 合 网 络 (EMFusion)、耦 合
+特征 学 习 (CFL)[26]、关 联 驱 动 双 分 支 特 征 分 解 网 络
+(CDDFuse)[27]、高斯差分 边 缘 保 持 (XDoG)[28]和 边 缘 梯 度
+增强融合(EgeFusion)[29]。5 种 融 合 单 样 本 主 观 视 觉 结 果
+如图4~7所示,子数据集内所有融合图像客观评价 指标 平
+均值分别如表1~5所示。
+图4 转移性支气管源性癌的脑图融合结果
+Fig.4 Thefusionresultsofbrainimagesin Metastatic
+BronchogenicCarcinoma
+图5 阿尔茨海默症的脑图融合结果
+Fig.5 ThefusionresultsofbrainimagesinAlzheimer'sdisease
+·961·
+
+=== PDF_PAGE 5 ===
+ 第48卷 电 子 测 量 技 术
+图6 运动神经元疾病的脑图融合结果
+Fig.6 Thefusionresultsofbrainimagesin MotorNeuron
+3.2 算法性能比较
+  分别从5个医学数据子集中随机选取一组融合 图像 并
+基于8种不同方法的融合结果进行主观视觉对比 分析。图
+4~7分别展示 了 转 移 性 支 气 管 癌、阿 尔 茨 海 默 症、运 动 神
+经元 疾 病 和 腹 部 疾 病 的 MRI&SPECT、CT&PET、MR-
+T1&MR-T2 图 像 融 合 示 例。 可 以 看 出,MSMG 和
+CDDFuse与其它算法在对比度上 存在 显 著 差 异,色 调 暗 沉
+或过曝光使得主体信息和整体清晰度大幅削减不利 于人 眼
+  
+图7 腹部疾病数据集中 CT&PET、MR-T1&MR-T2融合结果
+Fig.7 FusionresultsofCT & PET,MR-T1 & MR-T2
+inAbdominalDiseaseDataset
+表1 转移性支气管癌中11对融合图像的指标均值比较(MRI&SPECT)
+Table1 Comparisonofmeanmetricsfor11pairsoffusedimagesinMetastaticBronchogenicCarcinoma(MRI&SPECT)
+方法 QMI QSD QW QP QSF CON QAG QAB/F
+NSCT 2.789 60.970 0.870 0.473 17.105 149.312 5.445 0.640
+MSMG 2.676 48.559 0.713 0.280 12.817 83.895 4.201 0.446
+EMFusion 3.062 55.130 0.871 0.621 14.128 102.093 4.474 0.642
+CFL 2.786 65.812 0.849 0.421 18.401 173.054 5.864 0.605
+CDDFuse 3.050 65.716 0.807 0.397 17.484 156.052 5.497 0.585
+XDoG 2.966 63.838 0.854 0.482 17.066 148.967 5.511 0.637
+EgeFusion 2.163 63.554 0.682 0.287 31.833 514.513 10.967 0.352
+Proposed 3.539 66.646 0.871 0.639 27.857 390.334 7.591 0.682
+表2 阿尔茨海默症中11对融合图像的指标均值比较(MRI&SPECT)
+Table2 Comparisonofmeanmetricsfor11pairsoffusedimagesinAlzheimer'sDisease(MRI&SPECT)
+方法 QMI QSD QW QP QSF CON QAG QAB/F
+NSCT 3.390 62.870 0.923 0.584 22.129 247.658 8.185 0.715
+MSMG 2.948 48.566 0.722 0.345 15.408 120.910 5.728 0.442
+EMFusion 3.350 59.792 0.905 0.629 18.865 180.188 6.778 0.703
+CFL 3.171 65.609 0.900 0.497 24.821 311.918 9.023 0.668
+CDDFuse 3.422 67.854 0.872 0.439 23.057 269.453 8.165 0.658
+XDoG 3.479 68.315 0.913 0.596 23.405 276.847 8.622 0.722
+EgeFusion 2.263 65.154 0.767 0.333 30.874 844.677 9.582 0.432
+Proposed 4.169 68.598 0.915 0.629 31.487 498.715 9.332 0.736
+·071·
+
+=== PDF_PAGE 6 ===
+彭彤彪 等:混合边缘保护和照度显著决策的医学图像融合 第11期
+表3 运动神经元疾病中11对融合图像的指标均值比较(MRI&SPECT)
+Table3 Comparisonofmeanmetricsfor11pairsoffusedimagesinMotorNeuronDisease(MRI&SPECT)
+方法 QMI QSD QW QP QSF CON QAG QAB/F
+NSCT 3.118 59.982 0.906 0.590 18.914 184.117 7.154 0.711
+MSMG 2.426 41.544 0.729 0.279 15.000 117.246 5.459 0.479
+EMFusion 3.104 55.272 0.904 0.629 16.486 139.897 6.158 0.700
+CFL 2.776 65.201 0.890 0.490 21.304 233.919 7.865 0.648
+CDDFuse 3.093 64.714 0.885 0.497 19.488 196.490 7.205 0.666
+XDoG 3.205 62.770 0.912 0.593 19.271 191.284 7.283 0.706
+EgeFusion 1.880 63.171 0.698 0.268 34.992 738.066 10.467 0.332
+Proposed 4.260 66.104 0.919 0.691 29.516 439.171 8.472 0.749
+表4 腹部疾病中12对融合图像的指标均值比较(CT&PET)
+Table4 Comparisonofmeanmetricsfor12pairsoffusedimagesinAbdominalDiseases(CT & PET)
+方法 QMI QSD QW QP QSF CON QAG QAB/F
+NSCT 3.531 61.781 0.963 0.580 30.709 473.786 8.491 0.792
+MSMG 2.691 32.705 0.658 0.447 24.960 312.795 5.182 0.353
+EMFusion 3.340 55.837 0.915 0.428 32.635 535.254 8.661 0.704
+CFL 3.420 63.616 0.960 0.572 30.911 480.026 8.660 0.790
+CDDFuse 3.483 63.733 0.943 0.558 30.468 466.265 8.809 0.774
+XDoG 3.446 63.467 0.960 0.603 30.812 476.934 8.673 0.801
+EgeFusion 2.598 61.468 0.853 0.352 44.613 1000.197 14.019 0.534
+Proposed 4.094 64.221 0.971 0.658 31.435 496.596 8.833 0.827
+表5 腹部疾病中8对融合图像的指标均值比较(MR-T1&MR-T2)
+Table5 Comparisonofmeanmetricsfor8pairsoffusedimagesinAbdominalDiseases(MR-T1 & MR-T2)
+方法 QMI QSD QW QP QSF CON QAG QAB/F
+NSCT 3.384 52.472 0.801 0.308 19.058 183.679 7.605 0.529
+MSMG 3.146 48.956 0.790 0.329 19.338 189.132 7.625 0.515
+EMFusion 3.416 51.554 0.707 0.293 16.560 138.582 6.471 0.447
+CFL 3.516 55.383 0.777 0.313 19.003 183.114 7.672 0.483
+CDDFuse 3.445 67.647 0.767 0.347 20.882 241.515 8.540 0.514
+XDoG 3.601 54.982 0.798 0.333 20.570 213.954 8.175 0.526
+EgeFusion 2.634 55.673 0.628 0.209 21.074 854.323 10.700 0.307
+Proposed 3.679 52.905 0.801 0.399 21.077 183.919 7.421 0.572
+观察。NSCT 的多方向性描述在图4和图7中局部放大的
+组织脉络表达得到 体 现,EMFusion、CFL 和 XDoG 算 法 在
+保留显著能量结构和 边 缘 细 节 良 好,但 在 局 部 区 域 如 图 5
+中的眼球和图 6 中 的 大 脑 皮 层 沟 壑 处 引 入 伪 颜 色 信 息 和
+模糊了微小组织边缘。EgeFusion在细 节纹 理的 保 留 与 增
+强相对优越,然而从图7(i)中 可 看 出 这 牺 牲 了 结 构 层 显 著
+能量的等比例分配以及造成了色彩失真。
+人类肉眼对融合结果 的 质 量 评 估 存 在 一 定 的 局 限 性,
+结合主观视觉质量和客观 指 标 衡 量,可 以 综 合 评 价 不 同 方
+法的优缺点。融 合 结 果 的 定 量 分 析 与 源 图 像 和 结 果 之 间
+的信息 量、结 构 相 似 度、能 量 相 关 性 等 因 素 有 关。表 1~5
+显示了不同数据集下所有 融 合 样 本 的 平 均 融 合 性 能 度 量,
+其中红色加粗为最优,黑 色 加 粗 为 次 优。 对 比 表 中 8 种 方
+法在所有数据集上的指标数据,可以得出以下结论:
+1)本文算法 在 MRI&SPECT 的 三 个 医 学 数 据 集 (转
+移性支气管癌、阿尔茨海默 症、运 动 神 经 元 疾 病)中 表 现 优
+异,在 多 个 关 键 指 标 上 达 到 最 优 或 次 优。 尤 其 是 在 QMI、
+QSD 、QW 、QP 和QAB/F 等指标上 展 现 了 卓 越 性 能,能 够 有 效
+·171·
+
+=== PDF_PAGE 7 ===
+ 第48卷 电 子 测 量 技 术
+保留源图像的显著信息和边缘结构细节。
+2)在多模态腹部数据集中,本文算法在3个 指标 上达
+到最优,次 优 项 与 最 优 项 的 差 值 较 小。此 外,QW 和 QAB/F
+性能优越也证 明 了 本 文 算 法 在 保 留 复 杂 尺 度 边 缘 的 同 时
+也抑制了噪声伪影干扰,能 够 提 取 不 同 模 态 图 像 的 结 构 互
+补特征,从而为计算机辅助诊断服务。
+3.3 消融实验
+  1)改进照度显著决策的有效性
+本节对比了 单 一 损 失 约 束 和 复 合 损 失 约 束 对 融 合 结
+果的性能影响。如图8所示,相比单 一损 失约 束和 LMSE 与
+L1 聚合损失,以 LMSE 、L1 和 LTV 为主体的 加权复 合损 失在
+评估指标QW 和QMI上有更好的性能表现。
+在细节信息 更 为 丰 富 的 转 移 性 支 气 管 癌 疾 病 数 据 集
+中,加权复合损失约束的改 进 照 度 显 著 性 决 策 依 然 有 良 好
+的性 能 提 升,在 QW 和 QMI 分 别 平 均 提 高 了 1.1% 和
+5.05%。实验数据 反 映 了 改 进 照 度 显 著 决 策 通 过 照 度 筛
+选融合不同模态图像的显 著 能 量 层,生 成 了 更 具 信 息 丰 富
+度的融合结果,从而为计算机辅助诊断提供有效的支持。
+图8 加权复合损失函数的消融实验
+Fig.8 Ablationstudyontheweightedcompositelossfunction
+2)关于 DIP照度显著图迭代次数 T 的讨论
+低频基础层的显著能量感知是否全面对结构特征的提
+取以及相异模 态 多 分 解 基 础 层 的 互 补 融 合 具 有 重 大 影 响,
+因而对 DIP照度显著图迭代次数 T 的讨论是有必要的。
+图 9 展 示 了 在 不 同 照 度 显 著 图 迭 代 次 数 下
+MRI&SPECT、CT&PET 和 MR-T1&MR-T2三种相 异模
+态融合图像在 QMI 和QW 客 观 指 标 的 数 值 表 现,其 中 迭 代
+轮次的 取 值 范 围 为 T =500、1000、1500、2000、2500、
+3000。综 合 分 析 可 知,除 MR-T1&MR-T2 不 规 则 变 化
+外,QMI在区间内总体呈增长趋势,在2000轮后增速变缓;
+而 QW 则表现为先增后减趋势,在2000轮或2500轮达到
+顶峰;后续 QW 曲线的非 线 性 下 降 可 能 是 因 为 迭 代 轮 次 过
+多导致引入 局 部 伪 影 和 小 区 域 显 著 信 息 失 衡。 最 终 选 取
+T =2000为最佳的显著图迭代次数。
+图9 不同迭代次数 T 值下的融合图像客观评价
+Fig.9 Objectiveevaluationofthefusedimageunder
+differentTvaluesofiterations
+4 结  论
+  为提高现 有 融 合 算 法 的 边 缘 提 取 和 显 著 能 量 感 知 能
+力,本 文 提 出 了 一 种 基 于 混 合 多 尺 度 边 缘 保 护、改 进 照 度
+显著决策 和 高 频 核 能 引 导 的 多 模 态 医 学 图 像 融 合 算 法。
+首先,在特征提取 阶 段,利 用 THU 和 MDLatLRR 结 合 的
+混合多尺度边缘保护滤波,在 提 取 细 节 特 征 的 同 时 抑 制 噪
+声干 扰;然 后,根 据 复 合 加 权 损 失 约 束 下 的 改 进 照 度 显 著
+决策对不同模 态 基 础 层 分 量 进 行 像 素 筛 选 获 得 预 融 合 基
+础层;其 次,由 粗 细 复 杂 多 尺 度 细 节 分 量 的 高 频 核 能 引 导
+生成修正融合系数,与复杂 细 节 层 分 量 交 互 累 加 获 得 预 融
+合细 节 层;最 后,线 性 重 构 上 诉 预 融 合 基 础 层 和 细 节 层 得
+到最终的融合图像。实验 结 果 表 明,本 文 算 法 可 以 保 留 源
+图像更多的结构显著信息和边缘特征信息,特别在 QW 、QP
+和QAB/F 相比其他对比算法 平均 提高 了6.42%、16.33% 和
+12.58%,表明融合 结 果 的 特 征 信 息 得 到 充 分 保 留。 未 来
+工作将进一步 集 中 于 更 多 症 状 数 据 集 下 算 法 的 泛 化 能 力
+以及 不 同 模 态 图 像 的 配 准、去 噪,提 升 算 法 在 复 杂 场 景 下
+的性能表现。
+参考文献
+[1]  CHEN Y,DENG N, XIN B J,et al.Structural
+characterizationandmeasurementofnonwovenfabrics
+basedon multi-focusimagefusion[J].Measurement,
+2019,141:356-363.
+[2]  LIANGX,HUP,ZHANGL,etal.MCFNet:Multi-
+layerconcatenationfusionnetworkformedicalimages
+fusion[J].IEEE SensorsJournal,2019,19(16):
+7107-7119.
+[3]  史韶杰,韩建宁,李大威,等.基 于 多 尺 度 曝 光 融 合 的 医
+学 CT 图像增强 方 法 [J].电 子 测 量 技 术,2022,45(6):
+106-111.
+SHISH J,HAN J N,LID W,etal.MedicalCT
+·271·
+
+=== PDF_PAGE 8 ===
+彭彤彪 等:混合边缘保护和照度显著决策的医学图像融合 第11期
+image enhancement method based on multi-scale
+exposure fusion [J]. Electronic Measurement
+Technology,2022,45(6):106-111.
+[4]  KARIM S,TONG G,LIJ,etal.Currentadvances
+and future perspectives of image fusion: A
+comprehensivereview[J].InformationFusion,2023,
+90:185-217.
+[5]  HARIBABU M,BINDU C H.Visibilitybased multi
+modalmedicalimagefusionwithDWT[C].2017IEEE
+InternationalConferenceon Power,Control,Signals
+and Instrumentation Engineering (ICPCSI).IEEE,
+2017:1561-1566.
+[6]  LIU Y,LIU S,WANG Z.A generalframeworkfor
+imagefusionbasedonmulti-scaletransformandsparse
+representation[J].Information Fusion,2015,24:
+147-164.
+[7]  ZHUZ,ZHENG M,QIG,etal.Aphasecongruency
+and local Laplacian energy based multi-modality
+medicalimagefusion methodin NSCT domain[J].
+IEEE Access,2019,7:20811-20824.
+[8]  PEIC,FAN K, WANG W.Two-scale multimodal
+medicalimagefusion based on guided filtering and
+sparserepresentation[J].IEEE Access,2020,8:
+140216-140233.
+[9]  JIE Y,LI X,TAN H,etal.Multi-modal medical
+imagefusionviamulti-dictionaryandtruncated Huber
+filtering[J].BiomedicalSignalProcessingandControl,
+2024,88:105671.
+[10] 康家银,陆武,张 文 娟.融 合 NSST 和 稀 疏 表 示 的 PET
+和 MRI图像 融 合 [J].小 型 微 型 计 算 机 系 统,2019,40
+(12):2506-2511.
+KANGJY,LU W,ZHANG WJ.FusionofPETand
+MRIimagesusingnon-subsampledshearlettransform
+combined with sparserepresentation[J].Journalof
+ChineseComputerSystems,2019,40(12):2506-2511.
+[11] LIG,LIN Y,QU X.Aninfraredandvisibleimage
+fusionmethodbasedonmulti-scaletransformationand
+normoptimization[J].InformationFusion,2021,71:
+109-129.
+[12] 陈广秋,温奇璋,尹文卿,等.用 于 红 外 与 可 见 光 图 像 融
+合的注意力残差密集融合 网 络[J].电 子 测 量 与 仪 器 学
+报,2023,37(8):182-193.
+CHEN G Q, WEN Q ZH, YIN W Q,et al.
+Attentionalresidualdenseconnectionfusion network
+forinfraredand visibleimagefusion[J].Journalof
+Electronic MeasurementandInstrumentation,2023,
+37(8):182-193.
+[13] XU H,MAJ.EMFusion:Anunsupervisedenhanced
+medicalimagefusionnetwork[J].InformationFusion,
+2021,76:177-186.
+[14] HOU R,ZHOU D,NIE R,etal.VIF-Net:An
+unsupervisedframeworkforinfraredandvisibleimage
+fusion [J].IEEE Transactions on Computational
+Imaging,2020,6:640-651.
+[15] 周涛,程倩 茹,张 祥 祥,等.基 于 DCIF-GAN 的 肺 部 肿
+瘤 PET/CT 跨模态医学 图 像 融 合 [J].光 学 精 密 工 程,
+2024,32(2):221-236.
+ZHOU T,CHENG Q R,ZHANG X X,etal.PET/
+CTCross-modalmedicalimagefusionoflungtumors
+based on DCIF-GAN [J]. Optics and Precision
+Engineering,2024,32(2):221-236.
+[16] 武丽,丁琴,葛彩 成.融 合 公 平 因 子 的 半 监 督 学 习 医 学
+图 像 分 割 模 型 [J].电 子 测 量 技 术,2024,47(23):
+171-180.
+WU L,DING Q,GECCH.Semi-supervisedlearning
+medicalimagesegmentation modelfused withequity
+factors [J].Electronic Measurement Technology,
+2024,47(23):171-180.
+[17] LIU Z,LU Y,LAIZ,etal.Robustsparselow-rank
+embeddingforimagedimensionreduction[J].Applied
+SoftComputing,2021,113:107907.
+[18] ULYANOV D,VEDALDIA,LEMPITSKY V.Deep
+imageprior[C].IEEEConferenceonComputerVision
+andPatternRecognition,2018:9446-9454.
+[19] JAGALINGAM P,HEGDE A V.Areviewofquality
+metricsforfusedimage[J].AquaticProcedia,2015,
+4:133-142.
+[20] SHABANZADE F,GHASSEMIAN H.Combination
+ofwaveletandcontourlettransformsforPETandMRI
+image fusion [C].2017 Artificial Intelligence and
+SignalProcessing Conference(AISP).IEEE,2017:
+178-183.
+[21] ZHAI G, MIN X. Perceptual image quality
+assessment:asurvey[J].Science ChinaInformation
+Sciences,2020,63:1-52.
+[22] ZHU B,ZHOU L,PU S,et al.Advances and
+challenges in multimodal remote sensing image
+registration[J].IEEE Journalon Miniaturizationfor
+AirandSpaceSystems,2023,4(2):165-174.
+[23] GHALATIM K,NUNES A,FERREIRA H,etal.
+Texture analysis and its applicationsin biomedical
+imaging:A survey[J].IEEE Reviewsin Biomedical
+Engineering,2021,15:222-246.
+[24] MEHER B,AGRAWAL S,PANDA R,etal.A
+survey on region basedimagefusion methods[J].
+InformationFusion,2019,48:119-132.
+·371·
+
+=== PDF_PAGE 9 ===
+ 第48卷 电 子 测 量 技 术
+[25] TAN W, TIWARI P, PANDEY H M, et al.
+Multimodalmedicalimagefusionalgorithmintheera
+ofbigdata[J].NeuralComputingand Applications,
+2020:1-21,DOI:10.1007/s00521-020-05173-2.
+[26] VESHKIF G,OUZIR N,VOROBYOV S A,etal.
+Multimodalimagefusionviacoupledfeaturelearning[J].
+SignalProcessing,2022,200:108637.
+[27] ZHAO Z, BAI H, ZHANG J,et al.Cddfuse:
+Correlation-driven dual-branch feature decomposition
+for multi-modality image fusion [C].IEEE/CVF
+Conference on Computer Vision and Pattern
+Recognition,2023:5906-5916.
+[28] JIE Y,LIX,ZHOU F,etal.Medicalimagefusion
+basedon extended difference-of-Gaussiansand edge-
+preserving[J].Expert Systems with Applications,
+2023,227:120301.
+[29] TANG H, LIU G, QIAN Y,et al.EgeFusion:
+Towardsedgegradientenhancementininfrared and
+visibleimagefusion with multi-scaletransform [J].
+IEEE TransactionsonComputationalImaging,2024,
+10:385-398.
+作者简介
+彭彤彪,硕士 研 究 生,主 要 研 究 方 向 为 多 模 态 医 学 图 像
+融合。
+E-mail:2112303101@mail2.gdut.edu.cn
+田妮莉(通信作者),博士,讲师,硕士生导师,主要研究方
+向为图像视频处理、源相机识别、图像安全取证等。
+E-mail:tiannili@ gdut.edu.cn
+潘晴,博士,副 教 授,硕 士 生 导 师,主 要 研 究 方 向 为 目 标
+识别、模式识别。
+E-mail:panqing@ gdut.edu.cn
+·471·

@@ -1,0 +1,401 @@
+=== PDF_PAGE 1 ===
+2026 年 5 月
+第 49 卷  第 3 期
+Vol.49    No.3
+May，2026
+湖南师范大学自然科学学报
+Journal of Natural Science of Hunan Normal University
+引用格式：简安权， 贾文豪， 赵天力， 等 . 基于 3D Slicer 与 ROS2 的多模态医学影像信息融合的通信系统研究 ［J］. 湖南
+师范大学自然科学学报， 2026， 49（3） ：134-142.［Jian A Q， Jia W H ， Zhao T L， et al. Research on communication system 
+for multimodal medical image information fusion based on 3D Slicer and ROS2 ［J］. Journal of Natural Science of Hunan 
+Normal University ， 2026， 49（3） ：134-142.］ DOI：： 10.7612/j.issn.2096-5281.2026.03.016
+基于 3D Slicer 与 ROS2 的多模态医学影像信息
+融合的通信系统研究
+简安权
+1
+， 贾文豪
+1
+， 赵天力
+2，3
+， 胡世军
+2，3
+， 黄秀祥
+1*
+（1. 湖南师范大学工程与设计学院， 中国 长沙　410081；
+2. 中南大学湘雅二医院， 中国 长沙　410000；
+3. 数字心脏湖南省工程研究中心， 中国 长沙　410013）
+摘　要　针对心脏介入式手术术前规划过程中多模态医学影像数据交互与系统协同的问题， 提出了一
+种面向医学影像平台与机器人控制系统的跨平台数据交互框架。系统采用  3D Slicer 作为医学影像处理平
+台，ROS2 用于接收影像数据并实现对机械手的控制， 通过网络通信机制实现多模态医学影像数据与空间位
+姿信息的实时交互。选用基于以太网的  OpenIGTLink 协议设计了数据通信系统， 基于临床需求设计了基于 
+EKF 的多源空间位姿信息融合估计及预处理算法， 建立了仿真模型和机械手控制实验系统， 从通信延迟、 数
+据吞吐量、 多节点扩展能力及系统资源占用等方面进行测试分析。仿真和实验结果表明： 在单节点条件下系
+统平均通信延迟低于  30ms， 在多节点场景下仍能保持稳定运行； 通过数据预处理与融合机制， 系统通信负载
+得到有效降低， 整体实时性与稳定性得到提升； 机械手实验验证了 EKF 优化数据在传输过程中较低的延迟
+波动和更高的稳定性。
+关键词　心脏介入式手术； 多模态信息融合；3D Slicer；ROS2；EKF
+中图分类号　R445；TP391.41　　　　文献标志码　 A　　　　文章编号　 2096-5281（2026）03-0134-09
+123
+Research on Communication System for Multimodal Medical Image 
+Information Fusion Based on 3D Slicer and ROS2
+JIAN Anquan1, JIA Wenhao1, ZHAO Tianli2,3, HU Shijun2,3, HUANG Xiuxiang 1*
+（1. College of Engineering and Design, Hunan Normal University, Changsha 410081, China; 2. The Second 
+Xiangya Hospital of Central South University, Changsha  410000, China; 3. Hunan Provincial Engineering 
+Research Center for Digital Heart, Changsha 410013, China ）
+Abstract　To address the issues of multimodal medical imaging data interaction and system coordina-
+tion in the preoperative planning process of cardiac interventional surgery, this paper proposes a cross-
+platform data interaction framework oriented toward medical imaging platforms and robotic control sys-
+tems. The system employs 3D Slicer as the medical imaging processing platform ， while ROS2 is utilized 
+to receive imaging data and control the robotic manipulator, and the real-time interaction of multimodal 
+medical imaging data and spatial pose information is realized through a network communication mecha-
+  收稿日期：2025-11-14； 知网首发日期：2026-07-01
+  基金项目：湖南省重点研发计划项目 （2025DK2002）
+*通信作者：黄秀祥， 博士， 教授， 研究方向： 机器学习、 故障诊断技术，E-mail：hxxpxj01@163.com 。
+
+=== PDF_PAGE 2 ===
+简安权等： 基于3D Slicer 与 ROS2 的多模态医学影像信息融合的通信系统研究第 3 期
+nism. The OpenIGTLink protocol based on Ethernet was selected to design the data communication sys-
+tem. Based on clinical requirements, an algorithm for fusion estimation and preprocessing of multi-source 
+spatial pose information using EKF was designed. A simulation model and a mechanical hand control ex-
+perimental system were established. Tests and analyses were conducted in terms of communication delay, 
+data throughput, multi-node scalability, and system resource occupation. Simulation and experimental re-
+sults demonstrate that the average communication latency of the system is less than 30 ms under single-
+node conditions, while stable operation is maintained in multi-node scenarios. Through data preprocessing 
+and fusion mechanisms, the communication load is effectively reduced, and overall real-time performance 
+and system stability are improved. Furthermore, robotic experiments verify that EKF-optimized data ex-
+hibit lower latency fluctuations and higher stability during transmission.
+Key words　cardiac interventional surgery; multimodal information fusion; 3D Slicer; ROS2; EKF
+心血管疾病是当前全球范围内导致死亡和致残的主要原因之一， 其发病率和危害性长期居高不
+下。随着医学影像和介入手术技术的进步， 微创心脏介入手术逐渐取代部分传统手术， 成为临床治疗
+的重要手段［1］。此类手术通过微创器械进入血管系统， 在心脏内部完成病变处理， 具有创伤小、 恢复
+快、 精准度高等优点。然而， 由于心脏结构复杂且处于持续动态变化状态， 导管路径规划和术中操作
+难度极大， 对术前规划的精确性与可视化要求极高。
+术前规划是心脏介入手术的关键环节， 其主要任务是基于患者多模态医学影像数据， 构建个体化
+的三维模型， 对病变位置、 血管形态及导管路径进行预先分析和模拟操作。传统的术前规划多依赖单
+一 CT、MRI 影像， 无法全面反映心脏结构及动态变化。近年来， 多模态医学影像融合技术的出现为术
+前规划提供了新的解决思路［2］。
+如何将多模态影像数据与外部设备进行实时交互是多系统集成中的难点。在心脏介入手术中，
+导丝与导管的操作依赖于医生对影像信息与器械位姿的实时感知， 其控制精度高度依赖于影像数据
+与控制数据之间的同步性与稳定性。若通信链路中存在延迟累积或数据波动， 将导致系统感知滞后，
+使医生操作与实际器械响应之间产生偏差， 从而影响手术精度并增加潜在风险。
+特别是在多模态影像融合场景下，CT、MRI 及超声等数据具有不同时间分辨率与空间精度， 其高
+频交互对通信系统提出了更高要求。
+目前， 医疗领域尚缺乏统一的专用通信协议， 在工业通信中，CAN 总线与 RS-485 总线等协议具有
+良好的抗干扰能力与稳定性， 但其带宽与数据扩展能力有限， 难以满足大规模医学影像数据传输需
+求。相比之下， 基于以太网的通信协议能够提供更高的数据传输速率与更强的系统扩展能力。在国
+际研究方面，Tokuda 等［3］提出并实现的 OpenIGTLink 协议成为该领域的事实标准之一， 为影像与设备
+之间的实时互操作提供了通用接口； Connolly 等［4］提出的 SlicerROS2 模块， 展示了如何在Slicer 中直
+接调用 ROS2 的库与话题机制。
+不同通信方式在节点规模、 带宽能力以及系统成本等方面各具特点。 CAN 总线具有较好的实时
+性和抗干扰能力， 在工业控制和嵌入式系统中应用广泛， 但其数据帧长度有限， 整体带宽不足。RS-
+485 通信结构简单、 实现成本较低， 并能够支持较长距离的数据传输， 但其通信速率和网络扩展能力仍
+然受到一定限制［5］。相比之下，OpenIGTLink 协议能够提供更高的传输带宽和更好的系统扩展性， 因
+此在医学影像导航系统等多设备协同场景中逐渐得到应用 ［6］。
+本文研究思路在于采用稳定的通信机制， 在现有的通信平台及协议的基础上， 着重解决通信数据
+处理及传输问题， 研究与设计预处理算法， 结合通信物理层优化， 在仿真与实验平台验证其合理性， 使
+通信系统满足手术装置的需求。以 Connolly 等人近年来的研究为代表， 其工作重点在于构建 3D 
+Slicer 与 ROS2 之间的桥接机制， 聚焦基础通信协议及跨平台接口等方面， 其创新成果为本文研究提供
+了有益参考［7］。
+135
+
+=== PDF_PAGE 3 ===
+湖南师范大学自然科学学报 第 49 卷
+基于上述研究思路， 本文重点关注通信链路建立之后的数据传输效率与质量问题， 从信息融合与
+状态估计的角度出发， 对多模态影像所对应的空间位姿数据进行建模与优化处理。通过引入扩展卡
+尔曼滤波， 在存在噪声与冗余的条件下对系统状态进行递归估计， 从而在保证信息有效性的前提下降
+低数据波动与冗余传输。
+1　系统架构与数据融合方法
+1.1　系统总体架构
+为满足心脏介入式手术术前规划中多模态医学影像数据交互与实时处理的需求 ［8］， 本文设计了
+一种面向医学影像平台与机器人控制系统的跨平台数据交互架构。系统以 3D Slicer 作为医学影像处
+理与可视化平台， 以ROS2 作为系统控制与数据管理框架， 通过统一的数据接口实现多模态医学影像
+信息、 空间位姿信息及路径规划结果之间的实时交互。整体框架如图1 所示。
+图 1　整体架构
+Fig. 1　Overall architecture
+在系统整体架构中，3D Slicer 主要承担医学影像数据的加载、 处理与可视化任务。通过导入患者
+的 CT、 超声等多模态影像数据， 并利用3D Slicer 平台提供的配准与三维重建工具完成影像空间对齐
+及三维模型构建［9］。
+ROS2 平台则作为系统的数据处理与控制中心， 负责接收来自影像系统的空间信息与图像数据，
+并在内部进行数据解析、 融合处理以及路径规划等计算任务。 ROS2 采用分布式节点架构， 各功能模
+块之间通过发布 /订阅机制进行通信， 从而实现系统功能的模块化设计［10］。
+1.2　数据传输分析与预处理
+在整个系统框架中，3D Slicer 平台通常用于完成术前影像数据的处理与可视化， 并通过通信接口
+将相关数据传输至 ROS 系统以支持术中控制与导航 ［11］。在该过程中， 系统往往需要同时处理 CT、
+MRI 以及超声等多种影像数据。由于这些数据均用于描述同一解剖结构或器械状态， 因此不同模态
+之间通常存在一定程度的相关性 ［12］。如果将各模态的原始数据直接发送至通信网络， 可能导致冗余
+信息增加， 从而占用额外的通信带宽。
+为了从理论上分析多模态数据中的冗余性， 可以利用信息论中的信息熵与互信息进行描述。设
+随机变量 XCT , XMRI , XUS 分别表示来自 CT、MRI 和超声模态的数据， 其信息熵定义为：
+H ( )X  =  −∑ [ ]p ( )x log p ( )x 。 （1）
+式中，p ( )x 为随机变量的概率分布， 信息熵用于描述随机变量所包含的信息量大小。
+当多个模态数据同时存在时， 其联合信息熵可表示为H ( )XCT , XMRI , XUS 。
+若各模态数据完全独立， 则有：
+H ( )XCT , XMRI , XUS  =  H ( )XCT  +  H ( )XMRI  +  H ( )XUS 。 （2）
+然而在实际医学影像系统中， 不同模态通常描述的是同一解剖区域或器械位置， 因此其数据之间
+往往存在统计相关性。此时可以利用互信息来衡量不同模态之间的共享信息量。例如 CT 与 MRI 数
+据之间的互信息可表示为：
+I ( )XCT , XMRI  =  H ( )XCT  +  H ( )XMRI   −  H ( )XCT , XMRI 。 （3）
+136
+
+=== PDF_PAGE 4 ===
+简安权等： 基于3D Slicer 与 ROS2 的多模态医学影像信息融合的通信系统研究第 3 期
+当 I ( )XCT , XMRI  >  0时， 说明两种模态数据之间存在共享信息， 即二者中包含部分重复信息。类似
+地，CT、MRI 与超声之间也存在一定互信息关系。因此， 多模态系统中的信息冗余量可以表示为：
+R =   H ( )XCT  +  H ( )XMRI  +  H ( )XUS  −  H ( )XCT , XMRI , XUS 。 （4）
+当 R >  0时， 说明不同模态数据之间存在冗余信息。如果系统直接将所有原始数据发送至通信网
+络， 其传输数据量为：
+Draw =  H ( )XCT  +  H ( )XMRI  +  H ( )XUS 。 （5）
+而系统真正需要表达的通常是血管结构或介入器械的空间状态， 其有效信息量往往远小于上述
+原始数据量。因此， 直接传输多模态原始数据将增加通信负载并降低系统实时性。
+ROS2 所采用的 DDS 通信机制在数据分发与传输可靠性方面具有良好性能 ［13］， 但其优化重点主
+要集中于通信传输层， 对于医学影像场景中普遍存在的数据冗余与高频噪声问题缺乏针对性处理能
+力。为此， 本文在数据进入DDS 通信链路之前引入扩展卡尔曼滤波进行预处理， 将多模态高维影像
+信息转换为低维空间位姿状态量， 并结合变化阈值机制即仅在状态显著变化时触发数据更新， 从而将
+有效传输数据量由 MB 级降低至 kB 级甚至更低。
+在原始数据传输模式下， 系统直接发送来自影像平台的高维数据。设单帧三维影像数据尺寸为
+Nx ×  Ny ×  Nz， 每个体素采用16 bit 表示， 则单帧数据量为：
+Draw =  Nx ×  Ny ×  Nz ×  2(Bytes)。 （6）
+当影像尺寸为 256 ×  256 ×  128 时， 单帧数据量约为：Draw ≈  256 ×  256 ×  128 ×  2 ≈  8 MB。
+若系统以频率 f (Hz) 进行数据更新， 则通信带宽需求为：
+Braw =  80 MB/s。
+在 EKF 预处理模式下， 系统仅传输低维状态向量。设系统状态向量为x =  [ ]x , y , z, vx, vy  ,vz
+T
+。
+其维度为n = 6， 若每个状态量采用64 bit浮点数表示， 则单次传输数据量为DEKF = n × 8 ≈ 48 Bytes。
+进一步结合变化阈值机制， 仅当满足 Xk −  Xk − 1  >  δ 这一条件时触发数据发送， 从而有效降低数
+据发送频率。此时系统实际带宽需求可表示为：
+BEKF =  DEKF ×  feff， （7）
+其中， feff ≪  f 。
+由此可得数据压缩比为：
+η =  Draw
+DEKF
+。 （8）
+代入典型参数可得：η ≈  8 ×  106
+48  ≈  1.7 ×  105。
+表明该方法在理论上可实现约 5 个数量级的数据压缩。
+该方法在保证信息有效性的前提下显著降低了通信带宽占用， 提高了数据传输效率与系统整体
+实时性。
+2　系统实现与实验验证
+2.1　系统开发环境与硬件配置
+系统实现依托医学影像平台 3D Slicer 与机器人操作系统 ROS2。3D Slicer 主要用于多模态医学
+影像的加载、 配准与三维重建， 而ROS2 用于数据处理、 路径规划及系统控制［14］。两者之间通过网络
+通信接口实现跨平台数据交互， 从而构建影像处理与控制计算协同工作的系统环境。
+2.2　通信性能测试与结果分析
+为了评估系统通信模块在实际运行环境中的性能表现， 本研究对系统的数据传输延迟、 数据丢包
+率以及通信稳定性进行了实验测试。
+在实验过程中， 影像处理端周期性地向控制端发送空间位姿数据与影像数据。控制端通信节点
+137
+
+=== PDF_PAGE 5 ===
+湖南师范大学自然科学学报 第 49 卷
+在接收到数据后记录接收时间戳， 并对数据进行解析与转换。通过对发送时间与接收时间进行统计
+分析， 可以计算出通信延迟。
+在 3D Slicer 端周期性发送 IMAGE 与 TRANSFORM 消息， 每秒10 次， 共计1 000 次。为确保测量
+精度， 实验重复进行3 次， 取平均值。
+从表 1 中可以看出， 整体通信延迟仍保持在60 ms 以内。说明系统在空间位姿信息传输方面具有
+较高的实时性。整个通信过程中丢包率均低于 1%， 表明通信系统能够保证数据传输的稳定性。
+表 1　不同数据类型的通信性能测试结果
+Table 1　Test results of communication performance for different data types
+消息类型
+TRANSFORM
+IMAGE（256×256×64）
+IMAGE（512×512×128）
+平均延迟/ms
+6.3
+22.4
+38.5
+最大延迟/ms
+11.7
+37.6
+56.9
+丢包率/%
+0.12
+0.36
+0.72
+时间同步误差/ms
+8.9
+10.5
+12.1
+为直观展示通信性能变化趋势， 给出图 2 延迟分布图。结果表明， 大部分消息的延迟集中在
+30 ms 以内， 仅有少量峰值出现在影像帧更新时， 这主要与3D Slicer 图像缓存刷新周期有关。
+图 2　延迟分布图
+Fig. 2　Delay distribution graph
+此外， 为验证通信的长期稳定性， 系统在连续运行2 h 的测试中无断连或堆积现象，CPU 利用率维
+持在 20% 以下， 内存使用稳定， 表明系统能够支持长时间实时运行。
+2.3　多节点扩展性实验
+为了进一步评估数据融合处理与冗余抑制机制在多节点环境下的通信能力， 本研究设计了多节
+点扩展实验。在实验中， 控制端同时运行多个通信节点， 每个节点分别接收来自影像平台的数据， 以
+模拟多设备协同工作的场景。
+为实现对多节点系统性能瓶颈的定量判别， 选取CPU 利用率与网络带宽利用率作为关键观测指
+标， 分别反映计算资源与通信资源的占用程度。
+当系统运行过程中 CPU 利用率持续处于较高水平， 而网络带宽占用仍有明显余量时， 表明节点
+本地计算资源已成为主要限制因素， 判定为计算瓶颈。相反， 当网络带宽利用率接近饱和， 而CPU 利
+用率仍处于中等或较低水平时， 说明通信链路已成为系统性能的主要约束， 判定为网络瓶颈。此外，
+当 CPU 利用率与带宽利用率同时处于较高水平时， 系统通常处于计算与通信共同受限的状态， 即混
+合瓶颈阶段。
+通过上述基于 CPU 与带宽双指标的判别方法， 可以在多节点扩展实验中清晰识别性能瓶颈的主
+导因素， 并进一步揭示系统由计算受限向通信受限转变的演化过程， 为后续优化策略提供定量依据。
+每组配置按固定流程执行以保证可重复性。实验持续时间为 120～300 s， 以获取足够样本量， 每
+组重复至少三次取均值并计算置信区间。与此同时须实时监测并记录接收端与发送端的 CPU、 内存
+138
+
+=== PDF_PAGE 6 ===
+简安权等： 基于3D Slicer 与 ROS2 的多模态医学影像信息融合的通信系统研究第 3 期
+与网卡带宽占用， 以便在性能下降时判断是否为计算瓶颈或网络瓶颈。
+如图 3 所示， 系统在低节点规模下保持较高的数据传输能力， 整体吞吐量在单节点场景达到峰
+值， 证明系统链路设计、 数据封包结构与传输路径均在低负载条件下表现优良。
+图 3　丢包率、 吞吐量与节点数量关系图
+Fig. 3　Graph of the relationship between packet loss rate ， throughput and the number of nodes
+如图 4 所示， 内存曲线呈近线性增长， 说明随着数据通道数量与缓存队列量增加， 系统资源占用
+也随之上升。在节点数较高时， 内存上升趋势略有加速， 仍保持在3.5 GB 以下， 在可控区间内。
+图 4　内存使用情况、CPU 使用率与节点数量关系图
+Fig. 4　Graph of memory usage ， CPU usage versus number of nodes
+结合实验结果可以发现， 在节点数量较低时， 系统CPU 利用率较低且网络带宽充足， 此时计算瓶
+颈占主导地位。而随着节点数量增加至 8 个以上， 网络带宽逐渐接近饱和， 丢包率与延迟明显上升，
+此时系统性能下降主要由网络瓶颈主导。因此， 系统在不同规模下呈现出由计算瓶颈向网络瓶颈转
+移的特性。
+2.4　基于扩展卡尔曼滤波的数据预处理对比实验
+为进一步评估所提出方法在 ROS2 通信框架下的优化效果， 本节设计对比实验， 将未经过数据处
+理的原始通信方式 （ 基于ROS2 DDS 直接传输 ） 与引入EKF 预处理后的通信方式进行对比分析。
+实验过程中， 影像平台连续将空间位姿数据发送至控制系统。系统分别在原始数据模式和 EKF
+滤波模式下运行。在每种模式下， 系统连续运行300 s， 并记录位姿数据波动幅度、 数据更新稳定性与
+网络带宽占用情况。
+为了观察 EKF 滤波对数据稳定性的影响， 本研究选取某一空间坐标分量的时间序列进行分析。
+图 5 给出了原始数据与 EKF 滤波后的数据变化曲线。红色曲线为原始数据， 蓝色曲线为 EKF 滤波后
+的数据。
+实验结果表明， 未采用EKF 滤波时系统输出信号存在明显随机波动。在引入 EKF 状态估计后，
+信号波动显著降低。并且滤波后的数据更加集中于均值附近， 系统稳定性得到明显提升。
+在通信过程中加入随机噪声和丢包抖动， 模拟对带宽的占用， 后通过EKF 滤波去掉冗余， 检测带
+宽的状态。
+图 6 给出了不同数据发送频率下系统通信带宽的测试结果。可以看出， 在未进行滤波处理时， 通
+信带宽存在一定波动； 而在引入EKF 算法后， 带宽曲线明显更加平滑， 并更加接近理论值， 表明EKF
+算法能够有效提高通信数据的稳定性。
+139
+
+=== PDF_PAGE 7 ===
+湖南师范大学自然科学学报 第 49 卷
+综合实验结果可知， 在基于ROS2 DDS 通信框架的原始数据传输模式下， 系统存在明显的数据波
+动与带宽不稳定问题。而在引入 EKF 预处理机制后， 系统数据标准差下降约64%， 同时通信带宽波动
+明显减小。该结果表明， 相比于直接依赖 DDS 通信机制， 本文方法通过数据层优化有效提升了通信
+数据质量与传输稳定性。
+图 5　EKF 前后系统数据稳定性对比
+Fig. 5 　Comparison of data stability of the EKF pre- 
+and post-system
+图 6　EKF 前后通信带宽稳定性对比
+Fig. 6 　Comparison of bandwidth stability of EKF before and after communica-
+tion
+2.5　手术装置控制性能验证实验
+为进一步验证所提出通信系统在实际介入手术装置中的应用效果， 本文在原有通信实验基础上，
+构建了基于真实机械手的闭环控制实验平台。
+图 7 为实验平台的整体搭建示意图。系统将 3D Slicer 端生成的空间位姿与路径规划数据， 发送
+至 ROS2 控制端， 并驱动手术装置执行相应运动， 实现从影像到控制的完整闭环。
+图 7　手术装置控制性能验证实验平台
+Fig. 7　Surgical device control performance verification experimental platform
+基于上述实验平台， 分别开展响应延迟实验与轨迹跟踪实验， 实验分别在未采用数据预处理的原始
+模式与引入EKF优化两种情况下进行， 从多个角度综合评估通信优化方法对手术装置控制性能的影响。
+为保证实验结果的可靠性与可重复性， 实验过程中统一设置通信频率为 20 Hz， 路径点更新频率
+为 10 Hz。每组实验持续时间为 300 s， 并重复进行3 次取平均值。
+响应延迟实验折线图如图 8 所示。
+根据实验数据统计， 可得到如表2 所示结果。
+表 2　响应延迟实验数据分析
+Table 2　Analysis of response delay experiment data
+指标
+响应延迟 
+上升时间
+超调量
+未处理数据
+0.82 s
+1.35 s
+8.6%
+EKF 处理后
+0.46 s
+0.78 s
+2.1%
+变化率
+-43.9%
+-42.2%
+-75.6%
+140
+
+=== PDF_PAGE 8 ===
+简安权等： 基于3D Slicer 与 ROS2 的多模态医学影像信息融合的通信系统研究第 3 期
+图 8　响应延迟实验折线图
+Fig. 8　Response delay experiment line chart
+实验结果表明， 在阶跃输入作用下， 未经过处理的原始数据存在明显的响应滞后现象， 同时受噪
+声影响较大， 响应曲线存在一定波动。而经过EKF 处理后， 系统输出响应更加平滑， 且能够提前逼近
+目标值。
+为验证所提方法对机械手运动控制精度的提升效果， 设计轨迹跟踪实验， 通过构建理想轨迹并引
+入噪声与扰动， 对比EKF 处理前后系统的轨迹跟踪性能。
+从轨迹跟踪结果 （ 图9） 可以看出， 未处理数据在噪声干扰下存在明显波动， 导致机械臂前端装置
+实际运动轨迹偏离理想轨迹。而经过 EKF 处理后， 轨迹明显更加平滑， 能够更稳定地贴合理想轨迹。
+图 9　轨迹跟踪数据误差对比
+Fig. 9　Comparison of trajectory tracking data errors
+根据实验数据统计， 可得到如表3 所示结果。
+表 3　轨迹跟踪数据误差数据分析
+Table 3　Trajectory tracking data error analysis
+指标
+MAE
+RMSE
+最大误差
+未处理
+0.081
+0.102
+0.215
+EKF 处理后
+0.029
+0.036
+0.087
+变化率/%
+-64.2
+-64.7
+-59.5
+误差分析结果表明，EKF 处理后轨迹跟踪误差整体降低约 60%， 显著提升了机械手在动态环境下
+的运动精度与稳定性， 从而为介入手术过程中导丝与器械的精确操控提供了可靠保障。
+3　结论
+本文针对医学影像平台 3D Slicer 与机器人控制系统 ROS2 之间的数据交互需求， 采用基于以太
+网的 OpenIGTLink 协议设计了通信系统硬件平台， 并对通信方案进行了优化， 使其满足临床手术实时
+通信需求。系统以影像处理平台与控制计算平台为核心， 通过网络通信机制实现医学影像数据与空
+间位姿信息的实时传输， 从而为术前规划与术中导航提供稳定的数据交互基础。
+针对跨平台数据通信过程中存在的数据噪声与冗余问题， 设计了基于 EKF 融合与滤波的数据算
+法， 对空间位姿数据进行预处理。通过对原始数据进行状态估计与滤波处理， 能够有效抑制随机噪
+声， 提高数据稳定性， 并减少不必要的数据更新， 从而降低通信带宽占用， 提高系统整体通信效率。
+141
+
+=== PDF_PAGE 9 ===
+湖南师范大学自然科学学报 第 49 卷
+为了验证理论模型和通信系统的性能指标， 本文从通信延迟、 数据传输稳定性、 多节点扩展能力
+以及系统资源占用等多个方面对系统性能进行了测试， 并搭建了机械手控制系统进行验证。实验结
+果表明， 该系统在连续数据传输条件下能够保持稳定运行， 通信延迟处于较低水平， 并能够支持多节
+点并行通信。同时， 对比实验结果表明， 引入扩展卡尔曼滤波后， 系统数据波动明显减小， 通信带宽占
+用得到有效降低， 机械手的响应精度得到提升。
+综上所述， 本文提出的跨平台数据交互系统能够实现医学影像平台与机器人控制系统之间的稳
+定通信， 并通过数据融合与预处理机制提升数据质量与通信效率。研究结果为多模态医学影像融合
+及机器人辅助手术系统的数据交互提供了一种可行的技术方案。
+参考文献：
+［1］ 　朱永杰. 超声图像引导下介入式手术导航关键技术研究 ［D］. 大连： 大连理工大学，2016.
+［2］ 　Gu X L ，Xia Y，Zhang J. Multimodal medical image fusion based on interval gradients and convolutional neural net-
+works［J］. BMC Med Imag ，2024，24（1） ：1-15.
+［3］ 　Tokuda J，Fischer G S ，Papademetris X ， et al. OpenIGTLink ：an open network protocol for image-guided therapy envi-
+ronment［J］. Int J Med Robot Comput Assist Sura ，2009，5（4） ：423-434.
+［4］ 　Connolly L ，Kumar A S，Ketan Mehta K ， et al. SlicerROS2 ：a research and development module for image-guided ro-
+botic interventions［J］. IEEE Trans Med Robot Bionics ，2024，6（4） ：1334-1344.
+［5］ 　Zhang J Q ，Yu X J，Ha S E ， et al. Comparison of middlewares in edge-to-edge and edge-to-cloud communication for 
+distributed ROS 2 systems［J］. J Intell Robot Syst ，2024，110（4） ：162.
+［6］ 　Klemm M ，Kirchner T，Gröhl J， et al. MITK-OpenIGTLink for combining open-source toolkits in real-time computer-
+assisted interventions［J］. Int J Comput Assist Radiol Surg ，2017，12（3） ：351-361.
+［7］ 　徐静远. 基于卷积神经网络的多模态医学图像融合联合配准方法研究 ［D］. 济南： 齐鲁工业大学，2025.
+［8］ 　Sadeghi A H，Taverne Y J H J，Bogers A J J C ， et al. Immersive virtual reality surgical planning of minimally invasive 
+coronary artery bypass for Kawasaki disease［J］. Eur Heart J ，2020，41（34） ：3279.
+［9］ 　Lin C，Chen Y J，Feng S L， et al. A multibranch and multiscale neural network based on semantic perception for multi-
+modal medical image fusion［J］. Sci Rep，2024，14（1） ：17609.
+［10］ 　Yuan S，Chen R Y ，Zang L ， et al. Development of a software system for surgical robots based on multimodal image 
+fusion：study protocol［J］. Front Surg，2024，11（11） ：1389244.
+［11］ 　Tauscher S ，Tokuda J ，Schreiber G ， et al. OpenIGTLink interface for state control and visualisation of a robot for 
+image-guided therapy systems［J］. Int J Comput Assist Radiol Surg ，2015，10（3） ：285-292.
+［12］ 　You Y J，Niu Y L，Sun F B， et al. Three-dimensional printing and 3D slicer powerful tools in understanding and treat-
+ing neurosurgical diseases［J］. Front Surg，2022（9） ：1030081.
+［13］ 　Chalupa D，Mikulka J. A novel tool for supervised segmentation using 3D Slicer［J］. Symmetry，2 018 ，10（11） ：627.
+［14］ 　Liu J K ，Wang B. Application of 3D-Slicer software in the treatment of gliomas ［J］. J Craniofac Surg ，2025，36（2） ：
+578-581.
+（ 编辑　ZSY）
+142

@@ -1,0 +1,16 @@
+=== pip install picai_prep ===
+
+picai_prep OK /data/heluofan/picai/venv_v1/lib/python3.10/site-packages/picai_prep/__init__.py
+=== pip install picai_baseline ===
+If you have questions or suggestions, feel free to open an issue at https://github.com/DIAGNijmegen/picai_baseline
+
+splits OK, folds= 5
+=== README: preprocessing 段落 ===
+146:If you don't want to include the AI-generated annotations, you can also use the supervised data preparation script: [`prepare_data.py`](src/picai_baseline/prepare_data.py).
+147-
+148-
+149-## Baseline Algorithms
+150-We provide end-to-end training pipelines for csPCa detection/diagnosis in 3D. Each baseline includes a template to encapsulate the trained AI model in a Docker container, and uploading the same to the [grand-challenge.org](https://grand-challenge.org/) platform as an ["algorithm"](https://grand-challenge.org/documentation/algorithms/). 
+151-
+152-
+PREP_DONE

@@ -1,0 +1,31 @@
+﻿=== 逐行：Name | Desc | MAC | Perm | Status ===
+本地连接* 7 ||| WAN Miniport (IPv6) ||| MAC= ||| PERM= ||| Up ||| Virtual=True
+本地连接* 3 ||| WAN Miniport (L2TP) ||| MAC= ||| PERM= ||| Disconnected ||| Virtual=True
+vEthernet (Default Switch) ||| Hyper-V Virtual Ethernet Adapter ||| MAC=00-15-5D-FA-44-C0 ||| PERM=00155DFA44C0 ||| Up ||| Virtual=True
+Teredo Tunneling Pseudo-Interface |||  ||| MAC= ||| PERM= ||| Not Present ||| Virtual=True
+本地连接* 1 ||| WAN Miniport (SSTP) ||| MAC= ||| PERM= ||| Disconnected ||| Virtual=True
+本地连接* 6 ||| WAN Miniport (IP) ||| MAC= ||| PERM= ||| Up ||| Virtual=True
+本地连接* 8 ||| WAN Miniport (Network Monitor) ||| MAC= ||| PERM= ||| Up ||| Virtual=True
+本地连接* 4 ||| WAN Miniport (PPTP) ||| MAC= ||| PERM= ||| Disconnected ||| Virtual=True
+vSwitch (Default Switch) ||| Hyper-V Virtual Switch Extension Adapter ||| MAC= ||| PERM= ||| Up ||| Virtual=True
+本地连接* 2 ||| WAN Miniport (IKEv2) ||| MAC= ||| PERM= ||| Disconnected ||| Virtual=True
+Microsoft IP-HTTPS Platform Interface |||  ||| MAC= ||| PERM= ||| Not Present ||| Virtual=True
+以太网 ||| Intel(R) Ethernet Connection (7) I219-V ||| MAC=88-88-88-88-87-88 ||| PERM=888888888788 ||| Up ||| Virtual=False
+以太网(内核调试器) ||| Microsoft Kernel Debug Network Adapter ||| MAC= ||| PERM= ||| Not Present ||| Virtual=True
+6to4 Adapter |||  ||| MAC= ||| PERM= ||| Not Present ||| Virtual=True
+本地连接* 5 ||| WAN Miniport (PPPOE) ||| MAC= ||| PERM= ||| Disconnected ||| Virtual=True
+=== 物理网卡 ===
+以太网 ||| Intel(R) Ethernet Connection (7) I219-V ||| MAC=88-88-88-88-87-88 ||| PERM=888888888788 ||| Up
+=== 所有 PnP 网络设备状态 ===
+WAN Miniport (PPPOE) ||| OK ||| SWD\MSRRAS\MS_PPPOEMINIPORT
+Intel(R) Ethernet Connection (7) I219-V ||| OK ||| PCI\VEN_8086&DEV_15BC&SUBSYS_86721043&REV_10\3&11583659&0&FE
+Hyper-V Virtual Switch Extension Adapter ||| OK ||| ROOT\VMS_VSMP\0000
+WAN Miniport (PPTP) ||| OK ||| SWD\MSRRAS\MS_PPTPMINIPORT
+WAN Miniport (IKEv2) ||| OK ||| SWD\MSRRAS\MS_AGILEVPNMINIPORT
+Microsoft Kernel Debug Network Adapter ||| OK ||| ROOT\KDNIC\0000
+WAN Miniport (Network Monitor) ||| OK ||| SWD\MSRRAS\MS_NDISWANBH
+WAN Miniport (IP) ||| OK ||| SWD\MSRRAS\MS_NDISWANIP
+WAN Miniport (SSTP) ||| OK ||| SWD\MSRRAS\MS_SSTPMINIPORT
+Hyper-V Virtual Ethernet Adapter ||| OK ||| ROOT\VMS_MP\0000
+WAN Miniport (IPv6) ||| OK ||| SWD\MSRRAS\MS_NDISWANIPV6
+WAN Miniport (L2TP) ||| OK ||| SWD\MSRRAS\MS_L2TPMINIPORT

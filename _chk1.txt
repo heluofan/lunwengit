@@ -1,0 +1,21 @@
+﻿
+Name                   Length  LastWriteTime      
+----                   ------  -------------      
+deps                           2026/11/23 21:08:49
+sample                         2026/11/23 21:13:05
+__pycache__                    2026/11/23 21:12:06
+audit_samples.py       6789    2026/11/23 21:12:44
+case_manifest.csv      273719  2026/11/23 21:12:59
+label-tree.json        3528047 2026/11/23 21:11:05
+marksheet.csv          97708   2026/11/23 21:12:57
+nnunet_baseline.md     15979   2026/11/23 21:12:57
+nnunet_baseline.py     5686    2026/11/23 21:14:08
+nnunet_eval.py         10618   2026/11/23 21:12:58
+PI-CAI-LICENSE.txt     19917   2026/11/23 21:08:43
+picai_baseline.zip     878712  2026/11/23 21:11:01
+picai_labels.zip       1696136 2026/11/23 21:11:01
+picai_labels_retry.zip 2655508 2026/11/23 21:13:11
+prepare_data.py        8937    2026/11/23 21:11:05
+sample_readback.json   2740    2026/11/23 21:13:28
+
+

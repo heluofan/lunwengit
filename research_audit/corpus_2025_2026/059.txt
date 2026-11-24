@@ -1,0 +1,2136 @@
+=== PDF_PAGE 1 ===
+1817005 -1
+特邀综述第 62 卷 第 18 期/2025  年 9 月/激光与光电子学进展
+基于闭环反馈机制的三维单分子追踪
+技术研究进展 （特邀）
+卢全
+1，3
+， 吴宇
+2，3
+， 梅婷
+2，3
+， 胡悦
+1**
+， 侯尚国
+3*
+1
+哈尔滨工业大学电子与信息工程学院 ，黑龙江  哈尔滨  150001 ；
+2
+哈尔滨工业大学生命科学与技术学院 ，黑龙江  哈尔滨  150001 ；
+3
+深圳湾实验室系统与物理生物学研究所 ，广东  深圳  518132
+摘 要 单 分 子 追 踪 成 像 技 术 作 为 现 代 生 物 物 理 和 细 胞 生 物 学 研 究 的 重 要 手 段，近 年 来 取 得 了 显 著 进 展。 通 过 实 时 监 测
+单 个 分 子 的 动 态 行 为，该 技 术 揭 示 了 传 统 群 体 平 均 方 法 难 以 捕 捉 的 微 观 过 程 和 瞬 态 事 件。 本 文 系 统 综 述 了 单 分 子 追 踪
+成 像 领 域 的 最 新 研 究 进 展，重 点 聚 焦 于 基 于 闭 环 反 馈 机 制 的 三 维 追 踪 方 法。 此 类 方 法 主 要 涵 盖 结 构 化 信 号 探 测 与 结 构
+化激发扫描两大类别 ，具体包括四面体结构探测 、分离式探测 、四面体结构激发 、轨道式扫描 、三维动态光子定位 、极值搜
+索定位 、最小交叉熵定位 、异步读出 SPAD 阵列等多种技术路径 ，并简要介绍了基于图像采集的闭环反馈三维追踪方案 。
+本 文 从 空 间 分 辨 率、时 间 分 辨 率、追 踪 范 围、系 统 稳 定 性 及 实 现 复 杂 度 等 维 度，对 各 类 方 法 进 行 了 全 面 比 较 分 析，旨 在 为
+不同应用场景下的技术选型提供参考依据 。此外 ，本文探讨了三维追踪技术与环境背景成像的集成策略 ，以及结合荧光
+寿命 、荧光光谱 、偏振等多维光学参数实现多模态信息互补融合的方法 ，助力深入解析复杂生物学事件 。最后 ，本文展望
+了 其 未 来 发 展 方 向，包 括 多 目 标 并 行 追 踪、深 部 组 织 成 像、人 工 智 能 辅 助 闭 环 控 制、系 统 微 型 化 集 成 和 光 漂 白 抑 制 等，并
+讨 论 了 该 技 术 在 肿 瘤、神 经、病 毒 感 染 等 医 学 和 生 命 科 学 领 域 的 潜 在 应 用，旨 在 为 单 分 子 追 踪 成 像 技 术 的 持 续 发 展 与 实
+际应用提供系统化的参考与理论支持 。
+关键词  光学显微 ；三维单分子追踪 ；单颗粒追踪 ；闭环反馈 ；主动反馈追踪
+中图分类号  Q63   文献标志码  A DOI ： 10.3788 /LOP 251237
+Advances in Three -Dimensional Single -Molecule Tracking Microscopy 
+with Closed -Loop Feedback Control (Invited )
+Lu Quan
+1,3
+, Wu Yu
+2,3
+, Mei Ting
+2,3
+, Hu Yue
+1**
+, Hou Shangguo
+3*
+1
+School of Electronics and Information Engineering , Harbin Institute of Technology , Harbin 150001 , 
+Heilongjiang , China ; 
+2
+School of Life Science and Technology , Harbin Institute of Technology , Harbin 150001 , Heilongjiang , China ; 
+3
+Systems and Physical Biology Institute , Shenzhen Bay Laboratory , Shenzhen 518132 , Guangdong , China
+Abstract  Single -molecule tracking (SMT ) imaging technology has become a crucial tool in modern biophysics and cell 
+biology , achieving significant advancements in recent years . By monitoring the dynamic behavior of individual molecules in 
+real time , this technique reveals microscopic processes and transient events that are often obscured by traditional ensemble -
+averaged methods . This paper provides a comprehensive review of the latest research developments in the field of SMT 
+imaging , with a particular focus on three -dimensional (3D) tracking methods based on closed -loop feedback mechanisms . 
+These methods are primarily categorized into structured signal detection and structured excitation scanning , including 
+techniques such as tetrahedral detection , split detection , tetrahedral excitation , orbital scanning , 3D dynamic photon 
+localization , extremum search localization , minimum cross -entropy localization , and asynchronous readout SPAD arrays . 
+The paper also briefly introduces image acquisition -based closed -loop feedback 3D tracking schemes . We systematically 
+compare and analyze various methods in terms of spatial resolution , temporal resolution , tracking range , system stability , 
+收稿日期 ：2025 -05-16；修回日期 ：2025 -06-10；录用日期 ：2025 -06-13；网络首发日期 ：2025 -06-20
+基金项目 ： 国 家 自 然 科 学 基 金（22204106 ） 、深 圳 市 医 学 研 究 专 项 基 金（B2301003 ） 、深 圳 湾 实 验 室-EVIDENT 联 合 光 学 显 微 成
+像技术开发项目 （S234602004 -4） 、广东省珠江人才计划项目 （2021 QN 02Z631） 、深圳湾实验室科研启动项目 （21240091 ）
+通信作者 ：
+*
+shangguo .hou@szbl .ac.cn；
+**
+huyue@hit .edu.cn
+
+=== PDF_PAGE 2 ===
+1817005 -2
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+and implementation complexity , aiming to provide guidance for technology selection under different application scenarios . 
+Furthermore , the paper explores integration strategies between 3D tracking and environmental background imaging , as 
+well as multimodal fusion approaches combining optical parameters such as fluorescence lifetime , fluorescence spectrum , 
+and polarization to achieve complementary information for in -depth analysis of complex biological events . Finally , the 
+paper discusses future development directions , including multi -target parallel tracking , deep -tissue imaging , AI -assisted 
+closed -loop control , system miniaturization and integration , and photobleaching suppression . The potential applications of 
+these technologies in cancer biology , neuroscience , virology , and other biomedical fields are also explored . This review 
+aims to provide a systematic reference and theoretical foundation for the continued development and practical deployment 
+of single -molecule tracking technologies .
+Key words  optical microscopy ; three -dimensional single -molecule tracking ; single -particle tracking ; closed -loop 
+feedback ; active -feedback tracking
+1　引 言
+单 分 子/单 颗 粒 追 踪 技 术（SMT/SPT ）作 为 单 分
+子 生 物 物 理 研 究 的 关 键 技 术 手 段，有 力 推 动 了 生 命 科
+学的进步
+［1-8］
+。与传统的群体平均测量方法不同 ，SMT
+能够以纳米精度实时追踪单个分子或纳米颗粒在复杂
+生物环境中的空间轨迹 ，捕捉异质性行为 、瞬时跃迁状
+态 和 低 丰 度 分 子 事 件 等 关 键 信 息，这 些 是 传 统 方 法 无
+法 解 析 的。 通 过 构 建 时 间 相 关 的 三 维 轨 迹，该 技 术 不
+仅可以揭示分子扩散 、结合 、解离 、转运等基本过程 ，还
+能深入分析分子在膜结构 、细胞骨架 、细胞器及细胞环
+境 中 的 功 能 机 制 与 调 控 模 式。 近 年 来，单 分 子 追 踪 技
+术 被 广 泛 应 用 于DNA 修 复
+［9］
+、转 录
+［10-12］
+、翻 译
+［13］
+、核 酶
+催 化
+［14-15］
+、蛋 白 质 折 叠
+［16-17］
+、马 达 蛋 白 运 动 和 受 体 蛋 白
+识 别
+［18-20］
+等 生 物 分 子 动 力 学 研 究，是 从 分 子 行 为 层 面
+理解生命活动机制不可或缺的核心技术之一 。单颗粒
+追踪技术与单分子追踪技术的主要区别在于被追踪目
+标的尺寸 。若无特别说明 ，下文将不再严格区分两者 ，
+单颗粒追踪一词可视为广义上的 SMT/SPT 技术 。
+根 据 实 现 方 式 的 差 异，单 颗 粒 追 踪 技 术 主 要 分 为
+两 类：基 于 图 像 的 单 颗 粒 追 踪 技 术 和 基 于 闭 环 反 馈 机
+制的单颗粒追踪技术 。两者的显著区别在于是否引入
+闭环反馈来实时补偿粒子在激发焦面内的位移 。基于
+图像的单颗粒追踪技术借助传统的显微成像方法采集
+一 系 列 图 像
+［21-22］
+，如 共 聚 焦 显 微 镜
+［23］
+、全 内 反 射 显 微
+镜
+［24-27］
+、光 片 显 微 镜
+［28-29］
+等 ，再 运 用 均 方 位 移（MSD）分
+析 等 后 处 理 算 法 提 取 目 标 分 子 或 粒 子 的 位 置 信 息，并
+按 时 间 顺 序 串 联，从 而 重 构 出 粒 子 的 运 动 轨 迹（图 1） 。
+这类基于图像的追踪技术虽具有出色的空间定位精度
+且 可 同 时 追 踪 多 个 目 标，但 其 时 间 分 辨 率 受 传 统 显 微
+成 像 技 术 成 像 速 率 的 限 制。 例 如，共 聚 焦 显 微 镜 的 三
+维 成 像 时 间 分 辨 率 通 常 在 数 秒 以 上，全 内 反 射 显 微 镜
+的成像速率则受限于相机读出速度和克服噪声所需的
+曝 光 时 间，一 般 在10~200 ms 之 间。 即 便 通 过 限 制 采
+集 视 野 来 优 化 成 像 速 率，捕 捉 微 秒 级 时 间 尺 度 上 的 快
+速 动 力 学 事 件 依 然 极 具 挑 战。 需 注 意 的 是，二 维 单 颗
+粒 追 踪 缺 乏 轴 向 运 动 信 息，可 能 导 致MSD 分 析 不 准
+确
+［30］
+。获取轴向信息的直接方法是将一系列二维图像
+堆叠生成三维图像 ，然后连接粒子在各帧中的三维位置
+绘 制 其 三 维 运 动 轨 迹
+［31-33］
+，但 这 将 显 著 降 低 时 间 分 辨
+率。另一种方法是在多个焦平面同时成像
+［28， 34-36］
+，或利
+用 柱 面 透 镜 引 入 像 散 等 光 学 手 段
+［37-42］
+，使 荧 光 图 像 的
+形 状 或 大 小 携 带 样 品 轴 向 位 置 信 息。 此 外，还 可 引 入
+相 位 掩 模 或 空 间 光 调 制 器，对 系 统 点 扩 散 函 数（PSF）
+进 行 设 计，将 深 度 信 息 编 码 到 荧 光 图 像 中
+［43-52］
+。 这 些
+基 于 PSF 工 程 的 三 维 单 颗 粒/单 分 子 追 踪 方 法 虽 能 在
+相 机 单 次 曝 光 内 获 取 轴 向 位 置 信 息，但 总 体 时 间 分 辨
+率 仍 受 相 机 读 出 速 率 的 限 制，且 轴 向 追 踪 范 围 相 对 较
+小 。 若 希 望 覆 盖 更 大 的 深 度 范 围，则 需 引 入 更 多 成 像
+平面或更复杂的 PSF 设计 。
+相 比 之 下，基 于 闭 环 反 馈 机 制 的 单 颗 粒 追 踪 技 术
+摒 弃 了 从 图 像 序 列 中 事 后 提 取 轨 迹 的 方 式，转 而 利
+用 实 时 探 测 到 的 信 息 锁 定 目 标 粒 子。 该 方 法 通 过 闭
+环 反 馈，将 原 本 较 大 的 体 积 成 像 区 域 压 缩 成 围 绕 目
+标 粒 子 的 小 型 动 态 观 测 区 域，从 而 在 保 持 大 范 围 追
+踪 的 同 时 显 著 拓 展 轴 向 追 踪 范 围 且 不 牺 牲 时 间 分 辨
+率 。 此 外，这 类 技 术 还 可 结 合 体 积 成 像、荧 光 光 谱 等
+手 段 ，在 追 踪 目 标 粒 子 的 同 时 实 时 监 测 其 环 境 和 状
+图 1　基于图像的单颗粒追踪技术示意图
+Fig. 1　Schematic of image -based single -particle tracking
+
+=== PDF_PAGE 3 ===
+1817005 -3
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+态 变 化，为 研 究 复 杂 生 物 分 子 动 态 过 程 提 供 有 力 的
+技 术 支 撑。
+本 文 主 要 分 为3 个 部 分：首 先，回 顾 基 于 闭 环 反 馈
+机制的三维单颗粒追踪显微成像技术的不同实现路径
+（图 2） ，并 讨 论 其 在 单 分 子 追 踪 中 的 应 用；其 次，总 结
+三维单颗粒追踪技术与细胞级显微成像技术的结合策
+略 ，以 实 现 轨 迹 信 息 与 细 胞 环 境 信 息 的 互 补 融 合；最
+后 ，介 绍 将 荧 光 寿 命、荧 光 光 谱、偏 振 等 多 维 光 学 参 数
+引 入 三 维 单 颗 粒 追 踪 的 方 法，探 讨 多 模 态 信 息 获 取 的
+最新进展 。
+2　基于闭环反馈机制的三维追踪技术
+根 据 激 发 端 或 探 测 端 的 光 学 设 计 差 异，基 于 闭 环
+反馈机制的三维追踪方法可以分为结构化信号探测与
+结构化激发扫描两大类 。下文系统综述这两大类方法
+所 涵 盖 的 各 种 技 术 路 径，并 简 要 介 绍 基 于 图 像 采 集 的
+闭环反馈三维追踪方案 。
+2. 1　结构化信号探测
+基于结构化信号探测的三维追踪技术利用多个空
+间分离的点探测器来获取粒子的位置信息 。不同探测
+器 对 应 样 品 空 间 中 的 不 同 位 置，通 过 比 较 它 们 接 收 到
+的 荧 光 信 号 差 异，可 以 实 时 估 计 出 粒 子 的 三 维 位 置。
+闭 环 反 馈 控 制 器 根 据 信 号 差 异 驱 动 样 品 台 或 物 镜 的
+XYZ 位 移，使 粒 子 保 持 在 观 测 体 积 的 中 心，从 而 实 现
+实时追踪 。
+2. 1. 1　四面体结构探测三维追踪技术
+受 Berg 团队
+［53］
+利用 6 个光电倍增管实现三维反馈
+追 踪 的 启 发，Lessard 等
+［54-55］
+首 次 提 出 了 基 于 四 面 体 结
+构 探 测 的 三 维 追 踪 技 术（图 3） 。该 技 术 将4 个 与 光 纤
+耦 合 的 单 光 子 计 数 型 雪 崩 光 电 二 极 管（SPC -APD）以
+四 面 体 结 构 规 律 排 布，用 于 同 时 探 测 来 自 被 追 踪 粒 子
+的 荧 光 信 号。 两 对 SPC -APD 分 别 用 于 检 测 粒 子 在X
+和 Y 方 向 上 的 位 置 差 异，而 两 个 探 测 器 对 的 平 面 高 度
+存 在 偏 移，使 得 不 同 对 之 间 的 信 号 强 度 差 可 以 用 于 计
+算 粒 子 的Z 方 向 位 置。 通 过 比 较4 个 探 测 通 道 接 收 到
+的 光 子 计 数 差 异，可 以 实 时 估 计 粒 子 相 对 于 探 测 区 域
+中 心 的 三 维 偏 移 量，并 通 过 反 馈 系 统 驱 动 样 品 台 将 粒
+子重新带回探测中心位置 。这种四面体探测方案能够
+以较高的时间分辨率实现粒子的三维定位和追踪 。研
+究 团 队 利 用 该 技 术 在 甘 油 中 实 时 追 踪 了 半 导 体 量 子
+点
+［56］
+。 随 后，研 究 人 员 成 功 将 该 方 法 拓 展 到 单 分 子 追
+踪 领 域，首 次 实 现 了 对 高 黏 度 介 质 中 单 个Cy5 标 记 脱
+氧 尿 苷 三 磷 酸（dUTP）分 子 的 三 维 追 踪
+［57］
+。 这 些 分 子
+在高黏度环境中的扩散速度约为 3 μm2/s ，单分子轨迹
+持 续 时 间 在0.3 s 以 内。 Han 等
+［58］
+利 用 该 方 法 对 高 黏
+度 介 质 中 的 荧 光 蛋 白 低 聚 物 进 行 了 三 维 单 分 子 追 踪。
+尽 管 高 黏 度 减 缓 了 分 子 扩 散 速 度，但 轨 迹 持 续 时 间 仍
+然 只 有 几 百 毫 秒 。 通 过 增 加 一 个 探 测 通 道 ，Keller
+等
+［59］
+进 一 步 证 明 了 该 系 统 的 多 色 追 踪 能 力，他 们 在 高
+黏 度 溶 液 中 实 现 了 双 链DNA 的 单 分 子 荧 光 共 振 能 量
+转 移 动 力 学 测 量，展 示 了 四 面 体 探 测 方 法 在 多 色 闭 环
+反馈三维单分子追踪中的潜力 。
+2. 1. 2　分离式探测三维追踪技术
+Cang 等
+［60］
+优 化 共 聚 焦 显 微 镜 的 探 测 光 路，并 结 合
+暗 场 照 明 实 现 了 分 离 式 探 测 三 维 追 踪。 最 初，该 方 法
+采用象限 APD 获取粒子横向位置信息 ，轴向位置信息
+图 2　本综述中涵盖的基于闭环反馈机制的三维追踪方法概述
+Fig. 2　Overview of 3D tracking methods via closed -loop feedback control covered in this review
+
+=== PDF_PAGE 4 ===
+1817005 -4
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+则 通 过 针 孔 前 后 的 光 强 梯 度估 算，如 图 4（a）所 示。 为
+提 高 时 间 分 辨 率 与 灵 敏 度，研 究 人 员 引 入4 个 单 光 子
+计 数 型 雪 崩 光 电 二 极 管 取 代 象 限 探 测 器，实 现 了 更 快
+速 的 三 维 追 踪
+［61-63］
+。 在 该 系 统 中，两 组 相 互 垂 直 的 棱
+镜将荧光信号分别导向两个正交方向的探测器对 。目
+标粒子与激光焦点的任何偏移都会在探测器对中产生
+强 度 差，结 合 两 个 探 测 器 对 的 信 号 差 即 可 实 时 计 算 粒
+子 的 XY 位 置。 基 于 该 方 法，研 究 人 员 利 用 平 移 和 旋
+转 扩 散 之 间 的 相 关 性，成 功 测 量 了 单 个 金 纳 米 颗 粒 的
+光 谱 各 向 异 性
+［64］
+。 Qian 等
+［65］
+进 一 步 利 用 分 离 式 探 测
+技 术，通 过 热 梯 度 引 导 带 有Janus 涂 层 的 粒 子，实 现 了
+在光场中对粒子的主动引导和定点定位 。这一实验结
+果进一步证明了闭环反馈三维追踪在环境控制和粒子
+操纵方面的潜力 。
+2. 2　结构化激发扫描
+结构化激发扫描方法通过设计特定的激发光模式
+图 3　四面体探测三维追踪技术 。 （a）Han 等
+［58］
+开发的四面体探测三维追踪系统示意图 ，两对光纤组在样品空间形成三维四面体状的
+探 测 区 域； （b）五 个 量 子 点 标 记 的IgE -FcεRI 三 维 轨 迹，轨 迹 点 按 时 间 编 码 着 色； （c）用 于 闭 环 反 馈 控 制 和 追 踪 的 光 子 计 数；
+（d）相 机 在 起 点 附 近 采 集 的 图 像； （e）定 向 运 动MSD 分 析
+［57］
+； （f）荧 光 蛋 白Azami Green 的 低 聚 物（mAG/dAG/tAG ）在 甘 油 溶
+液中的单分子追踪结果分析
+［58］
+，仅统计追踪持续时间 ≥100 ms 的轨迹
+Fig. 3　Tetrahedral detection -based 3D tracking . (a) Schematic of the tetrahedral detection -based 3D tracking system developed by Han 
+et al .
+[58]
+, in which two pairs of optical fibers form a three -dimensional tetrahedral detection region within the sample space ; 
+(b) three -dimensional trajectory of five quantum dot -labeled IgE -FcεRI complexes , with trajectory points color -coded according 
+to time ; (c) photon count data used for closed -loop feedback control and tracking ; (d) representative camera image acquired near 
+the starting point ; (e) MSD analysis of directional motion
+[57]
+; (f) single -molecule tracking analysis of Azami Green oligomers 
+(mAG , dAG , and tAG ) in glycerol solution
+[58]
+, considering only trajectories with tracking durations ≥100 ms
+
+=== PDF_PAGE 5 ===
+1817005 -5
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+来获取粒子空间位置信息 ，而不依赖多个探测器阵列 。
+常 见 的 策 略 包 括 以 特 定 图 案 快 速 扫 描 激 发 光 束，或 在
+样品中时序依次形成多个激发焦点 。通过比较激发不
+同 位 置 时 收 集 到 的 荧 光 信 号，系 统 可 以 确 定 粒 子 所 在
+的位置 。随后 ，将计算得到的位置反馈给控制器 ，使样
+品 台 或 物 镜 移 动，实 现 对 粒 子 的 实 时 锁 定 和 追 踪。 与
+探 测 端 结 构 化 信 号 探 测 方 法 不 同，结 构 化 激 发 扫 描 利
+用 激 发 端 的 多 点 或 扫 描 模 式，通 过 对 荧 光 时 间 响 应 的
+解 码 得 到 粒 子 坐 标，是 另 一 类 闭 环 反 馈 三 维 追 踪 的 实
+现途径 。
+2. 2. 1　四面体结构激发三维追踪技术
+四 面 体 结 构 激 发 方 法 是 与 前 述 四 面 体 探 测 相 对
+应 的 一 种 方 案。 该 技 术 不 采 用4 个 规 则 排 布 的 探 测
+APD ，而 是 利 用4 个 依 次 发 射 的 激 光 脉 冲 来 进 行 荧 光
+激 发。4 个 激 光 焦 点 在 样 品 空 间 形 成 四 面 体 形 状 的 激
+发 区 域，并 严 格 控 制 每 个 焦 点 激 发 的 时 间 顺 序。 目 标
+粒 子 被 依 次 激 发 产 生 的 荧 光 信 号 由 单 个APD 探 测。
+通过分析在 4 个不同时间窗口内收集到的光子数目差
+异 ，可 以 推 断 粒 子 相 对 于 四 面 体 激 发 区 域 中 心 的 偏
+移 ，从 而 实 现 三 维 定 位 并 驱 动 反 馈 系 统 跟 踪 粒 子。
+Germann 等
+［66］
+利 用 4 个 脉 冲 激 光 二 极 管 开 发 了 首 台 基
+于 四 面 体 结 构 激 发 的 三 维 追 踪 系 统。 在 该 系 统 中，
+4 个 激 光 二 极 管 发 出 的 激 光 经 过 分 束 镜 组 合，在 焦 平
+面 形 成 一 个 四 面 体 的 激 发 阵 列，由 高 速 采 集 卡 按 顺 序
+激 发 并 记 录 来 自SPC -APD 的 光 子 脉 冲。 通 过 比 较 不
+同 激 发 点 的 光 子 计 数 差 异，可 以 估 计 出 粒 子 的 三 维 位
+置 ，并 通 过 驱 动 压 电 物 镜 实 现 补 偿 定 位。 在 1.86 ms
+的 反 馈 响 应 时 间 内 ，该 系 统 可 捕 捉 扩 散 速 率 高 达
+12 μm2/s 的 目 标 粒 子。 Perillo 等
+［67］
+进 一 步 改 进 该 方
+法 ，提 出 非 线 性 多 路 复 用 照 明 单 颗 粒 追 踪 系 统
+（TSUNAMI ） 。该 系 统 使 用 锁 模Ti∶Al 2O 3脉 冲 激 光
+器 替 代 多 个 二 极 管 发 出 周 期 为13 ns 的 激 光 脉 冲，利
+用 分 束 镜 和 两 组 物 理 时 间 延 迟 线，将 单 一 脉 冲 分 离 成
+4 束 具 有3.3 ns 时 间 延 迟 的 激 光 脉 冲（图 5） ，并 聚 焦 到
+样 品 空 间 中 略 微 错 位 的4 个 位 置，形 成 1 个 不 重 叠 的
+四 面 体 激 发 区 域。 每 个 激 发 点 对 应 一 个 时 间 门，荧 光
+由光电倍增管 （PMT）检测 ，并通过时间相关单光子计
+数 技 术 将 每 个 光 子 归 类 到 相 应 时 间 门 中。 通 过 比 较
+4 个 时 间 门 中 的 光 子 计 数 差 异，估 计 粒 子 与 激 发 中 心
+的 空 间 偏 移，进 一 步 通 过 闭 环 反 馈 控 制 振 镜 和 压 电 物
+镜 位 置，将 激 发 焦 点 持 续 锁 定 在 粒 子 上，实 现 实 时 三
+维 追 踪。 粒 子 的 三 维 轨 迹 最 终 由 反 馈 控 制 器 的 输 出
+信 号 决 定。 TSUNAMI 实 现 了 约 35 nm 的 三 维 定 位
+精 度，并 且 在 跟 踪 亮 度 较 高 的 荧 光 标 记 分 子 时，系 统
+时 间 分 辨 率 可 降 至50 μs。 Liu 等
+［68］
+将 TSUNAMI 拓
+展 到 多 色 成 像，同 时 追 踪 两 种 不 同 光 谱 的 粒 子，在 保
+持 15 nm 静 态 和 35 nm 动 态 定 位 精 度 的 同 时，时 间 分
+辨 率 低 至5 ms 。 该 系 统 可 以 同 时 监 测 哑 铃 形 示 踪 粒
+子 的 平 移 与 旋 转 运 动，并 将 其 作 为 光 学 标 尺 研 究 分 子
+构 象 变 化。 在 自 由 溶 液 中，该 方 法 被 应 用 于 解 析 连 接
+DNA 链 的 动 态 弯 曲 过 程，实 现 了 对DNA 构 象 变 化 的
+实 时 量 化。 此 外，研 究 者 还 将 该 示 踪 颗 粒 表 面 偶 联 抗
+EGFR 抗 体，并 对 其 在 细 胞 质 膜 表 面 的 着 陆 过 程 进 行
+追 踪，发 现 抗 体 与EGFR 的 结 合 显 著 限 制 了 颗 粒 的 平
+移与旋转自由度 。
+图 4　分 离 式 探 测 三 维 追 踪 技 术。 （a）系 统 示 意 图
+［63］
+； （b）30 frame/s 追 踪 视 频 截 图； （c）80 nm 颗 粒 的 长 时 程 三 维 运 动 追 踪，轨 迹 点 按
+时间编码着色
+［62］
+Fig. 4　Split -detection 3D tracking . (a) Schematics of the system [63]; (b) snapshot from tracking video at 30 frame/s ; (c) long -term 3D 
+tracking of 80 nm particles with trajectory points color -coded by time [62]
+
+=== PDF_PAGE 6 ===
+1817005 -6
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+2. 2. 2　轨道扫描式追踪技术
+2. 2. 2. 1　基于激光扫描的轨道扫描式追踪技术
+轨 道 扫 描 式 追 踪 方 法 最 早 由Enderlein
+［69］
+提 出，后
+由 Gratton 团 队
+［70］
+应 用 于 闭 环 反 馈 三 维 追 踪。 该 技 术
+通 过 在 X、Y 扫 描 振 镜 上 施 加 相 位 相 差90°的 正 弦 电
+压 ，使 激 光 焦 点 沿 圆 形轨 迹 周 期 性 扫 描（图 6） 。当 目
+标 粒 子 位 于 圆 形 轨 迹 的 中 心 时，探 测 到 的 荧 光 强 度 保
+持稳定 ；若粒子偏离中心位置 ，探测信号将随扫描相位
+呈现正弦调制 。通过分析荧光信号的正弦变化幅度和
+相 位，可 以 确 定 粒 子 相 对 于 轨 道 中 心 的 偏 移 方 向 和 距
+离。通过方波电压控制压电物镜定位器实现焦平面的
+切换 ，根据两个焦平面之间的荧光强度差异 ，可以确定
+粒子的轴向偏移 。随后实时驱动反馈系统调整激光轨
+道位置 ，将粒子重新捕获到轨道中心 。
+图 5　四 面 体 激 发 三 维 追 踪 技 术。 （a）TSUNAMI 系 统 示 意 图； （b）通 过 探 测 体 积 中 心 的 荧 光 信 号 测 量 验 证 四 束 激 光 的 时 间 间 隔；
+（c）四面体 PSF 的示意图 ； （d）不同深度的 100 nm 荧光微球的扫描图像
+Fig. 5　Tetrahedral excitation 3D tracking . (a) Schematic of TSUNAMI ; (b) verification of the time interval of the four lasers by 
+measuring the fluorescent signal at the center of the detection volume ; (c) schematic of the tetrahedral PSF ; (d) scanned images 
+of 100 nm fluorescent microspheres at different depths
+图 6　轨道扫描式追踪原理 ，激光（蓝色）以圆形图案围绕粒子 （绿色）横向扫描 。 （a）当粒子位于轨道扫描的中心时 ，粒子的荧光强度
+随时间保持稳定 ； （b）当粒子偏离轨道扫描中心时 ，粒子的荧光强度随时间正弦变化 ； （c）轴向顺序扫描两个焦平面 ，利用两平
+面之间的信号差异计算粒子的轴向位置
+Fig. 6　Principle of orbital tracking , the laser (blue ) scans around the particle (green ) in a circular pattern . (a) When the particle is located 
+at the center of the orbital scan , its fluorescence intensity remains stable over time ; (b) when the particle deviates from the 
+center , its fluorescence intensity varies sinusoidally ; (c) two focal planes are scanned axially in sequence , and the particle ’s axial 
+position is calculated from the signal difference between them
+
+=== PDF_PAGE 7 ===
+1817005 -7
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+Kis -Petikova 等［71］将 快 速 傅 里 叶 变 换 思 想 引 入 轨
+道 扫 描 式 追 踪 方 法，依 据 信 号 强 度 的 快 速 傅 里 叶 变 换
+计 算 粒 子 的XY 方 向 坐 标。 该 方 法 可 抑 制 激 光 扫 描
+频 率 以 外 其 他 频 率 的 噪 声 信 号。 Levi 等
+［72］
+在 双 光 子
+荧 光 显 微 镜 基 础 上 实 现 轨 道 扫 描 式 三 维 单 颗 粒 追 踪，
+并 利 用 该 系 统 研 究 了 成 纤 维 细 胞 对 荧 光 珠 的 吞 噬 作
+用 。 需 注 意，轨 道 扫 描 式 追 踪 方 法 的 时 间 分 辨 率 由 轨
+道 扫 描 频 率 决 定。 例 如，使 用 振 镜 实 现 圆 形 扫 描 时，
+时 间 分 辨 率 可 低 至 32 ms ，空 间 分 辨 率 约 为 20 nm 。
+此 外 ，Annibale 等
+［73］
+进 一 步 优 化 系 统，引 入 电 可 调 谐
+透 镜（ETL）取 代 压 电 纳 米 定 位 器 以 实 现 轴 向 扫 描
+（图 7） 。通 过 调 节 施 加 电 流 控 制ETL 的 焦 距，使 激 光
+焦 点 在 两 个 焦 平 面 间 快 速 切 换，无 需 机 械 移 动 物 镜 或
+样 品 。 ETL 的 引 入 使 时 间 分 辨 率 从 32 ms 提 升 至
+8 ms ，并 在 追 踪 活 细 胞 中 荧 光 标 记 的 基 因 座 时，将 轴
+向 追 踪 范 围 拓 展 至300 μm。
+2. 2. 2. 2　基于压电平台的轨道扫描式追踪技术
+Lanzanò 等
+［74］
+在 商 业 共 聚 焦 激 光 扫 描 显 微 镜 的 基
+础 上 增 设 了 一 个 三 维 压 电 平 台，实 现 了 三 维 单 颗 粒 轨
+道扫描式追踪 。与基于激光扫描的轨道扫描式追踪技
+术 不 同，该 系 统 通 过 向 压 电 平 台 的X 轴 和 Y 轴 施 加 相
+位 差 为90°的 正 弦 电 压 信 号，使 样 品 沿 圆 形 轨 道 移 动。
+通 过 快 速 傅 里 叶 变 换 算 法 更 新 轨 道 中 心 位 置，直 至 探
+测 到 的 强 度 变 化 最 小。 此 外，通 过 在 两 个 不 同 的Z 轴
+位 置 进 行 轨 道 扫 描，并 测 量 两 个 平 面 的 平 均 信 号 强 度
+差异来提供 Z 轴反馈 。尽管压电平台的扫描速度相对
+较 慢，但 仍 能 清 晰 观 测 到 酸 性 囊 泡 在 极 化 负 鼠 肾 细 胞
+中 的 转 运 动 态。 三 维 追 踪 结 果 显 示，囊 泡 在 细 胞 内 既
+有 定 向 运 动 又 有 扩 散 运 动，其 定 向 运 动 速 度 与 文 献 报
+道的马达驱动运输速度一致 。
+2. 2. 2. 3　基于双平面的轨道扫描式追踪技术
+为 提 高 三 维 轨 道 扫 描 式 追 踪 技 术 的 时 间 分 辨 率，
+Katayama 等
+［75］
+采 用 两 个SPC -APD 同 时 观 测 两 个 轴 向
+偏 移 的 焦 平 面，取 代 了 传 统 方 法 中 的 轴 向 扫 描。 该 方
+法 使 用 分 束 镜 分 离 激 发 光，并 在 探 测 光 路 中 设 置 两 个
+对应不同 Z 平面的 SPC -APD ，通过这两个探测器之间
+的相对荧光强度获取目标粒子的轴向位置信息 。Reuel
+等
+［76］
+利 用 该 方 法 研 究 单 壁 碳 纳 米 管（SWNT）的 运 输，
+证明 SWNT 的平移和旋转特性可用于测量 HeLa 细胞
+中 的 微 观黏 度，如 图 8（a）所 示。 值 得 注 意 的 是，与 荧
+光 珠 相 比，SWNT 表 现 出 更 高 的 光 稳 定 性，因 此 实 现
+了 更 长 的 追 踪 时 间。 轨 道 扫 描 式 追 踪 与SWNT 的 组
+合 具 有 较 大 的 斯 托 克 斯 位 移 和 近 红 外 发 射 光 谱
+［77-78］
+，
+这表明该方法可能是组织深处或其他浑浊环境中基于
+闭环反馈机制的三维追踪技术的最佳选择 。
+尽 管 双 平 面 同 步 监 测 可 以 提 升 轴 向 追 踪 效 率，但
+最 终 的 时 间 分 辨 率 仍 受 限 于 轨 道 的 扫 描 频 率 。
+McHale 等
+［79］
+使 用 两 束 高 频 调 制 的 激 发 光 照 明 轴 向 间
+隔 1 μm 的两个平面［图 8（b） ］ ，从而突破了三维轨道扫
+描 式 追 踪 方 法 的 局 限。 在 这 种 方 法 中，声 光 调 制 器 替
+代振镜实现激发光的高速扫描 。通过在焦平面之间快
+速 切 换，粒 子 的Z 方 向 位 置 信 息 也 被 编 码 到 荧 光 信 号
+中。频率分量中荧光强度的振荡幅度与粒子和原点间
+的 距 离 成 正 比，而 相 位 则 表 示 方 向（高 于 或 低 于 焦 平
+面） 。使 用 这 种 方 法，可 以 在 水 中 以 接 近100 kHz 的 计
+数 率 追 踪 扩 散 速 率 约 为20 μm2/s 的 单 个 量 子 点。 Du
+等
+［80］
+用 声 光 偏 转 器 代 替 声 光 调 制 器，实 现 了 纳 米 颗 粒
+在硅油 -水界面上的行为研究 ，发现表面小颗粒的扩散
+系 数 和 粒 径 之 间 存 在 非 线 性 关 系，还 用 该 方 法 研 究 了
+DNA 折纸和量子点的结合
+［81］
+。
+2. 2. 3　三维动态光子定位追踪技术
+轨道扫描的一种替代方案是多点扫描方法 。该方
+法 不 再 让 激 光 焦 点 沿 连 续 圆 形 轨 迹 扫 描，而 是 在 预 设
+的多个离散点之间快速跳转扫描 。每当激光到达某一
+离 散 位 置 时，即 可 对 探 测 到 的 单 个 光 子 立 即 进 行 位 置
+相关的反馈处理 ，无需等待完整轨道扫描周期 ，从而大
+幅 提 升 反 馈 响 应 速 度。 杜 克 大 学 的Welsher 团 队
+［82-83］
+基 于 这 一 思 想 提 出 了 三 维 动 态 光 子 定 位 追 踪 技 术
+（3D-DyPLoT ） 。如 图 9 所 示 ，二 维 电 光 偏 转 器（2D-
+EOD）和 可 调 谐 声 梯 度（TAG）透 镜 分 别 以50 kHz 和
+70 kHz 的高速率在 3 个维度上动态偏转激光焦点 。其
+中 ，2D-EOD 控 制 激 光 焦 点 按 照 骑 士 巡 游 图 案 进 行 非
+图 7　基于激光扫描的轨道扫描式追踪技术
+［73］
+。 （a）使用 ETL 的三维轨道扫描式追踪示意图 ； （b）在 8.192 ms 的轨道扫描周期内 ，
+压电平台与 ETL 的响应时间比较 ，ETL 具有更快的响应
+Fig. 7　Laser -scanning -based orbital tracking [73]. (a) Schematic of 3D orbital tracking using ETL ; (b) comparison of the response times of 
+the piezoelectric stage and ETL during an 8.192 ms orbital scanning cycle , showing that the ETL provides a faster response
+
+=== PDF_PAGE 8 ===
+1817005 -8
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+连 续 性 扫 描 ，形 成 1 μm× 1 μm 的 横 向 扫 描 范 围 。
+TAG 透镜可以动态改变激光的发散程度 ，从而在轴向
+产 生 2~4 μm 的 扫 描 范 围，如 图 9（a）所 示
+［84-86］
+。 利 用
+Fields 等
+［87］
+开 发 的 假 设高 斯 密 度 卡 尔 曼 更 新 滤 波 器，
+将检测到的荧光光子的到达时间与激光焦点的瞬时位
+置关联 ，通过卡尔曼滤波等算法实时估计粒子位置 ，并
+将 估 计 结 果 反 馈 给 压 电 平 台 进 行 补 偿 定 位 。 3D-
+DyPLoT 的优势在于通过高速扫描组件覆盖了更大的
+扫描体积 ，使得系统能够从压电致动器的大扩散跳跃 、
+发 射 极 暗 周 期 和 滞 后 中 恢 复，从 而 在 低 光 子 输 入（约
+20 kHz）下 稳 定 追 踪 扩 散 速 率 高 达20 μm2/s 的 粒 子。
+该 方 法 已 成 功 实 现 了 对 病 毒 样 颗 粒 的 长 时 间 三 维 追
+踪，具有约 10 nm 横向 、15 nm 轴向的定位精度 ，以及在
+高信号条件下 20 μs 的时间分辨率 。
+进 一 步 地，Hou 等
+［88］
+基 于 3D-DyPLoT ，通 过 实 时
+测 量 快 速 自 由 扩 散 粒 子 的 位 置 方 差，动 态 调 整 闭 环 反
+馈控制参数 ，提出了自适应实时三维单颗粒追踪方法 ，
+实 现 了 追 踪 速 度 和 精 度 之 间 的 动 态 平 衡，并 基 于 该 方
+法研究了病毒颗粒从自由扩散状态到早期侵染细胞膜
+表 面 的 非 均 一 运 动 过 程。2020 年 ，Hou 等
+［89］
+将 该 技 术
+拓 展 至 单 分 子 追 踪 领 域，提 出 三 维 单 分 子 主 动 实 时 追
+踪方法（3D-SMART ） ，实现了对单个自由扩散荧光分
+子的长达数分钟的持续追踪 。利用 3D-SMART ，该团
+队 研 究 了 液 相 内 的RNA 、DNA ，以 及 蛋 白 质 的 运 动 动
+态 ，并 通 过 使 用 双 色 观 测 通 道，实 现 了mRNA 转 录 过
+程 的 动 态 观 测，如 图 9（b）所 示。 此 外，该 团 队 与 吉 林
+大学 Zheng 等
+［90］
+联合 ，将 3D-SMART 应用于铁死亡过
+程 中 的 脂 滴 动 态 研 究。 最 近，他 们 又 在 此 基 础 上 提 出
+了 3D-SMARTER ［91］，通 过 结 合 纳 米 银 散 射 探 测 和 更
+高效的扫描模式 ，同时实现了高光子效率 、深度追踪和
+图 9　三维动态光子定位追踪技术 。 （a）系统示意图
+［88］
+； （b）DFHBI -1T 标记的单个 mRNA 在甘油中的三维追踪轨迹 ［89］
+Fig. 9　3D-DyPLoT .(a) Schematics of the system [88]; (b) 3D tracking trajectory of single DFHBI -1T-labeled mRNA in glycerol [89]
+图 8　基于双平面的轨道扫描式三维单颗粒追踪技术 。 （a）使用 2 个 SPC -APD 实现双平面同步监测 ［76］； （b）使用 2 个声光调制器实现
+高速激光扫描
+［79］
+Fig. 8　Orbital scanning 3D single particle tracking with bi -plane detection . (a) Schematic of biplane simultaneous monitoring using two 
+SPC -APDs [76]; (b) high -speed laser scanning via 2 acousto -optic modulators [79]
+
+=== PDF_PAGE 9 ===
+1817005 -9
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+超高定位精度（横向约 2.5 nm、轴向 4.3 nm、时间分辨率
+可达 1 μs） ，从而能够持续监测活细胞中蛋白质的步进
+运 动 和 细 胞 表 面 纳 米 粒 子 的 复 杂 扩 散 。 利 用 3D-
+SMARTER 的高时空分辨三维追踪能力 ，Qin 等
+［92］
+对溶
+液中的分子结合记忆效应进行了研究 。
+相比于压电平台 ，振镜系统具有更快的响应速度 。
+Tan 等
+［93］
+利 用 二 维 振 镜 代 替3D-SMART 中 的 二 维 压
+电 平 台，实 现 了 更 快 的 追 踪 速 度。 通 过 使 用 振 镜 替 代
+EOD 实 现 横 向 扫 描，Karagyozov 等
+［94］
+建 立 了 一 个 类 似
+的 基 于 闭 环 反 馈 机 制 的 双 光 子 三 维 追 踪 系 统，并 利 用
+该系统研究了在无任何约束的果蝇幼虫中神经元的钙
+动力学 。
+2. 2. 4　最低光子数显微成像技术
+Eilers 等
+［95-98］
+受 轨 道 扫 描 式 追 踪 方 法 的 启 发，提 出
+了 最 低 光 子 数 显 微 成 像 技 术（MINFLUX ） 。如 图 10
+所 示，系 统 通 常 使 用 相 位 板 或 空 间 光 调 制 器 生 成 特 殊
+设 计 的 环 形 空 心 激 发 光 束，在 目 标 粒 子 周 围 选 择4 个
+激 发 位 置 进 行 扫 描，其 中，3 个 位 置 呈 圆 形 分 布，另 一
+个 位 于 中 心。 理 想 情 况 下，当 粒 子 恰 好 位 于 环 形 激 发
+光 的 中 心 时，探 测 器 不 会 收 集 到 任 何 光 子；反 之，则 可
+以 根 据 每 个 位 置 收 集 到 的 光 子 数 及 激 发 光 的 照 明 位
+置 ，实 时 计 算 粒 子 的 空 间 坐 标。 通 过 动 态 更 新 激 光 的
+照明位置 ，使粒子始终处于照明区域的中心 ，从而实现
+目 标 粒 子 的 闭 环 反 馈 追 踪，如 图 10（b）所 示。 与 常 规
+方 法 中 定 位 精 度 与 光 子 数 的 平 方 根 成 正 比 的 限 制 相
+比 ，MINFLUX 可 以 在 更 少 的 光 子 下 实 现 更 高 的 定 位
+精度 。研究人员利用该方法成功追踪了活细菌中荧光
+蛋白标记的单个核糖体亚基 ，并且在 DNA 折纸测试结
+构 上 ，实 现 了 大 约 2 nm 的 定 位 精 度，时 间 分 辨 率 为
+400 μs，每个定位使用的荧光光子数不超过 100 。最近
+提 出 的p-MINFLUX 方 法 通 过 向4 个 点 发 送 时 间 偏 移
+脉 冲［图 10（d） ］
+［99-100］
+，取 代 了 基 于EOD 的 激 光 扫 描。
+该 方 法 在 系 统 上 去 除 了EOD ，简 化 了 扫 描 策 略，降 低
+了系统的硬件门槛 。此外 ，通过结合荧光寿命信息 ，可
+以同时追踪两个光谱特性相似但荧光寿命不同的染料
+分子 。
+2. 2. 5　基于极值搜索的三维单颗粒追踪技术
+除 了 轨 道 扫 描 式 追 踪 方 法 和3D-DyPLoT 等 采 用
+预 设 扫 描 路 径 的 确 定 性 追 踪 策 略 外，近 年 来 也 有 研 究
+探 索 通 过 动 态 生 成 扫 描 轨 迹 以 实 现 三 维 追 踪 的 新 方
+法 。 Ashley 等
+［101］
+首 次 提 出 了 一 种 基 于 极 值 搜 索 的 三
+维 单 颗 粒 追 踪 方 法，其 能 够 实 现 对 目 标 粒 子 的 高 精 度
+实 时 追 踪，且 适 用 于 传 统 共 聚 焦 显 微 镜 和 双 光 子 显 微
+镜 系 统（图 11） 。该 方 法基 于 极 值 搜 索 原 理，通 过 不 断
+调 整 激 发 焦 点 的 位 置 以 最 大 化 探 测 到 的 荧 光 强 度，从
+而实现无需复杂光学设计的三维定位 。研究者利用该
+方法成功实现了对水凝胶中量子点的三维追踪 。该方
+法在亚衍射极限定位精度和亚毫秒级时间分辨率方面
+表 现 出 色。 此 外，该 研 究 还 结 合 序 列 蒙 特 卡 罗 方 法 与
+期望最大化算法 ，对追踪数据进行离线分析 ，从而准确
+估算粒子轨迹与其运动模型参数 。该方法具有系统结
+构 简 洁 的 优 势，仅 需 在 传 统 共 聚 焦 或 双 光 子 显 微 镜 中
+图 10　最低光子数显微成像技术 。 （a）MINFLUX 系统示意图
+［95］
+； （b）激光快速连续扫描及相应光子数采集 ； （c）定位精度与时间
+分辨率的关系 ； （d）p-MINFLUX 系统示意图 ［100］
+Fig. 10　MINFLUX . (a) Schematic of MINFLUX
+[95]
+; (b) laser scanning and photon collection ; (c) relationship between localization 
+precision and temporal resolution ; (d) schematic of p -MINFLUX system [100]
+
+=== PDF_PAGE 10 ===
+1817005 -10
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+添 加 高 速 位 移 台 和 光 强 反 馈 模 块 即 可 实 现，无 需 依 赖
+复 杂 的 激 发 扫 描 策 略 或 多 点 探 测 器。 此 外，由 于 闭 环
+反 馈 控 制 基 于 荧 光 信 号 强 度 的 最 大 值，系 统 对 激 发 光
+形 状 和 光 学 对 准 的 依 赖 程 度 较 低，便 于 在 非 专 业 实 验
+室搭建 。然而 ，该技术的鲁棒性受样品背景噪声 、荧光
+光子数 ，以及点扩散函数的空间单峰性限制 ，在复杂环
+境中易陷入局部极值 ，进而影响追踪性能 。因此 ，该方
+法 在 实 际 使 用 中 对 系 统 调 参 的 依 赖 性 较 强，仍 需 进 一
+步优化其鲁棒性与适应性 。
+2. 2. 6　基于最小交叉熵定位的三维单分子追踪技术
+Amselem 等
+［102］
+结 合 结 构 化 激 发PSF 序 列 与 贝 叶
+斯统计方法 ，提出了实时的三维单分子追踪成像技术 ，
+实现了活体大肠杆菌内分子的高时空分辨率追踪 。该
+系 统 综 合 运 用 振 幅 调 制 器 与 空 间 光 调 制 器（SLM）进
+行 激 发PSF 设 计，利 用 电 光 偏 转 器（EOD）实 现 高 速、
+小 范 围 扫 描，并 通 过 压 电 驱 动 反 射 镜 实 现 大 范 围 定 位
+与 实 时 闭 环 反 馈 追 踪，如 图 12（a）所 示。 研 究 人 员 利
+用 SLM 生成 3 个间隔 400 nm 的高斯光束 ，构成轴向分
+层 PSF 。 在 横 向 平 面 内，高 斯 光 束 等 间 距 地 分 布 在 直
+径 2 μm 的 圆 上。EOD 后 的 光 路 中 设 置 了 一 个 中 心 开
+孔 光 阑，仅 允 许 位 于 光 阑 中 央 的 光 束 通 过。 通 过 控 制
+EOD 偏转不同角度 ，将目标深度对应的光束移动至圆
+心区域 ，从而在空间上选择性地激发目标区域 ，并有效
+抑 制 非 目 标 层 的 背 景 干 扰。 在 每 个 轴 向 层 面，系 统 依
+次扫描 13 个横向位置 ，最终构建出 1 个包含 39 个激发
+点 、覆 盖 体 积 为950 nm × 950 nm × 1390  nm 的 三 维
+扫 描 网 格，如 图 12（b）所 示。荧 光 信 号 由SPC -APD 收
+集 ，通 过 现 场 可 编 程 门 阵 列（FPGA）实 时 计 算 质 心 位
+置 ，并 反 馈 给 驱 动 压 电 反 射 镜 实 现 闭 环 控 制，从 而 以
+0.84 ms 的时间分辨率完成动态追踪 ，如图 12（c）所示 。
+研 究 表 明，该 系 统 在60 kHz 光 子 计 数 率 下 可 实 现
+横向 67 nm 、轴向 109 nm 的定位精度（理论极限精度分
+别为横向 41 nm 、轴向 95 nm） 。利用该系统 ，研究人员
+成 功 解 析 了 大 肠 杆 菌 内 触 发 因 子（TF）蛋 白 的 扩 散 动
+力 学 特 征：野 生 型TF 表 现 出 两 种 扩 散 模 式，分 别 为 核
+图 11　基于极值搜索的三维单颗粒追踪系统示意图
+［101］
+Fig. 11　Schematic of 3D single -particle tracking via 
+extremum seeking
+[101]
+图 12　基于最小交叉熵定位的三维单分子追踪技术
+［102］
+。 （a）系统示意图 ； （b）EOD 生成的激光焦点空间分布阵列 ； （c）实时反馈追踪
+与数据后处理的图形表示
+Fig. 12　3D single -molecule tracking via cross -entropy minimization [102]. (a) Schematic of the system ; (b) spatial distribution array of the 
+laser focus generated by the EOD ; (c) schematic representation of real -time feedback tracking and data post -processing
+
+=== PDF_PAGE 11 ===
+1817005 -11
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+糖 体 结 合 状 态［扩 散 系 数 为（0.32±0.02） μm2/s］与 游
+离状态［ （2.67±0.20） μm2/s］ ；而核糖体结合缺陷突变
+体 则 主 要 呈 现 快 速 扩 散 状 态［ （4.81±0.19） μm2/s］ 。
+为 进 一 步 分 析 粒 子 在 亚 毫 秒 尺 度 下 的 状 态 转 换 过 程，
+研 究 者 开 发 了 扩 展 协 方 差 估 计 算 法 与 隐 马 尔 可 夫 模
+型 ，用 于 从 受 定 位 噪 声 干 扰 的 轨 迹 中 识 别 扩 散 状 态 跃
+迁 。 然 而，由 于 单 位 时 间 内 可 探 测 光 子 数 有 限 以 及 高
+速运动引发的图像模糊 ，该系统在 0.84 ms 的时间分辨
+率 下 仍 难 以 准 确 识 别 短 寿 命 的 中 间 状 态（如 扩 散 系 数
+约 为 1.4 μm2/s 的 瞬 时 结 合 态） ，这 是 后 续 研 究 需 要 优
+化的关键问题之一 。
+2. 2. 7　基于异步读出 SPAD 阵列的单颗粒追踪技术
+Vicidomini 团队
+［103］
+将 5×5 异步读出单光子雪崩二
+极 管（SPAD）阵 列 探 测 器 与 共 聚 焦 激 光 扫 描 显 微 镜 集
+成，开发出一种实时四维单颗粒追踪 系统 ，如图 13（a）所
+示 。 该 系 统 在 探 测 路 径 中 加 入 柱 面 透 镜 以 产 生 像 散，
+使 SPAD 阵列能够记录粒子在激发焦点区域内的荧光
+微 图 像。 系 统 借 助 高 速FPGA 实 时 分 析 这 些 微 图 像
+的 质 心 偏 移 和 形 状 变 化，进 而 估 算 出 粒 子 的 横 向 与 轴
+向 位 置。 位 置 信 息 经 闭 环 反 馈 控 制 系 统 传 递，驱 动 用
+于 横 向 调 节 的 振 镜 和 轴 向 调 节 的 压 电 物 镜 定 位 器，实
+时 调 整 激 光 扫 描 焦 点，确 保 目 标 粒 子 始 终 处 于 激 发 区
+域 中 心。 该 系 统 实 现 了 亚 毫 秒 级 的 时 间 分 辨 率，具 体
+为 横 向200 μs、轴 向 4 ms ，如 图 13（b）所 示。 即 使 在 仅
+探 测 到 100 个 光 子 的 条 件 下，也 能 达 到40 nm 的 横 向
+和 60 nm 的 轴 向 定 位 精 度，并 能 够 实 时 追 踪 扩 散 系 数
+高达 10 μm2/s 的快速扩散粒子 。通过离线数据重建和
+算法优化 ，系统的时间分辨率可进一步提升至微秒级 。
+此 外，研 究 人 员 利 用 该 系 统 在 活 细 胞 中 对 溶 酶 体
+沿 微 管 轨 道 的 停-跑（stop -and -run）运 动 行 为 进 行 了 连
+续 追 踪，持 续 时 间 超 过2 min 。 更 为 重 要 的 是，该 系 统
+同步测量了与溶酶体膜相关的荧光蛋白标志物的荧光
+寿 命 变 化，揭 示 了 粒 子 运 动 状 态 与 其 局 部 微 环 境 光 学
+特 性 之 间 的 关 联。 与 传 统 追 踪 方 法 相 比，这 项 技 术 首
+次 利 用 SPAD 阵 列 的 并 行 光 子 计 数 与 时 间 戳 记 录 功
+能，实现了粒子空间位置 、时间动态和荧光寿命信息的
+同步采集与联动分析 。
+2. 3　基于图像分析反馈的三维追踪技术
+除了依赖单点探测器的结构化探测和结构化激发
+方 式，近 年 来 也 有 研 究 者 提 出 通 过 图 像 采 集 与 实 时 图
+像分析实现闭环反馈控制的方法 。与单点探测器只能
+获 取 有 限 空 间 内 的 光 强 变 化 不 同，电 子 倍 增 电 荷 耦 合
+图 13　基于异步读出 SPAD 阵列的单颗粒追踪技术
+［103］
+。 （a）系统示意图 ； （b）粒子相对视场中心产生二维运动时 ，微图像光斑偏移且
+Im 值 降 低，结 合 荧 光 寿 命τ 分 析，触 发 振 镜 重 定 位 机 制； （c）通 过 激 发 脉 冲 时 间texc 与 光 子 探 测 时 间td 的 延 迟 直 方 图Δtem 解 析 荧
+光寿命 ； （d）利用柱面透镜引入像散 ，通过微图像对称性变化解析粒子轴向位置
+Fig. 13　Single -particle tracking with asynchronous read -out SPAD array [103]. (a) Schematic of the system ; (b) when the particle exhibits 
+2D movement relative to the field -of-view center , the micro -image spot shifts and the Im value decreases , combined with 
+fluorescence lifetime τ analysis , this triggers the galvanometric mirror repositioning mechanism ; (c) fluorescence lifetime is 
+extracted from the delay histogram Δtem  between the excitation pulse time texc  and the photon detection time td; (d) astigmatism is 
+introduced using a cylindrical lens , enabling axial position determination based on symmetry changes in the particle ’s micro -image
+
+=== PDF_PAGE 12 ===
+1817005 -12
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+器 件（EMCCD ）或 科 学 级 互 补 金 属 氧 化 物 半 导 体
+（sCMOS ）等 相 机 能 够 在 单 帧 中 同 时 获 取 粒 子 周 围 大
+范 围 区 域 的 空 间 图 像，从 而 具 备 天 然 的 环 境 结 构 记 录
+功 能。 需 要 特 别 说 明 的 是，引 言 中 所 述 的 基 于 图 像 的
+单 颗 粒 追 踪 技 术 主 要 通 过 采 集 图 像 序 列，再 利 用 图 像
+处理算法提取并串联目标粒子在不同帧中的三维坐标
+信 息，从 而 构 建 其 空 间 轨 迹。 由 于 该 方 法 依 赖 于 图 像
+获 取 和 后 续 处 理，其 时 间 分 辨 率 受 限，追 踪 效 率 较 低，
+难以捕捉微秒至毫秒尺度的快速生物过程 。
+为解决这一问题 ，研究者引入了闭环反馈机制 ，将
+图像采集与实时位置信息估计 、反馈控制相结合 ，构建
+了基于图像分析反馈的三维追踪系统 。这类系统通过
+分 析 提 取 粒 子 图 像 的 强 度 分 布、形 状 特 征 或 不 同 焦 平
+面 图 像 之 间 的 亮 度 差 异，实 时 估 算 粒 子 在 三 维 空 间 中
+的 位 置，并 将 该 位 置 信 息 反 馈 至 压 电 驱 动 器 等 位 移 调
+控元件 ，实现对物镜或样品的快速调节 ，从而始终将目
+标粒子维持在焦平面内 。实时图像信息的高效利用显
+著提升了追踪系统的响应速度与稳态精度 。虽然两者
+都 以 图 像 作 为 主 要 信 息 来 源，但 是 否 引 入 闭 环 反 馈 机
+制是它们的核心区别 。
+尽管相机成像系统在时间分辨率与探测灵敏度方
+面 通 常 不 如 单 点 探 测 器，但 其 具 备 并 行 成 像 与 环 境 背
+景 获 取 的 天 然 优 势，尤 其 适 合 用 于 分 析 粒 子 与 周 围 细
+胞 结 构 或 微 环 境 之 间 的 动 态 关 系。 基 于 此 思 想，研 究
+者 开 发 了 一 系 列 基 于 相 机 的 闭 环 追 踪 系 统，如 双 平 面
+成像系统和光片成像系统等 。
+2. 3. 1　基于双平面的三维追踪技术
+Juette 等
+［104］
+通 过 将 双 平 面 成 像 与 闭 环 反 馈 三 维 追
+踪方法结合 ，开发出基于双平面成像的三维追踪方法 。
+在该系统中 ，荧光信号通过分束镜被分为两路 ，并分别
+成像到 EMCCD 相机的两个区域 ，形成略有轴向偏移的
+双平面图像 ，如图 14（a）所示 。系统通过实时分析两个
+平面之间粒子图像的相对强度和形状差异 ，计算粒子的
+轴向位置 ，进而将该信息反馈至物镜定位器 ，实现对焦
+平面位置的闭环调整 ，使粒子持续处于焦点区域 。图像
+分析在此系统中取代了多通道 APD ，完成了位置信息提
+取与反馈控制的任务 。该系统利用 EMCCD 显著提高
+了检测效率 ，但依然受到相机读出速率的限制 。
+2. 3. 2　基于光片照明的三维追踪技术
+Spille 等
+［105］
+将 光 片 照 明 与 闭 环 反 馈 追 踪 结 合，开
+图 14　基于图像的三维追踪技术 。 （a）基于双平面的三维追踪系统示意图
+［104］
+； （b）基于光片照明的三维追踪系统示意图
+［105］
+； （c）基于
+双平面视差成像和深度学习分析的三维追踪系统示意图
+［106］
+Fig. 14　Image -based 3D tracking . (a) Schematic of the three -dimensional tracking system based on bi -plane imaging [104]; (b)schematic of 
+the three -dimensional tracking system based on light -sheet illumination [105]; (c) schematic of the three -dimensional tracking 
+system based on bi -plane parallax imaging and deep learning -assisted automated [106]
+
+=== PDF_PAGE 13 ===
+1817005 -13
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+发了另一种基于图像的闭环反馈三维追踪方法 。该方
+法在商用倒置显微镜基础上将光片聚焦到定制的玻璃
+样品室 ，通过长工作距离水浸物镜收集荧光 。同时 ，为
+了 从 单 帧 图 像 中 提 取 粒 子 的 轴 向 信 息，系 统 在 探 测 光
+路 中 设 置 柱 面 透 镜，使 得 粒 子 图 像 在 不 同 轴 向 位 置 表
+现 出 明 显 不 同 的 椭 圆 形 态，如 图 14（b）所 示。 粒 子 的
+三 维 位 置 信 息 被 编 码 到 图 像 形 状 中，并 通 过 实 时 图 像
+分析提取图像的长短轴比例 、中心亮度分布等特征 ，以
+估算粒子的 Z 轴坐标 。估算结果被实时反馈至 Z 轴压
+电平台 ，实现焦平面动态调整 ，从而构成完整的闭环反
+馈 追 踪 回 路。 该 策 略 无 需 额 外 的 探 测 器 或 光 路 设 计，
+直接通过“图像形态 →位置信息 →反馈控制 ”的路径完
+成 三 维 闭 环 追 踪。 与 双 平 面 成 像 方 法 相 比，光 片 成 像
+本身具有天然的背景抑制能力 ，结合像散成像策略 ，可
+在 保 持 高 信 噪 比 的 条 件 下，实 现 粒 子 的 高 精 度 三 维 追
+踪 。 研 究 者 利 用 该 系 统 对 细 胞 核 内 核 糖 体RNA 与 信
+使 RNA 颗粒实现三维迁移轨迹追踪 ，展现了其在极低
+光子数条件下的高精度动态监测能力 。
+2. 3. 3　基 于 双 平 面 视 差 成 像 和 深 度 学 习 分 析 的 三 维
+追踪技术
+为 提 升 在 复 杂 细 胞 环 境 中 的 三 维 追 踪 性 能，Song
+等
+［106］
+开 发 了 一 种 融 合 双 平 面 成 像、视 差 显 微 技 术 与 深
+度 学 习（DL）分 析 的 自 动 化、高 速、多 维 单 颗 粒 追 踪 系
+统 ，实 现 了 在 纳 米 尺 度 下 全 方 位 精 准 追 踪 活 细 胞 内 各
+向 异 性 单 分 子/单 个 纳 米 颗 粒 的 功 能。 该 系 统 不 仅 能
+追踪其在三维空间的位移 ，还首次观测到分子 /纳米颗
+粒的旋转运动 。系统通过分束镜将荧光信号分为聚焦
+与散焦两个通道 ，并分别成像至相机 ，形成轴向间隔约
+为 900 nm 的双平面图像 。为增强轴向定位能力 ，系统
+引 入 楔 形 棱 镜，使 得 散 焦 通 道 中 的 粒 子 图 像 分 裂 为 上
+下 镜 像 对 ，并 根 据 镜 像 间 的 Y 方 向 距 离 ΔY 推 算 出
+Z 轴坐标 ，结合双焦平面之间的强度与形态变化 ，实现
+粒 子 三 维 位 置 的 多 重 校 正，如 图 14（c）所 示。 此 外，系
+统 集 成 了 压 电 物 镜 定 位 器 与 反 馈 控 制 模 块，可 在 样 品
+轴 向 漂 移 时 实 时 调 节 物 镜 位 置，将 粒 子 保 持 在 焦 平 面
+范 围 内。 为 克 服 低 信 噪 比（S/N）条 件 下 旋 转 追 踪 困
+难，研究者构建了实验与仿真结合的训练数据集 ，并利
+用 卷 积 神 经 网 络 对 粒 子 图 像 进 行 姿 态 识 别 与 三 维 定
+位 。 与 传 统 互 相 关 方 法 相 比，该 模 型 在S/N 为 4 时 的
+角度识别误差小于 2°，具备更强的鲁棒性与抗噪能力 。
+研究者利用该系统成功观测了活细胞中驱动蛋白沿微
+管 骨 架 运 输 货 物 的 动 态 过 程，发 现 其 在 暂 停 阶 段 表 现
+出 紧 密 附 着 与 绳 索 旋 转 两 种 不 同 结 合 状 态，分 别 对 应
+微管结合紧密与松散的状态转换过程 。
+2. 4　基于闭环反馈机制的三维单颗粒追踪方法比较
+表 1 总 结 了 上 述 各 种 三 维 闭 环 追 踪 方 法 的 主 要 性
+能 指 标，包 括三 维 定 位 精 度、时 间 分 辨 率、报 道 的 最 大
+追 踪 扩 散 系 数，以 及 在 该 扩 散 条 件 下 的 最 长 追 踪 持 续
+时 间 等。 可 以 看 出，各 方 法 在 定 位 精 度、时 间 分 辨 率、
+可 追 踪 扩 散 速 度 和 持 续 追 踪 时 长 之 间 存 在 权 衡。 通
+常，提高定位精度需要更多光子或更复杂的扫描模式 ，
+而 提 高 时 间 分 辨 率 则 需 要 更 快 速 的 反 馈 机 制。 同 时，
+较高的反馈速度或增大的扫描范围可能会牺牲定位精
+度 或 追 踪 稳 定 性。 因 此，具 体 方 法 的 选 择 应 依 据 实 验
+需 求 综 合 考 虑 上 述 各 项 因 素。 即 使 对 于 同 一 方 法，也
+可通过调整反馈增益 、扫描速率等参数 ，在精度和速度
+之间寻找最优平衡 。
+表 1　基于闭环反馈机制的三维单颗粒追踪方法比较
+Table 1　Comparison of 3D-SPT methods via closed -loop feedback control
+Name
+Tetrahedral detection
+［57］
+Split detection
+［107］
+Orbital （laser modulation ）
+［79］
+Orbital （piezo stage ）
+［74］
+Orbital （bi-plane）
+［76］
+Tetrahedral excitation
+［66］
+TSUNAMI
+［67］
+3D-DyPLoT
+［82］
+3D-SMARTER
+［91］
+MINFLUX
+［97-98］
+Extremum seeking
+［101］
+Cross -entropy minimization
+［102］
+4D-SPT
+［103］
+Image -based （bi-plane）
+［104］
+Image -based （light -sheet）
+［105］
+Image -based （DL -biplane）
+［106］
+Localization precision 
+X/Y/Z  /nm
+50/50/80
+9.8/12.8/13.1
+352/352/272
+2.4/2.8/2.4
+15/15/20
+60/60/300
+16.2/16.7/35.1
+6.6/8.7/15.6
+2.5/2.5/4.3
+2/2/2
+7.5/7/10.4
+67/67/109
+40/40/60
+7/8/27
+10/10/40
+1.7/6.01/8.63
+Temporal resolution
+5 ms
+~1 ms
+1 ms
+100 ms
+32 ms
+1.86 ms
+1 ms
+1 ms
+1 μs
+400 μs
+0.84 s
+Lateral ： 200 μs；
+axial ： 4 ms
+2 ms
+1.1 ms
+0.9 ms
+Diffusion coefficient /
+（μm
+2
+/s）
+3
+4.81
+20
+0.01
+2
+12.2
+7.5
+20
+4.43
+0.019
+4.81
+10
+2.4
+9.4
+Tracking duration
+（fastest diffusion coefficient ）
+0.3 s
+>8 s
+>20 s
+~25 s
+0.078 s
+30 s
+10 s
+>15 s
+>120 s
+3 s
+
+=== PDF_PAGE 14 ===
+1817005 -14
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+3　三维追踪与环境背景成像
+随 着 单 颗 粒 追 踪 技 术 的 发 展，将 其 与 其 他 显 微 成
+像 技 术 集 成 以 同 时 获 取 轨 迹 和 环 境 参 照 信 息，已 成 为
+一 个 重 要 方 向。 这 不 仅 可 以 测 量 单 颗 粒/单 分 子 的 三
+维 运 动，还 能 同 步 记 录 其 所 处 环 境 的 结 构 和 变 化。 目
+前 ，相 关 研 究 主 要 探 索 了 与 宽 场、转 盘 共 聚 焦 和 双 光
+子 显 微 成 像 等 方 法 的 结 合，以 实 现 对 生 物 过 程 的 全 局
+动 态 解 析。
+3. 1　三维追踪联用宽场显微成像
+Katayama 等
+［75］
+通过在轨道扫描式追踪系统中并行
+采集宽场荧光图像 ，成功实现了粒子运动轨迹与其环境
+背景的可视化关联 。利用该方法 ，他们观测了 HuH 7 细
+胞中 eGFP 标记微管蛋白网络内人工病毒颗粒的运动特
+征，成像视野覆盖 42 µm × 21 µm 的区域 。通过融合追
+踪与成像双通道数据 ，研究证实目标颗粒沿微管结构运
+动，其轨迹中的停滞现象与宽场图像中观察到的微管网
+络动态重构密切相关 。不过 ，该方法未采用光学切片技
+术，在获取完整三维图像信息方面存在一定局限性 。
+Wehnekamp 等
+［108］
+通 过 整 合 高 时 空 分 辨 率 的 三 维
+轨 道 扫 描 式 追 踪 方 法、同 步 宽 场 成 像 及 局 部 光 激 活 技
+术 ，利 用 mitoPAGFP/mitoTagRFP -T 双 色 标 记 体 系，
+成功追踪了斑马鱼感觉神经元轴突内运动中的线粒体
+（图 15） 。该 研 究 不 仅 实 现 了 在100 μm 范 围 内 约5 nm
+精 度 的 动 态 轨 迹 重 建，还 通 过 同 步 宽 场 成 像 为 细 胞 器
+运动提供了空间拓扑结构的背景参照 。
+Reuel 等
+［76］
+将 宽 场 荧 光 显 微 技 术 与 双 焦 面 轨 道 扫
+描 式 三 维 追 踪 技 术 相 结 合，建 立 了 一 种 适 用 于 活 细 胞
+中 单 根 碳 纳 米 管（CNT）的 三 维 高 精 度 追 踪 成 像 系 统
+（图 16） 。该系统揭示了碳纳米管在细胞内存在 3 种扩
+散 模 式：正 常 扩 散、对 流 扩 散 和 受 限 扩 散，并 能 够 精 确
+测定其平移与旋转扩散常数 。
+Hou 等
+［88］
+将自适应实时三维单颗粒追踪方法 （3D-
+PART）与明场成像结合 ，研究了 YFP 标记的病毒样颗
+粒在 HuH 7 细胞表面的着陆过程 ，如图 17（a）~（c）所示 。
+Lin 等
+［109］
+使用 3D-SMART 对 Staygold 荧光蛋白标记的
+病毒颗粒进行追踪 ，并与明场成像联用 ，获取了病毒在
+细胞内不同阶段的运动状态 ，如图 17（d）~（f）所示。
+3. 2　三维追踪联用转盘共聚焦显微成像
+DeVore 等
+［110］
+提 出 一 种 将 轨 道 扫 描 式 追 踪 技 术 与
+转 盘 共 聚 焦 显 微 成 像 相 结 合 的 方 法，实 现 了 粒 子 轨 迹
+与环境背景的参照 。共聚焦成像提供了与目标粒子焦
+平 面 相 对 应 的 光 学 切 片，从 而 实 现 轨 迹 与 细 胞 结 构 的
+精准空间配准 。系统最初采用 LED 作为激发光源 ，图
+像 通 过300 ms 的 曝 光 获 取，成 功 实 现 了 对 大 鼠 肥 大 细
+胞 中 量 子 点（QD）标 记 的IgE -FcεRI 复 合 物 在YFP 标
+记 的 微 管 蛋 白 网 络 中 的 三 维 运 动 追 踪。 然 而，较 长 的
+曝 光 时 间 与 同 步 追 踪 过 程 中 的 样 品 台 位 移 叠 加，导 致
+获 取 的 图 像 模 糊。 为 提 升 成 像 质 量，激 发 光 源 被 更 换
+为 激 光，并 将 曝 光 时 间 缩 短 至40 ms ，显 著 减 少 了 因 样
+品 移 动 引 发 的 图 像 拖 影，同 时 显 著 提 高 了 光 学 切 片 的
+图像对比度与清晰度 。
+3. 3　三维追踪联用双光子激光扫描显微成像
+在 TSUNAMI 系 统 中，Perillo 等
+［67］
+引 入 双 光 子 激
+光 扫 描 显 微 成 像（2P-LSM）作 为 单 颗 粒 追 踪 的 背 景 参
+照 手 段。 该 技 术 通 过 逐 层 扫 描 不 同 轴 向 焦 平 面，重 建
+出 与 追 踪 数 据 在 空 间 上 精 确 匹 配 的 三 维 体 积 图 像，从
+而实现粒子轨迹与细胞微结构的空间整合 。利用该方
+图 15　光 激 活 线 粒 体 在 轴 突 中 的 追 踪
+［108］
+。 （a）宽 场 图 像 显 示 了 光 激 活 线 粒 体 沿 单 个 轴 突 的 顺 行 运 输； （b）两 个 检 测 通 道 的 平 均 光 子
+计数率 ； （c）移动线粒体的三维轨迹
+Fig. 15　Photoactivated mitochondrial tracking in axons
+[108]
+. (a) Wide -field image reveals the anterograde transport of a photo -activated  
+mitochondrion along a single axon ; (b) mean photon count rate of both detection channels ; (c) 3D trajectory of the moving 
+mitochondrion
+
+=== PDF_PAGE 15 ===
+1817005 -15
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+法 ，研 究 团 队 成 功 完 成 了 直 径 约 为100 µm 的 A431 肿
+瘤 球 体 的 三 维 成 像，并 对 其 内 部 多 个 深 度 层 面 中 表 皮
+生 长 因 子 受 体（EGFR）的 内 化 过 程 进 行 了 动 态 追 踪。
+该 系 统 成 像 视 野 达100 µm× 100 µm ，不 仅 能 够 覆 盖 整
+个 肿 瘤 球 体，还 依 靠 多 光 子 激 发 实 现 了 深 部 组 织 中 单
+颗粒轨迹的高分辨率可视化 （图 18） 。尽管 2P-LSM 具
+备 获 取 完 整 三 维 结 构 信 息 的 能 力，并 且 具 有 较 强 的 组
+织 穿 透 和 光 学 切 片 能 力，但 体 积 成 像 是 通 过 逐 层 扫 描
+进行的 ，这与快速粒子追踪之间存在时间延迟 ，导致难
+以实现细胞尺度下结构变化与轨迹动态的完全同步记
+录 。 尤 其 在 研 究 大 尺 度 快 速 生 物 过 程 时，这 一 局 限 性
+尤为明显 ，是当前该方法亟待优化的重要方向 。
+Welsher 等
+［107］
+开 发 了 一 种三 维 多 分 辨 率显 微 成 像
+方 法（3D-MRM） ，首 次 将 分 离 式 探 测 三 维 追 踪 技 术 与
+2P-LSM 结 合，实 现 了 单 分 子 动 力 学 与 细 胞 环 境 背 景
+的高精度空间关联 。该方法通过实时将 2P-LSM 的成
+像 焦 点 锁 定 于 目 标 探 针 位 置，同 步 记 录 压 电 平 台 的 位
+移 信 息，并 通 过 快 速 扫 描 参 数 有 效 避 免 因 样 品 移 动 造
+成 的 图 像 模 糊，确 保 了 追 踪 与 成 像 的 空 间 和 时 间 一 致
+性 。 在 64 µm × 64 µm 成 像 区 域 内，该 技 术 成 功 观 察
+了 包 括 颗 粒 与 细 胞 表 面 结 合、膜 结 构 扩 散 及 受 限 运 动
+等 多 种 生 物 行 为，体 现 了 其 在 粒 子 运 动 与 细 胞 背 景 联
+图 16　HeLa 细 胞 内 SWNT 的 三 维 运 动 轨 迹 分 析
+［76］
+。 （a）18 条 SWNT 运 动 轨 迹 在HeLa 细 胞（黄 色 轮 廓）内 的 二 维 位 置 叠 加 图；
+（b）18 条轨迹的动力学参数主图 ，包括平移扩散系数 、旋转扩散系数 、扩散类型 ，以及受限区域体积或主动运输速度的定量数
+据； （c）3 种典型扩散模式的三维轨迹展示图及其对应的 MSD 曲线 ：正常扩散 、对流扩散 、受限扩散 ； （d）三维轨迹的荧光强度
+编码图 ，通过颜色变化反映追踪过程中的信号波动情况 ； （e）培养 1.5 h 后 SWNT 的聚集行为观察结果
+Fig. 16　Three -dimensional tracking analysis of SWNTs in HeLa cells [76]. (a) Overlaid 2D location of 18 SWNT trajectories in relation 
+to HeLa cell (yellow outline ); (b) master plot of the translational , rotational diffusion coefficients , types of diffusion , and corral 
+volumes or active transport velocities for 18 measured trajectories ; (c) 3D trajectories and corresponding MSD curves of three 
+typical diffusion modes : normal diffusion , convective diffusion , and corralled diffusion ; (d) 3D trajectory maps color -coded by 
+fluorescence intensity , reflecting signal fluctuations during tracking ; (e) aggregation behavior of SWNTs after 1.5 h incubation
+
+=== PDF_PAGE 16 ===
+1817005 -16
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+图 17　单 病 毒 颗 粒 三 维 动 态 追 踪。 （a）3D-PART 对 HuH 7 细 胞 膜 上 单 个 病 毒 颗 粒 的 三 维 追 踪［88］； （b）俯 视 图； （c）放 大 视 图。比 例 尺
+为 10 μm； （d）3D-SMART 对 293T/17 细胞中 VSV -G Vpr -StayGold 慢病毒的追踪 ［109］； （e）明场图像与图 a 中轨迹的俯视图叠
+加； （f）图 17（a）中的荧光强度曲线与 eGFP 标记 VLP 的对比 ，StayGold 标记具有更优的光稳定性和更长的追踪时长
+Fig. 17　Three -dimensional dynamic tracking of single viral particles . (a) 3D-PART tracking of single virus -like particles (VLPs ) on 
+HuH 7 cell membranes
+[88]
+; (b) top -down view of single VLP tracking ; (c) magnified view of single VLP tracking , scale bar is 
+10 μm; (d) 3D-SMART tracking of VSV -G Vpr -StayGold lentivirus in live 293T/17 cell[109]; (e) bright -field image overlaid with the 
+top-down view trajectory from (a); (f) fluorescence intensity traces from Fig . 17(a) compared with eGFP -labeled VLPs , 
+demonstrating superior photostability and longer tracking duration of StayGold labeling
+图 18　基于 TSUNAMI 系统的肿瘤球体体积成像与颗粒内化轨迹追踪
+［67］
+。 （a）直径 100 µm 肿瘤球体的三维等值面重建图 ； （b）图 18（a）中
+绿色切面的等值面模型 ； （c）图 18（b）的局部放大 ； （d）分离显示的 EGFR 内化运动轨迹三维重构 ； （e）追踪持续时间内的瞬时速度图
+Fig. 18　Volumetric imaging of tumor spheroids with particle internalization tracking using the TSUNAMI 
+[67]
+. (a) Three -dimensional 
+isosurface rendering of a 100 -µm diameter tumor spheroid ; (b) isosurface model of the green cross -section in Fig . 18(a); 
+(c) enlarged view of Fig . 18(b); (d) 3D reconstruction of isolated EGFR internalization trajectories ; (e) instantaneous velocity 
+plot over the duration of the trajectory
+
+=== PDF_PAGE 17 ===
+1817005 -17
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+动 分 析 中 的 独 特 优 势。 之 后 ，Li 等
+［111］
+进 一 步 将 3D-
+MRM 应 用 于HIV -1 病 毒 样 颗 粒（VLP）与 宿 主 细 胞 的
+相互作用研究 ，通过记录 208 条粒子轨迹并与宿主细胞
+结构图像配准 ，识别出 VLP 在摄取过程中经历的 3 个动
+态阶段 ：细胞外受限扩散 、膜冲浪及细胞内定向运输 。
+Annibale 等
+［73］
+通 过 整 合 三 维 轨 道 扫 描 式 追 踪 技 术
+与 2P-LSM ，构 建 了 可 用 于 复 杂 三 维 结 构 动 态 重 建 的
+成 像 系 统。 该 系 统 在 商 业 双 光 子 显 微 镜 基 础 上 引 入
+ETL ，替 代 传 统 压 电 平 台，从 而 消 除 物 镜 的 机 械 移 动，
+显 著 提 升 了 追 踪 范 围、速 度 与 定 位 精 度。 该 方 法 成 功
+应 用 于 拟 南 芥 主 根 的 三 维 结 构 成 像，展 示 了 该 系 统 在
+结构成像与轨迹追踪之间的信息融合能力 。
+Liu 等
+［68］
+开 发 的 三 维 双 色 双 粒 子 追 踪 技 术 ，在
+TSUNAMI 显 微 系 统 中 集 成 了 额 外 的 光 电 倍 增 管 和
+时 间 相 关 单 光 子 计 数 模 块，实 现 了 三 维 空 间 中 具 有 不
+同 光 谱 特 性 的 两 个 目 标 颗 粒 的 同 步 定 位，时 间 分 辨 率
+可 达 5 ms 。 通 过 将 粒 子 轨 迹 与 三 维 细 胞 图 像 进 行 空
+间 配 准，实 现 了 对 活 细 胞 中 纳 米 颗 粒 平 移 与 旋 转 行 为
+的同步监测 。如图 19 所示 ，该方法不仅能够识别纳米
+颗 粒 与 细 胞 膜 结 合 事 件，还 可 通 过 动 力 学 参 数 变 化 辅
+助 判 断 关 键 转 变 过 程，揭 示 了 分 子 运 动 状 态 与 膜 表 面
+受体相互作用之间的动态关系 。
+3. 4　三维追踪与三维轴向快速光栅采集显微成像
+Johnson 等
+［112］
+提 出 了 一 种 能 够 在 活 细 胞 环 境 中 实
+现 同 步 体 积 成 像 的 主 动 反 馈 单 粒 子 追 踪 技 术，该 系 统
+集 成 了3D-SMART 和 三 维 轴 向 快 速 光 栅 采 集 显 微 系
+图 19　抗 EGFR IgG 偶 联 各 向 异 性 二 聚 体 在 质 膜 表 面 的 着 陆 行 为 分 析
+［68］
+。 （a）单 层 LNCaP 细 胞 的 三 维 等 值 面 模 型； （b）双 粒 子 轨 迹
+的 局 部 放 大 视 图； （c）3 个 典 型 时 间 窗 口 的 轨 迹 分 析：I（0~5 s） 、II（20~25 s）和 III（50~55 s） ，分 别 对 应 不 同 相 互 作 用 阶 段；
+（d）玫瑰直方图定量表征各时间窗口内纳米颗粒的方位角与仰角分布特征 ； （e）角度变化（上）与平移扩散系数 （下）随时间演
+变的动力学曲线 ，红色虚线标示关键转变时间点
+Fig. 19　Analysis of anti -EGFR IgG -conjugated anisotropic dimer landing behavior on plasma membrane [68]. (a) 3D isosurface model of 
+monolayer LNCaP cells ; (b) local magnified view of dual -particle trajectories ; (c) trajectory analysis in three typical time 
+windows : I (0 ‒ 5 s ), II (20 ‒ 25 s ), and III (50 ‒ 55 s ), corresponding to different interaction phases ; (d) rose histograms 
+quantitatively characterize the distribution patterns of azimuthal and elevation angles within respective time windows ; (e) kinetic 
+curves of angular variation (top) and translational diffusion coefficient (bottom ) over time , with red dashed lines indicating 
+critical transition time points
+
+=== PDF_PAGE 18 ===
+1817005 -18
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+统（3D-FASTR ）［113］。 前 者 可 以 在 较 大 的 轴 向 范 围 内
+捕 捉 细 胞 外 病 毒 颗 粒 的 快 速 动 态 行 为，后 者 则 通 过
+快 速 三 维 采 集，为 追 踪 病 毒 颗 粒 提 供 快 速 体 积 成 像
+（图 20） 。该 技 术 通 过 在 细 胞 顶 端 表 面 约5 μm 平 面
+搜 索 扩 散 的 病 毒 颗 粒，成 功 实 现 了 病 毒 与 细 胞 初 始
+接 触 前 的 捕 获。 当 VLP 进 入 3D-SMART 追 踪 区 域
+时 ，单 光 子 计 数 器 检 测 到 显 著 高 于 背 景 水 平 的 光 子
+数 激 增 ，随 即 触 发 主 动 反 馈 追 踪 回 路 和3D-FASTR
+图 像 采 集。 实 验 中 采 用 了 将eGFP 或 miRFP 670 荧 光
+蛋 白 与HIV -1 Vpr 融 合 后 包 装 到 假 病 毒 衣 壳 的 策 略，
+成 功 将 荧 光 蛋 白 标 记 于SV -G 病 毒 样 颗 粒。 在 使 用
+SiR 650 -肌 动 蛋 白（特 异 性 标 记F-肌 动 蛋 白）染 色 的 细
+胞 上，通 过 三 维 实 时 成 像 追 踪 系 统 捕 获 了SV -G 病 毒
+样 颗 粒 在 细 胞 表 面 的 长 期 结 合 事 件。
+4　多模态三维单颗粒追踪技术
+除了关注空间位置的变化 ，单分子 /单颗粒在运动
+过 程 中 所 处 微 环 境 的 物 理 化 学 状 态 变 化 同 样 值 得 关
+注 。 将 闭 环 三 维 追 踪 与 其 他 光 学 参 数 成 像 技 术 相 结
+合，能够获取更丰富的粒子信息 ，实现多模态的动态分
+析 。 本 节 介 绍 闭 环 三 维 追 踪 技 术 分 别 与 荧 光 寿 命、荧
+光光谱及偏振成像相结合的进展 。
+4. 1　三维单颗粒追踪与荧光寿命
+传统的三维单颗粒追踪主要依赖荧光强度来定位
+目 标 颗 粒，而 忽 视 了 其 所 处 微 环 境 的 变 化 信 息。 荧 光
+寿 命 作 为 一 种 反 映 分 子 局 部 环 境 变 化（如 极 性、黏 度、
+近邻分子相互作用等 ）的物理参数 ，具备不依赖激发强
+度 与 分 子 浓 度 的 特 性，因 此 成 为 监 测 分 子 微 环 境 变 化
+的 理 想 指 标
+［114 -115］
+。 荧 光 寿 命 通 常 定 义 为 激 发 态 分 子
+发 出 荧 光 后，其 发 射 强 度 衰 减 至 初 始 值1/e 所 需 的 时
+间
+［116］
+。根 据 激 发 态 寿 命 理 论，荧 光 寿 命 仅 取 决 于 荧 光
+团 的 内 在 结 构 及 其 周 围 环 境，与 激 发 光 强、荧 光 团 浓
+度 ，以 及 光 漂 白 效 应 无 关
+［117 -120］
+。 由 于 大 多 数 荧 光 团 的
+寿 命 处 于 纳 秒 至 数 百 纳 秒 的 时 间 尺 度，实 现 高 精 度 测
+量需要依赖高时间分辨率的探测设备 。
+目前常用的荧光寿命测量方法分为时域和频域两
+大 类
+［120］
+。 典 型 的 时 域 方 法 包 括 时 间 相 关 单 光 子 计 数
+（TCSPC）和门控成像 ：时间相关单光子计数 -荧光寿命
+成像显微技术（TCSPC -FLIM）在每个激发周期内记录
+单个荧光光子的到达时间 ，通过构建光子到达时间的统
+计 直 方 图 并 拟 合 衰 减 曲 线，从 而 提 取 寿 命 信 息
+［121］
+。频
+域 FLIM 则通过调制激发光并测量发射光的相位延迟
+和调制度变化 ，进而计算荧光寿命 。基于相机的宽场频
+域 FLIM 具备采集速度快 、系统实现简便等优点 ，适合
+大面积样本的快速成像 ，但在区分相近寿命组分 、抵抗
+光 漂 白 影 响 及 处 理 动 态 样 本 方 面 仍 存 在 一 定 局 限 性。
+相比之下 ，扫描式 FLIM 具备更高的信噪比和一定程度
+的光学切片能力 ，但采集速度较慢且激发强度较高 ，容
+图 20　基于压电平台方法与 3D-FASTR 体积成像扫描模式比较 ［113］。 （a） （c）首帧后扫描结果的三维视图 ； （b） （d）末帧后扫描结果的
+三维视图 ； （e） （f）单帧时间内 ，基于压电平台方法与 3D-FASTR 在 YZ 平面扫描的差异
+Fig. 20　Comparison of volumetric imaging scanning patterns between piezoelectric stage -based method and 3D-FASTR [113]. (a) (c) 3D 
+views of the scanning results after the first frame ; (b)(d) 3D views of the scanning results after the last frame ; (e)(f) differences in 
+YZ plane scanning between the piezoelectric stage -based method and 3D-FASTR within a single frame time
+
+=== PDF_PAGE 19 ===
+1817005 -19
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+易引入光毒性 ，限制了其在活细胞长期成像中的应用 。
+绝大多数闭环反馈三维追踪系统为了实现高时间
+分辨率 ，通常采用单像素探测器 （如雪崩光电二极管或
+光电倍增管 ）进行信号采集 。因此 ，该类系统适合与脉
+冲激发激光器和 TCSPC 模块联用 ，在每个探测到的光
+子 上 标 记 时 间 戳，从 而 实 现 对 目 标 粒 子 荧 光 寿 命 的 动
+态监测 。为了在追踪过程中同步获取粒子的荧光寿命
+信息 ，Chen 等
+［121］
+将轨道扫描式闭环反馈单颗粒追踪与
+TCSPC -FLIM 成像结合 ，开发了动态扫描荧光寿命成
+像 方 法。 通 过 反 馈 控 制 的 寻 址 扫 描、荧 光 寿 命 成 像 和
+基 于 交 替 下 降 条 件 梯 度 的 压 缩 感 知 分 析 算 法，显 著 提
+高了 TCSPC -FLIM 的成像速度 ，使其能够对移动粒子
+进 行 追 踪 和 荧 光 寿 命 成 像。Tian 等
+［122］
+在 分 离 式 探 测
+三维追踪技术的基础上 ，结合时间选通模块和 TCSPC
+模 块。 根 据 寿 命 信 息，将 长 寿 命 荧 光 与 短 寿 命 背 景 信
+号分离 ，提高系统的信噪比 ，实现高背景环境下快速移
+动 粒 子 的 稳 定 追 踪。Chen 等
+［123］
+利 用 TSUNAMI 系 统
+对活细胞内单条 DNA 分子链进行高分辨三维追踪 ，并
+通过 TCSPC 实时连续测量其荧光寿命 ，用以表征分子
+结合 -解离状态的动态 变化（图 21） 。
+对 于 生 物 样 品 中 的 大 分 子，寿 命 轨 迹 可 能 反 映 分
+子 之 间 沿 运 动 路 径 的 实 时 相 互 作 用，这 可 能 提 供 与 一
+些重要机制相关的直接信息 。单颗粒追踪技术与荧光
+寿命显微成像技术联用能够为生物分子运动提供更为
+详细的物理信息 。
+4. 2　三维单颗粒追踪与荧光光谱
+荧 光 光 谱 作 为 一 种 非 侵 入 性 的 分 子 表 征 技 术，凭
+借其高 度 特 异 的 分 子 识 别 能 力，已 成 为 物 理、化 学、材
+图 21　四面体探测三维追踪系统
+［123］
+。 （a）光学布局 ； （b）工作示意图 ； （c）使用和不使用淬灭基团链的复合寿命迹线对比
+Fig. 21　Tetrahedral detection -based three -dimensional tracking system [123]. (a) Optical layout ; (b) schematic of operation ; (c) comparison 
+of composite fluorescence lifetime traces with and without the quencher -labeled chain
+
+=== PDF_PAGE 20 ===
+1817005 -20
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+料 科 学 ，以 及 生 物 医 学 等 多 个 领 域 的 重 要 研 究 工
+具
+［124］
+。 然 而，传 统 的 体 相 荧 光 测 量 由 于 受 到 系 综 平
+均 效 应 的 限 制，只 能 反 映 样 品 的 整 体 平 均 特 性，空 间
+分 辨 率 有 限，难 以 揭 示 体 系 中 的 微 观 异 质 性。 这 一
+局 限 导 致 分 子 动 态 行 为、构 象 变 化，以 及 细 胞 群 体 间
+差 异 等 关 键 信 息 在 宏 观 测 量 中 被 掩 盖。 随 着 单 光 子
+探 测 器 等 高 灵 敏 检 测 技 术 的 发 展，单 分 子 荧 光 光 谱
+（SMFS）应 运 而 生，突 破 性 地 实 现 了 对 单 个 分 子 的 精
+准 观 测 与 实 时 追 踪。SMFS 通 过 消 除 系 综 平 均 效 应，
+在 单 分 子 水 平 上 揭 示 了 诸 如 酶 催 化、蛋 白 质 折 叠、构
+象 异 构 转 变，以 及 核 酸 相 互 作 用 等 关 键 生 命 过 程 的
+微 观 机 制
+［125 -131］
+，为 理 解 复 杂 生 物 分 子 体 系 提 供 了 前
+所 未 有 的 时 空 分 辨 能 力。 Sanabria 等
+［132］
+通 过 整 合 单
+分 子 和 多 参 数 荧 光 检 测、电 子 顺 磁 共 振（EPR）波 谱、
+诱 变、荧 光 共 振 能 量 转 移（FRET）定 位 和 其 他 生 化 和
+生 物 物 理 工 具，在 纳 秒 至 毫 秒 级 时 间 尺 度 上 成 功 表
+征 了 T4 溶 菌 酶 的 3 种 短 寿 命 构 象 状 态。 此 外 ，Chu
+等
+［133］
+设 计 了 一 套 包 含 数 十 种 复 合 荧 光 标 记 的
+FRETfluors 调 色 板，实 现 了 单 分 子 水 平 的 多 通 道 光
+谱 解 析，为 探 测 分 子 环 境 与 分 子 间 相 互 作 用 提 供 了
+更 丰 富 的 物 理 化 学 信 息。
+尽 管 SMFS 技 术 已 能 在 体 外 解 析 复 杂 大 分 子 的
+动 态 行 为，然 而 生 物 大 分 子 的 真 实 功 能 始 终 在 细 胞 内
+微 环 境 中 发 挥 作 用。 因 此，近 年 来 研 究 者 致 力 于 发 展
+具 有 光 谱 分 辨 能 力 的 单 分 子 显 微 成 像 技 术，用 于 活 细
+胞 环 境 中 生 物 分 子 的 光 谱 信 息 获 取
+［134 -137］
+。 例 如 ，
+Zhanghao 等
+［138］
+提出了光谱和偏振光学断层扫描技术 ，
+该 系 统 通 过 同 时 采 集 荧 光 强 度、发 射 光 谱 与 偏 振 状 态
+3 个 维 度 的 数 据，实 现 对 细 胞 分 裂 过 程 中 多 细 胞 器 交
+互行为的动态监测 ，并可解析其膜结构 、极性变化和相
+位特征 。
+尽 管 荧 光 光 谱 动 态 探 测 技 术 近 年 来 取 得 显 著 进
+展，对快速运动生物分子的高速度 、长时间光谱成像仍
+面 临 一 系 列 挑 战。 主 要 技 术 瓶 颈 包 括：1）快 速 移 动 的
+目 标 生 物 分 子 可 能 在 成 像 期 间 离 开 激 发 焦 点，从 而 无
+法充分获取其光谱动态数据 ；2）在相机曝光时间内 ，生
+物 分 子 的 高 速 运 动 会 导 致 光 谱 图 像 模 糊；3）短 曝 光 时
+间 内 收 集 到 的 光 子 数 有 限，限 制 了 对 生 物 分 子 的 时 空
+定位精度 。最近 ，深圳湾实验室 Hou 团队
+［139］
+开发了一
+种基于三维目标锁定的单分子荧光光谱动态成像显微
+镜（3D-SpecDIM ） ，如 图 22 所 示。 其 可 在 单 分 子 水 平
+上同时捕获生物分子的快速三维位置信息与其物理化
+学 参 数 变 化 过 程，具 备 光 谱 准 确 性 高、采 集 速 度 快、三
+维 时 空 定 位 精 度 高 等 优 势。3D-SpecDIM 应 用 于 线 粒
+体 自 噬 过 程 的 实 时 光 谱 成 像，展 现 了 其 增 强 的 荧 光 比
+率成像能力 。此外 ，该方法还可用于多分辨率成像 ，为
+线粒体自噬过程提供了重要的背景结构信息 。进一步
+地，研究人员通过对细胞起泡过程进行光谱动态成像 ，
+验证了 3D-SpecDIM 的定量成像能力 。通过实时监测
+生 物 分 子 微 环 境 的 光 谱 参 数 变 化，并 结 合 三 维 动 态 追
+踪 ，3D-SpecDIM 为 多 参 数 同 步 获 取 提 供 了 通 用 平 台，
+能够提供常规成像技术无法实现的多维度深入信息 。
+4. 3　三维单颗粒追踪与偏振技术
+光的偏振态作为一种对微观结构极为敏感的光学
+参 数，其 与 纳 米 尺 度 物 质 的 相 互 作 用 机 制 为 动 态 单 颗
+粒分析提供了多维度的光学指纹 。传统偏振光学研究
+主要聚焦于分析入射偏振光经介质作用后的纯偏振态
+变 化，从 中 提 取 如 双 折 射、各 向 异 性 吸 收 等 特 性 参 数，
+并 结 合 建 模 与 电 磁 理 论，推 导 复 杂 多 层 膜 系 统 中 的 光
+学 响 应 与 微 观 结 构 特 征 之 间 的 内 在 联 系
+［140］
+。 除 了 偏
+振 变 化，散 射 光 本 身 的 光 谱 特 性 也 依 赖 于 散 射 体 的 介
+电 响 应
+［141 -142］
+，因 此 目 标 粒 子 的 散 射 光 可 以 有 效 反 映 其
+周围局部环境的状态变化 。
+尽管迄今为止的大多数研究都集中在散射光的频
+率分 量 上，但 其 他 光 学 测 量 同 样 蕴 含 丰 富 的 结 构 与 动
+力 学 信 息 。 例 如 ，偏 振 特 性 可 揭 示 粒 子 的 旋 转 行
+为
+［143］
+以 及 其 几 何 形 状 和 对 称 性 特 征
+［144 -145］
+。Yang
+［146］
+在
+2007 年提 出 了 一 个 用 于 单 个 纳 米 颗 粒 或 微 结 构 的 光
+散 射 理 论 框 架，利 用 散 射 光 的 偏 振 与 光 谱 响 应 分 析，
+深 入 研 究 了 纳 米 粒 子 的 旋 转 扩 散 特 性 和 形 状 信 息。
+随 后，Yang 团 队 在 2019 年 进 一 步 发 展 出 单 颗 粒 动 态
+光 散 射 技 术，将 分 离 式 探 测 三 维 追 踪 技 术 与 暗 场 照 明
+和 偏 振 测 量 相 结 合，成 功 实 现 对 溶 液 中 自 由 扩 散 金 属
+纳 米 颗 粒 形 状 的 高 精 度 无 损 测 量（图 23） 。该 方 法 不
+仅 能 够 记 录 散 射 光 的 偏 振 分 布，还 引 入 了 散 射 光 谱 作
+为 第 二 观 测 维 度，实 现 对 单 个 金 属 纳 米 颗 粒 三 维 形 状
+的 综 合 判 定
+［147 -148］
+。 Fang 团 队
+［106］
+开 发 了 一 种 结 合 深
+度 学 习 算 法 的 自 动 化 多 维 单 颗 粒 追 踪 技 术，能 够 在 复
+杂 活 细 胞 环 境 中 以 高 空 间 和 时 间 分 辨 率 解 析 金 纳 米
+颗 粒 探 针 的 三 维 方 向。 利 用 该 技 术 研 究 活 细 胞 中 驱
+动 蛋 白 沿 微 管 骨 架 运 输 货 物 的 动 态 过 程，发 现 在 运 输
+过 程 中 货 物 共 经 历 了 两 个 暂 停 阶 段 和 几 个 主 动 运 输
+阶 段。 在 暂 停 阶 段，货 物 颗 粒 在 紧 密 附 着 和 绳 索 旋 转
+两 种 模 式 之 间 切 换，分 别 对 应 不 同 的 货 物-驱 动 蛋 白-
+微 管 相 互 作 用。
+5　总结与展望
+尽 管 闭 环 反 馈 三 维 单 分 子/单 颗 粒 追 踪 技 术 已 经
+取 得 了 一 些 进 展，其 未 来 仍 有 很 大 的 提 升 空 间 和 新 方
+向 。 首 先，多 目 标 并 行 追 踪 是 一 个 重 要 的 发 展 方 向。
+目 前 大 多 数 主 动 追 踪 系 统 一 次 仅 能 锁 定 一 个 目 标 粒
+子
+［89， 102 -103 ， 107 ， 112］
+，如 何 扩 展 至 同 时 追 踪 多 个 粒 子 对 于 提
+高实验通量和研究复杂生物网络具有重要意义 。潜在
+的 解 决 方 案 包 括 引 入 多 束 激 发/探 测 光 路 或 多 颜 色 标
+记 与 区 分 等
+［59， 68， 125］
+。 然 而，多 目 标 追 踪 将 显 著 增 加 系
+统复杂度 ，对实时控制算法和数据处理提出更高要求 ，
+这 是 未 来 需 要 攻 克 的 技 术 挑 战。 其 次，进 一 步 推 进 闭
+环追踪在深部组织成像和活体应用中的能力也是值得
+
+=== PDF_PAGE 21 ===
+1817005 -21
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+图 23　单粒子动态光散射通过收集偏振动态信号表征单个金属纳米颗粒形状
+［148］
+Fig. 23　Single -particle dynamic light scattering characterizes the shape of individual metal nanoparticles by collecting polarization 
+dynamic signals
+[148]
+图 22　3D-SpecDIM 系 统 示 意 图［139］。 （a）使 用 二 维 电 光 偏 转 器 和 可 调 声 光 梯 度 透 镜 驱 动 激 光 焦 点，在 物 镜 后 方 的 小 区 域（1 μm×
+1 μm× 2 μm）内快速扫描 ； （b）FPGA 利用 APD 收集的光子到达时间信息和当前激光焦点位置信息 ，估算分子相对于照明体
+积 中 心 的 偏 移； （c）根 据 估 算 的 分 子 偏 移 信 息，向 压 电 平 台 施 加 反 馈 控 制 电 压，将 分 子 重 新 定 位 至 照 明 体 积 中 心； （d）闭 环 反
+馈控制 ； （e）同步三维位置动态与光谱动态 ，实现多参数动态采集
+Fig. 22　Schematic of 3D-SpecDIM [139]. (a) 2D-EODs and TAG lens are used to drive the focused laser spot rapidly scanning in a small 
+volume (1 μm× 1 μm× 2 μm) after objective ; (b) FPGA utilizes the photon arrival time information collected by APD and the 
+current laser position information to estimate the molecule ’s deviation from the center of illumination volume ; (c) with the 
+estimated molecule ’s deviation information , a feedback control voltage is applied to the piezoelectric stage to relocate the 
+molecule to the center of illumination volume ; (d) closed -loop feedback control ; (e) synchronizing the 3D positional dynamics 
+and the spectral dynamics enables multiparameter dynamics acquisition
+
+=== PDF_PAGE 22 ===
+1817005 -22
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+期待的方向之一 。组织深层的高分辨追踪需要应对强
+散 射 和 光 学 像 差 等 问 题
+［149 -151］
+。 未 来 有 望 结 合 多 光 子
+激发（例如双光子或三光子技术 ）以及自适应光学校正
+来 提 高 深 层 追 踪 性 能
+［72， 94］
+。 例 如，在 小 动 物 模 型 或 类
+器官中 ，实现对深部细胞内单颗粒的长时间追踪 ，有助
+于将单分子追踪技术从体外扩展到更接近生理环境的
+体系中 。
+人 工 智 能（AI）辅 助 的 闭 环 控 制 和 智 能 追 踪 算 法
+将为该领域注入新的活力 。当前的闭环追踪多采用比
+例-积分 -微分（PID）控制或基于模型的算法 （如卡尔曼
+滤 波）来 实 现 反 馈 控 制
+［82， 107 ， 148］
+。随 着 机 器 学 习 和 深 度
+学习技术的发展 ，未来可以预见将出现利用预测算法 、
+强化学习等手段优化反馈控制的方案 。智能算法可以
+根 据 粒 子 的 运 动 历 史 自 动 调 整 参 数
+［88， 152］
+，甚 至 预 测 粒
+子下一步运动 ，以降低反馈滞后 ，提高捕获效率 。在存
+在 复 杂 背 景 噪 声 或 非 线 性 运 动 模 式 的 情 况 下，AI 有 望
+辅助实现更鲁棒的目标锁定与状态判别 。这些智能追
+踪策略的引入将进一步提升闭环追踪系统在复杂环境
+下的适应性和性能 。
+此 外，系 统 的 微 型 化 和 片 上 集 成 也 是 未 来 发 展 的
+重 要 趋 势
+［153 -154］
+。 当 前 高 时 空 分 辨 的 追 踪 显 微 系 统 往
+往结构复杂 、体积庞大 ，这在一定程度上限制了其在临
+床 医 学 或 现 场 生 物 检 测 中 的 应 用。 通 过 微 光 学 器 件、
+集 成 化 光 路 和 微 机 电 系 统（MEMS）
+［155 -156］
+，有 望 研 制 出
+紧 凑 的 闭 环 追 踪 模 块，甚 至 将 其 集 成 到 实 验 室 芯 片
+（lab-on-chip）平 台 中。 微 型 化 的 追 踪 系 统 可 以 更 方 便
+地与其他实验装置 （如微流控 、生物芯片 ）结合 ，实现对
+活体样本的原位单颗粒追踪观察 。这将极大拓展单分
+子 追 踪 技 术 的 应 用 场 景，有 助 于 将 其 从 实 验 室 研 究 工
+具转变为实用化的分析手段 。
+值 得 一 提 的 是，在 闭 环 追 踪 领 域 中 光 漂 白 的 抑 制
+和无标记追踪也是一个长期目标 。由于绝大多数追踪
+实 验 依 赖 荧 光 标 记，目 标 分 子 的 光 漂 白 不 可 避 免 地 限
+制了可追踪的时间长度 。开发无需荧光标记的三维追
+踪 方 法 将 从 根 本 上 解 决 光 漂 白 问 题，提 高 可 持 续 观 测
+时 间。 干 涉 散 射 显 微 成 像（iSCAT）作 为 一 种 无 标 记
+超 灵 敏 检 测 手 段
+［157 -160］
+，近 年 来 展 现 出 监 测 单 颗 粒 散 射
+的 能 力。Squires 等
+［161 -163］
+将 干 涉 散 射 与 反 布 朗 运 动 电
+动 力 学 陷 阱 相 结 合，构 建 了 干 涉 散 射 反 布 朗 运 动 电 动
+力 学 陷 阱（ISABEL ）系 统，实 现 了 纳 米 颗 粒 的 闭 环 反
+馈 追 踪，初 步 证 明 了 将iSCAT 用 于 主 动 追 踪 的 可 行
+性。可以预见 ，将 iSCAT 等无标记技术与闭环三维追
+踪融合 ，有望实现高灵敏度 、长时程且不受光漂白限制
+的 追 踪，为 活 细 胞 内 长 时 间 观 察 分 子 动 力 学 过 程 提 供
+新的工具 。
+最后 ，随着上述各方面技术的进步 ，闭环反馈三维
+单分子追踪有望在医学和生命科学领域产生更大的影
+响 。 未 来，该 技 术 可 能 直 接 应 用 于 解 析 和 诊 断 复 杂 的
+生物医学过程 。例如 ：在肿瘤研究中 ，实时追踪肿瘤细
+胞膜上受体分子的动态行为将有助于理解信号传导和
+耐药机制 ；在神经科学中 ，观测神经元轴突内囊泡或线
+粒体的长距离运输将加深我们对神经递质传递和神经
+退行性疾病的认识 ；在病毒学中 ，监测病毒粒子穿越细
+胞膜和在细胞内迁移的路径将为揭示感染机制提供直
+观 证 据。 可 以 预 见，闭 环 三 维 单 分 子 追 踪 技 术 将 在 未
+来 的 生 物 医 学 研 究 中 发 挥 更 加 重 要 的 作 用，推 动 相 关
+领域获得新的突破 。
+参 考 文 献
+[1] Moerner W E , Orrit M . Illuminating single molecules in 
+condensed matter [J]. Science , 1999 , 283(5408 ): 1670 -
+1676 .
+[2] Wang C , Han B R , Zhou R B , et al . Real -time imaging 
+of translation on single mRNA transcripts in live cells [J]. 
+Cell , 2016 , 165(4): 990 -1001 .
+[3] Shida J F , Ma K B , Toll H W , et al . Multicolor long -
+term single -particle tracking using 10 nm upconverting 
+nanoparticles [J]. Nano Letters , 2024 , 24(14): 4194 -4201 .
+[4] Semmer F , Emperauger M C , Lopez C , et al . 3D real -
+time two -photon microscopy device for single -particle 
+holographic tracking (3D-red shot ) [J]. ACS Photonics , 
+2023 , 10(9): 3426 -3434 .
+[5] Laurent F , Floderer C , Favard C , et al . Mapping spatio -
+temporal dynamics of single biomolecules in living cells
+[J]. Physical Biology , 2020 , 17(1): 015003 .
+[6] Delarue M , Brittingham G P , Pfeffer S , et al . mTORC 1 
+controls phase separation and the biophysical properties 
+of the cytoplasm by tuning crowding [J]. Cell , 2018 , 174
+(2): 338 -349.
+[7] Gao Z S , Li Q , Fan C H , et al . Deciphering live -cell 
+biomolecular dynamics with single -molecule fluorescence 
+imaging [J]. Science Bulletin , 2024 , 69(12): 1823 -1828 .
+[8] Hou S G , Johnson C , Welsher K . Real -time 3D single 
+particle tracking : towards active feedback single molecule 
+spectroscopy in live cells [J]. Molecules , 2019 , 24(15): 
+2826 .
+[9] Stracy M , Uphoff S , de Leon F G , et al . In vivo single -
+molecule imaging of bacterial DNA replication , 
+transcription , and repair [J]. FEBS Letters , 2014 , 588
+(19): 3585 -3594 .
+[10] Kapanidis A N , Margeat E , Ho S O , et al . Initial 
+transcription by RNA polymerase proceeds through a 
+DNA -scrunching mechanism [J]. Science , 2006 , 314
+(5802 ): 1144 -1147 .
+[11] Robinson A , van Oijen A M . Bacterial replication , 
+transcription and translation : mechanistic insights from 
+single -molecule biochemical studies [J]. Nature Reviews 
+Microbiology , 2013 , 11(5): 303 -315.
+[12] Alhadid Y , Chung S , Lerner E , et al . Studying 
+transcription initiation by RNA polymerase with diffusion -
+based single -molecule fluorescence [J]. Protein Science , 
+2017 , 26(7): 1278 -1290 .
+[13] Blanchard S C . Single -molecule observations of ribosome 
+function [J]. Current Opinion in Structural Biology , 2009 , 
+
+=== PDF_PAGE 23 ===
+1817005 -23
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+19(1): 103 -109.
+[14] Klostermeier D . Single -molecule FRET reveals nucleotide -
+driven conformational changes in molecular machines and 
+their link to RNA unwinding and DNA supercoiling [J]. 
+Biochemical Society Transactions , 2011 , 39(2): 611 -616.
+[15] Bisaria N , Herschlag D . Probing the kinetic and 
+thermodynamic consequences of the tetraloop/tetraloop 
+receptor monovalent ion -binding site in P 4 ‒ P6 RNA by 
+smFRET [J]. Biochemical Society Transactions , 2015 , 
+43(2): 172 -178.
+[16] Deniz A A , Laurence T A , Beligere G S , et al . Single -
+molecule protein folding : diffusion fluorescence resonance 
+energy transfer studies of the denaturation of 
+chymotrypsin inhibitor 2[J]. Proceedings of the National 
+Academy of Sciences of the United States of America , 
+2000 , 97(10): 5179 -5184 .
+[17] Schuler B , Hofmann H . Single -molecule spectroscopy of 
+protein folding dynamics : expanding scope and timescales
+[J]. Current Opinion in Structural Biology , 2013 , 23(1): 
+36-47.
+[18] Hafner A E , Santen L , Rieger H , et al . Run -and -pause 
+dynamics of cytoskeletal motor proteins [J]. Scientific 
+Reports , 2016 , 6: 37162 .
+[19] Li N , Zhao R , Sun Y H , et al . Single -molecule imaging 
+and tracking of molecular dynamics in living cells [J]. 
+National Science Review , 2017 , 4(5): 739 -760.
+[20] Luo F , Qin G G , Xia T , et al . Single -molecule imaging 
+of protein interactions and dynamics [J]. Annual Review 
+of Analytical Chemistry , 2020 , 13(1): 337 -361.
+[21] von Diezmann L , Shechtman Y , Moerner W E . Three -
+dimensional localization of single molecules for super -
+resolution imaging and single -particle tracking [J]. 
+Chemical Reviews , 2017 , 117(11): 7244 -7275 .
+[22] Shen H , Tauzin L J , Baiyasi R , et al . Single particle 
+tracking : from theory to biophysical applications [J]. 
+Chemical Reviews , 2017 , 117(11): 7331 -7376 .
+[23] Kapanidis A N , Lee N K , Laurence T A , et al . 
+Fluorescence -aided molecule sorting : analysis of structure 
+and interactions by alternating -laser excitation of single 
+molecules [J]. Proceedings of the National Academy of 
+Sciences of the United States of America , 2004 , 101
+(24): 8936 -8941 .
+[24] Murakoshi H , Iino R , Kobayashi T , et al . Single -
+molecule imaging analysis of Ras activation in living cells
+[J]. Proceedings of the National Academy of Sciences of 
+the United States of America , 2004 , 101(19): 7317 -7322 .
+[25] Müller M , Lauster D , Wildenauer H H K , et al . 
+Mobility -based quantification of multivalent virus -
+receptor interactions : new insights into influenza a virus 
+binding mode [J]. Nano Letters , 2019 , 19(3): 1875 -1882 .
+[26] Sun W , Marchuk K , Wang G F , et al . Autocalibrated 
+scanning -angle prism -type total internal reflection 
+fluorescence microscopy for nanometer -precision axial 
+position determination [J]. Analytical Chemistry , 2010 , 
+82(6): 2441 -2447 .
+[27] Kihm K D , Banerjee A , Choi C K , et al . Near -wall 
+hindered Brownian diffusion of nanoparticles examined by 
+three -dimensional ratiometric total internal reflection 
+fluorescence microscopy (3-D R -TIRFM )[J]. Experiments in 
+Fluids , 2004 , 37(6): 811 -824.
+[28] Chen J J , Zhang Z J , Li L , et al . Single -molecule 
+dynamics of enhanceosome assembly in embryonic stem 
+cells [J]. Cell , 2014 , 156(6): 1274 -1285 .
+[29] Liu Z , Legant W R , Chen B C , et al . 3D imaging of 
+Sox 2 enhancer clusters in embryonic stem cells [J]. eLife , 
+2014 , 3: e04236 .
+[30] Dupont A , Gorelashvili M , Schüller V , et al . Three -
+dimensional single -particle tracking in live cells : news 
+from the third dimension [J]. New Journal of Physics , 
+2013 , 15(7): 075008 .
+[31] Brandenburg B , Zhuang X W . Virus trafficking -learning 
+from single -virus tracking [J]. Nature Reviews Microbiology , 
+2007 , 5(3): 197 -208.
+[32] Lv C , Lin Y , Sun E Z , et al . Internalization of the 
+pseudorabies virus via macropinocytosis analyzed by 
+quantum dot -based single -virus tracking [J]. Chemical 
+Communications , 2018 , 54(79): 11184 -11187 .
+[33] Liang Z P , Li P J , Wang C P , et al . Visualizing the 
+transport of porcine reproductive and respiratory syndrome  
+virus in live cells by quantum dots -based single virus 
+tracking [J]. Virologica Sinica , 2020 , 35(4): 407 -416.
+[34] Prabhat P , Ram S , Ward E S , et al . Simultaneous 
+imaging of different focal planes in fluorescence 
+microscopy for the study of cellular dynamics in three 
+dimensions [J]. IEEE Transactions on Nanobioscience , 
+2004 , 3(4): 237 -242.
+[35] Knight S C , Xie L Q , Deng W L , et al . Dynamics of 
+CRISPR -Cas 9 genome interrogation in living cells [J]. 
+Science , 2015 , 350(6262 ): 823 -826.
+[36] Cheng X D , Cheng X J , Huang R Y , et al . Digitally 
+assisted single -particle tracking for accurate analysis of 
+complicated cargo transport dynamics in microtubule 
+networks [J]. Analytical Chemistry , 2025 , 97(22): 11469 -
+11477 .
+[37] Kao H P , Verkman A S . Tracking of single fluorescent 
+particles in three dimensions : use of cylindrical optics to 
+encode particle position [J]. Biophysical Journal , 1994 , 67
+(3): 1291 -1300 .
+[38] Holtzer L , Meckel T , Schmidt T . Nanometric three -
+dimensional tracking of individual quantum dots in cells
+[J]. Applied Physics Letters , 2007 , 90(5): 053902 .
+[39] Zhao L Y , Zhong Y N , Wei Y L , et al . Microscopic 
+movement of slow -diffusing nanoparticles in cylindrical 
+nanopores studied with three -dimensional tracking [J]. 
+Analytical Chemistry , 2016 , 88(10): 5122 -5130 .
+[40] Huang B , Wang W Q , Bates M , et al . Three -
+dimensional super -resolution imaging by stochastic 
+optical reconstruction microscopy [J]. Science , 2008 , 319
+(5864 ): 810 -813.
+[41] Zhong Y N , Zhao L Y , Tyrlik P M , et al . Investigating 
+diffusing on highly curved water -oil interface using three -
+dimensional single particle tracking [J]. The Journal of 
+Physical Chemistry C , 2017 , 121(14): 8023 -8032 .
+[42] Zhong Y N , Wang G F . Three -dimensional 
+
+=== PDF_PAGE 24 ===
+1817005 -24
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+heterogeneous structure formation on a supported lipid 
+bilayer disclosed by single -particle tracking [J]. Langmuir , 
+2018 , 34(39): 11857 -11865 .
+[43] Pavani S R P , Thompson M A , Biteen J S , et al . Three -
+dimensional , single -molecule fluorescence imaging 
+beyond the diffraction limit by using a double -helix point 
+spread function [J]. Proceedings of the National Academy 
+of Sciences of the United States of America , 2009 , 106
+(9): 2995 -2999 .
+[44] Li H , Chen D N , Xu G X , et al . Three dimensional 
+multi -molecule tracking in thick samples with extended 
+depth -of-field [J]. Optics Express , 2015 , 23(2): 787 -794.
+[45] Shechtman Y , Weiss L E , Backer A S , et al . Precise 
+three -dimensional scan -free multiple -particle tracking 
+over large axial ranges with tetrapod point spread 
+functions [J]. Nano Letters , 2015 , 15(6): 4194 -4199 .
+[46] Backer A S , Backlund M P , von Diezmann A R , et al . 
+A bisected pupil for studying single -molecule 
+orientational dynamics and its application to three -
+dimensional super -resolution microscopy [J]. Applied 
+Physics Letters , 2014 , 104(19): 193701 .
+[47] Lew M D , Lee S F , Badieirostami M , et al . Corkscrew 
+point spread function for far -field three -dimensional 
+nanoscale localization of pointlike objects [J]. Optics 
+Letters , 2011 , 36(2): 202 -204.
+[48] Pavani S R P , Piestun R . High -efficiency rotating point 
+spread functions [J]. Optics Express , 2008 , 16(5): 3484 -
+3489 .
+[49] Thompson M A , Lew M D , Badieirostami M , et al . 
+Localizing and tracking single nanoscale emitters in three 
+dimensions with high spatiotemporal resolution using a 
+double -helix point spread function [J]. Nano Letters , 
+2010 , 10(1): 211 -218.
+[50] Shechtman Y , Gustavsson A K , Petrov P N , et al . 
+Observation of live chromatin dynamics in cells via 3D 
+localization microscopy using Tetrapod point spread 
+functions [J]. Biomedical Optics Express , 2017 , 8(12): 
+5735 -5748 .
+[51] Sun Y J , McKenna J D , Murray J M , et al . Parallax : 
+high accuracy three -dimensional single molecule tracking 
+using split images [J]. Nano Letters , 2009 , 9(7): 2676 -
+2682 .
+[52] Jia S , Vaughan J C , Zhuang X W . Isotropic three -
+dimensional super -resolution imaging with a self -bending 
+point spread function [J]. Nature Photonics , 2014 , 8(4): 
+302 -306.
+[53] Berg H C . How to track bacteria [J]. Review of Scientific 
+Instruments , 1971 , 42(6): 868 -871.
+[54] Lessard G A , Goodwin P M , Werner J H . Three -
+dimensional tracking of individual quantum dots [J]. 
+Applied Physics Letters , 2007 , 91(22): 224106 .
+[55] Lessard G A , Goodwin P M , Werner J H . Three -
+dimensional tracking of fluorescent particles [J]. 
+Proceedings of SPIE , 2006 , 6092 : 609205 .
+[56] Wells N P , Lessard G A , Werner J H . Confocal , three -
+dimensional tracking of individual quantum dots in high -
+background environments [J]. Analytical Chemistry , 
+2008 , 80(24): 9830 -9834 .
+[57] Wells N P , Lessard G A , Goodwin P M , et al . Time -
+resolved three -dimensional molecular tracking in live cells
+[J]. Nano Letters , 2010 , 10(11): 4732 -4737 .
+[58] Han J J , Kiss C , Bradbury A R M , et al . Time -
+resolved , confocal single -molecule tracking of individual 
+organic dyes and fluorescent proteins in three dimensions
+[J]. ACS Nano , 2012 , 6(10): 8922 -8932 .
+[59] Keller A M , DeVore M S , Stich D G , et al . Multicolor 
+three-dimensional tracking for single -molecule fluorescence 
+resonance energy transfer measurements [J]. Analytical 
+Chemistry , 2018 , 90(10): 6109 -6115 .
+[60] Cang H , Wong C M , Xu C S , et al . Confocal three 
+dimensional tracking of a single nanoparticle with 
+concurrent spectroscopic readouts [J]. Applied Physics 
+Letters , 2006 , 88(22): 223901 .
+[61] Cang H , Xu C S , Montiel D , et al . Guiding a confocal 
+microscope by single fluorescent nanoparticles [J]. Optics 
+Letters , 2007 , 32(18): 2729 -2731 .
+[62] Xu C S , Cang H , Montiel D , et al . Rapid and 
+quantitative sizing of nanoparticles using three -
+dimensional single -particle tracking [J]. The Journal of 
+Physical Chemistry C , 2007 , 111(1): 32-35.
+[63] Montiel D , Yang H . Real -time three -dimensional single -
+particle tracking spectroscopy for complex systems [J]. 
+Laser & Photonics Reviews , 2010 , 4(3): 374 -385.
+[64] Cang H , Montiel D , Xu C S , et al . Observation of 
+spectral anisotropy of gold nanoparticles [J]. Journal of 
+Chemical Physics , 2008 , 129(4): 044503 .
+[65] Qian B , Montiel D , Bregulla A , et al . Harnessing 
+thermal fluctuations for purposeful activities : the 
+manipulation of single micro -swimmers by adaptive 
+photon nudging [J]. Chemical Science , 2013 , 4(4): 1420 -
+1429 .
+[66] Germann J A , Davis L M . Three -dimensional tracking of 
+a single fluorescent nanoparticle using four -focus excitation 
+in a confocal microscope [J]. Optics Express , 2014 , 22
+(5): 5641 -5650 .
+[67] Perillo E P , Liu Y L , Huynh K , et al . Deep and high -
+resolution three -dimensional tracking of single particles 
+using nonlinear and multiplexed illumination [J]. Nature 
+Communications , 2015 , 6: 7874 .
+[68] Liu Y L , Perillo E P , Ang P , et al . Three -dimensional 
+two-color dual -particle tracking microscope for monitoring 
+DNA conformational changes and nanoparticle landings 
+on live cells [J]. ACS Nano , 2020 , 14(7): 7927 -7939 .
+[69] Enderlein J . Tracking of fluorescent molecules diffusing 
+within membranes [J]. Applied Physics B , 2000 , 71(5): 
+773 -777.
+[70] Levi V , Ruan Q , Kis -Petikova K , et al . Scanning FCS , 
+a novel method for three -dimensional particle tracking [J]. 
+Biochemical Society Transactions , 2003 , 31(5): 997 -
+1000 .
+[71] Kis -Petikova K , Gratton E . Distance measurement by 
+circular scanning of the excitation beam in the two -photon 
+microscope [J]. Microscopy Research and Technique , 
+2004 , 63(1): 34-49.
+
+=== PDF_PAGE 25 ===
+1817005 -25
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+[72] Levi V , Ruan Q Q , Gratton E . 3-D particle tracking in a 
+two -photon microscope : application to the study of 
+molecular dynamics in cells [J]. Biophysical Journal , 
+2005 , 88(4): 2919 -2928 .
+[73] Annibale P , Dvornikov A , Gratton E . Electrically 
+tunable lens speeds up 3D orbital tracking [J]. Biomedical 
+Optics Express , 2015 , 6(6): 2181 -2190 .
+[74] Lanzanò L C , Gratton E . Orbital Single Particle 
+Tracking on a commercial confocal microscope using 
+piezoelectric stage feedback [J]. Methods and Applications 
+in Fluorescence , 2014 , 2(2): 9.
+[75] Katayama Y , Burkacky O , Meyer M , et al . Real -time 
+nanomicroscopy via three -dimensional single -particle 
+tracking [J]. Chemphyschem , 2009 , 10(14): 2458 -2464 .
+[76] Reuel N F , Dupont A , Thouvenin O , et al . Three -
+dimensional tracking of carbon nanotubes within living 
+cells [J]. ACS Nano , 2012 , 6(6): 5420 -5428 .
+[77] Welsher K , Liu Z , Sherlock S P , et al . A route to 
+brightly fluorescent carbon nanotubes for near -infrared 
+imaging in mice [J]. Nature Nanotechnology , 2009 , 4
+(11): 773 -780.
+[78] Welsher K , Sherlock S P , Dai H J . Deep -tissue 
+anatomical imaging of mice using carbon nanotube 
+fluorophores in the second near -infrared window [J]. 
+Proceedings of the National Academy of Sciences of the 
+United States of America , 2011 , 108(22): 8943 -8948 .
+[79] McHale K , Berglund A J , Mabuchi H . Quantum dot 
+photon statistics measured by three -dimensional particle 
+tracking [J]. Nano Letters , 2007 , 7(11): 3535 -3539 .
+[80] Du K , Liddle J A , Berglund A J . Three -dimensional real -
+time tracking of nanoparticles at an oil – water interface
+[J]. Langmuir , 2012 , 28(25): 9181 -9188 .
+[81] Du K , Ko S H , Gallatin G M , et al . Quantum dot -DNA 
+origami binding : a single particle , 3D, real -time tracking 
+study [J]. Chemical Communications , 2013 , 49(9): 907 -
+909.
+[82] Hou S G , Lang X Q , Welsher K . Robust real -time 3D 
+single -particle tracking using a dynamically moving laser 
+spot [J]. Optics Letters , 2017 , 42(12): 2390 -2393 .
+[83] Hou S G , Welsher K . A protocol for real -time 3D single 
+particle tracking [J]. Journal of Visualized Experiments , 
+2018 (131): 56711 .
+[84] Mermillod -Blondin A , McLeod E , Arnold C B . High -
+speed varifocal imaging with a tunable acoustic gradient 
+index of refraction lens [J]. Optics Letters , 2008 , 33(18): 
+2146 -2148 .
+[85] Duocastella M , Sun B , Arnold C B . Simultaneous 
+imaging of multiple focal planes for three -dimensional 
+microscopy using ultra -high -speed adaptive optics [J]. 
+Journal of Biomedical Optics , 2012 , 17(5): 050505 .
+[86] Duocastella M , Theriault C , Arnold C B . Three -
+dimensional particle tracking via tunable color -encoded 
+multiplexing [J]. Optics Letters , 2016 , 41(5): 863 -866.
+[87] Fields A P , Cohen A E . Optimal tracking of a Brownian 
+particle [J]. Optics Express , 2012 , 20(20): 22585 -22601 .
+[88] Hou S G , Welsher K . An adaptive real -time 3D single 
+particle tracking method for monitoring viral first contacts
+[J]. Small , 2019 , 15(44): e1903039 .
+[89] Hou S G , Exell J , Welsher K . Real -time 3D single 
+molecule tracking [J]. Nature Communications , 2020 , 11: 
+3607 .
+[90] Zheng H L , Sha H , Zhou R , et al . Rational development 
+of Nile red derivatives with significantly improved 
+specificity and photostability for advanced fluorescence 
+imaging of lipid droplets [J]. Biosensors and 
+Bioelectronics , 2025 , 282: 117494 .
+[91] Hou S G , Zhang C , Niver A , et al . Mapping nanoscale 
+forces and potentials in live cells with microsecond 3D 
+single -particle tracking [EB/OL ]. [2024 -12-12]. https ://
+www .biorxiv .org/content/ 10.1101/2022.06.27.497788 v1.
+[92] Qin S Y , Yang Z , Liu H M , et al . Binding memory of 
+liquid molecules [EB/OL ]. (2024 -10-25) [2024 -12-12]. 
+https ://arxiv .org/abs/ 2410 .19634 v1.
+[93] Tan X C , Hou S G , Niver A , et al . Active -feedback 3D 
+single -molecule tracking using a fast -responding galvo 
+scanning mirror [J]. The Journal of Physical Chemistry 
+A, 2023 , 127(30): 6320 -6328 .
+[94] Karagyozov D , Mihovilovic Skanata M , Lesar A , et al . 
+Recording neural activity in unrestrained animals with 
+three -dimensional tracking two -photon microscopy [J]. 
+Cell Reports , 2018 , 25(5): 1371 -1383 .
+[95] Eilers Y , Ta H S , Gwosch K C , et al . MINFLUX 
+monitors rapid molecular jumps with superior 
+spatiotemporal resolution [J]. Proceedings of the National 
+Academy of Sciences of the United States of America , 
+2018 , 115(24): 6117 -6122 .
+[96] Schmidt R , Weihs T , Wurm C A , et al . MINFLUX 
+nanometer -scale 3D imaging and microsecond -range 
+tracking on a common fluorescence microscope [J]. Nature 
+Communications , 2021 , 12: 1478 .
+[97] Balzarotti F , Eilers Y , Gwosch K C , et al . Nanometer 
+resolution imaging and tracking of fluorescent molecules 
+with minimal photon fluxes [J]. Science , 2017 , 355
+(6325 ): 606 -612.
+[98] Gwosch K C , Pape J K , Balzarotti F , et al . MINFLUX 
+nanoscopy delivers 3D multicolor nanometer resolution in 
+cells [J]. Nature Methods , 2020 , 17(2): 217 -224.
+[99] Cole F , Zähringer J , Bohlen J , et al . Super -resolved 
+FRET and co -tracking in pMINFLUX [J]. Nature Photonics , 
+2024 , 18(5): 478 -484.
+[100] Masullo L A , Steiner F , Zähringer J , et al . Pulsed 
+interleaved MINFLUX [J]. Nano Letters , 2021 , 21(1): 
+840 -846.
+[101] Ashley T T , Gan E L , Pan J , et al . Tracking single 
+fluorescent particles in three dimensions via extremum 
+seeking [J]. Biomedical Optics Express , 2016 , 7(9): 3355 -
+3376 .
+[102] Amselem E , Broadwater B , Hävermark T , et al . Real -
+time single -molecule 3D tracking in E . coli based on 
+cross -entropy minimization [J]. Nature Communications , 
+2023 , 14: 1336 .
+[103] Bucci A , Tortarolo G , Held M O , et al . 4D Single -
+particle tracking with asynchronous read -out single -
+photon avalanche diode array detector [J]. Nature 
+
+=== PDF_PAGE 26 ===
+1817005 -26
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+Communications , 2024 , 15: 6188 .
+[104] Juette M F , Bewersdorf J . Three -dimensional tracking of 
+single fluorescent particles with submillisecond temporal 
+resolution [J]. Nano Letters , 2010 , 10(11): 4657 -4663 .
+[105] Spille J H , Kaminski T P , Scherer K , et al . Direct 
+observation of mobility state transitions in RNA 
+trajectories by sensitive single molecule feedback tracking
+[J]. Nucleic Acids Research , 2015 , 43(2): e14.
+[106] Song D L , Zhang X , Li B Y , et al . Deep learning -
+assisted automated multidimensional single particle 
+tracking in living cells [J]. Nano Letters , 2024 , 24(10): 
+3082 -3088 .
+[107] Welsher K , Yang H . Multi -resolution 3D visualization of 
+the early stages of cellular uptake of peptide -coated 
+nanoparticles [J]. Nature Nanotechnology , 2014 , 9(3): 
+198 -203.
+[108] Wehnekamp F , Plucińska G , Thong R , et al . 
+Nanoresolution real -time 3D orbital tracking for studying 
+mitochondrial trafficking in vertebrate axons in vivo [J]. 
+eLife , 2019 , 8: e46059 .
+[109] Lin Y X , Exell J , Lin H T , et al . Hour -long , kilohertz 
+sampling rate three -dimensional single -virus tracking in 
+live cells enabled by StayGold fluorescent protein fusions
+[J]. The Journal of Physical Chemistry . B , 2024 , 128
+(23): 5590 -5600 .
+[110] DeVore M S , Stich D G , Keller A M , et al . Note : Time -
+gated 3D single quantum dot tracking with simultaneous 
+spinning disk imaging [J]. Review of Scientific 
+Instruments , 2015 , 86(12): 126102 .
+[111] Li W Y , Yin S H , Huang S W , et al . The trajectory 
+patterns of single HIV -1 virus -like particle in live CD 4 
+cells : a real time three -dimensional multi -resolution 
+microscopy study using encapsulated nonblinking giant 
+quantum dot [J]. Journal of Microbiology , Immunology 
+and Infection , 2023 , 56(2): 257 -266.
+[112] Johnson C , Exell J , Lin Y X , et al . Capturing the start 
+point of the virus -cell interaction with high -speed 3D 
+single -virus tracking [J]. Nature Methods , 2022 , 19(12): 
+1642 -1652 .
+[113] Johnson C , Exell J , Kuo J , et al . Continuous focal 
+translation enhances rate of point -scan volumetric 
+microscopy [J]. Optics Express , 2019 , 27(25): 36241 -
+36258 .
+[114] Roehlicke T , Patting M , Rahn H J , et al . Spectrally 
+resolved and high speed TCSPC -based fluorescence 
+lifetime imaging (Conference Presentation ) [J]. Proceedings  
+of SPIE , 2019 , 10889 : 108890 Q.
+[115] Lin F R , Das P , Zhao Y H , et al . Monitoring the 
+endocytosis of bovine serum albumin based on the 
+fluorescence lifetime of small squaraine dye in living cells
+[J]. Biomedical Optics Express , 2019 , 11(1): 149 -159.
+[116] Chen D N , Li H , Yu B , et al . Four -dimensional multi -
+particle tracking in living cells based on lifetime imaging
+[J]. Nanophotonics , 2022 , 11(8): 1537 -1547 .
+[117] Bower A J , Li J , Chaney E J , et al . High -speed imaging 
+of transient metabolic dynamics using two -photon 
+fluorescence lifetime imaging microscopy [J]. Optica , 
+2018 , 5(10): 1290 -1296 .
+[118] Liu X B , Lin D Y , Becker W , et al . Fast fluorescence 
+lifetime imaging techniques : a review on challenge and 
+development [J]. Journal of Innovative Optical Health 
+Sciences , 2019 , 12(5): 1930003 .
+[119] Fornasiero E F , Mandad S , Wildhagen H , et al . 
+Precisely measured protein lifetimes in the mouse brain 
+reveal differences across tissues and subcellular fractions
+[J]. Nature Communications , 2018 , 9: 4230 .
+[120] Datta R , Heaster T M , Sharick J T , et al . Fluorescence 
+lifetime imaging microscopy : fundamentals and advances 
+in instrumentation , analysis , and applications [J]. Journal 
+of Biomedical Optics , 2020 , 25(7): 1-43.
+[121] Chen P F , Kang Q , Niu J J , et al . Fluorescence lifetime 
+tracking and imaging of single moving particles assisted 
+by a low -photon -count analysis algorithm [J]. Biomedical 
+Optics Express , 2023 , 14(4): 1718 -1731 .
+[122] Tian Z , Beckwith J S , Amin M J , et al . Leveraging 
+lifetime information to perform real -time 3D single -
+particle tracking in noisy environments [J]. The Journal of 
+Chemical Physics , 2021 , 155(16): 164201 .
+[123] Chen Y I , Chang Y J , Nguyen T D , et al . Measuring 
+DNA hybridization kinetics in live cells using a time -
+resolved 3D single -molecule tracking method [J]. Journal 
+of the American Chemical Society , 2019 , 141(40): 
+15747 -15750 .
+[124] Sha H , Li H Y , Zhang Y B , et al . Deep learning -
+enhanced single -molecule spectrum imaging [J]. APL 
+Photonics , 2023 , 8(9): 096102 .
+[125] Schubert J , Schulze A , Prodromou C , et al . Two -colour 
+single-molecule photoinduced electron transfer fluorescen ce 
+imaging microscopy of chaperone dynamics [J]. Nature 
+Communications , 2021 , 12: 6964 .
+[126] Harroun S G , Lauzon D , Ebert M C C J C , et al . 
+Monitoring protein conformational changes using fluorescent 
+nanoantennas [J]. Nature Methods , 2021 , 19(1): 71-80.
+[127] Doppagne B , Neuman T , Soria -Martinez R , et al . 
+Single -molecule tautomerization tracking through space - 
+and time -resolved fluorescence spectroscopy [J]. Nature 
+Nanotechnology , 2020 , 15(3): 207 -211.
+[128] Pirchi M , Ziv G , Riven I , et al . Single -molecule 
+fluorescence spectroscopy maps the folding landscape of a 
+large protein [J]. Nature Communications , 2011 , 2: 493.
+[129] König I , Zarrine -Afsar A , Aznauryan M , et al . Single -
+molecule spectroscopy of protein conformational dynamics 
+in live eukaryotic cells [J]. Nature Methods , 2015 , 12(8): 
+773 -779.
+[130] Nüesch M F , Pietrek L , Holmstrom E D , et al . 
+Nanosecond chain dynamics of single -stranded nucleic 
+acids [J]. Nature Communications , 2024 , 15: 6010 .
+[131] Di Antonio M , Ponjavic A , Radzevičius A , et al . Single -
+molecule visualization of DNA G -quadruplex formation 
+in live cells [J]. Nature Chemistry , 2020 , 12(9): 832 -837.
+[132] Sanabria H , Rodnin D , Hemmen K , et al . Resolving 
+dynamics and function of transient states in single enzyme 
+molecules [J]. Nature Communications , 2020 , 11: 1231 .
+[133] Chu J C , Ejaz A , Lin K M , et al . Single -molecule 
+
+=== PDF_PAGE 27 ===
+1817005 -27
+特邀综述 第 62 卷第  18 期/2025  年 9 月/激光与光电子学进展
+fluorescence multiplexing by multi -parameter spectroscopic 
+detection of nanostructured FRET labels [J]. Nature 
+Nanotechnology , 2024 , 19(8): 1150 -1157 .
+[134] Bongiovanni M N , Godet J , Horrocks M H , et al . Multi -
+dimensional super -resolution imaging enables surface 
+hydrophobicity mapping [J]. Nature Communications , 
+2016 , 7: 13544 .
+[135] Dong B Q , Almassalha L , Urban B E , et al . Super -
+resolution spectroscopic microscopy via photon localization
+[J]. Nature Communications , 2016 , 7: 12290 .
+[136] Huang T , Phelps C , Wang J , et al . Simultaneous 
+multicolor single -molecule tracking with single -laser 
+excitation via spectral imaging [J]. Biophysical Journal , 
+2018 , 114(2): 301 -310.
+[137] Zhang Z Y , Kenny S J , Hauser M , et al . Ultrahigh -
+throughput single -molecule spectroscopy and spectrally 
+resolved super -resolution microscopy [J]. Nature Methods , 
+2015 , 12(10): 935 -938.
+[138] Zhanghao K , Liu W H , Li M Q , et al . High -dimensional 
+super -resolution imaging reveals heterogeneity and 
+dynamics of subcellular lipid membranes [J]. Nature 
+Communications , 2020 , 11: 5890 .
+[139] Sha H , Wu Y , Zhang Y B , et al . Single molecule 
+spectrum dynamics imaging with 3D target -locking 
+tracking [EB/OL ]. [2024 -12-12]. https ://www . biorxiv .
+org/content/ 10.1101 /2024 .09.25.614875 v1.
+[140] Tariq A , Li P C , Chen D S , et al . Physically realizable 
+space for the purity -depolarization plane for polarized 
+light scattering media [J]. Physical Review Letters , 2017 , 
+119(3): 033202 .
+[141] Bohren C F , Huffman D R . Absorption and scattering of 
+light by small particles [M]. Weinheim : Wiley , 1998 .
+[142] Mock J J , Smith D R , Schultz S . Local refractive index 
+dependence of plasmon resonance spectra from individual 
+nanoparticles [J]. Nano Letters , 2003 , 3(4): 485 -491.
+[143] Sönnichsen C , Alivisatos A P . Gold nanorods as novel 
+nonbleaching plasmon -based orientation sensors for 
+polarized single -particle microscopy [J]. Nano Letters , 
+2005 , 5(2): 301 -304.
+[144] Pérez -Juste J , Pastoriza -Santos I , Liz -Marzán L M , et al . 
+Gold nanorods : Synthesis , characterization and application s
+[J]. Coordination Chemistry Reviews , 2005 , 249(17/18): 
+1870 -1901 .
+[145] Nehl C L , Liao H W , Hafner J H . Optical properties of 
+star -shaped gold nanoparticles [J]. Nano Letters , 2006 , 6
+(4): 683 -688.
+[146] Yang H . Single -particle light scattering : imaging and 
+dynamical fluctuations in the polarization and spectral 
+response [J]. The Journal of Physical Chemistry A , 2007 , 
+111(23): 4987 -4997 .
+[147] Guerra L F , Muir T W , Yang H . Determining the 
+spheroid geometry of individual metallic nanoparticles by 
+two -dimensional single -particle dynamic light scattering
+[J]. The Journal of Physical Chemistry C , 2019 , 123(30): 
+18565 -18572 .
+[148] Guerra L F , Muir T W , Yang H . Single -particle 
+dynamic light scattering : shapes of individual 
+nanoparticles [J]. Nano Letters , 2019 , 19(8): 5530 -5536 .
+[149] Yu Z P , Li H H , Zhong T T , et al . Wavefront shaping : 
+a versatile tool to conquer multiple scattering in 
+multidisciplinary fields [J]. The Innovation , 2022 , 3(5): 
+100292 .
+[150] Yang R W , Yang Y L , Wu T F , et al . Wavefront 
+correction with image -based interferometric focus sensing 
+in two -photon microscopy [J]. Nanophotonics , 2025 , 14
+(5): 613 -623.
+[151] Li H Y , Lu Q , Wang Z , et al . Three -dimensional 
+random -access confocal microscopy with 3D remote 
+focusing system [J]. Communications Engineering , 2024 , 
+3: 166.
+[152] Vickers N A , Sharifi F , Andersson S B . Information 
+optimization of laser scanning microscopes for real -time 
+feedback -driven single particle tracking [J]. Optics 
+Express , 2023 , 31(13): 21434 -21451 .
+[153] Miller D A B . Why optics needs thickness [J]. Science , 
+2023 , 379(6627 ): 41-45.
+[154] Wang R X , Ansari M A , Ahmed H , et al . Compact 
+multi -foci metalens spectrometer [J]. Light : Science & 
+Applications , 2023 , 12: 103.
+[155] Grüger H . MOEMS and MEMS -technology , benefits & 
+uses [M]∥Crocombe R , Leary P , Kammrath B . Portable 
+spectroscopy and spectrometry . Weinheim : Wiley , 2021 : 
+89-113.
+[156] Arbabi A , Faraon A . Advances in optical metalenses [J]. 
+Nature Photonics , 2022 , 17(1): 16-25.
+[157] Kukura P , Ewers H , Müller C , et al . High -speed 
+nanoscopic tracking of the position and orientation of a 
+single virus [J]. Nature Methods , 2009 , 6(12): 923 -927.
+[158] Celebrano M , Kukura P , Renn A , et al . Single -molecule 
+imaging by optical absorption [J]. Nature Photonics , 
+2011 , 5(2): 95-98.
+[159] Young G , Hundt N , Cole D , et al . Quantitative mass 
+imaging of single biological macromolecules [J]. Science , 
+2018 , 360(6387 ): 423 -427.
+[160] Kashkanova A D , Blessing M , Gemeinhardt A , et al . 
+Precision size and refractive index analysis of weakly 
+scattering nanoparticles in polydispersions [J]. Nature 
+Methods , 2022 , 19(5): 586 -593.
+[161] Squires A H , Lavania A A , Dahlberg P D , et al . 
+Interferometric scattering enables fluorescence -free 
+electrokinetic trapping of single nanoparticles in free 
+solution [J]. Nano Letters , 2019 , 19(6): 4112 -4117 .
+[162] Carpenter W B , Lavania A A , Squires A H , et al . Label -
+free anti -Brownian trapping of single nanoparticles in 
+solution [J]. The Journal of Physical Chemistry C , 
+Nanomaterials and Interfaces , 2024 , 128(47): 20275 -
+20286 .
+[163] Carpenter W B , Lavania A A , Borden J S , et al . 
+Ratiometric sensing of redox environments inside 
+individual carboxysomes trapped in solution [J]. The 
+Journal of Physical Chemistry Letters , 2022 , 13(20): 
+4455 -4462 .

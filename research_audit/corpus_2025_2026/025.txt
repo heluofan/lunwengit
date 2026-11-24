@@ -1,0 +1,1038 @@
+=== PDF_PAGE 1 ===
+第 52 卷 第 6 期
+2025 年
+Vol. 52， No. 6
+2025
+北京化工大学学报（自然科学版）
+Journal of Beijing University of Chemical Technology （Natural Science）
+基于 CMCA 的多模态医学图像融合方法
+缪旭帆 1 齐滢玥 1 杨冬梅 1 王承夏 2 杨立国 1 魏子涵 2 移 平 2 王建林 1*
+（1. 北京化工大学 信息科学与技术学院 ， 北京　100029； 2. 中日友好医院 脊柱外科， 北京　100029）
+摘　要 ： 针对医学图像中存在噪声影响融合效果的问题 ，提出了基于跨模态通道感知 （cross⁃modal channel⁃aware ，
+CMCA）的多模态医学图像融合方法 。引入挤压-激励模块增强的双分支编码器 ，在提取过程中进行通道加权 ，获取
+独立的模态特征 ；构建跨模态通道感知融合模块 ，整合提取的信息 ，实现特征互补融合 ；结合图像熵与中值加权建
+立复合损失函数 ，在训练过程中保留细节信息 ，抑制噪声 ，实现多模态医学图像融合 。实验结果表明 ，采用磁共振
+成像和计算机断层扫描（MRI⁃CT）数据集测试 ，多模态医学图像融合方法的平均梯度为 8. 630，标准差为 82. 301，空
+间频率为 35. 728，结构相似性指数为 1. 173，对辅助医生分析病灶信息具有参考价值 。
+关键词： 医学图像融合 ； 深度学习； 通道注意力
+中图分类号 ： TP391  DOI： 10. 13543/j. bhxbzr. 2025. 06. 013
+引 言
+医学成像技术在临床诊断与治疗中已经得到
+了 广 泛 应 用［1-2］，其 中 磁 共 振 成 像（magnetic reso ⁃
+nance imaging ，MRI）和 计 算 机 断 层 扫 描（computed 
+tomography，CT）等结构模态图像提供高分辨率的解剖
+细节，正电子发射断层扫描（positron emission tomogra ⁃
+phy，PET）和 单 光 子 发 射 计 算 机 断 层 扫 描（single ⁃
+photon emission computed tomography ，SPECT）等 功
+能模态图像揭示生理代谢活动和功能信息 。然而
+单一模态图像在提供全面诊断信息方面存在局限
+性，结构图像难以反映早期功能异常 ，功能图像则
+存在空间分辨率低的问题 ，这些局限性影响医生在
+早期病灶诊断中的判断 ［3-5］。多模态医学图像融合
+通过整合不同模态的互补信息 ［6］，生成包含解剖与
+功能内容的统一视图 ，为医生提供更丰富的解剖和
+功能特征，从而提高诊断的准确性［7］。
+传统多模态医学图像融合方法通过手工设计
+的特征提取和融合规则来整合图像信息 ，这些方法
+通常在变换域或像素域操作 ，保留细节并增强对比
+度［8-9］。然而，它们难以自适应处理复杂噪声与非线
+性 关 系，限 制 了 在 多 样 化 医 学 图 像 场 景 中 的 应
+用［10-11］。近年来 ，深度学习凭借其数据驱动和端到
+端 的 学 习 能 力，在 医 学 图 像 融 合 领 域 得 到 了 应
+用［12-13］，提升了图像的融合效果 。Li 等［14］的 Dense⁃
+Fuse 采用密集连接网络增强特征传递和复用 ，展现
+了良好的特征学习能力 ；Ma 等［15］提出的 fusion gen ⁃
+erative adversarial networks（FusionGAN）借助生成对
+抗网络实现强度与细节协同保留 ，但其训练不稳定
+性 可 能 导 致 融 合 图 像 引 入 伪 影；Xu 等［16］构 建 的
+U2Fusion 提供了一个统一的无监督框架处理多任务
+融合 ，在复杂噪声和信息分布下 ，对关键诊断信息
+进 行 自 适 应 保 留；Zhang 等［17］设 计 的 squeeze and 
+decomposition network（SDNet）通过自适应梯度重建
+实现实时融合 ，维持了图像的保真度 ；Li 等［18］提出
+的 residual fusion network with nest connections （RFN⁃
+Nest）利用迁移学习的思想 ，设计了二阶段的网络实
+现可学习融合 ，在复杂医学场景下可以保留图像细
+节；此外 ，Zhao 等［19］提出的 denoising diffusion model
+引用格式：缪旭帆 ，齐滢玥 ，杨冬梅 ，等 . 基于 CMCA 的多模态医学图像融合方法 ［J］. 北京化工大学学报（自然科学版 ），2025，
+52（6）：109−118.
+MIAO XuFan ， QI YingYue ， YANG DongMei ， et al . A multimodal medical image fusion method based on a cross -modal 
+channel - aware （CMCA） module［J］. Journal of Beijing University of Chemical Technology （Natural Science ），2025，52
+（6）：109−118.
+收稿日期：2025-11-02
+基金项目 ：北京市自然科学基金 -海淀原始创新联合基金
+（L252028）
+第一作者：男，1999 年生，博士生
+ * 通信联系人
+E-mail：wangjl@mail. buct. edu. cn
+
+=== PDF_PAGE 2 ===
+2025 年北京化工大学学报（自然科学版）
+（DDFM）利用扩散模型展现出生成能力在图像融合
+领域的潜力 ，但其在噪声抑制方面仍存在改进空
+间。这些方法使用了不同的设计去提升医学图像
+融合性能 ，然而却忽略了源图像数据中噪声对融合
+视觉结果的影响［20］。
+本文提出一种基于跨模态通道感知 （CMCA）的
+多模态医学图像融合方法 。为降低跨模态特征提
+取相互干扰 ，引入挤压 -激励模块增强的双分支编
+码器 ，独立提取并增强模态的深度特征 ；为对模态
+特征进行更好的融合 ，构建了跨模态通道感知融合
+模块 ，利用通道注意力机制整合两种模态的特征 ，
+实现特征互补 ；为了减少噪声对融合效果的影响 ，
+引入结合图像熵与中值加权的复合损失函数来处
+理医学图像的噪声 ，使模型在训练过程中对噪声进
+行抑制。
+1　基于 CMCA 的多模态医学图像融合
+方法
+本文提出基于 CMCA 的多模态医学图像融合方
+法。通过设计挤压 -激励模块增强的双分支编码
+器，独立提取模态的特征 ，降低跨模态的信息干扰 ；
+引入跨模态通道感知融合模块 ，自适应地学习通道
+特征进行融合 ，整合互补信息 ；通过图像重构解码
+器还原融合图像 ，提供可视化图像输出 ；构建复合
+损失函数约束模型训练 ，降低噪声对图像融合性能
+的影响 。图 1 为基于 CMCA 的多模态医学图像融合
+方法总体结构 。
+1. 1　双分支编码器
+为提取源图像的独立特征 ，本文构建了并行的
+双分支编码器 ，2 个编码器分支不共享权重 ，通过串
+联挤压-激励模块增强模态通道信息 。
+编码器包含 2 个结构相同的分支 ，每个分支的
+特征提取过程如下 ：首先，1 个初始根卷积层将单通
+道输入映射为 16 通道的特征图 ，初步捕获图像的低
+层次特征 ；随后，网络通过 3 个相同的特征提取模块
+提取深层信息 。每个特征提取阶段均由 1 个卷积层
+与 1 个挤压-激励模块串联组成 。通过集成挤压 -激
+励模块 ，编码器能够自适应地学习各通道特征 ，提
+取模态的深度信息 。
+这种双分支且不共享权重的设计 ，确保了每个
+模态信息的独立性 ，避免了模态间的相互干扰 。最
+终，每个编码分支输出 128 通道的深层特征图 ，为后
+续的融合模块提供了富含语义信息的特征表示 。
+1. 2　跨模态通道感知融合模块
+跨模态通道感知融合模块实现特征的自适应
+融合 ，模块包含信息聚合 、通道权重学习和残差增
+强 3 种机制 ，协同工作以生成融合特征 ，结构如图 2
+所示。
+跨模态通道感知模块以 MRI 和 CT 的特征作为
+输入 ，输入特征尺寸均为 RB × C × h × w，其中 B 代表批
+处 理 大 小（batch size） ，C 代 表 特 征 通 道 数（chan⁃
+nels） ，h 和 w 分别代表特征图的高度（height）和宽度
+（width） 。首先通过逐元素相加操作初步融合输入
+特征，并对融合结果进行全局平均池化和全连接序
+列获得通道上下文信息 ；接着上下文信息被用于学
+习自适应的通道注意力权重 ，这些权重能够反映网
+络对不同模态在各通道上的重要性 ，并以通道级乘
+法对原始特征进行加权 ；此外为有效保留原始特征
+CMCA
+融合输出
+编码器
+归一化
+归一化
+归一化
+归一化
+解码器
+归一化
+全局平
+均池化
+CMCA 跨模态通道感知融合模块
+逐元素相乘
+激活函数
+根卷积
+...
+×3
+根卷积
+...
+解码器
+MRⅠ输入
+CT输入
+MRⅠ特征
+CT特征
+融合特征
+3×3卷积+
+挤压-激励模块 3×3卷积
+3×3卷积+
+挤压-激励模块 3×3卷积
+×3
+3×3卷积+挤压-激励模块
+3×3
+卷积
+1×1
+卷积
+全连接
+序列
+1×1
+卷积
+3×3
+卷积
+3×3
+卷积
+3×3
+卷积
+3×3
+卷积
+图 1　基于 CMCA 的多模态医学图像融合方法的总体结构
+Fig.  1　The overall architecture of the proposed method
+··110
+
+=== PDF_PAGE 3 ===
+第 6 期 缪旭帆等：基于 CMCA 的多模态医学图像融合方法
+的固有信息 ，模块引入了残差增强路径 ，通过拼接
+和卷积操作生成残差特征 ；最终注意力加权后的特
+征与残差特征进行逐元素相加 ，得到融合输出 。
+通过上述协同设计 ，模块实现了多模态特征的
+自适应融合 ，保留了细节信息 ，增强了融合图像的
+鲁棒性。
+1. 3　图像重构解码器
+图像重构解码器将融合模块整合的自适应特
+征进行还原 。通过多层卷积操作 ，解码器将高维特
+征转换为符合视觉感知的融合输出 。
+解码器由 5 个卷积阶段构成 ，前 4 个阶段中 ，每
+个阶段包含 1 个 3 × 3 卷积层、归一化层和激活函数
+层，通道数从 256 逐步减少至 32。解码器的最后 1
+层 是 一 个1 × 1 卷 积 层，其 后 也 接 有ReLU 激 活 函
+数，将重建后的 32 通道特征图映射为单通道的融合
+输出。通过逐层采样的设计 ，解码器重建出具有完
+整语义的融合输出 。
+1. 4　复合损失函数设计
+为在细节保留和噪声抑制之间达到平衡 ，本文
+设计了一种基于复合损失函数约束的多模态医学
+图像融合方法 。损失函数从内容和梯度结构 2 个维
+度对融合图像进行约束 ，并通过图像熵和中值 2 个
+角度优化融合图像的内容损失 。复合损失函数 Ltotal
+由内容损失 Lcontent 和梯度损失 Lgradient 两部分构成 。
+1. 4. 1　内容损失
+在融合算法中 ，内容损失用于衡量融合图像与
+源图像在像素强度上的相似性 ，然而不同模态的图
+像在信息量和原始噪声分布方面存在差异 ，由像素
+强度构建的内容损失函数过于简化 ，为此本文提出
+一种新的内容损失 ，它通过对图像熵和中值加权 ，
+降低噪声对图像融合性能的影响 。Lcontent 由两部分
+组成：基于图像熵加权的损失 Len 和基于中值加权的
+损失 Lme。图像熵是衡量图像信息量的重要指标 ，高
+熵值意味着图像包含了更丰富的信息 。新的内容
+损失函数根据源图像的熵值 ，动态调整 2 种源模态
+信息在内容损失中的占比 ，促使融合结果保留信息
+更丰富的源模态特征 ，表示为式（1） 。
+Len = 1hw ⋅ Hshannon (Fsrc1 )Hshannon (Fsrc1 ) + Hshannon (Fsrc2 ) ⋅
+‖Ffused - Fsrc1‖1 + 1hw ⋅ Hshannon (Fsrc2 )Hshannon (Fsrc1 ) + Hshannon (Fsrc2 ) ⋅
+‖Ffused - Fsrc2‖1 （1）
+式中 ，Len 表示图像熵加权的损失 ；Ffused 表示生成的
+融合图像特征 ；Fsrc1 和 Fsrc2 分别表示两种模态的源医
+学图像特征 ；‖·‖1 表示 L1 范数 ，用于计算像素强
+度 的 平 均 绝 对 误 差，其 对 异 常 值 具 有 较 好 的 鲁 棒
+性；Hshannon (·) 表示图像的香农熵 ，用于量化图像中灰
+度分布的无序性和信息量 。
+输入图像中存在的噪声会产生假结构影响训
+练结果 。而中值对离群值不敏感 ，因此以中值为基
+准对像素强度误差加权 ，可强调分布更稳定的中位
+区 域 并 抑 制 异 常 噪 声，中 值 加 权 的 损 失 函 数 计 算
+见式（2） 。
+          Lme = 1hw ⋅ Median(Fsrc1 )Median(Fsrc1 ) + Median(Fsrc2 ) ⋅
+‖Ffused - Fsrc1‖1 + 1hw ⋅ Median(Fsrc2 )Median(Fsrc1 ) + Median(Fsrc2 ) ⋅
+‖Ffused - Fsrc2‖1 （2）
+式中 ，Lme 为中值加权损失 ；Median(·) 表示图像像素
+强度中值，模型根据图像中值分布特性分配权重。
+最终 ，内容损失 Lcontent 为 Len 和 Lme 的加权之和 ，
+见式（3） 。
+Lcontent = α1·Len + α2·Lme （3）
+式中 ，α1 和 α2 是超参数 ，用于平衡图像熵加权和中
+值加权在内容损失中的贡献 。
+这种设计确保了融合方法在获取像素强度信
+息时 ，既能优先考虑信息量丰富的模态 ，又能有效
+应对噪声问题 ，从而减少模型学习图像输入中的噪
+声信息对融合效果的影响 。
+1. 4. 2　梯度损失
+在融合图像算法中 ，梯度损失用于衡量融合图
+C
+MRⅠ特 征
+CT特 征
+通 道 权 重 向 量
+融 合 特 征
+C
+×
+h
+×
+w
+2
+C
+×
+h
+×
+w
+C
+×
+h
+×
+w
+C
+×
+h
+×
+w
+C
+×
+h
+×
+w
+C
+×
+h
+×
+w
+C
+×
+h
+×
+w
+C     
+特 征 通 道 数
+h
+,
+w
+ 特 征 图 的 高 度 和 宽 度
+逐 元 素 相 加
+逐 元 素 相 乘
+特 征 拼 接 C
+C
+× 1× 1
+C
+× 1× 1
+3× 3卷 积
+图 2　跨模态通道感知模块的结构
+Fig.  2　The architecture of the cross ⁃ modal channel ⁃ aware 
+fusion module
+··111
+
+=== PDF_PAGE 4 ===
+2025 年北京化工大学学报（自然科学版）
+像与源图像在结构和纹理细节上的相似性 ，计算公
+式见式（4） 。
+Lgradient = 1hw ‖ ‖|∇Ffused| - max (|∇Fsrc1|，|∇Fsrc2|) 1（4）
+式中，Lgradient 为梯度损失 ；∇ 是梯度操作符 ，用于计算
+图像在水平和垂直方向上的空间变化率 ；| ⋅ | 表示绝
+对值操作，用于获取梯度幅值；max (|∇Fsrc1|，|∇Fsrc2|) 操
+作表示在每个像素位置上 ，选择两个源医学图像模
+态梯度绝对值的最大值 。
+这样的设计使得融合图像保留源图像中的边
+缘和纹理信息 ，增强融合图像的结构细节表现力 。
+最终 ，融合方法的学习过程由式 （5）的复合损
+失函数进行引导
+Ltotal = λ1 ⋅ Lcontent + λ2 ⋅ Lgradient （5）
+式中，Ltotal 为总的复合损失函数 ；λ1 和 λ2 是正的权重
+系数，用于平衡内容损失和梯度损失在整体优化目
+标中的重要性 。各项超参数 (α1，α2，λ1，λ2 ) 的设定
+将在实验部分通过消融实验进行详细探讨和验证 。
+2　多模态医学图像融合算法
+基于 CMCA 的多模态医学图像融合算法步骤
+如下。
+（1）对源医学图像进行预处理 ，双分支编码器
+提取各模态深度特征 F1 和 F2。
+（2）CMCA 模块接收 F1 和 F2，通过逐元素相加 、
+通 道 注 意 力 加 权 及 残 差 增 强 机 制 ，生 成 融 合
+特征 Foutput。
+（3）图像重构解码器将 Foutput 还原为单通道的且
+具有互补信息的融合医学图像 Ffused。
+（4）模型训练与优化 ，结合图像熵加权与中值
+加权的复合损失函数 Ltotal 优化网络参数 。
+（5）输出融合图像测试时 ，输入多模态图像对 ，
+通 过 训 练 好 的 模 型 生 成 细 节 清 晰 的 高 质 量 融 合
+图像。
+算法流程如图 3 所示 ，其实现过程可分为训练
+阶段和测试阶段 。
+训练阶段首先初始化网络参数 。在每个训练
+周期 e 中，加载训练数据集中的医学图像特征对 Fsrc1
+和 Fsrc2。接着，编码器从 Fsrc1 和 Fsrc2 分别提取深度特
+征 F1 和 F2。这些特征随后输入到 CMCA 融合模块
+进行融合 ，得到融合特征 Foutput。解码器将 Foutput 重构
+为融合图像特征 Ffused。为了优化模型 ，需要计算图
+像 熵 加 权 损 失Len、中 值 加 权 损 失Lme 和 梯 度 损 失
+Lgradient，它们均以 Ffused，Fsrc1 和 Fsrc2 为输入 。最终 ，总
+损失 Ltotal 由内容损失 Lcontent 及 Lgradient 加权求和得到 。
+根据总损失 Ltotal 和学习率 η 进行反向传播并更新网
+络参数 。此过程重复直至所有训练周期结束 ，最终
+返回训练好的模型参数 。
+在测试阶段 ，首先加载训练好的模型参数 。对
+于输入的待融合医学图像特征对 Ftest1 和 Ftest2，编码
+器 提 取 相 应 的 特 征F1 和 F2。 这 些 特 征 随 后 经 过
+CMCA 融合模块融合得到 Foutput，并由解码器重构生
+成最终的融合图像特征 Ffused。最终返回此融合图像
+特征 Ffused。
+3　实验分析
+3. 1　实验环境与设置
+实验基于 PyTorch 深度学习框架实现 ，并在配
+备 NVIDIA GPU 的计算平台上进行训练 。实验所使
+用的计算机配置为 ：Intel Core i 7 处理器 ， 32 GB 内
+存， NVIDIA GeForce RTX 3090 GPU， 24 GB GPU 显
+存。编程语言采用 Python。
+3. 2　实验数据集与评价指标
+3. 2. 1　实验数据集
+本文采用公认的医学影像基准数据集哈佛医
+学公共数据集［21］进行实验 ，该数据集提供了预配准
+的原始图像对 ，其中包含 CT 与 MRI 图像 184 对，PET
+与 MRI 图像 269 对，SPECT 与 MRI 图像 357 对。所
+输入多模态图像对
+图像预处理
+构建训练数据集
+加载训练数据集
+训练参数设置
+初始化网络架构
+网络模型训练
+损失函数
+收敛?
+开始
+结束
+开始
+结束
+开始
+输入测试图像对
+生成可视化融合图像
+结束
+Y
+N
+数据预处理模型训练
+模型测试
+加载CMCA
+-
+Fuse模型
+输出CMCA
+-
+Fuse模型
+图 3　基于 CMCA 的多模态医学图像融合算法流程
+Fig. 3　Flow chart of the proposed algorithm
+··112
+
+=== PDF_PAGE 5 ===
+第 6 期 缪旭帆等：基于 CMCA 的多模态医学图像融合方法
+有图像对在送入网络训练和测试前均被裁剪为尺
+寸统一的像素图像块 。裁剪后，CT 与 MRI 图像共生
+成 2 944 对图像块 ；PET 与 MRI 图像生成 4 304 对；
+SPECT 与 MRI 图像生成 5 712 对。将上述图像数据
+集中 70% 的数据用于训练 ，15% 的数据用于验证 ，
+15% 的数据用于测试 。
+3. 2. 2　评估指标
+实验采用空间频率 （Fs） 、平均梯度（Gavg） 、标准
+差（σ） 、结 构 相 似 性 指 数（SSSIM）作 为 定 量 评 价 指
+标［22-23］，空间频率指标计算见式（6） 。
+Fs = (Fr )2 + (Fc )2   （6）
+式中，Fr 为行频率，用于反映图像在水平方向上的像
+素变化率 ；Fc 为列频率 ，用于反映图像在垂直方向
+上的像素变化率 。
+平均梯度指标计算见式（7） 。
+          Gavg = 1( M - 1) (N - 1) ·
+∑
+i = 1
+M - 1
+∑
+j = 1
+N - 1 ( I (i，j ) - I (i + 1，j ) )2 + ( I (i，j ) - I (i，j + 1) )2
+2
+（7）
+式中 ，I (i，j ) 为图像在坐标 (i，j ) 处的像素值 ；M 为图
+像的行数；N 为图像的列数 。
+标准差指标计算见式（8） 。
+σ = 1M × N ∑i = 1M ∑j = 1N ( I ( i，j ) - μ)2 （8）
+式中，μ 为图像的平均像素值 。
+结构相似性指数指标计算见式（9） 。
+SSSIM ( x，y ) = (2μx μy + C1 ) (2σxy + C2 )( μ2x + μ2y + C1 ) (σ2x + σ2y + C2 ) （9）
+式中 ，μx 为图像 x 的平均像素值 ；μy 为图像 y 的平均
+像素值 ；σx 为图像 x 的标准差 ；σy 为图像 y 的标准
+差 ；σxy 为 图 像 x 和 图 像 y 的 协 方 差 ； 此 外
+C1 = ( K1 L )2，C2 = ( K2 L )2 是为避免分母为零而设置
+的常数 ，L 为像素值的动态范围 ，且 K1 = 0. 01，K2 =
+0. 03。
+3. 3　实验参数设置
+训 练 模 型 采 用Adam 优 化 器，初 始 学 习 率 为
+0. 001，前一半训练周期不变 ，后一半线性衰减 。批
+大小为 128，训练总周期为 30。损失函数由内容损
+失和梯度损失构成 ，权重分别为 2. 5 和 2. 0。内容损
+失由图像熵加权损失和中值加权损失构成 ，权重分
+别为 0. 9 和 0. 1。
+3. 4　消融实验与参数分析
+本文设计了消融实验 ，系统地移除和调整特定
+组 件，通 过 模 型 性 能 的 变 化 验 证 关 键 模 块 的 有 效
+性，同时对参数进行分析以选取复合损失函数中的
+权 重 设 置。实 验 评 估 指 标 采 用 空 间 频 率、平 均 梯
+度、标准差和结构相似性指数 ，并在 MRI⁃CT 数据集
+上进行验证 。实验结果见表 1~表 5。
+表 1 对使用普通逐元素相加的融合方法和使用
+融合模块的融合方法进行了比对 。在引入融合模
+块后 ，性能指标均得到提升 ，平均梯度从基线模型
+的 6. 093 提 升 至 8. 63，标 准 差 从 71. 663 上 升 到
+82. 301，空间频率从 33. 869 提升至 35. 728，核心模
+块的有效性得到了验证 。
+同样 ，表 2 的结果表明在编码器中引入挤压 -
+激励模块 ，能够提升方法性能 。其中 ， “去除挤压
+激励模块 ”表示在融合方法中移除了挤压 -激励模
+块 的 实 验 设 置。移 除 模 块 后，各 项 指 标 均 出 现 下
+滑 ，这 验 证 了 挤 压- 激 励 模 块 提 升 了 特 征 提 取 的
+质量 。
+表 3 展示了图像熵加权损失项 Len 和中值加权
+损失项 Lme 的消融实验结果 。其中 ， “去除 Len”表示
+移 除 基 于 图 像 熵 加 权 的 内 容 损 失 项 的 实 验 设 置；
+“去除 Lme”表示移除基于中值加权的内容损失项的
+实验设置 ；而“去除 Len&Lme”则表示内容损失仅采用
+简单 L1 范数，即同时移除了这两种加权策略的实验
+设置。
+当单独移除 Len 和 Lme 时，模型性能均有不同程
+表 1　CMCA 模块在 MRI⁃CT 数据集上的消融实验结果
+Table 1　Experimental ablation results for the CMCA module 
+on the MRI⁃CT dataset
+方法
+Baseline
+本文方法
+平均梯度
+6.093
+8.630
+标准差
+71.663
+82.301
+空间频率
+33.869
+35.728
+结构相似性指数
+1.271
+1.173
+表 2　挤压 -激励增强模块在 MRI⁃CT 数据集上的消融实验
+结果
+Table 2　Experimental ablation results for the squeeze ⁃ and ⁃
+excitation module on the MRI⁃CT dataset
+方法
+去除挤压激励模块
+本文方法
+平均
+梯度
+7.215
+8.630
+标准差
+78.502
+82.301
+空间
+频率
+30.893
+35.728
+结构相似
+性指数
+1.160
+1.173
+··113
+
+=== PDF_PAGE 6 ===
+2025 年北京化工大学学报（自然科学版）
+度下降 ，当内容损失仅采用简单 L1 范数 ，即同时移
+除 Len 和 Lme 时，各项指标下降最为明显 。这证实了
+两种加权策略的协同作用 。
+在确定了内容损失内部各加权项的有效性及
+其最佳权重后 ，损失函数权重参数的优化对最终性
+能至关重要 。表 4 展示了内容损失内部权重 （α1，
+α2）在 MRI⁃CT 数据集上的影响结果 ，其中 α1 和 α2 分
+别是图像熵加权损失项 Len 和中值加权损失项 Lme 的
+权重系数 ，且 α1 + α2 = 1。从表中可以看出 ，当赋予
+图像熵加权损失 α1 更高的优先级时 ，模型在平均梯
+度、标准差和空间频率等指标上总体呈现出逐步提
+升的趋势 ，当 α1 = 0. 9，α2 = 0. 1 时，模型达到最优
+性能。
+在确定了内容损失内部各加权项的有效性及
+其最佳权重后 ，本文进一步探究了内容损失 Lcontent 和
+梯度损失 Lgradient 在总损失函数中的最佳权重平衡 。
+在固定了内容损失内部的权重 （α1 = 0. 9，α2 = 0. 1）
+后，调整总损失函数中的权重系数 λ1 和 λ2，其结果
+总结于表 5。
+表 5 的 结 果 清 晰 地 表 明 ，当 前 设 定 的 λ1 =
+2. 5，λ2 = 2. 0 在指标上取得了最佳平衡 。当内容损
+失的权重相对较高时 ，模型在平均梯度 、空间频率
+和标准差等细节保持指标上达到最佳平衡 。
+综上所述 ，本文方法所设计的跨模态通道感知
+融合模块 、编码器中的挤压 -激励模块以及复合损
+失函数中的各项 ，均是确保模型取得优异融合性能
+的必要组成部分 ，共同构成了医学图像融合方法 ，
+提升了融合图像的质量 。
+3. 5　实验结果与分析
+将 本 文 所 提 方 法 与 DenseFuse［14］ 、Fusion⁃
+GAN［15］ 、U2Fusion［16］ 、SDNet［17］ 、RFN ⁃ Nest［18］ 和
+DDFM［19］多模态医学图像融合方法进行定量比较 。
+实验在 MRI⁃CT、MRI⁃PET 和 MRI⁃SPECT 3 组多模态
+医学图像数据集上进行 ，采用空间频率 、平均梯度 、
+标准差和结构相似性指数 4 项指标评估量化 。定量
+结果汇总于表 6~表 8。
+表 3　图像熵加权 Len 和中值加权 Lme 损失项在 MRI⁃CT 数据
+集上的消融实验结果
+Table 3　Experimental ablation results for the image entropy 
+weighting Len and median weighting Lme loss terms on 
+the MRI⁃CT dataset
+方法
+去除 Len
+去除 Lme
+去除 Len&Lme
+本文方法
+平均梯度
+7.854
+8.123
+7.561
+8.630
+标准差
+79.120
+80.567
+77.234
+82.301
+空间频率
+32.510
+33.892
+31.025
+35.728
+结构相似
+性指数
+1.165
+1.169
+1.158
+1.173
+表 4　MRI⁃CT 数据集上内容损失中权重（α1，α2）在不同设置
+下的性能比较结果
+Table 4　Performance comparison of content loss internal 
+weights（α1，α2） for different configurations on the MRI⁃
+CT dataset
+α1
+0.1
+0.3
+0.5
+0.7
+0.9
+α2
+0.9
+0.7
+0.5
+0.3
+0.1
+平均梯度
+7.954
+8.229
+8.201
+8.456
+8.630
+标准差
+80.231
+80.345
+80.954
+81.589
+82.301
+空间频率
+34.887
+34.715
+34.012
+35.123
+35.728
+结构相似性指数
+1.162
+1.161
+1.168
+1.171
+1.173
+表 5　MRI⁃CT 数据集上总损失函数中权重系数 （λ1，λ2）在不
+同设置下的性能比较结果
+Table 5　Comparison of total loss function weight coefficients 
+（λ1，λ2） for different configurations on the MRI ⁃ CT 
+dataset
+λ1
+1.0
+2.0
+1.0
+2.5
+3.0
+2.5
+λ2
+1.0
+1.0
+2.0
+2.0
+2.0
+2.5
+平均梯度
+7.892
+8.305
+7.643
+8.630
+8.587
+8.599
+标准差
+79.851
+81.024
+78.432
+82.301
+82.015
+81.987
+空间频率
+32.112
+34.567
+31.501
+35.728
+35.503
+35.602
+结构相似
+性指数
+1.163
+1.168
+1.161
+1.173
+1.171
+1.172
+表 6　不同融合方法在 MRI⁃CT 数据集上的定量比较结果
+Table 6　Quantitative comparison results of different fusion 
+methods on the MRI⁃CT dataset
+融合方法
+DDFM
+DenseFuse
+FusionGAN
+RFN⁃Nest
+SDNet
+U2Fusion
+本文方法
+平均梯度
+5.093
+4.693
+3.209
+3.921
+6.192
+5.266
+8.630
+标准差
+59.663
+56.958
+30.359
+51.625
+53.924
+75.693
+82.301
+空间频率
+20.869
+18.720
+12.210
+11.680
+30.782
+19.044
+35.728
+结构相似
+性指数
+1.271
+1.242
+0.286
+1.218
+0.476
+1.174
+1.173
+··114
+
+=== PDF_PAGE 7 ===
+第 6 期 缪旭帆等：基于 CMCA 的多模态医学图像融合方法
+表 6 展示了本文方法与多模态医学图像融合方
+法 在MRI⁃CT 数 据 集 上 的 定 量 比 较 结 果。由 表 可
+见，本文方法在平均梯度 、标准差和空间频率 3 项反
+映 图 像 细 节 与 信 息 量 的 指 标 上 均 取 得 最 佳 效 果。
+本文方法在平均梯度上相较于次优方法 SDNet 提升
+了约 39. 3%；在标准差上相较于 U2Fusion 提升了约
+8. 7%；在 空 间 频 率 上 相 较 于 SDNet 提 升 了 约
+16. 2%。这表明本文方法缓解了噪声影响下融合图
+像 细 节 丢 失 的 问 题，能 够 生 成 信 息 量 更 多 的 融 合
+图像。
+表 7 展示了本文方法与多模态医学图像融合方
+法在 MRI⁃PET 数据集上的定量比较结果 。本文方
+法在平均梯度 、空间频率和结构相似性指数 3 项指
+标上表现最佳 ，分别为 7. 866， 6. 109， 1. 398，表明
+本文方法提升了一定的融合性能 。
+表 8 的定量分析结果验证了本文方法在 MRI⁃
+SPECT 数据集上的性能 ，在平均梯度 、标准差 、空间
+频率 、结构相似性指数 4 项指标均取得较佳效果 。
+本文方法通过跨模态通道感知模块在融合 SPECT
+功能信息与 MRI 解剖结构时 ，能够提升整体图像保
+真度，拥有更好的视觉效果 。
+将 本 文 方 法 与DDFM、DenseFuse、FusionGAN 、
+RFN⁃Nest 、SDNet 和 U2Fusion 6 种对比方法的融合
+结果进行定性比较 。图 4~图 6 分别展示了它们在
+MRI⁃CT、MRI⁃PET 和 MRI⁃SPECT 数据集上融合的视
+觉效果。
+图 4 展示了 MRI⁃CT 图像的融合结果 。MRI 图
+像提供软组织信息 ，CT 图像呈现骨骼结构 。在现有
+方 法 中 ，部 分 融 合 结 果 存 在 伪 影 干 扰 的 问 题。
+FusionGAN 和 SDNet 的融合图像出现了伪影 ，未能
+减少噪声对融合结果的干扰 。相比之下 ，本文方法
+生成的融合图像伪影较少 ，同时呈现骨骼与软组织
+结构 ，且边缘纹理细节清晰 ，和现有方法相比降低
+了噪声对融合结果的干扰 。
+图 5 呈现了 MRI⁃PET 图像的融合效果 。MRI 提
+供了精细的解剖结构 ，PET 揭示生理代谢活动的功
+能热点 。在对比方法中 ，U2Fusion 和 RFN⁃Nest 在保
+留功能热点的同时 ，背景细节信息被弱化 。而本文
+方法生成的融合结果将 PET 的功能热点与 MRI 的
+解剖背景信息同时保留 ，提升了融合图像的视觉保
+MRⅠ源图像 CT源图像 DDFM
+DenseFuse FusionGAN RFN
+-
+Nesa
+SDNea U2Fusion 本文方法
+图 4　不同方法在 MRI⁃CT 数据集上的融合结果视觉比较
+Fig.  4　Visual comparison of fused results using different meth ⁃
+ods on the MRI⁃CT dataset
+表 7　不同融合方法在 MRI⁃PET 数据集上的定量比较结果
+Table 7　Quantitative comparison results of different fusion 
+methods on the MRI⁃PET dataset
+融合方法
+DDFM
+DenseFuse
+FusionGAN
+RFN⁃Nest
+SDNet
+U2Fusion
+本文方法
+平均梯度
+5.239
+4.314
+3.345
+4.959
+7.544
+4.671
+7.866
+标准差
+10.627
+6.837
+6.599
+6.290
+9.075
+10.118
+10.481
+空间频率
+4.141
+2.797
+1.406
+2.606
+5.187
+2.740
+6.109
+结构相似
+性指数
+1.395
+1.361
+0.401
+1.293
+0.453
+1.287
+1.398
+表 8　不同融合方法在 MRI⁃SPECT 数据集上的定量
+比较结果
+Table 8　Quantitative comparison results of different fusion 
+methods on the MRI⁃SPECT dataset
+融合方法
+DDFM
+DenseFuse
+FusionGAN
+RFN⁃Nest
+SDNet
+U2Fusion
+本文方法
+平均梯度
+3.855
+2.787
+2.652
+3.848
+5.154
+2.887
+5.056
+标准差
+58.475
+44.415
+48.986
+62.538
+51.101
+49.435
+64.634
+空间频率
+15.064
+10.703
+10.121
+13.239
+20.138
+10.416
+20.819
+结构相似
+性指数
+1.431
+1.384
+0.230
+1.354
+0.425
+1.424
+1.506
+··115
+
+=== PDF_PAGE 8 ===
+2025 年北京化工大学学报（自然科学版）
+真度。
+图 6 显示了 MRI⁃SPECT 图像的融合效果 。类似
+于 MRI⁃PET 融合，SPECT 图像提供功能信息 ，MRI 提
+供解剖背景 。本文方法在此融合任务中保留了原
+始 MRI 图像的纹理细节 ，同时将 SPECT 的功能信息
+融入，实现了解剖和功能信息的有效互补 。
+本文所提方法针对二维切片图像融合 。在信
+息保留方面 ，三维图像融合可以保留空间信息与各
+向异性细节 ，二维图像融合关注切片内部结构与局
+部纹理细节 ；在计算复杂度方面 ，三维图像融合的
+模型参数大 、计算资源消耗高 、推理时间长 ，二维图
+像融合对硬件要求低 ，更适合在临床工作站中部
+署；在空间一致性方面 ，三维图像融合能够保持图
+像的空间连续性和一致性 ，二维融合不能直接对不
+同切片之间的空间结构关联进行建模 ，融合后的二
+维切片可以通过堆叠和三维重建技术补足空间信
+息。因此三维融合针对空间信息处理具有优势 ，而
+二维图像融合在平衡性能与实用性方面更具优势 。
+4　结论
+针对多模态医学图像融合中噪声影响融合效
+果的问题 ，提出了基于跨模态通道感知的多模态医
+学图像融合方法 。通过挤压 -激励模块增强的双分
+支编码器减少模块干扰信息 ，提取模态独立特征 ；
+其次 ，构建跨模态通道感知融合模块 ，利用通道注
+意力机制整合信息 ，对互补特征进行融合 ；利用图
+像重构解码器对融合后的特征进行重建 ，还原出高
+质量的融合图像 ，提供可视化输出 ；此外通过引入
+图像熵与中值加权的复合损失函数 ，在保留细节信
+息的基础上 ，降低医学图像中噪声干扰对融合性能
+的影响 ，提升了融合图像的鲁棒性 。哈佛医学公共
+数据集上的对比实验结果表明 ，基于 CMCA 的多模
+态医学图像融合方法在融合性能和视觉效果上相
+较于现有文献方法展现了优势 。本文方法能够为
+医生提供清晰的解剖和功能信息 ，获得更丰富的病
+灶信息，提高诊断的准确性 。
+参考文献：
+［1］ ZHOU T ， CHENG Q R ， LU H L ， et al .  Deep learning 
+methods for medical image fusion ： a review［J］.  Comput⁃
+ers in Biology and Medicine ， 2023， 160： 106959.
+［2］ ZOU J， LIU L Q ， CHEN Q ， et al.  MMR⁃Mamba ： multi-
+modal MRI reconstruction with Mamba and spatial ⁃ fre ⁃
+quency information fusion ［J］.  Medical Image Analysis ， 
+2025， 102： 103549.
+［3］ WEI X J ， QIU Y ， XU X X ， et al .  ECINFusion ： a novel 
+explicit channel⁃wise interaction network for unified multi⁃  
+modal medical image fusion ［J］.  IEEE Transactions on 
+Circuits and Systems for Video Technology ， 2025， 35
+MRⅠ源图像 PET源图像 DDFM
+DenseFuse FusionGAN RFN
+-
+Nesa
+SDNea U2Fusion 本文方法
+图 5　不同方法在 MRI⁃PET 数据集上的融合结果视觉比较
+Fig.  5　Visual comparison of fused results using different meth ⁃
+ods on the MRI⁃PET dataset
+MRⅠ源图像 SPECT源图像 DDFM
+DenseFuse FusionGAN RFN
+-
+Nesa
+SDNea U2Fusion 本文方法
+图6　不同方法在MRI⁃SPECT 数据集上的融合结果视觉比较
+Fig.  6　Visual comparison of fused results using different meth ⁃
+ods on the MRI⁃SPECT dataset
+··116
+
+=== PDF_PAGE 9 ===
+第 6 期 缪旭帆等：基于 CMCA 的多模态医学图像融合方法
+（5） ： 4011-4025.
+［4］ SHAO D G ， YANG H J ， MA L， et al.  AFPNet： an adap⁃
+tive frequency⁃domain optimized progressive medical 
+image fusion network ［J］.  Biomedical Signal Processing 
+and Control ， 2025， 103： 107357.
+［5］ HUANG Z B ， LIU J Y ， FAN X ， et al .  ReCoNet ： recur⁃
+rent correction network for fast and efficient multi ⁃modal⁃
+ity image fusion［M］//AVIDAN S ， BROSTOW G ， CISSÉ 
+M， et al .  Computer vision - ECCV 2022.  ECCV 2022.  
+Lecture notes in computer science ， vol 13678.  Cham ： 
+Springer， 2022： 539-555.
+［6］ KAVITA P ， ALLI D R ， RAO A B .  Study of image fusion 
+optimization techniques for medical applications ［J］.  
+International Journal of Cognitive Computing in Engineer ⁃
+ing， 2022， 3： 136-143.
+［7］ SINGHAL A ， PHOGAT M ， KUMAR D ， et al .  Study of 
+deep learning techniques for medical image analysis ： a 
+review［J］.  Materials Today ： Proceedings ， 2022， 56： 
+209-214.
+［8］ XIE X Y ， ZHANG X Z ， TANG X L ， et al .  MACTFu⁃
+sion： lightweight cross transformer for adaptive multi ⁃
+modal medical image fusion ［J］.  IEEE Journal of Bio ⁃
+medical and Health Informatics ， 2025， 29（5） ： 3317-
+3328.
+［9］ WANG J ， YU L ， TIAN S W ， et al .  AMFNet： an atten ⁃
+tion ⁃ guided generative adversarial network for multi ⁃
+model image fusion ［J］.  Biomedical Signal Processing 
+and Control ， 2022， 78： 103990.
+［10］ TANG W ， HE F Z ， LIU Y ， et al .  MATR： multimodal 
+medical image fusion via multiscale adaptive transformer
+［J］.  IEEE Transactions on Image Processing ， 2022， 31： 
+5134-5149.
+［11］ MALITESTA D ， CORNACCHIA G ， POMO C ， et al .  
+Formalizing multimedia recommendation through multi ⁃
+modal deep learning ［J］.  ACM Transactions on Recom ⁃
+mender Systems ， 2025， 3（3） ： 1-33.
+［12］ LIU Q， ZHU J ， YANG Y ， et al.  Multimodal pretraining ， 
+adaptation， and generation for recommendation ： a survey
+［C］//Proceedings of the 30th ACM SIGKDD Conference 
+on Knowledge Discovery and Data Mining .  Barcelona ， 
+2024： 6566-6576.
+［13］ TAKAHASHI S ， SAKAGUCHI Y ， KOUNO N ， et al .  
+Comparison of vision transformers and convolutional 
+neural networks in medical image analysis ： a systematic 
+review ［J］.  Journal of Medical Systems ， 2024， 48
+（1） ： 84.
+［14］ LI H， WU X J .  DenseFuse： a fusion approach to infrared 
+and visible images［J］.  IEEE Transactions on Image Pro ⁃
+cessing， 2019， 28（5） ： 2614-2623.
+［15］ MA J Y ， YU W ， LIANG P W ， et al.  FusionGAN ： a gen⁃
+erative adversarial network for infrared and visible image 
+fusion［J］.  Information Fusion ， 2019， 48： 11-26.
+［16］ XU H ， MA J Y ， JIANG J J ， et al .  U2Fusion： a unified 
+unsupervised image fusion network ［J］.  IEEE Transac ⁃
+tions on Pattern Analysis and Machine Intelligence ， 
+2022， 44（1） ： 502-518.
+［17］ ZHANG H ， MA J Y .  SDNet： a versatile squeeze ⁃ and ⁃
+decomposition network for real ⁃ time image fusion ［J］.  
+International Journal of Computer Vision ， 2021， 129
+（10） ： 2761-2785.
+［18］ LI H ， WU X J ， KITTLER J .  RFN⁃Nest ： an end⁃to⁃end 
+residual fusion network for infrared and visible images
+［J］.  Information Fusion ， 2021， 73： 72-86.
+［19］ ZHAO Z ， BAI H ， ZHU Y ， et al .  DDFM ： denoising dif ⁃
+fusion model for multi ⁃ modality image fusion ［C］//Pro⁃
+ceedings of the IEEE/CVF International Conference on 
+Computer Vision .  Paris， 2023： 8082-8093.
+［20］ KRONES F ， MARIKKAR U ， PARSONS G ， et al .  
+Review of multimodal machine learning approaches in 
+healthcare［J］.  Information Fusion ， 2025， 114： 102690.
+［21］ DAGLEY A ， LAPOINT M ， HUIJBERS W ， et al .  Har⁃
+vard aging brain study ： dataset and accessibility ［J］.  
+NeuroImage ， 2017， 144： 255-258.
+［22］ MA J ， TANG L ， FAN F ， et al .  SwinFusion： cross-
+domain long-range learning for general image fusion via 
+swin transformer ［J］.  IEEE/CAA Journal of Automatica 
+Sinica， 2022， 9（7） ： 1200-1217.
+［23］ SONG Y M ， DAI Y ， LIU W B ， et al.  DesTrans： a medi ⁃
+cal image fusion method based on Transformer and 
+improved DenseNet［J］.  Computers in Biology and Medi ⁃
+cine， 2024， 174： 108463.
+··117
+
+=== PDF_PAGE 10 ===
+2025 年北京化工大学学报（自然科学版）
+A multimodal medical image fusion method based on a cross⁃modal 
+channel⁃aware （CMCA） module
+MIAO XuFan1　QI YingYue1　YANG DongMei 1　WANG ChengXia 2　YANG LiGuo1　
+WEI ZiHan2　YI Ping2　WANG JianLin 1*
+（1.  College of Information Science and Technology ， Beijing University of Chemical Technology ， Beijing 100029；
+2.  Department of Spine Surgery ， China-Japan Friendship Hospital ， Beijing 100029， China）
+Abstract： To address the problem of noise degrading fusion performance in medical images ， we propose a multi ⁃
+modal medical image fusion method based on cross - modal channel -aware （CMCA） module .  A dual -branch 
+encoder enhanced with a squeeze -and-excitation module is introduced to apply channel -wise weighting during fea ⁃
+ture extraction and obtain modality -specific features .  A cross -modal channel -aware fusion module is constructed to 
+integrate the extracted information and achieve complementary feature fusion .  A composite loss function combining 
+image entropy and median -based weighting is adopted to preserve detail while suppressing noise during training ， 
+thereby enabling effective multimodal medical image fusion .  Experimental results on an MRI -CT dataset show that 
+the proposed method achieves an average gradient of 8. 630， a standard deviation of 82. 301 with a spatial fre ⁃
+quency of 35. 728， and a structural similarity index of 1. 173， which makes it a valuable tool for assisting clini ⁃
+cians in lesion analysis .
+Key words ： medical image fusion ； deep learning ； channel attention
+（责任编辑：张　杰　吴万玲）
+··118

@@ -1,0 +1,1183 @@
+=== PDF_PAGE 1 ===
+ 
+MBAFuse：红外与可见光图像的多分支自编码器融合网络
+张王卫1，代孟豪1，黄    敏1*，李    璞1，王昌海1，周    斌2，李现伟3
+(1. 郑州轻工业大学 软件学院，河南 郑州 450001；
+2. 郑州科技学院 电子与电气工程学院，河南  郑州 450064；
+3. 蚌埠学院 计算机与信息工程学院，安徽  蚌埠 233030)
+摘　要：红外与可见光图像融合旨在生成同时包含红外图像热辐射信息与可见光图像细节纹理的融
+合图像。现有自编码器架构在处理多模态图像时多采用共享或独立编码器网络，难以同时有效提取共
+享特征与模态特有特征 。为此，文中提出一种多分支自编码融合架 构(MBAFuse)，旨在提升红外与可
+见光图像融合的特征提取与图像重建能力 。该方法采用三分支结构 ，利用密集连接模块提取共享特
+征，分别结合展望注意 力(Outlook Attention) 模块与可逆神经网 络(INN)模块提取红外与可见光图像
+的高频与低频特征 。同时，引入相关性损失函数以增强共享与特有特征的解耦能力 ，进一步聚焦于模
+态差异显著的高频细节 。在训练阶段 ，构建综合损失函数 ，结合结构相似性损失 、均方误差(MSE)损
+失、梯度损失与相关性损失 ，并采用两阶段训练策略优化融合性能 。解码器部分引入基于多头注意力
+机 制的 Restormer模 块 以 增 强 图 像 重 建 效 果。 在 TNO、MSRS  和 RoadScene  三 个 公 开 数 据 集 上，
+MBAFuse  在 定 性 与 定 量 评 估 中 大 多 优 于 现 有 主 流 方 法。 与 现 有 多 种 主 流 图 像 融 合 方 法 相 比，
+MBAFuse 在 TNO、MSRS 与 RoadScene 三个数据集上的多个客观指 标(如 EN、SD、VIF)均取得显著
+提升，平均提升幅度分别达 10.2%、29.7% 和 7.5%，体现出良好的融合性能与鲁棒性 。此外，MBAFuse
+在医学图像和彩色图像融合任务中展现出良好的泛化能力。相关代码已在https://github.com/DMengHao/
+MBAFuse 开源，便于复现与拓展应用。
+关键词：红外图像；  可见光图像；  图像融合；  自编码器；  多模态特征提取
+中图分类号：TP751.1          文献标志码：A          DOI：10.3788/IRLA20250366
+引用格式：ZHANG Wangwei, DAI Menghao, HUANG Min, et al. MBAFuse: Multi-branch self-encoder fusion network for
+infrared and visible images[J]. Infrared and Laser Engineering, 2025, 54(11): 20250366.
+张王卫, 代孟豪, 黄敏, 等. MBAFuse：红外与可见光图像的多分支自编码器融合网络 [J]．红外与激光工程 , 2025,
+54(11): 20250366.
+ 0    引　言
+图像融合技术是一种通过整合同一场景下由不
+同传感器同步采集的多源图像数据 ，生成具有更丰富
+信息量的合成图像的技术方法 [1]。该技术能够有效保
+留多源图像中的关键特征信息 ，显著提升图像的细节
+表现力和视觉质量 ，从而为后续的图像分析与处理任
+务提供更为全面的数据基础。作为多模态图像融 合
+(MMIF)研究领域的重要组成部分 ，红外与可见光图
+ 
+收稿日期：2025−07−22；    修订日期：2025−09−25
+基金项目：河南省科技重大专项(241100210100)；河南省科技攻关项目(242102211110)
+作者简介：张王卫，男，讲师，博士，主要从事红外与可见光图像融合和虚拟与仿真方面的研究。
+通信作者：黄敏，男，教授，博士，主要从事图像处理和模式识别方面的研究。
+ 
+第 54 卷第 11 期 红外与激光工程 2025 年 11 月
+Vol.54 No.11 Infrared and Laser Engineering Nov. 2025
+20250366–1
+
+=== PDF_PAGE 2 ===
+像融 合 (IVIF)技术因其独特的优势而备受关注。具
+体而言 ，红外成像通过检测物体自身的热辐射特性 ，
+能够在低照度 、雨雾等复杂环境条件下实现稳定的目
+标识别 ；而可见光成像则依靠物体表面的反射光特
+性，能够提供更为丰富的纹理细节和空间信息 ，但其
+成像质量易受环境光照条件的影响。通过将这两种
+模态的图像信息进行有机融合 ，可以充分发挥红外图
+像的热辐射特征和可见光图像的细节特征的优势 ，生
+成信息更全面的融合图像。这种融合技术已被证明
+能够显著提升目标检测 [2-3]、目标跟踪 [4]以及语义分
+割[5-6]等计算机视觉任务的性能表现。
+近年来 ，红外与可见光图像融合技术研究取得了
+重要突破 ，主要形成了传统方法和深度学习方法两大
+体系。传统方法包含四大技术路线 ：空间域方 法 (如
+加权平均策略 、WANG等人 [7]的高通滤波与均值系
+数比例融合以及APARNA等人 [8]的熵基多曝光融合 )、
+变换域方 法(包括小波变换 [9]、金字塔变换 [10]、DCT[11]
+以及NENCINI等人[9] 的曲波变换和 DUAN等人[12]的
+小波变换结合显著性检测)、统计与优化方法(如ICA[13]
+和 MA 等 人[14]的 梯 度 传 递 与 总 变 差 最 小 化 模 型)
+以及基于滤波的方 法 (包括高斯滤波 、 引导滤波 [15]
+和ZHANG等人 [16]的引导滤波与稀疏表示融合 )。这
+些方法在细节保持 、特征增强和视觉效果提升等方面
+各具优势 ，为多模态图像融合研究奠定了坚实的理论
+基础和技术支撑。
+随着深度学习技术在计算机视觉领域的蓬勃发
+展，基于深度学习的图像融合方法逐渐成为研究热
+点。当前主流的深度学习融合框架主要包括 ：1)基
+于CNN的方法通过多层次特征提取与自适应融合机
+制，在保持图像结构完整性和细节特征方面表现突
+出[17-18]；2)GAN 框架通过对抗训练策略 ，其生成器可
+合成具有更优视觉质量的融合图像 ，其中MA等人 [19]
+开创性地 将GAN引入融合任务 ，LI 等人[20]通过引入
+多尺度约束进一步提升了细节表达能力 ；3)自编码器
+方法利用其强大的特征学习能力 ，如 QUAN等人 [21]
+提出的卷积自编码器模型 ，通过深度特征重构实现了
+优异的细节保留与信息整合效果。
+尽管CNN 模型相较传统方法在图像特征提取和
+融合效果方面取得了显著进展 ，但其在捕捉图像中长
+距离依赖关系与全局特征方面仍存在局限 ，常导致融
+合图像细节不清晰 、 对比度下降 ， 甚至出现信息丢
+失。为缓解这一问题 ，基于注意力机制的融合方法被
+提出 ，增强了模型对全局依赖关系的建模能力 ，弥补
+了 CNN 在全局特征提取方面的不足。然而 ，在模态
+差异较小或低对比度区域 ，注意力机制的性能仍有
+限，容易造成红外图像中关键的低对比度信息在融合
+过程中被削弱或遗漏。
+为此 ，融合 CNN 与注意力机制的混合模型应运
+而生 ，旨在兼顾局部与全局特征的有效提取 ，提升融
+合图像的质量。尽管已有方法在一定程度上缓解了
+上述问题 ，但在红外与可见光图像的共享特征提取 ，
+以及全局与局部特征的协同建模方面 ，仍存在进一步
+优化空间。
+针对现有方法在共享特征和局部 、全局特征提取
+上的不足 ，文中提出了一种端到端的多分支自编码器
+融 合 网络 (Multi-Branch Autoencoder Fusion Network，
+MBAFuse)。该方法设计了多个分支分别提取红外与
+可见光图像的共享特征和特有特征。具体来说 ，利用
+DenseBlock模 块 提 取 共 享 特 征 ， 同 时 通 过 可 逆 神
+经 网络 (Invertible Neural Network ，INN)[22]和 Outlook
+Attention模块 [23] 分别提取低频与高频特征 ，有助于融
+合图像的细节重建。
+文中的主要贡献总结如下：
+1)提出一种端到端多分支自编码器架构 ，通过
+引 入 共 享 与 特 有 特 征 提 取 模 块， 实 现 多 模 态 信 息
+的有效融合 ，显著提升融合图像的质量与细节表达
+能力；
+2)构 建 了 结 构 相 似 性 损 失 (SSIM)、 均 方 误 差
+(MSE)、梯度损失和相关性损失的联合损失函数 ，并
+采用两阶段训练策略 ，提升各模块的特征建模能力与
+整体收敛效果；
+3)在多个公开数据 集 (TNO、MSRS、RoadScene)
+上进行充分实验验证 ，各项指标由于现有主流融合方
+法，展示出较强的性能优势；
+4)将 所 提 方 法 扩 展 应 用 与 医 学 图 像 融 合 与
+RGB彩色图像融合任务 ，验证了模型良好的通用性
+第 11 期 张王卫等： MBAFuse：红外与可见光图像的多分支自编码器融合网络 第 54 卷
+20250366–2
+
+=== PDF_PAGE 3 ===
+与跨模态融合能力。
+ 1    方法介绍
+ 1.1   算法概述
+MBAFuse  网 络 由 编 码 器、 融 合 层 与 解 码 器 组
+成 ， 如 图 1所 示 。 编 码 器 包 含 共 享 特 征 提 取 模块
+(SFEM)、基础特征提取模 块(BFEM)与细节特征提取
+模块 (DFEM)，分别建模红外与可见光图像中的互补
+信息、低频语义特征与高频边缘细节。 BFEM 基于展
+望注意力机制 (Outlook Attention) 设计，通过结合局部
+窗口与动态注意力计算提升感受野与全局建模能力 ，
+适 用 于 低 频 语 义 建 模 。DFEM  引 入 可 逆 神 经 网络
+(INN)构建正反向特征映射路径 ，实现高频细节的无
+损提取与重建。 SFEM 则采用 DenseBlock 构建，增强
+跨层特征复用 ，并引入层间匹配机制以提升多模态共
+享特征的对齐效果和表达一致性。
+ 
+ 
+ 
+C
+ReLU
+Conv,3×3
+BN
+ReLU
+Conv,3×3
+BN
+ReLU
+Conv,3×3
+BN
+ReLU
+Conv,3×3
+BN
+(b) DFEM (c) SFEM
+ΦID
+{I,V}Φ
+SICNN τ1(·): IBB τ2(·): IBB τ3(·): IBB
+Attn: [B,H,W,k2×k2]
+X: [B,C,H,W] X: [B,H,W,C]
+V: [B,H,W,C,k2] X: [B,H,W,C,k2] X: [B,H,W,C]
+k2
+k2
+Attention maps
+Reshape
+Linear+Unfold
+Linear Softmax
+Fold+Linear
+CNN
+(a) BFEM
+ΦIB
+ΦICNN: The feature map after convolution
+Reshape: Modifying the dimensional 
+Fold+Linear: Folding and linear transformation layer
+Linear+Unfold: Linear transformation and unfolding layer
+Softmax: Softmax activation layer
+ΦIB: The infrared base features
+DFEM : Detail feature extraction module
+SFEM : Shared feature extraction module
+BFEM: Base feature extraction module
+τ1(·):IBB : First INN bottleneck block
+ 
+CNN CNN  {ΦI[1:C/2], ΦI[C/2+1:C]}: Feature map after channel splitting
+IBB IBB{ΦI[1:C/2], ΦI[C/2+1:C]}: Feature map after IBB
+ΦID: The infrared detail features
+SΦ{I,V}: The shared features of infrared and visible
+BN: Batch normalization layer
+RuLU: Rectified linear unit
+Linear: Linear transformation layer
+Φ
+IBB
+Φ
+IBB
+Φ
+Φ
+ΦCNN
+ [1:C/2] : Range of channel dimensions 1 to C/2
+[C/2+1:C] : Range of channel dimensions C/2 to C
+{I,V}
+I[1:C/2]
+I[C/2+1:C]
+[1:C/2]
+[C/2+1:C]
+I[1:C/2]
+ΦI[C/2+1:C]
+Conv,k×k: Convolutional layer with kernel size of k
+ 
+图 1  MBAFuse 方法架构示意图。(a)阶段一训练 ：采用自编码器结构，利用红外或可见光图像的特有特征与共享特征重建原始图像 ；(b)阶段二
+训练：融合红外与可见光图像的共享特征、细节特征与基础特征，通过自编码器重建融合图像
+Fig.1  Schematic diagram of the MBAFuse architecture. (a) Stage I training: A self-encoder structure is employed to reconstruct the original image using
+modality-specific and shared features extracted from either infrared or visible images; (b) Stage II training: The fused image is reconstructed using
+the shared, detailed, and basic features from both infrared and visible images through the same self-encoder framework
+ 
+融合层将三路特征通过通道拼接方式融合 ，形成
+统一的多源特征表征。解码器部分采用  Restormer 模
+块，通过多头注意力机制强化全局依赖建模 ，从而提
+升融合图像的纹理清晰度与边缘保真度。网络训练
+采用两阶段策略 ：第一阶段分别优化  SFEM、BFEM
+和 DFEM 的特征建模能力 ；第二阶段进行全网络联合
+训练以实现端到端优化。其中 ，两阶段并未冻结部分
+参数。完整网络结构与参数设置已在开源代码中
+公开。
+ 1.2   编码器
+编码器由三类功能模块构成 ，如图 2所示 ，分别
+用于提取不同模态和语义层次的图像特征 ：细节特征
+提取模 块 (DFEM)，基础特征提取模 块 (BFEM)与共
+享 特 征 提 取 模 块 (SFEM)， 分 别 基 于 INN、Outlook
+Attention 和 DenseBlock设计。
+I 2 RHW1
+V 2 RHW1
+为便于表述 ，定义红外图像与可见光图像分别为
+和 ，细节特征提取模块 、基础特
+征 提 取 模 块 和 共 享 特 征 提 取 模 块 分 别 记 作 D(·)、
+Vol.54 No.11 http://www.irla.cn/article/doi/10.3788/IRLA20250366 Nov. 2025
+20250366–3
+
+=== PDF_PAGE 4 ===
+B(·) 和S(·)。
+在编码器的双分支架构中 ，为提取红外和可见光
+图像的特有特征 ，采用了卷积 、批量归一 化 (BN)和
+ReLU激活函 数 (Re)，以支持早期视觉处理并提高优
+化稳定性。红外与可见光图像特有特征前期提取操
+作公式表示为
+CNNI = Re(B
+N
+(
+Conv364;64
+(
+Conv11;64 (I) )) )) (1)
+CNNV = Re(B
+N
+(
+Conv164;64
+(
+Conv31;64 (V) )) )) (2)
+CNNI
+CNNV
+C
+onv11;64()
+C
+onv364;64()
+式中 ：{ ， }表示红外和可见光图像经过卷积
+滤波后的特征 ； 表示输入和输出通道分别
+为1和 64的 1×1的卷积操作 ； 表示输入和
+输出通道分别 为 64和 64的 3×3的卷积操作 ，BN(·)
+和 Re(·)分别表示批量归一化 和 ReLU激活层。为
+了 充 分 提 取 红 外 和 可 见 光 图 像 中 的 细 节 特 征， 文
+中设计了细节特征提取模 块(Detail Feature Extraction
+Module，DFEM)。该模块采用双向特征提取机制 ，结
+合无损还原策略 ，有效捕获不同源图像的高频细节信
+息。其流程公式如下：
+I D = D (I CNN) ;
+V D = D {V CNN} (3)
+fI D，V Dg
+式中： 分别表示红外和可见光图像的细节
+特征。为了有效提取红外和可见光图像的基础特征 ，
+文中采用 了Outlook Attention模块构建基础特征提取
+模 块 (BFEM)。Outlook Attention作为一种专为视觉
+任务设计的注意力机制 ，能够高效捕获图像的空间上
+下文信息 ，从而更精准地提取不同源图像的基础特 征
+(它是具有全局支撑性 、跨模态共性、结构主导性的底
+层特征 )。针对红外与可见光图像的多模态融合需
+求，对 Outlook Attention模块的窗口大小和注意力权
+重计算方式进行了针对性调整 ，使其更好地适应不同
+模态特征的提取与融合。此外 ，结合多尺度特征融合
+策略 ，提升了模型对不同尺度目标的感知能力 ，进一
+步增强了基础特征的表达效果。 BFEM 所提取的红
+外与可见光图像基础特征如 图3 所示，其流程公式如
+下：
+I B = B (I CNN) ;
+V B = B (V CNN) (4)
+fI B;
+V Bg
+式中： 分别表示红外和可见光图像的基础特
+征。为了有效提取红外和可见光图像的共享特征 ，文
+中设计并采用了一 个DenseBlock模块 ，称为共享特征
+提 取 模块 (Shared Feature Extraction Module， SFEM)。
+ 
+ˆ
+ˆ
+I
+Conv,1×1
+Conv,3×3
+BN
+ReLU
+Conv,1×1
+Conv,3×3
+BN
+BFEM
+DFEM
+SFEM(DenseBlock)
+BFEM
+DFEM
+Restormer 
+Block×4
+Restormer 
+Block×4
+Encoder Decoder
+Encoder
+Decoder
+ReLU
+ΦIB ΦIB
+ΦID
+S
+Φ{I,V}
+SΦ{I,V}: The shared features of infrared and visible
+S
+Φ{I,V}
+B
+ΦV
+BΦV: The visible base features
+B
+ΦV
+B
+ΦV
+DΦV
+DΦV: The visible detail features
+DΦV
+DΦVC
+C
+C
+ΦIB ΦID
+ΦID
+CC CC
+B(·)
+D(·)
+S(·)
+B(·)
+D(·)
+L
+I
+total=Lir+Lvi+μ1Ldecomp Ltotal=α3LSSIM+β3LMSE+γ3LGrad+μ2Ldecomp
+Conv,k×k: Convolutional layer with kernel size of k
+BN: Batch normalization layer
+RuLU: Rectified linear unit
+BFEM: Base feature extraction module
+SFEM (DenseBlock): Share feature extraction module
+DFEM: Detail feature extraction module
+ΦIB: The infrared base features
+ΦIB: The infrared detail features
+: The Correlation Coefficient Operator
+Vˆ 
+ˆ 
+: The Visible Reconstructed Image
+: Channel Concatenation
+II {I,V} {I,V} {I,V} {I,V}
+C
+CC
+(b) Training stage II(a) Training stage I
+I
+{I, V}
+V
+F
+I
+{I, V}
+V
+V
+I: The infrared image
+V: The visible image
+{I,V}: The concatenated channel map of source images e g a m I  d e t c u r t s n o c e R  d e r a r f n I  e h T  :I
+F: The Fused Image
+ 
+图 2  (a) 基础特征提取模块(BFEM)；(b) 细节特征提取模块(DFEM)；(c) 共享特征提取模块(SFEM)，分别对应不同特征的提取结构
+Fig.2  (a) Basic Feature Extraction Module (BFEM); (b) Detailed Feature Extraction Module (DFEM); and (c) Shared Feature Extraction Module
+(SFEM), each representing distinct feature extraction structures
+第 11 期 张王卫等： MBAFuse：红外与可见光图像的多分支自编码器融合网络 第 54 卷
+20250366–4
+
+=== PDF_PAGE 5 ===
+该模块专门针对输入通道数 为2的多模态图像数据 ，
+利用密集连接结构增强特征传递与重用能力 ，从而提
+取跨模态的共享信息。其流程公式如下：
+fI;VgS = S (f I; V g) (5)
+fI;VgS
+式中： 表示红外和可见光图像的互补特征 ，在文
+中也称之为共享特征。
+ 1.3   融合层
+在两阶段训练策略中 ，第一阶段主要针对原始图
+像的重建 ，重点提取细节特征 ，以增强其在相关性损
+失函数下的细节表现。具体而言 ，将红外和可见光图
+像 经 SFEM提取的共享特征 ， 与分别通 过 DFEM和
+BFEM提取的细节特征和基础特征进行通道拼接 ，构
+成第一阶段的融合层。第二阶段使用第一阶段训练
+好的各个模块的参数 ，则将红外和可见光图像的共享
+特征 、细节特征和基础特征进一步通道拼接 ，用于构
+建第二阶段的融合层 ，最终实现融合图像的重建。这
+两个阶段的融合层可通过以下公式表示：
+Stage
+I : FI = C(fI;VgS; I B; DI );
+FV = C(fI;VgS; BV; V D) (6)
+Stage II
+: FfI;VgC(I;V S; I B; V B; I D; V D) (7)
+fF I; FV; FfI;Vgg
+式中 ： 分别表示第一阶段红外图像的融
+合层、可见光图像的融合层及第二阶段重建融合图像
+的融合层。
+ 1.4   解码器
+fF I; FVg
+f I;  Vg
+FfI;Vg
+在解码器中 ，文中设计并采用了基于多头注意力
+的 Restormer模块 ，通过将通道拼接后的融合层特征
+输入到解码 器DC(·) 进行图像重建。在第一阶段 ，将
+得 到 的 特 征 输 入 到 DC(·)， 得 到 重 建 图 像
+。在第二阶段 ，由于第一阶段已较好地提取红外
+与可见光图像的共享特征及各自的细节和基础特征 ，
+因此直接采用第一阶段训练得到的权重参数进行继
+续训练。通过将红外与可见光图像的共享特征及其
+各自的细节和基础特征经过通道拼接融合层得到的
+特征 ，输入DC(·)，最终重建出融合图 像F。解码
+器阶段可通过以下公式表示：
+Stage
+I :  I = DC (FI) ;  V = DC (FV) (8)
+Stage
+II : F = DC (FfI;Vg) (9)
+ 1.5   损失函数设计
+受 到 LI等 人 [20]提 出 的 两 阶 段 方 案 启 发 ，
+ 
+1
+10
+19
+28
+37
+46
+55
+64
+Visible feature basic mapsInfared basic feature maps
+ 
+图 3  红外与可见光图像基础特征的多通道可视 化 (BFEM 输出，64
+通道中精选示例，图中标注 “1”，“10” 等为代表性通道)
+Fig.3  Multi-channel visualization of fundamental features in infrared
+and visible light images (BFEM Output, selected examples from
+64 channels; Labels '1', '10', etc. denote representative channels)
+Vol.54 No.11 http://www.irla.cn/article/doi/10.3788/IRLA20250366 Nov. 2025
+20250366–5
+
+=== PDF_PAGE 6 ===
+MBAFuse 采用了两阶段训练策略。在第一阶段 ，为
+了更好地重建原始图像 ，特别考虑了红外和可见光图
+像在成像机制上的差异。这两种模态不仅存在显著
+差异，还包含一定的共享特征。为此提出了一种多模
+态一致性损失函数 ，结合图像间的共享特征及各自独
+特的细节与基础特征 ，从而实现更精确的图像重建。
+第一阶段的总损失函数如下：
+LItotal = Lir + Lvi + 1Ldecomp (10)
+Lir
+Lvi
+Ldecomp
+1
+1
+Lir
+Lvi
+Ldecomp
+式中 ： 和 分别表示重建后的红外图像与原始红
+外图像、可见光图像与原始可见光图像之间的损失函
+数。为了更好地实现红外和可见光图像在细节和基
+础特征上的模态分解 ，文中引入了相关性损失函数
+，以增强红外与可见光图像之间的细节特征相
+关性 ，同时降低基础特征相关性。此外 ， 表示控制
+相关性损失贡献的权重因子 ， 在 MBAFuse方法中 ，
+被设定 为 2。其损失函数 、 和 的公式分
+别定义如下：
+Lir = 1LSSIM
+( I; I) + 1LMSE { I; I} + 1LGrad( I; I) (1
+1)
+Lvi = 2LSSIM
+( V; V) + 2LMSE ( V; V) + 2LGrad( V; V) (12)
+Ldecomp = (C
+C( I D; V D))2
+C
+C(BI ; BV) +  (13)
+1
+1
+2
+2
+LSSIM( I; I) = 1   S
+S I M( I; I)
+LMSE
+( I; I) = 1H
+W ∥  I   I∥1
+jj jj1
+LGrad( I; I) = 1H
+W jj ∇ I; ∇I jj1
+∇
+在公 式 (11)和公 式 (12)中 ，权重因子 、 、 γ1、
+、 和 γ2分别控制红外图像和可见光图像重建时
+结构性损失 、均方误差损失和梯度损失的贡献 ，设置
+为 8、2、20、8、2和 20。 以 重 建 的 红 外 图 像 为 例，
+,结构性损失使用结构相似
+性 指 数 SSIM(·)， ， 其 中 H 和
+W分别表示图像的高和宽 ， 表示一范数运算符
+号，同时 梯度损失用于评估
+重建图像与红外图像之间的梯度差异 ， 表示梯度运
+算符。CC(·)为相关性运算符。为避免分母趋近 于0，
+引发总损失函数出 现 NaN异常 ，并引导训练过程更
+聚焦细节特征的模态分解 、削弱基础特征的干扰 ，相
+关性损失函数中的参数σ设置为 1.01。
+为适合融合图像的生成 ，特地设计了一个通用的
+多模态一致性损失函数 ，用于从红外与可见光图像重
+建融合图像。该损失函数综合了结构相似性损失 、均
+方误差损失 、梯度损失和相关性分解损失。第二阶段
+的总损失函数定义如下：
+LtotalII = 3LSSIMfI;Vg + 3LMSEfI;Vg + 3LGrad I;Vg + 2Ldecomp
+(14)
+3
+3
+3
+2
+Ldecomp
+在公 式 (11)中 ，权重因子 、 、 和 分别用
+于控制红外图像 、可见光图像和融合图像在训练过程
+中结构性损失 、均方误差损失 、梯度损失和相关性分
+解损失的权重，这些权重的设定值分别为8、2、20和 2。
+第二阶段中的每个损失函数与第一阶段的损失函数
+存在一些差 异 (仅 损失相同 )。其中 ，结构性损
+失、均方误差损失和梯度损失函数的定义如下：
+LSSIMfI;Vg = 1   S
+S I M(F; maxfI; Vg) (15)
+LMSEfI;Vg = 1H
+W jj F   maxfI; Vg jj 2F (16)
+LfI;VgGrad = 1H
+W jj ∇F   maxf∇I; ∇Vg jj 2 (17)
+jj jj2F
+∇
+式中 ：H和 W分别表示图像的高和宽 ；max{,}代表最
+大 选 择 ； 表 示 F范 数 求 取 符 ； 表 示 梯 度 求
+取符。
+ 2    实验结果
+ 2.1   实施细节
+实验设置 ：为验证所提出 的 MBAFuse方法的有
+效性 ，文中采用端到端的训练方式 ，仅在 MSRS数据
+集上对模型进行训练。具体地，从MSRS数据集中选取
+1 444对红外与可见光图像对 ，以步长200像素 、尺寸
+128 pixel×128 pixel进行裁剪 ，共生 成 8 649对图像作
+为训练集 ，其中，因步长大于窗口尺寸 ，图像尺寸不足
+时不补全 ，直接舍弃无法容纳完整窗口的边缘区域 ，
+仅保留有效裁剪块。训练过程中 ，RGB 格式的可见
+光图像被转换 至 YCbCr色彩空间 ，并提 取 Y 通道作
+为输入 ，与红外图像一同归一化 至 [0,1]区间。模型
+训 练 共 进 行 15个 epochs， 其 中 第 一 阶 段 为 10个
+epochs， 第二阶段 为 5个 epochs， 使 用 Adam优化器 ，
+初 始 学 习 率 设为 0.000 1。 所 有 训 练 与 测 试 均 基于
+PyTorch框架，在NVIDIA V100 GPU平台上完成。
+评估设置 ：为全面评 估MBAFuse的性能 ，实验分
+第 11 期 张王卫等： MBAFuse：红外与可见光图像的多分支自编码器融合网络 第 54 卷
+20250366–6
+
+=== PDF_PAGE 7 ===
+别在TNO[24]、MSRS[25]和 RoadScene[26]三个公开红外
+与 可 见 光 图 像 融 合 数 据 集 上 开 展 。 其 中，TNO 和
+RoadScene数 据 集 仅 用 于 测 试 ； 测 试 阶 段 分 别 从
+TNO、MSRS和 RoadScene中选 取 25、361和 50对图
+像，进行主客观对比分析。 TNO数据集图像分辨率
+较低 ，场景种类有限 ，为增强评估的多样性与代表性 ，
+进 一 步 引 入 了 包 含 高 分 辨 率 和 复 杂 道 路 场 景的
+MSRS与RoadScene数据集。
+评估指标 ：文中研究采用六项主流的融合质量评
+价指标 ： 信息 熵 (EN)、 标准 差 (SD)、 空间频 率 (SF)、
+互信息(MI)、视觉信息保真 度(VIF)以及结构相似性
+引导下的融合质量指标Qbaf(Structure Similarity-Guided
+Fusion Quality Index Qbaf)。这些指标从图像信息量 、
+细节清晰度 、对比度保持以及人眼感知一致性等多个
+维度综合评估融合效果。其中 ，指标值越高通常代表
+融合图像在细节保留 、信息融合及视觉一致性方面性
+能越优。
+对比算法 ：为全面验 证MBAFuse 的有效性 ，文中
+选 取 七 种 近 年 来 具 有 代 表 性 的 深 度 学 习 图 像 融
+合 方 法 作 为 对 比 ， 包 括 DenseFuse[17]、NestFuse[27]、
+CSFusion[28]、 U2 Fusion[29]、 DIDFuse[30]、 SDNet[31] 和
+DATFuse[32]。上述方法均公开提供源代码或由原作
+者提供模型，保证了评估过程的公平性与可复现性。
+ 2.2   对比实验
+为全面评估所提出的  MBAFuse 方法的融合性
+能，文中在 TNO、MSRS 和 RoadScene 三个主流红外
+与可见光图像融合公开数据集上与现有七种代表性
+深度学习融合方法进行了对比实验。这些方法包括
+DenseFuse、NestFuse、CSFusion、U2 Fusion、DIDFuse、
+SDNet 和 DATFuse，相关模型均可公开获取或由原作
+者提供。实验分别从三个数据集中选取具有代表性
+的 图 像 进 行 主 观 视 觉 对 比， 并 通 过 六 项 客 观 指标
+(EN、SD、SF、MI、VIF 和 Qbaf)进行量化评估。
+ 2.2.1    TNO 数据集结果分析
+在 TNO 数据集测试中 ，选取其中 25 幅融合图像
+中的 5 幅典型图像进行主观对 比 (见图 4)，并对关键
+区域进行局部放大以突出不同方法的融合差异。结
+果显示 ，尽管各方法均实现了一定程度的图像融合 ，
+但在细节保留与对比度方面表现不一。其中，NestFuse、
+CSFusion、U2 Fusion、DIDFuse 和 SDNet 在保留可见光
+图像中树木枝条等细节方面存在明显不足 ；DenseFuse
+与 DATFuse略有改善 ，但仍 不MBAFuse 在细节清晰
+度和结构对比上的表现。 MBAFuse在多个放大区域
+内表现出更优的细节还原能力和热信息融合效果。
+ 
+ 
+Infrared
+image
+Visible
+imageDenseFuseNestFuseCSFusionU2FusionDIDFuseSDNetDATFuseMBAFuse
+ 
+图 4  MBAFuse方法与其他七种最新融合方法在 TNO数据集上的主
+观比较
+Fig.4  Subjective comparison of the proposed MBAFuse method with
+seven state-of-the-art fusion approaches on the TNO dataset
+ 
+客观指标如 表1 所示 ，MBAFuse 在 EN、SD、SF、
+VIF 和 Qbaf 五项指标上取得最优成绩 ，在 MI 指标上
+亦接近最优 ，整体性能优于除个别方法外的所有对比
+模型，显示出优越的融合质量与稳定性。
+Vol.54 No.11 http://www.irla.cn/article/doi/10.3788/IRLA20250366 Nov. 2025
+20250366–7
+
+=== PDF_PAGE 8 ===
+ 2.2.2    MSRS数据集结果分析
+在 MSRS 数据集实验中 ，从 361 幅融合图像中选
+取 5 幅图像进行主观分 析 (见图 5)。结果显示 ，在斑
+马线、标识牌和车牌等细节区域 ，MBAFuse 表现出更
+好 的 信 息 保 持 能 力 。 例 如， 在 标 识 牌 字 体 和 车 牌
+号 码 的 清 晰 度 方 面 ，MBAFuse  相 较 于  NestFuse、
+CSFusion、U2 Fusion 等方法有明显优势。
+客观指标对比如 表 2 所示 ，MBAFuse 在五项指
+标 (EN、SD、SF、VIF 和 Qbaf)中获得最优 ，在 MI 指
+标上取得次优成绩 ，仅次于 DATFuse，综合性能依然
+处于领先水平。上述结果进一步验证了  MBAFuse 在
+复杂道路场景下的细节还原与多模态信息融合能
+力。
+ 
+ 
+表 2  在 MSRS 数据集上的客观比较
+Tab.2  Objective  comparison  results  on  the  MSRS
+dataset
+ 
+MSRS EN SD SF MI VIF Qbaf
+DenseFuse 6.43 38.02 9.27 2.06 0.75 0.59
+NestFuse 6.21 29.17 6.18 1.71 0.66 0.39
+CSFusion 5.57 21.54 5.71 1.65 0.56 0.26
+U2 Fusion 5.06 20.42 7.26 1.38 0.49 0.34
+DIDFuse 3.88 29.48 9.11 1.30 0.27 0.18
+SDNet 5.04 15.09 7.51 1.18 0.46 0.32
+DATFuse 6.50 36.57 10.96 2.70 0.91 0.60
+MBAFuse 6.95 46.34 12.30 2.28 0.98 0.61
+　Note: Bold and underlined values indicate the best and second-best
+performance, respectively
+ 
+ 2.2.3    RoadScene数据集结果分析
+在 RoadScene 数据集中 ，从 50 对融合图像中挑
+选 5 幅典型样本进行对比分 析(见图6)。实验结果表
+明，MBAFuse 在树木枝叶 、场景轮廓等细节保留方面
+显著优于其他方法 ，尤其在热辐射特征与可见光信息
+ 
+表 1  在 TNO 数据集上的客观比较
+Tab.1  Objective comparison results on the TNO dataset
+ 
+TNO EN SD SF MI VIF Qbaf
+DenseFuse 6.66 33.53 8.19 2.18 0.61 0.46
+NestFuse 6.89 34.97 5.97 1.50 0.54 0.34
+CSFusion 6.50 28.91 6.74 1.47 0.53 0.35
+U2 Fusion 6.42 26.34 8.85 1.35 0.54 0.42
+DIDFuse 6.85 43.87 9.98 1.69 0.59 0.10
+SDNet 6.36 27.1 10.13 1.50 0.53 0.43
+DATFuse 6.58 29.65 10.09 2.36 0.63 0.47
+MBAFuse 7.07 44.43 12.22 2.05 0.69 0.48
+　Note: Bold and underlined values indicate the best and second-best performance, respectively
+ 
+Infrared
+image
+Visible
+imageDenseFuseNestFuseCSFusionDIDFuseSDNetDATFuseMBAFuse U2 Fusion
+ 
+图 5  MBAFuse方法与其他七种最新融合方法 在MSRS数据集上的
+主观比较
+Fig.5  Qualitative comparison of the proposed MBAFuse method with
+seven state-of-the-art fusion methods on the MSRS dataset
+第 11 期 张王卫等： MBAFuse：红外与可见光图像的多分支自编码器融合网络 第 54 卷
+20250366–8
+
+=== PDF_PAGE 9 ===
+的 有 效 融 合 方 面 表 现 突 出 。 相 较 于  DenseFuse、
+NestFuse、SDNet 等方法 ，MBAFuse 在场景还原与细
+节清晰度方面具有明显优势。
+ 
+ 
+Infrared
+imageVisible imageDenseFuseNestFuseCSFusionDIDFuseSDNetDATFuseMBAFuse U2 Fusion
+ 
+图 6  MBAFuse方法与其他七种最新融合方法 在 RoadScene数据集
+上的主观比较
+Fig.6  Qualitative comparison of the proposed MBAFuse method with
+seven state-of-the-art fusion methods on the RoadScene dataset
+ 
+客观指标对比如 表 3 给出了 RoadScene 数据集
+下的客观评估结果 ，MBAFuse 在 EN、SD、SF 和 VIF
+四项指标中取得最佳 ，在 MI 和 Qbaf 指标上亦接近最
+优，进一步体现出其良好的泛化能力与稳健性能。
+ 
+表 3  在 RoadScene 数据集上的客观比较
+Tab.3  Objective comparison results on the RoadScene
+dataset
+ 
+RoadScene EN SD SF MI VIF Qbaf
+DenseFuse 6.89 35.76 9.48 2.31 0.61 0.46
+NestFuse 7.29 43.44 7.38 1.89 0.53 0.31
+CSFusion 6.92 32.21 8.91 1.86 0.53 0.38
+U2 Fusion 6.83 30.15 11.13 1.82 0.56 0.49
+DIDFuse 7.48 53.91 14.08 2.02 0.61 0.48
+SDNet 6.98 33.78 12.10 2.13 0.57 0.50
+DATFuse 6.73 32.27 11.17 2.57 0.62 0.51
+MBAFuse 7.49 58.8 14.11 2.33 0.64 0.43
+　Note: Bold and underlined values indicate the best and second-best
+performance, respectively
+ 
+ 2.3   消融实验
+为全面验证 MBAFuse 网络结构与损失函数设计
+的有效性 ，文中从损失函数配置与结构模块设计两个
+层面开展了系统的消融实验 ，涵盖三类典型数据 集
+(TNO、MSRS  和 RoadScene)， 具 体 结 果 如表 4~6所
+示。
+在损失函数方面 ，实验1~4通过调整梯度损失与
+相关性损失的权重 ，验证了当前参数设置在边缘保持
+与模态互补建模中的最优性。实 验 5移除第一阶段
+训练 ，评估两阶段策略对特征提取与重建性能的影
+响 。 进 一 步 地， 实 验 6与 实 验 7分 别 去 除 MSE  与
+SSIM 损失项 ，探讨不同损失函数在融合图像质量中
+的作用。在结构设计方面 ，实验8去除模态分解相关
+性 约 束 ， 实 验 9则 移 除 共 享 特 征 提 取 模 块 中 的
+DenseBlock，用以分析两者在提升融合一致性和细节
+保真度方面的贡献。
+具体结果显示 ，在 TNO 数据集上 ，MBAFuse 在
+信息 熵 (EN)、标准 差 (SD)、空间频 率 (SF)和  Qbaf 等
+细节相关指标上表现突出 ，6项指标中获 得 4项最
+优、2项次优。实 验 7和 8的性能下滑说明  MSE 与
+SSIM 损失对结构稳定性和感知质量具有关键影响 ，
+结构层面  DenseBlock 与 Decomp 损失函数模块的保
+留同样至关重要。
+在 MSRS 数据集中 ，MBAFuse 在 VIF 与 Qbaf 两
+项感知指标上均取得最优 ，且在 SD、MI、SF 等指标
+中表现接近最佳 ，进一步印证了其对复杂多模态场景
+的适应能力。尤其对比实 验 6，尽管其 VIF 稍高 ，但
+Vol.54 No.11 http://www.irla.cn/article/doi/10.3788/IRLA20250366 Nov. 2025
+20250366–9
+
+=== PDF_PAGE 10 ===
+ 
+表 4  TNO 数据集上的消融实验结果
+Tab.4  Results of the ablation experiments on the TNO dataset
+ 
+TNO EN SD SF MI VIF Qbaf
+I:1 = 2 = 5
+6.94 42.91 11.87 1.37 0.61 0.44
+II
+: 1 = 2 = 35
+7.05 42.00 11.70 1.85 0.66 0.47
+III
+: 1 = 2 = 1
+6.72 44.43 10.71 1.91 0.56 0.42
+IV
+: 1 = 2 = 4
+7.02 47.40 11.79 2.19 0.68 0.47
+VI
+: w=otwo   stage
+6.97 46.75 12.02 2.01 0.65 0.45
+VII
+: no_mse
+7.04 43.79 12.66 1.78 0.54 0.39
+VIII
+: no_mse
+7.03 45.38 11.37 1.91 0.66 0.46
+IX
+: no_decomp
+6.96 41.99 11.93 1.75 0.56 0.40
+X
+: no_denseblock
+7.04 44.86 12.21 1.79 0.56 0.39
+M
+BAFuse
+7.07 44.43 12.22 2.05 0.69 0.48
+　Note: Bold and underlined values indicate the best and second-best performance, respectively
+ 
+表 5  MSRS 数据集上的消融实验结果
+Tab.5  Results of the ablation experiments on the MSRS dataset
+ 
+MSRS EN SD SF MI VIF Qbaf
+I:1 = 2 = 5
+7.17 44.64 12.38 1.81 0.81 0.51
+II
+: 1 = 2 = 35
+6.89 43.82 11.76 2.05 0.91 0.60
+III
+: 1 = 2 = 1
+6.87 45.98 11.95 2.26 0.92 0.59
+IV
+: 1 = 2 = 4
+6.77 46.53 11.82 2.16 0.86 0.59
+VI
+: w=otwo   stage
+7.08 45.08 11.87 1.37 0.95 0.59
+VII
+: no_mse
+6.84 44.17 11.79 2.10 0.87 0.56
+VIII
+: no_mse
+6.87 45.74 11.49 2.18 0.60 0.42
+IX
+: no_decomp
+6.78 45.47 11.75 2.03 0.87 0.54
+X
+: no_denseblock
+6.90 44.96 11.73 2.09 0.84 0.56
+M
+BAFuse
+6.95 46.34 12.30 2.28 0.98 0.61
+　Note: Bold and underlined values indicate the best and second-best performance, respectively
+ 
+表 6  RoadScene 数据集上的消融实验结果
+Tab.6  Results of the ablation experiments on the RoadScene dataset
+ 
+RoadScene EN SD SF MI VIF Qbaf
+I:1 = 2 = 5
+7.31 56.54 13.94 2.03 0.63 0.42
+II
+: 1 = 2 = 35
+7.40 54.57 13.35 2.23 0.63 0.41
+III
+: 1 = 2 = 1
+6.75 47.02 12.31 2.13 0.51 0.34
+IV
+: 1 = 2 = 4
+7.14 53.66 13.33 2.43 0.66 0.39
+VI
+: w=otwo   stage
+6.91 47.87 13.99 2.30 0.62 0.47
+VII
+: no_mse
+7.35 51.29 15.79 1.99 0.47 0.32
+VIII
+: no_mse
+7.44 58.29 13.49 2.18 0.60 0.42
+IX
+: no_decomp
+7.23 48.18 13.58 2.00 0.49 0.32
+X
+: no_denseblock
+7.33 57.93 13.42 2.18 0.53 0.37
+M
+BAFuse
+7.49 58.80 14.11 2.33 0.64 0.43
+　Note: Bold and underlined values indicate the best and second-best performance, respectively
+第 11 期 张王卫等： MBAFuse：红外与可见光图像的多分支自编码器融合网络 第 54 卷
+20250366–10
+
+=== PDF_PAGE 11 ===
+多项指标下降 ，说明两阶段训练策略对于模型鲁棒性
+与性能稳定性具有显著提升。
+在 RoadScene 数据集中 ，MBAFuse 在全部六项指
+标中均取得最佳或次优 ，尤其在 EN、SD、SF、MI 上
+全面领先 ，体现出其在自然场景下优越的纹理建模能
+力。去除  SSIM 或 DenseBlock 虽对部分指标有微弱
+提升 ，但整体感知质 量(Qbaf、VIF)显著下降 ，说明这
+类结构和感知损失对主观质量提升具有重要作用。
+此外，图7展示了典型样本在三类数据集上的主
+观对比结果 ，其中关键区域均进行了红框放大 ，可直
+观观察各消融设置对边缘细节 、纹理质量和结构一致
+性的影响。MBAFuse在多类场景中均展现出更清晰
+的轮廓边缘与更优的视觉一致性 ，进一步支持了上述
+定量分析结果。
+综上 ，实验结果充分验证了  MBAFuse 中多损失
+联合优化 、模块化结构设计及两阶段训练策略的合理
+性与有效性，为高质量图像融合提供了坚实支撑。
+ 2.4   方法的可扩展性
+为验 证 MBAFuse 方法的泛化能力 ，文中在无需
+微调的情况下 ，直接在医学图 像MRI-CT数据集上选
+取 21幅 图 像 进 行 融 合 ， 并 与 DenseFuse、NestFuse、
+CSFusion、U2 Fusion、DIDFuse、SDNet及DATFuse七
+种主流方法进行了主客观对比。主观结果见 图8，客
+观评价结果列于表 7。主观分析显示，DenseFuse等多
+种方法在可见光纹理
+细节保留方面表现欠佳 ，融合图像模糊且细节缺
+失，DATFuse亦存在类似情况 ；而MBAFuse能有效融
+合红外热辐射特征与可见光纹理信息 ，在细节和对比
+度表现上明显优于其他方法 ，整体展现出卓越的互补
+信息提取能力和细节保留效果。
+客 观 指 标 方 面 ，MBAFuse 在 熵 (EN)、 标 准 差
+(SD)、视觉信息保真 度 (VIF) 及 Qbaf 指标上取得最
+优，在空间频 率 (SF) 和互信 息 (MI) 指标上亦接近最
+佳。 MBAFuse方法与其他七种最新融合方法的在医
+学数据 集 MRI-CT上的泛化能力主观比较中取得最
+优，在空间频 率 (SF) 和互信 息 (MI) 指标上亦接近最
+佳，进一步证明了其在医学图像融合任务中的良好泛
+化能力。为验证跨模态泛化性能 ，文中选取训练阶段
+使用的可见光图像 ，利用YCbCr色彩空间转换 ，仅提
+取 Y 通 道 进 行 融 合， 融 合 后 结 合 红 外 图 像的 Cb、
+Cr通道重 建 RGB图像。在无微调条件下 ，MBAFuse
+在RoadScene数据集上的表现同样优异 ，图9展示 了
+ 
+Infrared
+imageVisible imageγ1=γ2=γ3=5γ1=γ2=γ3=35μ1=μ2=1μ1=μ2=4trainingNo_decompMBAFuse
+TNO MSRS RoadScene
+W/O two-stage
+No_mseNo_ssimNo_decomp
+ 
+图 7  TNO、MSRS和 RoadScene数据集上的消融实验主观对比结果
+Fig.7  Subjective comparison of ablation results on the TNO, MSRS, and
+RoadScene datasets
+Vol.54 No.11 http://www.irla.cn/article/doi/10.3788/IRLA20250366 Nov. 2025
+20250366–11
+
+=== PDF_PAGE 12 ===
+5幅典型融合结果 ，进一步印证了该方法的鲁棒性与
+泛化能力。
+ 
+ 
+Infrared image Visible image MBAFuse
+ 
+图 9  在RoadScene 数据集上的RBG 彩色图像融合结果
+Fig.9  RGB color image fusion results on the RoadScene dataset
+ 
+ 3    结　论
+文中提出了一种基于多分支自编码器结构的红
+外与可见光图像融合方 法MBAFuse。该方法采用端
+到 端 设 计， 结 合 DenseBlock、 可 逆 神 经 网络 (INN)、
+Outlook Attention及 Restormer模 块 ， 实 现 了 共 享 特
+ 
+Infrared imageVisible imageDenseFuseNestFuseCSFusionDIDFuseSDNetDATFuseMBAFuse U2 Fusion
+ 
+图 8  MBAFuse方法与其他七种融合方法在医学数据 集 MRI-CT上
+的泛化能力主管比较
+Fig.8  Subjective comparison of ablation results on the TNO, MSRS, and
+RoadScene datasets
+ 
+表 7  MBAFuse方法在医学图像数据 集MRI-CT上的
+泛化能力比较
+Tab.7  Comparison of the generalization ability of the
+MBAFuse  method  on  the  MRI-CT  medical
+image dataset
+ 
+MRI-CT EN SD SF MI VIF Qbaf
+DenseFuse 4.71 71.95 30.05 2.36 0.44 0.51
+NestFuse 4.82 59.71 10.86 2.21 0.37 0.21
+CSFusion 4.95 56.58 16.83 2.23 0.41 0.31
+U2 Fusion 4.78 48.83 20.44 2.09 0.36 0.42
+DIDFuse 4.40 63.05 25.15 2.24 0.39 0.38
+SDNet 5.18 54.92 23.84 2.12 0.38 0.48
+DATFuse 5.37 69.80 34.50 2.52 0.46 0.51
+MBAFuse 5.49 78.25 25.41 2.33 0.53 0.53
+　Note: Bold and underlined values denote the best and second-best
+results, respectively
+第 11 期 张王卫等： MBAFuse：红外与可见光图像的多分支自编码器融合网络 第 54 卷
+20250366–12
+
+=== PDF_PAGE 13 ===
+征、细节特征与基础特征的有效提取 ，充分挖掘红外
+与可见光图像的互补信息。通过引入多模态一致性
+损 失 并 采 用 两 阶 段 训 练 策 略 ，MBAFuse在 TNO、
+MSRS和 RoadScene等多个数据集上表现优异 ，在主
+客观评价中多数指标超越现有七种先进方法。此外 ，
+MBAFuse在医学图 像MRI-CT数据集 及RGB图像融
+合任务中同样展现出良好的泛化能力与适应性 ，进一
+步验证了方法的鲁棒性。然而 ，受限于网络结构复
+杂，模型在实时应用和动态场景中仍存在一定挑战。
+未来工作将聚焦于网络结构的轻量化设计 ，提升推理
+效率，以适应实时视频融合与动态场景下的实际应用
+需求。
+参考文献：  
+ ZHAO Z, XU S, ZHANG J, et al. Efficient and model-based
+infrared and visible image fusion via algorithm unrolling [J].
+IEEE  Transactions  on  Circuits  and  Systems  for  Video
+Technology, 2021, 32(3): 1186-1196.
+[1]
+ TANG S, GONG R, WANG Y, et al. Robustart: Benchmarking
+robustness on architecture design and training techniques [J/OL].
+(2022-01-14) [2025-07-15]. https://arxiv.org/abs/2109.05211.
+[2]
+ LIU  A,  LIU  X,  YU  H,  et  al.  Training  robust  deep  neural
+networks  via  adversarial  noise  propagation  [J].  IEEE
+Transactions on Image Processing, 2021, 30: 5769-5781.
+[3]
+ ZHOU  W,  GUO  Q,  LEI  J,  et  al.  ECFFNet:  Effective  and
+consistent  feature  fusion  network  for  RGB-T  salient  object
+detection [J].  IEEE  Transactions  on  Circuits  and  Systems  for
+Video Technology, 2021, 32(3): 1224-1235.
+[4]
+ QIN  H,  DING  Y,  ZHANG  M,  et  al.  Bibert:  Accurate  fully
+binarized  bert  [J/OL].  (2022-03-12)  [2025-07-15].  https://
+arxiv.org/abs/2203.06390.
+[5]
+ QIN  H,  ZHANG  X,  GONG  R,  et  al.  Distribution-sensitive
+information  retention  for  accurate  binary  neural  network  [J].
+International  Journal  of  Computer  Vision, 2023, 131(1): 26-
+47.
+[6]
+ WANG Z, ZIOU D, ARMENAKIS C, et al. A comparative
+analysis of image fusion methods [J].  IEEE  Transactions  on
+Geoscience and Remote Sensing, 2005, 43(6): 1391-1402.
+[7]
+ VIJAYAN  A,  BINDU  V  R.  Feature  fusion  approach  for
+differently  exposed  images  with  weighted  guided
+filter[C]//Recent  Trends  in  Image  Processing  and  Pattern
+Recognition: Second International Conference, 2019.
+[8]
+ NENCINI F, GARZELLI A, BARONTI S, et al. Remote sensing[9]
+image  fusion  using  the  curvelet  transform  [J]. Information
+Fusion, 2007, 8(2): 143-156.
+ WANG Z, CUI Z, ZHU Y. Multi-modal medical image fusion
+by Laplacian pyramid and adaptive sparse representation [J].
+Computers in Biology and Medicine, 2020, 123: 103823.
+[10]
+ KUMAR  S  B  K.  Multifocus  and  multispectral  image  fusion
+based  on  pixel  significance  using  discrete  cosine  harmonic
+wavelet transform [J].  Signal,  Image  and  Video  Processing,
+2013, 7: 1125-1143.
+[11]
+ DUAN C, WANG Z, XING C, et al. Infrared and visible image
+fusion  using  multi-scale  edge-preserving  decomposition  and
+multiple saliency features [J]. Optik, 2021, 228: 165775.
+[12]
+ JOLLIFFE I T, CADIMA J. Principal component analysis: a
+review and recent developments [J]. Philosophical Transactions
+of  the  Royal  Society  A: Mathematical,  Physical  and
+Engineering Sciences, 2016, 374(2065): 20150202.
+[13]
+ MA J, CHEN C, LI C, et al. Infrared and visible image fusion
+via  gradient  transfer  and  total  variation  minimization  [J].
+Information Fusion, 2016, 31: 100-109.
+[14]
+ RAJALINGAM B, AL-TURJMAN F, SANTHOSHKUMAR R,
+et al. Intelligent multimodal medical image fusion with deep
+guided filtering [J].  Multimedia  Systems, 2022, 28(4): 1449-
+1463.
+[15]
+ ZHANG S, HUANG F, LIU B, et al. A multi-modal image
+fusion  framework  based  on  guided  filter  and  sparse
+representation  [J]. Optics  and  Lasers  in  Engineering,  2021,
+137: 106354.
+[16]
+ LI H, WU X J. DenseFuse: A fusion approach to infrared and
+visible images [J].  IEEE  Transactions  on  Image  Processing,
+2018, 28(5): 2614-2623.
+[17]
+ ZHANG Y, LIU Y, SUN P, et al. IFCNN: A general image
+fusion framework based on convolutional neural network [J].
+Information Fusion, 2020, 54: 99-118.
+[18]
+ MA  J,  YU  W,  LIANG  P,  et  al.  FusionGAN:  A  generative
+adversarial network for infrared and visible image fusion [J].
+Information Fusion, 2019, 48: 11-26.
+[19]
+ LI H, WU X J, KITTLER J. RFN-Nest: An end-to-end residual
+fusion network for infrared and visible images [J].  Information
+Fusion, 2021, 73: 72-86.
+[20]
+ QUAN T M, HILDEBRAND D G C, JEONG W K. Fusionnet:
+A deep fully residual convolutional neural network for image
+segmentation  in  connectomics  [J].  Frontiers  in  Computer
+Science, 2021, 3: 613981.
+[21]
+ DINH D, SOHL-DICKSTEIN J, BENGIO S. Density estimation
+using  real  nvp  [J/OL].  (2017-02-27)  [2025-07-15].  https://
+[22]
+Vol.54 No.11 http://www.irla.cn/article/doi/10.3788/IRLA20250366 Nov. 2025
+20250366–13
+
+=== PDF_PAGE 14 ===
+arxiv.org/abs/1605.08803.
+ YUAN L, HOU Q, JIANG Z, et al. Volo: Vision outlooker for
+visual recognition [J].  IEEE Transactions on Pattern Analysis
+and Machine Intelligence, 2022, 45(5): 6575-6586.
+[23]
+ TOET A, HOGERVORST M A. Progress in color night vision
+[J]. Optical Engineering, 2012, 51(1): 1-20.
+[24]
+ TANG L, YUAN J, ZHANG H, et al. PIAFusion: A progressive
+infrared and visible image fusion network based on illumination
+aware [J]. Information Fusion, 2022, 83-84: 79-92.
+[25]
+ XU H, MA J, LE Z, et al. Fusiondn: A unified densely connected
+network for image fusion[C]//AAAI, 2020: 12484-12491.
+[26]
+ LI H, WU X J, DURRANI T. NestFuse: An infrared and visible
+image  fusion  architecture  based  on  nest  connection  and
+spatial/channel  attention  models  [J]. IEEE  Transactions  on
+Instrumentation and Measurement, 2020, 69(12): 9645-9656.
+[27]
+ XU H, ZHANG H, MA J. Classification saliency-based rule for[28]
+visible and infrared image fusion [J].  IEEE  Transactions  on
+Computational Imaging, 2021, 7: 824-836.
+ XU H, MA J, JIANG J, et al. U2Fusion: A unified unsupervised
+image  fusion  network  [J]. IEEE  Transactions  on  Pattern
+Analysis and Machine Intelligence, 2020, 44(1): 502-518.
+[29]
+ ZHAO  Z,  XU  S,  ZHANG  C,  et  al.  DIDFuse:  Deep  image
+decomposition  for  infrared  and  visible  image  fusion  [J/OL].
+(2021-04-08) [2025-07-15]. https://arxiv.org/abs/2003.09210.
+[30]
+ ZHANG  H,  MA  J.  SDNet:  A  versatile  squeeze-and-
+decomposition  network  for  real-time  image  fusion  [J].
+International  Journal  of  Computer  Vision,  2021,  129(10):
+2761-2785.
+[31]
+ TANG W, HE F, LIU Y, et al. DATFuse: Infrared and visible
+image  fusion  via  dual  attention  transformer  [J].  IEEE
+Transactions  on  Circuits  and  Systems  for  Video  Technology,
+2023, 33(7): 3159-3172.
+[32]
+ 
+MBAFuse: Multi-branch self-encoder fusion network for infrared and
+visible images
+ZHANG Wangwei1，DAI Menghao1，HUANG Min1*，LI Pu1，WANG Changhai1，ZHOU Bin2，LI Xianwei3
+(1. School of Software Engineering, Zhengzhou University of Light Industry, Zhengzhou 450001, China;
+2. School of Electronic and Electrical Engineering, Zhengzhou University of Science and Technology, Zhengzhou 450064, China;
+3. School of Computer and Information Engineering, Bengbu University, Bengbu 233030, China)
+Abstract:　
+Objective　Infrared and visible image fusion aims to integrate the complementary information of infrared
+radiation and visible textures into a single image, enhancing both perceptual quality and downstream task
+performance. However, most existing encoder-decoder architectures struggle to simultaneously extract modality-
+shared and modality-specific features, leading to suboptimal fusion results. To address these limitations, this paper
+proposes MBAFuse, a novel end-to-end multi-branch autoencoder fusion network tailored for infrared and visible
+image fusion. The proposed method is designed to enhance the extraction of complementary features and improve
+the quality and robustness of the reconstructed fusion image.
+ 
+Methods　MBAFuse adopts a three-branch encoder architecture to separately extract shared and modality-
+specific features from infrared and visible images. The DenseBlock module is used to extract modality-invariant
+shared features, while an Invertible Neural Network (INN) and the Outlook Attention module are integrated to
+capture modality-specific low-frequency and high-frequency details, respectively. To better disentangle the shared
+and unique components, a modality correlation loss is introduced. The decoder employs a Restormer module,
+which leverages multi-head self-attention mechanisms to enhance reconstruction fidelity and detail retention.
+Furthermore, a composite loss function is formulated by combining structural similarity (SSIM) loss, mean
+squared error (MSE) loss, gradient loss, and correlation loss. The network is optimized using a two-stage training
+strategy, which gradually improves feature learning and fusion quality.
+ 
+第 11 期 张王卫等： MBAFuse：红外与可见光图像的多分支自编码器融合网络 第 54 卷
+20250366–14
+
+=== PDF_PAGE 15 ===
+Results and Discussions　 Extensive experiments are conducted on three widely used public datasets: TNO,
+MSRS,  and  RoadScene.  MBAFuse  demonstrates  superior  performance  in  both  qualitative  and  quantitative
+evaluations,  outperforming  seven  state-of-the-art  fusion  methods.  Specifically,  MBAFuse  achieves  average
+improvements of 10.2%, 29.7%, and 7.5% in metrics such as entropy (EN), standard deviation (SD), and visual
+information  fidelity  (VIF)  across  the  three  datasets,  respectively.  In  addition  to  infrared-visible  fusion,  the
+proposed method is also validated on medical image fusion (e.g., MRI-CT) and RGB image fusion tasks,
+exhibiting strong generalization capability and robustness across domains. While MBAFuse delivers impressive
+fusion performance, the complexity of its multi-branch architecture introduces computational overhead, posing
+challenges in real-time applications and dynamic environments. Future work will focus on model lightweighting
+and efficiency optimization, enabling real-time fusion for video streams and mobile scenarios.
+ 
+Conclusions　This paper proposes MBAFuse, a novel multi-branch autoencoder fusion network for infrared and
+visible image fusion. The proposed method effectively combines shared and modality-specific feature extraction
+through a three-branch encoder architecture incorporating DenseBlocks, an Invertible Neural Network (INN), and
+an Outlook Attention module. By introducing a comprehensive loss function and a two-stage training strategy,
+MBAFuse  significantly  enhances  both  the  visual  quality  and  structural  consistency  of  the  fused  images.
+Experimental results on the TNO, MSRS, and RoadScene datasets demonstrate that MBAFuse outperforms
+several state-of-the-art fusion methods in both objective metrics and subjective evaluations. Moreover, the method
+exhibits  strong  generalization  ability  across  medical  and  RGB  image  fusion  tasks.  Despite  the  increased
+complexity introduced by the multi-branch structure, MBAFuse presents a robust and effective solution for multi-
+modal image fusion. Future work will optimize the network architecture for real-time performance and extending
+the approach to dynamic and video-based fusion scenarios.
+Key words:　infrared image;      visible image;      image fusion;      autoencoder;      multi-modal feature
+extraction
+Funding projects:　Henan Province Major Science and Technology Special Project (241100210100); Science
+and Technology Research Project of Henan Province (242102211110)
+Vol.54 No.11 http://www.irla.cn/article/doi/10.3788/IRLA20250366 Nov. 2025
+20250366–15

@@ -1,0 +1,10 @@
+### resampled : 30 files
+   grid_same    30
+   origin_same  30
+### Pooch25 : 205 files
+   grid_diff    2
+   grid_same    203
+   origin_same  205
+   e.g. ('10408_1000415', 'mask(320, 320, 19) vs img(640, 640, 19)  sp(0.6, 0.6, 3.6)/(0.3, 0.3, 3.6)')
+   e.g. ('10459_1000467', 'mask(384, 384, 23) vs img(640, 640, 23)  sp(0.5, 0.5, 3.6)/(0.3, 0.3, 3.6)')
+GRID_CHECK_DONE

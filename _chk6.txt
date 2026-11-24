@@ -1,0 +1,14 @@
+﻿
+FullName                                                                       
+--------                                                                       
+C:\lunwen\research_audit\picai_sop_20261123\sample\10772_1000788\adc.mha       
+C:\lunwen\research_audit\picai_sop_20261123\sample\10772_1000788\expert_mask...
+C:\lunwen\research_audit\picai_sop_20261123\sample\10772_1000788\hbv.mha       
+C:\lunwen\research_audit\picai_sop_20261123\sample\10772_1000788\t2w.mha       
+C:\lunwen\research_audit\picai_sop_20261123\sample\11151_1001174\adc.mha       
+C:\lunwen\research_audit\picai_sop_20261123\sample\11151_1001174\expert_mask...
+C:\lunwen\research_audit\picai_sop_20261123\sample\11151_1001174\hbv.mha       
+C:\lunwen\research_audit\picai_sop_20261123\sample\11151_1001174\t2w.mha       
+
+
+--- deps ---

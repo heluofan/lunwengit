@@ -1,0 +1,810 @@
+=== PDF_PAGE 1 ===
+ 
+基于集成学习的神经母细胞瘤语义分割及半透明可视化
+潘    姣1)，季申予2)，李    亮3)，田中觉3)，王笑琨1)✉
+1) 北京科技大学智能科学与技术学院，北京 100083    2) 深兰科技，北京 100085    3) 立命馆大学信息理工学院，大阪 567-8570
+✉通信作者， E-mail: wangxiaokun@ustb.edu.cn
+摘    要    神经母细胞瘤是一种形态复杂多变的肿瘤 ，肿瘤的位置 、形状和大小差异显著 ，且常伴随重要解剖结构的包绕 ，肿瘤
+与周围组织的边界模糊 ，导致术前评估与手术规划面临巨大挑战 . 为提升术前诊疗的智能化与可视化水平 ，本文提出了一种
+基于集成学习的神经母细胞瘤语义分割及半透明三维可视化方法 . 在语义分割部分 ，本文基于预训练 的nnU-Net架构构建了
+能够使用多模态医学图像作为输入的分割框架 ，并在推理阶段引入了一种基于验证 集 Dice分数的加权投票集成策略 . 与
+nnU-Net默认的等权平均集成不同 ，该策略根据模型性能分配融合权重 ，使表现更优的模型在最终预测中占据更大权重 ，从而
+在保持整体稳定性的同时提升了分割精度 . 本方法 在SPPIN 2023挑战赛提供的儿童神经母细胞瘤数据集上开展了对比实
+验，该方法 在Dice系数 、Hausdorff距离与体积相似性等指标上均优于主流方法 . 此外，为进一步验证投票集成策略的有效性 ，
+我们 在BraTS2021给出的脑肿瘤数据集上进行了消融实验 ，证明了投票策略确实有效 . 在肿瘤可视化部分 ，本文使用了一种
+基于随机点采样的半透明三维可视化方法 ，通过将分割后的结果进行点云化 ，并进行多子集点云的统计融合 ，在无需深度排
+序的条件下实现快速渲染 ，实现了肿瘤和周围器官的半透明可视化 . 本文提出的可视化方案可以提升术前空间理解效率 ，为
+复杂病例的术前辅助决策提供直观、精准的视觉支持，具备良好的临床应用前景.
+关键词    语义分割；半透明可视化；神经母细胞瘤；集成学习；多模态核磁共振
+分类号    TP37
+Semantic segmentation and semi-transparent visualization of neuroblastoma based on
+ensemble learning
+PAN Jiao1)，JI Shenyu2)，LI Liang3)，TANAKA Satoshi3)，WANG Xiaokun1)✉
+1) School of Intelligence Science and Technology, University of Science and Technology Beijing, Beijing 100083, China
+2) Deepblue AI, Beijing 100085, China
+3) College of Information Science and Engineering, Ritsumeikan University, Kyoto 567-8570, Japan
+✉Corresponding author, E-mail: wangxiaokun@ustb.edu.cn
+ABSTRACT    Neuroblastoma is a cancer originating from immature nerve cells that mostly occurs in infants and young children. The
+morphology of neuroblastoma tumors is highly complex, exhibiting variations in location, shape, and size. Furthermore, tumors are often
+located near critical anatomical structures, making it difficult to differentiate between the tumor and surrounding tissue. This complexity
+presents significant challenges in preoperative evaluation and surgical planning. To better assist clinicians in preoperative diagnosis and
+treatment, this paper proposes a neuroblastoma diagnostic and treatment support method based on semantic segmentation and three-
+dimensional (3D) transparent visualization. For semantic segmentation, we introduce an ensemble learning framework that leverages
+multiple pretrained nnU-Net architectures. Unlike the default nnU-Net configuration, which averages the outputs of multiple models 
+收稿日期: 2025−06−11
+基金项目: 国家科技重大专项资助项目 （2022ZD0118001）； 国家自然科学基金资助项目 （62406024，62332017，U22A2022）； 北京科技大学青
+年教师交叉学科研究资助项目（FRF-IDRY23-001）
+工程科学学报， 第 48 卷，第 2 期：360−369，2026 年 2 月
+Chinese Journal of Engineering, Vol. 48, No. 2: 360−369, February 2026
+https://doi.org/10.13374/j.issn2095-9389.2025.06.11.003; http://cje.ustb.edu.cn
+
+=== PDF_PAGE 2 ===
+equally during inference, our framework uses a Dice-weighted voting mechanism, where each model’s contribution to the final
+prediction is proportional to its Dice score on the validation set. This nonuniform ensemble strategy allows better-performing models to
+contribute more significantly to the result, thereby improving segmentation accuracy and boundary consistency while maintaining
+robustness. The proposed framework is designed to support small-sample scenarios and effectively utilize multimodal medical imaging
+data (e.g., T1, T2, B0, B100). To validate the method, we performed comparison experiments on the pediatric neuroblastoma dataset
+provided by SPPIN 2023. The results demonstrate that our method outperforms conventional baselines in terms of Dice coefficient,
+Hausdorff distance, and volumetric similarity. Furthermore, to evaluate the effectiveness of the proposed voting-based ensemble strategy,
+we applied the same weighted scheme to the BraTS 2021 brain tumor dataset, where comparable performance improvements were
+observed. By incorporating the semantic segmentation results, we developed a transparent visualization approach that enables clear and
+intuitive observation of the segmented tumor and its surrounding anatomical structures, based on a method known as stochastic point-
+based rendering. This rendering technique provides realistic, rapid, and semi-transparent 3D visualization of point sets by utilizing
+statistical algorithms to represent spatial information. Unlike conventional 3D rendering methods, which often require computationally
+intensive depth sorting to preserve spatial relationships, our method maintains an accurate sense of depth without relying on such
+processes to improve efficiency while ensuring visual fidelity. In our study, we generated the point sets by sequentially reconstructing
+two-dimensional semantic segmentation outputs across image slices to effectively transform planar segmentation data into a coherent 3D
+point cloud. The color of each point in the cloud is derived from semantic labels assigned to the tumor region, combined with the
+intrinsic coloration of the surrounding tissues, resulting in a composite visual output that preserves both the anatomical realism and
+semantic interpretability. Through stochastic point-based rendering, both the color-coded tumor areas and adjacent anatomical structures
+are simultaneously visualized within a single perspective image. This unified view allows clinicians to efficiently assess the patient’s
+condition from just one fixed angle, without the need to manipulate the model or switch perspectives. As a result, the proposed method
+significantly enhances preoperative spatial understanding and the perception of anatomical relationships, supporting clinicians in fully
+comprehending complex pathological scenarios. Overall, this visualization strategy serves as a valuable auxiliary tool in preoperative
+planning and decision-making, offering considerable potential for clinical application in precision diagnostics and surgical guidance.
+KEY  WORDS    semantic  segmentation；semi-transparent  visualization；neuroblastoma； ensemble  learning；multimodal  magnetic
+resonance imaging
+神经母细胞瘤是一种由原本应正常发育的神
+经细胞发生突变 、失去分化能力并进入失控增殖
+状态所引发的恶性肿瘤 [1]. 该肿瘤在形态 、位置和
+大小等方面通常表现出高度异质性 ，且常紧邻甚
+至包绕肾脏 、肝脏 、胰腺 、脾脏等重要器官 ，或腹
+部主要血管 （如主动脉 、肾静脉等 ）. 由于其与关键
+解剖结构之间的空间关系极为复杂 ，使得手术切
+除过程异常复杂且充满挑战 [2−3]. 目前 ，临床亟需能
+够实现对神经母细胞瘤进行精准术前评估与手术
+规划的技术手段 . 随着医学影像技术和人工智能
+算法的持续发展 ，借助可视化与图像分析方法 ，对
+X射线 、CT（Computed tomography）、MRI（Magnetic
+resonance imaging）、 超声 和PET/CT（Positron emiss-
+ion tomography/Computed tomography） 等医学图像
+进行智能化及可视化分析 ，已成为实现肿瘤精准
+诊疗的关键路径 [4]. 尤其是肿瘤的语义分割与可视
+化技术展现出巨大潜力 [5]. 其中 ，语义分割能够高
+效提取肿瘤区域 ，使其与周围组织清晰区分 ，而可
+视化技术则有助于辅助医生理解肿瘤与邻近结构
+之间的空间关系 ，为手术规划与治疗决策提供有
+力支持.
+近年来 ， 医学图像分割作为计算机辅助诊疗
+中的关键任务受到广泛关注 . 其中最具代表性的
+有 nnU-Net（No-new-U-Net） [6]和 近 年 来 兴 起 的 基
+于视觉基础模型 的 SAM-Med（Segment anything in
+medical images） [7]等大规模分割模型 . nnU-Net作
+为一种自适应 、无需手动设计的分割框架 ，通过自
+动优化网络结构 、预处理流程及训练策略 ，表现出
+卓越的通用性与精度 ，已成为医学图像分割的基
+准方法. 而以SAM-Med为代表的大模型则依托大
+规模预训练数据获得了强大的零样本迁移能力 ，
+能够在无特定训练的情况下完成多种分割任务 .
+然而 ，面对神经母细胞瘤这类结构复杂且样本稀
+缺的分割任务时 ，通用大模型仍面临一定局限 . 本
+文的实验表明 ，SAM-Med及其基础上的改良方法
+在神经母细胞瘤的分割任务上效果不尽理想.
+本研究 在nnU-Net的基础上 ，引入了一种基于
+验证性能的加权投票集成策略 ，以提升模型在神
+经母细胞瘤这类小样本图像分割任务中的稳定性
+与准确性 . 此外 ，提出了一种图像配准的策略 ，使
+潘    姣等： 基于集成学习的神经母细胞瘤语义分割及半透明可视化 · 361 ·
+
+=== PDF_PAGE 3 ===
+框架能够接收多模态图像并整合 . 本方法通过训
+练多 个2D与 3D nnU-Net子模型 ，结合各自验证集
+上的Dice分数 ，赋予不同融合权重 ，构建非等权的
+集成框架. 与传 统nnU-Net默认采用的等权平均融
+合策略不同 ，本文方法能够强化高性能模型的贡
+献，减弱低性能模型对最终结果的干扰 ，从而提升
+整体分割质量 . 该策略不仅充分挖掘了交叉验证
+过程中各子模型的泛化能力 ，还有效缓解了小样
+本场景下模型单一 、易受噪声影响的问题 . 本研究
+在SPPIN 2023[8]儿童神经母细胞瘤数据集 和BraTS
+2021[9]脑肿瘤数据集上开展了对比与消融实验 . 其
+中 ，BraTS 2021脑肿瘤数据集的实验结果证明了
+所提出的加权投票集成策略的有效性 . 而在SPPIN
+2023儿童神经母细胞瘤数据集的结果表明 ，本方
+法的Dice系数 、Hausdorff距离和体积相似性都优
+于 nnU-Net及 SAM-Med等主流方法 . 上述方法充
+分证明了本研究提出的方法在神经母细胞瘤分割
+这类小样本医学图像分割任务中的有效性.
+此外 ，除了高质量的肿瘤语义分割结果 ，对肿
+瘤与周围复杂解剖结构之间空间关系的直观可视
+化也是临床决策的重要支撑 . ITK-Snap[10]等常用
+的医学图像软件虽可在三正交切片及网格预览中
+简 单 调 节 标 签 透 明 度， 但 因 缺 乏 GPU（Graphics
+processing unit） 体绘制能力 ，难以在单视图下同时
+呈现体内部多层次组织 . 目前临床常用的三维医
+学影像可视化主要基 于 VTK（Visualization toolkit）
+等工具中的两大路线 ：直接体绘制利用光线投射
+和传递函数直观呈现体内部密度分布 ，表面重建
+则借 助 Marching cubes等算法提取多边形网格并
+快速渲染. 前者参数调节繁琐 、在多组织重叠时易
+掩盖深层结构 ；后者需依赖精确分割且多层半透
+明显示必须反复深度排序 . 为应对神经母细胞瘤
+这类肿瘤常与主血管 、脏器包绕交织的小样本场
+景，传统可视化难以在单视图中同时突出多结构
+相对位置的难题 ，本研究集成了前置研究中提出
+的随机点采样渲染 （SPBR） 方法 ，将肿瘤的语义分
+割结果与周围组织的三维模型进行统一点云化 ，
+并实现了融合的半透明渲染 . 由于SPBR无需深度
+排序 ，该方法可自动稀释离群噪声 ，保持正确深度
+线索 ， 使肿瘤 、 血管及脏器在同一视角下透明共
+现，大幅提升对肿瘤周围空间理解的直观性.
+本文的贡献在于 ：（1） 提出了一种基于集成学
+习的语义分割框架 ，在预训 练nnU-Net模型的基础
+上，通过训练多个子模型并引入基于验证性能的
+加权投票机制 ，有效提升了分割结果的准确性与
+鲁棒性 ，尤其适用于小样本的医学图像分割任务 ；
+（2） 设计了一种基于随机点采样的三维半透明可
+视化方法 ，实现了肿瘤及其周围关键解剖结构的
+高效透明渲染 ，显著增强了术前的空间理解与结
+构感知能力 ，特别适用于复杂病理情况下的辅助
+诊断与路径规划 ；（3） 在小型神经母细胞瘤数据集
+上 ， 本文方法 在 Dice系数 、Hausdorff距离和体积
+相似性等关键评估指标上取得了显著优势 ，且具
+备良好的多模 态 MRI图像适应能力 ，能够满足不
+同临床成像条件下的应用需求 ；（4） 整体方案可作
+为一种可选的智能辅助诊疗工具 ，具备良好的可
+扩展性和临床应用前景 ，为神经母细胞瘤等复杂
+肿瘤的精准术前评估与决策支持提供了有效支撑.
+ 1    相关工作
+本文提出的基于集成学习的神经母细胞瘤语
+义分割与三维可视化方法的技术路线主要由医学
+图像的语义分割任务和三维可视化任务构成 ，因
+此本部分将对这两个任务的相关研究现状进行详
+细的总结.
+ 1.1    医学图像语义分割相关工作
+早期医学图像分割主要依赖区域生长 、阈值
+化和图论等传统图像处理技术 ，这类算法对成像
+噪声和器官形态差异高度敏感 ，难以在不同应用
+场景中实现良好泛化. 自U-Net[11]提出对称的编码 −
+解码结构及跳跃连接机制以来 ，各类基于卷积神
+经网络 （CNN） 的分割方法逐渐成为主流 [12−14]. 其
+中 ，V-Net[14]、3D U-Net[15]等模型通过结构优化不
+断 提 升 分 割 性 能.  值 得 一 提 的 是，nnU-Net首 创
+“no-new-net”理念 ，强调与其盲目堆叠复杂网络结
+构，不如通过自动化的预处理 、网络超参数搜索 、
+数据增强和后处理策略 ，充分释放现有模型的潜
+力. 凭借这一自适应式的处理流程 ，nnU-Net在多
+个公开医学图像分割挑战中屡获最佳成绩 . 作为
+开源工具发布后 ，它迅速成为医学图像分割领域
+公认的强大基线 ，显著降低了特定任务模型开发
+的技术门槛，现已被广泛视为社区中的标准方法.
+随着Transformer架构的兴起 ，TransUNet、Swin-
+UNETR-V2等模型引入自注意力机制以捕捉长程
+依赖关系 ，在多种任务中进一步提升了分割精度 [16].
+近期 ，基于视觉基础模型的大规模通用分割方法
+也 日 益 受 到 关 注. 这 类 模 型（如 SAM、MedSAM、
+nnSAM等 ）在通用分割及零样本 /少样本任务中展
+现出卓越性能[17]. 其中，Meta提出 的Segment anything
+model（SAM）[18]是一种可提示的通用分割框架 ，在
+· 362 · 工程科学学报， 第 48 卷，第 2 期
+
+=== PDF_PAGE 4 ===
+包 含 11亿标注样本的超大规模数据集上进行训
+练. 医学图像研究者进一步提 出 SAM-Med等变
+体 ， 将该范式拓展至医疗影像领域 . SAM-Med在
+大规模 、多模态医疗数据上训练 ，涵盖 10种成像
+模态 和 30余类疾病 ，实现了跨器官 、跨疾病的广
+泛分割能力 . 然而 ，在如神经母细胞瘤等罕见肿瘤
+任务中 ，其分割精度仍不及多数针对性微调模型 .
+为实现更精准的术前诊断与治疗支持 ，本文以nnU-
+Net为基线 ， 结合针对性改进策略 ， 力求在小样
+本、复杂解剖结构场景中获得更可靠的分割表现.
+ 1.2    医学图像可视化相关工作
+医学图像可视化技术在临床诊断与术前规划
+中扮演着关键角色 ， 近年来取得了诸多进展 [4,19].
+早期医学三维可视化多依赖等值面提取显示刚性
+表面 ， 随 着 GPU硬件加速的发展 ， 实时体绘制变
+得可行 [20]. 近年来 ，虚拟现实/增强现实 （VR/AR） 技
+术被引入医学可视化 ，可以在沉浸式环境中对三
+维影像进行交互式观察 ，研究表明这些沉浸式技
+术显著提升了外科医生对解剖评估的信心 [21]. 然
+而，现有方法在表达复杂的组织结构关系 ，尤其是
+对肿瘤与周围组织的包绕关系进行直观 、快速把
+握方面仍存在一定局限 . 尤其在处理高度重叠的
+三维解剖结构时 ，传统体绘制或表面渲染方法容
+易导致信息遮挡 ，难以提供清晰的结构层次感 . 对
+此，本文拟将三维医学模型转化为点云表示 ，并基
+于点云进行半透明可视化 ，以增强对包绕结构的
+空间理解能力.
+点云可视化方面 ， 传统的可视化方法通常包
+括不透明渲染与透明可视化 . 首先 ，不透明渲染的
+点云可视化方法已在诸多研究中提出 ，但这些方
+法无法实现 “可透视 ”的成像效果 ，对于复杂的肿
+瘤包绕情况并没有显著的帮助 . 另一方面 ，传统的
+透明可视化方法 ，早期研究通常需依赖深度排序
+处理 ，但该过程在面对大规模点云时计算成本高
+昂[22−23]. 在我们的前期工作中 ，提出了一种基于随
+机点渲染的半透明可视化方法 [24]，该方法通过基
+于统计学的随机算法 ，能够在无需深度排序的前
+提下获得准确的深度感 ，因此可以处理大规模的
+医学影像模型 . 本文中 ，我们利用该方法的半透明
+效果 ，将肿瘤语义分割的标签结果与医学图像的
+原始像素值进行叠加 ，进行了语义增强的半透明
+融合可视化，实现了对包绕结构的直观可视化.
+ 2    研究方法
+为针对神经母细胞瘤术前诊疗提供更具针对
+性的辅助方案 ，本文提出了一套基于集成学习的
+肿瘤语义分割与半透明可视化处理框架 . 该框架
+在 nnU-Net的基础上构建基于非等权投票集成模
+块，后结合语义标签 ，利用基于随机点渲染的半透
+明可视化方法实现肿瘤与周围组织的三维融合可
+视化 ，以直观呈现肿瘤及其与关键解剖结构的空
+间关系. 上述两部分的设计思路 、实现细节与关键
+技术，分别将在2.1和2.2节中详细阐述.
+ 2.1    基于集成学习的神经母细胞瘤分割
+ 2.1.1    数据配准
+在本文所关注的神经母细胞瘤分割任务中 ，
+为充分发挥多模 态MRI图像在信息表达上的互补
+优势 ，首先利用刚性互信息配准 ，将各序列精确对
+齐至相同的解剖空间 ，以确保不同模态间的器官
+位置高度一致 . 随后 ，本研究引入一种基于对比度
+增强的阈值填充策略 ：针对目标序列中强度低于
+设定阈值的体素 ，采用在肿瘤对比度更高的模态
+中对应位置的值替代 ，从而提升融合图像中肿瘤
+边界的可见性 . 在本文实验的具体实施中 ，所有序
+列 统 一 配 准 至 高 分 辨 率 的 T1加 权 图 像 ， 并 以
+T1图像作为主要的填充源.
+ 2.1.2    网络架构
+如图 1所示 ，本文采用的网络架构 与 nnU-Net
+保持一致 . nnU-Net基于经典 的 U-Net编码 –解码
+框架 ，提供三种自动派生形式 ：2D U-Net、3D全分
+辨 率 U-Net和 3D级 联 U-Net. 前两者适用于常规
+分辨率的医学影像 ，可单独或联合使用 ；后者多用
+于显存受限场景下对高分辨率图像的处理 . 本研
+究数据集不受显存限制 ，因此主要采 用 2D U-Net
+与3D全分辨率U-Net.
+两种网络均由对称的下采样与上采样路径构
+成，通过跳跃连接传递高分辨率特征 . 其基本单元
+为 ResConvBlock， 包 括 两 次 卷 积 、 实 例 归 一 化
+（InstanceNorm） 和LeakyReLU激活 ，并在各尺度末
+端引入深监督分支以增强梯度稳定性 . 另外 ，nnU-
+Net能根据输入图像的体素间距 、 尺寸和显存预
+算，自动推断网络深度 、通道数 、卷积核大小 、图
+像块尺寸与批次大小，实现配置的自适应优化.
+ 2.1.3    加权集成策略
+Pi
+在本研究中 ，我们主要 对nnU-Net的模型集成
+功能进行了改进 ， 将 nnU-Net原本的简单集成方
+式 ， 改为基于验证 集 Dice分数的加权投票集成 .
+对 nnU-Net训练过程中 的 2D和 3D两条管线 ， 由
+于每条管线执行 了 5折交叉验证 ，合计获 得 10个
+子模型及其在各自验证折中的预测概率图 （ 即
+潘    姣等 ：基于集成学习的神经母细胞瘤语义分割及半透明可视化 · 363 ·
+
+=== PDF_PAGE 5 ===
+S i
+softmax概率）与对应的验证Dice分数 .
+S min
+b
+b
+wi
+b
+b = 0:1
+Pfinal
+Pfinal
+随后引入全部子模型 的Dice分数最低值
+以及平衡系数 ， 将每 个模型 的Dice分数归一化
+为权重 以 反映其相对可靠性 . 其中平衡系数 越
+大代表各个子模型的权重越平均 ，反之则代表权
+重受Dice分数影响越大 ，本文设置 .  推理阶
+段，对同一输入体数据 ，k个子模型各自输出概率
+图；将它们按权重加权求和得到融合后的最终概
+率图 ， 再对 取通道维度上的最大值的索
+引生成最终标签图 . 该策略在保 留3D模型空间一
+致性的同时 ，充分利 用2D模型对细节结构的敏感
+性，通过性能驱动的加权融合，提升分割的稳健性.
+wi = (S i   S min + b)k∑
+j=1
+(S j   S min + b)
+（1）
+Pfinal =
+10∑
+i=1
+wiPi （2）
+ 2.1.4    损失函数
+本研究所用的损失函数为加权交叉熵损失
+（Weighted cross-entropy loss） 与Dice损失的加权组
+合，形式如公式(3)所示：
+L = LWCE + LDice （3）
+LWCE
+LDice
+ =
+0:5
+ = 1
+其中 ， 为 加权交叉熵损失 ， 为 Dice损失 ，
+超参 数 α与 β用于平衡两者的贡献 . 本文设置
+， ， 以实现较优的收敛与分割效果.
+为应对数据集中类别不平衡的问题 ， 加权交
+叉熵损失对低频类别 （正样本类别 ） 赋予更高权
+重，引导模型更加关注这些难分类别 . 其数学表达
+式如下所示：
+LWCE =  
+C∑
+c=1
+wc  [yc  lg (pc) + (1   yc)  lg (1   pc)]（4）
+yc 2
+f0;1
+pc 2
+f0;1
+wc
+其中 ，C为类别总数 ， } 类别表示样本是否
+属于类 别 C， } 为模型对类 别 C的预测概
+率， 为 类别权重 ，通常取为类别频率的倒数 ，在
+训练过程中对少数类误判时会受到更大的惩罚 .
+相比于标准交叉熵损失 ，加权版本在肿瘤类等困
+难类别上的表现显著提升.
+Dice 损失用于衡量预测与真实分割在空间上
+的重叠程度，定义如下所示：
+LDice =   2 jX \ YjjXj + jYj （5）
+jX \ Yj
+jXj
+jYj
+其中 ，X和 Y分别表示预测分割与真实分割的体素
+集合 ， 是 为两者交集体素数 ， 和 分别为
+各自的体素总数 . 最小 化 Dice损失有助于提高预
+测结果在空间上的重叠度与边界贴合度 . 我们将
+其与交叉熵损失结合 ，以同时优化像素级精度和
+分割结果的连续性.
+ 2.2    基于随机点渲染的半透明可视化
+本节简要回顾基于随机点渲染的半透明可视
+化方法. 本方法取得的透明效果源于像素强度的随
+机确定方式 ，无需进行耗时的深度排序即可实现
+正确的深度感 ，是一种快速而精确的三维透明可
+视化方法. 如图2所示 ，该渲染方法分为以下三步 ：
+•STEP 1： 从原始点云中创 建 L个子集 ， 每个
+子集描述的表面是等效但统计独立的 ，且每组点
+云的密度一致.
+•STEP 2： 将1中的每个子集按照指定的方向
+进行投影 ，获得 L个投影图像 ，按照每个像素计算
+点的遮挡关系.
+ 
+3D U-Net
+2D U-Net
+Output
+wiα dice
+nnU-Net
+T1-weighted
+fused image
+Registration
+Training Inference
+5-fold cross validation
+图 1    基于集成学习的神经母细胞瘤分割流程
+Fig.1    Segmentation pipeline of neuroblastoma based on ensemble learning
+· 364 · 工程科学学报， 第 48 卷，第 2 期
+
+=== PDF_PAGE 6 ===
+•STEP 3： 将2中 的 L个中间图像进行平均 ，获
+取最终的透明渲染图像.
+根据上述步骤 ， 通过参 数 L可以控制渲染图
+像的质量 ，因为它代表了被平均的中间图像数量 .
+此外 ，点云的不透明度控制不依赖任何深度排序
+过程.
+
+设 s为一个点的截面面积 （其投影仅覆盖一个
+像素 ），S为包 含 n个点的局部表面片段面积 ，则该
+局部表面片段的不透明度 表示为 ：
+ = 1  
+(
+1   sS )n （6）
+
+
+根据 式 (6)，通过调整局部点的数 量 n可以控
+制局部表面不透明度 .  通过调节点 数 n，可以实现
+期望的不透明度 .  当 n过大时 ，可均匀地剔除一
+部分点以减少点数 . 当 n较小时 ，可通过随机复制
+部分点并生成适量副本来增加点数 ，而无需向原
+始点云添加新点 . 在这种情况下 ，当参 数 L设置得
+足够大时 ，基于统计学可以得出每个副本将归属
+于一个不同的子集中.
+ 3    实验结果
+我们首先针 对SPPIN 2023儿科神经母细胞瘤
+数据集 和BraTS 2021成人脑胶质瘤数据集开展了
+加权投票策略的系统性消融实验 ，通过分别训 练
+3D nnU-Net与 2D nnU-Net， 并对比它们的等权集
+成与基于验 证 Dice得分的加权集成 ，验证了加权
+投票能够在两种数据集上稳定提升分割性能 ；其
+次，通过设置不同的加权平衡系数探讨了该数值
+对最终性能的影响 . 随后 ，我们依 托SPPIN 2023挑
+战赛官方线上评测平台开展对比实验 ，进一步确
+认了所提方法在小样本 、异质性强的儿科肿瘤场
+景中的优势.
+ 3.1    数据集介绍
+SPPIN 2023 (Surgical planning in pediatric neuro-
+blastoma)挑战赛 是MICCAI 2023面向儿科神经母
+细胞瘤术前规划的首个多模 态MRI自动分割挑战
+数 据 集 ， 训 练 阶 段 提 供 来 自 34名 患 儿 的 78组
+MRI（含诊断期与化疗后扫描 ）， 初步测试集 （验证
+集）含3名患者 的7组扫描数据 ，最终测试阶段 （测
+试集 ）另含11名患者 的24组数据 ，用以评估算法
+在小样本 、异质场景下的稳健性 . 每组数据包含未
+经配准的多参数序列 （T1、T2、T1-c、DWI-ADC等 ），
+并为全部病例提供人工精标的肿瘤体积标签 ，目
+标是生成可直接用 于 3D手术模型的精准分割结
+果. 官方排行榜 以Dice、95-HD与体积相似 性(VS)
+作为核心指标 . 本文使 用 SPPIN 2023数据集与多
+个SOTA模型进行对比实验 ，训练 、验证及测试集
+的 划 分 遵 循 上 述 官 方 划 分 规 则 ， 比 例 约 为
+10∶1∶3，最终结果亦参考官方的公开排名 ，具体
+结果见3.4.
+BraTS 2021（RSNA-ASNR-MICCAI brain tumor
+segmentation 2021） 是目前规模最大的成人胶质瘤
+多模 态MRI基准之一 ，汇集多机 构2000余例术 前
+mpMRI； 其 中 1251例 带 公 开 标 注 作 为 训 练 集 ，
+219例为隐藏验证集 ，其余用于最终盲测 ，以评估
+算法在真实异构成像协议下的泛化能力 . 每例包
+含 T1、 对比增 强 T1-Gd、T2与 T2-FLAIR四序列 ，
+均已配准 到 SRI24模板并重采样 至 1 mm3等方体
+素，便于直接训 练 3D网络 . 竞赛核心的三分割任
+务要求参赛者分别输 出 Whole tumor (WT)、Tumor
+core (TC： 坏死/非增强肿瘤 +增强区 )和 Enhancing
+tumor (ET)三个空间掩膜 ， 并 以 Dice与 95% Haus-
+dorff distance打分 . 本文使 用BraTS 2021数据集进
+ 
+Step 3
+Image 1
+Image 2
+Image L
+...
+Subgroup 1
+Subgroup 2Original
+point dataset
+L Groups
+Step 1 Step 2
+Subgroup L
+...
+Averaged
+image
+AveragePointrenderingRandomdivision
+图 2    基于随机点渲染的半透明可视化
+Fig.2    Stochastic point-based rendering for translucent visualization
+潘    姣等 ：基于集成学习的神经母细胞瘤语义分割及半透明可视化 · 365 ·
+
+=== PDF_PAGE 7 ===
+行消融实验 ，用以评估所提出网络的各个组件的
+有效性 ，本文采 用1251例带公开标注作为训练集
+进行不同设置模型的训练 ，219例验证集用于测试
+其有效性 ，官方测试集已停止公开所以并未使用 .
+因此本文训练集与测试集比例约 为 6∶1，具体实
+验结果见3.3.
+ 3.2    实验细节
+本 研 究 中 的 语 义 分 割 模 型 均 基 于 PyTorch
+1.10框架实现 ，使用 Python 3.8 编写. BraTS 2021数
+据 集 的 相 关 实 验 在 一 台 搭 载 NVIDIA RTX 4090
+GPU（24 GB  显 存 ） 、Intel Core i9-10900K CPU和
+128 GB内存的高性能工作站上完成训练与评估 ，
+操作系统 为 Ubuntu 20.04. BraTS 2021的测试结果
+基于其公开验证集在本地进行评估 ，并采用与官
+方一致的评价指标 （Dice、HD95）进行性能对比分
+析. SPPIN 2023数 据 集 相 关 实 验 则 在 一 台 搭 载
+NVIDIA A100 GPU（40 GB 显存）、配备 AMD EPYC
+7543 CPU和 256 GB内存的服务器上进行 ，操作系
+统为CentOS 8. SPPIN 2023的测试结果由官方平台
+统一评估 ，模型推理结果通过官方接口提交 . 两组
+实验的训练过程中的优化器和学习率采 用nnU-Net
+提供的自动化流程进行配置.
+在半透明可视化模块中 ，由于其完全基 于CPU
+运算 、无需 GPU加速 ，因此具备良好的跨平台适
+应性. 为验证其实用性与设备兼容性 ，我们分别在
+上述高性能工作站与一台搭 载 Apple M2芯片 （配
+备 24 GB内存 ） 的 MacBook Air上进行了测试 . 结
+果表明 ，两台设备上的渲染速度与交互流畅度均
+可满足实际使用需求 ，支持临床环境下的实时预
+览与交互式图像分析任务.
+ 3.3    消融实验
+表 1是 在 BraTS2021中进行的关于加权融合
+策略有无的消融实验 . 结果表明基于加权集成的
+方法在各 项 Dice指标上均表现最佳 ，尤其在增强
+肿瘤区域 （Enhancing tumor） 上达到 了0.882的 Dice
+分数 ，优于nnU-Net的 2D和 3D版本 . 这表明加权
+集成策略能够有效融合不同模型的优势 ，提升分
+割精度 . 相比之下 ，nnU-Net（3D） 在整体肿瘤和肿
+瘤核心区域也取得了较高性能 ， 显著优 于 2D模
+型，验证了三维空间信息对分割效果的重要性 . 综
+合来看 ，加权集成方法在保持高效性的同时 ，实现
+了更全面、准确的肿瘤识别.
+表 2评估了融合过程中平衡系 数 b对分割性
+能的影响 . 消融实验分别测试 了 b在不同取值下
+的分割结果 （其 中inf表示各子模型权重相等 ）. 实
+验结果表明 ， 随 着 b从 0增加 至 0.1， 模型的  Dice
+系数均稳步提升 ， 尤其 在 Enhancing tumor区域提
+升显著 （由 0.8789增 至 0.8821）. 当 b取 0.1时性能
+达到峰值并趋于稳定 . 当 b大 于1.0时性能则开始
+下降 ，且在 b趋近 于inf时 （即各模型等权融合 ）三
+项指标均为最低值 . 因此 ，本文最终选 取 0.1作为
+平衡系数b的默认取值，以获得鲁棒的分割性能.
+ 
+ 
+表 2    平衡系数b消融实验结果（Dice score）
+Table 2    Ablation study results on factor b （Dice score）
+b Whole tumor dice Tumor core dice Enhancing tumor dice
+0 0.9383 0.9237 0.8789
+0.01 0.9386 0.9239 0.8793
+0.1 0.9391 0.9243 0.8821
+0.2 0.9390 0.9243 0.8821
+1.0 0.9384 0.9236 0.8808
+10.0 0.9372 0.9216 0.8796
+inf 0.9363 0.9188 0.8786
+ 
+此外 ，下述对比实验的 表3中 第5行与 第6行
+的对比结果表明 ，在神经母细胞瘤分割任务中 ，采
+用加权集成投票策略显著提升了模型在的表现 .
+进一步说明了这一改进机制有效整合 了 nnU-Net
+不同子模型在空间结构识别上的互补特性 ，提升
+了对复杂病灶区域的分割稳定性与准确性 ，进一
+步验证了集成策略在小样本 、高异质性的神经母
+细胞瘤肿瘤任务中的有效性.
+ 
+表 1    BraTS 2021消融实验结果（Dice score）
+Table 1    Ablation study results on BraTS 2021（Dice score）
+Method Whole tumordice Tumor coredice Enhancing tumordice
+nnU-Net (2D) 0.925 0.900 0.865
+nnU-Net (3D) 0.938 0.924 0.879
+Weighted ensemble
+(Ours) 0.939 0.924 0.882
+ 
+表 3    SPPIN 2023 对比实验结果
+Table 3    Comparison study results on SPPIN 2023
+Method Dicecoefficient Hausdroffdistance Volumetricsimilarity
+SAM-Med3D[7] 0.32 — —
+SAM-Med3D-
+MoE[25]
+0.49 — —
+DynUnet[26] 0.57 31.15 0.68
+PRIMAGE 0.66 31.31 0.75
+nnU-net 0.80 11.51 0.83
+Ours 0.89 5.24 0.93
+· 366 · 工程科学学报， 第 48 卷，第 2 期
+
+=== PDF_PAGE 8 ===
+ 3.4    神经母细胞瘤分割对比实验
+如表3所示 ，在SPPIN2023 挑战赛提供的神经
+母细胞瘤多模 态 MRI分割数据集上 ，我们的方法
+在多个关键评估指标中展现出显著优势 . 通过引
+入加权集成投票机制 ，有效融合多个子模型的预
+测结果，在Dice、HD95和 VS指标上分别达 到0.89、
+5.24和 0.93， 显 著 优于 nnUNet和 PRIMAGE等 基
+线方法. 在最终官方测试排行榜中 ，我们的方法排
+名第二 ，表明其在保持较高精度和边界鲁棒性的
+同时 ，具有良好的泛化能力 . 该结果验证了加权集
+成策略在复杂多模态神经母细胞瘤分割任务中的
+有效性和实用潜力.
+值得注意的是，大规模预训练模型SAM-Med3D
+及其MoE（Mixture of experts） 扩展在本任务中的表
+现远低于预期 ，Dice分别仅 为0.32和 0.49. 我们分
+析认为 ，该类模型虽在通用医学图像分割任务中
+具备一定迁移能力 ，但在神经母细胞瘤这一小样
+本、高异质性且器官定位偏移明显的任务中 ，存在
+明显的性能退化 . 一方面 ，这可能源于其预训练语
+义嵌入与目标任务之间存在语义域差异 ；另一方
+面，也反映出通用大模型在病种特异性结构建模
+方面的不足 . 相比之下 ， 我们的方法采用结构轻
+量、针对性强的集成策略 ，能够更有效地适应目标
+任务的特征分布 ，并在保持计算效率的同时 ，实现
+稳定且具有鲁棒性的分割性能.
+图3给出 了SAM-Med3D与本文模型 在SPPIN-
+2023数据集上的典型分割对比示例 . 从图中可以
+看出 ，SAM-Med3D在神经母细胞瘤区域存在识别
+不清的问题 ，表现为区域分割不完整或错判 ，而本
+文方法则更好地保留了肿瘤的关键结构 ，展现出
+更强的分割能力 . 图4展示了轴向 、矢状面和冠状
+面三组可视化对比 （GT为专家标注 ，Pred.为模型
+预测 ）. 该图中直观体现了本文的预测结果与专家
+标注有较高的相似度 ，能够实现神经母细胞瘤的
+精确分割，为术前诊疗的空间理解做贡献.
+ 3.5    语义增强的半透明融合可视化
+图 5展示了基于随机点渲染方法生成的半透
+明可视化结果 . 在保持底层解剖结构可辨识的同
+时，融合了肿瘤分割的语义标签 ，以半透明的形式
+清晰地突出了关键目标区域 ，实现了精确的空间
+定位与结构对比 . 与 ITK-Snap提供的三视图效果
+相比 ，本方法能够通过实时交互渲染各个角度的
+半透明可视化图像 . 该效果在医学影像分析中尤
+为重要 ，能够显著增强病灶区域与周围组织间的
+空间关系表达 ，为临床诊断与术前规划提供更直
+观的可视化支持 . 此外，在不借 助GPU并行加速的
+条件下 ，对点云完成一次半透明可视化的预处理
+平均时间约 为 3.4 s， 此后在连续交互模式下切换
+不同视角的半透明渲染图像的平均帧率可 达21.7
+帧每秒 ，能够满足普通设备下进行常规术前预览
+和交互操作的实时性要求.
+ 4    结论
+针对神经母细胞瘤辅助诊疗中面临的肿瘤形
+态复杂 、数据集稀缺 、图像模态多样等现实困难 ，
+本文提出了一种基于集成学习的语义分割与半透
+明三维可视化方法 . 我们在预训 练nnUNet模型提
+出的 2D与 3D融合框架基础上 ，引入了基于验证
+集Dice分数的加权投票集成策略 ，在保 持nnU-Net
+模型稳定性的同时 ，显著提升了分割精度 . 通过 在
+SPPIN 2023和 BraTS 2021数据集上的对比与消融
+实验 ，验证了所提投票集成策略的有效性 ，且在神
+ 
+(a) (b) (c) (d)
+图 3    与SAM-Med3D对比结果示例(SPPIN 2023数据集). （a)输入图片; （b)人工标签; （c) 本文分割结果; （d)SAM-Med3D分割结果
+Fig.3    Comparation results with SAM-Med3D on the SPPIN 2023 dataset: (a) input image; (b) manual label; (c) segmentation results of our method;
+(d) segmentation results of SAM-Med3D
+潘    姣等 ：基于集成学习的神经母细胞瘤语义分割及半透明可视化 · 367 ·
+
+=== PDF_PAGE 9 ===
+经 母 细 胞 瘤 分 割 挑 战 中的 Dice系 数 、Hausdorff
+距 离 与 体 积 相 似 性 等 指 标 优 于 包括 SAM-Med、
+DynUNet在内的主流分割方法.
+此外 ， 本文还采用了一种基于随机点采样的
+三维透明可视化方法 ，能够在无需深度排序的条
+件下实现肿瘤与关键解剖结构的高效 、直观融合
+可视化 ，有效增强术前空间理解与解剖关系感知 .
+整体方法在分割精度与可视表达两个层面为神经
+母细胞瘤术前辅助决策提供了可靠技术支撑 ，展
+现出良好的临床应用前景.
+未来工作中 ， 我们计划在分割框架中进一步
+引入 如 nnSAM、MedSAM等基础视觉大模型 ， 结
+合其语义泛化能力与结构先验 ，提升在复杂背景
+与少样本肿瘤任务中的适应性与泛化性能 ；同时
+在可视化方面引入基于风险等级的肿瘤高亮策略
+与临床关注点引导机制 ，构建更具交互性 、可解释
+性的可视化系统 ，为精准术前规划提供更全面的
+智能辅助支持.
+ 
+GT Pred. GT Pred. GT Pred.
+图 4    SPPIN 2023 神经母细胞瘤分割结果
+Fig.4    Segmentation results for neuroblastoma on the SPPIN 2023 dataset
+ 
+(a) (b)
+(c) (d)
+10 cm
+10 cm
+图 5    语义增强的半透明融合可视化. (a) ITK-Snap正视图；(b) 半透明可视化正面视角；(c) ITK-Snap俯视图; (d) 半透明可视化俯视视角
+Fig.5    Semantically enhanced translucent fusion visualization: (a) ITK-Snap (front); (b) translucent (front); (c) ITK-Snap (top); (d) translucent (top)
+· 368 · 工程科学学报， 第 48 卷，第 2 期
+
+=== PDF_PAGE 10 ===
+致谢
+本研究的数据集由荷兰玛西玛公主小儿肿瘤
+中心提供. 在此，特别感谢The Wijnen小组 及Myrthe
+A.D. Buser, MSc.领导的挑战赛团队将该数据集公
+开，为本研究提供了关键支持.
+参    考    文    献 
+ Hussein R, Abou-Shanab A M, Badr E. A multi-omics approach
+for  biomarker  discovery  in  neuroblastoma:  A  network-based
+framework. NPJ Syst Biol Appl, 2024, 10: 52
+[1]
+ Wellens L M, Meulstee J, van de Ven C P, et al. Comparison of 3-
+dimensional  and  augmented  reality  kidney  models  with
+conventional  imaging  data  in  the  preoperative  assessment  of
+children  with  wilms  tumors. JAMA  Netw  Open,  2019,  2（4）:
+e192633
+[2]
+ Simons  D  C,  Buser  M  A  D,  Fitski  M,  et  al.  Multi-modal  3-
+dimensional  visualization  of  pediatric  neuroblastoma:  Aiding
+surgical planning beyond anatomical information.  J Pediatr Surg,
+2024, 59（8）: 1575
+[3]
+ Xu D D, Cui Y, Zhang S Q, et al. Optimizing the visual effects of
+3D rendering in medical imaging: A technical review.  J  Graph,
+2024, 45（5）: 879
+（许丹丹, 崔勇, 张世倩, 等. 优化医学影像三维渲染可视化效
+果：技术综述. 图学学报, 2024, 45（5）：879）
+[4]
+ Fang W Y, Lin D X, Kou W F, et al. Advances in medical image
+three-dimensional reconstruction system.  Chin J Med Phys, 2022,
+39（7）: 823
+（方威扬, 林东鑫, 寇万福, 等. 医学图像三维重建系统的研究进
+展. 中国医学物理学杂志, 2022, 39（7）：823）
+[5]
+ Isensee  F,  Jaeger  P  F,  Kohl  S  A  A,  et  al.  nnU-Net:  A  self-
+configuring  method  for  deep  learning-based  biomedical  image
+segmentation. Nat Meth, 2021, 18（2）: 203
+[6]
+ Wang H Y, Guo S Z, Ye J, et al. SAM-Med3D: Towards general-
+purpose  segmentation  models  for  volumetric  medical  images//
+Computer Vision—ECCV 2024 Workshops. Italy, 2025: 51
+[7]
+ Buser M A D, Steeg A F W, Simons D C, et al. Surgical Planning
+in Pediatric Neuroblastoma // International Conference on Medical
+Image Computing and Computer Assisted Intervention  （MICCAI）,
+Vancouver, 2023: 1
+[8]
+ Baid U, Ghodasara S, Mohan S, et al, The RSNA-ASNR-MICCAI
+BraTS  2021  benchmark  on  brain  tumor  segmentation  and
+radiogenomic classification [J/OL].  arXiv  preprint （2021–07–05）
+[2025–06–10]. https://arxiv.org/abs/2107.02314
+[9]
+ Yushkevich P A, Piven J, Hazlett H C, et al. User-guided 3D
+active contour segmentation of anatomical structures: Significantly
+improved efficiency and reliability.  NeuroImage, 2006, 31（3） :
+1116
+[10]
+ Ronneberger O, Fischer P, Brox T. U-Net: Convolutional networks
+for biomedical image segmentation //  Medical  Image  Computing
+and  Computer-Assisted  Intervention—MICCAI  2015.  Munich,
+2015: 234
+[11]
+ Zhang S S, Liu R X, Shan K, et al. Research on cardiac image[12]
+segmentation algorithm based on improved level set modeling.
+Chin J Eng, 2025, 47（7）: 1536
+（张帅帅, 刘瑞霞, 单珂, 等. 基于改进水平集模型的心脏图像分
+割算法. 工程科学学报, 2025, 47（7）：1536）
+ Huang J T, Li Q, Guan X. An improved U-shaped network for
+brain tumor segmentation. Chin J Eng, 2023, 45（6）: 1003
+（黄敬腾, 李锵, 关欣. 一种用于脑肿瘤分割的改 进U形网络. 工
+程科学学报, 2023, 45（6）：1003）
+[13]
+ Milletari F, Navab N, Ahmadi S A. V-net: Fully convolutional
+neural  networks  for  volumetric  medical  image  segmentation  //
+2016  Fourth  International  Conference  on  3D  Vision （3DV） .
+Stanford, 2016: 565
+[14]
+ Ahmed S F, Rahman F S, Tabassum T, et al. 3D U-Net: Fully
+convolutional  neural  network  for  automatic  brain  tumor
+segmentation // 2019 22nd International Conference on Computer
+and Information Technology （ICCIT）. Dhaka, 2019: 1
+[15]
+ He Y F, Nath V, Yang D, et al. SwinUNETR-V2: Stronger swin
+transformers with stagewise convolutions for 3D medical image
+segmentation // Medical Image Computing and Computer Assisted
+Intervention—MICCAI 2023. Vancouver, 2023: 416
+[16]
+ Li Y X, Jing B W, Li Z H, et al. Plug-and-play segment anything
+model improves nnUNet performance.  Med  Phys, 2025, 52（2）:
+899
+[17]
+ Kirillov A, Mintun E, Ravi N, et al. Segment anything // 2023
+IEEE/CVF International Conference on Computer Vision  （ICCV）.
+Paris, 2024: 3992
+[18]
+ Zhou L, Fan M J, Hansen C, et al. A review of three-dimensional
+medical  image  visualization.  Health  Data  Sci,  2022,  2022:
+9840519
+[19]
+ Zhang W H. Medical volume reconstruction techniques [J/OL].
+arXiv preprint  （2018–02–21） [2025–06–10]. https://arxiv.org/abs/
+1802.07710
+[20]
+ Shi X W, Yuan H, Lü M X, et al. Current status and progress of
+virtual  reality  technology  in  medical  field. Laser  Optoelectron
+Prog, 2020, 57（1）: 010006
+[21]
+ Zwicker M, Pfister H, van Baar J, et al. EWA splatting.  IEEE
+Trans Visual Comput Graphics, 2002, 8（3）: 223
+[22]
+ Seemann P, Palma G, Dellepiane M, et al. Soft Transparency for
+Point  Cloud  Rendering  //  Proceedings  of  the  Eurographics
+Symposium on Rendering: Experimental Ideas & Implementations.
+Karlsruhe, 2018: 95
+[23]
+ Uchida  T,  Hasegawa  K,  Li  L,  et  al.  Noise-robust  transparent
+visualization  of  large-scale  point  clouds  acquired  by  laser
+scanning. ISPRS J Photogramm Remote Sens, 2020, 161: 124
+[24]
+ Wang G A, Ye J, Cheng J L, et al. SAM-Med3D-MoE: Towards a
+non-forgetting segment anything model  via mixture of experts for
+3D medical image segmentation//Medical  Image  Computing  and
+Computer Assisted Intervention—MICCAI 2024. Marrakesh, 2024:
+552
+[25]
+ Buser M A D, Simons D C, Fitski M, et al. , Automated segmenta-
+on of pediatric neuroblastoma on multi-modal MRI: Results of the
+SPPIN challenge at MICCAI 2023 //  International Conference on
+Medical  Image  Computing  and  Computer  Assisted  Intervention
+（MICCAI） 2023, Vancouver, 2023: 1
+[26]
+潘    姣等 ：基于集成学习的神经母细胞瘤语义分割及半透明可视化 · 369 ·

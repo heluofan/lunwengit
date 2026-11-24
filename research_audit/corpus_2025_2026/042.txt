@@ -1,0 +1,780 @@
+=== PDF_PAGE 1 ===
+http://www．jsjkx．com
+DOI:１０．１１８９６/jsjkx．２６０２０００５８
+到稿日期:２０２５Ｇ０８Ｇ２８　返修日期:２０２５Ｇ１０Ｇ２４
+通信作者:管泽礼(guanzeli＠bupt．edu．cn)
+基于多任务学习的眼科视频特征融合与多维画像
+杜剑彤１ 管泽礼２ 薛　哲２
+１ 北京大学第一医院眼科　北京１０００３４
+２ 北京邮电大学计算机学院　北京１００８７６
+　(dujiantong＠bjmu．edu．cn)
+　
+摘　要　针对社交网络眼科视频存在的视觉特征区分度低、文本描述口语化严重以及多模态语义异构等挑战,提出了一种 基 于
+多任务学习的眼科视频特征融合与多维画像构建方法(OVP),从非结构化 的 视 频 流 与 文 本 流 中 挖 掘 具 有 医 学 语 义 价 值 的 多 维
+特征,以实现对眼科视频的精准表征.利用预训练深度残差网络提取视频关键帧的高维视觉表征,捕捉眼科图像特有的细 粒 度
+特征;提出基于眼科知识图谱的眼科视频文本特征提取方法,通过 检 索 并 融 合 外 部 实 体 注 解 与 关 联 知 识,有 效 弥 补 了 社 交 媒 体
+文本专业语义稀疏的问题,并结合 BERT 模型提取富含 领 域 知 识 的 文 本 特 征;在 此 基 础 上,设 计 跨 模 态 注 意 力 融 合 机 制,动 态
+计算视觉与文本特征的交互权重,实现了图像信息与医学语义的深度对齐.构建多任务联合优化与眼科多维画像,协同训 练 视
+频疾病分类、传播热度预测与内容质量评估３个子任务,利用任务间的共享信息提升泛化能力.在真实眼科视频数据集 上 进 行
+实验,实验结果表明,OVP 方法在眼科视频疾病分类准确率、热度 预 测 及 质 量 评 估 性 能 上 均 显 著 优 于 现 有 基 线 方 法,验 证 了 该
+方法在复杂眼科视频特征融合与多维度画像构建方面的有效性.
+关键词:眼科视频画像;多任务学习;多模态融合;知识图谱;深度学习
+中图分类号　TP３９１
+　
+MultiＧtaskLearningＧbasedOphthalmicVideoFeatureFusionand MultiＧdimensionalProfiling
+DUJiantong
+１,GUANZeli２andXUEZhe２
+１DepartmentofOphthalmology,PekingUniversityFirstHospital,Beijing１０００３４,China
+２SchoolofComputerScience,BeijingUniversityofPostsandTelecommunications,Beijing１００８７６,China
+　
+Abstract　Toaddresschallengesinprofilingophthalmicvideosonsocialnetworks,suchasthelowdiscriminabilityofvisualfeaＧ
+tures,thecolloquialnatureoftextdescriptions,andmultimodalsemanticheterogeneity,thispaperproposesanOVP(Ophthalmic
+VideoProfiling)methodbasedonmultiＧtasklearning．TheproposedmethodaimstominemultiＧdimensionalfeatureswithmedical
+semanticvaluefromunstructuredvideoandtextstreamstofacilitateprecisevideorepresentation．IntheOVPframework,apreＧ
+traineddeepresidualnetworkisemployedtoextracthighＧdimensionalvisualrepresentationsfrom keyframes,capturingfineＧ
+grainedfeaturesspecifictoophthalmicimagery．Toovercomethesparsityofprofessionalsemanticsinsocialmediatext,amethod
+forextractingtextualfeaturesfromophthalmicvideosbasedonanophthalmicknowledgegraphisproposed,whichretrievesand
+fusesexternalentityannotationsandrelatedknowledgebeforeencodingviaBERT．Subsequently,acrossＧmodalattentionfusion
+mechanismisdesignedtodynamicallycalculateinteractionweightsbetweenvisualandtextualfeatures,achievingdeepalignment
+betweenvisualinformationandmedicalsemantics．Furthermore,amultiＧtaskjointoptimizationandophthalmicmultidimensional
+profilingisconstructedtojointlytrainthreesubＧtasks:diseaseclassification,popularityprediction,andcontentqualityassessＧ
+ment,utilizingsharedinformationtoenhance modelgeneralization．Experimentsconductedonarealophthalmicvideodataset
+demonstratethattheOVPmethodsignificantlyoutperformsexistingbaselinemethodsintermsofdiseaseclassificationaccuracy,
+heatmapprediction,andqualityassessmentperformanceforophthalmicvideos．Theexperimentalresultsvalidatetheeffectiveness
+oftheOVP methodinfeaturefusionandmultidimensionalprofilingofcomplexophthalmicvideos．
+Keywords　Ophthalmicvideoprofiling,MultiＧtasklearning,MultiＧmodalfusion,Knowledgegraph,Deeplearning
+　
+
+=== PDF_PAGE 2 ===
+１　引言
+眼科视频已成为数 字 健 康 环 境 下 医 学 信 息 传 播、医 患 交
+流 及 临 床 知 识 共 享 的 重 要 数 据 来 源,在 眼 健 康 知 识 传 播 与 诊
+疗技术展示等场景中具有广泛的应用价值.基于多任务学 习
+的眼科视频特征融合与多维画像研究旨在利用人工智能方 法
+对社交网络中 的 大 规 模 眼 科 视 频 数 据 进 行 建 模 与 结 构 化 表
+征,从 非 结 构 化 视 频 与 文 本 信 息 中 提 取 具 有 语 义 表 达 能 力 的
+多模态特征.通过构 建 系 统 化 的 多 维 画 像,可 实 现 对 视 频 医
+学属性、传播特征及内容质量的综合刻画,从而为医学科普 内
+容推荐系统构建 [１]、网 络 虚 假 医 疗 信 息 监 测 [２]以 及 眼 科 临 床
+教学辅助分析 [３]提供技术支持.
+针对视频特征融合 与 多 维 画 像 问 题,现 有 研 究 主 要 集 中
+于基于深度学习的视频分类方法 [４Ｇ６]、基于元数据的多模 态 检
+索技术 [７Ｇ９]以及面向通用场景的视频理解框架 [１０Ｇ１２].然而,当
+将 上 述 方 法 应 用 于 社 交 网 络 中 的 眼 科 视 频 数 据 时,仍 面 临 若
+干挑战.首先,眼科视 频 具 有 显 著 的 专 业 属 性 与 细 粒 度 视 觉
+特征,通用视觉特征提取模型难以充分表征领域特定语义;其
+次,社交网络视频文本通常呈现口语化与碎片化特征,且缺 乏
+规 范 医 学 术 语 标 注,导 致 仅 依 赖 文 本 模 型 难 以 准 确 建 模 医 学
+语境 [１３];最 后,现 有 多 模 态 融 合 方 法 多 采 用 特 征 拼 接 策 略,未
+充分建模视觉信息与文本信息之 间 的 知 识 语 义 关 联 [１４],限 制
+了多维画像建模的精度与表达能力.
+为了解决上述问题,基于眼科知识对多模态数据的语义增
+强作用,本文提出了眼 科 知 识 图 谱 增 强 的 视 频 特 征 提 取 方 法,
+不直接依赖原始文本,而是通过检索并融合知识图谱中的实体
+注解与关联知识构建增强上下文,有效应对社交网络中眼科领
+域文本口语化严重、专 业 语 义 缺 失 的 问 题. 本 文 提 出 了 基 于
+跨模态注意力机制的眼 科 视 频 多 模 态 特 征 融 合 方 法 (OVP),
+通过计算视觉特征与知识增强后文本特征之间的互注意力 权
+重,实现了图像信息与医 学 语 义 的 深 度 对 齐,提 升 了 OVP 方
+法 对 复 杂 眼 科 视 频 内 容 的 理 解 能 力;提 出 了 基 于 多 任 务 学 习
+的眼科视频多维画像方法,通过协同训练疾病分类、热度预 测
+与质量评估３个子任务,有效利用了任务间的共享信息,实 现
+了对社交网络中眼科视频的多维度、全方位数字化表征.
+２　相关工作
+现有的相关研究工作主要围绕视频内容理解与视觉特 征
+提取、多模态语义融合与推理以及多任务协同建模等展开,但
+在应对 眼 科 特 有 的 高 专 业 性 与 细 粒 度 特 征 时 仍 面 临 诸 多
+挑战.
+在视频内容理解与 视 觉 特 征 提 取 方 面,基 于 深 度 学 习 的
+方法已成为主流,Lian等 [１５]在医疗网络物理系 统 中 验 证 了 基
+于深度学习 的 边 缘 计 算 框 架 的 有 效 性. 针 对 视 频 的 时 空 特
+性,Fan等 [１６]提出了多尺度视觉 Transformer模 型,通 过 构 建
+层 级 化 的 特 征 表 示,提 升 了 对 复 杂 时 空 动 态 的 理 解 和 特 征 提
+取能力.为了兼顾计算效率与性能,Kondratyuk等 [１７]设 计 了
+MoViNets方 法,显 示 了 在 移 动 端 高 效 处 理 视 频 流 的 可 能 性.
+在视频检索任务中,Bain等 [１８]提 出 的 FrozeninTime模 型 展
+现了端到端时空特 征 学 习 在 跨 模 态 检 索 中 的 优 势. 然 而,上
+述 研 究 大 多 关 注 宏 观 场 景,而 眼 科 视 频 具 有 极 强 的 细 粒 度 特
+征.Sun等 [１９]针对 糖 尿 病 视 网 膜 病 变 分 级 提 出 了 病 灶 感 知
+Transformer模型,虽然在静 态 图 像 上 表 现 优 异,但 如 何 将 其
+迁 移 至 动 态 视 频 流 中 以 精 准 表 征 微 小 的 组 织 纹 理 变 化,仍 是
+当前研究的难点.
+在多模态语义融合 与 推 理 方 面,眼 科 视 频 通 常 由 视 觉 图
+像 与 非 结 构 化 文 本 共 同 构 成,如 何 跨 越 多 模 态 语 义 融 合 的 鸿
+沟,是实现眼科视频 多 维 画 像 的 核 心. 随 着 预 训 练 语 言 模 型
+的发展,Gu等 [２０]提 出 了 PubMedBERT 模 型,通 过 在 生 物 医
+学 语 料 上 进 行 领 域 特 定 预 训 练,提 升 了 对 医 学 文 本 的 理 解 能
+力.在 跨 模 态 对 齐 与 融 合 方 面,Trewartha 等 [２１] 与 Wang
+等 [２２]分别探索了医学领域的对比学 习 框 架,通 过 大 规 模 图 文
+对齐和融合来提升模型的零样本迁移能力.社交网络中的 眼
+科视频往往伴随着口语化表达与专业术语 缺 失 的 问 题,Wang
+等 [２３]提出了结构化知识感知 的 注 意 力 网 络.Yasunaga等 [２４]
+提出的 QAＧGNNZ将知识图谱 引 入 语 言 模 型,以 增 强 推 理 能
+力.将领域特 有 的 医 学 知 识 图 谱 高 效 结 合 到 视 文 融 合 过 程
+中,以弥补领域文本的语义缺失,是实现多模态语义融合和 眼
+科视频多维画像中亟待解决的问题.
+在多任务协同建模 方 面,通 过 共 享 表 示 层 协 同 训 练 多 个
+相 关 任 务 能 够 有 效 提 升 模 型 的 泛 化 能 力.Vandenhende
+等 [２５]指出合理的任 务 调 度 与 特 征 共 享 机 制 是 多 任 务 学 习 的
+关 键. 在 医 学 领 域,Zhou 等 [２６] 提 出 的 IRENE 模 型 基 于
+Transformer模型实现了多模态输入的统一处理,在临床诊 断
+等多任务场景 下 表 现 出 优 越 性 能.Kazemzadeh 等 [２７]强 调 眼
+科 AI的发展趋势将从单一疾 病 检 测 向 多 维 度 的 综 合 诊 断 转
+变. 针 对 多 任 务 训 练 中 的 损 失 函 数 平 衡 问 题,Gawlikowski
+等 [２８]提出了利用不确定性加权来 动 态 调 整 任 务 权 重 的 策 略.
+然而,现 有 的 医 学 多 维 画 像 大 多 仍 采 用 单 任 务 模 式,Moor
+等 [２９]指出构建医学人工智能模型需 要 整 合 多 源 信 息,而 当 前
+缺 乏 将 眼 科 视 频 的 医 学 质 量、传 播 热 度 与 内 容 类 别 进 行 协 同
+建模的研 究,限 制 了 对 眼 科 视 频 的 全 方 位 特 征 融 合 与 多 维
+刻画.
+３　基于多 任 务 学 习 的 眼 科 视 频 特 征 融 合 与 多 维 画
+像构建方法(OVP)
+　　本文提出基于多任务学习的眼科视频特征提取与多维 画
+像方法(OphthalmicVideoProfiling,OVP),旨 在 解 决 社 交 网
+络 环 境 下 眼 科 视 频 存 在 的 模 态 语 义 异 构、非 结 构 化 文 本 专 业
+性缺失以及画像维度单一等问题,其主要由４个部分组 成:基
+于预训练模型的眼科视频图像特征提取捕捉关键帧的细粒 度
+视 觉 表 征;眼 科 知 识 图 谱 增 强 的 视 频 文 本 特 征 提 取 引 入 外 部
+结构化知识,弥补领域文本的语义空白;基于跨模态注意力 机
+制的眼科视频 多 模 态 特 征 融 合 在 特 征 空 间 动 态 对 齐 视 文 语
+义;多任务联合优化与多维画像通过分类、热度预测与质量 评
+估任务的协同训练,生 成 眼 科 视 频 多 维 度 画 像. 整 个 流 程 如
+图１所示.
+４８３ ComputerScience 计算机科学 Vol．５３,No．３,Mar．２０２６
+
+=== PDF_PAGE 3 ===
+图１　基于多任务学习的眼科视频特征融合与多维画像构建方法(OVP)
+Fig．１　MultiＧtasklearningＧbasedophthalmicvideofeaturefusionandmultiＧdimensionalprofiling
+３．１　基于预训练模型的眼科视频图像特征提取
+眼科视频资源通常 包 含 复 杂 的 解 剖 结 构 演 示、精 细 的 手
+术 操 作 流 程 或 特 定 的 病 理 体 征 展 示,这 些 高 维 视 觉 信 息 是 判
+别视频属性的核心依据.为了从非结构化的视频流中高效 提
+取 具 有 辨 别 力 的 视 觉 表 征,本 文 提 出 了 一 种 基 于 预 训 练 模 型
+的 眼 科 视 频 图 像 特 征 提 取 方 法,通 过 关 键 帧 抽 取 算 法 去 除 视
+频的时序冗余,利用在ImageNet上预 训 练 的 ResNetＧ１８ 模 型
+提 取 帧 级 特 征,通 过 均 值 池 化 策 略 聚 合 得 到 视 频 级 的 全 局 视
+觉特征向量.
+考虑到眼科视频的 时 长 差 异 较 大 且 存 在 大 量 重 复 帧,直
+接处理全量视频帧会带来大的计算开销且引入噪声.给定 一
+个输入的眼科视频序 列V,采 用 基 于 时 间 间 隔 的 等 间 距 采 样
+策略,从视频流 中 抽 取k 个 关 键 帧 图 像,形 成 关 键 帧 集 合I,
+如式(１)所示:
+I＝{I１,I２,􀆺,Ik} (１)
+其中,Ii 表示第i 个关键帧图像;k 为超参数,用于控制视觉信
+息的采样密度.
+为了获取 每 一 帧 图 像 的 深 层 语 义 信 息,采 用 ResNetＧ１８
+深度卷积神经网络作 为 视 觉 骨 干 网 络.ResNetＧ１８ 在 保 持 优
+异 特 征 提 取 能 力 的 同 时,能 够 有 效 避 免 过 拟 合 风 险 并 提 升 计
+算效率,适用于处理 规 模 庞 大 的 社 交 网 络 视 频 数 据. 将 关 键
+帧集合I 中的每一帧Ii 输 入 到 预 训 练 的 ResNetＧ１８ 网 络 中,
+去 除 原 始 网 络 的 最 后 全 连 接 分 类 层,提 取 倒 数 第 二 层 的 输 出
+作为该帧的高维视觉特征向量vi.计算过程如式(２)所示:
+vi＝ResNet(Ii),vi∈ℝDv (２)
+其中,ResNet(􀅰)表示 特 征 提 取 操 作,Dv 为 视 觉 特 征 向 量 的
+维度.
+视 频 被 表 示 为 一 组 无 序 的 帧 特 征 向 量 序 列 {v１,v２,􀆺,
+vk}.为了获得该视频在全局层面上 的 统 一 视 觉 表 征,并 忽 略
+短 时 序 内 的 局 部 抖 动 影 响,采 用 均 值 池 化 策 略 对 所 有 帧 特 征
+进行聚合.最终的视频图像特征Vimg的计算式如式(３)所示:
+Vimg＝ １k ∑ki＝１vi (３)
+通 过 聚 合 操 作,Vimg融 合 了 视 频 中 各 个 关 键 时 间 节 点 的
+视觉信息,形成了鲁棒的视频全局视觉画像特征.
+３．２　知识图谱增强的眼科视频文本特征提取
+社交网络环境下的 眼 科 视 频 配 文 往 往 呈 现 口 语 化、碎 片
+化的特征,且受限于时长,文本中往往缺乏规范且详尽的医 学
+背景描述.语义稀疏性导致模型难以直接从原始文本中捕 获
+深层的领域语义.本文提出了一种基于眼科知识图谱的上 下
+文增强策略,利用外部结构化知识库作为语义补充源,通过 实
+体 链 接 与 邻 居 检 索 构 建 富 含 医 学 知 识 的 上 下 文 序 列,并 结 合
+BERT 预训练模型生成融合了通用语义与领域 知 识 的 文 本 特
+征表示.
+利用眼科医学词典 辅 助 序 列 标 注 模 型,从 非 结 构 化 视 频
+文本中识别核心疾 病、诊 疗 行 为 等 关 键 实 体. 基 于 预 设 的 医
+学逻辑约束,通过语义依存分析挖掘实体间的潜在关联,自 动
+化构建疾病Ｇ症状、治疗Ｇ器械等核心关系.
+为了弥补原始文本 的 信 息 缺 失,需 要 从 外 部 知 识 图 谱 中
+引入相关 的 医 学 知 识. 设 输 入 的 视 频 文 本 序 列 为 S＝ {w１,
+w２,􀆺,wn},预先 定 义 的 眼 科 知 识 图 谱 为 G＝ (E,R),其 中 E
+为实体集合.利用 实 体 识 别 技 术 识 别 出 文 本 S 中 包 含 的 眼
+科专业术语集合ES (如 “白 内 障”“眼 压 ”等 ). 对 于 每 一 个 识
+别到的实体e∈ES ,在 图 谱 G 中 检 索 其 定 义 注 解 或 一 跳 邻 居
+节点,将其作为该实 体 的 背 景 知 识 补 充. 检 索 得 到 的 知 识 上
+下文集合 Cknow的形式化定义如式(４)所示:
+Cknow＝ ∪
+e∈ES
+{info(n)∣(e,r,n)∈G,sim(e,n)＞δ} (４)
+其中,info(n)表示节点n 的文本描述或 属 性 值;sim(􀅰)为 语
+义相似度函数;δ 为 相 关 性 阈 值,旨 在 过 滤 噪 声,确 保 引 入 知
+识的准确性.
+为了使模型能够同时理解原始文本的语境信息与外部 引
+入的专业知识,采用 基 于 拼 接 的 输 入 构 造 策 略. 将 原 始 文 本
+序列S 与检索到的 知 识 上 下 文Cknow 通 过 特 殊 分 隔 符 进 行 连
+５８３杜剑彤,等:基于多任务学习的眼科视频特征融合与多维画像
+
+=== PDF_PAGE 4 ===
+接,形成一个知识增强的输 入 序 列 Xinput.为 了 区 分 不 同 来 源
+的信息,在序列首部添加分类标记[CLS],并 在 原 始 文 本 与 知
+识上下文之间以及序列末尾添加分隔 标 记 [SEP]. 构 建 后 的
+输入序列如式(５)所示:
+Xinput＝[CLS]􀱇S􀱇[SEP]􀱇Cknow􀱇[SEP] (５)
+其中,􀱇表示序列拼接操作.
+该构造方式使得模型在后续处理中能够通过自注意力 机
+制捕捉原始描述与专业知识之间的内在关联.
+在构建好增强输入序列 后,利 用 BERT 预 训 练 模 型 作 为
+文本编码器.BERT 模 型 具 备 强 大 的 双 向 上 下 文 理 解 能 力,
+能 够 有 效 融 合 通 用 语 言 知 识 与 通 过 上 下 文 引 入 的 眼 科 知 识.
+将 Xinput输 入 BERT 模 型,经 过 多 层 Transformer编 码 器 的 深
+度交互处理后,提取输出层第一个位置对应的隐藏状态向 量,
+将其作 为 最 终 的 文 本 语 义 特 征 Vtext. 其 计 算 过 程 如 式 (６)
+所示:
+Vtext＝BERT(Xinput),Vtext∈ℝDt (６)
+其中,Dt 为文本特征向量的维度.
+特征向量Vtext不仅包 含 视 频 脚 本 的 字 面 语 义,还 深 度 融
+合了眼科的专业背景信息,有效解决了语义鸿沟问题.
+３．３　基于跨模态注意力机制的眼科视频多模态特征融合
+视觉特征Vimg与 知 识 增 强 文 本 特 征Vtext分 别 位 于 两 个 异
+构的特征子空间中.视觉特征侧重于呈现眼科病灶或手术 操
+作 的 物 理 表 象,而 文 本 特 征 则 侧 重 于 描 述 医 学 原 理 与 病 理 逻
+辑.简单的向量拼接 策 略 忽 略 了 模 态 间 的 语 义 对 齐 关 系,难
+以有效捕捉视文信息之间的深层交互.本文设计了一个跨 模
+态注意力融合模块,以蕴含丰富医学逻辑的文本特征为引 导,
+动 态 计 算 视 觉 特 征 在 语 义 空 间 中 的 重 要 性 权 重,从 而 实 现 多
+模态特征的深度融合.
+为了在统一的度量 空 间 内 计 算 模 态 间 的 相 关 性,需 要 将
+视觉 特 征 与 文 本 特 征 映 射 到 相 同 的 维 度 空 间,引 入 ３ 个 可 学
+习的线性投影矩 阵 Wq,Wk,Wv. 考 虑 到 眼 科 视 频 中,解 说 词
+(文本)往往对画面内 容 起 到 定 义 和 解 释 的 关 键 作 用,采 用 文
+本查询图像 的 策 略,将 文 本 特 征Vtext映 射 为 查 询 向 量 (QueＧ
+ry),将视觉特征Vimg映 射 为 键 向 量 (Key)和 值 向 量 (Value).
+计算过程如式(７)所示:
+Q＝WqVtext,K＝WkVimg,V＝WvVimg (７)
+其中,Q,K,V∈ℝdh ,dh 为映射后的隐含层维度.
+在获得统一空间的 特 征 表 示 后,利 用 缩 放 点 积 注 意 力 机
+制计算文本 对 视 觉 内 容 的 关 注 程 度. 通 过 计 算 查 询 向 量 Q
+与键向量K 之间的点积相似度,并除 以 缩 放 因 子 dh 来 防 止
+梯度消失.采用 Sigmoid激活函数将 点 积 结 果 映 射 为 归 一 化
+的 注 意 力 权 重,该 系 数 定 量 反 映 了 视 觉 特 征 在 当 前 文 本 语 境
+下的重要性,其计算式如式(８)所示:
+α＝σ QK
+T
+dh
+æ
+èç
+ ö
+ø÷
+ (８)
+其中,α 为标量或权重向量,表示 视 觉 信 息 与 医 学 文 本 语 义 的
+契合程度.
+利用计算得到的注意力权重 α 对 值 向 量V 进 行 加 权,提
+取出与文本语义高度相关的视觉信息.为了防止原始特征 信
+息的丢失并加速收 敛,引 入 残 差 连 接 和 层 归 一 化 机 制. 将 加
+权 后 的 视 觉 特 征 与 原 始 文 本 特 征 进 行 聚 合,得 到 最 终 的 多 模
+态融合特征向量 Hfusion.其计算过程如式(９)所示:
+Hfusion＝LayerNorm(Vtext＋α􀅰V) (９)
+Hfusion既保留了文本中的领域知识 逻 辑,又 融 合 了 视 觉 中
+的 关 键 影 像 证 据,为 后 续 的 多 任 务 画 像 构 建 提 供 了 鲁 棒 的 特
+征基础.
+３．４　多任务联合优化与眼科多维画像构建
+为了实现对眼科视 频 的 多 维 度 深 度 解 析,在 特 征 融 合 层
+之上构建 了 一 个 多 任 务 学 习 模 块,利 用 单 一 的 融 合 特 征 向
+Hfusion,协 同 完 成 疾 病 分 类、传 播 热 度 预 测 以 及 质 量 评 估 ３ 个
+相关联的任务.通过 在 统 一 的 框 架 下 联 合 训 练,不 同 任 务 之
+间 能 够 共 享 底 层 的 特 征 表 示,充 分 利 用 任 务 间 的 潜 在 语 义 关
+联,例 如 高 质 量 的 专 业 视 频 往 往 对 应 特 定 的 眼 科 亚 专 科 且 具
+有较高的公众关注度提升 了 OVP 方 法 的 泛 化 能 力 和 预 测 精
+度,从而避免了单任务学习中可能出现的过拟合问题.
+针对眼科视频画像 构 建 的 具 体 需 求,设 计 了 ３ 个 任 务 处
+理分支,分别将融合 特 征 映 射 到 不 同 的 输 出 空 间. 通 过 一 个
+全连接层将特征映射 到 类 别 空 间,利 用 Softmax 函 数 输 出 概
+率分布,其计算过程如式(１０)所示:
+y
+∧
+cls＝Softmax(WcHfusion＋bc) (１０)
+其中,Wc 和bc 分别为分类任务的可学习权重矩阵和偏置项.
+采用线性回归层直接输出预测出的热度标量值预测视 频
+在社交网络上的受欢迎程度,计算过程如式(１１)所示:
+y
+∧
+pop＝WpHfusion＋bp (１１)
+其中,Wp 和bp 为热度预测任务的参数.
+采用 Sigmoid激活函数输出质量为 正 面 的 概 率 判 定 视 频
+内容的医学价值导向(如 正 面 科 普 或 负 面 误 导 ),计 算 过 程 如
+式(１２)所示:
+y
+∧
+qual＝σ(WqHfusion＋bq) (１２)
+其中,σ(􀅰)表示 Sigmoid激活函数,Wq 和bq 为质量评估 任 务
+的参数.
+为了协同优化上述 任 务,构 建 了 一 个 联 合 损 失 函 数 来 指
+导 OVP 方法的反向传播训练.针对分类任务,采用多分类交
+叉熵损失函数
+ cls来最大化正确类别的概率;针对热度预测任
+务,采 用 均 方 误 差 损 失 函 数
+ pop来 最 小 化 预 测 值 与 真 实 热 度
+之间的偏差;针 对 质 量 评 估 任 务,采 用 二 元 交 叉 熵 损 失 函 数
+qual.最终的总目标损失函数 Ltotal定义为３个子任 务 损 失 的
+加权和,如式(１３)所示:
+Ltotal＝λ１
+ cls(y
+∧
+cls,ycls)＋λ２
+ pop(y
+∧
+pop,ypop)＋
+λ３
+ qual(y
+∧
+qual,yqual) (１３)
+其中,ycls,ypop,yqual分别 表 示 真 实 的 标 签 数 据,λ１,λ２,λ３ 为 平
+衡各任务重要性的超参数权重.
+通过最小化 Ltotal,OVP 方法能够利用任务间 的 共 享 信 息
+动态调整网络参数,生成精准且全面的眼科视频画像.
+多 任 务 联 合 优 化 与 眼 科 多 维 画 像 的 伪 代 码 如 算 法 １
+所示.
+算法１　多任务联合优化与眼科多维画像
+输入:眼科视频数据集 D＝{(V１,S１),(V２,S２),􀆺,(VN,SN)};预 构
+建的眼科知 识 图 谱 G＝ (E,R);预 训 练 ResNetＧ１８ 参 数 θres;
+BERT 参数θbert;初始权重 Θ
+６８３ ComputerScience 计算机科学 Vol．５３,No．３,Mar．２０２６
+
+=== PDF_PAGE 5 ===
+输出:训 练 好 的 画 像 构 建 方 法 M;眼 科 视 频 画 像 集 合 P ＝
+{(y
+∧i
+cls,y
+∧i
+pop,y
+∧i
+qual)}Ni＝１
+过程:
+１．随机初始化参数
+２．foreachepoche∈[１,Epochs]do
+３．　foreachbatchB∈Ddo
+４．　　根据式(１)－式(３)提取关键帧并聚合全局视觉特征 Vimg
+５．　　根据式(４)－式(５)检索图谱上下文 Xinput
+６．　　根据式(６)利用 BERT 编码获取文本语义特征 Vtext
+７．　　根据式(７)构建查询向量 Q、键向量 K、值向量 V
+８．　　根据式(８)－式(９)生成融合特征 Hfusion
+９．　　根据式(１０)－式(１２)分别获得各个任务的输出
+１０．　 根据式(１３)计算多任务联合损失 Ltotal
+１１．　 反向传播误差并更新参数θres,θbert,Θ
+１２．endfor
+１３．endfor
+１４．推理:
+１５．对于新输入,执行步骤４－步骤８得到融合特征
+１６．输出分类标签、热度预测值与质量评估结果
+１７．Return 画像结果集合 P
+４　实验
+４．１　数据集与实验设置
+为了构建面向真实 应 用 场 景 的 眼 科 视 频 数 据 集,采 用 国
+内 主 流 短 视 频 平 台 与 综 合 视 频 社 区 作 为 数 据 来 源,根 据 关 键
+词检索与相关推荐回溯相结合的策略进行数据采集.检索 范
+围覆盖了青光眼、白 内 障、糖 尿 病 视 网 膜 病 变、年 龄 相 关 性 黄
+斑变性、屈光不正与干眼症６类常见的眼科疾病,采集字 段 包
+含视频文件、标题、文本描述、互动统计数据(点赞、评论、分 享
+量等)以及用户评论内容.经过严格的数据清洗、去重与 人 工
+校验,最终构建了一个包含 ４１３４ 个 样 本 的 眼 科 视 频 数 据 集.
+各类疾病样本分布 分 别 为:干 眼 症 ７９９ 条、青 光 眼 ７３６ 条、年
+龄相关性黄斑变性７１１条、白内障６６１条、糖尿病视网 膜 病 变
+６３２条以及屈光不正５９５条.
+针对多源数据存在 的 异 构 性 与 噪 声 问 题,以 视 频 唯 一 标
+识 符 为 主 键 对 齐 不 同 来 源 的 数 据,清 洗 文 本 中 的 特 殊 符 号 与
+异常乱码,并利用空 字 符 填 充 缺 失 字 段. 在 多 模 态 样 本 构 建
+方面,视觉模态采用等间隔采样策略,从每个视频抽取３ 帧 关
+键帧,统一调整分辨率并剔除模糊帧;文本模态则利用自动 语
+音识别技术获取语 音 转 写 文 本,并 将 其 与 标 题、描 述、发 布 者
+信 息 及 评 论 内 容 按 固 定 顺 序 拼 接,形 成 富 含 语 义 的 长 文 本 序
+列.为了支持多任务 学 习 中 的 质 量 评 估,依 据 视 频 的 互 动 强
+度 及 评 论 有 效 性 构 建 了 二 值 化 质 量 标 签,其 中 高 质 量 样 本 共
+计１１９５条.
+为了全面评估基于多任务学习的眼科视频特征融合与 多
+维画像(OVP)方法的性能,选 取 了 多 组 代 表 性 方 法 作 为 基 线
+方法进 行 对 比. 在 文 本 单 模 态 方 面,采 用 基 于 统 计 特 征 的
+LDA 模型、基于深 度 学 习 的 TextCNN、TextRNN 模 型,以 及
+基于预训练语 言 模 型 的 BERT 模 型;在 视 觉 单 模 态 方 面,采
+用 ResNetＧ１８模型,通过对 关 键 帧 特 征 进 行 池 化 得 到 视 频 级
+表 征,所 有 对 比 模 型 均 在 相 同 的 数 据 划 分 与 标 签 映 射 规 则 下
+进行训练与评估.
+数据集按８∶１∶１的比例 划 分 为 训 练 集、验 证 集 和 测 试 集.
+文本输入最大截 断 长 度 设 置 为 ２５６,以 保 留 充 分 的 语 义 线 索;
+视觉输入图像统一缩放至２２４×２２４,采用随机裁剪与水平翻转
+进行数据增强.模型优化采用 AdamW 优 化 器,并 实 施 分 组 学
+习率策略:BERT 及其预训练参数的学习率设为２e－５,其余网
+络层(如视觉骨干、注意力层及 多 任 务 头)的 学 习 率 设 为 ３e－
+４.多任务联合损失函 数 由 分 类 损 失、热 度 回 归 损 失 与 质 量 评
+估损失加权构成,权重超参数分 别 设 置 为 １．０,０．３ 和 ０．３,以
+在突出分类主任务的同时有效利用辅助任务的监督信号.
+基于多任务学习框 架 中 各 子 任 务 的 特 性 差 异,构 建 了 针
+对性的评价指标体系.针对眼科疾病分类任务,选取 AccuraＧ
+cy,Precision,Recall及 MacroＧF１进行综合考量.针对传播热
+度预测 任 务,采 用 MAE 与 RMSE 量 化 预 测 值 与 真 实 标 签 之
+间的偏 差. 针 对 内 容 质 量 评 估 任 务,采 用 Accuracy,PreciＧ
+sion,Recall与 F１score指标,刻画 OVP 方法对高质量样本的
+判别能力.
+４．２　OVP 方法与基线方法的对比实验
+分类任务对比实验结果如表１所列.
+表１　OVP 方法在分类任务上的对比实验结果
+Table１　ComparativeexperimentalresultsoftheOVP method
+ontheclassificationtask
+(％)
+方 法 Accuracy Precision Recall F１score
+LDA ８０．７７ ８０．７１ ７１．９４ ８１．３１
+TextRNN ９０．３２ ８５．５１ ８６．４１ ８５．８３
+TextCNN ９３．２９ ９２．４１ ９０．８８ ９２．４２
+BERT ９３．２９ ９４．５８ ９４．７１ ９４．６１
+ResNet１８ ５２．８９ ５４．８５ ５２．７３ ５６．０８
+OVP ９５．３６ ９５．８ ９６．０２ ９５．８１
+基于深度学习的语义表征模型在各项指标上均优于传 统
+的 LDA 模型,这表明疾病的精准判别已不再依赖于简单的词
+频共现,而是更多地取决于对上下文语义对齐、隐含症状线 索
+以及跨字 段 信 息 的 深 度 建 模. 在 文 本 单 模 态 基 线 中,TextＧ
+CNN与 TextRNN 相 较 于 LDA 取 得 了 大 幅 提 升,且 TextＧ
+CNN的整体表现优于 TextRNN,这说明在眼科短视频的文本
+与 评 论 语 料 中,具 有 高 判 别 力 的 特 征 往 往 以 局 部 短 语 或 固 定
+搭配(如特定病症描述 )的 形 式 出 现,而 由 于 社 交 媒 体 文 本 普
+遍存在碎片化、口 语 化 及 噪 声 较 多 的 特 点,TextRNN 所 擅 长
+的长程依 赖 建 模 优 势 难 以 得 到 有 效 发 挥,反 而 是 TextCNN
+对局部关键特征的捕捉更为敏锐.BERT 模 型 凭 借 其 在 大 规
+模语 料 上 的 预 训 练 知 识,在 ４ 项 分 类 指 标 上 均 表 现 出 更 均 衡
+的优势,特别是精确率(Precision)与 召 回 率 (Recall)同 步 维 持
+在高位,反映了其对口语化表达、同义改写以及跨病种相似 描
+述具有更强的消歧能力.
+纯视觉基线 ResNet１８在疾病分类任务上的表现较差,这
+是 由 于 社 交 媒 体 眼 科 视 频 由 大 量 关 键 帧 由 口 播 出 镜、字 幕 讲
+解 或 生 活 化 场 景 构 成,缺 乏 如 临 床 医 学 影 像 般 标 准 且 具 备 直
+接 诊 断 价 值 的 病 灶 视 觉 线 索,导 致 单 一 视 觉 模 态 难 以 有 效 区
+分６类疾病.
+OVP 方法在所 有 对 比 实 验 中 取 得 了 最 优 结 果. 相 较 于
+最强的文本基 线 BERT,OVP 在 准 确 率 (Accuracy)上 提 升 了
+７８３杜剑彤,等:基于多任务学习的眼科视频特征融合与多维画像
+
+=== PDF_PAGE 6 ===
+２．０７个 百 分 点,在 F１ 值 上 提 升 了 １．２０ 个 百 分 点,同 时 精 确
+率与召回率也分别 提 升 了 １．２２ 个 百 分 点 与 １．３１ 个 百 分 点.
+这种性能的全面提升表 明 了 多 模 态 融 合 策 略 的 有 效 性:OVP
+方 法 并 非 简 单 地 依 赖 某 一 模 态,而 是 通 过 跨 模 态 注 意 力 机 制
+将视觉信息作为补充语境,有效弥补了文本语义的模糊性,同
+时利用文本逻 辑 约 束 了 视 觉 特 征 的 噪 声.OVP 方 法 在 降 低
+误 判 率 的 同 时 增 强 了 对 疾 病 相 关 证 据 的 覆 盖 能 力,使 其 在 复
+杂的社交网络噪声环境下具备了更鲁棒的综合判别性能.
+热度预测任务的对比实验结果如表２所列.与侧重 语 义
+逻 辑 的 疾 病 分 类 任 务 不 同,视 频 的 传 播 热 度 不 仅 受 内 容 选 题
+影响,更与视频的呈 现 形 式、关 键 帧 的 视 觉 吸 引 力、字 幕 清 晰
+度以及整体信息密度等视觉因素存在直接关联.在单模态 对
+比中,ResNet１８在热 度 预 测 任 务 上 的 表 现 优 于 BERT,这 说
+明 视 觉 表 征 能 够 捕 捉 到 画 面 质 量、色 彩 饱 和 度 及 主 体 显 著 性
+等 与 用 户 点 击 行 为 强 相 关 的 特 征,而 这 些 特 征 难 以 在 非 结 构
+化的文 本 描 述 中 被 显 式 表 达.TextCNN,TextRNN 与 LDA
+之 间 的 误 差 波 动 表 明,仅 凭 浅 层 的 文 本 统 计 或 单 一 的 序 列 建
+模 难 以 拟 合 热 度 数 据 的 非 线 性 分 布,特 别 是 在 受 推 荐 算 法 与
+长 尾 效 应 影 响 显 著 的 社 交 媒 体 场 景 中,单 一 文 本 模 态 极 易 因
+极值样本的干扰而产生较大预测偏差.
+表２　OVP 方法在热度预测任务上的对比实验结果
+Table２　ComparativeexperimentalresultsoftheOVP methodon
+theheatmappredictiontask
+方 法 MAE RMSE
+LDA １．６７ ２．１１
+textRNN １．６５ ２．１４
+textCNN １．２５ １．６３
+BERT ０．９３ １．４６
+ResNet１８ ０．８７ １．１３
+OVP ０．０２ ０．０３
+OVP 方法在热 度 预 测 任 务 上 取 得 了 领 先 的 性 能,MAE
+与 RMSE 分 别 降 低 至 ０．０２ 与 ０．０３,较 最 强 的 单 模 态 基 线
+ResNet１８分别下降了０．８５与１．１０,这是因为 OVP 方法的多
+模态协同机制不仅利用文本特征把握了内容选题的受众关 注
+度,更结合视觉特征量化了呈现形式,对决定传播热度的关 键
+因子形成了全方位的可观测表征.视文互补的建模方式有 效
+解 决 了 单 一 模 态 信 息 缺 失 导 致 的 信 息 偏 差,更 精 准 地 描 述 了
+热 度 数 据 的 分 布 规 律,降 低 了 大 误 差 样 本 对 整 体 预 测 性 能 的
+负面影响,表 明 了 多 源 信 息 融 合 在 构 建 高 质 量 画 像 中 的 必
+要性.
+数据质量评估实验 的 结 果 如 表 ３ 所 列,传 统 统 计 建 模 即
+LDA 在４项指标上整体偏低,说明社 交 媒 体 场 景 下 的 数 据 质
+量 判 别 并 非 由 浅 层 词 频 或 主 题 分 布 即 可 稳 定 刻 画,而 更 依 赖
+对信息充分度、表达 结 构、互 动 线 索 等 复 合 信 号 的 表 征 能 力.
+深度文本模型整体优 于 LDA,但 其 表 现 呈 现 明 显 分 化:TextＧ
+RNN的 Accuracy 达 到 ８０．６４％,而 BERT 的 Accuracy 达 到
+８３．８７％,但两者的 Precision和 Recall较 不 均 衡,提 示 仅 依 赖
+文本语义容易受到口语化、碎片化表达以及平台噪声的干 扰,
+且在质量标签分布不均衡时更易出现预测偏保守或对高质 量
+样本覆盖不足的问题.纯视 觉 基 线 ResNet１８ 的 综 合 表 现 相
+对更稳健,表明在短视频内容中,画面清晰度、字幕呈现、讲 解
+场景与制作规范性 等 视 觉 侧 线 索 与 内 容 可 用 性/可 读 性 的 相
+关性较强,能够为质量判别提供直接证据.
+表３　OVP 方法在分类任务上的对比实验结果
+Table３　ComparativeexperimentalresultsoftheOVP methodon
+theclassificationtask
+(％)
+方 法 Accuracy Precision Recall F１score
+LDA ６２．３６ ６２．６ ５４．６８ ５６．８６
+TextRNN ８０．６４ ７８．２７ ７４．８１ ７５．３４
+TextCNN ７２．７９ ７１．１６ ７３．３９ ７３．１１
+BERT ８３．８７ ７１．９３ ７０．８９ ７５．６１
+ResNet１８ ８３．８８ ７９．９３ ７８．８４ ７９．３６
+OVP ８９．０３ ８３．１６ ８７．８８ ８２．３９
+４．３　OVP 方法的消融实验
+为了进一步量化本文 方 法 中 各 关 键 输 入 模 态 对 OVP 方
+法整体性能的贡献,本文在完整的 OVP 框架下构建了两组消
+融变体进行对照实 验:OVPＧK 表 示 移 除 关 键 帧 图 像 分 支,仅
+保留文本相关 输 入,含 转 写 文 本、标 题 及 评 论、对 应 编 码 器;
+OVPＧV 表示移除视频语音转写文本信息,仅保留 关 键 帧 视 觉
+信息及标题、评论 等 结 构 化 文 本 字 段;OVP 方 法 则 为 同 时 引
+入视频声音转写文本与关键帧视觉信息的完整版本.除输 入
+模态的差异外,各变体在数据集划分、优化策略与损失权重 设
+置 上 均 保 持 一 致,以 确 保 实 验 结 果 能 够 直 接 归 因 于 特 定 信 息
+源的增减.
+在眼科疾病分类任 务 中,不 同 模 态 的 贡 献 呈 现 出 明 显 的
+语义依赖特征.如图 ２ 所 示,完 整 OVP 方 法 在 精 确 率、召 回
+率与 F１值上均取 得 最 优 结 果,表 明 视 频 转 写 文 本 与 关 键 帧
+视觉信息在疾病判别中存在互补增益.对比两组消融变体 发
+现,移除关键帧 图 像 分 支 后 的 OVPＧK 与 完 整 方 法 在 准 确 率
+上差异微小,甚至出现轻微 上 浮,但 其 召 回 率 与 F１ 值 分 别 下
+降了０．３９个百分点和０．２４个百分点,这表明在分 类 任 务 中,
+视 觉 信 息 对 提 升 整 体 准 确 率 的 直 接 贡 献 有 限,但 其 在 处 理 语
+义 不 充 分 样 本 或 难 例 时 能 够 提 供 关 键 的 补 充 证 据,从 而 有 效
+提升了召回率.如图２所示,移除视频转 写 文 本 后 的 OVPＧV
+在４项指标上均出现了下滑,尤其是精确率降低了１．６８ 个 百
+分点,F１值降低了１．１０个百分点,这 一 结 果 表 明 了 转 写 文 本
+在眼科视频分析中的核心地位:在社交媒体场景中,标题与 评
+论往往存在口语化、缩 略 表 达,甚 至 泛 化 标 签 化 的 问 题,而 转
+写文本作为 更 长、更 完 整 的 叙 事 载 体,提 供 了 详 尽 的 疾 病 表
+述、症状线索与诊疗解释,这些深层语义特征对于减少类别 混
+淆、抑制误判以及确立稳定的判别边界至关重要.
+图２　OVP 方法在疾病分类任务上的消融实验
+Fig．２　AblationexperimentoftheOVP methodonthedisease
+classificationtask
+８８３ ComputerScience 计算机科学 Vol．５３,No．３,Mar．２０２６
+
+=== PDF_PAGE 7 ===
+在数据质量评估任务中,由图３可见,移除关键帧图 像 分
+支的 OVPＧK 指标下降 最 为 明 显,与 完 整 模 型 相 比,Accuracy
+下降４．６８个百分点,F１ 下降６．４个百分点,同时 Precision与
+Recall别下降１０．０４ 个 百 分 点 与 １５．８５ 个 百 分 点,这 说 明 视
+觉 线 索 在 质 量 判 别 中 具 有 关 键 作 用,且 对 降 低 误 判 与 提 升 高
+质量样 本 覆 盖 均 有 直 接 贡 献. 移 除 视 频 转 写 文 本 信 息 的
+OVPＧV 仍保持相对较 好 的 水 平,但 相 较 于 完 整 OVP 方 法 仍
+出现稳定退化,这表明转写文本所提供的叙事完整性、解释 链
+条 与 术 语 线 索 能 够 增 强 模 型 对 高 质 量 内 容 的 识 别 敏 感 性,减
+少信息 充 分 但 互 动 不 极 端 的 优 质 样 本 被 错 分 为 低 质 量 的
+情况.
+图３　OVP 方法在数据质量评估任务上的消融实验
+Fig．３　AblationexperimentoftheOVP methodonthedataquality
+assessmenttask
+消融实验还表明了不同任务对信息源的偏好差异.疾 病
+分类任务高度 依 赖 语 义 证 据 以 完 成 医 学 概 念 层 面 的 精 细 区
+分,而 热 度 预 测 任 务 则 更 依 赖 内 容 形 态 与 视 觉 表 现 所 携 带 的
+传播吸引力线索.完整 OVP 方 法 通 过 同 时 保 留 并 融 合 这 两
+类 信 息 源,在 分 类 任 务 与 热 度 预 测 任 务 等 之 间 建 立 了 一 致 的
+优 化 方 向,从 而 在 保 证 高 精 度 疾 病 判 别 的 同 时 实 现 了 对 视 频
+传播价值的精准量化.
+４．４　基于 OVP 方法的眼科视频画像
+眼科数据关键词演 化 分 析 可 精 准 刻 画 公 众 关 注 焦 点、科
+普叙事逻辑与疾病话题的时序迁移特征.社交媒体侧的关 键
+词 分 布 直 接 反 映 了 内 容 的 表 达 惯 性、受 众 的 交 互 偏 好 以 及 平
+台算法分发机制的 共 同 重 塑 作 用. 因 此,关 键 词 演 化 分 析 不
+仅能够揭示各病种知识传播的阶段性重心,更为画像构建、多
+任务建模及数据治理策略提供了可解释的依据.
+基于 OVP 方法的眼科 视 频 画 像 清 晰 给 出 了 关 注 域 的 集
+中特征,并主要由屈 光 相 关 议 题 占 据 主 导 地 位,如 图 ４ 所 示.
+该 画 像 以 筛 选 后 的 高 质 量 视 频 为 分 析 对 象,通 过 聚 合 跨 平 台
+交互行为数据(点赞、评论、收藏与分享),构建综合热度 指 标,
+实现了异构 主 题 的 横 向 比 较. 图 ４ 的 结 果 显 示,散 光、白 内
+障、视物模糊、近 视 眼 手 术 及 高 度 近 视 等 主 题 位 于 高 热 度 梯
+队,领先于其他议题,表 明 公 众 的 交 互 注 意 力 高 度 聚 焦 于 “可
+感知症状—矫正决策—术 后 评 估”这 一 完 整 的 信 息 链 条. 视
+物 模 糊 与 飞 蚊 症 虽 归 属 于 青 光 眼 类 目,但 反 映 了 公 众 对 早 期
+视 功 能 受 损 的 高 度 敏 感 性;散 光 在 白 内 障 相 关 语 境 中 的 高 频
+出现,折射出患者对术后视觉质量的精细化诉求;而眼疲劳 与
+高度近视构成了屈 光 不 正 类 目 的 核 心 讨 论 域. 相 比 之 下,干
+眼 症 等 慢 病 管 理 类 主 题 在 优 质 内 容 子 集 中 呈 现 长 尾 分 布,提
+示该类议题的传播更依赖于持续性的科普供给与长期的讨 论
+沉淀.上述结果证实,高 质 量 科 普 内 容 的 流 量 主 要 汇 聚 于 与
+日常视觉体验强相关、决策成本高且可操作性强的议题,为 主
+题监测与跨平台协同传播策略提供了定量支撑.
+图４　基于 OVP 方法的眼科视频公众关注度画像
+Fig．４　Ophthalmicvideopublicattentionprofilebasedonthe
+OVP method
+基于 OVP 方法的眼科 视 频 公 众 关 注 热 度 流 转 与 演 替 画
+像,直观呈现了典型的突发峰值驱动模式,即多数时间窗口 内
+热度趋零,而特定时段出现尖峰,且不同议题在峰值窗口内 交
+替占优并伴随阶段 性 共 振,如 图 ５ 所 示. 该 画 像 选 取 综 合 热
+度 排 名 前 列 的 议 题 并 以 病 种 为 聚 合 单 位,以 月 份 为 粒 度 重 构
+了互动热度的时序 轨 迹. 从 演 化 形 态 分 析,早 期 的 热 度 峰 值
+多 由 单 一 议 题 独 立 拉 动,而 后 期 演 化 中 更 易 出 现 多 议 题 叠 加
+的 复 合 峰 值,这 表 明 随 着 平 台 生 态 演 进 与 用 户 科 普 消 费 习 惯
+的成熟,热点话题倾向于围绕“症状解释—治疗方式—并发 疑
+虑”等相邻语义场景形成连续的传播链条.鉴于此时序 特 征,
+数 据 治 理 与 舆 情 监 测 应 优 先 采 用 滚 动 窗 口 与 动 态 阈 值 策 略,
+以 更 灵 敏 地 捕 捉 短 期 内 的 热 度 爆 发 与 议 题 流 转,而 非 仅 依 赖
+年度均值刻画长期趋势.
+图５　基于 OVP 方法的眼科视频公众关注热度流转与演替画像
+Fig．５　Flowandsuccessionofpublicattentionheatinophthalmic
+videosbasedontheOVP method
+基于 OVP 方法的眼科 视 频 公 众 关 注 度 画 像 度 量 了 不 同
+眼科病种在 高、低 质 量 内 容 上 的 受 众 深 度 交 互 偏 好 差 异,如
+图６所示.本文定义深度交互指数为收藏量和转发量之 和 与
+点赞量的比值.画像 分 析 表 明,各 病 种 的 质 量 交 互 模 式 存 在
+结构性分异:在屈光不正与白内障相关议题中,高质量内容 的
+深度交互指数高于低质量内容,表明在此类决策导向强、技 术
+门 槛 高 的 议 题 上,规 范 严 谨 的 科 普 内 容 更 容 易 触 发 用 户 的 收
+藏与转发行为.在青光眼、干眼症、年龄相关性黄斑变性 与 糖
+尿 病 视 网 膜 病 变 中,低 质 量 内 容 的 深 度 交 互 指 数 反 而 呈 现 高
+位.这一反常现象揭示了部分病种传播中存在的低点赞但 高
+收藏转发特征,既可能源于比值指标中分母偏小的统计效 应,
+９８３杜剑彤,等:基于多任务学习的眼科视频特征融合与多维画像
+
+=== PDF_PAGE 8 ===
+也 客 观 反 映 了 碎 片 化、情 绪 化 或 营 销 化 表 达 在 特 定 传 播 链 条
+中具有较强的扩散优势.基于 OVP 方法的 眼 科 视 频 质 量Ｇ热
+度差异特征画像,呈现出高质量驱动特征,即多数议题在高 质
+量 组 的 平 均 热 度 稳 定 高 于 低 质 量 组,且 在 对 数 尺 度 下 仍 保 持
+跨数量级的差距,如 图 ７ 所 示. 这 一 特 征 说 明 互 动 热 度 的 主
+要贡献源于信息完 整、表 达 规 范 且 讨 论 充 分 的 优 质 内 容. 细
+分病种观察,屈光不正议题在高质量组的优势尤为突出,验 证
+了 用 户 对 此 类 结 构 化 科 普 与 手 术 叙 事 的 高 频 互 动 倾 向;干 眼
+症 议 题 在 中 等 热 度 区 间 呈 现 稳 定 的 组 间 差 异,符 合 其 日 常 化
+与 工 具 性 消 费 属 性;年 龄 相 关 性 黄 斑 变 性 议 题 在 高 质 量 组 形
+成热度上沿,反映了高密度信息内容对特定受众的聚集效 应.
+白内障议题中的不良用眼习惯等主题在高质量组实现了热 度
+跃迁,体现了优质内容的放大效应;而糖尿病视网膜病变议 题
+在 低 质 量 组 的 缺 席,进 一 步 佐 证 了 高 解 释 成 本 话 题 对 高 质 量
+载体的依赖性.青光眼议题中的飞蚊症等症状词在低质量 组
+维 持 着 一 定 热 度,提 示 高 频 症 状 类 议 题 具 有 较 强 的 泛 化 传 播
+属性.该画像结果深 刻 揭 示 了 不 同 病 种 及 语 义 类 型 在 质 量Ｇ
+热度耦合强度上的结构性差异.
+图６　基于 OVP 方法的眼科视频受众深度交互偏好画像
+Fig．６　Audiencedeepinteractionpreferenceprofileforophthalmic
+videosbasedontheOVP method
+图７　基于 OVP 方法的眼科视频质量Ｇ热度差异特征画像
+Fig．７　QualityＧheatdifferencefeatureprofileforophthalmicvideos
+basedontheOVP method
+结束语　本文针对社交网络眼科视频普遍存在的模态 语
+义异构、文本描述非规范化以及内容良莠不齐等问题,提出 了
+一种基于多任务学习的眼科视频特征融合与多维画像构建 方
+法(OVP).该方法引入 眼 科 知 识 图 谱 对 文 本 进 行 语 义 增 强,
+利用结构化知识弥补了社交媒体文本在专业性上的缺失. 通
+过 设 计 跨 模 态 注 意 力 融 合 机 制,实 现 了 视 觉 表 征 与 医 学 语 义
+的深度对齐,并借助多任务学习框架,在统一的特征空间内 协
+同优化疾病分类、热度预测与质量评估任务,提升了对复杂 眼
+科视频内容的理解能力.
+参 考 文 献
+[１] DE CROON R,VAN HOUDT L,HTUN N N,etal．Health
+recommendersystems:Systematicreview[J]．JournalofMedical
+InternetResearch,２０２１,２３(６):e１８０３５．
+[２] SUAREZＧLLEDO V,ALVAREZＧGALVEZ J．Prevalence of
+health misinformationonsocial media:systematicreview[J]．
+JournalofMedicalInternetResearch,２０２１,４２(１):e０２６．
+[３] YUAN L,KANG D,DONG X,etal．Artificialintelligencein
+clinicaleducationin ophthalmology:asystematicreview [J]．
+VisualNeuroscience２０２５,１２(６):２８９３Ｇ２９０７．
+[４] ARNAB A,DEHGHANI M,HEIGOLD G,etal．ViViT:AfviＧ
+deovisiontransformer[C]∥ProceedingsoftheIEEE/CVFInＧ
+ternationalConferenceonComputerVision(ICCV)．２０２１:６８３６Ｇ
+６８４６．
+[５] LIU Z,NINGJ,CAO Y,etal．Videoswintransformer[C]∥
+ProceedingsoftheIEEE/CVFConferenceonComputerVision
+andPatternRecognition．２０２２:３２０２Ｇ３２１１．
+[６] LIK,WANG Y,ZHANG J,etal．UniFormer:UnifyingconvoＧ
+lutionandselfＧattentionforvisualrecognition[J]．IEEE TranＧ
+sactionson Pattern Analysisand MachineIntelligence(TPAＧ
+MI),２０２３,４５(１０):１２５８１Ｇ１２６００．
+[７] LUO H,JIL,ZHONG M,etal．Clip４clip:Anempiricalstudyof
+clipforendtoend videoclipretrieval[J]．Neurocomputing,
+２０２２,５０８:２９３Ｇ３０４．
+[８] LID,LIJ,LI H,etal．Alignandprompt:VideoＧandＧlanguage
+preＧtrainingwithentityprompts[C]∥ProceedingsoftheIEEE/
+CVFConferenceon ComputerVisionandPattern Recognition
+(CVPR)．２０２２:４９５３Ｇ４９６３．
+[９] NIB,PENG H,CHEN M,etal．ExpandinglanguageＧimagepreＧ
+trained modelsforgeneralvideorecognition[C]∥ European
+Conferenceon Computer Vision(ECCV)．Cham:Springer NaＧ
+tureSwitzerland,２０２２:１Ｇ１８．
+[１０]TONG Z,SONG Y,WANG J,et al．VideoMAE:Masked auＧ
+toencodersaredataＧefficientlearnersforselfＧsupervised video
+preＧtraining[J]．Advancesin NeuralInformation Processing
+Systems,２０２２,３５:１００７８Ｇ１００９３．
+[１１]LIN K,LIL,LIN C,etal．SwinBERT:EndＧtoＧendtransformers
+withsparseattentionforvideocaptioning[C]∥Proceedingsof
+theIEEE/CVF Conference on Computer Vision and Pattern
+Recognition．２０２２:１７９４９Ｇ１７９５８．
+[１２]ZHU B,BIN Y,XU H,etal．LanguageBind:ExtendingvideoＧ
+languagepretrainingtoNＧmodalitybylanguageＧbasedsemantic
+alignment[C]∥TheTwelfthInternationalConferenceonLearＧ
+ningRepresentations(ICLR)．２０２４．
+[１３]HUANGSC,SHENL,LUNGREN M,etal．GLoRIA:A multiＧ
+modalglobalＧlocalrepresentationlearningframeworkforlabelＧ
+efficient medicalimagerecognition[C]∥ Proceedings ofthe
+IEEE/CVFInternationalConferenceonComputerVision．２０２１:
+３９４２Ｇ３９５１．
+[１４]STAHLSCHMIDT S R,ULFENBORG B,SYNNERGREN J．
+Multimodaldeeplearningforbiomedicaldatafusion:areview
+[J]．BriefingsinBioinformatics,２０２２,２３(２):１Ｇ１５．
+０９３ ComputerScience 计算机科学 Vol．５３,No．３,Mar．２０２６
+
+=== PDF_PAGE 9 ===
+[１５]LIANZ,YANG Q,WANG W,etal．DEEPＧFEL:Decentralized,
+efficient and privacyＧenhanced federated edge learning for
+healthcarecyberphysicalsystems[J]．IEEE TransactionsonＧ
+NetworkScienceandEngineering,２０２２,９(５):３５５８Ｇ３５６９．
+[１６]FAN H,XIONG B,MANGALAM K,etal．Multiscalevision
+transformers[C]∥ProceedingsoftheIEEE/CVFInternational
+ConferenceonComputerVision．２０２１:６８２４Ｇ６８３５．
+[１７] KONDRATYUK D,YUAN L,LI Y,etal．Movinets:Mobile
+videonetworksforefficientvideorecognition[C]∥Proceedings
+oftheIEEE/CVFConferenceonComputerVisionandPattern
+Recognition．２０２１:１６０２０Ｇ１６０３０．
+[１８]BAIN M,NAGRANI A,VAROL G,etal．Frozenintime:A
+jointvideoandimageencoderforendＧtoＧendretrieval[C]∥ProＧ
+ceedingsoftheIEEE/CVFInternationalConferenceon ComＧ
+puterVision．２０２１:１７２８Ｇ１７３８．
+[１９]SUN R,LIY,ZHANG T,etal．LesionＧawaretransformersfor
+diabeticretinopathygrading[C]∥ProceedingsoftheIEEE/CVF
+ConferenceonComputerVisionandPatternRecognition．２０２１:
+１０９３８Ｇ１０９４７．
+[２０] GU Y,TINN R,CHENG H,etal．DomainＧspecificlanguage
+modelpretrainingforbiomedicalnaturallanguage processing
+[J]．ACM Transactionson Computingfor Healthcare,２０２１,
+３(１):１Ｇ２３．
+[２１] TREWARTHA A,WALKER N,HUO H,etal．Quantifying
+theadvantageofdomainＧspecificpreＧtrainingonnamedentity
+recognitiontasksinmaterialsscience[J]．Patterns,２０２２,３(４):
+１００４８８．
+[２２] WANG Z,WU Z,AGARWAL D,etal．MedCLIP:Contrastive
+learningfrom unpaired medicalimagesandtext[C]∥ProceeＧ
+dingsofthe２０２２ConferenceonEmpiricalMethodsin Natural
+LanguageProcessing．２０２２:３８７６Ｇ３８８７．
+[２３] WANGJ,LIW,LIU W,etal．alEnablinginductiveknowledge
+graphcompletionviastructureＧawareattentionnetwork[J]．ApＧ
+pliedIntelligence,２０２３,５３(８):２５００３Ｇ２５０２７．
+[２４]YASUNAGA M,REN H,BOSSELUT A,etal．QAＧGNN:ReaＧ
+soningwithLanguageModelsandKnowledgeGraphsforQuesＧ
+tionAnswering[C]∥Proceedingsofthe２０２１Conferenceofthe
+NorthAmericanChapterofthe AssociationforComputational
+Linguistics:HumanLanguageTechnologies．２０２１:５３５Ｇ５４６．
+[２５]VANDENHENDES,GEORGOULISS,VAN GANSBEKE W,
+etal．MultiＧtasklearningfordensepredictiontasks:A survey
+[J]．IEEE TransactionsonPatternAnalysisand MachineIntelＧ
+ligence,２０２２,４４(７):３６１４Ｇ３６３３．
+[２６]ZHOU H Y,YU Y,WANGC,etal．AtransformerＧbasedrepreＧ
+sentationＧlearningmodelwithunifiedprocessingofmultimodal
+inputforclinicaldiagnostics[J]．NatureBiomedicalEngineering,
+２０２３,７(６):７４３Ｇ７５５．
+[２７]KAZEMZADEH K．Artificialintelligenceinophthalmology:opＧ
+portunities,challenges,andethicalconsiderations[J]．Medical
+Hypothesis,DiscoveryandInnovationinOphthalmology,２０２５,
+１４(１):２５５．
+[２８]GAWLIKOWSKIJ,TASSICR,ALI M,etal．AsurveyofunＧ
+certaintyindeepneuralnetworks[J]．ArtificialIntelligenceReＧ
+view,２０２３,５６:１５１３Ｇ１５８９．
+[２９] MOOR M,BANERJIE O,ABAD ZS H,etal．Foundation moＧ
+delsfor generalist medicalartificialintelligence[J]．Nature,
+２０２３,６１６(７９５６):２５９Ｇ２６５．
+DUJiantong,bornin１９８９,Ph．D．His
+mainresearchinterestsincludeophthalＧ
+mologyandophthalmicresearch．
+GUAN Zeli,bornin１９９４,Ph．D,postＧ
+doctoralresearcher．His mainresearch
+interestisartificialintelligence．
+(责任编辑:喻藜)
+１９３杜剑彤,等:基于多任务学习的眼科视频特征融合与多维画像

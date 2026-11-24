@@ -1,0 +1,32 @@
+==== pkgs
+batchgenerators               0.25.6
+batchgeneratorsv2             0.3.8
+blosc2                        4.3.3
+connected-components-3d       4.1.1
+dicom2nifti                   2.6.2
+nibabel                       5.4.2
+numpy                         2.2.6
+pandas                        2.3.3
+scikit-image                  0.25.2
+scikit-learn                  1.7.2
+scipy                         1.15.3
+simpleitk                     2.5.7
+torch                         2.9.1+cu128
+torchvision                   0.24.1
+tqdm                          4.70.1
+
+==== disk
+/dev/nvme0n1    7.0T  1.7T  5.0T  25% /data
+
+==== dl
+[  571s]   1.33/25.02 GB   5.3%  inst=1.47 avg=2.39 MB/s ETA=170 min
+[  586s]   1.36/25.02 GB   5.4%  inst=1.80 avg=2.37 MB/s ETA=170 min
+
+==== pip
+global.disable-pip-version-check='true'
+global.index-url='https://mirrors.aliyun.com/pypi/simple/'
+global.retries='3'
+global.timeout='60'
+global.trusted-host='mirrors.aliyun.com'
+install.trusted-host='mirrors.aliyun.com'
+---

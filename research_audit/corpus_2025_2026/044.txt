@@ -1,0 +1,2456 @@
+=== PDF_PAGE 1 ===
+第 42 卷第 5 期
+2025 年 9 月
+中 国 科 学 院 大 学 学 报( 中英文)
+Journal
+ 
+of
+ 
+University
+ 
+of
+ 
+Chinese
+ 
+Academy
+ 
+of
+ 
+Sciences
+Vol.
+ 
+42
+September　 No.
+ 
+5
+2025
+∗国家自然科学基金(61976091) 资助
+ 
+† 通信作者,E-mail:
+ 
+changqing@ ecust. edu. cn
+ 
+文章编号:2095- 6134(2025)05- 0645- 10
+基于多层级特征融合的多模态医学图像配准∗
+ 
+常青
+†
+,李梦珂,陆晨豪,张扬
+ 
+( 华东理工大学信息科学与工程学院,上海
+ 
+200237)
+ 
+(2023 年 3 月 10 日收稿; 2023 年 7 月 11 日收修改稿)
+Chang
+ 
+Q,
+ 
+Li
+ 
+M
+ 
+K,
+ 
+Lu
+ 
+C
+ 
+H,
+ 
+et
+ 
+al.
+ 
+Multimodal
+ 
+medical
+ 
+image
+ 
+registration
+ 
+based
+ 
+on
+ 
+multi-layer
+ 
+feature
+ 
+fusion
+ 
+[ J] .
+ 
+Journal
+ 
+of
+ 
+University
+ 
+of
+ 
+Chinese
+ 
+Academy
+ 
+of
+ 
+Sciences,2025,42(5):645- 654. DOI:10. 7523 / j. ucas. 2023. 070.
+摘　 要　 多模态医学图像的灰度和纹理结构差别较大,难以提取相对应的特征,导致配准精度
+较低。 针对这一问题,提出基于多层级特征融合的配准模型,并行提取参考图和浮动图的特
+征,在多层级结构中使用双输入空间注意力模块实现多模态特征渐进融合,获取其相关性,并
+将这种相关性映射到图像配准变换中。 同时使用基于密集对称尺度不变特征变换的局部特征
+相似性引导网络进行迭代优化,实现多模态图像的无监督配准。
+ 
+关键词　 多层级特征融合;多模态;密集对称尺度不变特征变换;无监督配准
+ 
+中图分类号:TP391. 4　 　 文献标志码:A　 　 DOI:10. 7523 / j. ucas. 2023. 070
+Multimodal
+ 
+medical
+ 
+image
+ 
+registration
+based
+ 
+on
+ 
+multi-layer
+ 
+feature
+ 
+fusion
+  
+CHANG
+  
+Qing,
+ 
+LI
+  
+Mengke,
+ 
+LU
+  
+Chenhao,
+ 
+ZHANG
+  
+Yang
+ 
+( School
+ 
+of
+ 
+Information
+ 
+Science
+ 
+and
+ 
+Engineering,
+ 
+East
+ 
+China
+ 
+University
+ 
+of
+ 
+Science
+ 
+and
+ 
+Technology,Shanghai
+ 
+200237,
+ 
+China)
+ 
+Abstract　 As
+ 
+the
+ 
+initial
+ 
+step
+ 
+of
+ 
+multimodal
+ 
+medical
+ 
+image
+ 
+registration,
+ 
+the
+ 
+accuracy
+ 
+and
+ 
+speed
+ 
+of
+ 
+registration
+ 
+will
+ 
+largely
+ 
+affect
+ 
+the
+ 
+effect
+ 
+of
+ 
+medical
+ 
+image
+ 
+fusion.
+ 
+Due
+ 
+to
+ 
+the
+ 
+large
+ 
+difference
+ 
+in
+ 
+grayscale
+ 
+and
+ 
+texture
+ 
+structure
+ 
+of
+ 
+multimodal
+ 
+medical
+ 
+images,
+ 
+it
+ 
+is
+ 
+difficult
+ 
+to
+ 
+extract
+ 
+correlating
+ 
+features,
+ 
+resulting
+ 
+in
+ 
+low
+ 
+registration
+ 
+accuracy.
+ 
+This
+ 
+paper
+ 
+proposes
+ 
+a
+ 
+multi-layer
+ 
+feature
+ 
+fusion
+ 
+registration
+ 
+network,
+ 
+parallel
+ 
+extraction
+ 
+of
+ 
+features
+ 
+of
+ 
+the
+ 
+fix
+ 
+image
+ 
+and
+ 
+moving
+ 
+image,
+ 
+and
+ 
+the
+ 
+multimodal
+ 
+feature
+ 
+is
+ 
+gradually
+ 
+fused
+ 
+by
+ 
+using
+ 
+the
+ 
+dual-input
+ 
+spatial
+ 
+attention
+ 
+module
+ 
+in
+ 
+the
+ 
+multi-
+layer
+ 
+structure,
+ 
+obtaining
+ 
+their
+ 
+correlation
+ 
+and
+ 
+mapping
+ 
+such
+ 
+correlation
+ 
+to
+ 
+image
+ 
+registration
+ 
+transformation.
+ 
+At
+ 
+the
+ 
+same
+ 
+time,
+ 
+the
+ 
+structural
+ 
+information
+ 
+loss
+ 
+term
+ 
+guidance
+ 
+network
+ 
+based
+ 
+on
+ 
+dense
+ 
+symmetric
+ 
+scale
+ 
+invariant
+ 
+feature
+ 
+transform
+ 
+is
+ 
+introduced
+ 
+for
+ 
+iterative
+ 
+optimization
+ 
+to
+ 
+achieve
+ 
+accurate
+ 
+unsupervised
+ 
+registration.
+ 
+Keywords 　 multi-layer
+ 
+feature
+ 
+fusion;
+ 
+multimodal;
+ 
+dense
+ 
+symmetric
+ 
+scale
+ 
+invariant
+ 
+feature
+ 
+transform;
+ 
+unsupervised
+ 
+registration
+ 
+
+=== PDF_PAGE 2 ===
+中国科学院大学学报( 中英文) 第 42 卷
+　 　 多模态医学图像是指由不同成像设备对同一
+组织拍摄得到的图像,每种模态图像提供不同信
+息,通过融合不同模态图像的信息,可以为专家的
+临床诊断提供重要依据[1-2] 。 多模态医学图像配
+准作为医学图像融合的初始步骤,配准的精度和
+速度在很大程度上会影响医学图像融合的效果。
+因此实现精准且实时的多模态医学图像配准具有
+非常重要的临床意义。
+然而,将医学图像进行配准是一项具有较高
+难度的任务,尤其是对于多模态图像的配准[3] 。
+2 个模态的图像在相同结构下可以呈现出完全不
+一样的灰度和纹理结构,如图 1 所示,脑脊液在脑
+部核 磁 共 振 成 像 ( magnetic
+ 
+resonance
+ 
+imaging,
+MRI) 的 T1 加权图像上表现为黑色,在 MRI 的 T2
+加权图像上表现为白色。 然而从不同外观形态的
+图像中提取相对应的特征是非常困难的。
+近几年深度学习发展十分迅速,基于该技术
+的方法被广泛应用于图像配准,并展现出巨大发
+展潜力[4-5] 。 受传统配准方法启发,Haskins 等[6]
+提出训练深度相似网络作为迭代配准优化的度
+量,但是这种方法需要通过迭代进行参数寻优,图
+像配准速度较慢。 后来,Balakrishnan 等[7] 利用卷
+积神经网络( convolutional
+ 
+neural
+ 
+networks,CNN)
+直接估计图像之间的空间变换,提出一种典型的
+无 监 督 配 准 算 法 VoxelMorph。 与 此 类 似, Mok
+等[8] 提出 一 种 拉 普 拉 斯 金 字 塔 网 络 ( Laplacian
+ 
+pyramid
+ 
+image
+ 
+registration
+ 
+network,LapIRN),采用
+一种新的金字塔相似性度量,用于捕捉不同层级
+输入的 图 像 偏 移。 然 而, 这 些 方 法 都 是 针 对 单
+模态图像 配 准,其 相 似 性 度 量 不 适 合 多 模 态 图
+像,导 致 其 在 多 模 态 图 像 配 准 中 的 应 用 受 到
+限制。
+橘点是特征点,箭头长度和方向代表特征点梯度幅值及方向。
+图 1　 脑部 MRI-T1 和脑部 MRI-T2 图像
+Fig. 1　 Brain
+ 
+MRI-T1
+ 
+image
+ 
+and
+ 
+brain
+ 
+MRI-T2
+ 
+image
+基于深度学习的多模态图像配准需要一个有
+效的配准网络,因为它要提取并匹配 2 幅图像之
+间的特征,从而直接估计形变参数。 Guo 等[9] 提
+出 多 阶 段 配 准 框 架 ( multi-stage
+ 
+registration,
+MSReg),并在每个阶段利用生成的增强数据集改
+进网络训练。 2 个模态图像在输入网络前先进行
+融合, 然 后 输 入 到 ResNetXt[10] 进 行 深 度 配 准,2
+幅图像的特征提取复合在一起,可能会导致混合
+区域的特征失真。 还有一些方法[11] 使用 2 个独
+立的 CNN 分别提取图像特征,然后将 2 个模态图
+像特征通过通道级联作为后期融合,这些方法将
+2 幅图像的特征提取完全分开,忽略了图像对之
+间的对应关系。 之后,Song 等[3,12] 提出适用于多
+模态的注意力配准 AttentionReg,通过注意力机制
+融合提取的特征,建立 2 张不同图像对应特征之
+间的空间对应关系,此方法仅在特征提取后加入
+注意力机制,不能充分提取不同水平空间 2 张图
+像特征之间的相关性。 针对多模态图像的刚性配
+准,Chen 等[13] 在不同卷积层加入注意力机制实
+现特征的渐进融合,取得了良好的配准性能,但该
+方法尚未扩展到非刚性配准中。 从本质上来说,
+形变参数的估计是利用深度卷积网络表征图像特
+征的过程,如何从差距大的图像中提取相对应的
+特征是多模态图像配准的一个难点。
+针对上述问题,本文提出一种基于多层级特
+征融合 网 络 ( multi-layer
+ 
+feature
+ 
+fusion
+ 
+registration
+ 
+network,MFFRN) 的 多 模 态 配 准 算 法, 主 要 内 容
+如下:
+1) 提出一种 MFFRN 框架,通过 2 个独立的
+CNN 分别提取图像特征,在不同空间维度对 2 个
+模态的特征进行融合,实现特征的逐步融合和对
+应,从而增强网络的特征表征能力。
+2) 设计 双 输 入 空 间 注 意 力 模 块 ( dual-input
+ 
+spatial
+ 
+attention
+ 
+model,DSAM),用于连接 2 个独立
+的特征 提 取 网 络, 学 习 图 像 之 间 的 对 应 关 系。
+DSAM 是通过注意力机制计算 2 个模态特征之间
+的相关性,从空间层面对 2 个模态的特征进行校
+准融合。
+3) 引入密集对称尺度不变特征变换( dense
+ 
+symmetric
+ 
+scale
+ 
+invariant
+ 
+feature
+ 
+transform, DS-
+SIFT),通过密集方式提取对称尺度不变特征变换
+的特征,提取到更加丰富的基于图像局部信息的
+特征,实现从差异大的图像中选取合适的特征并
+引导网络参数更新。
+646
+
+=== PDF_PAGE 3 ===
+第 5 期 常青,等:基于多层级特征融合的多模态医学图像配准
+1　 方法
+1. 1　 MFFRN
+　 　 现有的基于 CNN 的多模态配准方法,通常有
+2 种方式提取参考图和浮动图的特征,一种是在
+输入网络前直接将 2 个图像的通道进行连接作为
+早期融合[9] ,另一种是使用 2 个单独的 CNN 分别
+提取图像特征以进行后期融合[11] 。 但是研究表
+明,这些方法均忽略了图像之间的空间对应关系,
+不能完全提取 2 个模态对应的特征信息[3] 。 受
+Chen 等[13] 研 究 启 发, 本 文 设 计 一 种 MFFRN 框
+架,如图 2 所示,通过 DSAM 对 2 个模态的特征进
+行逐步融合,从而更好地提取并匹配多模态图像
+之间的特征。
+网络在提取特征时旨在提取到能克服模态差
+异的高级特征,由于 2 个模态图像灰度和纹理结
+构的差异,本文使用双并行特征提取网络,即参考
+图和浮动图通过 2 个独立的 CNN 分别实现特征
+的提 取, 然 后 将 得 到 的 2 个 分 支 特 征 图 输 入 到
+DSAM 中。 DSAM 融合 2 个分支的特征信息, 通
+过学习 2 个模态特征图之间的相关性,输出 2 个
+分支重新校准过的空间特征。 DSAM 的输出作为
+下一次 2 个 CNN 的输入,并且将 DSAM 的输出进
+行通道级联用于跳跃连接。 在不同层级网络中使
+用 DSAM,可以在逐步提取各自特征的同时发现
+更多语义对应关系,实现不同空间维度的渐进式
+特征融合,提高网络的特征表征能力。 同时,将融
+合过后的特征图跳跃连接到相同空间维度的更深
+层的网络,进一步融合浅层特征和深层特征,也可
+以在一定程度上缓解神经网络梯度消失的问题。
+此外,本文提出的配准模型是体素到体素的映射,
+需要尽可能保留图像特征信息,所以网络中上采
+样层和下采样层均基于卷积实现。
+最新研究表明,CNN 在理解特征之间的空间
+对应关系方面的能力有限[3] ,所以本文在 MFFRN
+中使用注意力机制对不同模态的特征进行融合。
+网络利用注意力机制学习一组权重参数,以动态
+加权的方式强调感兴趣区域同时弱化不相关区
+域。 一些方法[14] 通过在 CNN 中加入注意力模块
+以提取到最相关的语义上下文信息,但是这些方
+法的研究仅针对单一图像场景,缺乏对于参考图
+和浮动图相关性的设计。 本文设计一种双输入空
+间注意力模块 DSAM,与单幅图像中注意力机制
+不同[15] ,DSAM 以卷积层从不同模态中提取的特
+征作为输入,旨在能提取到不同模态下 2 幅图像
+特征之间的空间对应关系。 DSAM 通过空间权重
+对特征进行校准,计算来自 2 张不同模态图像特
+征之间的空间相关性,从空间层面重新校准每种
+模态的特征。 在本文配准框架中,将 DSAM 嵌入
+到配准网络不同的下采样层,提取不同空间维度
+特征之间的空间对应关系,从而实现不同空间维
+度特征的逐步融合。
+DSAM 通过连接 2 个独立 CNN 提取的特征
+图,获取不同通道上的空间权重,进而保留 2 种模
+态特征相关的区域激活,捕获 2 个模态之间的相
+关性。 DSAM 基本结构如图 3 所示,首先分别对 2
+个通道数为 C、大小为 H × W × D 的特征进行最大
+池化,得到 2 个通道数为 1 的特征图,其中对特征
+进行最大池化,可以有效突出重要特征区域。 然
+后将得到的 2 个特征图进行通道级联,得到的特
+图 2　 MFFRN 网络结构
+Fig. 2　 Architecture
+ 
+of
+ 
+MFFRN
+ 
+network
+746
+
+=== PDF_PAGE 4 ===
+中国科学院大学学报( 中英文) 第 42 卷
+图 3　 DSAM 基本结构
+Fig. 3　 Structure
+ 
+of
+ 
+DSAM
+征图的通道大小为 2,再利用卷积操作得到融合
+特征图 Mfuse,经过卷积操作融合特征图的通道大
+小降为 1。 其数学公式如下
+Mfuse = Convfuse(Cat(MaxPool(F′),MaxPool(M′))),
+(1)
+式中: F′ 和 M′ 是双并行输入 DSAM 的特征图,
+MaxPool(·) 是最大池化,Cat( ·) 代表对 2 个特
+征图从通道进行级联。 Convfuse( ·) 代表融合特
+征图的卷积运算,该卷积用于降低特征图的通道
+数。 对 Mfuse 使用 2 个独立的卷积运算得到 2 个
+模态上原始特征图的空间校准权重,公式如下
+α1 = Conv1( Mfuse), (2)
+α2 = Conv2( Mfuse), (3)
+式中: α1 和 α2 分别是 2 个原始输入特征图的空
+间校准权重,Conv1 和 Conv2 代表卷积运算,其卷
+积核大小为 3。 然后利用 Sigmoid 激活函数对 α1
+和 α2 进行归一化,消除噪声差异。 最后将空间校
+准权重与原始特征相乘对特征进行自适应调整,
+并将结果与原始特征相加得到融合特征,其数学
+公式如下
+F′DSAM = M′ + ( M′ × δ( α1)), (4)
+M′DSAM = M′ + ( M′ × δ( α2)), (5)
+式中: δ(·) 代 表 Sigmoid 激 活 函 数, F′DSAM 和
+M′DSAM 是 DSAM 输出的特征图。 DSAM 融合了 2
+个模态的信息,可以嵌入在不同水平空间的卷积
+块之间,实现不同水平信息的融合。
+1. 2　 DS-SIFT
+　 　 DS-SIFT 是一种基于局部梯度信息的密集特
+征描述子,是一种密集的特征表示方法。 原始的
+尺 度 不 变 特 征 转 换 ( scale-invariant
+ 
+feature
+ 
+transform,SIFT) [16] 不能应用于多模态图像的配准
+中。 如图 1 中 MRI-T1 图像和 MRI-T2 图像所示,
+2 幅图像中相同关键点的梯度方向是相反的,因
+此 SIFT 方法在不同模态图像的同一个位置产生
+了 2 个完全不同的特征描述符。 对称不变特征变
+换 ( symmetric
+ 
+scale-invariant
+ 
+feature
+ 
+transform, S-
+SIFT) [17] 是基于 SIFT 改进的局部结构特征,其生
+成的特征描述符对于对比度是对称的,这使得其
+能在不同模 态 下 提 取 到 相 同 特 征 描 述 符。 SIFT
+和 S-SIFT 都是在图像上寻找关键点,并在关键点
+处生成特征描述符,是一种稀疏的特征表示方法,
+不适合用于度量参考图和形变后的浮动图之间的
+相似性。 DS-SIFT 在 S-SIFT 基础上进行改进,使
+用密集的方式对图像进行特征提取,不存在关键
+点检测阶段,直接在每个像素处提取局部特征描
+述符。
+S-SIFT 生成特征描述符的过程如图 4( a) ~
+4(g) 所示,其中橘色的点是特征点。 首先,计算
+特征点 4n × 4n 邻域内像素点的梯度幅值及梯度
+方向( 本文中 n 设为 4,为方便展示图 4 中仅显示
+n 为 2 的情况),并将梯度方向限制在 0° ~ 180°,
+如图 4(b) 所示。 然后将原始图像旋转 180°,以同
+样的计算方式得到特征点 4n × 4n 邻域内像素点
+的梯度幅值及梯度方向,如图 4( e) 所示。 其次,
+将特征点 4n × 4n 邻域划分为 n × n 个子块,并计
+算每一个子块在 8 个方向的梯度直方图,得到原
+846
+
+=== PDF_PAGE 5 ===
+第 5 期 常青,等:基于多层级特征融合的多模态医学图像配准
+图 4　 DS-SIFT 生成特征描述符
+Fig. 4　 Generating
+ 
+feature
+ 
+descriptors
+ 
+by
+ 
+DS-SIFT
+始特征点的方向直方图 A( n × n × 8) 和旋转 180°
+后特征点的方向直方图 B( n × n × 8) ,其结果如
+图 4(c) 和 4( f) 所示。 从图 4( a) ~ 4( g) 可以看
+出,2 个方向直方图之间的关系为
+B( i,j,k) = A( n + 1 - i,n + 1 - j,k), (6)
+式中: i,j = 1,…,n,k = 1,2,…,8。 为更直观地展
+示 2 个方向直方图之间的关系,在图 4(c) 和 4(f)
+中用不同颜色标出不同子块直方图的序列,颜色
+相同代表子块的直方图相同。 因此,为了提升效
+率,方向直方图 B( n × n × 8) 不需要通过旋转计
+算,可以直接从 A( n × n × 8) 得到。 最后为实现
+对称不变性,将 2 个直方图 A( n × n × 8) 和 B( n ×
+n × 8) 组合在一起,若 C(4 × 4 × 8) 是特征点的
+对称描述符,计算如下式所示
+C( i,j,k) =
+c1 | A( i,j,k) + B( i,j,k) | ,i = 1,2
+c2 | A( i,j,k) - B( i,j,k) | ,i = 3,4{ ,
+(7)
+式中: c1 和 c2 是用于调整对称直方图比例的 2 个
+参数,本文中均使用 1。
+使用 DS-SIFT 提取特征不需要在高斯尺度空
+间上获取关键点,而是先对图像进行高斯平滑操
+作,然后通过密集网格获取图像中的特征点及其
+特征描述符。 DS-SIFT 提取特征描述符的过程如
+图 4(h) 所示,采样间隔和采样范围可以根据任务
+预先设置。 本文中采样间隔设置为 1,在采样范
+围内自左向右、从上到下提取每个像素在 8 个方
+向上的梯度,最后形成 4×4×8 的 128 维的特征描
+述符。 这种做法会导致图像边缘提取不到特征,
+因此在提取特征前先对图像的边缘进行扩充填 0
+扩大采样范围。
+1. 3　 基于 MFFRN 配准的总体方案设计
+　 　 在 3D 空间定义一组图像,即参考图 F 和浮
+动图 M。 图像配准的目的是找到参考图和浮动
+图之间的最佳空间变换参数 ϕ ,使配准图 M( ϕ)
+与参考图在空间结构上对齐。 本文使用 MFFRN
+建模图像之间复杂的非线性映射函数,直接估计
+参考图和浮动图之间的形变场,即
+ϕ = gθ( F,M), (8)
+式中: g 是映射函数,用于获取参考图和浮动图之
+间像素级别映射关系,从而输出与参考图尺寸一
+致的 3 通道形变场, θ 是映射函数 g 的网络参数。
+通过最大化图像 F 和 M( ϕ) 之间的相似性寻找
+最优网络参数 θ ,进而得到最优形变场,配准过程
+可以表示为
+θ^ = argmax
+θ
+S( F,M( ϕ)) + R( ϕ), (9)
+式中: S(·) 表 示 图 像 对 之 间 的 结 构 信 息 损 失,
+R( ϕ) 是保持形变场平滑的正则项, M( ϕ) 是使
+用 空 间 变 换 网 络 ( spatial
+ 
+transformer
+ 
+network,
+STN) [18] 对 M 进行非线性变换得到的。
+MFFRN 整体配准框架如图 5 所示,在训练过
+程中每次随机选择一对参考图 F 和浮动图 M ,并
+将其并行 输 入 到 MFFRN 中。 然 后 利 用 MFFRN
+提取并匹配输入图像的特征,从而直接估计形变
+场 ϕ 。 最后空间变换网络根据形变场对浮动图
+进行双线性插值得到配准图。
+为实现多模态图像的无监督配准,网络的损
+失项需要考虑模态差异性,才能度量不同模态图
+像的相似性。 DS-SIFT 在不同模态下能提取到相
+同特征,因此 MFFRN 配准框架使用 DS-SIFT 特征
+构建结构信息损失项,即在训练过程中分别提取
+F 和 M( ϕ) 的 DS-SIFT 特征,将其向量化,使网络
+946
+
+=== PDF_PAGE 6 ===
+中国科学院大学学报( 中英文) 第 42 卷
+图 5　 MFFRN 配准框架
+Fig. 5　 Frame
+ 
+of
+ 
+MFFRN
+能反向传播梯度信息,引导网络参数优化。 为构
+建结 构 信 息 损 失, 使 用 均 方 误 差 ( mean
+ 
+squared
+ 
+error,MSE) 计 算 F 和 M( ϕ) 之 间 的 DS-SIFT 特
+征,可用如下公式表达
+LDSSIFT = 1N ∑Ni = 1 (DSSIFT( F( i)) -
+DSSIFT( M( ϕ)( i))) 2, (10)
+　 　 DS-SIFT 提取特征的方法是基于二维图像实
+现,因此在具体实现过程中是组合某一空间维度
+的二维图像特征以此构造三维图像特征。 最小化
+图像之间的相似性损失,参考图和配准后图像差
+异会变小,但可能会产生不连续的形变场,导致配
+准结果产生过度形变,因此需在损失函数中加入
+空间梯度平滑形变场,如下式所示
+R( ϕ) = ∑
+pεΩ
+‖ Δϕ( p)‖2, (11)
+式中: Δϕ( p) 是对形变场在位置 p 处求梯度。 因
+此,模型最终的损失函数如下所示
+L = LDSSIFT + λR( ϕ), (12)
+式中: λ 是正则项参数。
+2　 实验结果与分析
+2. 1　 数据集及预处理
+　 　 本文中脑部图像配准均基于脑模板,即将不
+同大脑图像配准到一个标准大脑模板上,使用的
+脑模板图像来自公共数据集 MNI152[19] 。 为验证
+本文提出方法的配准性能,使用公开数据集 ISBI
+ 
+Challenge[20] 中 MRI-T1 作为配准的浮动图,该数
+据集包含 242 位患者的 MRI 扫描图像,图像原始
+大小 为 512 × 512 × 120, 分 辨 率 为 0. 410 2 mm ×
+0. 410 2 mm×1. 5 mm。 从 242 幅图像中剔除异常
+数据,并将剩余的 232 幅图像随机划分为训练集
+和测试集,其中训练集包含 208 幅图像,测试集包
+含 24 幅图像。
+在训练前,对大脑数据集进行一系列标准化
+处理。 首先使用 FSL 软件[21] 中 bet 算法对大脑
+颅骨进行剥离操作,然后使用仿射变换将浮动图
+线性配准到模板图像上,使浮动图和模板图在空
+间上初步对齐。 直接使用原始 3D 图像进行训练
+时间较长,对显卡要求也较高,所以对图像进行重
+采 样, 重 采 样 后 图 像 的 分 辨 率 为 1. 5 mm ×
+1. 5 mm×1. 5 mm。 其次为减少灰度值异常点对配
+准结果的影响,将重采样后的图像进行灰度归一
+化,归一化后图像灰度范围为 0 ~ 1。 最后为减少
+空白区域带来的计算冗余,再将图像大小裁剪到
+128×128×160。
+2. 2　 实验设计
+　 　 本 文 中 对 比 实 验 SyN 和 FSL 软 件 基 于
+Ubuntu 系 统 实 现, 除 此 之 外, 其 他 实 验 均 基 于
+Windows10 操作系统,使用基于 Pytorch 的深度学
+习开源框架实现。 在训练过程中所有进行参数更
+新的优化 器 均 使 用 Adam, 同 时 利 用 GTX2070Ti
+进 行 GPU 加 速。 设 置 网 络 训 练 的 总 次 数
+(Epoch) 为 300,每次迭代次数设置为训练集图像
+对个数, 学 习 率 设 为 1 × 10-4。 此 外, 为 了 适 配
+GPU 内存,训练批次 batch
+ 
+size 设置为 1。
+对配准结果解剖结构区域和参考图解剖结构
+区域的重叠部分进行测量,可以得到 Dice 分数,
+056
+
+=== PDF_PAGE 7 ===
+第 5 期 常青,等:基于多层级特征融合的多模态医学图像配准
+其定义如下所示
+Dice = 2 | A ∩ B || A + B | , (13)
+式中:A 和 B 分别是参考图和配准结果对应的某
+一解剖结构区域。 Dice 分数表示 2 个图像对应区
+域之间的重叠程度,取值范围在 0 ~ 1,Dice 值越
+高,表明配准结果解剖结构区域和参考图解剖结
+构区域的重叠度越高,即图像配准效果越好。 利
+用 FSL 软 件 自 动 分 割 出 脑 脊 液 ( cerebrospinal
+ 
+fluid,CSF)、白质( white
+ 
+matter,WM) 和灰质( grey
+ 
+matter,GM),然后通过分割出的解剖区域对脑部
+配准结果进行评估。
+2. 3　 结果与分析
+　 　 在多模态脑部数据集进行实验,并与一系列
+先进 的 配 准 算 法 进 行 对 比, 验 证 所 提 出 方 法
+MFFRN 的优异性。 同时,在单模态脑部数据集上
+进行实验,证明所提出方法 MFFRN 具有一定通
+用性。
+2. 3. 1　 多模态结果分析
+　 　 在 多 模 态 脑 部 数 据 集 上 进 行 实 验, 选 择
+MNI152 中 MRI-T2 加权脑模板图像作为配准的
+参考图,ISBI
+ 
+Challenge 的 MRI-T1 加权图像作为
+配准的浮动图。 首先使用 SimpleITK[22] 将浮动图
+仿射配准到 MRI-T2 加权的脑模板上,并将仿射
+配准方法作为第一个对比方法。 然后与 SyN[23] 、
+VoxelMorph[7] 和 AttentionReg[3] 进 行 对 比, 其 中
+SyN 使用 ANTs 工具包[24] 实现,参数均使用默认
+参数。 VoxelMorph 是针对单模态图像配准,因此
+与 VoxelMorph 对比时仅保留网络框架,目标函数
+与本文一致。 此外,本文只关注图像的非刚性配
+准, 因 此 VoxelMorph、 AttentionReg 和 本 文 方 法
+MFFRN 均使用仿射配准结果作为网络的输入。
+表 1 给出 5 种方法在多模态脑部测试集上不
+同区域的平均 Dice 及分别利用 GPU 和 CPU 时的
+配准时间对比。 可以看出,与其他几种方法相比,
+本文方法在脑部测试集上得到了最优 Dice 分数。
+对于 CSF 解剖区域,与其他 4 种方法相比,本文
+所提 方 法 的 Dice 分 数 分 别 提 升 40. 72% 、 8% 、
+2. 61% 和 3. 35% 。 对于 GM 解剖区域, 与其他 4
+种方法相比,本文所提方法的 Dice 分数分别提升
+17. 99% 、5. 17% 、2. 87% 和 2. 87% 。 对于 GM 解剖
+区域,与其他 4 种方法相比,本文所提方法的 Dice
+分数分别提升 14. 46% 、5. 49% 、2. 75% 和 3. 06% 。
+从配准时间看,MFFRN 使用 GPU 的平均配准时
+间是 0. 327 s,其配准速度是传统配准方法的 100
+多倍。 MFFRN 因为在多层网络中加入了 DSAM,
+需要更多时间计算,配准速度会比 VoxelMorph 和
+AttentionReg 略慢。 但 MFFRN 所需时间与其他 2
+种深度学习方法差距不大,仍可以达到临床中实
+时配准的要求。
+为更直观地展示本文方法在多模态图像上的
+配准效果,对不同方法结果进行可视化分析,相关
+结果可见图 6。 图 6 中共有 3 行测试结果图像,
+从上到下分别为横断面图像、矢状面图像和冠状
+面图像。 其中图 6(a) 和 6(b) 分别表示参考图和
+进行过 affine 预配准的结果图,因为浮动图和原
+始参考图的图像大小不一致,脑部片层是无法对
+应的,因此在这里使用预配准的图像作为浮动图,
+图 6(c) ~ 6(f) 是 4 种方法的配准结果。 图 6 中使
+用蓝色椭圆形圈起来的区域是本文方法配准结果
+明显有改善的地方,可以看出本文方法取得最好
+的可视化结果。 VoxelMorph 和本文方法都取得不
+错的配准效果,但使用本文方法得到的配准结果
+在局部纹理结构上与参考图更相似,说明多层级
+特征融合网络能学习到 2 个模态特征的相关性,
+提 高 特 征 表 达 能 力。 AttentionReg 与 SyN 和
+VoxelMorph 相比,配准效果有改善,但在部分纹理
+细节上仍不如本文方法。
+2. 3. 2　 单模态结果分析
+　 　 在 单 模 态 脑 部 数 据 集 上 进 行 实 验, 选 择
+MNI152 中 MRI-T1 加权脑模板图像作为配准的
+参考图,ISBI
+ 
+Challenge 的 MRI-T1 加权图像作为
+配准的浮动图,首先使用 SimpleITK[22] 将浮动图
+仿射配准到 MRI-T1 加权的脑模板上,并将仿射
+配准方法作为第一个对比方法。 然后与 SyN[23] 、
+VoxelMorph[7] 和 LapIRN[8] 进行对比,证明本文所
+提方法在单模态数据上同样具有一定优越性,其
+中 SyN 使用 ANTs 工具包实现。 本文只关注图像
+的非刚性配准,因此上述所有方法均使用仿射预
+　 　 　表 1　 不同方法在多模态脑部数据集上的量化结果
+Table
+ 
+1　 Quantitative
+ 
+results
+ 
+of
+ 
+different
+ 
+methods
+on
+ 
+multi-modal
+ 
+brain
+ 
+dataset
+方法 CSF GM WM
+配准时间
+(GPU) / s
+配准时间
+(CPU) / s
+Affine 0. 307 0. 517 0. 588 — 22. 231
+SyN 0. 400 0. 580 0. 638 — 35. 030
+VoxelMorph 0. 421 0. 593 0. 655 0. 227 2. 929
+AttentionReg 0. 418 0. 593 0. 653 0. 225 2. 760
+ 
+MFFRN(ours) 0. 432 0. 610 0. 673 0. 327 3. 520
+156
+
+=== PDF_PAGE 8 ===
+中国科学院大学学报( 中英文) 第 42 卷
+图 6　 不同方法在多模态脑部数据集上的可视化结果
+Fig. 6　 Visualization
+ 
+results
+ 
+of
+ 
+different
+ 
+methods
+ 
+on
+ 
+multi-modal
+ 
+brain
+ 
+dataset
+配准结果作为网络的输入。
+表 2 中给出 5 种方法在单模态脑部测试集上
+不同区域的平均 Dice 及分别使用 GPU 和 CPU 时
+的配准时间对比。 由于配准前参考图和浮动图仅
+经过仿射预配准, 因此 在 脑 区 上 的 平 均 Dice 较
+低。 SyN、VoxelMorph 和 LapIRN 相较于 Affine,配
+准性能都有明显提升,但 SyN 和 LapIRN 在 CSF
+解剖区 域 的 Dice 分 数 较 低, 而 MFFRN 方 法 在
+CSF 解剖区域的 Dice 分数有明显提升。 对于 GM
+和 WM 解剖区域,MFFRN 方法同样取得了最好的
+Dice 分 数。 可 以 看 出 与 其 他 配 准 方 法 相 比,
+MFFRN 在脑部 CSF、GM 和 WM 区域均取得最优
+Dice 分数。 从配准时间看,MFFRN 平均配准时间
+为 0. 327 s,明显优于传统配准方法。 LapIRN 方
+法通过拉普拉斯金字塔网络实现由粗到细的配
+准,因此配准所需的时间最长。 与 VoxelMorph 相
+比,MFFRN 在多层网络中使用 DSAM 融合特征,
+增加了网络的参数,因此需要更多计算时间,但是
+仅比 VoxelMorph 慢 0. 1 s,仍可以达到临床中实时
+配准的要求。
+为进一步直观展示 MFFRN 在单模态图像上
+的配准效果,随机选择 3 组测试结果进行可视化
+分析,如图 7 所示。 图中用蓝色椭圆标出的位置,
+是本文配准方法有明显改善的区域。 从图中可以
+看出,与其他方法相比,本文提出的方法不仅在整
+体结构上取得良好的配准效果,在纹理信息较复
+杂的局部结构上配准效果也有明显提升。 图 8 是
+不同方法在测试集上的差异图,包含横断面、矢状
+面和冠状面 3 个方向。 将灰度差异图映射到红蓝
+白,其中红色和蓝色部分代表该区域灰度差异较
+大,白色区域表示该区域灰度差异较小,图中白色
+区域越多代表参考图和配准结果越相似。 观察图
+8 可以看出,与其他方法相比,本文提出的方法可
+以显著地减小参考图和配准后的图像之间的差异。
+2. 4　 结论
+　 　 本文提出一种基于 MFFRN 的多模态医学图
+像配准框架,可以有效地提取参考图和浮动图之
+间对应的特征,并将这种对应关系映射到图像配
+表 2　 不同方法在单模态脑部测试集上的量化结果
+Table
+ 
+2　 Quantitative
+ 
+results
+ 
+of
+ 
+different
+ 
+methods
+ 
+on
+ 
+single-modal
+ 
+brain
+ 
+dataset
+方法 CSF GM WM 配准时间(GPU) / s 配准时间(CPU) / s
+Affine 0. 307 0. 517 0. 588 — 20. 938
+SyN 0. 480 0. 625 0. 677 — 33. 060
+VoxelMorph 0. 545 0. 630 0. 671 0. 218 2. 541
+LapIRN 0. 464 0. 633 0. 689 0. 418 6. 251
+MFFRN(ours) 0. 566 0. 653 0. 701 0. 307 3. 308
+256
+
+=== PDF_PAGE 9 ===
+第 5 期 常青,等:基于多层级特征融合的多模态医学图像配准
+图 7　 不同方法在单模态脑部数据集上的可视化结果
+Fig. 7　 Visualization
+ 
+results
+ 
+of
+ 
+different
+ 
+methods
+ 
+on
+ 
+single-modal
+ 
+brain
+ 
+dataset
+图 8　 不同方法在单模态测试集上的强度差异图
+Fig. 8　 Intensity
+ 
+difference
+ 
+of
+ 
+different
+ 
+methods
+ 
+on
+ 
+single-modal
+ 
+test
+ 
+dataset
+准变换中。 通过在多层网络中嵌入双输入空间注
+意力模块 DSAM,以渐进的方式对图像特征进行
+融合,提 高 网 络 特 征 表 达 能 力。 此 外, 引 入 DS-
+SIFT 作为结构化信息监督引导网络参数优化,实
+现精准的无监督医学图像配准。 在多模态脑部数
+据集上进行的实验结果表明,本文提出的方法能
+精确配准 MRI-T1 和 MRI-T2 图像,配准性能显著
+优于典型的传统方法和先进的深度学习方法。 同
+时,在单模态脑部数据集上进行实验,本文方法也
+有效地提升了单模态医学图像的配准精度,说明
+该方法具有一定通用性。 但本文工作也存在一定
+不足,在配准之前需要借助其他工具进行仿射配
+准。 在后续工作中,我们将致力于研究端到端的
+医学图像配准。
+参考文献
+[ 1 ]　 Dey
+ 
+N,
+ 
+Schlemper
+ 
+J,
+ 
+Salehi
+ 
+S
+ 
+S
+ 
+M,
+ 
+et
+ 
+al.
+ 
+ContraReg:
+ 
+contrastive
+ 
+learning
+ 
+of
+ 
+multi-modality
+ 
+unsupervised
+ 
+deformable
+ 
+356
+
+=== PDF_PAGE 10 ===
+中国科学院大学学报( 中英文) 第 42 卷
+image
+ 
+registration [ C ] ∥2022
+ 
+International
+ 
+Conference
+ 
+on
+ 
+Medical
+ 
+Image
+ 
+Computing
+ 
+and
+ 
+Computer
+ 
+Assisted
+ 
+Intervention.
+ 
+September
+ 
+18-22,
+ 
+2022,
+ 
+Singapore.
+ 
+Springer,
+ 
+2022:66-77.
+ 
+DOI:10. 1007 / 978-3-031-16446-0_7.
+[ 2 ]　 Hu
+ 
+J,
+ 
+Luo
+ 
+Z
+ 
+W,
+ 
+Wang
+ 
+X,
+ 
+et
+ 
+al.
+ 
+End-to-end
+ 
+multimodal
+ 
+image
+ 
+registration
+ 
+via
+ 
+reinforcement
+ 
+learning [ J ].
+ 
+Medical
+ 
+Image
+ 
+Analysis,
+ 
+2021,
+ 
+68:101878.
+ 
+DOI:10. 1016 / j. media.
+2020. 101878.
+[ 3 ]　 Song
+ 
+X
+ 
+R,
+ 
+Chao
+ 
+H
+ 
+Q,
+ 
+Xu
+ 
+X
+ 
+A,
+ 
+et
+ 
+al.
+ 
+Cross-modal
+ 
+attention
+ 
+for
+ 
+multi-modal
+ 
+image
+ 
+registration [ J ].
+ 
+Medical
+ 
+Image
+ 
+Analysis,
+ 
+2022,
+ 
+82: 102612.
+ 
+DOI: 10. 1016 / j. media.
+ 
+2022. 102612.
+[ 4 ]　 Chen
+ 
+X,
+ 
+Diaz-Pinto
+ 
+A,
+ 
+Ravikumar
+ 
+N,
+ 
+et
+ 
+al.
+ 
+Deep
+ 
+learning
+ 
+in
+ 
+medical
+ 
+image
+ 
+registration [ J ].
+ 
+Progress
+ 
+in
+ 
+Biomedical
+ 
+Engineering,
+ 
+2021,
+ 
+3 ( 1 ): 012003.
+ 
+DOI: 10. 1088 / 2516-
+1091 / abd37c.
+[ 5 ]　 Haskins
+ 
+G,
+ 
+Kruger
+ 
+U,
+ 
+Yan
+ 
+P
+ 
+K.
+ 
+Deep
+ 
+learning
+ 
+in
+ 
+medical
+ 
+image
+ 
+registration:
+ 
+a
+ 
+survey [ J ].
+ 
+Machine
+ 
+Vision
+ 
+and
+ 
+Applications,
+ 
+2020,
+ 
+31 ( 1): 1-18.
+ 
+DOI: 10. 1007 / s00138-
+020-01060-x.
+[ 6 ]　 Haskins
+ 
+G,
+ 
+Kruecker
+ 
+J,
+ 
+Kruger
+ 
+U,
+ 
+et
+ 
+al.
+ 
+Learning
+ 
+deep
+ 
+similarity
+ 
+metric
+ 
+for
+ 
+3D
+ 
+MR-TRUS
+ 
+image
+ 
+registration [ J].
+ 
+International
+ 
+Journal
+ 
+of
+ 
+Computer
+ 
+Assisted
+ 
+Radiology
+ 
+and
+ 
+Surgery,
+ 
+2019,
+ 
+14 ( 3): 417-425.
+ 
+DOI: 10.
+ 
+1007 / s11548-
+018-1875-7.
+[ 7 ]　 Balakrishnan
+ 
+G,
+ 
+Zhao
+ 
+A,
+ 
+Sabuncu
+ 
+M
+ 
+R,
+ 
+et
+ 
+al.
+ 
+VoxelMorph:
+ 
+a
+ 
+learning
+ 
+framework
+ 
+for
+ 
+deformable
+ 
+medical
+ 
+image
+ 
+registration
+[J].
+ 
+IEEE
+ 
+Transactions
+ 
+on
+ 
+Medical
+ 
+Imaging,
+ 
+2019: 1788-
+1800.
+ 
+DOI:10. 1109 / TMI.
+ 
+2019.
+ 
+2897538.
+[ 8 ]　 Mok
+ 
+T
+ 
+C
+ 
+W,
+ 
+Chung
+ 
+A
+ 
+C
+ 
+S.
+ 
+Large
+ 
+deformation
+ 
+diffeomorphic
+ 
+image
+ 
+registration
+ 
+with
+ 
+laplacian
+ 
+pyramid
+ 
+networks[C]∥2020
+ 
+International
+ 
+Conference
+ 
+on
+ 
+Medical
+ 
+Image
+ 
+Computing
+ 
+and
+ 
+Computer
+ 
+Assisted
+ 
+Intervention.
+ 
+October
+ 
+4-8,
+ 
+2020,
+ 
+Lima,
+ 
+Peru.
+ 
+Springer,
+ 
+2020:
+ 
+211-221.
+ 
+DOI:10. 1007 / 978-3-030-
+59716-0_21.
+[ 9 ]　 Guo
+ 
+H
+ 
+T,
+ 
+Kruger
+ 
+M,
+ 
+Xu
+ 
+S,
+ 
+et
+ 
+al.
+ 
+Deep
+ 
+adaptive
+ 
+registration
+ 
+of
+ 
+multi-modal
+ 
+prostate
+ 
+images [ J].
+ 
+Computerized
+ 
+Medical
+ 
+Imaging
+ 
+and
+ 
+Graphics,
+ 
+2020,
+ 
+84:101769. DOI:10. 1016 / j.
+compmedimag. 2020. 101769.
+[10]　 Xie
+ 
+S
+ 
+N,
+ 
+Girshick
+ 
+R,
+ 
+Dollár
+ 
+P,
+ 
+et
+ 
+al.
+ 
+Aggregated
+ 
+residual
+ 
+transformations
+ 
+for
+ 
+deep
+ 
+neural
+ 
+networks [ C ] ∥2017
+ 
+IEEE
+ 
+Conference
+ 
+on
+ 
+Computer
+ 
+Vision
+ 
+and
+ 
+Pattern
+ 
+Recognition
+ 
+(CVPR).
+ 
+July
+ 
+21-26,
+ 
+2017,
+ 
+Honolulu,
+ 
+HI,
+ 
+USA.
+ 
+IEEE,
+ 
+2017:5987-5995.
+ 
+DOI:10. 1109 / CVPR. 2017.
+ 
+634.
+[11]　 Sun
+ 
+Y
+ 
+Y,
+ 
+Moelker
+ 
+A,
+ 
+Niessen
+ 
+W
+ 
+J,
+ 
+et
+ 
+al.
+ 
+Towards
+ 
+robust
+ 
+CT-ultrasound
+ 
+registration
+ 
+using
+ 
+deep
+ 
+learning
+ 
+methods[ C]∥
+International
+ 
+Workshop
+ 
+on
+ 
+Machine
+ 
+Learning
+ 
+in
+ 
+Clinical
+ 
+Neuroimaging,
+ 
+International
+ 
+Workshop
+ 
+on
+ 
+Deep
+ 
+Learning
+ 
+Fails,
+ 
+International
+ 
+Workshop
+ 
+on
+ 
+Interpretability
+ 
+of
+ 
+Machine
+ 
+Intelligence
+ 
+in
+ 
+Medical
+ 
+Image
+ 
+Computing.
+ 
+Cham:
+ 
+Springer,
+ 
+2018:
+ 
+43-51. DOI:10. 1007 / 978-3-030-02628-8_5.
+[12]　 Song
+ 
+X,
+ 
+Guo
+ 
+H,
+ 
+Xu
+ 
+X,
+ 
+et
+ 
+al.
+ 
+Cross-modal
+ 
+attention
+ 
+for
+ 
+MRI
+ 
+and
+ 
+ultrasound
+ 
+volume
+ 
+registration [ C] ∥2021
+ 
+International
+ 
+Conference
+ 
+on
+ 
+Medical
+ 
+Image
+ 
+Computing
+ 
+and
+ 
+Computer
+ 
+Assisted
+ 
+Intervention.
+ 
+September
+ 
+27 - October
+ 
+1,
+ 
+2021,
+ 
+Strasbourg,
+ 
+France.
+ 
+Springer,
+ 
+2021:66-75.
+ 
+DOI:10. 1007 /
+978-3-030-87202-1_7.
+[13]　 Chen
+ 
+X
+ 
+C,
+ 
+Zhou
+ 
+B,
+ 
+Xie
+ 
+H
+ 
+D,
+ 
+et
+ 
+al.
+ 
+Dual-branch
+ 
+squeeze-
+fusion-excitation
+ 
+module
+ 
+for
+ 
+cross-modality
+ 
+registration
+ 
+of
+ 
+cardiac
+ 
+SPECT
+ 
+and
+ 
+CT [ C] ∥2022
+ 
+International
+ 
+Conference
+ 
+on
+ 
+Medical
+ 
+Image
+ 
+Computing
+ 
+and
+ 
+Computer
+ 
+Assisted
+ 
+Intervention.
+ 
+September
+ 
+18-22,
+ 
+2022,
+ 
+Singapore.
+ 
+Springer,
+ 
+2022:46-55.
+ 
+DOI:10. 1007 / 978-3-031-16446-0_5.
+[14]　 Oktay
+ 
+O,
+ 
+Schlemper
+ 
+J,
+ 
+Le
+ 
+Folgoc
+ 
+L,
+ 
+et
+ 
+al.
+ 
+Attention
+ 
+U-net:
+ 
+learning
+ 
+where
+ 
+to
+ 
+look
+ 
+for
+ 
+the
+ 
+pancreas [ EB / OL].
+ 
+2018.
+arXiv:1804. 03999. ( 2018-04-11) [ 2023-06-21].
+ 
+https:∥
+arxiv. org / abs / 1804. 03999.
+[15]　 Zheng
+ 
+S
+ 
+X,
+ 
+Lu
+ 
+J
+ 
+C,
+ 
+Zhao
+ 
+H
+ 
+S,
+ 
+et
+ 
+al.
+ 
+Rethinking
+ 
+semantic
+ 
+segmentation
+ 
+from
+ 
+a
+ 
+sequence-to-sequence
+ 
+perspective
+ 
+with
+ 
+transformers[C]∥2021
+ 
+IEEE / CVF
+ 
+Conference
+ 
+on
+ 
+Computer
+ 
+Vision
+ 
+and
+ 
+Pattern
+ 
+Recognition
+ 
+(CVPR).
+ 
+June
+ 
+20-25,
+ 
+2021,
+ 
+Nashville,
+ 
+TN,
+ 
+USA.
+ 
+IEEE,
+ 
+2021:
+ 
+6877-6886.
+ 
+DOI:
+10. 1109 /
+ 
+CVPR46437. 2021. 00681.
+[16]　 Lowe
+ 
+D
+ 
+G.
+ 
+Distinctive
+ 
+image
+ 
+features
+ 
+from
+ 
+scale-invariant
+ 
+keypoints [ J ].
+ 
+International
+ 
+Journal
+ 
+of
+ 
+Computer
+ 
+Vision,
+ 
+2004,
+ 
+60 ( 2 ): 91-110.
+ 
+DOI: 10. 1023 / B:
+ 
+VISI.
+ 
+0000029664. 99615. 94.
+[17]　 Chen
+ 
+J,
+ 
+Tian
+ 
+J.
+ 
+Real-time
+ 
+multi-modal
+ 
+rigid
+ 
+registration
+ 
+based
+ 
+on
+ 
+a
+ 
+novel
+ 
+symmetric-SIFT
+ 
+descriptor[J].
+ 
+Progress
+ 
+in
+ 
+Natural
+ 
+Science,
+ 
+2009,
+ 
+19 ( 5): 643-651.
+ 
+DOI: 10.
+ 
+1016 / j. pnsc.
+2008. 06. 029.
+[18]　 Jaderberg
+ 
+M,
+ 
+Simonyan
+ 
+K,
+ 
+Zisserman
+ 
+A,
+ 
+et
+ 
+al.
+ 
+Spatial
+ 
+transformer
+ 
+networks[ EB / OL].
+ 
+2015. arXiv:1506.
+ 
+02025.
+( 2015-06-05 ) [ 2023-06-21 ].
+ 
+https: ∥ arxiv. org / abs /
+1506. 02025.
+[19]　 Fonov
+ 
+V,
+ 
+Evans
+ 
+A
+ 
+C,
+ 
+Botteron
+ 
+K,
+ 
+et
+ 
+al.
+ 
+Unbiased
+ 
+average
+ 
+age-
+appropriate
+ 
+atlases
+ 
+for
+ 
+pediatric
+ 
+studies[J].
+ 
+Neuroimage,
+ 
+2011,
+ 
+54(1):313-327.
+ 
+DOI:10. 1016/ j.
+ 
+neuroimage. 2010. 07. 033.
+[20]　 Shapey
+ 
+J,
+ 
+Kujawa
+ 
+A,
+ 
+Dorent
+ 
+R,
+ 
+et
+ 
+al.
+ 
+Segmentation
+ 
+of
+ 
+vestibular
+ 
+schwannoma
+ 
+from
+ 
+MRI,
+ 
+an
+ 
+open
+ 
+annotated
+ 
+dataset
+ 
+and
+ 
+baseline
+ 
+algorithm [ J].
+ 
+Scientific
+ 
+Data,
+ 
+2021,
+ 
+8 ( 1):
+286.
+ 
+DOI:10. 1038 / s41597-021-01064-w.
+[21]　 Smith
+ 
+S,
+ 
+Bannister
+ 
+P
+ 
+R,
+ 
+Beckmann
+ 
+C,
+ 
+et
+ 
+al.
+ 
+FSL:
+ 
+new
+ 
+tools
+ 
+for
+ 
+functional
+ 
+and
+ 
+structural
+ 
+brain
+ 
+image
+ 
+analysis [ J ].
+ 
+NeuroImage,
+ 
+2001,
+ 
+13 ( 6):
+ 
+249.
+ 
+DOI:10.
+ 
+1016
+ 
+/ S1053-
+8119(01)91592-7.
+[22]　 Beare
+ 
+R,
+ 
+Lowekamp
+ 
+B,
+ 
+Yaniv
+ 
+Z.
+ 
+Image
+ 
+segmentation,
+ 
+registration
+ 
+and
+ 
+characterization
+ 
+in
+ 
+R
+ 
+with
+ 
+SimpleITK
+ 
+[ J].
+ 
+Journal
+ 
+of
+ 
+Statistical
+ 
+Software,
+ 
+2018,
+ 
+86.
+ 
+DOI:10.
+ 
+18637 /
+jss. v086. i08.
+[23]　 Avants
+ 
+B
+ 
+B,
+ 
+Epstein
+ 
+C
+ 
+L,
+ 
+Grossman
+ 
+M,
+ 
+et
+ 
+al.
+ 
+Symmetric
+ 
+diffeomorphic
+ 
+image
+ 
+registration
+ 
+with
+ 
+cross-correlation:
+ 
+evaluating
+ 
+automated
+ 
+labeling
+ 
+of
+ 
+elderly
+ 
+and
+ 
+neurodegenerative
+ 
+brain[ J].
+ 
+Medical
+ 
+Image
+ 
+Analysis,
+ 
+2008,
+ 
+12 ( 1):26-41.
+ 
+DOI:10. 1016 / j. media.
+ 
+2007. 06. 004.
+[24]　 Avants
+ 
+B
+ 
+B,
+ 
+Tustison
+ 
+N,
+ 
+Song
+ 
+G.
+ 
+Advanced
+ 
+normalization
+ 
+tools
+ 
+(ANTS) [ J].
+ 
+Insight
+ 
+J,
+ 
+2009:
+ 
+1-35.
+ 
+DOI:10. 54294 /
+uvnhin.
+ 
+456

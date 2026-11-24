@@ -1,0 +1,28 @@
+==== one
+total 10528
+drwxrwxr-x    2 heluofan heluofan    4096 Nov 24 09:29 .
+drwxrwxr-x 1478 heluofan heluofan   36864 Nov 24 09:29 ..
+-rw-rw-r--    1 heluofan heluofan  215671 Nov 24 09:29 11073_1001095_adc.mha
+-rw-rw-r--    1 heluofan heluofan 2981040 Nov 24 09:29 11073_1001095_cor.mha
+-rw-rw-r--    1 heluofan heluofan  117616 Nov 24 09:29 11073_1001095_hbv.mha
+-rw-rw-r--    1 heluofan heluofan 2730969 Nov 24 09:29 11073_1001095_sag.mha
+-rw-rw-r--    1 heluofan heluofan 4686782 Nov 24 09:29 11073_1001095_t2w.mha
+
+==== npat
+1476
+
+==== percase
+     22 10
+      1 15
+      5 4
+   1448 5
+
+==== seqs
+   1500 adc.mha
+   1497 cor.mha
+   1500 hbv.mha
+   1498 sag.mha
+   1500 t2w.mha
+
+==== nocase
+

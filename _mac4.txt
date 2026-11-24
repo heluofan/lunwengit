@@ -1,0 +1,33 @@
+﻿=== 系统产品信息（UUID/序列号是否被重置）===
+
+
+Name              : System Product Name
+Vendor            : System manufacturer
+Version           : System Version
+IdentifyingNumber : System Serial Number
+UUID              : FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF
+
+
+
+=== 主板完整字段 ===
+
+
+Name         : 基板
+Manufacturer : ASUSTeK COMPUTER INC.
+Product      : PRIME Z390-A
+Version      : Rev 1.xx
+SerialNumber : MB-1234567890
+Tag          : Base Board
+Description  : 基板
+
+
+
+=== 网卡高级属性中的 MAC 相关项 ===
+
+DisplayName DisplayValue RegistryKeyword
+----------- ------------ ---------------
+本地管理地址                   NetworkAddress 
+
+
+=== 是否装了 Intel 改MAC工具 ===
+(空=没装)

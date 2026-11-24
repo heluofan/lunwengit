@@ -1,0 +1,13 @@
+﻿===== 1. 淇?dataset.json modality =====
+before: {'0': 'T2W', '1': 'CT', '2': 'HBV'}
+after : {'0': 'T2W', '1': 'ADC', '2': 'HBV'}
+===== 2. 瀵归綈 nnU-Net v1 鐩綍灞傜骇 =====
+lrwxrwxrwx 1 heluofan heluofan 44 Nov 24 09:51 /data/heluofan/picai/workdir/nnUNet_raw -> /data/heluofan/picai/workdir/nnUNet_raw_data
+dataset.json
+imagesTr
+labelsTr
+splits.json
+===== 3. 鍚姩 plan_and_preprocess =====
+procs=1
+--- plan.log ---
+PLAN_RESTART_DONE

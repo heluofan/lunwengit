@@ -1,0 +1,42 @@
+﻿=== 网卡与 MAC（含硬件出厂 PermanentAddress）===
+
+Name                                  InterfaceDescription                    
+----                                  --------------------                    
+本地连接* 7                               WAN Miniport (IPv6)                     
+本地连接* 3                               WAN Miniport (L2TP)                     
+vEthernet (Default Switch)            Hyper-V Virtual Ethernet Adapter        
+Teredo Tunneling Pseudo-Interface                                             
+本地连接* 1                               WAN Miniport (SSTP)                     
+本地连接* 6                               WAN Miniport (IP)                       
+本地连接* 8                               WAN Miniport (Network Monitor)          
+本地连接* 4                               WAN Miniport (PPTP)                     
+vSwitch (Default Switch)              Hyper-V Virtual Switch Extension Adapter
+本地连接* 2                               WAN Miniport (IKEv2)                    
+Microsoft IP-HTTPS Platform Interface                                         
+以太网                                   Intel(R) Ethernet Connection (7) I219-V 
+以太网(内核调试器)                            Microsoft Kernel Debug Network Adapter  
+6to4 Adapter                                                                  
+本地连接* 5                               WAN Miniport (PPPOE)                    
+
+
+=== 显示名/描述 ===
+
+Name                                  InterfaceDescription                    
+----                                  --------------------                    
+本地连接* 7                               WAN Miniport (IPv6)                     
+本地连接* 3                               WAN Miniport (L2TP)                     
+vEthernet (Default Switch)            Hyper-V Virtual Ethernet Adapter        
+Teredo Tunneling Pseudo-Interface                                             
+本地连接* 1                               WAN Miniport (SSTP)                     
+本地连接* 6                               WAN Miniport (IP)                       
+本地连接* 8                               WAN Miniport (Network Monitor)          
+本地连接* 4                               WAN Miniport (PPTP)                     
+vSwitch (Default Switch)              Hyper-V Virtual Switch Extension Adapter
+本地连接* 2                               WAN Miniport (IKEv2)                    
+Microsoft IP-HTTPS Platform Interface                                         
+以太网                                   Intel(R) Ethernet Connection (7) I219-V 
+以太网(内核调试器)                            Microsoft Kernel Debug Network Adapter  
+6to4 Adapter                                                                  
+本地连接* 5                               WAN Miniport (PPPOE)                    
+
+

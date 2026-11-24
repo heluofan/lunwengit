@@ -1,0 +1,852 @@
+=== PDF_PAGE 1 ===
+http://www .joca.cn计算机应用, 2025, 45( S1) : 360 - 365
+基于注意力机制的多模态融合直肠癌疗效预测方法
+韦振坤
+1，2
+，姚 宇
+1，2*
+，王 辛
+3
+，周继陶
+3
+，刘 佳
+4
+（1. 中国科学院 成都计算机应用研究所 ，成都 610213； 2. 中国科学院大学，北京 100049； 
+3. 四川大学 华西医院，成都 610041； 4. 中国移动（成都）产业研究院，成都 610067）
+（ ∗ 通信作者电子邮箱 Casitmed2022@163. com）
+摘 要 ：针对传统方法预测局部晚期直肠癌（LARC）患者治疗效果时通常仅依赖于单一模态的医学图像信息 、临床信息
+或病理信息的问题 ，提出一种基于注意力机制的多模态医学图像融合（MMIF）方法，用于预测直肠癌疗效 。该方法由特征提
+取模块、多尺度特征融合模块 、MMIF 模块以及注意力决策模块组成 。使用特征提取模块和多尺度特征融合模块提取多尺度
+深度特征。随后，使用 MMIF 模块融合不同模态的深度特征 。最后，使用注意力决策模块将临床特征 、影像组学特征和深度
+特征整合，以实现疗效预测 。在病理完全缓解（pCR）分类预测的实验结果表明 ，与单模态方法弥散加权成像（DWI）相比，所
+提方法的准确率提升了 5 个百分点 ，召回率提升了 6 个百分点 ，且受试者工作特征曲线下面积（AUC）提升了 4 个百分点 ，从
+而验证了该方法在直肠癌疗效预测方面具有显著优势 。
+关键词：直肠癌；疗效预测；注意力机制；深度学习；医学图像融合
+中图分类号：TP391. 4  文献标志码：A
+Multimodal fusion method for predicting rectal cancer efficacy based on 
+attention mechanism
+WEI Zhenkun
+1，2
+， YAO Yu
+1，2*
+， WANG Xin
+3
+， ZHOU Jitao
+3
+， LIU Jia
+4
+（1. Chengdu Institute of Computer Application ， Chinese Academy of Sciences， Chengdu Sichuan 610213， China； 
+2. University of Chinese Academy of Sciences， Beijing 100049， China； 
+3. West China Hospital， Sichuan University， Chengdu Sichuan 610041， China； 
+4. China Mobile （Chengdu）  Institute of Research and Development， Chengdu Sichuan 610067， China）
+Abstract: Traditional methods for predicting therapeutic efficacy in patients with Locally Advanced Rectal Cancer （LARC） 
+often rely on single-modal medical image information ， clinical data， or pathological information .  To address this issue ， a Multimodal 
+Medical Image Fusion （MMIF）method　 based on attention mechanism was proposed to predict efficacy of rectal cancer .  The 
+proposed method comprises a feature extraction module ， a multi -scale feature fusion module ， an MMIF module ， and an attention -
+based decision -making module .  The feature extraction and multi -scale fusion modules are employed to extract multi -scale deep 
+features.  These features are then fused using the MMIF module to integrate information across different modalities .  Finally ，the 
+attention-based decision module integrates clinical features ， radiomics features ， and deep features to predict the efficacy .  
+Experimental results for pathologic Complete Response （pCR） classification prediction demonstrate that compared to single -modal 
+method DWI （Diffusion Weighted Imaging ） ， the proposed method improves the accuracy by 5 percentage points ， the recall by 6 
+percentage points ， and the Area Under Receiver Operating Characteristic Curve （AUC） by 4 percentage points ， thereby validating 
+the significant enhancement of this method in rectal cancer efficacy prediction .
+Key words: rectal cancer; efficacy prediction; attention mechanism; deep learning; medical image fusion
+0　引言
+局部晚期直肠癌（Locally Advanced Rectal Cancer ， LARC）是
+全 球 重 要 的 健 康 问 题
+［1-2］
+。 根 据 世 界 卫 生 组 织（World Health 
+Organization， WHO）癌症统计数据 ，每年新诊断的直肠癌病例超
+过 120 万，且相关死亡人数超过 60 万
+［3］
+。随着中国老龄化进程加
+快及生活方式的变化 ，直肠癌的发病率和死亡率持续上升 ，因此，
+优化预防 、筛查和治疗措施成为重要议题
+［4-5］
+。然而，LARC 患者
+在治疗后的肿瘤反应存在显著的个体差异
+［6-7］
+，部分患者治疗效
+果 显 著，15%~27% 的 患 者 可 获 得 病 理 完 全 缓 解（pathologic 
+Complete Response ， pCR） ，但 30%~40% 的患者对治疗反应不佳 ，
+甚至有少数患者出现肿瘤进展
+［8］
+。这种反应差异可能导致治疗
+的调整时机延误 ，同时增加不良反应的风险 。因此，精准预测患
+者对治疗的反应不仅有助于制定更个性化和高效的治疗方案 ，
+还能减少不必要的医疗干预 ，避免患者承受额外的副作用 ；同时，
+提升患者的生存期和生活质量 ，确保有限的医疗资源得到合理
+分配和高效利用，从而改善整体治疗效果
+［9］
+。
+近年来 ，深度学习方法在直肠癌疗效预测方面取得了显著
+进展。Li 等
+［10］
+开发了一种基于深度学习的模型 ，通过分析术前
+H&E 染色活检切片预测新辅助放化疗后的 pCR。该模型在训练
+集 中 的 受 试 者 工 作 特 征 曲 线 下 面 积（Area Under receiver 
+operating characteristic Curve ， AUC）达到 0. 87，在独立验证集中
+AUC 为 0. 79，展现出良好的预测能力 。Delli 等
+［11］
+则通过结合临
+床特征和影像组学特征 ，构建了一个用于预测 LARC 患者治疗反
+应的机器学习模型 ，AUC 达到了 0. 793。Liu 等
+［12］
+应用基于磁共
+振成像（Magnetic Resonance Imaging ， MRI）的深度学习模型 ，预测
+LARC 患者在新辅助放化疗后的远处转移风险 ，结果表明 ，影像
+组学特征与临床病理因素结合的模型在 3 年内预测远处转移的
+AUC 达到 0. 894，显著优于单独使用影像特征的模型 。Xu 等
+［13］
+使
+用病理图像特征和临床特征 ，构建了一个深度学习模型以预测
+直肠癌患者的生存率 。Chiloiro 等
+［14］
+的研究表明 ，基于肠系膜特
+征的深度学习模型可以预测 LARC 患者新辅助化放疗后的治疗
+反应及 2年无病生存率，该模型的 AUC 在训练集和测试集中分别
+达到 0. 79 和 0. 70。Jiang 等
+［15］
+开发并验证了一个基于 MRI 的深
+DOI:10.11772/j.issn.1001-9081.2024070926文章编号：1001-9081（2025）S1-0360-06
+收稿日期：2024-07-03；修回日期：2024-09-30；录用日期：2024-10-08。
+基金项目：国家自然科学基金资助项目（82073338） ；四川省科技计划项目重点研发项目（2022YFS0217） 。
+作者简介：韦振坤（1992—） ，男，安徽阜阳人，博士研究生，主要研究方向 ：医学图像分析 、机器学习； 姚宇（1980—） ，男，四川宜宾人，研究员，博士，
+主要研究方向 ：机器学习、模式识别 ； 王辛（1977—） ，女，四川成都人 ，教授，博士，主要研究方向 ：直肠肿瘤的诊断与治疗 ； 周继陶（1985—） ，女，四川
+成都人，主治医师，博士，主要研究方向：直肠肿瘤诊断与治疗 ； 刘佳（1995—） ，女，宁夏银川人，工程师，硕士，主要研究方向：智能信息处理、机器学习。
+
+=== PDF_PAGE 2 ===
+韦振坤等：基于注意力机制的多模态融合直肠癌疗效预测方法第 45 卷
+度学习模型 ，通过分析治疗前的肿瘤体积预测直肠癌患者的生
+存率，该模型在验证集中的 C 指数达到 0. 82，表现出较好的生存
+率预测能力 。Lim 等
+［16］
+同样开发了一种基于 MRI 的深度学习模
+型，用于预测接受术前放化疗的直肠癌患者的 pCR，该模型的
+pCR 预测 AUC 达到 0. 926，敏感性为 0. 831，特异性为 0. 921，总体
+准确率为 90. 2%。这些研究表明，各模态的组合应用能更全面地
+评估肿瘤特性 ，从而提高 LARC 的诊断和治疗反应评估的准
+确性。
+尽管相关方法已取得显著进展 ，但在实际应用中仍面临诸
+多挑战 。首先，影像组学特征的提取通常依赖于人工勾画感兴
+趣区域，该过程不仅耗时费力 ，还可能引入人为误差 ，从而影响预
+测模型的稳定性与准确性
+［17］
+。其次，病理特征的获取需要在手术
+后对组织进行活检 ，该侵入性操作具有一定风险且时效性不
+佳
+［18］
+。再次，临床特征的评估需要专业医师对肿瘤的浸润程度及
+转移风险进行详细评估和分级 ，这种主观性评价可能导致变异
+性与一致性差异 ，进而对模型的性能产生不利影响 。最后，当前
+研究主要依赖于对深度特征 、影像组学特征 、病理图像特征和临
+床特征的单一或多重组合进行建模
+［19-21］
+。现有的多模态特征融
+合方法主要是将不同模态的特征集成到一个统一的潜在特征空
+间中，通过加法、乘法、串联以及注意力机制等操作直接合并从主
+干网络中提取的特征
+［22-23］
+。这种方法尽管在不同特征域中提取
+了共通特征 ，但通常忽略了多模态特异性特征的重要性 ，导致这
+些特异性信息被视为冗余 ，进而被压缩或忽略 。然而，这些特异
+性特征在辅助决策中可能发挥关键作用 ，单纯依赖共性特征的
+学习可能会导致宝贵信息的丢失 ，从而限制融合方法的预测
+能力。
+针对上述问题 ，本文提出了一种基于注意力机制的多模态
+融合直肠癌疗效预测方法 。与现有方法不同 ，本文方法能有效
+整合多模态医学图像的特异性特征 ，并结合临床特征和影像组
+学特征对 LARC 患者的治疗反应进行全面评估 。该方法的整体
+模型框架由 4 个主要模块组成 ：特征提取模块 、多尺度特征融合
+模 块、多 模 态 医 学 图 像 融 合（Multimodal Medical Image Fusion ， 
+MMIF）模块和注意力决策模块 。首先，基于传统卷积神经网络构
+建特征提取模块 ，并串联多尺度特征融合模块 ，从多模态 MRI（包
+括 T2 加 权 成 像（T2 Weighted Imaging ， T 2WI） 、弥 散 加 权 成 像
+（Diffusion Weighted Imaging ， DWI ）和 表 观 弥 散 系 数 图 像
+（Apparent Diffusion Coefficient ， ADC）中提取深度特征 ；其次 ，通
+过 MMIF 模块对提取的特征进行深度融合 ，以实现多模态信息的
+有效整合 ；最后，利用注意力决策模块整合临床特征和影像组学
+特征 ，对患者在接受全程新辅助治疗后的疗效 （肿瘤退缩分级
+（Tumor Regression Grade， TRG）和 pCR 分类）进行预测。
+1　实验数据与预处理
+1. 1　数据收集
+本文收集了 2015 年 6 月至 2022 年 4 月期间在四川大学华西
+医院接受 MRI 检查的 150 名局部晚期直肠癌患者的多模态影像
+数据，包括 T2WI、DWI 以及 ADC 图像。依据 2020 年发布的中国
+临床肿瘤学会结直肠癌诊疗指南
+［24］
+，由 2 位具备 10 年经验的资深
+病理专家共同评估 ，完成 150 例患者 TRG 和 pCR 的评定。患者的
+TRG 结果分为 4 类：TRG0（45 例） 、TRG1（25 例） 、TRG2（61 例）和
+TRG3（19 例） 。在评估疗效时 ，将 TRG0 至 TRG2 视为疗效显著
+（Effective） 、TRG3 则被视为疗效不佳 （Ineffective） 。基于 pCR 评
+定标准，45 名患者达到了 pCR，105 例未达到 pCR。
+为确保标注过程的客观性及一致性 ，本文的感兴趣区域
+（Region Of Interest ， ROI）包括肿瘤 ROI、淋巴结区 ROI 和直肠系
+膜 ROI，由 2 位具有 3 年经验的放射科医师独立逐层手动勾画 ，并
+采用 Dice 系数评估标注者之间的标注一致性 。此外，对于 Dice
+系数低于 0. 95 或有争议的标注，交由 1位经验丰富的专家进行复
+核与调整，确保标注结果的可靠性和高度一致性 。ROI 的分割基
+于 T2WI 序列完成 ，随后通过影像配准方法映射至 ADC 和 DWI
+序列。
+本文严格选择包含肿瘤区域 ROI，且尽可能涵盖直肠系膜和
+淋巴结区域 ROI 的图像 ，以确保全面的病灶特征提取 ，如图 1 所
+示。经过筛选与处理 ，最终收集了 1 295 组多模态医学图像 。为
+确保数据分布的均衡性 ，本文采用分层抽样策略 ，将数据集按比
+例划分为训练集（880 组，占总数据集的 68%） 、验证集（220 组，占
+17%）和测试集（195 组，占 15%） 。在划分过程中 ，严格保证各个
+子集内的类别分布一致 ，以避免数据不平衡可能导致的模型训
+练偏差或实验结果偏差 ，确保结果的可靠性和科学性 。
+1. 2　预处理
+MRI 图像的体素值受成像设备硬件和扫描参数的影响 ，导致
+不同模态的 MRI 图像间灰度值分布的差异显著 。为了在将 MRI
+图像输入网络之前减小这些差异 ，本文采用 Z-score 标准化方法
+对图像进行预处理 ，以确保图像数据在模型训练过程中的一致
+性和可比性，计算公式如下：
+z = ( x - μ )  σ （1）
+其中：x 为输入图像的某个像素点 ； μ 为该图像灰度的平均值 ；σ
+为该图像灰度的标准差 ； z 是标准化后的输出 。最后，所有这些
+图像的分辨率都经过重采样 ，统一为 512 像素×512 像素，以满足
+后续分析处理的需要 。
+为有效地扩充训练样本 ，增强模型的泛化能力 ，本文的所有
+实验在训练时均使用了数据增强技术 ，主要采用的数据增强方
+式如表 1 所示，包括随机翻转（水平和垂直） 、网格畸变、随机亮度
+对比和高斯噪声等 。
+2　多模态医学图像融合方法
+本文提出的多模态医学图像融合方法的结构如图 2 所示，包
+含特征提取模块 、多尺度特征融合模块 、MMIF 模块和注意力决
+策模块。
+2. 1　特征提取模块
+本文借鉴了 ResNet-50
+［25］
+的网络结构，构建了特征提取模块 ，
+用于从 T2WI、DWI 和 ADC 影像中提取多模态特征 。表 2 详细展
+示了该特征提取模块的主要结构 ，其中包含 9 个卷积层和 1 个最
+大池化层 。初始输入层设有 64 个卷积核 ，每个核的尺寸为 7×7，
+图 1　多模态医学图像及感兴趣区域标注
+表 1　数据增强
+数据增强方式
+Cutout
+VerticalFlip
+HorizontalFlip
+RandomBrightnessContrast
+GridDistortion
+HueSaturationValue
+Downscale
+GaussNoise
+超参数
+p=0. 5
+p=0. 3
+p=0. 3
+brightness_limit=0. 2， 
+contrast_limit=0. 2， p=0. 3
+p=0. 3
+p=0. 3
+p=0. 3
+p=0. 3
+361
+
+=== PDF_PAGE 3 ===
+计算机应用 第 45 卷
+且步长设置为 2。池化层采用的卷积核尺寸为 2×2，步长同样为
+2。在接下来的卷积层 1~4 中，所有卷积层的核尺寸均为 3×3，步
+长如表 2所示，而卷积核的数量依次增至 64、128、256 和 512。
+2. 2　多尺度特征融合模块
+同时，为了保证多尺度特征的充分融合 ，设计了多尺度特征
+融合模块。如图 3 所示，该模块首先利用不同扩张率的空洞卷积
+（Dconv1～Dconv4）作用于输入特征图 ，从而对来自不同尺度的信
+息进行有效捕捉与增强 。随后，将所有尺度的特征图缩放至统
+一空间尺寸 ，并进行级联拼接 ，构建多尺度特征 。以 T2WI 模态
+为例，上述过程可形式化表示如下 ：
+■
+■
+■
+||||
+||||
+F iCAT = Conv (Cat (Dconv1(OF iT2WI )，Dconv2 (OF iT2WI )，
+             Dconv3(OF iT2WI )，Dconv4 (OF iT2WI )) )
+TF iT2WI = fSA ( fCA (F iCAT ) ⊗ F iCAT )⊕OF iT2WI
+（2）
+其 中：Cat 和 Conv 分 别 表 示 级 联 操 作 和 卷 积 操 作；Dconv1、
+Dconv2、Dconv3 和 Dconv4 分别表示不同扩张率的空洞卷积 ；fSA
+和 fCA 分别表示空间注意力和通道注意力 ；OF 表示多尺度特征融
+合前的原始特征；TF 表示多尺度融合特征 。
+2. 3　多模态医学图像融合模块
+与其他的多模态特征融合方法不同的是 ，本文将多模态医
+学图像融合模块插入编码模块的每一个卷积下采样编码器之
+间，对相同尺度大小的多模态特征 F iT2WI、F iDWI 和 F iADC 进行加权融
+合，生成融合特征 FF iT2WI、FF iDWI 和 FF iADC 用于下一个编码器 ，其中
+每种模态的加权特征用于优化其他模态 。
+以生成融合特征 FF iT2WI 为例 ，如图 4 所示 ，首先 ，分别计算
+F iT2WI 的通道注意力与空间注意力特征 ，以生成加权注意力 AiT2WI；
+接着，将它分别与多模态图像特征 F iDWI 和 F iADC 相加，得到融合特
+征 FF iDWI + T2WI 和 FF iADC + T2WI；随后 ，将上述两者进行级联 ，并通过
+卷积操作将通道数减半 ；然后，对该结果再次进行通道注意力和
+空间注意力计算 ，得到融合注意力 AiCAT；最后，将 F iT2WI 和 FF iCAT 使
+用融合注意力进一步优化 ，并相加得到最终的融合特征 FF iT2WI。
+整个过程可以用式（3）表示：
+■
+■
+■
+|
+|
+|
+||||
+|
+|
+|
+|
+||||
+|
+AiT2WI = fSA ( fCA (F iT2WI ) ⊗ F iT2WI )
+FF iDWI + T2WI = ( AiT2WI ⊗ F iT2WI )⊕( AiT2WI ⊗ F iDWI )
+FF iADC + T2WI = ( AiT2WI ⊗ F iT2WI )⊕( AiT2WI ⊗ F iADC )
+FF iCAT = Conv (Cat (FF iDWI + T2WI，FF iADC + T2WI ))
+AiCAT = fSA ( fCA (FF iCAT ) ⊗ FF iCAT )
+FF iT2WI = ( AiCAT ⊗ FF iCAT )⊕( AiCAT ⊗ F iT2WI )
+（3）
+其中：Cat 表示级联操作 ；Conv 表示卷积操作 ；F i 和 FF i 分别表示
+第 i层融合前和融合后的特征 。
+然而，在编码阶段随着卷积层不断加深 ，一些显著性信息也
+会丢失，因此本文方法同时采用如式（4）所示的残差跨层连接保
+证信息在自上而下的传输过程中不被稀释 。
+■
+■
+■
+||||
+||||
+FF iT2WI = Cov1i (FF i - 1T2WI⊕FF i - 2T2WI )
+FF iDWI = Cov2i (FF i - 1DWI ⊕FF i - 2DWI )
+FF iADC = Cov3i (FF i - 1ADC ⊕FF i - 2ADC )
+（4）
+其 中 ：FF i - 2 表 示 上 一 层 的 原 始 输 入 特 征；
+FF i - 1 表示当前层处理的特征 ；FF i 表示输出到下一层的融合
+特征。
+2. 4　注意力决策模块
+注意力决策模块的主要结构如图 5 所示 ，融合特征 FF iT2WI、
+FF iDWI 和 FF iADC 分别经过特征融合模块得到融合特征 FFDu1、FFDu2
+和 FFDu3；然后将得到的融合特征连接并经过卷积层 ，得到长度为
+512 的多模态医学图像融合特征 FD；最后将临床特征 FC、影像组
+学特征 FR 和图像融合特征 FD 结合，通过多头自注意力模块进行
+分类预测。
+实验数据集中的临床特征包括性别 、年龄等 11 个临床指标，
+影像组学特征的提取是将实验数据集中图像及标注 ROI 使用
+Pyradiomics
+［26］
+进 行 影 像 组 学 特 征 计 算 并 提 取，每 组 数 据 提 取
+1 562 个影像组学特征 。对于临床特征和影像组学特征的编码 ，
+本文使用了 2 层的多层感知机进行编码 ，其中临床特征编码为长
+度为 32 的特征 FC，影像组学特征编码为长度为 64 的特征 FR。
+3　实验与结果分析
+3. 1　网络训练
+为了减轻对有限的训练数据带来的过度拟合 ，本文使用了
+图 2　MMIF 方法的结构
+表 2　特征提取模块
+名称
+输入卷积层
+最大池化层
+卷积层 1
+卷积层 2
+卷积层 3
+卷积层 4
+输入维度
+512×512
+256×256
+128×128
+128×128
+64×64
+32×32
+输出维度
+256×256
+128×128
+128×128
+64×64
+32×32
+16×16
+网络参数
+卷积核大小 7×7，步长 2
+卷积核大小 2×2，步长 2
+卷积核大小 3×3，步长 1
+卷积核大小 3×3，步长 1
+卷积核大小 3×3，步长 2
+卷积核大小 3×3，步长 1
+卷积核大小 3×3，步长 2
+卷积核大小 3×3，步长 1
+卷积核大小 3×3，步长 2
+卷积核大小 3×3，步长 1
+图 3　多尺度特征融合模块
+图 4　多模态医学图像融合模块
+图 5　注意力决策模块
+362
+
+=== PDF_PAGE 4 ===
+韦振坤等：基于注意力机制的多模态融合直肠癌疗效预测方法第 45 卷
+数据增强，包括随机裁剪、翻转、调整亮度和对比度等使训练数据
+多样化 。主干网络的特征提取模块和多尺度特征融合模块 ，在
+MRI 数据集上预先训练分割 ROI 任务并加载，在训练疗效预测时
+冻结参数 ，只对多模态特征融合模块和注意力决策模块进行初
+始化和训练。
+在 训 练 过 程 中，训 练 周 期 为300 个 epoch，批 量 大 小
+（batchsize）设 置 为2，根 据 前 期 实 验 结 果，初 始 学 习 率 设 置 为
+0. 000 1，实验选择 RMSprop 作为模型优化器 ，并使用余弦退火算
+法动态调整学习率 。为防止深度学习模型过拟合 ，在训练过程
+中实施了早期停止训练的策略 。具体来说 ，如果在连续 30 个
+epoch 内，模型在验证集上的准确率或 AUC 没有提升 ，那么训练
+将自动停止。
+由于数据集类不平衡 ，本文所采用的损失函数为二元交叉
+熵损失函数（Binary Cross Entropy ， BCE）结合标签分布感知边距
+（Label-Distribution-Aware Margin ， LDAM）损 失，损 失 函 数 可 表
+示为：
+Loss = 0.5 × LossBCE + 0.5 × LossLDAM （5）
+交叉熵损失函数如式（6）所示：
+LossBCE = -( X × log (Y ) + (1 - Y ) × log (1 - X ) ) （6）
+其中：X 表示预测值；Y 表示真实值。
+LDAM 损失
+［27］
+考虑数据集的类别分布判断权重 ，对少数类引
+入比多数类更强的正则化 ，以减小它们的泛化误差 。定义一个
+样本对 ( x，y )，x 为样本，y 为对应的标签 ，同时给定一个模型 f。考
+虑 函 数 映 射：zy = f ( x)y，令 u = e
+zy - py
+，对 于 每 一 个 类 别
+j ∈ 1，2，…，k，都有 pj = C/n1/4j ，其中 nj 表示每个类别的样本数 ，C
+为固定的常数，则 LDAM 损失可以定义为：
+LossLDAM (( x，y )，f ) = -log uu + ∑
+j ≠ y
+e
+zy
+（7）
+所有模型的训练和测试都是在 Python 3. 8 中通过具有 2 个
+NVIDIA RTX 2080 SUPER 图 形 处 理 单 元 的Linux 服 务 器
+（Ubuntu18. 04. 5LIS）上使用 PyTorch 1. 10. 0 实现。图 6 展示了在
+训练集和验证集上的损失曲线和验证集上的 AUC 和准确率随训
+练轮数的变化曲线 。
+3. 2　评价指标
+模型的分类性能通过 4 个主要指标进行评估 ，分别是 ：准确
+率 Acc、召回率 R、精确率 P 和 F1分数。
+准确率作为衡量模型总体表现的基础指标 ，表示模型正确
+预测的样本数相较于总样本数的比值 。计算公式如下：
+Acc = (TP + TN )  (TP + FP + TN + FN ) （8）
+其中：TP 表示实际为阳性且被正确预测为阳性的样本数 ；FP 表
+示实际为阴性但被错误预测为阳性的样本数 ；TN 表示实际为阴
+性且被正确识别的样本数 ；FN 表示实际为阳性但未被模型正确
+识别的样本数。
+召回率也称为敏感性 ，表示在所有实际为阳性的样本中 ，模
+型成功识别出的真阳性样本所占的比例 。计算公式如下：
+R = TP  (TP + FN ) （9）
+精确率用于衡量模型所有阳性预测中 ，实际正确预测为阳
+性的比例。计算公式如下：
+P = TP  (TP + FP ) （10）
+F1 分数是精确率和召回率的调和平均数 ，它在两者之间取
+得平衡 。当精确率和召回率都较高时 ，F1 值也会较高 。计算公
+式如下：
+VF1 = 2PR  ( P + R ) （11）
+此外，鉴于数据集中存在类别不平衡问题 ，受试者工作特征
+曲线（Receiver Operating Characteristic ， ROC）及其对应的曲线下
+面积（AUC）常被认为是更客观的评估指标 ，能够更准确地反映模
+型在不平衡数据条件下的判别能力 。因此，本文同时采用 AUC
+作为模型性能的补充评估指标 。
+3. 3　对比实验
+为评估本文 MMIF 方法的有效性 ，将它与仅使用单一模态作
+为输入的方法进行对比 ，分别对 TRG 和 pCR 的分类任务开展训
+练，并绘制了在测试集上的 ROC 曲线，如图 7 所示。为了确保比
+较的公正性 ，单模态方法的构建也使用了 MMIF 方法相同的架
+构，仅将多模态输入替换成相同的单模态输入 ，同时将主干网络
+的参数同步替换 。对比实验中的单模态方法包括 T2WI 模型 、
+DWI 模型和 ADC 模型。
+实验结果如表 3 所示：TRG 分类预测中，MMIF 方法的准确率
+为 0. 93，DWI 模型则达到了 0. 92，其他指标也仅相差 3~6 个百分
+点；T2WI 模型和 ADC 模型的各项指标则相对落后 。而在 pCR 分
+类预测中 ，MMIF 方法的各项指标均领先于单模态模型 ；对比
+DWI 模型，MMIF 的准确率提升了 5 个百分点 ，召回率提升了 6 个
+百分点，AUC 提升了 4 个百分点。在单模态模型中 ，T2WI 模型和
+DWI 模型的性能好于 ADC 模型。
+为了确保实验结果的公平性和客观性 ，本文在相同的数据
+集和实验设置下复现了多篇已发表文献中的方法 ，并构建了相
+应的对比模型 。随后，对不同方法进行了系统的对比评估 。所
+有实验均基于统一的自建数据集进行 ，以确保不同方法在相同
+数据条件下的表现具有可比性 。对比实验的详细结果如表 4 所
+示。从准确率 、召回率 、F1 分数等核心指标上的对比来看 ，基于
+单模态 MRI 特征的深度学习方法 T2+DL
+［15］
+和 T1+DL
+［16］
+在测试集
+上的表现与影像组学方法
+［11］
+相近，但整体效果不如多模态方法 。
+实验结果表明 ，本文方法在实验数据集上表现最佳 。具体来说 ，
+图 6　损失与准确率变化曲线
+图 7　测试集 ROC 曲线
+363
+
+=== PDF_PAGE 5 ===
+计算机应用 第 45 卷
+对比最新的基于融合注意力机制的多模态融合方法 ，在准确率
+上提升 3 个百分点 ，召回率提升 2 个百分点 ，AUC 则提升 5 个百
+分点。
+在医学图像分析中 ，某些局部区域可能包含了对疗效预测
+至关重要的信息 ，而其他区域可能噪声较多或与任务无关 。注
+意力机制能有效地帮助模型聚焦这些关键区域 ，从而提高特征
+提取的准确性 。为了验证本文方法的有效性 ，通过可视化权重
+图（如图 8（c）所示）展示模型在处理图像时关注的关键区域 ，可以
+看出 ，模型倾向聚焦的特征区域与医师在诊疗时关注的区域
+（图 8（b） ）高度一致 。模型聚焦的关键区域主要集中在肿瘤及其
+周围区域，这些区域是判断疗效的生理和病理基础 。
+3. 4　消融实验
+3. 4. 1　各模块消融实验
+为验证本文所提出各模块的有效性 ，设计并开展了一系列
+对比实验 。首先，在主干网络的基础上引入 MMIF 模块，构建 A
+模型，它的分类模块由全局平均池化层与全连接层组成 。该结
+构代表了一种基础形式的多模态特征融合方法 ，用作后续实验
+的基线模型。随后，在 A 模型的基础上进一步集成多尺度特征融
+合模块，构建 B 模型。
+图 9（a）展示了 A 模型、B 模型与 MMIF 方法在 pCR 分类任务
+中的 ROC 曲线 ，三者对应的 AUC 值分别为 0. 81、0. 81 和 0. 84。
+由图 9 可知，MMIF 方法在判别能力上优于 A、B 模型。B 模型与 A
+模型的 AUC 值一致，但 B 模型在其他 4 项指标上分别提升了 1 至
+2 个百分点 ，表明它在识别能力与预测稳定性方面更具优势 。
+表 5 进一步列出了三种方法在 pCR 分类预测实验中的具体指标
+结果。实验结果表明 ，本文提出的 MMIF 模块和多尺度特征融合
+模块在数据集上表现最佳 。
+3. 4. 2　融合方式消融实验
+本实验首先构建了一个像素级融合模型 ，该模型通过通道
+叠加的方式对多个输入进行融合 ，特征提取模块基于 A 模型，但
+移除了其中 MMIF 模块的特征提取分支 ；分类模块则保持不变 ，
+仍采用平均池化层和全连接层的配置 。A 模型则作为特征级融
+合模型。决策级融合模型的构建同样基于对 A 模型的改动：同样
+移除 MMIF 模块，并将原有的分类模块替换为注意力决策模块 。
+在 pCR 分类预测上的对比实验结果如表 6 所示。图 9（b）为
+各模型的 ROC 曲线。像素级融合模型 、特征级融合模型和决策
+级融合模型的分类 AUC 值分别为 0. 79、0. 81 和 0. 78。像素级融
+合模型和特征级融合模型的性能要优于单独使用决策级融合的
+模型，像素级融合模型相较于特征级融合模型来说 ，性能表现方
+面差别并不大 ，AUC 值仅相差 2 个百分点 ，且其他评价指标也都
+非常接近 。而 MMIF 综合使用了特征级融合方法和决策级融合
+方法，在各项评价指标方面均有提升 。虽然 3 种多模态融合方法
+表现各有差异，且落后于本文提出的 MMIF 方法，但对比表 3 可以
+发现，与单模态模型相比 ，像素级和特征级融合方法均提高了模
+型的性能。
+3. 4. 3　临床与影像组学消融实验
+为验证本文融合临床特征和影像组学特征的有效性 ，在数
+据集上进行了消融实验 ，实验结果如表 7 所示。相较于只使用模
+态医学图像融合特征 FD 的预测结果，综合使用临床特征 FC、影像
+组学特征 FR 和 FD 的模型预测表现更好 。具体来说 ，对比只使用
+FD 的模型，使用 3 种特征的模型的 AUC 和准确率分别提高了 2 和
+6 个百分点，召回率和 F1 分数分别提高了 9 个百分点。对比纳入
+使用 FC 和 FR 的模型 ，使用 FR 的模型 AUC 和准确率高 1 个百分
+点，精确率提升 2 个百分点，其他指标差不多 。实验结果表明 ，本
+文融合临床特征和影像组学特征在数据集上表现最佳 。
+表 3　多模态与单模态模型的实验结果对比
+分类预测
+TRG 分类预测
+pCR 分类预测
+模态
+T2WI
+DWI
+ADC
+MMIF
+T2WI
+DWI
+ADC
+MMIF
+AUC
+0. 79
+0. 79
+0. 64
+0. 86
+0. 78
+0. 80
+0. 72
+0. 84
+准确率
+0. 89
+0. 92
+0. 82
+0. 93
+0. 75
+0. 75
+0. 63
+0. 80
+精确率
+0. 68
+0. 76
+0. 52
+0. 79
+0. 72
+0. 72
+0. 57
+0. 77
+召回率
+0. 71
+0. 73
+0. 53
+0. 79
+0. 72
+0. 71
+0. 56
+0. 77
+F1分数
+0. 69
+0. 75
+0. 53
+0. 79
+0. 72
+0. 71
+0. 56
+0. 77
+表 4　不同疗效预测方法的实验结果对比
+方法
+影像组学［11］
+T2+DL［15］
+T1+DL［16］
+多模态［21］
+本文方法
+AUC
+0. 83
+0. 78
+0. 80
+0. 79
+0. 84
+准确率
+0. 75
+0. 75
+0. 75
+0. 77
+0. 80
+精确率
+0. 72
+0. 72
+0. 72
+0. 74
+0. 77
+召回率
+0. 70
+0. 72
+0. 71
+0. 75
+0. 77
+F1分数
+0. 71
+0. 72
+0. 71
+0. 74
+0. 77
+图 8　模型关注区域可视化
+表 5　消融实验 pCR 分类预测结果
+模块消融
+A 模型
+B 模型
+本文方法
+AUC
+0. 81
+0. 81
+0. 84
+准确率
+0. 77
+0. 78
+0. 80
+精确率
+0. 74
+0. 76
+0. 77
+召回率
+0. 75
+0. 76
+0. 77
+F1分数
+0. 74
+0. 76
+0. 77
+表 6　不同多模态医学图像融合方法对比
+融合方法
+像素级融合
+特征级融合
+决策级融合
+本文方法
+AUC
+0. 79
+0. 81
+0. 78
+0. 84
+准确率
+0. 77
+0. 77
+0. 75
+0. 80
+精确率
+0. 74
+0. 74
+0. 72
+0. 77
+召回率
+0. 75
+0. 75
+0. 72
+0. 77
+F1分数
+0. 74
+0. 74
+0. 72
+0. 77
+图 9　消融实验测试集  ROC 曲线
+364
+
+=== PDF_PAGE 6 ===
+韦振坤等：基于注意力机制的多模态融合直肠癌疗效预测方法第 45 卷
+4　结语
+本文提出了一种基于多模态医学图像特征融合的 LARC 患
+者治疗疗效预测方法 。该方法通过多尺度特征融合模块提取不
+同尺度的信息 ，多模态医学图像特征融合模块对不同模态的特
+征进行加权融合 ，以及注意力决策模块融合临床特征和影像组
+学特征实现了 LARC 患者治疗疗效的精准预测 。该方法表现出
+了优于其他多模态融合方法的分类性能 ，实验结果表明该模型
+能有效地挖掘多模态医学图像数据信息 ，提升疗效预测的精度 。
+本文方法的性能优势主要源于对多模态医学图像信息的充
+分利用和多阶段特征融合策略的合理设计 。相较于现有方法 ，
+该方法能更全面地描述病灶 ，提高预测的准确性和可靠性 。然
+而，该方法在结构设计上较为复杂 ，对计算资源的依赖性较强 ；同
+时，目前仅适用于三种模态的输入数据 。然而，在临床应用中，医
+学 图 像 可 包 括 众 多 不 同 模 态，动 态 对 比 增 强MRI（Dynamic 
+Contrast-Enhanced Magnetic Resonance Imaging ， DCE-MRI） 、正电
+子 发 射 断 层 显 像/X 线 计 算 机 体 层 成 像（Positron Emission 
+Tomography / Computed Tomography ， PET/CT）以及扩散张量成像
+（Diffusion Tensor Imaging ， DTI）等。当前方法对于不固定数量的
+模态数据融合适应性不足 ，未来研究需开发可灵活适应不同模
+态数量的改进方法 。其次，本文的验证仅限于单一中心 ，缺乏多
+中心实验验证 。这可能导致模型对单一数据集过度拟合 ，特定
+条件和偏见的影响可能会降低模型在其他数据集或临床环境中
+的普适性和有效性 。最后，关于模型可解释性的深入分析尚处
+于初步阶段 ，有待进一步详细探讨 ，以提高它在临床应用中的透
+明度和可信度。
+参考文献 （References）
+[1]　SUNG H ， FERLAY  J ， SIEGEL R L ， et al .  Global cancer statistics 
+2020： GLOBOCAN estimates of incidence and mortality worldwide for 
+36 cancers in 185 countries［J］.  CA： A Cancer Journal for Clinicians ， 
+2021， 71（3） ： 209-249.
+[2]　GBD 2017 Colorectal Cancer Collaborators .  The global ， regional ， and 
+national burden of colorectal cancer and its attributable risk factors in 
+195 countries and territories ， 1990-2017： a systematic analysis for the 
+global burden of disease study 2017［J］.  The Lancet Gastroenterology 
+and Hepatology， 2019， 4（12） ： 913-933.
+[3]　WANG F H ， ZHANG X T ， LI Y F ， et al .  The Chinese Society of 
+Clinical Oncology （CSCO）： clinical guidelines for the diagnosis and 
+treatment of gastric cancer［J］.  Cancer Communications ， 2021， 41（8） ：
+747-795.
+[4]　中华人民共和国国家卫生健康委员会 ，中华医学会肿瘤学分会 .  中
+国结直肠癌诊疗规范（2023 年版） ［J］.  中华外科杂志 ， 2023， 61（8） ： 
+617-644.
+[5]　ZHU J， TAN Z ， HOLLIS -HANSEN K ， et al.  Epidemiological trends in 
+colorectal cancer in China ： an ecological study ［J］.  Digestive Diseases 
+and Sciences， 2017， 62（1） ： 235-243.
+[6]　SHAO K ， ZHENG R ， LI A ， et al .  Clinical predictors of pathological 
+good response in locally advanced rectal cancer ［J］.  Radiation 
+Oncology， 2021， 16： No. 10.
+[7]　EDWARDS -MURPHY A ， NEARY P .  Neoadjuvant treatment for rectal 
+cancer and nonoperative management/total neoadjuvant therapy ［J］.  
+Digestive Disease Interventions， 2023， 7（1） ： 30-36.
+[8]　WANG G ， ZHENG Z ， CHEN J ， et al.  A nomogram for predicting good 
+response after neoadjuvant chemoradiotherapy for locally advanced rectal 
+cancer： a retrospective ， double -center， cohort study ［J］.  International 
+Journal of Colorectal Disease， 2022， 37（10） ： 2157-2166.
+[9]　BOURBONNE V ， SCHICK U ， PRADIER O ， et al .  Radiomics 
+approaches for the prediction of pathological complete response after 
+neoadjuvant treatment in locally advanced rectal cancer ： ready for prime 
+time？ ［J］.  Cancers， 2023， 15（2） ： No. 432.
+[10]　LI Z ， ZHOU X ， ZHENG J ， et al .  Deep learning for prediction of 
+neoadjuvant chemoradiotherapy response in locally advanced rectal 
+cancer： a retrospective multi -cohort pathomics study［EB/OL］.  ［2024-
+04-12］. https：//dx. doi. org/10. 2139/ssrn. 3859293.
+[11]　DELLI PIZZI A ， CHIARELLI A M ， CHIACCHIARETTA P ， et al .  
+MRI-based clinical -radiomics model predicts tumor response before 
+treatment in locally advanced rectal cancer ［J］.  Scientific Reports ， 
+2021， 11： No. 5379.
+[12]　LIU X ， ZHANG D ， LIU Z ， et al .  Deep learning radiomics -based 
+prediction of distant metastasis in patients with locally advanced rectal 
+cancer after neoadjuvant chemoradiotherapy ： a multicentre study ［J］.  
+eBiomedicine， 2021， 69： No. 103442.
+[13]　XU Y ， GUO J ， YANG N ， et al .  Predicting rectal cancer prognosis 
+from histopathological images and clinical information using multi -
+modal deep learning ［J］.  Frontiers in Oncology ， 2024， 14： 
+No. 1353446.
+[14]　CHILOIRO G ， CUSUMANO D ， ROMANO A ， et al .  Delta radiomic 
+analysis of mesorectum to predict treatment response and prognosis in 
+locally advanced rectal cancer［J］.  Cancers， 2023， 15（12） ： No. 3082.
+[15]　JIANG X ， ZHAO H ， SALDANHA O L ， et al.  An MRI deep learning 
+model predicts outcome in rectal cancer ［J］.  Radiology ， 2023， 307
+（5） ： No. e222223.
+[16]　LIM J H ， HEO J ， PARK J ， et al.  Deep learning model for predicting 
+treatment response for patients with rectal cancer using 3D medical 
+imaging［J］.  Journal of Clinical Oncology， 2023， 41（S4） ： No. 168.
+[17]　ABOIAN M ， BOUSABARAH K ， KAZARIAN E ， et al .  Clinical 
+implementation of artificial intelligence in neuroradiology with 
+development of a novel workflow -efficient picture archiving and 
+communication system -based automated brain tumor segmentation and 
+radiomic feature extraction［J］.  Frontiers in Neuroscience ， 2022， 16： 
+No. 860208.
+[18]　LOU X， ZHOU N ， FENG L ， et al.  Deep learning model for predicting 
+the pathological complete response to neoadjuvant chemoradiotherapy 
+of locally advanced rectal cancer［J］.  Frontiers in Oncology ， 2022， 12： 
+No. 807264.
+[19]　唐霖峰，张浩，徐涵，等 .  基于深度学习的图像融合方法综述［J］.  中
+国图象图形学报， 2023， 28（1） ：3-36.
+[20]　RAJALINGAM B ， PRIYA R .  Review of multimodality medical image 
+fusion using combined transform techniques for clinical application ［J］.  
+International Journal of Scientific Research in Computer Science 
+Applications and Management Studies ， 2018， 7（3） ： 1-8.
+[21]　文含，赵莹，蔡秀定，等 .  一种具有域自适应反标准化的多模态医学
+图 像 对 比 学 习 算 法［J］.  生 物 医 学 工 程 学 杂 志， 2023， 40（3） ：
+482-491.
+[22]　李鸿，邹俊颖，谭茜成，等 .  面向医学图像分割的多注意力融合网络
+［J］.  计算机应用， 2022， 42（12） ：3891-3899.
+[23]　HARIBABU M ， GURUVIAH V ， YOGARAJAH P .  Recent 
+advancements in multimodal medical image fusion techniques for better 
+diagnosis： an overview［J］.  Current Medical Imaging ， 2023， 19（7） ： 
+1-22.
+[24]　中国结直肠癌诊疗规范（2020 年版）专家组 .  国家卫生健康委员会
+中 国 结 直 肠 癌 诊 疗 规 范（2020 年 版） ［J］.  中 华 胃 肠 外 科 杂 志， 
+2020， 23（6） ：521-540.
+[25]　HE K ， ZHANG X ， REN S ， et al .  Deep residual learning for image 
+recognition ［C］// Proceedings of the 2016 IEEE Conference on 
+Computer Vision and Pattern Recognition .  Piscataway ： IEEE ， 2016： 
+770-778.
+[26]　WANG L ， CHEN X ， ZHANG H ， et al .  Comprehensive analysis of 
+transient receptor potential channels -related signature for prognosis ， 
+tumor immune microenvironment ， and treatment response of colorectal 
+cancer［J］.  Frontiers in Immunology， 2022， 13： No. 1014834.
+[27]　CAO K ， WEI C ， GAIDON A ， et al .  Learning imbalanced datasets 
+with label -distribution-aware margin loss［C］// Proceedings of the 33rd 
+International Conference on Neural Information Processing Systems .  
+Red Hook： Curran Associates Inc. ， 2019： 1567-1578.
+表 7　融合临床特征和影像组学特征实验结果对比
+融合特征
+FD
+FD+FC
+FD+FR
+FD+FC+FR
+AUC
+0. 82
+0. 83
+0. 84
+0. 84
+准确率
+0. 74
+0. 75
+0. 76
+0. 80
+精确率
+0. 71
+0. 72
+0. 74
+0. 77
+召回率
+0. 68
+0. 70
+0. 70
+0. 77
+F1分数
+0. 68
+0. 71
+0. 71
+0. 77
+365

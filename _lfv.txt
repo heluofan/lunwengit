@@ -1,0 +1,115 @@
+﻿==== what
+200G	/data/heluofan/seg_work/datasets
+7.1G	/data/heluofan/seg_work/nnUNet_raw
+7.1G	/data/heluofan/seg_work/flare22_extract
+1.5G	/data/heluofan/seg_work/flare22_train.parts
+1.2G	/data/heluofan/seg_work/analysis
+1.1G	/data/heluofan/seg_work/baselines
+940M	/data/heluofan/seg_work/seed_results
+578M	/data/heluofan/seg_work/flare22.zip.parts
+580K	/data/heluofan/seg_work/fold4.log
+580K	/data/heluofan/seg_work/fold3.log
+580K	/data/heluofan/seg_work/fold2.log
+576K	/data/heluofan/seg_work/fold1.log
+36K	/data/heluofan/seg_work/oof_postproc_sensitivity.csv
+24K	/data/heluofan/seg_work/pipeline.log
+20K	/data/heluofan/seg_work/oof_surface_metrics.csv
+16K	/data/heluofan/seg_work/dryrun.log
+8.0K	/data/heluofan/seg_work/oof_per_case_dice.csv
+8.0K	/data/heluofan/seg_work/folds_watcher.log
+8.0K	/data/heluofan/seg_work/compute_surface_metrics.py
+4.0K	/data/heluofan/seg_work/summarize_folds.py
+4.0K	/data/heluofan/seg_work/seed_303.log
+4.0K	/data/heluofan/seg_work/seed_202.log
+4.0K	/data/heluofan/seg_work/seed_101.log
+4.0K	/data/heluofan/seg_work/run_train.sh
+4.0K	/data/heluofan/seg_work/run_pipeline.sh
+4.0K	/data/heluofan/seg_work/prep_flare.py
+4.0K	/data/heluofan/seg_work/postproc_sensitivity.log
+4.0K	/data/heluofan/seg_work/nnunet_env.sh
+4.0K	/data/heluofan/seg_work/next_pids.txt
+4.0K	/data/heluofan/seg_work/merge_flare.py
+4.0K	/data/heluofan/seg_work/install_nnunet.sh
+4.0K	/data/heluofan/seg_work/folds_watcher.sh
+4.0K	/data/heluofan/seg_work/folds_watcher.pid
+4.0K	/data/heluofan/seg_work/folds_summary.md
+4.0K	/data/heluofan/seg_work/fixdeps2.py
+4.0K	/data/heluofan/seg_work/deps.txt
+
+==== what2
+136G	/data/heluofan/seg_work/datasets/nnUNet_raw
+46G	/data/heluofan/seg_work/datasets/amos22
+17G	/data/heluofan/seg_work/datasets/nifti_fill
+2.4G	/data/heluofan/seg_work/datasets/nnUNet_results_corrected_20261119
+28M	/data/heluofan/seg_work/datasets/conv_test
+384K	/data/heluofan/seg_work/datasets/_tr_f3.log
+240K	/data/heluofan/seg_work/datasets/cases_all.csv
+184K	/data/heluofan/seg_work/datasets/met.csv
+136K	/data/heluofan/seg_work/datasets/_refix_chain.log
+112K	/data/heluofan/seg_work/datasets/_proof_fix.png
+80K	/data/heluofan/seg_work/datasets/all_psma.json
+48K	/data/heluofan/seg_work/datasets/met_fixed.csv
+20K	/data/heluofan/seg_work/datasets/_train_f0.log
+12K	/data/heluofan/seg_work/datasets/__pycache__
+8.0K	/data/heluofan/seg_work/datasets/tcia_conv.py
+8.0K	/data/heluofan/seg_work/datasets/_fixseg_v2_5.log
+8.0K	/data/heluofan/seg_work/datasets/_fixseg_v2_2.log
+8.0K	/data/heluofan/seg_work/datasets/_fixseg_v2_0.log
+4.0K	/data/heluofan/seg_work/datasets/wait_and_eval.sh
+4.0K	/data/heluofan/seg_work/datasets/met_summary.json
+
+==== ls
+total 2544
+drwxrwxr-x 10 heluofan heluofan   4096 Nov 24 10:33 .
+drwxr-x--- 35 heluofan heluofan   4096 Nov 24 10:33 ..
+drwxrwxr-x  3 heluofan heluofan   4096 Nov 14 10:04 analysis
+drwxr-xr-x  3 heluofan heluofan   4096 Nov 14 12:05 baselines
+-rw-rw-r--  1 heluofan heluofan   4488 Nov 14 01:36 compute_surface_metrics.py
+drwxrwxr-x  8 heluofan heluofan   4096 Nov 24 10:33 datasets
+-rw-rw-r--  1 heluofan heluofan    287 Nov 13 00:46 deps.txt
+-rw-rw-r--  1 heluofan heluofan  15220 Nov 13 00:59 dryrun.log
+-rw-rw-r--  1 heluofan heluofan   1891 Nov 13 01:59 fixdeps2.py
+drwxrwxr-x  3 heluofan heluofan   4096 Nov 13 01:43 flare22_extract
+drwxrwxr-x  2 heluofan heluofan   4096 Nov 13 01:40 flare22_train.parts
+drwxrwxr-x  2 heluofan heluofan   4096 Nov 13 01:07 flare22.zip.parts
+-rw-rw-r--  1 heluofan heluofan 585273 Nov 14 01:00 fold1.log
+-rw-rw-r--  1 heluofan heluofan 585769 Nov 14 00:56 fold2.log
+-rw-rw-r--  1 heluofan heluofan 586101 Nov 14 01:00 fold3.log
+-rw-rw-r--  1 heluofan heluofan 586351 Nov 14 01:00 fold4.log
+-rw-rw-r--  1 heluofan heluofan   2512 Nov 14 01:01 folds_summary.md
+-rw-rw-r--  1 heluofan heluofan   7189 Nov 14 01:01 folds_watcher.log
+-rw-rw-r--  1 heluofan heluofan      8 Nov 13 23:48 folds_watcher.pid
+
+==== disk
+/dev/nvme0n1    7.0T  604G  6.0T   9% /data
+---
+amos_check.py
+amos_dl.py
+amos_inspect.py
+_amos_run.log
+amos_unzip.py
+bench
+bench_chitu.py
+bench_conc.py
+bench_fixed.sh
+bench_prefill2.py
+bench_prefill.py
+bench_prefix.py
+bench_sweep.py
+bin
+_bn.log
+bn.py
+brats_work
+build_chitu.sh
+build_sage_in_container.sh
+check_env.sh
+chitu_ctl.sh
+chitu-src
+_cleanup.log
+ComfyUI
+conv_bf16_enc.py
+cuda-12.8
+_deleted_manifest_20261124.tar.gz
+der_data
+_diag_nan.log
+diag_nan.py

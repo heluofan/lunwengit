@@ -1,0 +1,935 @@
+=== PDF_PAGE 1 ===
+Techniques and Methods 技术与方法
+生物化学与生物物理进展
+Progress in Biochemistry and Biophysics
+2026，53（6） ：1780~1792
+www.pibb.ac.cn
+基于条件去噪扩散模型的电阻抗/
+微波双模态成像算法研究*
+刘近贞 1，2）** 孟祥骞 1，2） 熊 慧 1，2） 周李敏 1，2） 李春婵 3）
+（1） 天津工业大学控制科学与工程学院，天津 300387；2） 天津工业大学天津市电气装备智能控制重点实验室，天津 300387；
+3） 天津工业大学工程实训中心，天津 300387）
+摘要 目的　脑卒中具有高发病率与高致残率 ，病灶的精准检测是临床救治的关键 。电阻抗成像 （electrical impedance 
+tomography，EIT） 与微波成像 （microwave tomography，MWT） 作为非侵入、无电离辐射的生物医学成像技术 ，在床旁实
+时监测与快速筛查中具备显著优势 。然而，单一模态面临成像精度低 、信息单一的问题 ，难以满足临床精准检测的需求 。
+因此，开展电阻抗与微波双模态成像研究具有重要意义 。方法　为实现电阻抗和微波信息有效融合 ，提出双模态融合条件
+去噪扩散模型 （dual-modality fusion conditional denoising diffusion probabilistic model ，DM-DDPM） ，通过构建双编码器网
+络，分别提取 EIT 边界电压的信息与 MWT 散射场的深层介电特性信息，借助注意力特征融合实现异构特征的有效融合，生
+成互补融合先验。引入交叉注意力机制将融合先验数据作为条件 ，引导基于 Transformer的扩散模型进行反向去噪 ，以实现
+电导率分布的高精度重构 。结果　所提算法在不同噪声水平下均保持优异性能 ，在信噪比为 30 dB 的噪声环境下 ，该算法
+的平均相对误差降低至 0.20 以下，结构相似度和相关系数分别保持在 0.90 和 0.89 以上。相较单模态算法及多模态算法 ，伪
+影显著减少、病灶边缘更清晰、定位更准确。实物实验中，算法可有效抑制环境噪声与系统干扰，实现模拟病灶精准重建，
+验证了实际应用可行性 。结论　该算法将双模态信息与条件去噪扩散模型结合 ，既解决单模态成像精度低 、抗噪性差的问
+题，又避免多模态数据直接融合的噪声放大缺陷 ，实现了对不同数量脑卒中病灶的精准定位 ，为脑卒中检测提供了可靠的
+技术支撑。
+关键词 脑卒中，电阻抗成像，微波成像，多模态融合，条件去噪扩散模型，图像重建
+中图分类号 R318.0，Q64   DOI： 10.3724/j.pibb.2026.0031   CSTR： 32369.14.pibb.20260031
+脑卒中作为一种高发病率和高死亡率的疾病 ，
+准确检测病灶大小和位置对临床治疗至关重要 ［1］。
+电 阻 抗 成 像 （electrical impedance tomography ，
+EIT） 与 微 波 成 像 （microwave tomography ，
+MWT） 作为非侵入式医学成像技术 ，凭借其非电
+离辐射、便携及实时成像等优势，在临床诊断领域
+极具潜力 ［2-3］。EIT 利用电导率差异 ，通过电极阵
+列的激励与测量反演组织的电导率分布，已应用于
+脑 卒 中 检 测［4］、 肺 部 成 像［5］ 等 生 物 医 学 领 域。
+MWT 基于组织电特性差异引发的微波吸收与反射
+变化，反演目标区域的复介电常数分布 ［6］，为病
+灶检测提供了另一种重要的技术路径。单一模态的
+成像存在明显局限 。EIT 的“软场”特性使其对深
+部组织敏感性不足 ，MWT 的逆散射问题的非线性
+则易产生伪影 ［7］，影响成像精度 。针对单一物理
+场成像存在的问题，研究者开始探索将不同物理机
+制的成像技术进行融合。
+多模态成像技术通过有机整合同源或异源成像
+技术所获取的多维度信息，旨在克服单一模态在空
+间分辨率或物理敏感度上的固有不足。多模态成像
+技术主要有两种类型，第一种是先验信息法，利用
+一个模态的成像结果作为先验信息来指导另一个模
+态 的 图 像 重 建 过 程， 以 此 来 提 高 成 像 质 量。Li
+等［8］ 利用计算机断层扫描 （computer tomography，
+CT） 图像作为空间先验和正则化项来指导 EIT 重
+∗ 国家自然科学基金 （62401390） 资助项目。
+∗∗ 通讯联系人。
+Tel：022-83955415，E-mail：liujinzen@163.com
+收稿日期：2026-01-21，接受日期：2026-04-24
+
+
+=== PDF_PAGE 2 ===
+刘近贞，等：基于条件去噪扩散模型的电阻抗/微波双模态成像算法研究2026；53（6） ·1781·
+建。Fogel 等［9］ 利用超声获取低分辨率的重建图
+像，将其转换为复介电常数，并将其作为先验信息
+应用于 MWT。Liang 等［10］ 将超声成像得到的位置
+信息作为先验信息指导 EIT 重建，并通过约束最小
+二乘法对不同模态信息进行融合。第二种方法是独
+立重建融合法，即先独立重建各模态图像，再通过
+信息融合技术将其结合 ，生成最终图像。Khoshdel
+等［11］ 提出基于 U-Net 架构的卷积神经网络重建介
+电常数的实部和虚部的乳房图像，并提出与微波和
+超声双模态结合的成像方法 。Lin 等［12］ 提出解纠
+缠 变 分 自 编 码 器 （disentangled variational 
+autoencoder，DV AE） 解耦电阻抗 、微波和超声层
+析成像的结构与数值特征，结合不同模态的图像信
+息，提高了肿瘤检测的准确性。尽管能充分利用多
+模态互补特征 ，但若原始数据中存在较多噪声干
+扰，会导致噪声在融合过程中被放大，最终影响成
+像精度。
+去 噪 扩 散 概 率 模 型 （denoising diffusion 
+probabilistic models，DDPM） 凭借其强大的概率建
+模能力及优异的抗噪性能，在医学图像重建领域得
+到 广 泛 关 注［13］。 与 传 统 深 度 学 习 方 法 相 比，
+DDPM 通 过 迭 代 去 噪 过 程 逐 步 细 化 图 像 细 节。
+DDPM 已被用于 EIT 的图像重建问题 ［14］，不同于
+传统 EIT 重建方法依赖正问题建模与正则化约束以
+缓解不适定性 ，可借助 DDPM 对电导率分布进行
+建模，结合电压数据作为先验条件，通过去噪过程
+逐步还原高精度的图像。
+基于此，本文提出一种用于脑卒中检测的电阻
+抗/微 波 双 模 态 融 合 的 条 件 去 噪 扩 散 模 型（dual-
+modality fusion conditional denoising diffusion 
+probabilistic model ，DM-DDPM） 。该 模 型 通 过 双
+编码器网络提取特征并生成融合先验信息。通过交
+叉注意力机制将融合先验嵌入基于 Transformer 的
+条件去噪扩散模型完成去噪过程。既避免了原始数
+据噪声在网络前端的放大，又通过融合先验信息让
+DDPM 的去噪过程始终受双模态物理信息的引导 ，
+最终实现脑卒中的高精度、高鲁棒性的图像重建。
+1　实验方法
+1.1　EIT与MWT的数学模型
+采用相邻电极激励模式进行 EIT 测量，在被测
+物体边界均匀布置 16 个电极 ，通过对电极阵列依
+次注入低频电流激励信号，利用相邻电极采集边界
+电压数据 ，可获取 208 个边界电压数据 ，图 1 为
+EIT 系统的简化模型。
+由于激励电流频率较低，介电常数的影响可忽
+略不计，电流场可视为稳态场。将人体颅脑形状简
+化为包含目标区域的均匀背景介质，建立二维求解
+域 Ω。基于麦克斯韦方程组 ，电势 φ 与电导率 σ 的
+分布满足：
+∇·(σ (r ) ∇φ (r ) ) = 0, r ∈ Ω                (1)
+在此模型中，电势分布和电导率分布的边界条
+件表示为：
+φ (r ) = φl (r ), r ∈ Ω'                      (2)
+σ (r ) ∂φ ( )r∂n = jn (r ), r ∈ Ω'                (3)
+φl 为被测边界电位分布 ，n 为边界外法向量 ，jn 为
+电极注入的电流密度 ，Ω'为被测场域的边界 。采
+用有限元法对方程进行数值求解，能够在电极布局
+和测量条件已知的情况下，准确地模拟电流激励下
+的电位分布。
+对于微波成像，其数学模型也是基于麦克斯韦
+方程组，核心是建立介质的电磁参数与散射电磁场
+Electrode array
+Voltage-
+controlled 
+current source
+Data acquisition system
+Image reconstruction
+Current signal
+Signal
+conditioning 
+Voltage signal
+1
+2
+3
+4
+5
+6
+7
+89
+10
+11
+12
+13
+14
+15
+16
+Fig. 1　Simplified model of the EIT system
+
+=== PDF_PAGE 3 ===
+·1782· 2026；53（6）生物化学与生物物理进展  Prog. Biochem. Biophys.
+之间的关系。图2 为16 个天线均匀分布，依次照射
+被测场域 Ω，照射后的散射场通过物体周围的 16
+个接收天线来依次测量，获得256 个电场强度。
+对 横 磁 波 （transverse magnetic wave ， TM 
+wave） 的二维电磁散射问题研究 ［15］。电磁源向 Ω
+发送 TM 波，并在切面 S 上构建标量积分方程 ，内
+部的散射场满足：
+Es (r ) = k2b ∫SG (r,r') χ (r') Ez (r') ( )dr' ,r ∈ S    (4)
+其中，Es 是接收天线测得的散射电场 ，Ez 是域 S 中
+的总电场 ，kb 是背景波数 ，S 是散射体的横截面 。
+r' = ( x'，y') 是待测场域中的源点 ，r = ( x，y) 是天
+线的位置向量。对比度函数 χ (r )表示为：
+χ (r ) = εr ( )rεb - 1 - j σr ( )r - σbωεb            (5)
+其中，εr 和 σr 分别是病灶的相对介电常数和电导
+率，εb 和 σb 是背景介质的介电常数和电导率，ω 是
+入射电场的角频率。背景波数 kb 为：
+kb = ω ε0 μ0                            (6)
+对于 TM 波，Dyadic Green 函数可以用第二类
+汉克尔函数表示为：
+G (r,r') = - jk2b
+4 H ( )20 (kb| r - r'| )              (7)
+其中，H ( )20 是第二类汉克尔函数 ，表示散射源与接
+收点之间的电磁场传播特性 。基于上述数学模型 ，
+用时域有限差分法进行数值求解，获取待测场域的
+电磁场值，从而解决电磁正散射问题。
+1.2　电阻抗/微波双模态成像方法基础
+EIT 和 MWT 分别在低频和高频范围内工作 ，
+探测不同的物理特性 。EIT 的逆问题是在已知边界
+电压变化，求解被测场域的电导率分布，表示为公
+式 （8） 。MWT 的逆散射问题是指通过已知散射电
+场的变化，来重构被测场域的复介电常数分布，表
+示为公式 （9） 。
+∆V = J1 σ                              (8)
+∆E = J2 χ                              (9)
+式中，∆V 是 EIT 的边界测量电压，σ 是待重建的介
+质电导率分布，J1 是电学灵敏度矩阵 。∆E 是 MWT
+测量的电场强度 ，χ 是待重建的介质对比度分布 ，
+J2 是电磁灵敏度矩阵。
+测量相同被测场域的逆问题的数学模型为：
+■■■∆V = J1 σ∆E = J2 χ                            (10)
+若 x1 为通过 EIT 模态测量得到的被测物体的位
+置，x2 为通过 MWT 模态测量得到的被测物体的位
+置，当双模态测量的目标位置相同时，x1 = x2 = x。
+假设 σ 和 χ 到 x 的映射满足：
+■
+■
+■
+σ = f1 ( )x
+χ = f2 ( )x
+                             (11)
+将式 （11） 带入式 （10） 为：
+■
+■
+■
+∆V = J1 f1 ( )x
+∆E = J2 f2 ( )x
+                         (12)
+求解 （12） ，将单模态方程转化为双模态的统
+一模型：
+y = g (x)                              (13)
+其中，y 为双模态测量值 ，g (·) 为双模态测量值与
+重建目标位置的映射函数。
+将两种模态结合可以利用低频与高频信息，捕
+获不同频段的电磁特性，实现了电导率与复介电常
+数的同步重构，可以解决单模态成像中因组织异质
+性导致的逆问题病态性 。EIT 和 MWT 均以组织的
+电特性为重建目标，可采用统一的算法实现数据融
+合。不需要直接求解耦合方程，通过损失函数迭代
+优化，最小化预测数据和正问题求解出的计算数据
+之间的误差。
+Loss = 1N ∑i = 1N (y'i - yi )2                   (14)
+式中，y'i 是预测数据 ，yi 是真实数据 ，N 是被测场
+域的剖分单元数。
+1.3　扩散模型
+扩散模型是一种概率生成模型，是模拟分子扩
+散的规律，通过双向马尔可夫链结构，模拟“数据
+添加噪声 -噪声还原数据 ”的过程。前向扩散过程
+Fig. 2　Configuration of the 16 antennas in the MWT system
+
+=== PDF_PAGE 4 ===
+刘近贞，等：基于条件去噪扩散模型的电阻抗/微波双模态成像算法研究2026；53（6） ·1783·
+通过 T 个步长向原始数据逐步添加高斯噪声 。利用
+重参数化 ，任意时刻 t 的数据 xt 可由原始数据 x0 结
+合预定义的噪声调度参数 βt ∈ (0，1)直接得到［13］，
+xt = αˉt x0 + 1 - αˉt ϵ                 (15)
+其中 ，αt = 1 - βt，αˉt = ∏i = 1
+t
+αi，t = 1，2，…，T 
+αt = 1 - βt，ϵ 为高斯噪声 ，随着 t 增加，xt 逐步趋
+于随机噪声。
+反向过程从随机噪声 xt 开始，通过 T 步去噪重
+建原始数据。由于该过程的分布不可直接计算，通
+常利用神经网络 ϵθ 来拟合噪声预测模型，进而近似
+逼近反向分布的均值 μθ，即：
+μθ = 1αt (xt - 1 - αt1 - -αt ϵθ (xt,t) )          (16)
+去噪过程是基于马尔可夫链实现，即当前时间
+步的分布仅与前一时间步的分布有关，无需依赖更
+早的数据。在模型完成第 t 步噪声预测后 ，可通过
+逆转正向加噪过程，反推出前一时间步 t - 1 的 xt - 1
+分布，即，
+xt - 1 = 1αt xt - 1 - αtαt ϵθ (xt,t)          (17)
+通过逐步去噪，模型能够从高斯噪声中恢复出
+高精度的电导率分布图像。
+2　电阻抗/微波双模态融合的条件去噪扩散
+模型
+DM-DDPM 网络可分为两大核心模块：双模态
+特征融合预处理模块、基于条件去噪扩散模型的图
+像重建模块，整体网络如图 3 所示。采用双编码器
+网络，分别提取 EIT 的边界电压信息与 MWT 的散
+射场信息，生成具有电导率分布特征与介电常数分
+布特征的融合先验信息 。将这一先验信息作为条
+件，引导基于 Transformer 的条件去噪扩散模型生
+成高精度电导率图像 ，整个架构通过递进式设计 ，
+充分发挥双模态信息的互补性与扩散模型的生成能
+力，最终实现高精度的图像处理。
+Fig. 3　Structure of DM-DDPM network
+
+=== PDF_PAGE 5 ===
+·1784· 2026；53（6）生物化学与生物物理进展  Prog. Biochem. Biophys.
+2.1　双编码器网络
+双编码器网络是实现双模态信息特征提取与融
+合的核心，两分支结构对称但参数独立，确保能针
+对性地适配不同模态信号的特性 。EIT 分支输入电
+极测量的边界电压数据，通过一维卷积映射至高维
+特征空间，MWT 分支输入为天线阵列接收的散射
+场数据，通过卷积块提取特征 。编码层结构由 3 个
+卷积块与 3 个最大池化层组成，每个卷积块均采用
+“卷积层 +BatchNorm+ReLU 激活函数 ”的堆叠结
+构，增强特征表达能力并加速训练收敛。最大池化
+层用于下采样，实现特征图尺寸的减半与感受野的
+扩大。两个分支在瓶颈层进行深度融合，采用注意
+力特征融合 （attentional feature fusion ，AFF）［16］，
+将不同模态的信息自适应融合，生成融合特征，最
+大化地利用两种模态内部信息之间的关系。解码器
+经上采样及跳跃连接保留细节，最终输出同时编码
+了电导率与介电常数分布信息的初步融合结果。该
+阶段的作用并非直接得到最终电导率重建结果，而
+是作为条件引导信息，为后续扩散模型提供先验。
+2.2　条件去噪扩散模型框架
+DDPM 是从随机高斯噪声开始反向去噪 ，既
+缺乏物理信息约束易生成虚假结构，又存在采样效
+率低的问题。为此，DM-DDPM 模型引入条件约束
+机制，将预处理得到的初步成像结果嵌入扩散过
+程，实现双模态信息的深度融合与高精度成像。与
+无条件扩散模型仅依赖当前时刻进行去噪预测不
+同，条件去噪扩散模型在每一步反向去噪时，加入
+条件约束使去噪过程不仅依赖于当前噪声图像 xt 和
+时间步 t，更重要的是充分融合了双模态先验信息。
+交叉注意力机制被用于实现电压数据与散射场
+数据的双模态融合，通过将双模态特征作为条件信
+息引入网络，对噪声预测过程进行约束。该机制在
+特征交互过程中能够有效挖掘不同模态之间的结构
+先验与物理关联。进行多次交叉注意力运算，强化
+输入数据与网络内在表征的深度融合，使网络在去
+噪的各个阶段均能感知双模态信息，从而提升对输
+入数据的判别能力。在此基础上，扩散模型不仅能
+够遵循其固有的概率生成过程，还能够生成与多模
+态数据一致的重建结果 。如图 4 所示，交叉注意力
+机制计算融合得到的融合信息和电导率分布之间的
+关系，通过动态计算不同模态数据间的权重，实现
+信息的选择性融合。这种设计使得扩散模型在生成
+电导率分布时，不仅依赖统计先验，还能够显式地
+受双模态成像结果引导，避免无物理意义的解。
+2.3　位置嵌入
+扩散模型的网络本身不具备时序感知能力，无
+法区分不同时间步 t，因此需对网络各层输出的特
+征张量引入时间步嵌入操作，将离散的时间步转化
+为高维连续向量，把扩散过程的时间步信息传入网
+络，使其精准感知当前所处的去噪阶段，进而指导
+噪声预测任务 。采用 Embedding 层实现时间步 t 的
+可学习向量表示，该策略能够自适应图像的去噪特
+征分布 。具体为 ：首先构建形状为 （100，D） 的
+嵌入字典 （D 为嵌入维度 ） ，字典中每个时间步
+t(t ∈ [1，100] ) 对应一个随机初始化的 D 维向量 ，
+训练过程中 ，模型根据当前时间步 t 调取对应的 D
+维嵌入向量，与卷积输出的特征张量在通道维度逐
+通道相加，完成时间步信息的嵌入。
+2.4　基于Transformer的去噪网络
+针对 DDPM 模型采用 U-Net 结构存在的局部依
+赖，而 Transformer 的自注意力机制可有效建模全
+局特征关联 ，提升成像精度 ［17］。因此，设计基于
+Transformer 的 U-Net 网络作为电导率的特征提取和
+噪声去除 ，该网络保留 U-Net 的编码 -解码与跳跃
+连接结构，将原有的卷积块替换为 Transformer 块，
+实现局部特征与全局特征的协同提取，噪声预测网
+络如图5 所示。
+Transformer 块主要包括注意力计算块 、残差
+结 构 、 层 归 一 化 块 和 多 层 感 知 块 （multilayer 
+perceptron，MLP） ，具体结构如图 6 所示。将噪声
+电导率信息与条件融合结果进行特征嵌入，并通过
+位置编码引入空间结构信息，利用自注意力机制对
+全局特征进行建模，使网络能够在去噪过程中同时
+关注整体电导率分布与局部异常区域。
+Prior
+information  
+Computation of
+attention weights 
+Noisy latent
+variable
+Q K V
+Output
+Fig. 4　Cross attention mechanism
+
+=== PDF_PAGE 6 ===
+刘近贞，等：基于条件去噪扩散模型的电阻抗/微波双模态成像算法研究2026；53（6） ·1785·
+3　数据集构建与评价指标
+3.1　构建数据集
+在多模态图像融合研究中 ，由于 EIT 与 MWT
+相关公开数据集匮乏，因此，本研究需要自行构建
+仿真数据集。采用 COMSOL Multiphysics 对颅脑模
+型进行建模 ，并对其计算区域进行三角形网格剖
+分，制作成含有 345 个节点和 636 个单元的有限元
+数据 （图 7） 。随机选择 14 000 个电学样本和 14 000
+个微波样本用于训练网络模型，在输入网络前进行
+归一化处理，按照 8∶1∶1 将数据集划分为互不重
+叠的训练集、验证集和测试集。为了简化实验，将
+病灶区域的介电常数设定为 37.87，电导率设定为
+0.75 S/m，脑组织的介电常数设定为 55.60，电导率
+为1.89 S/m。
+3.2　评价指标
+训练网络的损失函数是每个像素的真实标签和
+预测标签之间的均方误差。训练过程采用固定学习
+率 0.001，并使用 Adam 优化器进行网络参数的更
+Fig. 5　Structure of the noise prediction network
+Fig. 6　Transformer block
+ Fig. 7　Finite element mesh of the head model
+
+=== PDF_PAGE 7 ===
+·1786· 2026；53（6）生物化学与生物物理进展  Prog. Biochem. Biophys.
+新。网络模型的搭建使用 Pytorch2.4 框架，并使用
+NVIDIA GeForce RTX 4060 GPU （CUDA 11.8） 进
+行训练，训练周期为1 000 epoch，批量尺寸为64。
+为评估所提出网络的图像重建性能，采用相对
+误差 （relative error，RE） 、相关系数 （correlation 
+coefficient， CC） 、结 构 相 似 性 指 数 （structure 
+similarity index measure ， SSIM） 作 为 定 量 评 价
+指标。
+相对误差衡量重建图像与实际图像的差异，重
+建图像是否光滑，评估成像质量：
+RE = ∑i
+N
+( )xi - yi
+2
+∑i
+N
+( )yi
+2                    (18)
+相关系数反映重建图像和实际图像之间的相
+关性：
+CC = ∑i
+N
+( )xi - xˉ ( )yi - yˉ
+∑i
+N
+( xi - xˉ)2 ( yi - yˉ)2
+             (19)
+SSIM 是用于衡量重建图像与实际图像之间相
+似度的指标，考虑了亮度、对比度和结构三个方面
+的相似性：
+SSIM = ( )2xˉ yˉ + C1 ( )2σxy + C2
+( )xˉ2 + yˉ2 + C1 ( )σ2x + σ2y + C2
+      (20)
+其中，x 和 y 分别是重建图像和真实图像 。xˉ 和 yˉ 是
+两个图像的均值 。σ2x 和 σ2y 是两个图像的方差 。σxy
+是两个图像的协方差。C1 和 C2 代表两个常数。
+4　实验结果与分析
+为了验证算法的图像生成能力和抗噪声能力 ，
+设计了仿真数据的对比实验和实测数据的对比实验
+来验证算法的可行性。
+4.1　生成能力分析
+通过增加时间步可提升网络的噪声预测精度 。
+图 8 显示了重建图像的质量随着时间步的增加而提
+高，DM-DDPM 网络在 100 个时间步具有非常好的
+效果，该模型基本能够在前 50 步中初步构建出目
+标的几何形状与轮廓 。在 60~100 个时间步中 ，一
+般目标位置和尺寸趋于稳定，目标位置处的伪影逐
+渐减小，背景逐渐清晰。后期迭代主要是进一步优
+化电导率的预测值 ，提高图像重建精度 。在 80 到
+100 个时间步的过程中 ，增加时间步有助于消除伪
+影并增强网络泛化能力与稳定性 。图 9 中，测试集
+中的样本在迭代 70 次后的 SSIM 和 CC 指标能达到
+0.99，RE 也低于0.01。
+4.2　抗噪性能验证
+为了验证所提出 DM-DDPM 成像算法的性能 ，
+将 所 提 出 的 方 法 与 U-Net 网 络 ［18］ 、
+DiffusionEIT［14］、DiffusionMWT 以及 MDRANet［19］
+进行了对比。U-Net 网络采用经典的编码器-解码器
+对称架构，通过层级卷积提取局部特征，并利用跳
+跃 连 接 融 合 高 低 层 特 征 ， 实 现 端 到 端 映 射 。
+DiffusionEIT 是基于单模态电阻抗成像的扩散模型，
+利用 DDPM 对电导率分布建模 ，将电压数据作为
+条 件 先 验 ， 通 过 逐 步 去 噪 过 程 还 原 图 像 。
+DiffusionMWT 是基于单模态微波成像的扩散模型 。
+MDRANet 是一种多模态融合网络 ，采用双分支结
+构提取不同模态特征，经多尺度密集模块对提取的
+特征进行层间拼接，最后对深度特征解码生成融合
+图像。
+此外，为了评估所提出算法的抗噪性能，添加
+信 噪 比（signal-to-noise ratio ，SNR） 为 50、40 和
+30 dB 的高斯白噪声进行比较 。所有方法使用相同
+的数据集进行训练，并对测试集添加噪声进行性能
+验证。
+Fig. 9　Variation of metrics with iteration
+10 steps
+20 steps
+30 steps
+40 steps
+50 steps
+100 steps
+90 steps
+…
+Fig. 8　Reconstructed images at 100 steps
+
+=== PDF_PAGE 8 ===
+刘近贞，等：基于条件去噪扩散模型的电阻抗/微波双模态成像算法研究2026；53（6） ·1787·
+图 10~12 显示了图像重建结果 ，针对不同病灶
+数量，DM-DDPM 在成像精度与鲁棒性上均优于对
+比网络 ，能够更好地重建病灶的位置 、大小和形
+状。U-Net 能够在一定程度上识别目标的位置和大
+小 。 随 着 噪 声 的 增 加， 会 出 现 大 范 围 的 伪 影。
+DiffusionEIT 在低噪声的情况下 ，相较于其他网络
+的成像效果较好 ，但加入噪声导致病灶的部分缺
+失，抗噪性能较差 。DiffusionMWT 在 30 dB 的噪
+声 下， 仍 存 在 较 多 噪 声， 去 噪 效 果 不 佳。DM-
+DDPM 整合 EIT 与 MWT 的互补信息 ，克服单模态
+数据局限性，比单模态图像重建方法可利用的信息
+更加丰富与全面，从而提升图像的质量。在双模态
+信息融合的过程中，会引入冗余和冲突信息，导致
+重建效果下降 。相比 MDRANet，DM-DDPM 能够
+有效利用互补信息的同时避免冲突信息的干扰，得
+到高质量的图像。
+U-Net
+DiffusionEIT
+DiffusionMWT
+MDRANet
+DM-DDPM
+Ground Truth
+50 dB
+40 dB
+30 dB
+Fig .12　Comparison of reconstructed images of triple-target under different noise conditions
+U-Net
+DiffusionEIT
+DiffusionMWT
+MDRANet
+DM-DDPM
+Ground Truth
+50 dB
+40 dB
+30 dB
+Fig. 10　Comparison of reconstructed images of single-target under different noise conditions
+U-Net
+DiffusionEIT
+DiffusionMWT
+MDRANet
+DM-DDPM
+Ground Truth
+50 dB
+40 dB
+30 dB
+Fig. 11　Comparison of reconstructed images of double-target under different noise conditions
+
+=== PDF_PAGE 9 ===
+·1788· 2026；53（6）生物化学与生物物理进展  Prog. Biochem. Biophys.
+表 1~3 显示了算法对脑卒中重建的平均 RE、
+平均 CC 和平均 SSIM 的计算结果 ，可以看出 DM-
+DDPM 对 3 个测试样本的重建质量相较于其他网络
+模型有显著提升 。40 dB 和 30 dB 噪声干扰下的重
+建图像 SSIM 均高于 0.90，CC 均高于 0.89，RE 均低
+于 0.20，明显优于对比方法 ，证明了网络的优越
+性 。 在 30 dB 的 噪 声 下， 相 较 于 单 一EIT 模 态
+DiffusionEIT，SSIM 平 均 提 高 了23.66%， 与 单 一
+MWT 模 态 DiffusionMWT 相 比 ， RE 平 均 提 高
+19.99%。表明双模态融合的重建结果的鲁棒性和
+重 建 精 度 远 高 于 单 一 模 态。 DM-DDPM 在 RE、
+CC、SSIM 上的优异表现 ，对应图 10~12 中伪影更
+少、边缘更清晰、目标结构更准确。
+针对不同目标物数量的重建结果表明 ，DM-
+DDPM 在各类场景下表现出优越的重建性能 。与
+单模态网络相比，DM-DDPM 能够整合更丰富的电
+磁特性信息，从而提升了图像重建质量。多模态融
+合可能引入冗余信息 ，导致重建效果下降 ，DM-
+DDPM 将双模态融合结果作为条件先验而非直接
+融合原始数据，既避免了原始数据噪声在融合前端
+的放大，又提升了特征融合的针对性，重建图像的
+伪影更少、边缘更清晰。
+4.3　实物实验
+为了验证 DM-DDPM 算法在真实环境下的可
+行性 ，构建实物实验系统测量数据 。如图 13a 所
+示 ，EIT 数 据 采 集 系 统 由 数 据 采 集 卡（NI USB-
+6281） 、4 个 16 通道多路复用器 （ADG1606） 组成
+的开关阵列 、电流源 、导线、16 个电极以及电脑
+组成。MWT 数据采集系统由矢量网络分析仪 VNA
+（Aglient E5071C） 、两个频段为 0.8~2.5 GHz 的超宽
+带 天 线、 同 轴 电 缆、 定 位 底 座 及 电 脑 组 成（图
+13b） 。发射天线固定不动 ，接收天线旋转一周 ，
+VNA 记录接收天线的S 参数。
+传感器数量的选取直接影响成像分辨率与计算
+效率 ，参考现有研究 ［20-21］，本研究在双模态成像
+系统中均配置 16 个传感器。由于电极夹会对 MWT
+系统的微波信号采集产生电磁干扰，导致接收的散
+Table 3　Metrics of triple-target under different noise conditions
+Algorithm
+U-Net
+DiffusionEIT
+DiffusionMWT
+MDRANET
+DM-DDPM
+SNR=50 dB
+RE
+0.092 0
+0.000 5
+0.000 6
+0.044 1
+0.000 8
+CC
+0.997 9
+0.999 4
+0.999 6
+0.998 9
+0.999 5
+SSIM
+0.873 4
+0.995 5
+0.994 3
+0.928 8
+0.998 5
+SNR=40 dB
+RE
+0.178 7
+0.150 6
+0.139 0
+0.160 9
+0.059 7
+CC
+0.983 1
+0.992 1
+0.994 2
+0.994 4
+0.993 4
+SSIM
+0.890 4
+0.698 1
+0.723 6
+0.703 5
+0.946 4
+SNR=30 dB
+RE
+0.337 4
+0.206 1
+0.224 1
+0.378 1
+0.106 2
+CC
+0.924 5
+0.894 7
+0.853 6
+0.965 4
+0.969 4
+SSIM
+0.652 1
+0.684 4
+0.667 5
+0.463 5
+0.902 8
+Table 2　Metrics of double-target under different noise conditions
+Algorithm
+U-Net
+DiffusionEIT
+DiffusionMWT
+MDRANET
+DM-DDPM
+SNR=50 dB
+RE
+0.103 1
+0.140 1
+0.364 0
+0.066 5
+0.000 5
+CC
+0.972 0
+0.981 0
+0.854 7
+0.988 5
+0.999 7
+SSIM
+0.719 7
+0.966 5
+0.975 0
+0.850 5
+0.987 3
+SNR=40 dB
+RE
+0.189 2
+0.093 3
+0.087 4
+0.065 8
+0.004 2
+CC
+0.927 1
+0.981 2
+0.984 3
+0.986 8
+0.997 2
+SSIM
+0.699 6
+0.958 8
+0.940 4
+0.848 9
+0.960 2
+SNR=30 dB
+RE
+0.485 2
+0.540 0
+0.574 1
+0.721 3
+0.127 3
+CC
+0.798 8
+0.821 4
+0.807 1
+0.565 6
+0.942 2
+SSIM
+0.631 0
+0.543 2
+0.633 4
+0.550 4
+0.905 6
+Table 1　Metrics of single-target under different noise conditions
+Algorithm
+U-Net
+DiffusionEIT
+DiffusionMWT
+MDRANET
+DM-DDPM
+SNR=50 dB
+RE
+0.080 5
+0.007 8
+0.103 6
+0.049 5
+0.006 2
+CC
+0.955 2
+0.988 9
+0.973 6
+0.978 0
+0.993 1
+SSIM
+0.700 1
+0.943 5
+0.759 7
+0.717 1
+0.956 9
+SNR=40 dB
+RE
+0.120 5
+0.066 7
+0.203 5
+0.105 1
+0.046 1
+CC
+0.943 6
+0.948 8
+0.897 5
+0.966 1
+0.983 2
+SSIM
+0.627 7
+0.953 5
+0.608 1
+0.694 8
+0.947 8
+SNR=30 dB
+RE
+0.607 2
+0.243 8
+0.439 1
+0.320 3
+0.185 1
+CC
+0.467 0
+0.855 1
+0.422 6
+0.418 4
+0.897 8
+SSIM
+0.631 3
+0.891 0
+0.481 7
+0.693 7
+0.911 4
+
+=== PDF_PAGE 10 ===
+刘近贞，等：基于条件去噪扩散模型的电阻抗/微波双模态成像算法研究2026；53（6） ·1789·
+射场数据无法准确表征待测区域的介电特性，因此
+实物实验采用异步采集完成双模态数据获取，两次
+采集过程中保持水槽、目标物的位置完全固定，确
+保双模态数据为同一场景的配对数据。
+测量区域为参照成年人标准颅脑轮廓设计的水
+槽模型 ，外部尺寸为长约 22 cm、宽约 20 cm。盐
+水作为背景导电介质模拟正常脑组织，其对应的电
+导率约为 1.6 S/m，相对介电常数约为 75。选用绝
+缘亚克力块模拟脑卒中病灶区域，利用二者在电导
+率、相对介电常数上的显著差异形成高对比度，用
+于突出成像系统对异常区域的响应能力。在水槽中
+随机放置 1~3 个亚克力圆柱，模拟不同病灶的分布
+情况。
+实物实验受测量系统、环境等因素影响，存在
+较强的噪声干扰 ，图 14 所示为算法的图像重建结
+果 。U-Net 重 建 的 病 灶 不 清 晰 且 存 在 较 大 伪 影，
+DiffusionEIT 和 MDRANet 的 重 建 图 像 有 所 改 善，
+但前者受单模态信息局限，后者因双模态融合机制
+未能有效抑制冗余干扰 ，导致病灶附近仍存在伪
+影，DM-DDPM 可实现病灶的精准定位，且重建图
+像的伪影显著减少，通过迭代去噪自适应地过滤掉
+测量中的随机噪声 ，有效提升了成像的抗干扰能
+力，充分验证了 DM-DDPM 算法在实际应用中的
+可行性与优越性。
+5　结 论
+针对脑卒中检测中 EIT 与 MWT 单模态存在的
+成像精度低 、伪影明显等问题 ，提出一种电阻抗 /
+微波 DM-DDPM。该模型采用双编码器提取双模态
+特征并生成融合先验，将融合先验通过交叉注意力
+机 制 嵌 入 扩 散 模 型 的 去 噪 过 程 ， 并 使 用
+Transformer 块增强全局特征关联 。通过仿真数据
+PC-based
+signal receiver 
+DAQ system
+Head phantom
+Antenna
+Positioning
+platform 
+VNA
+(a) (b)
+Fig. 13　Comparison of physical experimental results
+(a) EIT data acquisition system. (b) MWT data acquisition system.
+U-Net DiffusionEIT DiffusionMWT MDRANet
+DM-DDPM
+Fig. 14　Comparison of physical experimental results
+
+=== PDF_PAGE 11 ===
+·1790· 2026；53（6）生物化学与生物物理进展  Prog. Biochem. Biophys.
+与实物实验的对比，DM-DDPM 在不同场景中均表
+现 优 异， 50 dB 信 噪 比 下 的RE 均 低 于 0.006 2，
+SSIM 均高于 0.956 9，在 30 dB 低信噪比下 RE 仍控
+制在 0.185 1 以下，SSIM 保持在 0.905 6 以上。与对
+比方法相比实现了更平滑的图像重建以及准确的目
+标物位置表达。该算法能够准确重建病灶的数量与
+位置，并具备良好的抗噪性能。
+虽然 DM-DDPM 方法能够完成高水平的图像
+重建，但仍有改进空间。模型的背景与目标电导率
+相对单一，在接下来的研究中可以尝试增加颅脑模
+型的复杂度 ，构建更贴近临床真实场景的头模型 ，
+进一步提升实际应用价值。
+参 考 文 献
+[1] Sperber C, Gallucci L, Mirman D, et al. Stroke lesion size - Still a 
+useful biomarker for stroke severity and outcome in times of high-
+dimensional models. Neuroimage Clin, 2023, 40: 103511
+[2] 白世展, 李文胜, 林海军, 等 . 基于径向基函数神经网络的肺部
+加权频差电阻抗成像方法 . 生物化学与生物物理进展 , 2023, 
+50(7): 1755-1766
+Bai S Z, Li W S, Lin H J, et al. Prog Biochem Biophys, 2023, 50(7): 
+1755-1766
+[3] 邓煌森, 刘捷, 闫炼, 等 . 基于深度卷积自编码器的微波成像方
+法 及 其 医 学 应 用 潜 力. 中 国 医 学 物 理 学 杂 志, 2025, 42(2): 
+184-189
+Deng H S , Liu J , Yan L, et al. Chin J Med Phys , 2025, 42(2): 
+184-189
+[4] Toivanen J , Kolehmainen V , Paldanius A , et al . Graph 
+convolutional networks enable fast hemorrhagic stroke 
+monitoring with electrical impedance tomography . IEEE Trans 
+Biomed Eng, 2026, 73(2): 851-861
+[5] Kircher M , Elke G , Stender B , et al . Regional lung perfusion 
+analysis in experimental ARDS by electrical impedance and 
+computed tomography. IEEE Trans Med Imaging , 2021, 40(1): 
+251-261
+[6] Fear E C. Microwave imaging of the breast. Technol Cancer Res 
+Treat, 2005, 4(1): 69-82
+[7] Bertero M , Boccacci P , De MoI C . Introduction to Inverse 
+Problems in Imaging. 2nd Ed. Boca Raton: CRC Press, 2021
+[8] Li Z, Zhang J, Liu D, et al. CT image-guided electrical impedance 
+tomography for medical imaging. IEEE Trans Med Imaging, 2020, 
+39(6): 1822-1832
+[9] Fogel H , Hughson M , Asefi M , et al . Generation of prior 
+information in a dual-mode microwave-ultrasound breast imaging 
+system. Sensors (Basel), 2022, 22(18): 7087
+[10] Liang G, Ren S, Dong F. Ultrasound guided electrical impedance 
+tomography for 2D free-interface reconstruction . Meas Sci 
+Technol, 2017, 28(7): 074003
+[11] Khoshdel V, Ashraf A , LoVetri J . Enhancement of multimodal 
+microwave-ultrasound breast imaging using a deep-learning 
+technique. Sensors (Basel), 2019, 19(18): 4050
+[12] Lin Z, Guo R, Zhang K, et al. Tri-modal joint inversion based on 
+disentangled variational autoencoder for human thorax imaging . 
+IEEE Trans Instrum Meas, 2023, 72: 4506912
+[13] Ho J, Jain A, Abbeel P. Denoising diffusion probabilistic models. 
+Advances in Neural Information Processing Systems , 2020,          
+33: 6840-6851
+[14] Liu J, Shi F, Xiong H , et al. DiffusionEIT: diffusion model for 
+electrical impedance tomography . IEEE Trans Instrum Meas , 
+2024, 73: 4509209
+[15] Costa Batista A, Batista L S, Adriano R. A quadratic programming 
+approach for microwave imaging . IEEE Trans Anntenas Propag, 
+2021, 69(8): 4923-4934
+[16] Dai Y, Gieseke F, Oehmcke S , et al. Attentional feature fusion//
+Medioni G . 2021 IEEE Winter Conference on Applications of 
+Computer Vision (WACV), Waikoloa, HI , USA : IEEE , 2021: 
+3559-3568
+[17] Vaswani A, Shazeer N, Parmar N, et al. Attention is all you need//
+Luxburg U V , Guyon I , Bengio S , et al . Advances in Neural 
+Information Processing Systems : 30. Red Hook : Curran 
+Associates, 2017: 5998-6008
+[18] Ronneberger O, Fischer P, Brox T. U-Net: convolutional networks 
+for biomedical image segmentation//Navab N, Hornegger J, Wells 
+W M . Medical Image Computing and Computer-Assisted 
+Intervention - MICCAI 2015. Cham: Springer, 2015: 234-241
+[19] Fu J, Li W, Peng X, et al. MDRANet: a multiscale dense residual 
+attention network for magnetic resonance and nuclear medicine 
+image fusion. Biomed Signal Process Control, 2023, 80: 104382
+[20] 宋振忠, 张素勤, 杨懿铄, 等 . 利用 Gauss-Newton 算法探究电极
+数对 EIT 重建图像质量的影响 . 国外电子测量技术 , 2024,        
+43(11): 44-49
+Song Z Z , Zhang S Q , Yang Y S, et al. Foreign Electron Meas 
+Technol, 2024, 43(11): 44-49
+[21] Abbosh Y M, Sultan K, Guo L, et al. Non-uniform antenna array 
+for enhanced medical microwave imaging. Sensors (Basel), 2025, 
+25(10): 3174
+
+=== PDF_PAGE 12 ===
+刘近贞，等：基于条件去噪扩散模型的电阻抗/微波双模态成像算法研究2026；53（6） ·1791·
+Research on Electrical Impedance and Microwave Dual-modality Tomography 
+Algorithm Based on Conditional Diffusion Models*
+LIU Jin-Zhen1,2)**, MENG Xiang-Qian1,2), XIONG Hui1,2), ZHOU Li-Min1,2), LI Chun-Chan3)
+(1)The School of Control Science and Engineering, Tiangong University, Tianjin 300387, China; 
+2)Key Laboratory of Intelligent Control of Electrical Equipment, Tiangong University, Tianjin 300387, China; 
+3)Engineering Training Center, Tiangong University, Tianjin 300387, China)
+Graphical abstract
+Abstract　Objective  Stroke poses a heavy burden due to its high mortality and morbidity rates . Accurate and 
+real-time detection of lesions is pivotal for prompt clinical intervention and favorable prognosis . Electrical 
+impedance tomography (EIT) and microwave tomography (MWT) have emerged as compelling alternatives for 
+stroke screening , owing to their non-ionizing , non-invasive and portable nature . EIT provides information on 
+tissue conductivity, and MWT offers high sensitivity to changes in dielectric properties . However, single-modality 
+                                      
+∗ This work was supported by a grant from The National Natural Science Foundation of China (62401390).
+∗∗ Corresponding author.
+Tel： 86-22-83955415， E-mail： liujinzen@163.com
+Accepted： January 21， 2026    Accepted： April 24， 2026
+
+=== PDF_PAGE 13 ===
+·1792· 2026；53（6）生物化学与生物物理进展  Prog. Biochem. Biophys.
+imaging is inherently limited , EIT suffers from low sensitivity to deep-seated tissues and severe ill-posedness of 
+inverse problems, whereas MWT is challenged by strong nonlinearity in inverse scattering and susceptibility to 
+modeling errors . Consequently , the clinical utility of standalone EIT or MWT for stroke diagnosis remains 
+constrained by poor spatial resolution and imaging artifacts . To improve the accuracy and robustness of stroke 
+imaging, a dual-modality fusion conditional denoising diffusion probabilistic model (DM-DDPM) was proposed 
+for high-precision dual-modality image reconstruction . Methods  A dual-encoder network with a symmetric 
+architecture and independently trained parameters was constructed to extract heterogeneous features separately 
+from EIT boundary voltage measurements and MWT scattered field signals . Attentional feature fusion (AFF) is 
+employed to integrate complementary information from the two modalities adaptively , generating robust fused 
+priors that suppress redundant noise while preserving key physical characteristics . Subsequently, the fused priors 
+are embedded into a Transformer-based diffusion model via a cross attention mechanism to guide the reverse 
+denoising process . This approach effectively reduces artifacts and enhances the stability of conductivity 
+distribution reconstruction . Time step embedding is introduced to enable the network to perceive the diffusion 
+stage and further improve the accuracy of noise prediction . Results  Simulated experiments demonstrated that 
+DM-DDPM significantly outperforms single-modality and multi-modality networks under various noise levels . A 
+head model simulation dataset was constructed based on COMSOL Multiphysics , and tests were carried out under 
+50 dB, 40 dB and 30 dB signal-to-noise ratio levels . At 30 dB, the average relative error (RE) was below 0.20, 
+while the structural similarity index measure (SSIM) and correlation coefficient (CC) remained above 0.90 and 
+0.89, respectively . Compared with single-modality and multi-modality networks , artifacts were significantly 
+reduced, lesion edges were clearer , and localization was more accurate . The model maintains high reconstruction 
+quality and strong robustness for single , double , and triple lesions simultaneously . Furthermore , physical 
+experiments were conducted using a 16-electrode EIT system and a 16-antenna MWT system with asynchronous 
+data acquisition . These experiments confirmed the feasibility of the method in real-world scenarios and 
+demonstrated that it can robustly reconstruct simulated lesions despite environmental interference and 
+measurement noise , validating its reliability for practical clinical applications . Conclusion  The proposed 
+method effectively combines complementary dual-modality information with a conditional diffusion model . Low 
+accuracy and poor noise resistance in single-modality imaging were effectively addressed , while the noise 
+amplification issue caused by direct multimodal data fusion was avoided . The proposed algorithm exhibits strong 
+anti-noise interference ability and high imaging stability in both simulation and physical experiments . Precise 
+localization of stroke lesions with different quantities was achieved , providing a high-precision , and practical 
+technical support for clinical stroke detection.
+Key words 　 stroke, electrical impedance tomography (EIT), microwave tomography (MWT), multimodal 
+fusion, conditional diffusion model, image reconstruction
+DOI：10.3724/j.pibb.2026.0031   CSTR： 32369.14.pibb.20260031

@@ -1,0 +1,920 @@
+=== PDF_PAGE 1 ===
+ 
+ 
+·论　著·
+基于多模态对比学习的小肠视频关键帧检索
+武星1, 2，杨国银1，李婧雯1，张健3, 4，孙群5，韩先花6，钱权1, 2，陈延伟7
+1. 上海大学 计算机工程与科学学院（上海  200444）
+2. 上海大学 上海先进通信与数据科学研究院（上海  200444）
+3. 上海大学 医学院（上海  200444）
+4. 上海全景医学影像诊断中心（上海  200233）
+5. 上海交通大学附属第六人民医院 消化内科（上海  200233）
+6. 山口大学 理学部（日本山口 753-8511）
+7. 立命馆大学 情报理工学部（日本滋贺 525-8577）
+【摘要】  为给定标签的小肠视频检索出与文本最相关的关键帧画面，可以高效精准地定位病变位置。然
+而，如果直接从原视频中学习，训练过程会非常缓慢；而如果从图像—文本数据集中学习视觉表征，则会导致计
+算的不一致性。为了应对这一挑战，本文基于多模态对比学习，提出了小肠视频关键帧检索（KRCL）框架。该框
+架充分利用视频类别标签中的文本信息，以学习与文本密切相关的视频特征；同时实现在预训练的图像—文本
+模型中建模视频的时序信息，将图像—文本多模态模型中学到的知识迁移到视频领域，实现医学视频、图像和文
+本数据之间的交互。在高级虚拟内窥镜克瓦希尔胃部病变诊断（Hyper-Kvasir）数据集和微软研究院视频—文本检
+索（MSR-VTT）数据集上的实验结果分别证明了KRCL的有效性和鲁棒性，并且本文所提出的方法在几乎所有的
+评价指标上达到了目前最先进的性能。
+【关键词】  对比学习；多模态学习；视频关键帧检索
+Small bowel video keyframe retrieval based on multi-modal contrastive learning
+WU Xing 1, 2,  YANG Guoyin 1,  LI Jingwen 1,  ZHANG Jian 3, 4,  SUN Qun 5,  HAN Xianhua 6,  QIAN Quan 1, 2,
+ CHEN Yanwei 7
+1. School of Computer Engineering and Science, Shanghai University, Shanghai 200444, P. R. China
+2. Shanghai Institute for Advanced Communication and Data Science, Shanghai University, Shanghai 200444, P. R. China
+3. Medical College of Shanghai University, Shanghai University, Shanghai 200444, P. R. China
+4. Shanghai Universal Medical Imaging Diagnostic Center, Shanghai 200233, P. R. China
+5. Gastroenterology, Shanghai Sixth People’s Hospital Affiliated to Shanghai Jiaotong University, Shanghai 200233, P. R. China
+6. Faculty of Science, Yamaguchi University, Yamaguchi-Ken 753-8511, Japan
+7. College of Information Science and Engineering, Ritsumeikan University, Shiga-Ken 525-8577, Japan
+Corresponding author: WU Xing, Email: xingwu@shu.edu.cn
+【Abstract】 Retrieving keyframes most relevant to text from small intestine videos with given labels can efficiently
+and accurately locate pathological regions. However, training directly on raw video data is extremely slow, while learning
+visual representations from image-text datasets leads to computational inconsistency. To tackle this challenge, a small
+bowel video keyframe retrieval based on multi-modal contrastive learning (KRCL) is proposed. This framework fully
+utilizes textual information from video category labels to learn video features closely related to text, while modeling
+temporal information within a pretrained image-text model. It transfers knowledge learned from image-text multimodal
+models to the video domain, enabling interaction among medical videos, images, and text data. Experimental results on
+the hyper-spectral and Kvasir dataset for gastrointestinal disease detection (Hyper-Kvasir) and the Microsoft Research
+video-to-text (MSR-VTT) retrieval dataset demonstrate the effectiveness and robustness of KRCL, with the proposed
+method achieving state-of-the-art performance across nearly all evaluation metrics.
+【Key words】 Contrastive learning; Multi-modal learning; Video keyframe retrieval 
+ 
+ 
+DOI：10.7507/1001-5515.202304021
+基金项目：国家自然科学基金（62172267）
+通信作者：武星， Email: xingwu@shu.edu.cn
+• 334 • Journal of Biomedical Engineering, Apr. 2025, Vol. 42, No.2
+   http://www.biomedeng.cn
+
+=== PDF_PAGE 2 ===
+ 
+0    引言
+在大数据时代，医学领域产生了大量的电子病
+历、医学影像、医学视频等多模态数据。这些数据
+从不同角度表达了患者病情信息，对于病情的描述
+和分析具有重要作用。然而，面对大规模的视频数
+据，如何在给定查询文本的情况下，自动检索出视
+频中对应的关键帧画面，从而快速定位病变位置
+并提升医生的信息获取效率，成为亟待解决的重要
+问题。
+近年来，视觉—语言对比学习在多模态任务中
+取得了显著成果，其通过数据本身提供监督信息，
+学习鲁棒、通用且具有代表性的多模态表示，并展
+现出强大的迁移与泛化能力。其中，视频—文本检
+索任务获得了更多的关注，该任务旨在根据查询文
+本检索相关视频，或通过视频内容定位对应的文本
+信息；电视节目检索（television show retrieval，
+TVR）[1]和高效视频检索系统（high-efficient
+retrieval of online videos，HERO）[2]旨在从大型视频
+语料库中检索整个视频并查询定位视频中的相关
+时刻；视觉—语言变换器的双向编码器表示
+（vision-and-language bidirectional encoder representa-
+tions from transformers，ViLBERT）[3]和统一图像—
+文本表示（universal image-text representation，
+UNITER）[4]使用一个共享的编码器进行图像—文
+本联合表示学习和检索；对比语言—图像预训练
+（contrastive language-image pretraining，CLIP）[5]使
+用两个独立的编码器分别对图像和文本进行编码；
+而适应性语言—图像平衡框架（adaptive language-
+balanced framework，ALBEF）[6]采用金字塔结构，
+分别在浅层对图像和文本进行编码，在深层融合进
+行匹配。
+如表1所示，当前的视频—文本检索任务主要
+有三种主流的模型。第一种是基于细粒度匹配的
+模型：该模型通过更细粒度的视频文本匹配解决
+了单一特征向量难以编码丰富细节信息的问题。
+例如，层次图推理模型（hierarchical graph reaso-
+ning，HGR）[7]将视频—文本跨模态匹配拆解为事
+件、动作、实体间的细粒度匹配；分层对齐网络
+（hierarchical alignment network，HANet）[8]从全局
+到局部进行三个层级的编码；细粒度跨模态对齐
+网络（fine-grained cross-modal alignment network，
+FCA-Net）[9]旨在进行视觉语义单元和短语之间的
+细粒度交互；层次化变换器（hierarchical transfor-
+mer，HiT）[10]和令牌感知级联对比学习（token-
+aware cascade contrastive learning，TACo）[11]使用多
+级特征对齐来实现更好的多模态学习。
+第二种是基于多模态信息编码的模型：由于
+视频有丰富的多模态信息，使用变换器（transfor-
+mer）[12]将视频的多种模态信息进行联合编码，可
+以增强性能。例如，协作专家模型（collaborative
+experts，CE）[13]通过协同聚合将多模态特征融合在
+一起；多模态transformer（multi-modal transfor-
+mer，MMT）[14]首先利用transformer对由多模态
+特征组成的序列进行编码，然后结合文本向量计算
+相似度，根据计算结果对不同模态特征进行加权求
+和，从而实现基于文本的多模态加权；多领域
+MMT用于视频检索（multidomain MMT for video
+retrieval，MDMMT）[15]通过适当组合不同的视频
+字幕数据集，取得了跨领域泛化能力；全局—局部
+序列对齐模型用于文本—视频检索（global-local
+sequence alignment for text-video retrieval，
+T2VLAD）[16]将多模态视频信息和文本自适应地聚
+合在一系列共享的语义中心上。
+第三种是基于大规模预训练的模型：经过预
+训练的模型的检索能力可以得到显著提升。与传
+统的方法不同，对比语言—图像预训练用于视频—
+语言任务（contrastive language-image pretraining for
+video-and-language tasks，ClipBERT）[17]通过端到端
+的方式学习视频和文本表示，并用预训练的二维模
+型初始化模型，以此来提高效率并降低计算负担；
+时间冻结（frozen in time，Frozen）模型[18]利用双
+transformer编码器（transformer encoder，TranEnc）
+结构进行端到端训练；多流语料库对齐网络与单
+门控专家混合模型（corpus alignment network with
+single gate mixture-of-experts，CAMoE）[19]证明了要
+想利用好预训练模型不宜增加太多结构和参数。
+同时，受图像—文本检索的启发，诸如基于
+CLIP的视频—文本检索模型（CLIP for video-text
+retrieval，CLIP4Clip）[20]、基于CLIP的视频检索网
+络（CLIP to video retrieval network，CLIP2Video）[21]、
+基于CLIP的文本—视频检索模型（CLIP to text-
+video retrieval model，CLIP2TV）[22]等模型试图将
+ 
+表 1　视频-文本检索任务解决方案
+Tab.1　Video-text retrieval task solutions 
+解决方案 代表模型
+基于细粒度匹配的模型 HGR、HANet、FCA-Net、HiT、TACo
+基于多模态信息编码的模型 CE、MMT、MDMMT、T2VLAD
+基于大规模预训练的模型 ClipBERT、Frozen、CAMoE、
+CLIP4Clip、CLIP2Video、CLIP2TV
+生物医学工程学杂志  2025年4月第42卷第2期 • 335 •
+http://www.biomedeng.cn 
+
+=== PDF_PAGE 3 ===
+大规模图像—文本预训练模型的知识转移到视频—
+文本检索中，或用图像和视频训练模型。
+然而，医学领域的特殊性使得基于视频—文本
+检索的研究面临着诸多挑战：一是数据困境，医学
+注释数据极度稀缺，特别是医学视频的获取成本高
+昂。二是计算困境，医学视频的训练通常需要消耗
+数倍于图像的计算资源，并且不同数据类型（图像
+与视频）之间的差异会导致计算不一致性的问题。
+三是表征困境，医学领域需要对非常精细的视觉特
+征进行表征，但传统视觉编码器在医学领域的表现
+不佳，表征质量难以满足。四是泛化困境，医学领
+域的真实应用场景下，现有模型的泛化能力受限，
+难以满足实际需求。
+针对上述问题，本文的主要创新如下：① 提
+出了一个基于多模态对比学习的小肠视频关键帧
+检索（small bowel video keyframe retrieval based on
+multi-modal contrastive learning，KRCL）框架，以期
+实现视觉（视频/图像）模态和文本模态之间的交
+互。② 基于视频—文本之间的对比学习来充分学
+习与文本密切相关的视频特征。③ 在图像—文本
+预训练模型中建模视频的时序信息，并通过图像—
+文本之间的对比学习将学到的知识迁移到视频—
+文本检索任务。
+本文提出的KRCL框架，不仅克服了医学数据
+稀缺、计算资源消耗大、视觉表征不精细等难题，
+同时通过视觉—语言对比学习，增强了多模态表示
+的泛化能力，为医学视频—文本检索任务提供了一
+种高效、精准的解决方案。本文的研究对于提升医
+学领域的自动化诊断水平、提高医生工作效率以及
+推动视觉—语言对比学习在医学领域的应用具有
+重要意义。 
+1    本文方法 
+1.1    整体网络结构
+在每个小肠视频有一个弱标签的情况下，本文
+将小肠视频片段表示为一系列帧（图像）的集合，
+将对应的弱标签当作文本，并将其与小肠视频的每
+一帧进行对比，计算标签和视频帧之间的相似度。
+根据相似度得分对给定标签的所有视频帧进行排
+序，其中相似度得分最高的视频帧即为本文检索到
+的视频中的关键帧，从而将小肠视频的弱标签精确
+到帧。在这个过程中包含三种类型的数据：视频、
+图像以及文本，同时涉及两种模态的编码器：文本
+编码器和视觉编码器，其中文本编码器将文本映射
+到特征空间，视觉编码器将视频或者图像映射到相
+同的特征空间。考虑到与图像相比，视频增加了时
+间的维度，因此本文需要解决几个关键问题：① 如
+何利用视频类别标签中的文本信息？② 如何在语
+言—图像预训练模型中建模视频的时序信息？
+③ 如何将预训练的语言—图像模型中的知识迁移
+到视频领域？
+如图1所示，为本文提出的KRCL框架。在预
+ 
+文本编码器
+相似度
+相似度计算
+pathological diagnosis
+标签：cecum
+K 段
+视频帧
+随机选择
+of cecum
+帧级表征
+本文表征 视频表征
+文本提示模块
+线性投影
+视觉编码器
+融合视频表示
+0 1 2 3 0 1 2 3 4
+ 
+ 
+图 1　本文所提方法总体框架图
+Fig.1　The architecture of the proposed method
+• 336 • Journal of Biomedical Engineering, Apr. 2025, Vol. 42, No.2
+   http://www.biomedeng.cn
+
+=== PDF_PAGE 4 ===
+训练部分，采用基于视觉—语言对比学习的方法来
+学习文本编码器和视觉编码器的跨模态表示能力，
+以此实现对包括盲肠（cecum）相关病理诊断
+（pathological diagnosis of cecum）的多模态数据表
+征。在推理部分，KRCL框架通过多模态学习方法
+对给定标签的小肠视频进行关键帧检索，从而能够
+高效定位含有cecum特征或相关病理变化的关键
+帧，来实现对下游病理分析任务的支持。 
+1.2    视觉—语言对比学习
+本文主要采用了三种视觉—语言对比学习预
+训练的方法来学习文本编码器和视觉编码器。第
+一种是直接重用强大的CLIP预训练模型，旨在大
+大降低预训练成本；第二种是用原始数据集中大
+规模的图像和文本数据进行预训练，该方法旨在将
+学到的知识从图像—文本预训练模型中迁移到视
+频—文本检索任务中；第三种是以原始视频作为
+输入来训练模型，通过结合成对的文本学习视频特
+征提取器，以此来实现直接输出视频表示。由于
+Radford等[5]已经给出了第一种方法的详细阐述，
+因此下文将重点阐述本文所实现的后两种多模态
+预训练方法。
+（1）图像—文本对比学习。本文将数据集中包
+含cecum、息肉（polyps）、胃食管交界线（Z-line）及
+波士顿肠道准备量表评分 0-1（Boston bowel
+preparation scale score 0-1，BBPS 0-1）等标注的N 个
+成对的小肠影像和对应的标签作为输入来训练模
+型，学习得到一个文本编码器fT 和一个视觉编码
+器fV。其中，文本编码器fT将文本映射到特征空
+间，视觉编码器fV将图像映射到相同的特征空
+间。如图2所示，在模型训练过程中，本文将N张
+小肠影像送入到图像编码器，得到N个图像特征向
+量(I1, I2, …, IN)，并同样将与之对应的N个标签作
+为文本送入到文本编码器中，得到N个文本特征向
+量(T1, T2, …, TN)。由于不同编码器输出的特征向
+量长度不一样，所以需要使用一个线性映射将两个
+编码器生成的特征向量映射到统一的长度，从而得
+到一个N×N的相似度矩阵。由于图像和标签是一
+对一的关系，所以只有在对角线上的图像和文本是
+成对的，其他位置上的图像和文本都是不成对的，
+以此构建N个正样本和（N2—N）个负样本。本文
+的训练目标是让成对的图像—文本的特征向量相
+似度尽可能高，而不是让一对的图像—文本的特征
+向量相似度尽可能低。
+（2）视频—文本对比学习。不同于上面图像文
+本对之间一对一的对比关系，视频—文本对中可能
+出现一个文本与多段视频相关的情况，此时就不止
+对角线元素是正样本。因此，如图3所示，在得到
+相似度矩阵之后，本文将交叉熵损失换成库尔贝
+克—莱布勒（Kullback-Leibler，KL）散度，并利用两
+个分布的相似度来计算损失（loss），得到对应的真
+实值（ground truth），从而将图像—文本对之间的
+对比学习转换成视频—文本对之间的对比学习。
+给定一个输入视频v和一个来自预定义标签
+集 T 的标签t，视频的视觉特征由视觉编码器fV提
+ 
+cecum
+polyps
+Z-line
+BBPS 0-1
+...
+...
+...
+...
+...图像
+相似度矩阵
+文本
+编码器
+标签
+视觉
+编码器
+（ 图像 ）
+I1
+I2
+I3
+IN IN·T1
+I3·T1
+I2·T1
+I1·T1
+...
+IN·T2
+I3·T2
+I2·T2
+I1·T2
+...
+...
+...
+...
+...
+...
+...
+...IN·T3
+I3·T3
+I2·T3
+I1·T3
+...
+IN·TN
+I3·TN
+I2·TN
+I1·TN
+TNT3T2T1
+ 
+ 
+图 2　图像—文本对比学习
+Fig.2　Image-text contrastive learning
+生物医学工程学杂志  2025年4月第42卷第2期 • 337 •
+http://www.biomedeng.cn 
+
+=== PDF_PAGE 5 ===
+取得到，输入标签的文本特征由文本编码器fT提取
+得到。为了使成对的视频和标签表征彼此更接近，
+本文在相似性计算模块中定义两种模态之间的对
+称相似性，并用余弦距离表示，如式(1)、式(2)
+所示：
+s (v; t) = w  rT
+∥w∥∥r∥ (1)
+ 
+s(t; v) = r  wT
+∥r∥∥w∥ (2)
+ 
+其中，w=fV(v)和r=fT(t)分别是v和t的编码
+特征，w为视频特征经过变换后的加权向量，||·||代
+表欧几里得范数。从而，视频到文本（video-to-
+text，v2t)和文本到视频（text-to-video，t2v)的相似
+性分数如式(3)、式(4)所示：
+pv2ti (v) = exp (s (v; ti) =τ)N∑
+j=1
+exp
+(
+s
+(
+v; tj
+)
+=τ
+)
+(3)
+ 
+pt2vi (t) = exp (s (t; vi) =τ)N∑
+j=1
+exp
+(
+s
+(
+t; vj
+)
+=τ
+)
+(4)
+ 
+τ
+其中，  是可学习的温度参数，N是视频文本
+对的训练数量，s(·)代表相似度函数。
+本文假设qv2t(v)来表示真实相似性得分，其中
+负对的概率为0，正对的概率为1。因此，损失函数
+定义如式（5）所示：
+L = 12 E(v;t)∼D[KL (pv2t (v) ; qv2t (v)) +
+KL
+(
+pt2v (t) ; qt2v (t))] (5)
+ 
+D
+其中，  表示整个训练集，KL(·)表示KL散
+E
+D
+L
+度，  表示对训练集  上所有样本的平均，  表示
+损失函数，用于衡量模型预测分布与真实分布之间
+的差异。 
+1.3    小肠视频关键帧检索
+本文所使用的三种预训练方法对应KRCL框
+架模型的三个变体，它们所包含的功能模块如表2
+所示。其中，① KRCL框架直接重用了强大的
+CLIP预训练模型；② 基于图像—文本的KRCL
+（KRCL-image-text，KRCL-IT）基于图像—文本数据
+预训练；③ 基于视频—文本的KRCL（KRCL-video-
+text，KRCL-VT）直接将原始视频—文本数据作为输
+入来对模型进行预训练。
+（1）文本提示模块。该模块主要对输入的文本
+做一些调整和修改：如果预训练模型中输入的文
+本是标签的形式，则推理过程可以直接用这些标签
+去抽取文本特征；而如果预训练模型中输入的文
+本是文本字符串的形式，则推理时需要先将原始输
+入转化为同一种形式再输入文本编码器中。如表3
+所示，本文根据填充的位置将提示分为三种类型。
+（2）融合视频表示。该模块主要对视觉部分进
+行额外的重新格式化：如果预训练模型是直接在
+视频—文本数据上进行的，由于此时模型已经训练
+为输出视频表示，所以几乎不需要对视觉部分进行
+ 
+cecum
+polyps
+Z-line
+...
+...
+BBPS 0-1
+文本
+编码器
+视觉
+编码器
+（ 图像 ）
+标签
+视频
+...
+...
+...
+v1
+v2
+v3
+vN vN·T1
+v3·T1
+v2·T1
+v1·T1
+...
+vN·T2
+v3·T2
+v2·T2
+v1·T2
+...
+...
+...
+...
+...
+...
+...
+...vN·T3
+v3·T3
+v2·T3
+v1·T3
+...
+vN·TN
+v3·TN
+loss
+v2·TN
+v1·TN
+TN
+1 1
+1
+1
+1
+1
+1
+1
+1
+1 1
+T3T2T1
+相似度矩阵 ground truth
+ 
+ 
+图 3　视频—文本对比学习
+Fig.3　Video-text contrastive learning
+ 
+表 2　KRCL变体模型中所包含的功能模块
+Tab.2　Functional modules included in the KRCL variant
+model                     
+模型 多模态学习框架（文本编码器 +视觉编码器 + 相似度计算） 融合视频表示 文本提示模块
+KRCL √ √ √
+KRCL-IT √ √ —
+KRCL-VT √ — —
+• 338 • Journal of Biomedical Engineering, Apr. 2025, Vol. 42, No.2
+   http://www.biomedeng.cn
+
+=== PDF_PAGE 6 ===
+额外的重新格式化；而如果预训练模型是通过图
+像—文本数据训练得到的，那么模型还需要学习视
+频的重要时间关系。如图4所示，本文主要采用了
+以下四种方式：均值池化（mean pooling，
+MeanPool）、一维卷积（one dimensional convolu-
+tion，Conv1D）、长短时记忆网络（long short-term
+memory network，LSTM）、TranEnc，将帧级嵌入融
+合为视频嵌入。
+其中，MeanPool表示时间维度上的平均池
+化。通过对图像—文本对的大规模预训练，帧级表
+征和文本表征通过层归一化线性投影到了多模态
+嵌入空间。因此，为了得到融合的视频表示，本文
+通过平均池化层对所有帧的嵌入进行聚合来获得
+平均帧嵌入。Conv1D为一维卷积层，LSTM为一
+个递归神经网络，然后还有一个带位置嵌入的
+TranEnc，并在编码后嵌入了时间信息。后续操作
+与平均池化相同。 
+2    实验与分析 
+2.1    实验设置
+本文实验程序采用用于编写和处理数据的编
+程语言Python（3.8.10，Python Software Founda-
+tion，美国）进行编写，模型的搭建与训练使用深度
+学习框架PyTorch（1.9.0，Facebook，美国）。训练
+过程中，本文使用的是支持大规模数据处理的图形
+处理单元（graphics processing unit，GPU）NVIDIA
+Geforce RTX 3090（NVIDIA，美国）。参数优化使用
+自适应矩估计优化器（adaptive moment estimation，
+Adam），并且所有视频帧的大小均调整为224 ×
+224像素。文本编码器和视觉编码器的初始学习率
+设置为1 × 10−7。 
+2.2    评价指标
+本文遵循标准检索任务中常用的3个评价指
+标：中值排名（median rank，MdR）、平均排名
+（mean rank，MnR）和排名K的召回率（R@K）。其
+中，MdR表示所有正确结果的排序中位数，中位数
+排名越低则模型性能越好；MnR表示所有正确结
+果的排序平均数，平均排名越低则模型性能越好；
+R@K表示召回结果中包含正确结果的比例，如前
+1个检索结果的召回率是R@1、前5个检索结果的
+召回率是R@5、前10个检索结果的召回率是R@10。 
+2.3    数据集
+本文实验中的胃肠道图像和视频数据集使用
+的是由挪威大学、挪威科学技术大学和挪威卫生部
+提供的公开数据集——高级虚拟内窥镜克瓦希尔
+胃部病变诊断数据集（hyper-spectral and Kvasir
+dataset for gastrointestinal disease detection，Hyper-
+Kvasir）[23]。Hyper-Kvasir是目前最大的胃肠道图
+ 
+视频表征
+帧级表征
+时间
+视频表征
+帧级表征
+MeanPool
+...
+...
+...
+...
+MeanPool
+LSTM
+MeanPool
+时间
+LSTM
+视频表征
+帧级表征+
+位置嵌入
+时间
+视频表征
+帧级表征
+MeanPool
+Conv1D
+MeanPool
+TranEnc
+Conv1D
+时间
+TranEnc
+1 0 2 3 4 5
+ 
+ 
+图 4　融合视频表征的四种形式
+Fig.4　Four types of fusion video representations
+ 
+表 3　文本提示类型及举例
+Tab.3　Text prompt types and examples 
+输入标签x 提示类型 模版
+x′ 填充后的文本输入 
+cecum 前缀提示 标签，视频的诊断结果 cecum，视频的诊断结果
+中缀提示 这是标签，视频的诊断结果 这是cecum，视频的诊断结果
+后缀提示 标签的病理诊断 cecum的病理诊断
+生物医学工程学杂志  2025年4月第42卷第2期 • 339 •
+http://www.biomedeng.cn 
+
+=== PDF_PAGE 7 ===
+像和视频数据集，包含110 079张图像以及374个
+视频，总时长约为9.78 h，涵盖了889 372个视频
+帧。该数据集按照70%、10%、20%的比例将数据
+集划分为训练集、验证集和测试集。
+本文实验中使用的视频—文本检索数据集是
+由微软研究院（microsoft research，MSR）提供的公
+开数据集MSR视频—文本检索（MSR video-to-
+text，MSR-VTT）数据集[24]。MSR-VTT是最流行的
+视频—文本检索任务基准数据集，包括10 000个视
+频片段，每个视频片段有20个与之对应的描述，涵
+盖了最全面的类别和多样化的视觉内容。本文将
+该数据集中的9 000个视频及其相应的标题作为训
+练集，其余1 000对视频—文本对作为测试集。 
+2.4    消融实验结果及分析
+如图5所示，展示了在Hyper-Kvasir数据集上
+一些文本到视频的检索结果，如波士顿肠道准备量
+表评分 2-3（Boston bowel preparation scale score 2-
+3，BBPS 2-3）、幽门（pylorus）、胃反折位（retroflex
+stomach）、巴雷特氏食管（barrett’s）和痔疮（hemorr-
+hiods）等。对于每一个查询，本文给出了该标签所
+对应的ground truth，以及相似度最高（rank1）和相
+似度次高（rank2）的视频帧的检索结果。
+如表4所示，展示了在Hyper-Kvasir数据集上
+采用不同预训练方式得到的文本到视频检索结
+果。可以看出，KRCL-VT的整体性能不如另外两
+种预训练方式，其原因可能是该预训练方式需要数
+以亿计的视频—文本数据，而Hyper-Kvasir数据集
+中的视频—文本数据较少，难以获得大量的数据。
+KRCL-IT和KRCL所取得的良好性能证明了将预
+训练的图像—文本模型中的知识迁移到视频领域
+的方法是可行且有效的。并且KRCL-IT的性能略
+高，其原因可能是该模型是基于Hyper-Kvasir数据
+集进行预训练的，这与下游任务所使用的数据集相
+同。由此可以看出，采用与下游数据具有相同域的
+数据进行预训练，可以更加有利于下游任务。
+本文在Hyper-Kvasir数据集的文本到视频任务
+上使用相同的预训练模型对不同的特征融合方式
+进行评估，实验结果如表5所示，其中还展示了
+ 
+polyps
+ground
+truth
+rank1
+（ 相似度：0.258）
+rank2
+（ 相似度：0.211）
+ground
+truth
+rank1
+（ 相似度：0.249）
+rank2
+（ 相似度：0.211）
+ground
+truth
+rank1
+（ 相似度：0.248）
+rank2
+（ 相似度：0.231）
+ground
+truth
+rank1
+（ 相似度：0.227）
+rank2
+（ 相似度：0.217）
+ground
+truth
+rank1
+（ 相似度：0.219）
+rank2
+（ 相似度：0.213）
+ground
+truth
+rank1
+（ 相似度：0.206）
+rank2
+（ 相似度：0.201）
+ground
+truth
+rank1
+（ 相似度：0.195）
+rank2
+（ 相似度：0.192）
+ground
+truth
+rank1
+（ 相似度：0.119）
+rank2
+（ 相似度：0.116）
+ground
+truth
+rank1
+（ 相似度：0.101）
+rank2
+（ 相似度：0.099）
+BBPS 2-3 BBPS 0-1
+cecum pylorus Z-line
+retroﬂex stomach barrett’s hemorrhiods
+ 
+ 
+图 5　Hyper-Kvasir数据集上文本到视频的检索结果
+Fig.5　Text-to-video search results on the Hyper-Kvasir dataset
+ 
+表 4　Hyper-Kvasir数据集上不同预训练方式的结果
+Tab.4　Results of different pre-training methods on the Hyper-
+Kvasir dataset 
+模型
+文本到视频任务
+R@1 R@5 R@10 MdR MnR
+KRCL 22.0 46.8 52.8 4.0 28.2
+KRCL-VT 20.8 44.1 50.4 6.0 29.5
+KRCL-IT 23.1 45.6 53.5 4.0 25.1
+ 
+表 5　Hyper-Kvasir数据集上不同特征融合方式的结果
+Tab.5　Results of different feature fusion approaches on the
+Hyper-Kvasir dataset 
+特征融合方式
+文本到视频任务
+R@1 R@5 R@10 mean
+MeanPool 22.0 46.8 52.8 40.5
+Conv1D 22.0 46.9 53.1 40.7
+LSTM 22.2 46.7 52.9 40.6
+TranEnc 22.7 47.1 53.5 41.1
+• 340 • Journal of Biomedical Engineering, Apr. 2025, Vol. 42, No.2
+   http://www.biomedeng.cn
+
+=== PDF_PAGE 8 ===
+R@1、R@5和R@10的平均值（mean）。
+MeanPool是最简单的时空融合方式，它忽略
+了时序性，只是将帧特征的均值作为整个视频的表
+示。与MeanPool基线相比，Conv1D和LSTM的提
+升不明显，说明平均池化的融合方式与时序建模融
+合方式差别不大。本文分析其原因可能是，在视频—
+文本检索领域，数据集相对来说都太小，微调训练
+无法体现出时序建模的作用。从实验结果来看，相
+对比较明显的是TranEnc，因此，本文最终选择
+TranEnc作为模型的视频表征融合方式。 
+2.5    对比实验结果及分析
+由于医学领域的表征学习比自然领域困难，因
+此本文认为所提方法既然可以在Hyper-Kvasir数据
+集上取得较好的结果，那么将其应用于自然图像数
+据集也可以获得较好的性能。为了验证这一猜想，
+本文在视频—文本检索任务的基准数据集MSR-
+VTT上进行了实验，并与目前该领域中一些最先进
+的方法进行了比较，进一步证明本文方法的有效性
+和鲁棒性。
+如表6所示，展示了在MSR-VTT数据集上的
+视频—文本检索结果，表6中加粗的数值表示当前
+实验的最佳性能。为了进行性能对比，本文将现有
+的方法分为两类：非基于 CLIP 模型的方法（NO-
+CLIP）和基于 CLIP 预训练的模型（CLIP-based）；
+NO-CLIP包括支持集（support-set）等，CLIP-
+based包括视频编码模型（video coding model，
+VCM）等。可以看出，CLIP-based 的方法相较于
+NO-CLIP 方法表现出显著的性能提升，并且与所有
+基线方法相比，本文提出的 KRCL 框架模型在
+MSR-VTT 数据集上的性能表现最优，取得了当前
+先进的效果。本文分析认为，这种性能增长主要得
+益于大规模的图像—文本预训练。此外，本文对帧
+之间的互动进行建模，进行端到端微调的改进，使
+得性能进一步提高，证明了图像—文本预训练模型
+在视频—文本检索上的潜力。 
+3    结论
+本文针对医学领域视频—文本检索所面临的
+四大关键挑战，提出了KRCL框架模型及其变体模
+型（KRCL-IT和KRCL-VT）。实验结果表明，所提
+方法在Hyper-Kvasir数据集上的检索性能和效率
+显著优于现有方法，充分验证了研究的有效性和适
+用性。
+关于数据困境：针对医学注释数据稀缺的问
+题，本文方法通过直接重用CLIP的预训练模型，
+充分利用了公开的图像—文本和视频—文本数据预
+训练能力，显著降低了对大规模医学标注数据的依
+赖。此外，本文设计了KRCL-IT和KRCL-VT两种
+变体，分别基于图像—文本和视频—文本数据进行
+预训练，为医学视频的跨模态检索提供了灵活的解
+决方案。
+关于计算困境：面对医学视频训练过程中高
+昂的计算成本和计算不一致性问题，本文通过使用
+多模态对比学习框架，优化了视频—文本特征的对
+齐和融合过程。在减少训练资源消耗的同时，本文
+方法进一步提高了模型的计算效率和一致性。实
+验结果表明，本文方法在不增加额外计算开销的情
+况下，能够取得更高的检索性能。
+关于表征困境：针对医学领域对精细视觉特
+征表征的需求，本文通过多模态特征学习框架，结
+合了预训练模型的跨模态特征表达能力和适配医
+学视频的特征编码器。该方法不仅在精细视觉表
+征方面表现出更高的鲁棒性，同时有效提升了医学
+关键帧检索的表征质量。
+关于泛化困境：为了应对医学领域真实场景
+中模型泛化能力不足的问题，本文设计的多模态对
+比学习框架能够在不同模态间实现特征共享，并通
+过在公开数据集上的广泛实验验证了方法的鲁棒
+ 
+表 6　MSR-VTT数据集上的检索结果比较
+Tab.6　Comparison of retrieval results on the MSR-VTT dataset 
+类型 方法
+文本到视频（基础）任务 文本到视频（微调）任务
+R@1 R@5 R@10 MdR MnR R@1 R@5 R@10 MdR MnR
+NO-CLIP CE 20.9 48.8 62.4 6.0 28.2 20.6 50.3 64.0 5.3 25.1
+MMT 26.6 57.1 69.6 4.0 24.0 27.0 57.5 69.7 3.7 21.3
+support-set 27.4 56.3 67.7 3.0 — 26.6 55.1 67.5 3.0 —
+HIT 30.7 60.9 73.2 2.6 — 32.1 62.7 74.1 3.0 —
+CLIP-based CLIP 31.2 53.7 64.2 4.0 — 27.2 51.7 62.6 5.0 —
+CLIP4Clip 43.1 70.4 80.8 2.0 16.2 43.1 70.5 81.2 2.0 12.4
+CLIP2TV 45.6 71.1 80.8 2.0 15.0 43.9 70.9 82.2 2.0 12.0
+VCM 43.8 71.0 80.9 2.0 14.3 45.1 72.3 82.3 2.0 10.7
+KRCL 45.1 71.5 81.4 2.0 13.7 44.6 72.4 82.8 2.0 11.0
+生物医学工程学杂志  2025年4月第42卷第2期 • 341 •
+http://www.biomedeng.cn 
+
+=== PDF_PAGE 9 ===
+性和通用性。这表明，本文方法在医学视频检索的
+实际应用中具有良好的泛化能力，能够满足临床
+需求。
+综上所述，本文提出的KRCL方法及其变体在
+解决医学领域视频—文本检索挑战方面具有显著
+优势。未来工作中，将进一步探索更加高效的预训
+练策略以及针对特定医学场景的个性化模型设计，
+为医学视频的自动化分析提供更加全面和高效的
+技术支持。
+重要声明
+利益冲突声明：本文全体作者均声明不存在利益冲突。
+作者贡献声明：武星主要负责实验指导和设计、论文
+编写以及审阅修订；杨国银、李婧雯主要负责数据收集与
+分析、算法程序设计以及论文编写；张健、孙群主要负责
+实验素材收集；韩先花主要负责实验数据分析；陈延伟、
+钱权主要负责论文审阅修订。
+参考文献 
+ Lei J, Yu L, Berg T L, et al. Tvr: A large-scale dataset for video-
+subtitle moment retrieval//Computer Vision–ECCV 2020: 16th
+European Conference, Glasgow: Springer, 2020: 447-463.
+1
+ Li L, Chen Y C, Cheng Y, et al. Hero: hierarchical encoder for
+video+ language omni-representation pre-training. arXiv preprint,
+2020, arXiv: 2005.00200.
+2
+ Lu J, Batra D, Parikh D, et al. Vilbert: pretraining task-agnostic
+visiolinguistic representations for vision-and-language tasks.
+Advances in Neural Information Processing Systems, 2019, 32: 1-
+12.
+3
+ Chen  Y  C,  Li  L,  Yu  L,  et  al.  UNITER:  universal  image-text
+representation learning//Computer Vision–ECCV 2020: 16th
+European Conference, Glasgow: Springer, 2020: 104-120.
+4
+ Radford A, Kim J W, Hallacy C, et al. Learning transferable visual
+models  from  natural  language  supervision//International
+Conference on Machine Learning, Virtual Event: PMLR, 2021:
+8748-8763.
+5
+ Li J, Selvaraju R, Gotmare A, et al. Align before fuse: vision and
+language representation learning with momentum distillation.
+Advances in Neural Information Processing Systems, 2021, 34:
+9694-9705.
+6
+ Chen S, Zhao Y, Jin Q, et al. Fine-grained video-text retrieval with
+hierarchical  graph  reasoning//Proceedings  of  the  IEEE/CVF
+Conference on Computer Vision and Pattern Recognition, Virtual
+Event: IEEE, 2020: 10638-10647.
+7
+ Wu  P,  He  X,  Tang  M,  et  al.  HANet:  hierarchical  alignment
+networks for video-text retrieval//Proceedings of the 29th ACM
+International Conference on Multimedia, Virtual Event: ACM,
+2021: 3518-3527.
+8
+ Han N, Chen J, Xiao G, et al. Fine-grained cross-modal alignment
+network for text-video retrieval//Proceedings of the 29th ACM
+International Conference on Multimedia, Virtual Event: ACM,
+9
+2021: 3826-3834.
+ Liu S, Fan H, Qian S, et al. HiT: hierarchical transformer with
+momentum contrast for video-text retrieval//Proceedings of the
+IEEE/CVF International Conference on Computer Vision, Virtual
+Event: IEEE, 2021: 11915-11925.
+10
+ Yang J, Bisk Y, Gao J. TACo: token-aware cascade contrastive
+learning for video-text alignment//2021 IEEE/CVF International
+Conference on Computer Vision (ICCV), Montreal: IEEE, 2021:
+11542-11552.
+11
+ Vaswani A, Shazeer N, Parmar N, et al. Attention is all you need//
+Proceedings of the 31st International Conference on Neural
+Information Processing Systems (NIPS'17), Long Beach: NIPS,
+2017: 6000-6010.
+12
+ Liu Y, Albanie S, Nagrani A, et al. Use what you have: video
+retrieval using representations from collaborative experts. arXiv
+preprint, 2019, arXiv: 1907.13487.
+13
+ Gabeur V, Sun C, Alahari K, et al. Multi-modal transformer for
+video retrieval//Computer Vision–ECCV 2020: 16th European
+Conference, Glasgow: Springer, 2020: 214-229.
+14
+ Dzabraev  M,  Kalashnikov  M,  Komkov  S,  et  al.  MDMMT:
+multidomain multimodal transformer for video retrieval//2021
+IEEE/CVF  Conference  on  Computer  Vision  and  Pattern
+Recognition Workshops (CVPRW), Nashville: IEEE, 2021: 3349-
+3358.
+15
+ Wang  X,  Zhu  L,  Yang  Y.  T2VLAD:  global-local  sequence
+alignment for text-video retrieval//Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition, Virtual
+Event: IEEE, 2021: 5079-5088.
+16
+ Lei J, Li L, Zhou L, et al. Less is more: clipbert for video-and-
+language  learning  via  sparse  sampling//Proceedings  of  the
+IEEE/CVF  Conference  on  Computer  Vision  and  Pattern
+Recognition, Virtual Event: IEEE, 2021: 7331-7341.
+17
+ Bain M, Nagrani A, Varol G, et al. Frozen in time: a joint video and
+image  encoder  for  end-to-end  retrieval//Proceedings  of  the
+IEEE/CVF International Conference on Computer Vision, Virtual
+Event: IEEE, 2021: 1728-1738.
+18
+ Cheng X, Lin H, Wu X, et al. Improving video-text retrieval by
+multi-stream corpus alignment and dual softmax loss. arXiv
+preprint, 2021, arXiv: 2109.04290.
+19
+ Luo H, Ji L, Zhong M, et al. CLIP4Clip: an empirical study of CLIP
+for end to end video clip retrieval and captioning. Neurocom-
+puting, 2022, 508: 293-304.
+20
+ Fang H, Xiong P, Xu L, et al. CLIP2Video: Mastering video-text
+retrieval via image CLIP. arXiv preprint, 2021, arXiv: 2106.11097.
+21
+ Gao Z, Liu J, Sun W, et al. CLIP2TV: align, match and distill for
+video-text retrieval. arXiv preprint, 2021, arXiv: 2111.05610.
+22
+ Borgli H, Thambawita V, Smedsrud P H, et al. HyperKvasir, a
+comprehensive  multi-class  image  and  video  dataset  for
+gastrointestinal endoscopy. Scientific Data, 2020, 7(1): 283.
+23
+ Xu J, Mei T, Yao T, et al. MSR-VTT: a large video description
+dataset for bridging video and language//2016 IEEE Conference on
+Computer Vision and Pattern Recognition (CVPR), Las Vegas:
+IEEE, 2016: 5288-5296.
+24
+收稿日期：2023-04-10    修回日期：2024-12-28
+ 本文编辑：陈咏竹
+• 342 • Journal of Biomedical Engineering, Apr. 2025, Vol. 42, No.2
+   http://www.biomedeng.cn

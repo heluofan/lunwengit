@@ -1,0 +1,16 @@
+﻿ROWS=1500
+COLS=case_id,patient_id,fold,label,has_lesion,adc,hbv,t2w
+
+
+case_id    : 10000_1000000
+patient_id : 10000
+fold       : 0
+label      : csPCa_lesion_delineations/human_expert/resampled/10000_1000000.nii
+             .gz
+has_lesion : False
+adc        : 10000/10000_1000000_adc.mha
+hbv        : 10000/10000_1000000_hbv.mha
+t2w        : 10000/10000_1000000_t2w.mha
+
+
+

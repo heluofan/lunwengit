@@ -1,0 +1,1750 @@
+=== PDF_PAGE 1 ===
+0200007 -1
+特邀综述第 46 卷 第 2 期/2026  年 1 月/光学学报
+多模态非线性显微成像技术发展与生物医学应用
+（特邀）
+王诗琪 ， 赵灿 ， 郭嘉庆 ， 孙雪峰 ， 刘丽炜
+*
+深圳大学物理与光电工程学院 ，光电子器件与系统教育部 /广东省重点实验室 ，广东  深圳  518060
+摘要  系统阐述多模态非线性光学显微成像技术的最新进展及其在生物医学研究中的应用 。系统性介绍多模态非线性
+光学成像技术的工作原理与成像特点 ；进而深入讨论多模态成像技术的集成策略与系统优化方法 ；同时介绍多模态非线
+性光学显微成像技术的优势和发展现状 ；最后全面归纳该技术在生物医学领域的典型应用场景 ，并通过系统对比各模态
+的关键性能参数与适用条件 ，为面向具体生物问题的技术方案选择提供理论依据与实践指导 ，旨在为推动多模态非线性
+光学显微成像技术在生命科学和临床研究中的更广泛应用提供参考 。
+关键词  非线性光学显微 ；多模态成像 ；生物医学成像 ；双光子显微成像
+中图分类号  O437   文献标志码  A DOI ： 10.3788 /AOS 252077
+1　引   言
+历经数十年的发展 ，光学显微成像技术在分辨率 、
+探 测 灵 敏 度 及 成 像 速 度 等 关 键 性 能 上 取 得 突 破 性 进
+展 ，实 现 对 从 分 子 到 组 织 等 不 同 尺 度 下 动 态 生 物 过 程
+的精准观测 。近年来 ，通过融合多种成像模态 ，现代光
+学显微镜进一步具备在单细胞乃至亚细胞器水平上对
+空 间、时 间 与 光 谱 信 息 进 行 高 精 度、动 态 解 析 的 能 力。
+多模态集成策略不仅大幅拓展成像的信息维度与解析
+深 度，更 构 建 从 形 态 结 构 到 功 能 活 动 的 系 统 性 定 量 研
+究 框 架，为 深 入 全 面 探 索 生 物 问 题 提 供 更 为 精 确 的 量
+化依据 。
+光学显微成像技术的发展历程可主要划分为线性
+和 非 线 性 两 个 阶 段，图 1 展 示 了 线 性 光 学 显 微 技 术 发
+展 的 关 键 节 点。 从 Janssen 发 明 第 一 台 复 合 式 显 微 镜
+开 始，光 学 显 微 成 像 技 术 逐 渐 由 基 础 光 学 装 置 发 展 为
+现 代 高 性 能 成 像 系 统
+［1］
+。Abbe 在 1873 年 提 出 衍 射 极
+限 理 论，第 一 次 从 物 理 原 理 上 明 确 光 学 显 微 镜 的 分 辨
+率 极 限 ，为 光 学 显 微 成 像 技 术 奠 定 坚 实 的 理 论 基
+础
+［2-3］
+。Michelson
+［4］
+在 显 微 成 像 中 引 入 干 涉 原 理，推 动
+干涉显微镜的诞生 。1935 年，Zernike 提出相位比较成
+像 理 论，通 过 傅 里 叶 光 学 方 法 有 效 提 升 透 明 样 本 的 成
+像 对 比 度
+［5］
+。20 世 纪 下 半 叶 起，显 微 技 术 进 入 快 速 发
+展阶段
+［6-7］
+。1955 年，Minsky 发明共聚焦激光扫描显微
+镜 ，利 用 点 扫 描 与 空 间 滤 波 技 术 显 著 提 升 系 统 的 轴 向
+分 辨 率，成 为 高 分 辨 率 三 维 显 微 成 像 的 重 要 里 程 碑
+［8］
+。
+尽 管 共 聚 焦 技 术 奠 定 现 代 高 分 辨 率 三 维 成 像 的 基 础，
+但 其 在 成 像 深 度 和 光 损 伤 上 的 不 足，促 使 研 究 人 员 寻
+求新的技术解决方案 。
+为 突 破 上 述 限 制，利 用 非 线 性 光 学 效 应 的 显 微 成
+像方法应运而生 。非线性光学的建立是一个从理论预
+测 到 实 验 验 证 的 漫 长 而 辉 煌 的 历 程。 在 理 论 奠 基 阶
+段 ，Goppert -Mayer 基 于 量 子 力 学 微 扰 理 论，推 导 出 双
+光 子 吸 收 的 数 学 模 型，为 非 线 性 光 学 构 建 坚 实 的 理 论
+框 架
+［9-11］
+。 而 激 光 器 技 术 的 发 展 则 为 非 线 性 光 学 从 理
+论 走 向 实 验 验 证 奠 定 关 键 基 础。 1961 年 ，Kaiser 和
+Garrett
+［12］
+利 用 红 宝 石 激 光 器 在CaF 2∶Eu2 +晶 体 中 观 测
+到双光子吸收现象 。图 2 展示了非线性光学显微镜的
+发展历程
+［13］
+。
+自 20 世纪 90 年代起 ，非线性显微成像技术进入快
+速 发 展 阶 段。1990 年 ，Denk 、Strickler 和 Webb
+［14］
+成 功
+研 制 出 全 球 首 台 双 光 子 激 发 荧 光（2PEF）显 微 镜 。
+Piston 等
+［15-16］
+将 时 间 分 辨 技 术 与2PEF 显 微 镜 巧 妙 结
+合 ，开 创 性 地 研 发 出 基 于 双 光 子 激 发 的 荧 光 寿 命 成 像
+（FLIM）系 统。 该 技 术 能 够 在 秒 级 尺 度 上 精 准 捕 捉 活
+细 胞 中 的 荧 光 衰 减 动 力 学 图 像，为 细 胞 代 谢 研 究 提 供
+至 关 重 要 的 量 化 工 具。 随 后，Becker 等
+［17-18］
+提 出 多 维
+度 时 间 相 关 单 光 子 计 数（TCSPC ）技 术 。 而 在 1996
+收稿日期 ：2025 -11-11；修回日期 ：2025 -12-13；录用日期 ：2025 -12-18；网络首发日期 ：2025 -12-19
+基 金 项 目： 中 国 国 家 重 点 研 发 计 划（2024 YFE 0215700 ） 、国 家 自 然 科 学 基 金（62535012 ， 62225505 ， 62127819 ， 62475165 ， 
+T2421003 ） 、深圳市人才创新项目 （RCJC 20210706091949022 ）
+通信作者 ：
+*
+liulw@szu .edu.cn
+
+=== PDF_PAGE 2 ===
+0200007 -2
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+年 ，Hell 等
+［19］
+通 过 成 像 聚 苯 乙 烯 微 球 验 证 三 光 子 激 发
+荧光（3PEF）技术的可行性 。
+1999 年，谢晓亮团队
+［20］
+实现三维相干反斯托克斯 -
+拉 曼 散 射（CARS）显 微 成 像，为 观 察 生 物 分 子 的 振 动
+和 结 构 提 供 全 新 的 手 段。2008 年 ，Freudiger 等
+［21］
+在 谢
+晓 亮 团 队 研 究 的 基 础 上，开 发 出 受 激 拉 曼 散 射（SRS）
+显 微 技 术，并 将 其 成 功 应 用 于 活 细 胞 脂 质 合 成 的 动 态
+追 踪。 2010 年 ，Saar 等
+［22］
+再 次 突 破 技 术 瓶 颈，实 现 视
+频 速 率 的SRS 显 微 成 像。 这 一 成 就，不 仅 大 幅 提 高 成
+像效率 ，更为实时 、动态地观察生命过程提供强有力的
+技 术 支 持。 2015 年 ，Scarcelli 团 队 研 发 出 首 台 基 于 布
+里渊散射的无标记显微镜
+［23］
+。该技术突破传统光学成
+像 的 局 限，能 够 精 准 解 析 细 胞 及 三 维 组 织 的 局 部 力 学
+特 性，并 成 功 揭 示 由 细 胞 骨 架 和 细 胞 体 积 调 节 引 发 的
+微观力学变化 。
+非 线 性 光 学 显 微 成 像 技 术 在21 世 纪 呈 现 出 应 用
+范 围 逐 步 向 多 模 态 融 合、小 型 化 以 及 智 能 化 发 展 的 趋
+势。Sun 等
+［24］
+于 2010 年研制出荧光寿命内窥镜成像系
+统 ；2015 年 ，Schweitzer 等
+［25］
+推 出 临 床 级 眼 科 寿 命 成 像
+系统 ；2017 年，首台临床级 SRS 显微镜问世 ，被用于在
+临 床 环 境 中 对 组 织 结 构 进 行 快 速 术 中 评 估
+［26］
+；2018
+年 ，Zhang 等
+［27］
+利 用 三 次 谐 波（THG）显 微 镜 对 脑 胶 质
+瘤 进 行 定 量 评 估 ；同 期 Mohseni 等
+［28］
+提 出 光 谱 聚 焦
+CARS 技术 ，实现光谱分辨率的提升 。与此同时 ，多模
+态 融 合 与 智 能 化 发 展 成 为 提 升 成 像 能 力 的 关 键 路 径。
+Gorpas 等
+［29］
+于 2019 年 将 荧 光 寿 命 与 增 强 现 实 技 术 融
+合 ，开 发 出 可 实 时 导 航 的 术 中 成 像 系 统。 2020 年 ，
+Hollon 等
+［30］
+更 将 拉 曼 成 像 与 深 度 神 经 网 络（DNN）相
+结合 ，实现脑肿瘤的近实时术中诊断 。
+在 生 命 科 学 探 索 不 断 向 微 观 世 界 及 多 维 度 信 息
+领 域 深 入 的 过 程 中，传 统 单 模 态 非 线 性 成 像 技 术 所 展
+示 出 的 局 限 性 日 益 凸 显，其 难 以 全 面 解 析 生 物 样 本 内
+蕴 含 的 多 参 数、多 维 度 动 态 信 息。 开 发 能 够 同 步 捕 捉
+结 构 、组 分 与 功 能 信 息 的 多 模 态 非 线 性 光 学 成 像 技
+术 ，已 成 为 非 线 性 光 学 显 微 成 像 技 术 研 究 的 一 大 趋
+势 。 早 在 2006 年 ，Kano 等
+［31］
+就 通 过 巧 妙 地 利 用 超 连
+续 谱 光 源，实 现 同 一 激 发 条 件 下CARS 与 2PEF 的 融
+合 成 像，使 得 活 体 酵 母 细 胞 中 的 细 胞 核、线 粒 体 及 隔
+膜 等 亚 细 胞 结 构 得 以 清 晰 分 辨，充 分 展 示 出 多 模 态 成
+像 在 细 胞 器 识 别 方 面 的 卓 越 优 势。 随 后，在 2007 年 ，
+Cheng 团 队
+［32］
+取 得 重 要 突 破，他 们 将 2PEF 、CARS 与
+和 频 产 生（SFG）三 种 非 线 性 成 像 模 式 整 合 于 同 一 光
+学 平 台 之 上，实 现 对 中 枢 神 经 系 统 在 生 理 与 病 理 状 态
+下 的 多 模 态 关 联 成 像 。 2009 年 ，Downes 等
+［33］
+将
+CARS 、2PEF 、二 次 谐 波（SHG） 、SFG 及 微 分 干 涉 衬
+度（DIC）等 多 种 成 像 技 术 进 行 系 统 级 集 成，实 现 从 形
+态 到 功 能 的 跨 尺 度 关 联 分 析。 这 些 技 术 革 新 不 仅 为
+生 物 医 学 研 究 提 供 更 为 丰 富、准 确 的 实 验 数 据，更 为
+从 机 理 解 析 到 临 床 实 践 转 化 的 全 面 深 入 提 供 可 靠 的
+技 术 支撑。
+本文系统论述多模态非线性光学显微成像技术的
+独特优势与发展前景 。首先阐释非线性光学成像的基
+本 原 理 与 技 术 特 点；进 而 探 讨 多 模 态 集 成 策 略 与 系 统
+优 化 路 径，涵 盖 内 窥 成 像 设 计 与 深 度 学 习 辅 助 等 前 沿
+方向 ；最后总结该技术在生物医学研究中的典型应用 ，
+并 通 过 对 比 各 模 态 的 技 术 参 数 与 适 用 场 景，为 面 向 特
+图 1　线性光学显微技术关键发展历程示意图
+Fig. 1　Schematic timeline of key developments in linear optical microscopy
+
+=== PDF_PAGE 3 ===
+0200007 -3
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+定生物学问题的成像方法选择提供实践依据 。本文特
+别 关 注 成 像 速 度、穿 透 深 度 和 信 号 特 异 性 等 方 面 的 最
+新 突 破，旨 在 为 该 技 术 在 生 物 医 学 领 域 的 更 深 入 和 广
+泛应用提供新思路 。
+2　多 模 态 非 线 性 光 学 显 微 成 像 系 统
+研发
+随 着 生 物 医 学 与 材 料 科 学 研 究 不 断 深 入，复 杂 样
+本 的 多 维 度、跨 尺 度 表 征 对 光 学 成 像 技 术 提 出 更 高 要
+求 。 单 一 模 态 成 像 因 信 息 维 度 的 局 限，难 以 全 面 获 取
+样本的结构 、功能及化学组成信息 。具体而言 ，2PEF/
+3PEF 对 内 源 性 代 谢 分 子 和 外 源 性 探 针 高 度 敏 感，能
+够 实 现 细 胞 功 能 和 代 谢 状 态 的 动 态 监 测，但 无 法 对 无
+荧 光 信 号 的 关 键 组 织 结 构（如 胶 原 纤 维）进 行 成 像。
+SHG 能够特异性地可视化胶原蛋白 、肌球蛋白等非中
+心对称的生物大分子 ，提供无标记的组织结构信息 ，然
+而其对样品的化学成分和细胞功能状态无从反映 。同
+样 ，CARS/SRS 通 过 探 测 分 子 振 动 光 谱，能 够 实 现 对
+特 定 化 学 键 的 无 标 记 高 灵 敏 度 成 像，但 在 揭 示 细 胞 骨
+架 等 宏 观 结 构 方 面 能 力 有 限。 为 突 破 上 述 限 制，多 模
+态 集 成 成 像 系 统 应 运 而 生，通 过 有 机 整 合 互 补 的 光 学
+成像技术 ，实现对样本的多参数协同解析 ，大幅提升成
+像的信息容量与准确性 。
+2.1　系统集成与技术演进
+在 构 建 多 模 态 非 线 性 光 学 显 微 成 像 平 台 的 过 程
+中 ，不 同 成 像 方 法 由 于 其 光 学 机 制 和 设 备 要 求 的 差 异
+而 表 现 出 本 质 区 别，这 给 整 体 架 构 的 实 现 带 来 挑 战。
+具 体 来 说，2PEF/ 3PEF 、SHG/THG 和 FLIM 等 技 术
+在硬件层面上表现出较高的协同性与整合可行性 。典
+型 的 2PEF/ 3PEF 系 统 主 要 由 近 红 外 飞 秒 激 光 源、光
+束 扫 描 单 元 和 荧 光 探 测 模 块 构 成［图 3（a） ］ 。光 束 扫
+描 单 元 通 过 点 扫 描 来 实 现 样 本 的 激 发，而 高 数 值 孔 径
+物 镜 则 负 责 高 效 地 收 集 信 号。 光 电 倍 增 管（PMT）则
+将 光 学 信 息 转 换 为 电 信 号，最 终 传 输 至 计 算 机 进 行 图
+像 重 建
+［34-35］
+。 SHG/THG 可 以 通 过 这 一 主 体 光 路，依
+靠 调 整 滤 光 片 来 实 现 信 号 的 分 离 与 采 集
+［36］
+。FLIM 则
+图 2　非线性光学显微方法发展历程
+Fig. 2　Developmental timeline of nonlinear optical microscopy techniques
+
+=== PDF_PAGE 4 ===
+0200007 -4
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+通 常 通 过 在2PEF/ 3PEF 系 统 中 集 成TCSPC 来 扩 展
+对 微 环 境 参 数 的 定 量 检 测 能 力
+［37-38］
+，原 理 如 图3（b）所
+示 。 近 年 来，随 着 TCSPC 的 不 断 发 展，高 性 能 的 单 光
+子 探 测 器 也 应 运 而 生，例 如 计 数 型PMT 、InGaAs/InP
+单光子雪崩二极管 （SPAD）红外探测器以及 16 通道多
+光谱探测器
+［39-41］
+，如图 3（c）~（e） 。
+相 对 于SHG 和 FLIM 等 技 术，CARS 和 SRS 在 系
+统集成中面临更大的技术挑战 ，主要体现在光源特性 、
+光 路 配 置 和 信 号 探 测 等 多 个 方 面
+［42］
+。 在 激 发 光 源 方
+面 ，CARS 通 常 需 要 使 用 窄 带 皮 秒 脉 冲 来 实 现 高 光 谱
+分 辨 率 并 抑 制 非 共 振 背 景。 而 2PEF 与 SHG 等 过 程
+则需要依靠飞秒激光的高峰值功率来有效激发 。如果
+要 在 同 一 激 光 源 下 实 现 多 模 态 同 步 成 像，就 需 要 对 脉
+冲 宽 度 进 行 权 衡 调 整。 一 种 常 见 的 做 法 是 引 入 色 散，
+将 飞 秒 脉 冲 展 宽 至 皮 秒 级 别，以 满 足CARS 成 像 的 需
+求 。 这 种 处 理 会 导 致2PEF 和 SHG 所 需 的 峰 值 功 率
+明显下降 ，进而影响相应信号强度 。此外 ，CARS 成像
+需 要 确 保 泵 浦 光 与 斯 托 克 斯 光 在 时 空 上 精 确 重 叠，通
+常 需 要 借 助 光 学 参 量 振 荡 器（OPO）等 设 备 来 进 行 振
+动 谱 扫 描。 光 路 复 杂 度 和 系 统 调 试 难 度 因 此 显 著 增
+加，同时还需要妥善处理色差 、脉冲前沿匹配和共轴调
+整等问题 。
+为应对上述挑战 ，研究者发展了多种技术路径 ，如
+图 4 所 示。 2005 年 ，Cheng 团 队
+［43］
+采 用 两 台 皮 秒 钛 宝
+石激光器 ，分别发出泵浦光 （ωₚ）和斯托克斯光 （ωₛ） ，结
+合 前 向（F-CARS）与 背 向（E-CARS）探 测 模 式，并 同
+步 集 成2PEF 成 像 技 术，实 时 监 测 轴 突 内 外Ca2 +动 态
+分 布［图 4（a） ］ 。如 图 4（b）所 示 ，该 团 队
+［44］
+进 一 步 将
+SHG 、SFG 与 CARS 结 合，通 过 偏 振 分 析 验 证 星 形 胶
+质 纤 维 的 柱 对 称 特 性，并 明 确 其 与 髓 鞘 的 空 间 关 联。
+尽管此类研究通过脉冲压缩装置切换与多通道探测器
+实 现 CARS -2PEF -SHG 等 多 模 态 集 成，但 仍 需 在 成 像
+性能之间进行权衡 ，并受制于系统成本与兼容性限制 。
+2004 年，Hellerer 等
+［45］
+提出的光谱聚焦（spectral focusing ）
+技 术 为 上 述 矛 盾 提 供 突 破 性 解 决 方 案［图 4（c） ］ 。该
+技 术 通 过 对 飞 秒 脉 冲 引 入 线 性 啁 啾，在 保 留 飞 秒 光 源
+兼 容 性 的 基 础 上 实 现 皮 秒 级 瞬 时 窄 带 输 出，从 而 同 时
+兼 顾 高 光 谱 分 辨 率 与 多 模 态 集 成 需 求 。 2009 年 ，
+Langbein 等
+［46］
+基 于 光 谱 聚 焦 原 理，实 现 基 于 单 个 宽 谱
+飞秒激光器的 CARS 成像系统 ，大幅降低系统复杂度 ，
+如 图 4（d）所 示。 同 年，Cheng 团 队
+［47］
+开 发 一 种 基 于 单
+一激光源的多模态非线性光学显微成像系统 。该系统
+以 飞 秒 激 光 器 为 核 心，结 合 OPO 与 周 期 极 化 钽 酸 锂
+（PPLN）晶 体 进 行 频 率 转 换，实 现 CARS 、2PEF 、SHG
+及 THG 等 多 种 非 线 性 成 像 模 式 的 集 成。 利 用 此 平
+台，研究人员成功对髓鞘结构进行 CARS 成像 ，并在活
+图 3　多 模 态 非 线 性 光 学 成 像 系 统 中 的 关 键 光 路 结 构 与 探 测 技 术。 （a）典 型 2PEF/ 3PEF 成 像 光 路 架 构； （b） TSCPC 原 理 示 意 图；
+（c） TSCPC 计数型 PMT
+［39］
+； （d） InGaAs/InP SPAD 红外探测器
+［40］
+； （e） TSCPC 16 通道多光谱探测器
+［41］
+Fig. 3　Key optical configurations and detection technologies in multimodal nonlinear optical imaging system . (a) Typical optical 
+path architecture for 2PEF/ 3PEF imaging ; (b) schematic principle of TCSPC ; (c) TCSPC -based photon -counting PMT [39]; 
+(d) InGaAs/InP SPAD for infrared detection
+[40]
+; (e) 16-channel multispectral TCSPC detector [41]
+
+=== PDF_PAGE 5 ===
+0200007 -5
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+细 胞 内 实 现 脂 质 体 的 高 对 比 度 观 测［图 4（e） ］ 。此 外，
+该工作还展示了该平台在新鲜肝脏组织中进行多模态
+非 线 性 光 学 成 像 与 显 微 光 谱 分 析 的 应 用，凸 显 其 在 复
+杂生物样本多尺度成像中的实用价值 。
+尽 管 SRS 与 CARS 在 激 发 条 件 上 具 有 相 似 性，二
+者 的 信 号 特 性 与 探 测 机 制 存 在 本 质 区 别：SRS 表 现为
+强度调制信号 ，需通过 MHz 频率调制结合锁相放大技
+术 提 取 淹 没 于 噪 声 中 的 微 弱 强 度 变 化；CARS 则 产 生
+位 于 反 斯 托 克 斯 频 段 的 新 光 子，可 通 过 二 向 色 镜 和 带
+通 滤 光 片 进 行 光 谱 分 离
+［48-50］
+。 这 一 差 异 为 多 模 态 并 行
+图 4　五 类 CARS 成 像 系 统 光 路 架 构 示 意 图。 （a）双 光 源CARS -2PEF 系 统［43］； （b）飞 秒-皮 秒 混 合CARS -SHG -SFG 系 统［44］； （c）光 谱
+聚焦 CARS 系统
+［45］
+； （d）单光源差分 CARS 系统
+［46］
+； （e）单激光源多模态 CARS -2PEF -SHG -THG 系统［47］
+Fig. 4　Schematic diagrams of five types of CARS imaging system architectures . (a) Dual -source CARS -2PEF system [43]; 
+(b) femtosecond -picosecond hybrid CARS -SHG -SFG system [44]; (c) spectral focusing CARS system [45]; (d) single -source 
+differential CARS system
+[46]
+; (e) single -laser -source multimodal CARS -2PEF -SHG -THG system [47]
+
+=== PDF_PAGE 6 ===
+0200007 -6
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+探 测 提 供 物 理 基 础，但 也 对 系 统 集 成 提 出 更 高 要 求。
+不 同 非 线 性 过 程 对 激 发 光 源 参 数 存 在 冲 突：皮 秒 脉 冲
+虽 适 用 于SRS 和 CARS 等 高 光 谱 成 像，但 会 严 重 降 低
+2PEF 、SHG 及 更 高 阶 非 线 性 过 程（如 THG 、3PEF）的
+光子产率 ；飞秒脉冲虽可高效激发 2PEF 与 SHG ，但其
+宽 光 谱 特 性 会 抬 高SRS 的 探 测 基 底，导 致 信 噪 比 与 对
+比 度 下 降。 此 外，尽 管 多 模 态 顺 序 采 集 方 案 具 备 可 行
+性 ，但 其 成 像 速 度 低、光 漂 白 严 重，且 易 受 激 光 功 率 波
+动与环境扰动影响 。
+要 实 现 真 正 意 义 上 的 多 模 态 同 步 成 像，需 要 在
+激 发 源 设 计 和 信 号 解 耦 两 个 方 面 突 破 技 术 瓶 颈 。
+2010 年 ，Li 等
+［51］
+研 发 一 种 集 成 化 多 模 态 非 线 性 光 学
+显 微 镜 系 统。 该 系 统 利 用780 nm 飞 秒 钛 蓝 宝 石 激 光
+器 和 光 子 晶 体 光 纤 产 生 的 超 连 续 谱 作 为 激 发 源，成
+功 地 同 步 获 取 活 体 秀 丽 隐 杆 线 虫 的CARS 、2PEF 和
+SHG 图 像。 他 们 使 用 棱 镜 压 缩 器，实 现 泵 浦 光 与 斯
+托 克 斯 光 的 脉 冲 时 间 重 叠，并 利 用 建 立 在 非 共 振 区
+域 校 准 的 像 素 级 背 景 扣 除 算 法 有 效 抑 制CARS 的 非
+共 振 背 景 ，从 而 实 现 对 线 虫 体 内 脂 质 分 布、水 分 含
+量 、肌 纤 维 结 构 以 及 内 源 性 荧 光 颗 粒 的 多 维 度 同 步
+成 像 与 信 息 融 合。 随 后，Qu 团 队
+［52］
+进 一 步 开 发 出 集
+成 SRS 与 多 通 道 2PEF 的 显 微 镜，将 SRS 与 GFP 标
+记 的 脂 滴（LDs）的 共 定 位 率 从 72% 提 升 至 99% ，有
+效 解 决 飞 秒SRS 脂 质 成 像 中 的 假 阳 性 问 题，同 时 也
+实 现 LDs 与 线 粒 体、溶 酶 体 以 及 内 质 网 等 细 胞 器 的
+关 联 成像。
+2021 年 ，深 圳 大 学Liu 团 队
+［53］
+设 计 一 种 多 模 态 同
+步激发与探测方案 ，该方案融合偏振分离 、皮秒分光以
+及 飞 秒/皮 秒 脉 冲 复 用 等 技 术，如 图 5 所 示。调 控 偏 振
+态、光谱成分和时间序列等维度 ，在一次激发过程中同
+时 获 取 振 动 光 谱 信 号 与 自 发 荧 光 信 号，并 显 著 降 低 不
+同 模 态 之 间 的 激 发 互 扰 和 信 号 交 叉 干 扰。 此 外，各 模
+态 数 据 经 过 肿 瘤 相 关 胶 原 特 征（TACS）分 类、纵 横 比
+（AR）计 算 和 黄 素 腺 嘌 呤 二 核 苷 酸（FAD）寿 命 分 析 等
+定量方法处理 ，通过多维度生物标志物 （包括胶原排列
+取向 、脂质 /蛋白质比值和 FAD 寿命参数 ）成功实现浆
+液性交界性肿瘤与多种恶性肿瘤的精准区分 。这种同
+步 成 像 机 制 不 仅 显 著 降 低 光 漂 白 和 光 损 伤 效 应，还 为
+术中快速病理诊断和肿瘤微环境研究提供强有力的多
+模态成像新工具 。
+图 5　多模态 SRS -SHG -2PEF -FLIM 成像系统光路示意图与性能表征 ［53］。比例尺 ：10 µm
+Fig. 5　Optical schematic and performance characterization of a multimodal SRS -SHG -2PEF -FLIM imaging system [53]. Scale bars : 
+10 µm
+
+=== PDF_PAGE 7 ===
+0200007 -7
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+2.2　面向临床与活体成像的系统集成
+随着多模态成像技术从实验室研究逐步走向临床
+实 际 应 用，系 统 集 成 化 已 成 为 其 发 展 的 关 键 需 求。 随
+着激光 、光纤技术和集成电子等不断发展 ，微型多模态
+显 微 技 术 在 神 经 科 学 和 临 床 前 研 究 方 面 取 得 明 显 进
+步 。 Murugkar 等
+［54］
+提 出 一 种 基 于 微 机 电 系 统
+（MEMS）扫 描 镜 和 定 制 化 微 型 光 学 元 件 的 紧 凑 型 多
+模态成像系统 。该系统采用单台钛宝石飞秒激光器作
+为共用光源 ，一部分输出直接用于激发 2PEF 和 SHG ；
+另 一 部 分 用 于 泵 浦 光 子 晶 体 光 纤 产 生 斯 托 克 斯 光，从
+而 实 现CARS 成 像。 研 究 团 队 通 过 采 用MEMS 扫 描
+镜替代传统振镜系统 ，并搭配一款直径仅为 1.8 mm 的
+色 差 校 正 微 型 物 镜，有 效 校 正 双 波 长 像 差［图 6（a） ］ 。
+在此基础上 ，成功实现 CARS 、2PEF 与 SHG 三模态的
+同步集成 。
+面 对 临 床 应 用 在 空 间 紧 凑、操 作 灵 活 和 多 模 态 兼
+容 性 等 方 面 的 严 苛 要 求，将 多 种 成 像 技 术 集 成 于 微 型
+内 窥 探 头 或 光 纤 束 中，已 成 为 实 现 深 部 组 织 高 分 辨 率
+动 态 成 像 的 主 流 策 略。2024 年 ，Septier 等
+［55］
+提 出 建 立
+在 双 包 层 负 曲 率 空 芯 光 纤 的 柔 性 多 模 态 内 窥 系 统，其
+集 成 2PEF 、3PEF 、SHG 和 THG 四 种 模 态，如 图 6（b）
+所 示。 这 个 系 统 不 仅 可 以 内 置920 mm 激 光 器 实 现 表
+层 成 像，还 可 以 外 接 大 型 光 学 参 量 放 大 器（OPA）进
+行 深 层 成 像。 其 远 端 探头 直 径 小 于2.2 mm ，质 量 小
+于 2 g ，最 高 帧 率 达 到 10 frame/s ，横 向 分 辨 率 达 到
+0.92 μm，已成功应用于小鼠脑 、猪视网膜 、人皮肤和植
+图 6　微 型 多 模 态 显 微 成 像 系 统 光 路 架 构 示 意 图。 （a）基 于 MEMS 扫 描 镜 的 微 型2PEF -SHG -CARS 成 像 系 统［54］； （b）集 成 式 多 模 态
+非线性光学内窥系统
+［55］
+； （c）上部分为系统整体结构示意图 ，下部分为大体积组织测量实物图
+［56］
+Fig. 6　Schematic diagrams of miniaturized multimodal microscopy imaging systems . (a) Miniaturized 2PEF -SHG -CARS imaging 
+system based on MEMS scanning mirror
+[54]
+; (b) integrated multimodal nonlinear optical endoscopy system
+[55]
+; (c) schematic of 
+overall system architecture (top) and photograph of system measuring large -volume tissue sample (bottom )[56]
+
+=== PDF_PAGE 8 ===
+0200007 -8
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+物 样 本 的 多 尺 度 成 像。 同 年，莱 布 尼 茨 光 子 技 术 研 究
+所与耶拿大学等机构合作开发一种集成 CARS 、2PEF
+及 SHG 的多模态内窥成像系统 ，并结合啁啾脉冲放大
+（CPA）飞 秒 激 光 消 融 技 术，成 功 实 现 头 颈 部 鳞 状 细 胞
+癌的诊疗一体化应用 。该系统采用空芯光纤传输激发
+光，采用多模光纤收集信号 ，在无标记条件下同步获取
+组织的化学与结构信息 。在 20 例离体组织样本中 ，成
+像 结 果 与H&E 染 色 高 度 一 致。 进 一 步 地，利 用 CPA
+飞 秒 激 光 系 统 实 现 亚 细 胞 精 度 的 靶 向 消 融，为 术 中 精
+准切除提供关键技术支持 ［图 6（c） ］
+［56］
+。
+研 究 人 员 通 过 创 新 的 光 学 架 构 和 信 号 分 离 方 案，
+将 不 同 成 像 技 术 高 效 融 合 至 统 一 框 架，充 分 发 挥 技 术
+优势 ，实现对生物标本的多参数 、高选择性的形态和功
+能 信 息 采 集。 为 全 面 分 析 各 种 集 成 方 案 的 技 术 特 性，
+表 1 从融合模式种类 、激励光源设置 、核心性能参数以
+及检测手段等方面对代表性多模态显微成像研究进行
+归 纳 对 比。 在 激 发 光 源 方 面，多 模 态 系 统 普 遍 以 飞 秒
+激 光 为 核 心，有 些 还 结 合OPO 、PPLN 晶 体 倍 频 模 块
+或 SF75 玻璃棒等组件 ，以扩展波长范围或优化脉冲特
+性，实现对生物样本的高质量多参数成像 。总体来看 ，
+面向活体微创场景的多模态非线性光学内窥成像装置
+在 光 源 配 置 上 具 有 更 广 泛 的 选 择，例 如 皮 秒 级 光 纤 激
+光 器 和 飞 秒 激 光 器 等 多 种 类 型，同 时 常 使 用 空 芯 光 纤
+（如 双 包 层 负 曲 率 设 计）来 高 效 传 导 激 发 光 和 信 号 光。
+系 统 研 发 主 要 集 中 在 微 型 化 构 造、减 少 生 物 组 织 损 伤
+以 及 提 高 活 体 适 用 性 等 核 心 问 题 上。 可 以 说，两 类 系
+统各自服务于实验室高精度成像和体内微创观测的不
+同目标 ，形成差异化且互补的技术发展路径 ，共同推动
+多模态非线性光学成像从基础科研向临床和医疗应用
+的转变 。
+3　多 模 态 非 线 性 光 学 显 微 成 像 系 统
+优化
+多 模 态 非 线 性 显 微 成 像 系 统 在 性 能 上 仍 面 临 瓶
+颈 。 以 2PEF 为 例，尽 管 其 近 红 外 激 发 光 具 备 优 于 宽
+场 与 共 聚 焦 显 微 的 穿 透 能 力，但 其 成 像 深 度 通 常 难 以
+达 到 毫 米 级 水 平 ，限 制 其 在 深 部 生 物 组 织 中 的 应
+用
+［59-60］
+。 在 时 间 分 辨 率 方 面，受 限 于 传 统 扫 描 机 制 的
+速率 ，系统往往难以捕捉毫秒级的快速生理过程 ，如钙
+瞬 变 或 神 经 电 活 动 信 号，尤 其 对FLIM 及 需 要 高 重 复
+率采样的 CARS/SRS 成像构成挑战 。此外 ，扫描器角
+度 范 围 与 物 镜 对 入 射 光 的 限 制 也 制 约 成 像 视 场
+（FOV）的 扩 展，影 响 大 规 模 组 织 区 域 或 多 细 胞 动 态 过
+程的高通量成像 。
+3.1　系统架构创新
+为 了 实 现 优 化 成 像 效 率、拓 宽 空 间 覆 盖 范 围 及
+强 化 动 态 适 应 能 力 的 三 大 核 心 目 标，研 究 团 队 通 过
+创 新 设 计 扫 描 系 统、精 细 改 进 光 学 结 构，并 应 用 实
+时 校 准 方 法 ，全 面 提 升 多 模 态 成 像 系 统 的 整 体 表
+现 ，使 其 能 够 更 好 地 满 足 从 亚 细 胞 到 组 织 尺 度 分
+表 1　多模态非线性光学显微成像系统比较
+Table 1　Comparison of multimodal nonlinear optical microscopy systems
+Number of 
+modality
+Tri -modal 
+microscopy
+Quad -modal 
+microscopy
+Integrated 
+modality
+2PEF/SHG/
+THG
+2PEF/SHG/
+CARS
+(endoscopy )
+2PEF/ 3PEF/
+SHG/THG
+2PEF/SHG/
+THG/CARS
+2PEF/SHG/
+SRS/TP -
+FLIM
+2PEF/ 3PEF/
+SHG/THG
+(endoscopy )
+System parameter
+Femtosecond laser : 1070  nm , 70 MHz , 50 fs 
+pulse width
+Picosecond fiber laser source : 796 nm (pump 
+beam ), 1030  nm (Stokes beam ); others : excitation 
+via hollow -core fiber , collection via multimode 
+fiber
+Tunable femtosecond laser : 700‒1300  nm , 
+80 MHz , 100 fs pulse width
+Femtosecond laser : 790 nm , 80 MHz ; 
+others : Opal -BB OPO , and PPLN crystal 
+frequency
+Tunable femtosecond laser : 700‒1300  nm , 
+80 MHz , 800 nm (pump beam ), 1040  nm 
+(Stokes beam ); others : SF75 glass rod for 
+linear chirping of both beams
+Femtosecond laser : 780 nm , 920 nm and 
+1050  nm , 80 MHz , OPA laser : 940 nm , and 
+1300  nm ; others : double -clad negative -curvature 
+hollow -core fiber
+Performance indicator
+—
+Lateral resolution of 
+~1.7 μm, axial 
+resolution of ~ 8.2 μm
+—
+Spectral resolution : 
+50 cm-1
+Spectral resolution : 
+16 cm-1
+Frame rate : 10 frame/s ,
+filed of view : 600 μm, 
+lateral resolution : 
+0.92 μm
+Technical innovation
+Wavelength separation
+[57]
+Wavelength division 
+multiplexing , chirp 
+compensation , and 
+parallel detection
+[56]
+Tunable laser and 
+multichannel detector
+[58]
+Optical path delay and 
+collinear combination
+[47]
+Multi -thread optical 
+layout and synchronized 
+acquisition control
+[53]
+Fiber design and spiral 
+scanning
+[55]
+
+=== PDF_PAGE 9 ===
+0200007 -9
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+辨 、从 静 态 到 动 态 过 程 观 察 的 多 参 数 定 量 分 析 需
+求 。 表 2 系 统 总 结 了 光 路 架 构 与 光 束 调 控 方 面 的 代
+表 性 创 新，集 中 展 示 提 升 多 模 态 成 像 性 能 的 先 进 技
+术 路径。
+当 前，传 统 机 械 扫 描 系 统 在 实 时 成 像 方 面 存 在 明
+显 不 足，特 别 是 在 毫 秒 级 动 态 过 程 观 测 时 表 现 更 不 尽
+如 人 意 。 为 此 ，Schnitzer 团 队
+［61］
+开 发 MEMS 扫 描 系
+统，实现快轴 3.52 kHz 的采集速率 ；程和平团队
+［73］
+提 出
+一 种 集 成 MEMS 扫 描 器 的 FHIRM -TPM 系 统 ，实 现
+1 mm× 0.8 mm 的 10 倍 可 扩 展 视 场 与0.68~1.46 μm
+的亚微米级横向分辨率 ，该技术可同步对线粒体 /胞质
+Ca2 + 活 性 及 淀 粉 样 斑 块 进 行 成 像［图 7（a） ］ 。另 外 ，
+通 过“ 目 标 区 域 成 像”优 化 扫 描 路 径，进 一 步 提 升 成 像
+效 率，通 过 光 栅 扫 描 精 确 定 位 感 兴 趣 区 域（ROI） 。在
+这 一 策 略 下，Xu 团 队
+［62］
+在 512 pixel× 512 pixel 下 实 现
+30 frame/s 的 在 体 成 像 性 能，如 图 7（b）所 示 。 此 外 ，
+Na Ji 团 队
+［69，74］
+开 发 的 自 由 空 间 角 啁 啾 增 强 延 迟
+（FACED ）架构 ，通过高反射镜多次反射将脉冲激光分
+裂 为 80 个 空 间 分 隔、时 间 间 隔 为 2 ns 的 焦 点 ，实 现
+1000 ~3000  frame/s 的高速光栅扫描 ，横向分辨率达到
+0.35~0.82 μm。 而 Schnitzer 团 队
+［63］
+采 用 微 透 镜 阵 列
+生 成 20×20 的 等 功 率 光 束 阵 列 ，结 合 高 速 相 机 在
+表 2　系统成像性能提升策略
+Table 2　Strategies for improving system imaging performance
+Technical 
+optimization
+Speed
+Field of 
+view
+Volumetric 
+imaging
+Technical 
+approach
+MEMS
+ROI
+Multi -focal
+Axially extended 
+Bessel focus 
+technology
+Deep learning
+Non -telecentric 
+2PEF
+Spatio -temporal 
+multiplexing
+Bessel beam
+FACED
+Spatio -temporal 
+multiplexing/
+temporal focusing
+Holography
+Acousto -optic 
+lens
+Indicator
+~40 frame/s
+~30 frame/s with 
+512 pixel× 512 pixel (2D)
+~1000  frame/s with 
+1024  pixel× 196 pixel (2D)
+~99 frame/s with 1.4 mm×
+1.4 mm× 0.1 mm volume (3D)
+~26 frame/s (2D)
+Temporal resolution ~ 38 ms
+2.5‒3.5 mm
+Simultaneous multi -area imaging of 
+four regions totaling 1.5 mm× 1.5 mm
+600‒1000  μm FOV with ~ 2‒3 μm 
+axial resolution
+~1000  frame/s with 
+80 pixel× 900 pixel (2D)
+~3000  frame/s with 
+80 pixel× 1200  pixel (2D)
+1 mm× 1 mm× 0.6 mm volumes at 
+scanning speed up to 17 Hz depth : 
+~800 μm
+103 μm× 206 μm× 524 μm
+400 μm× 400 μm× 400 μm
+Pros and cons
+Widely used in miniature 2PEF
+[61]
+Enables high -speed imaging at low power 
+conditions (~18 mW )
+[62]
+2PEF with millisecond temporal resolution , 
+but at the cost of limited spatial resolution
+[63]
+Bessel -2PEF is optimal for imaging sparsely labeled , high -
+contrast structures , but suffers from limitations such as 
+shallow imaging depth , low contrast , and high excitation 
+power
+[64]
+The frame rate is insufficient for directly resolving action 
+potentials , which requires millisecond -scale temporal 
+resolution
+[65]
+The non -telecentric approach can significantly expand the 
+FOV but at the expense of a reduced numerical aperture
+[66]
+Splitting the light source into four beams for scanning 
+enables large -area imaging ; however , the system ’s axial 
+resolution is compromised because the beams underfill the 
+objective ’s back aperture
+[67]
+Using a lens instead of an SLM reduces laser power loss and 
+minimizes the impact on the image signal -to-noise ratio [68]
+Achieves kilohertz scanning rates , but is accompanied by 
+severe photobleaching
+[69]
+The system can simultaneously record the activity of up to 
+12000  neurons , but the custom -amplified fiber laser system 
+is costly
+[70]
+Digital micromirror devices can achieve random -access 
+imaging by shifting the focus , but this introduces negative 
+angular dispersion
+[71]
+Corrects inter -frame motion without any host processing 
+overhead , enabling real -time 3D motion compensation [72]
+
+=== PDF_PAGE 10 ===
+0200007 -10
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+1024  pixel× 196 pixel 下 实 现 1 kHz/s 的 成 像 速 率，可
+以有效捕捉到快速生理动态过程的变化 。
+视 场 限 制 是 多 模 态 成 像 技 术 应 用 于 大 范 围 生 物
+样 本 的 另 一 关 键 挑 战。 Baden 团 队
+［66］
+通 过 适 度 降 低
+数 值 孔 径（NA） ，采 用 非 远 心 光 学 设 计，在 保 持 视 场 中
+心 高 度 横 向 分 辨 率 的 同 时，视 场 扩 展 至2.5~3.5 mm
+［图 7（c） ］ 。Clough 等
+［67］
+采 用 时 空 复 用 架 构，将 激 发 光
+源 拆 分 为4 条 具 有8 ns 延 迟 的 光 路，配 合 双 扫 描 臂，同
+步 视 频 成 像 总 覆 盖 面 积 达 到1.5 mm× 1.5 mm 的 4 个
+独立视场［图 7（d） ］ 。
+在 体 成 像 领 域，光 学 成 像 的 质 量 和 稳 定 性 受 到 多
+种 干 扰 因 素 影 响，如 光 散 射、光 学 像 差 和 样 本 移 动 等。
+特 别 是 在 需 要 对 深 层 组 织 进 行 多 类 型 信 号 同 步 采 集
+时，这些干扰更加显著 。为解决上述技术瓶颈 ，研究团
+队 在 系 统 结 构 与 激 发 光 调 控 方 面 提 出 多 项 创 新 方 案，
+如图 9 所示 。在系统结构优化方面 ，Beaulieu 等
+［75］
+通过
+精确控制光程延迟 ，在 900 μm 的深度下实现大视场多
+平 面 同 步 体 积 成 像，为 深 区 多 模 态 动 态 观 测 提 供 关 键
+技 术 支 撑［图 8（a） ］ 。在 激 发 光 束 调 控 方 面，Na Ji 团
+队
+［64］
+将 自 适 应 光 学 与 贝 塞 尔 光 束 扫 描 技 术 相 结 合，利
+用 实 时 波 前 校 正 有 效 补 偿 生 物 组 织 的 光 学 异 质 性，最
+终 在 小 鼠 脑 皮 层500 μm 成 像 深 度 处 实 现 亚 细 胞 分 辨
+率 的 快 速 体 成 像［图 8（b） ］ 。此 外，Saitou 团 队
+［68］
+设 计
+“透镜 -轴锥镜三联体 ”光学结构 ，生成长工作距离的贝
+图 7　多模态微型显微镜系统在成像速度与视场范围方面的关键技术创新 。 （a）基于 MEMS 扫描镜的快速扫描模块
+［73］
+； （b）基于 ROI
+的自适应激发扫描策略
+［62］
+； （c）采用远心光路架构的视场扩展方案
+［66］
+； （d）集成多激光源的快速切换模块
+［67］
+Fig. 7　Key technological innovations for improving the imaging speed and field of view in multimodal miniature microscopy systems . 
+(a) High -speed scanning module based on a MEMS scanning mirror [73]; (b) adaptive excitation scanning strategy based on ROI 
+selection
+[62]
+; (c) field -of-view expansion scheme using telecentric optical architecture [66]; (d) fast -switching module integrating 
+multiple laser sources
+[67]
+
+=== PDF_PAGE 11 ===
+0200007 -11
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+塞 尔 光 束，实 现 600~1000  μm 视 场 下 青 鳉 幼 鱼 全 身 的
+细胞级分辨率成像 。为了应对深层组织中光散射和像
+差 引 起 的 信 号 衰 减 问 题，波 前 调 控 和 自 适 应 光 学 技 术
+提 供 有 效 的 解 决 方 案。 Smith 团 队
+［76］
+开 发 的 Diesel 2p
+系 统 融 合 自 适 应 光 学、偏 振 合 成 和 时 空 复 用 技 术，
+在 25 mm2 的 大 视 场 下 仍 然 保 持 良 好 的 深 度 分 辨 率。
+Vaziri 团 队
+［70］
+通 过 多 光 束 时 间 延 迟 调 控，在 1 mm×
+1 mm× 1.22 mm 的 体 积 内 实 现 17 Hz 帧 率 的 神 经 活
+动 记 录 ，兼 顾 大 成 像 深 度 和 高 时 间 分 辨 率 的 需求 。
+此 外 ，Cheng 等
+［77］
+通 过 时 空 复 用 技 术（spatiotemporal 
+图 8　多 模 态 微 型 显 微 镜 在 体 成 像 中 的 关 键 技 术 突 破。 （a）多 平 面 聚 焦 技 术，实 现 单 次 曝 光 多 深 度 同 步 成 像（Δz≈90 µm） ，提 升 数 据
+采 集 效 率
+［75］
+； （b）可 动 态 切 换 的 贝 塞 尔/高 斯 双 光 束 光 路 设 计，兼 顾 成 像 穿 透 深 度 与 空 间 分 辨 率
+［64］
+； （c）时 空 复 用 技 术，通 过 精
+确延时与共路扫描实现多平面同步成像 ，并利用解耦探测最大化散射荧光收集效率
+［77］
+Fig. 8　Key technological breakthroughs for in vivo  imaging with multimodal miniature microscopes . (a) Multiplane focusing technique 
+enabling simultaneous imaging of multiple depths (Δ z≈90 µm ) in single exposure , enhancing data acquisition efficiency
+[75]
+;  
+(b) optical design with dynamically switchable Bessel/Gaussian dual beams , balancing imaging penetration depth and spatial 
+resolution
+[64]
+; (c) spatiotemporal multiplexing technique achieving simultaneous multiplane imaging through precise time delays 
+and common -path scanning , while maximizing scattered fluorescence collection efficiency using decoupled detection [77]
+
+=== PDF_PAGE 12 ===
+0200007 -12
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+multiplexing ） ，解 决 多 焦 点 双 光 子 显 微 镜 在 深 层 组 织
+成 像 中 因 散 射 造 成 的 信 号 模 糊 问 题［图 8（c） ］ 。上 述
+技 术 的 发 展 极 大 地 提 升 体 成 像 的 性 能，能 够 以 更 高 的
+空 间 分 辨 率 和 信 噪 比 对 生 物 体 内 部 进 行 三 维 可 视 化，
+为生命科学研究提供强大的观测手段 。
+3.2　深度学习与智能信息处理
+随 着 光 学 与 智 能 信 息 技 术 的 融 合，多 模 态 非 线 性
+显微成像体系正在经历重大变革 。传统上以硬件为主
+导 的 架 构 逐 渐 演 变 为“ 硬 件 与 算 法 协 同 驱 动”的 新 模
+式 。 利 用 计 算 方 法 对 光 学 像 差 进 行 校 正，构 建 理 想 激
+发光场 ，并进行高速数据计算 ，这种方式可以使得成像
+技 术 在 图 像 清 晰 度、采 集 速 率 以 及 环 境 适 应 能 力 等 方
+面都取得长足进步 。在生物活体样本持续运动的情况
+下，为了保证多模式成像系统的输出稳定性 ，必须采用
+即 时 运 算 分 析 来 有 效 克 服 因 移 动 导 致 的 图 像 失 真 问
+题 。 如 图 9（a）所 示，Silver 团 队
+［72］
+研 发 以现 场 可 编 程
+门 阵 列（FPGA）为 核 心 的 闭 环 控 制 系 统，该 系 统 可 以
+同 时 处 理 扫 描 数 据 和 实 时 运 动 信 号，快 速 计 算 位 置 偏
+图 9　计 算 光 学 与 智 能 算 法 在 多 模 态 成 像 系 统 中 的 创 新 应 用。 （a）基 于 实 时 三 维 运 动 校 正 的 系 统 有 效 抑 制 活 体 运 动 伪 影，显 著 减 小
+成像子体积需求
+［72］
+； （b）采用 DNN 实现视频速率双光子光纤镜成像 ，提升在体图像采集与分析效率
+［65］
+Fig. 9　Innovative applications of computational optics and intelligent algorithms in multimodal imaging systems . (a) System based on 
+real -time 3D motion correction effectively suppresses in vivo  motion artifacts , significantly reducing required imaging sub -
+volume
+[72]
+; (b) using a DNN to achieve video -rate two -photon fiberscope imaging , enhancing efficiency of in vivo  image 
+acquisition and analysis
+[65]
+
+=== PDF_PAGE 13 ===
+0200007 -13
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+移 并 进 行 反 馈 调 节 倾 向 于 区 域，实 现 在1 kHz 跟 踪 频
+率 下 亚 微 米 级 的 运 动 校 正。 类 似 地，Smith 团 队
+［78］
+的
+多 区 域 成 像 系 统，通 过 算 法 同 步 控 制 扫 描 器 相 位 和 焦
+平 面，确 保 多 光 路 成 像 的 时 序 与 空 间 一 致 性，为 多 模
+态、多区域动态观测提供保障 。
+随 着 深 度 学 习 的 不 断 发 展，在 高 速 高 分 辨 率 成 像
+方 面 也 取 得 重 要 进 展。 以 Li 团 队
+［65］
+为 例，他 们 提 出 一
+种“ 下 采 样+ 深 度 学 习 恢 复”的 策 略，通 过 高 速 扫 描 和
+下 采 样 实 现 约26 frame/s 的 视 频 成 像。接 着 使 用 双 阶
+段 DNN 进 行 图 像 优 化，第 一 个 阶 段 的DNN 负 责 提 取
+神经元形态并保留精细结构 ，第二个阶段的 DNN 则同
+时 进 行 降 噪 和 像 素 修 复，同 时 利 用 迁 移 学 习 适 配 在 体
+成 像 环 境［图 9（b） ］ 。最 终，他 们 在 保 持 高 信 噪 比 和 空
+间 分 辨 率 的 前 提 下 ，将 成 像 速 度 提 升 至 传 统 光 纤
+2PEF 的 10 倍 ，为 快 速 动 态 多 模 态 观 测 提 供 全 新 的
+途径 。
+总 体 来 看，新 的 硬 件 创 新、光 场 调 控 技 术、不 断 发
+展 的 深 度 学 习，显 著 促 进 多 模 态 成 像 速 度、视 场 范 围、
+信 噪 比、解 决 力 的 全 面 提 升。 从 过 去 主 要 依 靠 硬 件 实
+现的模式 ，逐步转向计算与硬件深度融合的新形式 ，当
+前的系统设计范式正在发生深刻变化 。
+4　多 模 态 非 线 性 光 学 显 微 成 像 技 术 的
+生物应用
+4.1　多模态成像的荧光特异性表征
+非线性光学显微成像技术的物理基础依赖超短脉
+冲激光在衍射极限聚焦条件下所诱导的高阶非线性光
+学 效 应。 当 激 光 瞬 时 功 率 密 度 超 过 特 定 阈 值（通 常 高
+于 10
+12
+ W/cm2 ）时，可激发介质产生显著的高阶极化响
+应 ，从 而 诱 发 多 种 非 线 性 信 号 产 生 机 制，如 多 光 子 吸
+收 、谐 波 产 生 和 四 波 混 频 等
+［79-80］
+。 这 些 过 程 促 使 荧 光
+团 或 特 定 分 子 结 构 发 生 协 同 量 子 态 跃 迁，并 辐 射 出 具
+有 特 征 波 长 与 空 间 分 布 的 非 线 性 光 学 信 号，如 图 10
+所示 。
+多 光 子 激 发 荧 光 显 微（MPEFM ）成 像 利 用 高 峰 值
+功 率 的 飞 秒 脉 冲 激 光 同 时 激 发 多 个 长 波 长 光 子，促 使
+荧 光 分 子 发 生 非 线 性 吸 收 跃 迁
+［81-83］
+。MPEFM 能 够 高
+灵 敏 度 地 检 测 细 胞 内 源 性 的 代 谢 相 关 荧 光 物 质，如 辅
+酶 还 原 型 烟 酰 胺 腺 嘌 呤 二 核 苷 酸（NADH）与 FAD 。
+通 过 定 量 分 析NADH 与 FAD 的 相 对 浓 度，研 究 人 员
+能 够 非 侵 入 性 地 评 估 细 胞 的 代 谢 状 态 与 氧 化 还 原
+水平
+［84-86］
+。
+SHG/THG 与 SRS/CARS 则 构 成 无 标 记 成 像 的
+重 要 分 支
+［87-90］
+。 SHG 依 赖 介 质 二 阶 非 线 性 极 化（χ2） ，
+能够特异性识别胶原纤维等具有非中心对称结构的生
+物 分 子；THG 则 基 于 三 阶 非 线 性（χ3） ，对 折 射 率 异 质
+界 面 高 度 敏 感，可 实 现 脂 质 体 和 细 胞 核 等 亚 细 胞 结
+构
+［91-95］
+。 与 之 互 补，SRS 与 CARS 技 术 通 过 探 测 分 子
+化 学 键 的 振 动 特 性，实 现 对CH ₙ等 特 定 化 学 基 团 的 高
+分 辨 率 成 像
+［96-98］
+。 其 中，SRS 信 号 与 分 子 浓 度 呈 线 性
+关 系 ，适 用 于 LDs 脂 质 、蛋 白 质 等 成 分 的 定 量 分 析；
+CARS 则 凭 借 其 信 号 增 强 特 性，在 低 浓 度 样 本 检 测 中
+图 10　光学成像模态与其对应的特异性生物分子与微环境参数
+Fig. 10　Optical imaging modalities and their corresponding specific biomolecules and microenvironmental parameters
+
+=== PDF_PAGE 14 ===
+0200007 -14
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+表现出显著优势
+［99-100］
+。
+FLIM 则 进 一 步 将 探 测 维 度 延 伸 至 荧 光 分 子 的 时
+间 动 力 学 特 性
+［101 -102］
+。 该 技 术 通 过 量 化 荧 光 团 处 于 激
+发 态 的 平 均 时 间，获 取 其 对 微 环 境 参 数（如 pH 、黏 度、
+离 子 浓 度 及 分 子 相 互 作 用）的 动 态 响 应。 结 合 双 光 子
+激 发，FLIM 能 够 在 活 体 及 厚 组 织 中 实 现 对 代 谢 物 状
+态、蛋 白 质 构 象 变 化 的 长 时 程 动 态 监 测
+［103 -104］
+。 这 些 各
+具 特 色 的 非 线 性 光 学 模 态，分 别 从 荧 光 强 度、分 子 结
+构、化学键振动及寿命动力学等多个维度 ，为多模态成
+像提供特异性强 、互补性好的方法学基础 ，共同推动对
+复杂生物系统的多尺度定量解析 。
+4.2　多模态成像在生物医学领域的应用
+多 模 态 非 线 性 光 学 显 微 成 像 技 术 凭 借 其 无 标 记、
+高分辨率 、三维成像及多参数同步采集等独特优势 ，通
+过 对 多 种 非 线 性 光 学 过 程 的 有 机 整 合，已 在 生 物 医 学
+研究中展现出关键作用 。该技术作为精准医学与前沿
+生 命 科 学 探 索 的 重 要 支 撑 手 段，被 成 功 应 用 于 肿 瘤 病
+理诊断 、细胞代谢过程分析 、特定蛋白靶向标记及肿瘤
+微 环 境 精 准 表 征 等 多 个 关 键 研 究 方 向，并 取 得 一 系 列
+重要进展（如图 11 所示） 。
+在 细 胞 结 构 和 分 子 理 化 性 质 的 多 维 度 表 征 方 面，
+Mazumder 等
+［105］
+开 发 集 2PEF 、FLIM 、SHG 、CARS 四
+种 成 像 模 式 于 一 体 的 紧 凑 型 多 模 态 非 线 性 光 学 显 微
+镜 。 该 系 统 通 过 测 量NADH 的 荧 光 寿 命 来 区 分 其 游
+离 状 态 和 结 合 状 态，从 而 对 细 胞 代 谢 状 态 进 行 定 量 评
+价。Hou 等
+［106］
+共同利用 2PEF 、CRS 、SHG 等非线性光
+学成像技术 ，对原代乳腺上皮细胞及乳腺癌细胞系 3D
+球状体模型开展代谢与组成研究 。Lee 等
+［107］
+开发一套
+高 速 多 模 态 非 线 性 光 学 显 微 镜，其 融 合 2PEF 、SHG 、
+THG 三种成像模式 ，利用共振扫描器结合振镜扫描策
+略 ，将 成 像 速 度 提 升 到300 frame/s ，实 现 脊 椎 动 物 早
+期细胞分裂过程的高速 、多模态 、无标记活体成像 。
+在心血管疾病 、代谢性疾病 、眼科及神经科学等非
+癌 性 疾 病 的 机 制 研 究 和 临 床 评 估 中，多 模 态 非 线 性 光
+学成像技术发挥至关重要的作用 。在心血管疾病的研
+究 中，多 模 态 成 像 技 术 成 为 揭 示 动 脉 粥 样 硬 化 机 制 和
+评 估 药 物 干 预 效 果 的 关 键 技 术 支 持。 研 究 者 利 用
+CARS 、2PEF 与 SHG 多 模 态 非 线 性 成 像 技 术，对 动 脉
+粥样硬化斑块进行动态观测 ［图 12（a） ］
+［108］
+。另一研究
+则 通 过 图 像 算 法 计 算 病 变 区 域 的 脂 质 含 量、胶 原 密 度
+及 细 胞 代 谢 活 性，从 而 建 立 用 于 定 量 评 估 动 脉 粥 样 硬
+化病变的无标记成像指标体系
+［109］
+。
+在 眼 科 学 与 神 经 科 学 领 域，多 模 态 成 像 同 样 表 现
+出 重 要 价 值。 如 图 12（b）所 示 ，研 究 者 采 用2PEF 与
+SHG 成 像 技 术，对 角 膜 组 织 进 行 高 分 辨 率 无 标 记 观
+察
+［110 -111］
+。 深 圳 大 学 刘 丽 炜 团 队
+［112］
+利 用 搭 建 的 多 模 态
+成 像 系 统 对 斑 马 鱼 及 小 鼠 活 体 大 脑 进 行 高 速 三 维
+FLIM ，实 现 脑 部 细 胞 内Ca2 +浓 度 动 态 监 测、热 损 伤 后
+小 胶 质 细 胞 运 动 与 微 环 境 变 化 追 踪、星 形 质 细 胞 网 络
+间 隙 连 接 结 构 与 功 能 分 析，以 及 神 经 元 钙 活 动 的 定 量
+可视化［图 12（c） ］ 。
+在 癌 症 早 期 诊 断 方 面，Chrabaszcz 等
+［113］
+采 用 多 模
+图 11　多模态非线性显微成像技术的主要生物应用
+Fig. 11　Key biological applications of multimodal nonlinear microscopy
+
+=== PDF_PAGE 15 ===
+0200007 -15
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+态 非 线 性 光 学 成 像 技 术（集 成 CARS 、2PEF 、SHG 、
+FLIM） ，结 合 标 准/高 清 傅 里 叶 红 外 光 谱，实 现 小 鼠 乳
+腺 癌 肺 转 移 灶 早 期 检 测 和 动 态 分 析，结 果 如 图13（a）
+所 示。 同 年，该 团 队
+［114］
+利 用 多 模 态 无 标 记 检 测 技 术，
+实现对肺转移瘤中细胞外基质重构过程的精准识别与
+阶 段 判 定。 在 癌 症 病 理 分 级 诊 断 方 面，Meyer 等
+［115］
+采
+用 CARS 、SHG 、2PEF 多 模 态 成 像 技 术 无 标 记 观 察 头
+颈鳞癌组织切片 。H&E 染色对比表明 ，该系统可清晰
+识别从正常上皮到不典型增生再到癌原位的形态学改
+变 ，将 多 模 态 非 线 性 成 像 用 于 头 颈 部 鳞 状 细 胞 癌 的 组
+图 12　多 模 态 非 线 性 光 学 成 像 技 术 在 非 癌 疾 病 研 究 中 的 典 型 应 用。 （a）采 用 CARS 与 2PEF 技 术 对IV 型 动 脉 粥 样 硬 化 病 变 的 协 同
+成像
+［108］
+； （b）角膜组织在深度方向的多模态光谱成像
+［110］
+； （c）通过多模态显微成像系统实时监测中枢神经系统髓鞘降解模型
+的钙离子内流 、小胶质细胞动态功能成像
+［32，112］
+Fig. 12　Typical applications of multimodal nonlinear optical imaging in study of non -cancerous diseases . (a) Synergistic imaging of a 
+type IV atherosclerotic lesion using CARS and 2PEF techniques
+[108]
+; (b) depth -resolved multimodal spectral imaging of corneal 
+tissue
+[110]
+; (c) real -time monitoring of calcium influx and microglial dynamics in a central nervous system demyelination model 
+using a multimodal microscopy system
+[32,112]
+
+=== PDF_PAGE 16 ===
+0200007 -16
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+织 病 理 分 级。 深 圳 大 学 刘 丽 炜 团 队
+［116］
+利 用 自 研 的 光
+谱与时间分辨多模态双光子成像技术 ，实现无标记 、多
+维度皮肤基底细胞癌定量评估 ［图 13（b） ］ 。
+在 癌症 手 术 的 诊 断 与 治 疗 监 测 领 域，科 研 人 员 开
+发 一 系 列 先 进 的 多 模 态 非 线 性 光 谱 成 像 技 术，并 成 功
+将 其 应 用 于 临 床 实 践 中 ，如 图 13（c）所 示 。 Yang
+等
+［117 -118］
+开 发 便 携 式 无 标 记 多 模 态 非 线 性 光 学 成 像 系
+统，其整合 SHG 、THG 、2PEF 、3PEF 、CARS 和 SRS 六
+图 13　多 模 态 非 线 性 光 学 成 像 技 术 在 癌 症 研 究 中 的 应 用。 （a）基 于 2PEF -SHG -CARS -FLIM 对 小 鼠 乳 腺 癌 肺 转 移 灶 进 行 早 期 检 测
+与 动 态 分 析
+［113 -114］
+； （b）采 用 2PEF -SHG -CARS 、2PEF -SHG -FLIM 及 2PEF -SHG -SRS -FLIM 等 技 术 实 现 头 颈 鳞 癌、皮 肤 癌、
+脑胶质瘤的组织分级与分期
+［53，115 -116］
+； （c）利用 2PEF -SHG -3PEF -THG 内窥成像系统对小鼠脑部进行在体多模态成像 ［55］
+Fig. 13　Applications of multimodal nonlinear optical imaging in cancer research . (a) Early detection and dynamic analysis of lung 
+metastasis in a mouse model of breast cancer using 2PEF , SHG , CARS , and FLIM
+[113 -114]
+; (b) tissue grading and staging of 
+head and neck squamous cell carcinoma , skin cancer , and glioma using techniques such as 2PEF -SHG -CARS , 2PEF -SHG -
+FLIM , and 2PEF -SHG -SRS -FLIM [53,115 -116]; (c) in vivo  multimodal imaging of a mouse brain using a 2PEF -SHG -3PEF -THG 
+endoscopic imaging system
+[55]
+
+=== PDF_PAGE 17 ===
+0200007 -17
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+种 成 像 方 式，可 用 于 人 乳 腺 癌 切 除 组 织 和 犬 类 针 吸 活
+检 样 本 的 成 像。 该 系 统 可 以 识 别 肿 瘤 细 胞 的 浸 润 情
+况 、胶 原 纤 维、细 胞 外 囊 泡 以 及 代 谢 特 征，并 结 合 深 度
+学习技术实时生成虚拟组织学诊断结果 。他们还进一
+步 优 化 系 统，使 其 能 够 快 速 全 覆 盖 成 像 小 尺 寸 活 检 样
+本，实现准确识别肿瘤细胞簇和代谢异常区域 ，并且与
+术后病理结果一致 。
+为 实 现 临 床 设 备 的 转 化，Meyer 等
+［119］
+研 发 紧 密 型
+多模态非线性显微镜 （集成 2PEF 、SHG 、CARS） ，可安
+装 在 移 动 推 车 ，适 用 于 临 床 皮 肤 病 灶 和 肿 瘤 筛 查。
+Crisafi 等
+［120］
+开 发 基 于 紧 凑 型 光 纤 激 光 源 的 多 模 态 非
+线性显微镜 ，优化激光传输设计 ，在缩小设备体积的同
+时 保 证 成 像 质 量，更 适 配 床 旁 诊 断。Lombardini 等
+［121］
+设 计 融 合CARS 、2PEF 、SHG 的 高 分 辨 率 柔 性 相 干 拉
+曼 内 窥 镜，实 现 大 鼠 尾 腱、人 结 肠 组 织 的 无 标 记 成 像。
+Pshenay -Searin 等［122］开 发 直 径 仅 为2.4 mm 的 多 模 态
+非 线 性 内 窥 镜 探 头，获 得 CARS/ 2PEF/SHG 图 像，其
+参数可与大型设备相吻合 。这些创新技术的应用为癌
+症 的 术 中 诊 断 与 治 疗 监 测 提 供 重 要 的 支 持，有 望 在 临
+床实践中发挥更大的作用 。
+在 药 物 研 发 和 药 效 评 估 领 域，多 模 态 非 线 性 光 学
+成 像 技 术 是 一 项 强 大 的 工 具，可 用 于 可 视 化 药 物 在 组
+织 中 的 分 布 以 及 分 析 治 疗 效 果。 Darville 等
+［123］
+基 于
+CARS 显微技术 ，结合多模态非线性光学成像方法 ，系
+统 研 究 未 标 记 药 物 纳 米/微 米 晶 体 在 生 物 体 系 中 的 分
+布 与 相 互 作 用，如 图 14（a）所 示。 研 究 团 队 首 先 通 过
+拉 曼 与 CARS 光 谱 确 定 前 体 药 物 帕 利 哌 酮 棕 榈 酸 酯
+（PP）及其代谢产物帕利哌酮 （PAL）在 CH 伸缩振动区
+的 特 征 信 号 ，进 而 利 用 CARS 显 微 镜 实 现 对 RAW 
+264.7 巨 噬 细 胞 内PP 晶 体 三 维 分 布 的 无 标 记、非 侵 入
+性 实 时 成 像，并 在 组 织 切 片 中 验 证 该 技 术 对 尺 寸 大 于
+400 nm 晶 体 原 位 检 测 的 适 用 性。 Bocklitz 等
+［124］
+结 合
+图 14　多 模 态 非 线 性 光 学 成 像 技 术 助 力 药 物 研 发 与 药 效 精 准 评 估。 （a）基 于 2PEF -CARS 成 像 解 析PP -NC 纳 米/微 米 晶 体 在RAW 
+264.7 巨 噬 细 胞 中 的 靶 向 分 布 与 治 疗 效 应
+［123］
+； （b）利 用 2PEF -SHG -CARS 图 像 生 成 虚 拟H&E 染 色，实 现 治 疗 后 的 组 织 病 理
+辅助诊断与药效量化评估
+［124］
+Fig. 14　Multimodal nonlinear optical imaging facilitates drug discovery and precise evaluation of drug efficacy . (a) Elucidating targeted 
+distribution and therapeutic effects of PP -NC nano/microcrystals in RAW 264.7 macrophages based on 2PEF -CARS 
+imaging
+[123]
+; (b) generating virtual H&E staining from 2PEF -SHG -CARS images to enable post -treatment histopathological 
+diagnosis and quantitative assessment of drug efficacy
+[124]
+
+=== PDF_PAGE 18 ===
+0200007 -18
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+CARS 、2PEF 与 SHG 多 模 态 成 像 与 拉 曼 光 谱 技 术，开
+发 出 虚 拟H&E 图 像 生 成 算 法，其 无 需 进 行 组 织 固 定
+和 染 色 即 可 生 成 病 理 医 师 熟 悉 的 伪 彩 色 图 像，显 著
+简 化 病 理 诊 断 流 程，特 别 适 用 于 术 中 快 速 组 织 评 估
+［图 14（b） ］ 。
+整 体 而 言，融 合 多 种 成 像 方 式 的 非 线 性 显 微 成 像
+技术已普遍应用于许多场景 ，如细胞检测 、药物传输与
+治疗等 ，尤其值得关注的是 ，这类系统能够完成对多种
+生物分子的联合分析 ，比如脂质等 ，同时捕捉生物组织
+内部的内源成分信息 。从离体样本研究过渡到手术期
+即 时 判 断，这 一 技 术 在 微 化 仪 器 不 断 进 步 的 推 动 下 取
+得 成 功，同 时 肿 瘤 智 能 辅 助 诊 断 系 统 构 建 融 合 人 工 智
+能 方 法 正 逐 步 成 长 为 多 模 态 成 像 领 域 的 关 键 演 进
+趋势 。
+5　总结与展望
+多模态非线性光学显微成像技术通过协同多种非
+线 性 光 学 效 应，为 生 物 样 本 的 高 特 异 性 光 学 探 测 与 多
+维 表 征 提 供 强 大 工 具。 以 2PEF/ 3PEF 、SHG 、FLIM
+和 CARS/SRS 为核心的多模态技术 ，虽已成功实现对
+生物样本结构 、功能与分子信息的协同表征 ，但在系统
+集 成 和 临 床 转 化 等 方 面 仍 然 面 临 挑 战。 首 先，需 要 进
+一 步 提 高 成 像 技 术 的 分 辨 率 和 灵 敏 度，以 便 更 准 确 地
+观 察 生 物 组 织 的 微 观 结 构 和 功 能。 在 硬 件 层 面，需 要
+不 断 优 化 成 像 系 统 的 性 能，以 实 现 更 高 效 的 数 据 采 集
+和 处 理。 在 算 法 层 面，基 于 数 据 驱 动 的 方 法 正 成 为 提
+升 成 像 质 量、速 度 与 自 动 化 水 平 的 关 键 发 展 方 向。 深
+度 学 习 技 术 凭 借 其 自 动 特 征 提 取、强 大 的 非 线 性 建 模
+能 力 及 高 效 数 据 处 理 优 势，有 望 突 破 光 学 成 像 在 分 辨
+率极限 、噪声抑制 、复杂环境中信号衰减以及海量数据
+处 理 效 率 等 方 面 的 技 术 瓶 颈，为 构 建 下 一 代 智 能 成 像
+系 统 奠 定 核 心 技 术 基 础。 其 次，还 需 要 加 强 对 多 模 态
+成 像 技 术 的 标 准 化 和 规 范 化，以 确 保 其 在 不 同 实 验 室
+和临床环境中的稳定性和可重复性 。在开发临床需求
+专 用 成 像 集 成 装 置 的 同 时，推 动 标 准 化 数 据 采 集 流 程
+与 智 能 分 析 方 法 融 合 发 展，全 面 提 升 技 术 在 实 际 场 景
+下的实用性和普及性 。
+除 了 文 中 提 到 的 模 态 组 合，将 超 分 辨 成 像 技 术 与
+其他非线性成像技术结合也是近年来的研究热点 。例
+如 ，Peres 等
+［125］
+将 2PEF 、SHG 、CARS 和 受 激 发 射 损 耗
+（STED）相 结 合，实 现 活 体 小 鼠 耳 垂 组 织 中 复 杂 生 物
+活 动 的 监 测：通 过 SHG 定 位 胶 原 纤 维 层，利 用 CARS
+成 像 识 别 皮 脂 细 胞，并 借 助 双 色2PEF 实 时 观 察 其 附
+近 基 底 角 质 形 成 细 胞 的 自 发 及 受 激Ca2 +活 性。 更 进
+一 步 地，通 过 引 入 合 适 的 荧 光 标 记 并 切 换 至STED 模
+式 ，该 系 统 还 能 解 析 常 规 显 微 镜 无 法 分 辨 的 精 细 形 态
+和 潜 在 的 功 能 性 皮 肤 结 构
+［126］
+。然 而，这 种 多 模 态 成 像
+技 术 融 合 也 面 临 着 严 峻 的 技 术 挑 战。 一 方 面，尽 管 近
+红外波段的激发光与损耗光是深层散射成像的理想选
+择，但在组织深处 ，光学像差会严重降低双光子 STED
+的 分 辨 率 。 另 一 方 面 ，随 着 成 像 深 度 的 增 加 ，2P-
+STED 维 持 分 辨 率 所 需 的 激 发 功 率 会 急 剧 增 加，远 超
+常 规 2PEF 成 像。 对 于 STED -FLIM 而 言，无 论 是 超
+分 辨 技 术 固 有 的 多 帧 采 集 需 求，还 是 FLIM 必 需 的 光
+子累积过程 ，都严重限制时间分辨率 ，使得捕捉快速的
+生物动态过程变得极为困难 。
+总 而 言 之，多 模 态 非 线 性 光 学 显 微 成 像 技 术 正 以
+前所未有的深度与精度推动生命科学观测范式的不断
+突 破。 通 过 多 种 非 线 性 光 学 过 程 的 有 机 整 合，该 技 术
+实现从亚细胞结构到组织形态的多尺度 、多参数解析 ，
+在 细 胞 代 谢 分 析、肿 瘤 边 界 识 别 与 微 环 境 表 征 等 方 向
+展 现 出 显 著 优 势。 尽 管 在 系 统 集 成、成 像 通 量 与 临 床
+标 准 化 方 面 仍 面 临 挑 战，但 随 着 微 型 化 光 学 设 计 和 智
+能分析方法的发展 ，未来有望构建更高效 、稳定的集成
+系统 。推动多模态成像操作规范与临床评价体系的建
+立，将加速该技术从实验室向术中导航 、病理诊断等临
+床 应 用 场 景 的 转 化，最 终 为 精 准 医 学 提 供 强 有 力 的 原
+位、实时 、多维光学检测手段 。
+参 考 文 献
+[1] Davidson M W . Janssen ’s microscope [EB/OL ]. (2015 -
+11-13) [2025 -12-11]. https : ∥micro . magnet . fsu. edu/
+primer/museum/janssen .html .
+[2] Hell S W . Far -field optical nanoscopy [J]. Science , 2007 , 
+316(5828 ): 1153 -1158 .
+[3] Fernández -Suárez M , Ting A Y . Fluorescent probes for 
+super -resolution imaging in living cells [J]. Nature 
+Reviews Molecular Cell Biology , 2008 , 9(12): 929 -943.
+[4] Michelson A A . On the application of interference 
+methods to astronomical measurements [J]. Proceedings 
+of the National Academy of Sciences of the United States 
+of America , 1920 , 6(8): 474 -475.
+[5] Priscilla N , Sulejman S B , Roberts A , et al . New 
+avenues for phase imaging : optical metasurfaces [J]. ACS 
+Photonics , 2024 , 11(8): 2843 -2859 .
+[6] Jonkman J , Brown C M , Wright G D , et al . Tutorial : 
+guidance for quantitative confocal microscopy [J]. Nature 
+Protocols , 2020 , 15(5): 1585 -1611 .
+[7] Webb R H . Confocal optical microscopy [J]. Reports on 
+Progress in Physics , 1996 , 59(3): 427 -471.
+[8] Minsky M . Memoir on inventing the confocal scanning 
+microscope [J]. Scanning , 1988 , 10(4): 128 -138.
+[9] So P T C , Dong C Y , Masters B R , et al . Two -photon 
+excitation fluorescence microscopy [J]. Annual Review of 
+Biomedical Engineering , 2000 , 2: 399 -429.
+[10] Rubart M . Two -photon microscopy of cells and tissue [J]. 
+Circulation Research , 2004 , 95(12): 1154 -1166 .
+[11] Piston D W . Imaging living cells and tissues by two -
+photon excitation microscopy [J]. Trends in Cell Biology , 
+1999 , 9(2): 66-69.
+[12] Kaiser W , Garrett C G B . Two -photon excitation in  
+CaF 2∶Eu
+2+
+[J]. Physical Review Letters , 1961 , 7(6): 229 -
+231.
+[13] Perry S W , Burke R M , Brown E B . Two -photon and 
+second harmonic microscopy in clinical and translational 
+
+=== PDF_PAGE 19 ===
+0200007 -19
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+cancer research [J]. Annals of Biomedical Engineering , 
+2012 , 40(2): 277 -291.
+[14] Denk W , Strickler J H , Webb W W . Two -photon laser 
+scanning fluorescence microscopy [J]. Science , 1990 , 248
+(4951 ): 73-76.
+[15] Piston D W , Sandison D R , Webb W W . Time -resolved 
+fluorescence imaging and background rejection by  
+two -photon excitation in laser -scanning microscopy [J]. 
+Proceedings of SPIE , 1992 , 1640 : 379 -389.
+[16] Patterson G H , Piston D W , Barisas B G . Förster 
+distances between green fluorescent protein pairs [J]. 
+Analytical Biochemistry , 2000 , 284(2): 438 -440.
+[17] Becker W , Bergmann A . Multi -dimensional time -
+correlated single photon counting [M]∥Geddes C D , 
+Lakowicz J R . Reviews in fluorescence 2005 . Boston : 
+Springer US , 2007 : 77-108.
+[18] Becker W . Fluorescence lifetime imaging -techniques and 
+applications [J]. Journal of Microscopy , 2012 , 247(2): 
+119 -136.
+[19] Hell S W , Bahlmann K , Schrader M , et al . Three -
+photon excitation in fluorescence microscopy [J]. Journal 
+of Biomedical Optics , 1996 , 1(1): 71-74.
+[20] Zumbusch A , Holtom G R , Xie X S . Three -dimensional 
+vibrational imaging by coherent anti -stokes Raman 
+scattering [J]. Physical Review Letters , 1999 , 82(20): 
+4142 -4145 .
+[21] Freudiger C W , Min W , Saar B G , et al . Label -free 
+biomedical imaging with high sensitivity by stimulated 
+Raman scattering microscopy [J]. Science , 2008 , 322
+(5909 ): 1857 -1861 .
+[22] Saar B G , Freudiger C W , Reichman J , et al . Video -rate 
+molecular imaging in vivo  with stimulated Raman 
+scattering [J]. Science , 2010 , 330(6009 ): 1368 -1370 .
+[23] Kabakova I , Zhang J T , Xiang Y C , et al . Brillouin 
+microscopy [J]. Nature Reviews Methods Primers , 2024 , 
+4: 8.
+[24] Sun Y H , Hatami N , Yee M , et al . Fluorescence 
+lifetime imaging microscopy for brain tumor image -
+guided surgery [J]. Journal of Biomedical Optics , 2010 , 
+15(5): 056022 .
+[25] Schweitzer D , Deutsch L , Klemm M , et al . 
+Fluorescence lifetime imaging ophthalmoscopy in type 2 
+diabetic patients who have no signs of diabetic retinopathy
+[J]. Journal of Biomedical Optics , 2015 , 20(6): 061106 .
+[26] Orringer D A , Pandian B , Niknafs Y S , et al . Rapid 
+intraoperative histology of unprocessed surgical 
+specimens via fibre -laser -based stimulated Raman 
+scattering microscopy [J]. Nature Biomedical 
+Engineering , 2017 , 1(2): 27.
+[27] Zhang Z Q , Kuzmin N V , Groot M L , et al . 
+Quantitative comparison of 3D third harmonic generation 
+and fluorescence microscopy images [J]. Journal of 
+Biophotonics , 2018 , 11(1): e201600256 .
+[28] Mohseni M , Polzer C , Hellerer T . Resolution of spectral 
+focusing in coherent Raman imaging [J]. Optics Express , 
+2018 , 26(8): 10230 -10241 .
+[29] Gorpas D , Phipps J , Bec J , et al . Autofluorescence 
+lifetime augmented reality as a means for real -time 
+robotic surgery guidance in human patients [J]. Scientific 
+Reports , 2019 , 9: 1187 .
+[30] Hollon T C , Pandian B , Adapa A R , et al . Near real -
+time intraoperative brain tumor diagnosis using stimulated 
+Raman histology and deep neural networks [J]. Nature 
+Medicine , 2020 , 26(1): 52-58.
+[31] Kano H , Hamaguchi H O . In-vivo  multi -nonlinear optical 
+imaging of a living cell using a supercontinuum light 
+source generated from a photonic crystal fiber [J]. Optics 
+Express , 2006 , 14(7): 2798 -2804 .
+[32] Huff T B , Shi Y Z , Fu Y , et al . Multimodal nonlinear 
+optical microscopy and applications to central nervous 
+system imaging [J]. IEEE Journal of Selected Topics in 
+Quantum Electronics , 2008 , 14(1): 4-9.
+[33] Downes A , Mouras R , Elfick A . A versatile CARS 
+microscope for biological imaging [J]. Journal of Raman 
+Spectroscopy , 2009 , 40 (7): 757 -762.
+[34] Helmchen F , Denk W . Deep tissue two -photon 
+microscopy [J]. Nature Methods , 2005 , 2(12): 932 -940.
+[35] König K . Multiphoton microscopy in life sciences [J]. 
+Journal of Microscopy , 2000 , 200(2): 83-104.
+[36] Campagnola P J , Wei M D , Lewis A , et al . High -
+resolution nonlinear optical imaging of live cells by 
+second harmonic generation [J]. Biophysical Journal , 
+1999 , 77(6): 3341 -3349 .
+[37] Ni H W , Xu Z C , Li D Y , et al . Aggregation -induced 
+emission luminogen for in vivo  three -photon fluorescence 
+lifetime microscopic imaging [J]. Journal of Innovative 
+Optical Health Sciences , 2019 , 12(5): 1940005 .
+[38] Ranawat H , Pal S , Mazumder N . Recent trends in  
+two -photon auto -fluorescence lifetime imaging (2P-
+FLIM ) and its biomedical applications [J]. Biomedical 
+Engineering Letters , 2019 , 9(3):293 -310.
+[39] Becker & Hickl GmbH . Hybrid single -photon detector
+[EB/OL ]. (2024 -05-28) [2025 -11-03]. https : ∥www .
+becker -hickl . com/zh/products/% e 6%b7%b7%e5% 
+90%88%e5%9e% 8b% e5%8d% 95%e5%85%89% 
+e5%ad% 90%e6%8e%a 2%e6%b5%8b%e 5%99%a8/.
+[40] Becker & Hickl GmbH . InGaAs/InP SPAD infrared 
+detector [EB/OL ]. (2024 -05-28)[2025 -11-03]. https :∥
+www . becker -hickl . com/zh/products/ingaas -inp -spad -%
+e7%ba% a2%e5%a4%96%e6%8e% a2%e6%b5%8b%
+e5%99%a8/.
+[41] Becker & Hickl GmbH . Multispectral TCSPC detector
+[EB/OL ]. (2024 -05-28)[ 2025 -11-03]. https :∥www .
+beckerhickl . com/zh/products/% e5%a4%9a% e5%85% 
+89%e8%b0%b1tcspc% e 6%8e% a 2%e6%b5%8b%
+e5%99%a8/.
+[42] Fu D , Lu F K , Zhang X , et al . Quantitative chemical 
+imaging with multiplex stimulated Raman scattering 
+microscopy [J]. Journal of the American Chemical 
+Society , 2012 , 134(8): 3623 -3626 .
+[43] Wang H F , Fu Y , Zickmund P , et al . Coherent anti -
+stokes Raman scattering imaging of axonal myelin in live 
+spinal tissues [J]. Biophysical Journal , 2005 , 89(1): 581 -
+591.
+[44] Fu Y , Wang H F , Shi R Y , et al . Second harmonic and 
+sum frequency generation imaging of fibrous astroglial 
+filaments in ex vivo spinal tissues [J]. Biophysical Journal , 
+2007 , 92(9): 3251 -3259 .
+[45] Hellerer T , Enejder A M K , Zumbusch A . Spectral 
+focusing : high spectral resolution spectroscopy with 
+broad -bandwidth laser pulses [J]. Applied Physics 
+Letters , 2004 , 85(1): 25-27.
+
+=== PDF_PAGE 20 ===
+0200007 -20
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+[46] Langbein W , Rocha -Mendoza I , Borri P . Single source 
+coherent anti -Stokes Raman microspectroscopy using 
+spectral focusing [J]. Applied Physics Letters , 2009 , 95
+(8): 081109 .
+[47] Chen H T , Wang H F , Slipchenko M N , et al . A 
+multimodal platform for nonlinear optical microscopy and 
+microspectroscopy [J]. Optics Express , 2009 , 17(3): 
+1282 -1290 .
+[48] Zhang C , Zhang D L , Cheng J X . Coherent Raman 
+scattering microscopy in biology and medicine [J]. Annual 
+Review of Biomedical Engineering , 2015 , 17: 415 -445.
+[49] Li M Q , Xu J , Romero -Gonzalez M , et al . Single cell 
+Raman spectroscopy for cell sorting and imaging [J]. 
+Current Opinion in Biotechnology , 2012 , 23(1): 56-63.
+[50] Zhang D L , Wang P , Slipchenko M N , et al . Fast 
+vibrational imaging of single cells and tissues by 
+stimulated Raman scattering microscopy [J]. Accounts of 
+Chemical Research , 2014 , 47(8): 2282 -2290 .
+[51] Li D , Zheng W , Zeng Y , et al . In vivo  and simultaneous 
+multimodal imaging : integrated multiplex coherent anti -
+Stokes Raman scattering and two -photon microscopy [J]. 
+Applied Physics Letters , 2010 , 97(22): 223702 .
+[52] Li X S , Lam W J , Cao Z , et al . Integrated femtosecond 
+stimulated Raman scattering and two -photon fluorescence 
+imaging of subcellular lipid and vesicular structures [J]. 
+Journal of Biomedical Optics , 2015 , 20(11): 110501 .
+[53] Li Y P , Shen B L , Zou G J , et al . Super -multiplex 
+nonlinear optical imaging unscrambles the statistical 
+complexity of cancer subtypes and tumor 
+microenvironment [J]. Advanced Science , 2022 , 9(5): 
+2104379 .
+[54] Murugkar S , Smith B , Srivastava P , et al . Miniaturized 
+multimodal CARS microscope based on MEMS scanning 
+and a single laser source [J]. Optics Express , 2010 , 18
+(23): 23796 -23804 .
+[55] Septier D , Brévalle -Wasilewski G , Lefebvre E , et al . 
+A hollow -core fiber based stand -alone multimodal (2-
+photon , 3-photon , SHG , THG ) nonlinear flexible 
+imaging endoscope system [J]. IEEE Journal of Selected 
+Topics in Quantum Electronics , 2024 , 30(6): 4301212 .
+[56] Calvarese M , Corbetta E , Contreras J , et al . 
+Endomicroscopic AI -driven morphochemical imaging and 
+fs-laser ablation for selective tumor identification and 
+selective tissue removal [J]. Science Advances , 2024 , 10
+(50): eado 9721 .
+[57] van Huizen L M G , Radonic T , van Mourik F , et al . 
+Compact portable multiphoton microscopy reveals 
+histopathological hallmarks of unprocessed lung tumor 
+tissue in real time [J]. Translational Biophotonics , 2020 , 2
+(4): e202000009 .
+[58] Shen B L , Yan J S , Wang S Q , et al . Label -free whole -
+colony imaging and metabolic analysis of metastatic 
+pancreatic cancer by an autoregulating flexible optical 
+system [J]. Theranostics , 2020 , 10(4): 1849 -1860 .
+[59] Streich L , Boffi J C , Wang L , et al . High -resolution 
+structural and functional deep brain imaging using 
+adaptive optics three -photon microscopy [J]. Nature 
+Methods , 2021 , 18(10): 1253 -1258 .
+[60] Ouzounov D G , Wang T Y , Wang M R , et al . In vivo  
+three -photon imaging of activity of GCaMP 6-labeled 
+neurons deep in intact mouse brain [J]. Nature Methods , 
+2017 , 14(4): 388 -390.
+[61] Piyawattanametha W , Barretto R P J , Ko T H , et al . 
+Fast -scanning two -photon fluorescence imaging based on 
+a microelectromechanical systems two -dimensional 
+scanning mirror [J]. Optics Letters , 2006 , 31(13): 2018 -
+2020 .
+[62] Li B , Wu C Y , Wang M R , et al . An adaptive excitation 
+source for high -speed multiphoton microscopy [J]. Nature 
+Methods , 2020 , 17(2): 163 -166.
+[63] Zhang T , Hernandez O , Chrapkiewicz R , et al . 
+Kilohertz two -photon brain imaging in awake mice [J]. 
+Nature Methods , 2019 , 16(11): 1119 -1122 .
+[64] Fan J L , Rivera J A , Sun W , et al . High -speed 
+volumetric two -photon fluorescence imaging of 
+neurovascular dynamics [J]. Nature Communications , 
+2020 , 11: 6020 .
+[65] Guan H H , Li D W , Park H C , et al . Deep -learning two -
+photon fiberscopy for video -rate brain imaging in freely -
+behaving mice [J]. Nature Communications , 2022 , 13: 
+1534 .
+[66] Janiak F K , Bartel P , Bale M R , et al . Non -telecentric 
+two -photon microscopy for 3D random access mesoscale 
+imaging [J]. Nature Communications , 2022 , 13: 544.
+[67] Clough M , Chen I A , Park S W , et al . Flexible 
+simultaneous mesoscale two -photon imaging of neural 
+activity at high speeds [J]. Nature Communications , 
+2021 , 12: 6638 .
+[68] Takanezawa S , Saitou T , Imamura T . Wide field light -
+sheet microscopy with lens -axicon controlled two -photon 
+Bessel beam illumination [J]. Nature Communications , 
+2021 , 12: 2979 .
+[69] Wu J L , Liang Y J , Chen S , et al . Kilohertz two -photon 
+fluorescence microscopy imaging of neural activity in vivo
+[J]. Nature Methods , 2020 , 17(3): 287 -290.
+[70] Weisenburger S , Tejera F , Demas J , et al . Volumetric 
+Ca
+2+
+ imaging in the mouse brain using hybrid multiplexed 
+sculpted light microscopy [J]. Cell , 2019 , 177(4): 1050 -
+1066 .e14.
+[71] Geng Q , Gu C L , Cheng J Y , et al . Digital micromirror 
+device -based two -photon microscopy for three -
+dimensional and random -access imaging [J]. Optica , 
+2017 , 4(6): 674 -677.
+[72] Griffiths V A , Valera A M , Lau J Y , et al . Real -time 
+3D movement correction for two -photon imaging in 
+behaving animals [J]. Nature Methods , 2020 , 17(7): 741 -
+748.
+[73] Wu R L , Zhao C Z , Qiu S , et al . A versatile miniature 
+two -photon microscope enabling multicolor deep -brain 
+imaging [J]. Nature Methods , 2025 , 22(9): 1935 -1943 .
+[74] Lai Q T K , Yip G G K , Wu J L , et al . High -speed laser -
+scanning biological microscopy using FACED [J]. Nature 
+Protocols , 2021 , 16(9): 4227 -4264 .
+[75] Beaulieu D R , Davison I G , Kılıç K , et al . Simultaneous 
+multiplane imaging with reverberation two -photon 
+microscopy [J]. Nature Methods , 2020 , 17(3): 283 -286.
+[76] Yu C -H, Stirman J N , Yu Y Y , et al . Diesel 2p 
+mesoscope with dual independent scan engines for 
+flexible capture of dynamics in distributed neural circuitry
+[J]. Nature Communications , 2021 , 12: 6639 .
+[77] Cheng A , Gonçalves J T , Golshani P , et al . 
+Simultaneous two -photon calcium imaging at different 
+
+=== PDF_PAGE 21 ===
+0200007 -21
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+depths with spatiotemporal multiplexing [J]. Nature 
+Methods , 2011 , 8(2): 139 -142.
+[78] Stirman J N , Smith I T , Kudenov M W , et al . Wide 
+field -of-view , multi -region , two -photon imaging of 
+neuronal activity in the mammalian brain [J]. Nature 
+Biotechnology , 2016 , 34(8): 857 -862.
+[79] Amar H . Nonlinear optics [J]. Journal of the Franklin 
+Institute , 1965 , 280(4): 363.
+[80] Smith S D . Lasers , nonlinear optics and optical 
+computers [J]. Nature , 1985 , 316(6026 ): 319 -324.
+[81] Diaspro A , Bianchini P , Vicidomini G , et al . Multi -
+photon excitation microscopy [J]. BioMedical Engineering 
+OnLine , 2006 , 5(1): 36.
+[82] 方 娜, 吴 赞 艺, 王 行 富, 等 . 基 于 多 光 子 显 微 技 术 的 脑
+膜 瘤 微 环 境 可 视 化 研 究（特 邀） [J]. 中 国 激 光, 2025 , 
+52(9): 0907202 .
+Fang N , Wu Z Y , Wang X F , et al . Visualization of 
+microenvironment of meningiomas based on multiphoton 
+microscopy (invited )[J]. Chinese Journal of Lasers , 2025 , 
+52(9): 0907202 .
+[83] 李 凯 彦, 黄 燕 侃, 曹 梓 贤, 等 . 微 型 双 光 子 显 微 镜 与 显
+微 内 窥 镜 方 法 与 应 用（特 邀）[J]. 激 光 与 光 电 子 学 进 展, 
+2025 , 62(18): 1817008 .
+Li K Y , Huang Y K , Cao Z X , et al . Methods and 
+applications of miniature two -photon microscopes and 
+endomicroscopes (invited )[J]. Laser & Optoelectronics 
+Progress , 2025 , 62(18): 1817008 .
+[84] Patterson G H , Knobel S M , Arkhammar P , et al . 
+Separation of the glucose -stimulated cytoplasmic and 
+mitochondrial NAD (P)H responses in pancreatic islet β 
+cells [J]. Proceedings of the National Academy of 
+Sciences of the United States of America , 2000 , 97(10): 
+5203 -5207 .
+[85] Huang S H , Heikal A A , Webb W W . Two -photon 
+fluorescence spectroscopy and microscopy of NAD (P)H 
+and flavoprotein [J]. Biophysical Journal , 2002 , 82(5): 
+2811 -2825 .
+[86] Williams R M , Piston D W , Webb W W . Two -photon 
+molecular excitation provides intrinsic 3-dimensional 
+resolution for laser -based microscopy and micro -
+photochemistry [J]. The FASEB Journal , 1994 , 8(11): 
+804 -813.
+[87] Moreaux L , Sandre O , Blanchard -Desce M , et al . 
+Membrane imaging by simultaneous second -harmonic 
+generation and two -photon microscopy [J]. Optics 
+Letters , 2000 , 25(5): 320 -322.
+[88] Campagnola P J , Clark H A , Mohler W A , et al . 
+Second -harmonic imaging microscopy of living cells [J]. 
+Journal of Biomedical Optics , 2001 , 6(3): 277 -286.
+[89] Holtom G R , Thrall B D , Chin B Y , et al . Achieving 
+molecular selectivity in imaging using multiphoton 
+Raman spectroscopy techniques [J]. Traffic , 2001 , 2(11): 
+781 -788.
+[90] Ozeki Y , Kitagawa Y , Sumimura K , et al . Stimulated 
+Raman scattering microscope with shot noise limited 
+sensitivity using subharmonically synchronized laser 
+pulses [J]. Optics Express , 2010 , 18(13): 13708 -13719 .
+[91] Mohler W , Millard A C , Campagnola P J . Second 
+harmonic generation imaging of endogenous structural 
+proteins [J]. Methods , 2003 , 29(1): 97-109.
+[92] Gusachenko I , Tran V , Houssen Y G , et al . 
+Polarization -resolved second -harmonic generation in 
+tendon upon mechanical stretching [J]. Biophysical 
+Journal , 2012 , 102(9): 2220 -2229 .
+[93] Barad Y , Eisenberg H , Horowitz M , et al . Nonlinear 
+scanning laser microscopy by third harmonic generation
+[J]. Applied Physics Letters , 1997 , 70(8): 922 -924.
+[94] Débarre D , Supatto W , Pena A M , et al . Imaging lipid 
+bodies in cells and tissues using third -harmonic generation 
+microscopy [J]. Nature Methods , 2006 , 3(1): 47-53.
+[95] Barille R , Canioni L , Rivet S , et al . Visualization of 
+intracellular Ca
+2+
+ dynamics with simultaneous two -
+photon -excited fluorescence and third -harmonic 
+generation microscopes [J]. Applied Physics Letters , 
+2001 , 79(24): 4045 -4047 .
+[96] Wang H W , Le T T , Cheng J X . Label -free imaging of 
+arterial cells and extracellular matrix using a multimodal 
+CARS microscope [J]. Optics Communications , 2008 , 
+281(7): 1813 -1822 .
+[97] Hudson B . Selection rules for coherent anti -Stokes 
+Raman spectroscopy [J]. The Journal of Chemical 
+Physics , 1974 , 61(12): 5461 -5463 .
+[98] Beyrau F , Bräuer A , Seeger T , et al . Gas -phase 
+temperature measurement in the vaporizing spray of a 
+gasoline direct -injection injector by use of pure rotational 
+coherent anti -Stokes Raman scattering [J]. Optics 
+Letters , 2004 , 29(3): 247 -249.
+[99] Sen P , Sen P K . Theory of stimulated Raman and 
+Brillouin scattering in noncentrosymmetric crystals [J]. 
+Physical Review B , 1985 , 31(2): 1034 -1040 .
+[100] Stiebing C , Meyer T , Rimke I , et al . Real -time Raman 
+and SRS imaging of living human macrophages reveals 
+cell -to-cell heterogeneity and dynamics of lipid uptake [J]. 
+Journal of Biophotonics , 2017 , 10(9): 1217 -1226 .
+[101] Lakowicz J R , Szmacinski H , Nowaczyk K , et al . 
+Fluorescence lifetime imaging of free and protein -bound 
+NADH [J]. Proceedings of the National Academy of 
+Sciences of the United States of America , 1992 , 89(4): 
+1271 -1275 .
+[102] Lakowicz J R , Szmacinski H , Nowaczyk K , et al . 
+Fluorescence lifetime imaging [J]. Analytical 
+Biochemistry , 1992 , 202(2): 316 -330.
+[103] Dong C Y , So P T , French T , et al . Fluorescence 
+lifetime imaging by asynchronous pump -probe microscopy
+[J]. Biophysical Journal , 1995 , 69(6): 2234 -2242 .
+[104] Yu W , So P T , French T , et al . Fluorescence 
+generalized polarization of cell membranes : a two -photon 
+scanning microscopy approach [J]. Biophysical Journal , 
+1996 , 70(2): 626 -636.
+[105] Mazumder N , Balla N K , Zhuo G -Y, et al . Label -free 
+non -linear multimodal optical microscopy : basics , 
+development , and applications [J]. Frontiers in Physics , 
+2019 , 7: 170.
+[106] Hou J , Williams J , Botvinick E L , et al . Visualization of 
+breast cancer metabolism using multimodal nonlinear 
+optical microscopy of cellular lipids and redox state [J]. 
+Cancer Research , 2018 , 78(10): 2503 -2512 .
+[107] Lee S H , Hong S H , Park S H , et al . Observation of 
+cell division in a fertilized egg of a zebrafish by using a 
+multimodal nonlinear optical microscope [J]. Journal of the 
+Korean Physical Society , 2019 , 75(6): 485 -489.
+[108] Ko A C T , Ridsdale A , Smith M S D , et al . Multimodal 
+
+=== PDF_PAGE 22 ===
+0200007 -22
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+nonlinear optical imaging of atherosclerotic plaque 
+development in myocardial infarction -prone rabbits [J]. 
+Journal of Biomedical Optics , 2010 , 15(2): 020501 .
+[109] Wang H W , Langohr I M , Sturek M , et al . Imaging and 
+quantitative analysis of atherosclerotic lesions by CARS -
+based multimodal nonlinear optical microscopy [J]. 
+Arteriosclerosis , Thrombosis , and Vascular Biology , 
+2009 , 29(9): 1342 -1348 .
+[110] Segawa H , Kaji Y , Leproux P , et al . Multimodal and 
+multiplex spectral imaging of rat cornea ex vivo  using a 
+white -light laser source [J]. Journal of Biophotonics , 
+2015 , 8(9): 705 -713.
+[111] Mercatelli R , Mattana S , Capozzoli L , et al . Label -free 
+investigation of human collagen morpho -mechanics by 
+correlative SHG , Brillouin and Raman microscopy [J]. 
+Proceedings of SPIE , 2020 , 11251 : 112510 G.
+[112] Li Y P , Xu X C , Zhang C , et al . In vivo  neurodynamics 
+mapping via high -speed two -photon fluorescence lifetime 
+volumetric projection microscopy [J]. Advanced Science , 
+2025 , 12(7): 2410605 .
+[113] Chrabaszcz K , Kaminska K , Augustyniak K , et al . 
+Tracking extracellular matrix remodeling in lungs induced 
+by breast cancer metastasis . Fourier transform infrared 
+spectroscopic studies [J]. Molecules , 2020 , 25(1): 236.
+[114] Chrabaszcz K , Meyer T , Bae H , et al . Comparison of 
+standard and HD FT -IR with multimodal CARS/TPEF/
+SHG/FLIMS imaging in the detection of the early stage 
+of pulmonary metastasis of murine breast cancer [J]. The 
+Analyst , 2020 , 145(14): 4982 -4990 .
+[115] Meyer T , Guntinas -Lichius O , von Eggeling F , et al . 
+Multimodal nonlinear microscopic investigations on head 
+and neck squamous cell carcinoma : toward intraoperative 
+imaging [J]. Head & Neck , 2013 , 35(9): E280 -E287.
+[116] Guo F Y , Lin F R , Shen B L , et al . Multidimensional 
+quantitative characterization of basal cell carcinoma by 
+spectral - and time -resolved two -photon microscopy [J]. 
+Nanophotonics , 2024 , 13(2): 217 -227.
+[117] Yang L X , Park J , Marjanovic M , et al . Intraoperative 
+label -free multimodal nonlinear optical imaging for point -
+of-procedure cancer diagnostics [J]. IEEE Journal of 
+Selected Topics in Quantum Electronics , 2021 , 27(4): 
+6801412 .
+[118] Yang L X , Park J , Chaney E J , et al . Label -free 
+multimodal nonlinear optical imaging of needle biopsy 
+cores for intraoperative cancer diagnosis [J]. Journal of 
+Biomedical Optics , 2022 , 27(5): 056504 .
+[119] Meyer T , Chemnitz M , Baumgartl M , et al . Expanding 
+multimodal microscopy by high spectral resolution 
+coherent anti -stokes Raman scattering imaging for clinical 
+disease diagnostics [J]. Analytical Chemistry , 2013 , 85
+(14): 6703 -6715 .
+[120] Crisafi F , Kumar V , Perri A , et al . Multimodal 
+nonlinear microscope based on a compact fiber -format 
+laser source [J]. Spectrochimica Acta Part A : Molecular 
+and Biomolecular Spectroscopy , 2018 , 188: 135 -140.
+[121] Lombardini A , Mytskaniuk V , Sivankutty S , et al . High -
+resolution multimodal flexible coherent Raman endoscope
+[J]. Light : Science & Applications , 2018 , 7:10.
+[122] Pshenay -Severin E , Bae H , Reichwald K , et al . 
+Multimodal nonlinear endomicroscopic imaging probe 
+using a double -core double -clad fiber and focus -
+combining micro -optical concept [J]. Light : Science & 
+Applications , 2021 , 10: 207.
+[123] Darville N , Saarinen J , Isomäki A , et al . Multimodal 
+non -linear optical imaging for the investigation of drug 
+nano -/ microcrystal -cell interactions [J]. European Journal 
+of Pharmaceutics and Biopharmaceutics , 2015 , 96: 338 -
+348.
+[124] Bocklitz T W , Salah F S , Vogler N , et al . Pseudo -HE 
+images derived from CARS/TPEF/SHG multimodal 
+imaging in combination with Raman -spectroscopy as a 
+pathological screening tool [J]. BMC Cancer , 2016 , 16
+(1): 534.
+[125] Peres C , Nardin C , Yang G , et al . Commercially 
+derived versatile optical architecture for two -photon 
+STED , wavelength mixing and label -free microscopy [J]. 
+Biomedical Optics Express , 2022 , 13(3): 1410 -1429 .
+[126] Velasco M G M , Zhang M Y , Antonello J , et al . 3D 
+super -resolution deep -tissue imaging in living mice [J]. 
+Optica , 2021 , 8(4): 442 -450.
+Development and Biomedical Applications of Multimodal Nonlinear 
+Microscopy (Invited )
+Wang Shiqi , Zhao Can , Guo Jiaqing , Sun Xuefeng , Liu Liwei
+*
+Key Laboratory of Optoelectronic Devices and Systems of Ministry of Education and Guangdong Province , College of 
+Physics and Optoelectronic Engineering , Shenzhen University , Shenzhen 518060 , Guangdong , China
+Abstract 
+Significance 　 Nonlinear optical microscopy (NLOM ) has emerged as a revolutionary tool in life sciences and clinical research , 
+offering unprecedented capabilities for high -resolution , three -dimensional , and deep -tissue imaging within living samples . Traditional 
+linear fluorescence microscopy often relies on fluorescent probes that can induce phototoxicity . In contrast , NLOM techniques —such 
+as two -photon excited fluorescence (2PEF ), second harmonic generation (SHG ), third harmonic generation (THG ), and coherent 
+
+=== PDF_PAGE 23 ===
+0200007 -23
+特邀综述 第 46 卷 第 2 期/2026  年 1 月/光学学报
+Raman scattering (CRS ) —provide intrinsic contrast based on the inherent molecular properties of biological tissues . This label -free 
+capability is crucial for long -term , high -speed dynamic imaging of cellular and subcellular processes in vivo  without altering their 
+native states .
+The complexity of biological systems , however , means that a single imaging modality often provides an incomplete picture . For 
+instance , while SHG is excellent for visualizing highly ordered structures like collagen , it cannot reveal metabolic activity . By 
+integrating multiple NLOM modalities into a single platform , multimodal nonlinear optical microscopy (MNLOM ) overcomes this 
+limitation . MNLOM constructs a multi -dimensional profile by simultaneously capturing complementary information on tissue 
+morphology , cellular function , and molecular composition . This enables multi -parameter and accurate identification of complex 
+biological events , making it a powerful platform for investigating fundamental cellular mechanisms , advancing early diagnosis , and 
+guiding precise , real -time diagnosis in clinical settings . Therefore , the development and application of advanced MNLOM systems are 
+of paramount significance for both fundamental biomedical research and clinical diagnostics . This review aims to systematically 
+summarize the key developments in MNLOM , providing a critical reference for researchers to harness its full potential .
+Progress 　 Recent years have witnessed remarkable progress in both the technological development and biomedical application of 
+MNLOM . Our review begins with a detailed exploration of system development , focusing on integration strategies and technological 
+evolution . We discuss the transition from early -stage , lab -built systems to sophisticated , user -friendly platforms designed for complex 
+biological experiments . Key innovations in system integration and technological evolution are highlighted , including the 
+synchronization of multiple laser sources , the design of efficient signal collection pathways , and the development of compact and 
+robust microscope heads suitable for clinical environments . We specifically elaborate on the engineering challenges and solutions for 
+building systems oriented toward clinical and in vivo  imaging , such as the integration with endoscopes for intraoperative diagnosis . 
+Following system development , we focus on advanced system optimization methods . Innovations in system architecture , such as the 
+use of shared laser sources and optimized scanning modules , have significantly improved imaging speed and depth . A particularly 
+transformative advancement is the integration of deep learning , which enables the use of artificial intelligence algorithms for real -time 
+image acquisition .
+The latter half of the review focuses on the diverse biomedical applications of MNLOM . We first explore how multimodal 
+imaging enables specific biomarker characterization without external labels . For example , by combining 2PEF from endogenous 
+fluorophores like nicotinamide adenine dinucleotide (NADH ) and flavin adenine dinucleotide (FAD ), SHG from collagen , and 
+coherent anti -Stokes Raman scattering (CARS ) or stimulated Raman scattering (SRS ) for lipid mapping , researchers can 
+simultaneously visualize cellular morphology , extracellular matrix remodeling , and metabolic state . This capability has been 
+powerfully applied across various fields . In oncology , MNLOM facilitates early diagnosis and precise pathological grading and staging 
+by providing label -free histopathology of tumor margins . In cardiovascular disease research , it allows for the dynamic visualization of 
+atherosclerotic plaque formation and vessel wall mechanics . For central nervous system studies , MNLOM enables deep -brain imaging 
+of neuronal activity and myelin sheath degradation . Furthermore , we present case studies in ophthalmology for diagnosing retinal 
+diseases and in pharmacology for assessing drug efficacy and toxicity , demonstrating the technology ’s broad utility for prognostic 
+assessment and drug development .
+Conclusions and Prospects 　 In conclusion , MNLOM has evolved from a specialized physical tool into an indispensable platform for 
+modern biomedical research . By synergistically combining the strengths of various label -free imaging modalities , MNLOM provides a 
+multi -parametric and comprehensive window into the intricate dynamics of life , from the subcellular to the tissue level . The 
+integration of advanced optics , high -speed electronics , and intelligent algorithms has pushed the boundaries of high -resolution , real -
+time imaging , enabling breakthroughs in our understanding of disease pathogenesis and paving the way for novel diagnostic and 
+therapeutic strategies .
+Looking forward , the field is poised for further innovation . Future prospects include the development of next -generation systems 
+with even higher sensitivity , deeper penetration , and faster acquisition speeds . The fusion of MNLOM with other advanced 
+techniques will unlock additional dimensions of information . A major thrust will be the continued clinical translation of MNLOM , 
+requiring the development of more compact , cost -effective , and FDA -approved systems for routine adjuvant diagnosis in operating 
+rooms and clinics . Furthermore , creating standardized , AI -driven analysis pipelines and large -scale databases is crucial for translating 
+multimodal imaging data into clinically relevant diagnostic information . The maturation of these technologies will accelerate the 
+translation of this technique from the laboratory to clinical applications such as intraoperative navigation and pathological diagnosis , 
+ultimately providing a powerful tool for in-situ , real -time , and multi -dimensional optical detection in precision medicine .
+Key words  nonlinear optical microscopy ; multimodal imaging ; biomedical imaging ; two -photon microscopy

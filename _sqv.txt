@@ -1,0 +1,68 @@
+﻿=== splits 瑕嗙洊鑼冨洿 ===
+If you have questions or suggestions, feel free to open an issue at https://github.com/DIAGNijmegen/picai_baseline
+
+fold None train 1035 val 260
+fold None train 1031 val 264
+fold None train 1041 val 254
+fold None train 1030 val 265
+fold None train 1043 val 252
+UNION cases = 1295
+picai_pub splits folds = 5
+=== README Data Preprocessing ===
+
+```python
+from picai_baseline.splits.picai import train_splits, valid_splits
+
+for fold, ds_config in train_splits.items():
+    print(f"Training fold {fold} has cases: {ds_config['subject_list']}")
+
+for fold, ds_config in valid_splits.items():
+    print(f"Validation fold {fold} has cases: {ds_config['subject_list']}")
+```
+
+Additionally, we prepared 5-fold cross-validation splits of all cases with an [expert-derived csPCa annotation](https://github.com/DIAGNijmegen/picai_labels/tree/main/csPCa_lesion_delineations/human_expert). These splits are subsets of the splits above. You can load these splits as follows:
+
+```python
+from picai_baseline.splits.picai_nnunet import train_splits, valid_splits
+```
+
+When using `picai_eval` from the command line, we recommend saving the splits to disk. Then, you can pass these to `picai_eval` to ensure all cases were found. You can export the labelled cross-validation splits using:
+
+```bash
+python -m picai_baseline.splits.picai_nnunet --output "/workdir/splits/picai_nnunet"
+```
+
+
+### Data Preprocessing
+We follow the [`nnU-Net Raw Data Archive`][nnunet_raw_data_format] format to prepare our dataset for usage. For this, you can use the [`picai_prep`][picai_prep] module. The [`picai_prep`][picai_prep] module allows to resample all cases to the same resolution (you can resample each case indivudually to the same resolution between the different sequences, or choose to resample the full dataset to the same resolution). For details on the available options to convert the dataset in `/input/` into the [`nnU-Net Raw Data Archive`][nnunet_raw_data_format] format, and store it in `/workdir/nnUNet_raw_data`, please see the instructions [provided here][picai_prep_mha2nnunet]. Below we give the conversion as performed for the [baseline semi-supervised nnU-Net](https://grand-challenge.org/algorithms/pi-cai-pubpriv-nnu-net-semi-supervised/). For the U-Net baseline, please see the [U-Net tutorial](src/picai_baseline/unet_baseline.md#u-net---data-preparation) for extra instructions.
+
+Note, the [`picai_prep`][picai_prep] module should be automatically installed when installing the `picai_baseline` module, and is installed within the [`picai_nnunet`][picai_nnunet_docker] and [`picai_nndetection`][picai_nndetection_docker] Docker containers as well. 
+
+```bash
+python src/picai_baseline/prepare_data_semi_supervised.py
+```
+
+For the baseline semi-supervised U-Net algorithm, specify the dataset-wise resolution: `--spacing 3.0 0.5 0.5`.
+To adapt/modify the preprocessing pipeline or its default specifications, either check out the various command like options (use flag `-h` to show these) or make changes to the [`prepare_data_semi_supervised.py`](src/picai_baseline/prepare_data_semi_supervised.py) script.
+
+Alternatively, you can use Docker to run the Python script:
+
+```bash
+docker run --cpus=2 --memory=16gb --rm \
+    -v /path/to/input/:/input/ \
+    -v /path/to/workdir/:/workdir/ \
+    -v /path/to/picai_baseline:/scripts/picai_baseline/ \
+    joeranbosma/picai_nnunet:latest python3 /scripts/picai_baseline/src/picai_baseline/prepare_data_semi_supervised.py
+```
+
+If you don't want to include the AI-generated annotations, you can also use the supervised data preparation script: [`prepare_data.py`](src/picai_baseline/prepare_data.py).
+
+
+=== unzip 杩涘害 ===
+rc=0 5.1G
+--- downloads/picai_public_images_fold1.zip
+rc=0 9.9G
+--- downloads/picai_public_images_fold2.zip
+rc=0 15G
+--- downloads/picai_public_images_fold3.zip
+5865

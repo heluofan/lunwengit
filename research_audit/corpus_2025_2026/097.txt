@@ -1,0 +1,581 @@
+=== PDF_PAGE 1 ===
+  文章编号:1673-5196(2025)05-0092-08
+面向多模态皮肤病语料库的可变形分区
+注意力黑色素瘤识别方法
+林玉萍1,刘梦皎2,王明豪2,张 栋2,许美凤 *3,李 策4
+(1.西安交通大学 外国语学院,陕西 西安 710049;2.西安交通大学 人工智能学院,陕西 西安 710049;3.西安交通大学第二附属医院 皮
+肤科,陕西 西安 710004;4.兰州理工大学 自动化与电气工程学院,甘肃 兰州 730050)
+摘要:针对黑色素瘤图像诊断问题,提出一种基于可变形分区注意力机制的黑色素瘤识别方法.该 方 法 采 用 由 粗 到
+细的特征提取与识别策略准确区分黑色素瘤和普通痣并建立相应语义标签,在此基 础 上 结 合 病 例 文 本 构 建 多 模 态
+皮肤病语料库.首先,为解决良性与恶性子类别间差异过大导 致 模 型 训 练 困 难 及 识 别 效 率 低 的 问 题,构 建 了 一 个 从
+粗类到细类层级深入的学习架构;其次,针对病灶边 缘 模 糊、分 布 不 均 以 及 特 征 提 取 难 的 问 题,提 出 了 一 种 融 合 注
+意力机制与可变形卷积的可变形分区注意力模块,通过由粗到细的特征提取策略实 现 了 全 局 与 局 部 特 征 的 有 效 结
+合;此外,引入了联合损失函数优化模型识别精准性.实验结果表明,该算法在自建数据集上展现了高敏感性和高特
+异性,有效提升了病例文本和医学影像匹配构建多模态皮肤病语料库的准确性.
+关键词:医学图像处理;黑色素瘤识别;可变形卷积;注意力机制;深度学习;多模态语料库
+中图分类号:TP391  文献标志码:A
+Deformablepartitionattentionbasedmelanomarecognitionmethodfor
+multimodalskindiseasecorpus
+LIN Yu-ping
+1,LIU Meng-jiao2,WANG Ming-hao2,ZHANG Dong2,XU Mei-feng3,LICe4
+(1.SchoolofForeignStudies,Xi’anJiaotongUniversity,Xi’an 710049,China;2.CollegeofArtificialIntelligence,Xi’anJiaotongUniversi-
+ty,Xi’an 710049,China;3.DepartmentofDermatology,SecondAfflicatedHospitalofXi’anJiaotongUniversity,Xi’an 710004,China;
+4.SchoolofAutomationandElectricalEngineering,LanzhouUniversityofTechnology,Lanzhou 730050,China)
+Abstract:Fortheproblemofmelanomaimagediagnosis,thispaperproposesarecognitionmethodbased
+onadeformablepartitionattentionmechanism.Thismethodadoptsacoarse-to-finefeatureextractionand
+recognitionstrategytoaccuratelydistinguish melanomafromcommon molesandestablishcorresponding
+semanticlabels.Basedonthis,amultimodaldermatologicalcorpusisconstructedbyintegratingcasetexts.
+First,totackleissuessuchasblurredlesionboundaries,unevendistribution,anddifficultyinfeatureex-
+traction,thispaperintroducesadeformablepartitionattention modulethatcombinesattention mecha-
+nismswithdeformableconvolutions.Second,toaddressthelargedifferencesbetweenbenignand malig-
+nantsubcategoriesthatresultintrainingdifficultiesandlowrecognitionefficiency,thispaperconstructsa
+hierarchicallearningframeworkthatprogressesfrom coarsetofinecategories.Inaddition,ajointloss
+functionisintroducedtooptimizethe model’srecognitionaccuracy.Experimentalresultsshowthatthe
+proposedalgorithm demonstrateshighsensitivityandspecificityonself-constructeddataset,effectively
+improvingtheaccuracyof multimodaldermatologicalcorpusconstruction by matchingcasetexts with
+medicalimages.
+Keywords:medicalimageprocessing;melanomarecognition;deformableconvolution;attentionmecha-
+nism;deeplearning;multimodalcorpus
+  收稿日期:2025-03-14
+  基金项目:国家自然科学基金(62363025),陕西省社会科学基金(2021K014)
+  通讯作者:许美凤(1977-),女,福建漳州人,副主任医师.Email:xumf96@163.com
+第51卷 第5期
+2025年10月
+兰 州 理 工 大 学 学 报
+JournalofLanzhouUniversityofTechnology
+Vol.51 No.5
+Oct.2025
+
+=== PDF_PAGE 2 ===
+  恶 性 黑 色 素 瘤 (malignantmelanoma,MM)是
+由于黑色素细胞侵 袭 而 形 成 的 皮 肤 癌,在 皮 肤 癌 中
+是最严重的一 种 表 现 形 式.恶 性 黑 色 素 瘤 的 死 亡 率
+高于其他与皮肤有 关 的 恶 性 肿 瘤,但 如 果 在 早 期 诊
+断中发现并接受治疗,生存率会显著提高.在临床 诊
+断中,医生常用皮肤镜进行初步诊断,同时参考计算
+机辅助诊断 方 法 [1-3].然 而,有 些 恶 性 黑 色 素 瘤 和 痣
+的外观相似,很 难 在 病 变 照 片 上 区 分.因 此,诊 断 黑
+色素瘤的金标准是组织病理学分析 [4-5],它可以提供
+肿瘤的深度和分级 等 信 息,是 黑 色 素 瘤 鉴 别 的 有 力
+依据.
+在黑 色 素 瘤 的 临 床 诊 断 中,利 用 人 工 分 析 组 织
+病理图像面临诸多挑战.首先,黑色素瘤图像具有 复
+杂的视觉特征,如体积大、形状多变、边界模糊 等.其
+次,即便是资深病理 学 家 进 行 准 确 筛 查 也 需 要 耗 费
+大量时间和 精 力.此 外,近 年 来 医 学 成 像 数 据 激 增,
+但专业医生数量增 长 缓 慢,无 法 满 足 病 理 图 像 分 析
+市场的增量.最后,良性痣(合并痣、皮内痣、交界痣)
+与恶性黑色素瘤外 观 相 似,而 不 同 类 型 的 痣 发 展 为
+黑色素瘤的风险不 同,因 此 对 其 进 行 准 确 分 类 对 于
+医疗诊断至关 重 要.而 现 有 基 于 计 算 机 视 觉 的 辅 助
+诊断方法通常只关 注 良 恶 性 的 区 分,忽 视 了 良 性 痣
+亚型识别的重要性.
+近年 来,已 有 许 多 基 于 深 度 学 习 的 黑 色 素 瘤 识
+别算法被成功 研 发 [6-7].例 如,Li等 [8]提 出 了 一 种 皮
+肤病变图像处理的 深 度 学 习 框 架,该 框 架 由 全 卷 积
+残差网络、非残差结 构 的 标 准 卷 积 神 经 网 络 和 病 变
+指数计算单元组成.与浅层网络模型相比,残差网 络
+层的深度学习框架 更 深,可 以 提 取 更 丰 富 的 特 征 向
+量 [9-11].但是,加深网络 层 的 同 时 也 增 加 了 噪 声 特 征
+和冗余特征 [12-14].此外,在包含残余块的深度网络体
+系结构中,应 谨 慎 选 择 激 活 函 数 [15].Guo 等 [16]提 出
+了一种自适应属性卷积和知识聚合模块缓解黑色素
+瘤分割的收缩问题,其 关 键 是 多 尺 度 的 感 受 野 和 扩
+张卷 积.Yada 等 [17]研 发 了 Real-MedNLP 模 型,该
+模型用来实体识别、案 例 识 别 和 不 良 药 物 事 件 提 取
+三项任务的医 学 自 然 语 言 处 理 任 务.GU 等 [18]使 用
+了大规模神经语言 模 型 预 训 练 的 方 法,通 过 在 生 物
+医学自然语言处理 领 域 的 特 定 语 料 上 进 行 预 训 练,
+展示 了 显 著 优 于 混 合 域 预 训 练 的 结 果.Lambert
+等 [19]对深度学 习 模 型 在 医 学 影 像 分 析 中 不 确 定 性
+量化的方法进行了 综 合 回 顾,旨 在 解 决 深 度 学 习 模
+型在临床应用中的“黑 箱”效 应 问 题,即 终 端 用 户 对
+模型不透明预测结果的不信任.Zeng等 [20]提出利用
+自然语言处理技术从电子病历中识别癌症患者的治
+疗方案.Gong 等 [21]提 出 利 用 深 度 学 习 预 训 练 模 型
+进行中文电子病历中临床命名实体识别的方法.
+尽管已有许多面向医学影像的深度学习的方法
+在提升诊断效率和 准 确 性 方 面 展 现 了 巨 大 潜 力,但
+应用于识别组织病理图像上的黑色素瘤和痣仍存在
+一些不足和挑战.首先,在医学图像中获取大量标 注
+特征费时费力,需提 高 模 型 特 征 挖 掘 能 力 以 应 对 特
+征表征匮乏;加深网 络 层 虽 然 有 助 于 提 取 更 丰 富 的
+特征表征,但 也 增 加 了 噪 声 和 冗 余 信 息.其 次,病 变
+组织与正常组织的 混 杂 以 及 复 杂 的 视 觉 特 征,没 有
+清晰的形状边界,导 致 传 统 的 矩 形 卷 积 无 法 准 确 提
+取关键特征.再次,由于病变分布特征的差异及噪 声
+干扰,模型识 别 复 杂 样 本 性 能 容 易 退 化.最 后,受 类
+间差异和类内差异 影 响,模 型 通 常 在 区 分 良 恶 性 和
+识别良性痣亚型时敏感性和特异性表现不均一.
+为解 决 这 些 困 难,本 文 受 启 发 于 人 类 视 觉 认 知
+的机制原理,提出了 一 种 基 于 可 变 形 分 割 注 意 力 机
+制的从粗到细 的 神 经 网 络 以 准 确 识 别 黑 色 素 瘤.本
+文主要贡献如下:
+1)提出了一种由粗到细的学习范式,结合粗粒
+度和细粒度特征强化了模型对整体及局部特征的学
+习能力,并据此构建了多模态皮肤病语料库.
+2)提出可变形分区注意力机制的识别方法,通
+过细化通道和空间 特 征 并 结 合 全 局 和 局 部 特 征,挖
+掘多粒度特征表征,使模型提取到充足的特征信息.
+3)实验结果表明,本算法在自建数据集上展现
+了高敏 感 性 和 高 特 异 性,能 实 现 精 确 的 黑 色 素 瘤
+分类.
+1 基于可变形分区注意力的黑色素瘤
+识别方法
+人眼通过全局扫描快速锁定目标区域进行初步
+识别,随后集中注意力于该区域以完成精确识别.本
+文借鉴这一从粗到 细 的 策 略,利 用 可 变 形 分 区 注 意
+力模块结 合 粗 粒 度 的 通 道 特 征 与 细 粒 度 的 空 间 特
+征,强化了对整体及局部特征的学习能力.在本文 提
+出的黑色素瘤识别 方 法 中,首 先 对 病 变 区 域 进 行 良
+恶性识别,随后对判 定 为 良 性 样 本 的 亚 型 进 一 步 细
+分.最后通过将 大 量 医 学 图 像 与 黑 色 素 瘤 语 义 标 签
+进行分类与关联,建立多模态皮肤病语料库,提高数
+据的可访问性和医学图像数据的使用价值.
+1.1 多粒度特征融合的粗到细的学习范式
+为应对良性与恶性子类别间差异过大导致模型
+训练困难及识别效 率 低 的 问 题,本 文 提 出 一 种 多 粒
+度 特 征 融 合 的 粗 到 细 的 学 习 范 式 ,如 图1所 示 .首
+·39·第5期        林玉萍等:面向多模态皮肤病语料库的可变形分区注意力黑色素瘤识别方法         
+
+=== PDF_PAGE 3 ===
+图1 多粒度特征融合的粗到细学习范式
+Fig.1 Thecoarse-to-finelearningparadigm withmulti-granularityfeaturefusion
+先,利用粗编码网络 对 黑 色 素 瘤 的 医 学 图 像 进 行 深
+度特征挖掘,通过相 关 卷 积 网 络 提 取 特 征 并 进 行 筛
+选,由分类 器 对 病 变 区 域 进 行 初 步 良 恶 性 分 类.然
+后,将判定为良性的 样 本 输 入 到 细 编 码 网 络 进 一 步
+提取特征和筛选,再 通 过 分 类 器 将 其 最 终 归 类 为 具
+体的良性类别之一:复合痣、皮内痣或边缘痣.
+基于本文方法建立的多模态皮肤病语料库对临
+床实践中的智能诊疗辅助和医疗资源配置优化等方
+面具有重要意 义.该 语 料 库 未 来 将 服 务 于 建 设 健 康
+信息平台、医学教育和优化诊疗方案等领域,助力预
+测疾病、探究发病机制、提高诊断效率和支撑临床决
+策等具体医疗场景.
+1.2 基于可变形分区注意力的黑色素瘤识别方法
+在恶性黑色素瘤与痣的识别任务中,交界痣、混
+合痣和皮内痣的高度相似性导致单一模型分类表现
+不佳.因此,本文提出一种基于可变形分区注意力 的
+黑色素瘤识别 方 法(melanomarecognitionnetwork
+basedondeformablepartitionattention,DPANet),
+其框架图如图 2 所 示.该 网 络 首 先 通 过 粗 识 别 子 网
+络区分图像的良恶 性(黑 色 箭 头 指 示),接 着 对 判 定
+为良性的图像通过 分 割 与 预 处 理 后,由 精 细 分 类 子
+网络进一步识 别 具 体 的 良 性 类 型 (蓝 色 箭 头 指 示).
+在 DPANet中,首 先 针 对 黑 色 素 瘤、痣 和 正 常 组 织
+之间没有明确和形 状 的 边 界,提 取 的 特 征 中 易 包 含
+噪声和冗余特征的 问 题,引 入 可 变 形 卷 积 并 增 加 注
+意力机制,使模型不仅能考虑特征的粗粒度表示,还
+在通道和空间维度 上 通 过 注 意 力 学 习 实 现 了 分 区,
+从而构建了一个融合全局 与 局 部 特 征 信 息 的 3D 注
+意力矩阵.然后 针 对 黑 色 素 瘤 与 痣 之 间 的 类 内 差 异
+显著和类间距离不 足 的 问 题,引 入 相 似 性 度 量 与 交
+叉熵损失,设计了新 型 联 合 损 失 函 数 以 有 效 减 小 类
+内变化,并增强类别间的区分能力.
+1.3 可变形分区注意力方法
+本文提 出 的 可 变 形 分 区 注 意 力 模 块 (deform-
+ablepartitionedattention,DPA)通过引入可学习的
+采样点偏移和调制 系 数,使 网 络 能 够 捕 捉 病 变 区 域
+的空间几何变形,实现全局与局部特征的有效融合,
+从而增强 特 征 表 示 的 准 确 性 和 有 效 性.具 体 而 言,
+DPA 模块通过灵活组合全局平均池化(globalaver-
+agepooling,GAP)、全局最大池化(globalmaxpoo-
+ling,GMP)及可变 形 卷 积,避 免 了 特 征 缺 失 并 减 少
+了参数量 [22-23],可提 升 模 型 对 恶 性 黑 色 素 瘤 和 良 性
+痣识别的性能.
+为克服传统残差卷积网络由于有限的感受野大
+小和通道间缺乏交 互 而 导 致 的 识 别 性 能 限 制,本 文
+设计的 DPA 模块不仅 实 现 了 有 针 对 性 的 特 征 选 择
+与增强,还通过多 层 感 知 器(multilayerperceptron,
+MLP)和 批 量 归 一 化 (batchnorm ReLU,BNR)进
+一步增强了特征表 示 的 差 异.DPA 作 为 一 个 即 插 即
+用模块,能够在不增 加 过 多 参 数 的 情 况 下 显 著 提 升
+模型的表现,特别适用于需要提取精准特征的任务,
+如区分恶性黑色素瘤和良性痣.
+1.4 用于平衡类内和类间的新型联合损失
+为解决类间间距不平衡的问题,本文采用 Soft-
+max交叉熵 损 失 来 衡 量 预 测 概 率 分 布 与 实 际 概 率
+分 布 之 间 的 差 异 .交 叉 熵 在 处 理 复 杂 数 据 时 表 现 出
+·49·                   兰 州 理 工 大 学 学 报               第51卷
+
+=== PDF_PAGE 4 ===
+图2 基于可变形分区注意力的黑色素瘤识别方法框架
+Fig.2 Frameworkofthemelanomarecognitionmethodbasedondeformablepartitionattention
+色.但是在处理大规模数据集时难以高效识别困难样
+本,导致梯度下降进程中优 化 缓 慢 或 无 法 收 敛.受 焦
+点损失和 ArcFace损失的启发,本文引入平衡因子α
+和聚焦因子γ(默认值为2)调整交叉熵损失函数,使
+模型能够更集中于学习那些难以分类的样本,减少简
+单样本的影响.这不仅让预测概率分布更贴近真实分
+布,还增加了类别间距离的区分度,如下式所示:
+LFL =-α (1-Py
+)γlogPy
+ (1)
+  为进一步增强 类 内 聚 合 并 提 升 模 型 性 能,本 文
+设计 了 一 种 新 的 联 合 损 失 函 数 (localizedfeature
+learningcombinedloss,LFLC),如下式所示:
+LFLC =-αN ∑
+N
+i=1
+∑
+K
+c=1
+(1-Py
+ i,c )γlogPy
+ i,c )-
+λ
+N ∑
+N
+i=1
+∑
+K
+c=1
+‖Py
+ i,c -Py
+c )‖22 (2)
+LFLC 不 仅 增 加 了 类 间 间 距,还 通 过 最 小 化 同 一 类
+别内的差异来 强 化 类 内 聚 合.其 第 一 部 分 基 于 多 类
+别交叉熵损失,旨在增加不同类别之间的间距;第二
+部分则通过调整 类 内 差 异 调 整 因 子λ(实 验 中 设 定
+为0.3)来减小 同 类 样 本 间 的 分 散 程 度.这 种 设 计 确
+保了每种类别的样 本 都 能 得 到 均 衡 处 理,从 而 提 升
+了模型的整体泛化能力和预测准确性.
+1.5 多模态皮肤病语料库构建
+本文提出的基于可变形注意力机制的粗细网络
+分类方法,可以通过 多 次 特 征 提 取 对 黑 色 素 瘤 病 理
+图像进行精确分类,从而帮助临床医生减少工作量,
+促进多模态皮肤病语料库的建设.具体来说,首先 通
+过粗编码网络对采集到的黑色素瘤影像进行初步分
+类,获取恶性或良 性 的 初 步 结 果;随 后,对 良 性 痣 的
+影像进一步分类,细编码网络对其进行细化,帮助确
+认具体的良性类型.
+通过 结 合 自 然 语 言 处 理 技 术,可 以 实 现 在 黑 色
+素瘤语料库中构建分类关键词.首先,利用神经网 络
+提取相应特征,通过 词 向 量 嵌 入 技 术 来 获 得 关 键 词
+的数学表示法.然后,这些关键词按照黑色素瘤图 像
+的分类语义标签,通过分类模型被统一归类.本文 首
+先以“良性”和“恶 性”两 类 标 签 进 行 关 键 词 匹 配,之
+后利用局部线性嵌 入 技 术,将 图 像 细 分 为 三 种 不 同
+良性子类的关键词(如 复 合 痣、皮 内 痣 和 边 缘 痣)进
+行更精细的匹 配.匹 配 后 的 语 义 标 签 可 作 为 反 馈 信
+息,进一步指导黑色素瘤图像分类模型的训练,从而
+提升分类准确性,完善多模态皮肤病语料库的构建.
+·59·第5期        林玉萍等:面向多模态皮肤病语料库的可变形分区注意力黑色素瘤识别方法         
+
+=== PDF_PAGE 5 ===
+2 实验结果
+本文方法在 Ubuntu18.04(Python3.8 环 境)、
+配备 RTX3090-24G 显 卡 和 CUDA11.2 的 系 统 上
+实现.主要 依 赖 的 开 发 库 包 括 MXNet1.8、Numpy
+1.17和 OpenCV4.2 等.所有图像统一调整为512×
+512像素大小.模型训练配置如下:训练周期设 为 50
+轮,批量大小为32,初始学习率为0.001,并采用0.1
+的学习率衰减策略.超参数设置依据实验调试,以 确
+保模型能充分发挥 性 能.数 据 集 按 照 7∶1∶2 的 比
+例划分为训练集、验证集和测试集,通过随机不放回
+采样确保各部分独立且分布均匀.为了评估性能,本
+文将该方法与多个 主 流 分 类 算 法 进 行 了 比 较,包 括
+ResNet
+[24]、ResNeX[25]、SENet[27]、SKNet[28] 和
+ResNeSt
+[26]
+.这些模型通过不同 的 优 化 策 略,如 残 差
+学习、分组 卷 积、通 道 注 意 力 机 制 和 分 割 注 意 力 机
+制,在多种图像识别任务中展现了卓越性能,为评估
+本文提出的 DPANet提供了坚实的参考基础.
+2.1 数据集和指标
+数据 集 收 集 于 西 安 交 通 大 学 第 一、第 二 附 属 医
+院.获取病理 切 片 图 像 的 步 骤 如 下:1)外 科 医 生 从
+患者身上切下病变组织并制作病理切片;2)显微镜
+中观察切片并由皮肤病理学家在病理切片中找出包
+含关键信息的几个区域;3)病理学家根据每张图像
+得出诊断结论,并将 其 用 作 诊 断 报 告 中 记 录 的 目 标
+区域图像标 签.从 诊 断 报 告 中 收 集 了 9098 个 目 标
+区域 图 像 的 数 据 集,包 括 2170 个 黑 色 素 瘤、2242
+个合并痣、2919个皮内痣和1767个边缘痣.
+对于 这 些 临 床 应 用 指 标,医 生 期 望 模 型 能 够 兼
+具高灵敏度和高准 确 度.因 此,评 估 标 准 使 用 F1 分
+数来全面衡量其性能.在本文的分类任务中,根据 实
+际类别 和 预 测 类 别 的 组 合,将 样 本 记 录 为 真 阳 性
+(truepositive,TP)、假 阳 性 (falsepositive,FP)、真
+阴性(truenegative,TN)和 假 阴 性 (falsenegative,
+FN).四个评估指标是准确率(accuracy,ACC)、精确
+度预测值 (positivepredictivevalue,PPV)、敏 感 性
+阳性率(sensitivitypositiverate,SPR)和 F1 得 分,
+由下面的公式计算得出:
+SPR= TPTP+FN (3)
+PPV= TPTP+FP (4)
+ACC= TP+TNTP+FP+FN+TN (5)
+F1= 2×PPVPPV+TPR= 2×TP2×TP+FN+FP
+(6)
+  粗分类实验用 于 测 试 模 型 区 分 良 恶 性 (痣 和 黑
+色素瘤)的性能,细分类实验用于测试模型区分良性
+痣子类别的性能(复合痣、皮内痣和边缘痣).
+2.2 良恶性的粗略鉴别及良性痣精细识别
+2.2.1 定量结果
+粗分类 任 务 的 实 验 结 果 如 表 1 所 示.实 验 结 果
+显示,本文提出的 DPANet在 所 有 评 价 指 标 上 均 优
+于 其 他 对 比 算 法.具 体 而 言,DPANet 在 F1 分 数
+(98.19%)、敏感性阳性率 SPR(98.08%)、精 确 度 预
+测值 PPV(98.17%)以及准确率 ACC (98.14%)这4
+个指标均取得了 最 高 分,表 明 DPANet不 仅 在 正 类
+预测和覆盖度上表 现 出 色,同 时 保 持 了 高 度 的 预 测
+可靠性,进而在整个 测 试 集 上 的 总 体 分 类 准 确 性 也
+达到了最优水平.相比之下,尽管 ResNest和 SKNet
+在某些指标上有较 好 的 表 现,但 它 们 的 整 体 性 能 未
+超越 DPANet.DPANet的 优 秀 性 能 得 益 于 其 融 入
+了可变形卷积 和 分 区 注 意 力 机 制.可 变 形 卷 积 模 块
+能够学习病变的空 间 几 何 变 形,使 网 络 更 好 地 适 应
+黑色素瘤和痣在图 像 中 不 规 则 的 形 状 和 分 布,从 而
+更有效地提取 特 征.分 区 注 意 力 机 制 通 过 在 通 道 和
+空间维度进行分区 注 意 力 学 习,能 将 全 局 和 局 部 特
+征相结合,产生细粒度的注意力特征.这种方式可 以
+对特征进行有针对 性 的 选 择 和 增 强,有 效 抑 制 噪 声
+特征,突出关键特征,进一步提升了模型的特征选择
+能力,使得在粗分类 任 务 中 能 够 更 准 确 地 区 分 良 性
+和恶性样本.
+表1 粗分类数据集上的定量实验结果
+ Tab.1 Quantitativeexperimentalresultsonthecoarse
+classificationdataset %
+算法 F1 SPR PPV ACC
+ResNet 91.68 95.54 88.21 90.86
+ResNeXt 94.57 94.35 92.26 93.87
+SENet 95.84 94.31 93.88 94.79
+SKNet 95.36 96.87 93.39 97.38
+ResNest 96.83 95.54 97.96 97.13
+DPANet 98.19 98.08 98.17 98.14
+关于精 细 分 类 任 务 的 实 验 结 果 如 表 2 所 示.
+DPANet在各项 评 价 指 标 上 均 表 现 突 出,其 F1 值
+达 到 88.21%,SPR 为 90.79%,PPV 为 85.81%,
+ACC 为90.39%,显著优于其他算法,表明其在区分
+不同类型的良性痣 方 面 具 有 很 强 的 能 力,能 够 更 准
+确地对样本进行分类.在细分类任务中,各类痣的
+表2 精细分类数据集上的定量实验结果
+Tab.2 Quantitativeexperimentalresultsonthefine-grained
+·69·                   兰 州 理 工 大 学 学 报               第51卷
+
+=== PDF_PAGE 6 ===
+classificationdataset %
+算法 F1 SPR PPV ACC
+ResNet 64.16 60.73 68.02 82.73
+ResNeXt 70.63 74.87 66.35 73.51
+SENet 72.92 76.41 69.36 84.71
+SKNet 73.43 75.41 71.75 77.09
+ResNest 77.89 86.46 71.42 79.63
+DPANet 88.21 90.79 85.81 90.39
+特征差异更为 细 微.对 于 边 界 模 糊 或 形 状 不 规 则 的
+痣细胞区域,DPANet中 的 可 变 形 卷 积 模 块 可 以 聚
+焦到关键特征区域,避 免 因 固 定 卷 积 核 采 样 而 丢 失
+重要信息,为细分类提供更具判别力的特征,增强了
+模型对不同类型痣的区分能力.在细分类时,不同 类
+型良性痣 可 能 存 在 部 分 相 似 的 通 道 特 征 和 空 间 特
+征,其分区注意力机制可有效区分这些细微差别.它
+将特征分为不同分 区,在 每 个 分 区 内 分 别 进 行 通 道
+和空间注意力操作,通过全局平均池化、全局最大池
+化以及多层感知器等操作,重新分配注意力权重,强
+化关键特征并抑制噪声.
+相较 于 粗 分 类 任 务,每 种 方 法 的 假 阳 性 率 都 有
+所增加,且比较算法 在 精 细 类 任 务 中 性 能 相 较 本 文
+方法差距更大,这是 因 为 不 同 子 类 型 痣 的 特 征 相 似
+度高,使模型难以准 确 提 取 易 于 精 细 划 分 子 类 的 特
+征,对性能产 生 了 不 利 影 响.然 而,本 文 所 提 出 的 方
+法在精细分类任务 的 评 价 指 标 中 保 持 最 高 得 分,仍
+保持着比其他 模 型 更 优 异 的 分 类 性 能.从 模 型 设 计
+角度分析,DPANet因采用由粗到细的学习范式,减
+少了类间相似性造 成 的 干 扰,在 保 证 模 型 对 恶 性 黑
+色素瘤的敏感性和特异性的同时提高了分类性能.
+2.2.2 定性结果
+此外,本 文 选 择 了 一 些 具 有 不 同 放 大 倍 数 和 颜
+色的病例图像样本,并 将 每 种 算 法 的 预 测 结 果 可 视
+化,如图3所示(错误结果已在图像中用×标出).所
+提出方法的预测结 果 优 于 比 较 算 法,表 明 本 文 提 出
+的方法对 样 本 的 颜 色 和 放 大 倍 数 具 有 积 极 的 适 应
+性.对于恶性黑色素瘤样本,每种算法的错误率相 对
+较少,比较算法通常容易在良性痣上性能不佳,尤其
+是在合并痣上,因为 合 并 的 痣 样 本 具 有 许 多 与 皮 内
+痣和边缘痣相似的特征.总 的 来 说,ResNext的 结 果
+优于 ResNet,这得益于分区注意卷积和组卷积有效
+地提 高 了 模 型 性 能.SENet和 SKNet的 结 果 优 于
+ResNet和 ResNext,这得益于通道注意机制 对 特 征
+的高效选 择.此 外,ResNest也 是 基 于 分 区 注 意 力,
+虽性能有所提升,但 本 文 的 DPANet表 现 仍 优 于 所
+有对比算法,这表明 在 本 文 提 出 的 多 粒 度 特 征 融 合
+的粗到细的学习范 式 下,结 合 可 变 形 分 区 注 意 力 机
+制和平衡类内、类间距离的联合损失函数,可进一步
+提高分类性能.
+图3 黑色素瘤识别可视化结果
+Fig.3 Visualizationresultsofmelanomarecognition
+·79·第5期        林玉萍等:面向多模态皮肤病语料库的可变形分区注意力黑色素瘤识别方法         
+
+=== PDF_PAGE 7 ===
+  结合模型架构 和 实 验 结 果 分 析,本 文 方 法 在 区
+分良恶性及识别良性痣亚型任务中表现出色主要原
+因如下:首先,通过 采 用 由 粗 到 细 的 学 习 范 式,模 型
+能够更全面地捕捉 病 变 区 域 的 整 体 和 局 部 特 征,从
+而提高分类准确性;其次,引入的可变形分区注意力
+机制使得 网 络 不 仅 能 够 适 应 不 规 则 形 状 的 病 变 区
+域,还能有效抑制噪声并突出关键特征,增强了特征
+表示的能力;此外,新型联合损失函数的设计进一步
+优化了类间差异和 类 内 一 致 性,确 保 了 模 型 的 鲁 棒
+性和泛化能力.这些因素共同作用,使得 DPANet在
+多项评价指标上均 优 于 对 比 算 法,展 现 了 更 高 的 敏
+感性和特异性.
+2.3 多模态皮肤病语料库讨论
+为提 高 黑 色 素 瘤 分 类 准 确 性,本 文 采 用 深 度 学
+习分类算法与基于可变形分割注意力机制的模型相
+结合的方式,构建了一个多模态皮肤病语料库.该 研
+究数据来源于西安交大一附院和二附院关于黑色素
+瘤的图像数据集,并 以 此 为 基 础 对 基 于 可 变 形 分 割
+注意力机制的 算 法 模 型 进 行 了 对 比 实 验.多 模 态 皮
+肤病语料库的建设 既 具 有 创 新 性,又 具 有 一 定 的 应
+用价值,填补了国内在该领域的某些技术空白.
+基于可变形注意力机制的粗细网络分类方法所
+构建的多模态皮肤 病 语 料 库,在 黑 色 素 瘤 相 关 的 临
+床诊断、医学研究和教学中具有广泛的应用前景.在
+临床诊断中,多模态 皮 肤 病 语 料 库 通 过 其 高 效 与 精
+准的特点,有助于临 床 医 生 更 快 速 地 生 成 初 步 诊 断
+报告,提升诊 断 效 率.在 医 学 研 究 中,通 过 对 大 规 模
+数据集的深度挖掘 和 统 计 分 析,可 以 进 一 步 探 索 黑
+色素瘤的发病 机 制 和 优 化 诊 疗 方 案.本 文 所 提 出 的
+方法能对黑色素瘤 图 像 进 行 二 次 分 类,大 幅 度 提 升
+了数据的利用效率,挖掘出更多潜藏的病理信息.在
+医学教学方面,多模 态 皮 肤 病 语 料 库 可 以 提 供 与 病
+历文本相对应的医 学 影 像,构 建 与 医 学 病 理 学 高 度
+契合的仿真学习平台,为医学教学提供了有力支 持.
+这一平台结合理论 知 识 与 真 实 病 例,有 助 于 提 升 医
+务人员的专业水平.
+3 结论
+本文提出了一种基于可变形分区注意力机制的
+黑色素瘤识别方法,并 将 其 应 用 于 皮 肤 病 语 料 库 构
+建.该方法利用从粗到细的分类策略,结合多重可 变
+形卷积和注意力机制来增强模型提取和突出特征的
+能力,并通过交叉熵和内积进行模型训练,有效地扩
+大了类间差异,减少了类内差异,最终实现黑色素瘤
+图像的精准分类.在自建数据集上的实验结果表 明,
+该方法能实现 精 确 的 黑 色 素 瘤 分 类.基 于 所 构 建 的
+黑色素瘤识别方法,结 合 病 例 文 本 构 建 了 多 模 态 皮
+肤语料库.在未来的工作中,团队会继续研究整个 载
+玻片图像中黑色素 瘤 的 分 割 和 结 构 测 量,将 为 医 生
+的治疗计划提供准 确 的 参 考 信 息,并 进 一 步 提 高 人
+工智能辅助诊疗的效率和可靠性.在应用价值方 面,
+皮肤病语料库不仅可以为医学生在日常学习和真实
+病例研究中提供数 据 支 持,增 强 其 理 论 知 识 与 实 践
+技能之间的结合,还 能 为 临 床 医 生 提 供 决 策 辅 助 工
+具和新的交流渠道,从 而 提 高 皮 肤 病 诊 断 与 治 疗 的
+准确率和效率,促进学科发展.
+参考文献:
+[1] BIL,FENG D D,FULHAM M,etal.Multi-labelclassification
+ofmulti-modalityskinlesionviahyper-connectedconvolutional
+neuralnetwork [J].PatternRecognition,2020,107:107502.
+[2] WANG X,JIANG X,DING H,etal.Knowledge-awaredeep
+frameworkforcollaborativeskinlesionsegmentationandmel-
+anoma recognition [J].Pattern Recognition,2021,120:
+108075.
+[3] BASAK H,KUNDU R,SARKAR R.MFSNet:a multifocus
+segmentationnetworkforskinlesionsegmentation[J].Pattern
+Recognition,2022,128:108673.
+[4] GOODSON A G,GROSSMAN D.Strategiesforearly melano-
+madetection:approachestothepatientwithnevi[J].Journal
+oftheAmerican AcademyofDermatology,2009,60(5):719-
+735.
+[5] WANG Q,SUN L,WANG Y,etal.Identificationofmelanoma
+from hyperspectralpathologyimage using 3D convolutional
+networks[J].IEEETransactionson MedicalImaging,2020,40
+(1):218-227.
+[6] GOCERIE.CapsNettopologytoclassifytumoursfrom brain
+imagesandcomparativeevaluation[J].IETImageProcessing,
+2020,14(5):882-889.
+[7] WU H,PANJ,LIZ,etal.Automatedskinlesionsegmentation
+viaanadaptivedualattention module [J].IEEE Transactions
+on MedicalImaging,2020,40(1):357-370.
+[8] LIY,SHEN L.Skinlesionanalysistowardsmelanomadetec-
+tionusingdeeplearningnetwork [J].Sensors,2018,18(2):
+556-572.
+[9] YAMAMOTO Y,TSUZUKIT,AKATSUKAJ,etal.Auto-
+matedacquisitionofexplainableknowledgefrom unannotated
+histopathologyimages [J].NatureCommunications,2019,10
+(1):5642-5651.
+[10] QU X,SHIY,HOU Y,etal.Anattention-supervisedfull-
+resolutionresidualnetworkforthesegmentationofbreastul-
+trasoundimages [J].MedicalPhysics,2020,47(11):5702-
+5714.
+[11] TANG Z,CHUANG K V,DECARLIC,etal.Interpretable
+classificationofAlzheimer’sdiseasepathologieswithaconv-
+olutionalneuralnetwork pipeline [J].Nature Communica-
+·89·                   兰 州 理 工 大 学 学 报               第51卷
+
+=== PDF_PAGE 8 ===
+tions,2019,10(1):2173-2187.
+[12] TOLKACH Y,DOHMG¨ORGEN T,TOMA M,etal.High-
+accuracyprostatecancerpathologyusingdeeplearning [J].
+NatureMachineIntelligence,2020,2(7):411-418.
+[13] JAIN M S,MASSOUD T F.Predictingtumour mutational
+burdenfrom histopathologicalimagesusing multiscaledeep
+learning [J].Nature MachineIntelligence,2020,2(6):356-
+362.
+[14] ZHANG D,HAN H,DU S,etal.MPMR:multi-scalefeature
+andprobabilitymapfor melanomarecognition [J].Frontiers
+in Medicine,2022,8:775587.
+[15] GOCERIE.Analysisofdeepnetworks withresidualblocks
+anddifferentactivationfunctions:classificationofskindisea-
+ses[C]//2019NinthInternationalConferenceonImagePro-
+cessing Theory,Toolsand Applications (IPTA).Istanbul,
+Turkey:IEEE,2019:1-6.
+[16] GUOX,CHENZ,YUAN Y.Complementarynetworkwitha-
+daptivereceptivefieldsfor melanomasegmentation [C]//
+2020IEEE17thInternationalSymposiumonBiomedicalIma-
+ging (ISBI).IowaCity,USA:IEEE,2020:2010-2013.
+[17] YADA S,NAKAMURA Y,WAKAMIYA S,et al.Real-
+MedNLP:overview ofrealdocument-based medicalnatural
+languageprocessingtask [C]//Proceedingsofthe16th NT-
+CIR Conferenceon EvaluationofInformation Access Tech-
+nologies.Tokyo,Japan:NationalInstitute of Informatics,
+2022:285-296.
+[18] GU Y,TINN R,CHENG H,etal.Domain-specificlanguage
+modelpretrainingforbiomedicalnaturallanguageprocessing
+[J].ACM Transactions on Computing for Healthcare
+(HEALTH),2021,3(1):1-23.
+[19] LAMBERT B,FORBES F,DOYLE S,etal.Trustworthy
+clinicalAIsolutions:aunifiedreviewofuncertaintyquantifi-
+cationindeeplearningmodelsformedicalimageanalysis[J].
+ArtificialIntelligencein Medicine,2024,150:102830.
+[20] ZENGJ,BANERJEEI,HENRY AS,etal.Naturallanguage
+processingtoidentifycancertreatmentswithelectronicmedi-
+calrecords[J].JCO ClinicalCancerInformatics,2021,5:379-
+393.
+[21] GONG L,ZHANGZ,CHENS.Clinicalnamedentityrecogni-
+tionfrom Chineseelectronic medicalrecordsbasedondeep
+learningpretraining [J].Journalof HealthcareEngineering,
+2020(1):8829219.
+[22] HU J,SHEN L,SUN G.Squeeze-and-excitation networks
+[C]//ProceedingsoftheIEEE ConferenceonComputerVi-
+sionandPatternRecognition.SaltLake,USA:IEEEComput-
+erSociety,2018:7132-7141.
+[23] LIX,WANG W,HU X,etal.Selectivekernelnetworks[C]//
+ProceedingsoftheIEEE/CVF Conferenceon ComputerVi-
+sionandPattern Recognition.Long Beach:IEEE,2019:510-
+519.
+[24] HE K,ZHANG X,REN S,etal.Deepresiduallearningfor
+imagerecognition [C/OL].[2024-12-10].https://ieeexplore.
+ieee.org/stamp/stamp.jsp? arnumber=7780459.
+[25] XIES,GIRSHICK R,DOLLÁR P,etal.Aggregatedresidual
+transformationsfordeepneuralnetworks [C]//Proceedings
+oftheIEEEConferenceonComputerVisionandPatternRec-
+ognition.Honolulu:IEEEComputerSociety,2017:1492-1500.
+[26] ZHANG H,WU C,ZHANGZ,etal.ResNeSt:split-attention
+networks[C]//ProceedingsoftheIEEE/CVFConferenceon
+Computer Vision and Pattern Recognition.New Orleans:
+IEEE,2022:2736-2746.
+[27] GOUTTE C,GAUSSIER E.A probabilisticinterpretationof
+precision,recalland F-score,withimplicationforevaluation
+[C]//EuropeanConferenceonInformationRetrieval.Berlin,
+Heidelberg:Springer,2005:345-359.
+[28] ZUO W,ZHOU F,HE Y,etal.Automaticclassificationof
+lungnodulecandidatesbasedonanovel3Dconvolutionnet-
+workandknowledgetransferredfroma2Dnetwork[J].Med-
+icalPhysics,2019,46(12):5499-5513.
+[29] BRADLEY AP.TheuseoftheareaundertheROCcurvein
+theevaluation of machinelearningalgorithms [J].Pattern
+Recognition,1997,30(7):1145-1159.
+·99·第5期        林玉萍等:面向多模态皮肤病语料库的可变形分区注意力黑色素瘤识别方法         

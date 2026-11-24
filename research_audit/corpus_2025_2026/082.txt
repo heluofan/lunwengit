@@ -1,0 +1,833 @@
+=== PDF_PAGE 1 ===
+联合掩码引导与多频域双重注意力机制的急性缺血性
+脑卒中CT到DWI影像生成模型
+张泽华①      赵   宁①      王   帅②      王   璇①      郑   强*①
+①(烟台大学计算机与控制工程学院   烟台   264005)
+②(滨州医学院附属医院   滨州   256603)
+摘   要：基于人工智能的跨模态医学图像生成技术为急性缺血性脑卒中的快速多模态诊疗提供了新的路径。针对
+现有医学图像生成方法仅依赖图像数据本身的统计特征、忽略医学图像的解剖结构，从而造成病灶模糊和结构偏
+差问题，该文提出了一种新的联合掩码与多频双重注意力GAN模型，用于急性脑缺血性卒中CT到DWI影像生
+成。该模型主要包含：(1)掩码引导特征融合模块：通过CT图像与掩码图像的卷积融合，引入解剖结构的空间先
+验信息，增强脑区及病灶区域的特征表达；(2)多频域注意力编码器：采用离散小波变换分解低频全局特征与高频
+边缘特征，通过双通路注意力跨尺度融合，减少深层信息的丢失；(3)自适应融合权重模块：结合卷积神经网络与
+注意力机制，自动学习每个输入特征的自适应权重系数。该研究在临床CT到DWI多模态急性脑缺血性卒中数据
+集上开展了实验验证，分别在全局尺度采用均方误差、峰值信噪比、结构相似度指数进行评估，在局部尺度基于
+超像素分割后统计灰度均值相关性进行分析。结果表明，所提模型在各项指标上均优于当前先进方法，对脑区轮
+廓和病灶区域具有更高的准确性和还原性。
+关键词：生成对抗网络；医学图像生成；离散小波变换；脑缺血性卒中
+中图分类号：TN911; TP391 文献标识码：A 文章编号：1009-5896(2026)03-0994-11
+DOI: 10.11999/JEIT250643 CSTR: 32379.14.JEIT250643
+ 1    引言
+急性脑缺血性卒中是临床上常见的神经系统疾
+病，以起病急、进展快、致残率高为特征，早期准
+确诊断对于制定治疗方案、提高预后具有重要意义[1]。
+计算机断层扫描(Computed Tomography, CT)因
+检查速度快、可及性高，常被用于急性脑缺血性卒
+中的初步评估，尤其在排除脑出血方面发挥着关键
+作用[2, 3]。CT对早期缺血性病灶的敏感性低、易漏
+诊。相比之下，弥散加权成像(Diffusion Weighted
+Imaging, DWI)在识别急性期缺血灶方面具有明显
+优势，能够在急性脑缺血性卒中发生后数分钟内检
+测出弥散受限区域，为早期诊断提供了更可靠的影
+像学依据[4]。然而，多模态影像采集所带来的转诊
+时间长、扫描时间长等问题，会耽误脑卒中患者的
+最佳救治时机。
+近年来，生成式人工智能技术迅速发展，为多
+种临床疾病的诊断与治疗提供了新的思路[5]，CT到
+DWI的快速智能生成有望成为优化急性脑缺血性
+卒中诊疗流程的重要技术手段[6]。目前已经有很多
+学者验证了图像生成技术在医学应用场景的可行
+性。Armanious等人[7]提出的MedGAN模型通过将
+生成对抗训练与多个非对抗性损失函数结合，在捕
+捉高频细节和低频结构方面表现突出。Ekanayake
+等人[8]提出一种多分支级联Swin Transformer模
+型，该模型通过移位窗口自注意力机制，显著提高
+了MRI图像重建的速度和稳定性。Dalmaz等人[9]提
+出的ResViT通过引入残差Transformer模块，在图
+像细节的呈现与噪声控制上表现优异。Özbey等人[10]
+提出了基于对抗和条件扩散建模的SynDiff方法，
+能够实现多序列MRI图像之间的生成以及MRI与CT
+图像之间的跨模态生成。
+尽管深度学习模型在医学图像生成方面取得了
+显著进展，但现有技术仅依赖图像数据本身的统计
+特征，这种方法往往忽视了不同医学影像模态之间
+固有的特征分布差异[11]。例如，CT图像通常包含
+较为显著的低频信息[12]，主要表现为骨骼结构的清
+晰刻画，DWI图像则更侧重于高频成分，强调软
+组织的对比度和病灶的检测[13]。不同模态影像在空
+ 
+ 
+收稿日期：2025-07-08；改回日期：2025-11-03；网络出版：2025-11-12
+*通信作者： 郑强　zhengqiang@ytu.edu.cn
+ 基金项目：国家自然科学基金(61802330，61802331)，山东省自
+然科学基金(ZR2024MH072)，烟台市科技创新发展计划(2023XDRH006)，
+山东省科技型中小企业创新能力提升项目(2023TSGC0878)
+ Foundation Items: The National Natural Science Foundation of
+China (61802330, 61802331), The Natural Science Foundation of
+Shandong Province (ZR2024MH072), The Science and Technology
+Innovation Development Program of Yantai (2023XDRH006),
+The Innovation Capacity Enhancement Project for Technology-
+based SMEs of Shandong Province (2023TSGC0878)
+第 48卷第 3期 电   子   与   信   息   学   报 Vol. 48No. 3
+2026 年 3月 Journal of Electronics & Information Technology Mar. 2026
+
+=== PDF_PAGE 2 ===
+间频率上的差异使它们包含的信息类型有显著的不
+同[14]，单一的网络架构往往难以有效地同时捕捉和
+处理这些频率差异。针对这一问题，本文提出了一
+种联合掩码引导和多频域双重注意力GAN模型
+(Joint Mask and Multi-frequency Dual Attention
+Generative Adversarial Network, JMMDA-GAN)，
+用于急性脑缺血性卒中CT影像到DWI影像的快速
+生成。此模型能够自适应地融合不同频率特征，并
+解决跨模态特征差异的问题，主要工作包括：
+(1)提出了双通道掩码引导特征融合机制，能
+够有效融合CT图像与掩码信息，通过卷积操作捕
+捉解剖结构的空间特征，从而提升了脑区与病灶区
+域的表征能力；
+(2)设计了多频域注意力模块，利用离散小波
+变换对图像的低频特征与高频特征进行分解，从而
+通过双通道注意力机制进行跨尺度特征融合，解决
+了高频信息丢失的问题；
+(3)提出了一种自适应融合策略，结合卷积神
+经网络与注意力机制，能够动态学习并优化不同输
+入特征的权重系数，从而提升了图像生成的稳定性
+和鲁棒性。
+ 2    网络模型
+本文提出的JMMDA-GAN模型(图1)由4个核
+心模块构成：掩码引导特征融合模块、多频注意力
+编码器、残差模块和上采样卷积解码器。掩码引导
+特征融合模块，通过对CT图像和掩码进行双通道
+卷积处理，然后通过特征拼接实现跨模态的特征融
+合。多频注意力编码器引入离散小波变换将输入特
+征分解为低频分量与高频分量，通过双通路注意力
+机制实现跨尺度特征交互。自适应融合权重模块，
+利用可学习参数进行动态调整，结合跳跃连接实现
+关键特征提取。残差网络由9个ResNet模块组成，
+用来解决梯度消失和网络性能下降的问题[15]。上采
+样卷积解码器集成了卷积层、归一化模块和ReLU
+激活函数。JMMDA-GAN的多频注意力编码器和
+上采样卷积解码器均由4层组成。
+ 2.1  掩码引导特征融合模块
+传统GAN网络在医学图像合成任务中通常采
+用像素级损失函数[16]约束图像生成过程。尽管像素
+级损失函数能够确保生成图像与真实图像在像素级
+别上的相似性，但无法有效捕捉更高层次的解剖结
+构特征，导致生成图像在解剖结构连续性和一致性
+上存在不足。此外，由于CT与DWI图像模态间固
+有的差异，其特征空间存在明显的域偏移问题[17]，
+传统方法中的直接特征拼接策略易引入伪影，尤其
+是在组织边界区域表现为结构模糊或不连续。
+为克服上述局限性，本文设计了一种掩码引导
+ 
+ 
+ 
+图 1 联合掩码与多频双重注意力GAN模型图
+第 3期 张泽华等：联合掩码引导与多频域双重注意力机制的急性缺血性脑卒中CT到DWI影像生成模型 995
+
+=== PDF_PAGE 3 ===
+的双路特征融合模块，如图2(a)所示。本模块通过
+引入解剖先验掩码建立空间约束机制，并采用双路
+特征提取与融合策略，以同时捕捉图像全局与局部
+解剖特征。具体而言，CT图像和掩码的特征提取
+过程见式(1)和式(2)
+F CT = ReLU (BN (Conv77 (ReflectionPad (ICT))))
+(1)
+ 
+FMask = ReLU (BN (Conv77 (M ))) (2)
+ 
+ICT
+M
+F CT
+FMask
+ReflectionPad (ICT)
+Conv77 ()
+BN ()
+ReLU ()
+其中， 为初始CT图像， 为包含解剖信息的
+掩码， 和 分别表示经过处理后的CT图像
+特征和Mask特征。为了提高生成图像边缘的连续
+性并减少边界伪影，本方法对输入的CT图像进行
+了3个像素宽度的反射式填充，即 。
+卷积层 利用较大的感受野有效地捕获CT
+图像和掩码的全局轮廓特征。批归一化层 
+通过标准化特征分布提升梯度传播稳定性，激活函
+数 则通过保留正值区间梯度并引入非线性
+决策边界，有效促进特征的稀疏性并提升网络的收
+敛速度与泛化性能。最终，经过处理后的CT特征
+与掩码特征通道的输出通过逐元素相加操作融合，
+形成最终的复合特征。
+本文所提出的掩码引导特征融合模块中使用的
+掩码是通过机器学习算法和深度学习方法结合生成
+的，如图2(b)所示。首先对数据集中的CT图像和
+DWI图像进行灰度化、阈值分割和形态学处理，
+随后采用K均值聚类算法对图像进行分割，从而提
+取出初步的CT掩码和DWI掩码。然后对两种掩码
+进行加权融合，得到最终的融合掩码。将预处理后
+的CT图像与对应的融合掩码构成训练数据集，并
+利用深度学习方法Pix2PixHD[18]模型进行训练。最
+终，由Pix2PixHD模型生成的掩码将作为本文模型
+的输入掩码使用。
+ 2.2  多频注意力编码器
+在传统基于卷积的医学图像生成对抗网络中，
+高频信息往往会随着网络深度的增加而逐渐丢失。
+尤其在图像细微结构(如病灶边缘和组织微小差
+异)的重建过程中，高频信息的缺失会显著降低生
+成图像的质量与临床准确性[19]。另外，传统的注意
+力机制缺乏对不同频率分量间相互作用的显式建模，
+导致难以有效维持跨尺度的解剖结构一致性。由于
+医学图像的解剖结构具有天然的跨尺度复杂性[20]，
+传统卷积网络和注意力机制难以同时兼顾细节与整
+体结构的协调性，这导致在医学图像生成任务中常
+常出现边缘模糊与细节丢失的现象。
+本文设计了一种基于离散小波变换的多频域特
+征分析模块，本模块首先将图像特征进行频域分
+解，获得低频分量与多个方向的高频分量，此分解
+过程可由式(3)描述
+FLL = I  Hlow  H Tlow #2
+FLH = I  Hlow  H Thigh #2
+FHL = I  Hhigh  H Tlow #2
+FHH = I  Hhigh  H Thigh #2
+■
+||||■
+||||■ (3)
+ 
+Hlow = [1; 1] /
+p
+2
+Hhigh = [ 1; 1] /
+p
+2
+#2
+其中， ， 表示低
+频和高频滤波器， 表示2×2下采样。
+F LL
+
+为进一步精准提取低频与高频信息中的关键特
+征，本方法设计了如图3所示的双路径处理结构，
+多频注意力编码器(Multi-Freq Attention Encoder,
+MFAE)。低频特征 经1 1卷积层进行特征融
+合，随后通过批归一化减少噪声干扰，最后利用
+SiLU激活函数引入非线性，提高模型的表达能
+力。之后，通过多头空间注意力机制(Multi-Head
+Spatial Attention mechanism, MHSA)捕获重要的
+病灶及解剖结构特征。此过程可由式(4)表示
+FLF = MHSA (SiLU (BN (Conv11 (FLL)))) (4)
+ 
+FLH
+FHL
+FHH
+
+高频信息对于细节重建具有重要作用，为保证
+细节信息的准确捕获和图像的高质量重建，该方法
+将 ,  和 分别经过3 3卷积层、批归一化
+和SiLU激活函数处理后，乘以对应的可学习权
+重，再通过逐元素相加方式融合为最终的高频特
+征，具体如式(5)所示
+FHF =
+∑
+i  SiLU (BN (Conv33 (Fi))) (5)
+ 
+ 
+ 
+ 
+图 2 掩码引导特征融合模块及掩码生成流程图
+996 电   子   与   信   息   学   报 第 48 卷
+
+=== PDF_PAGE 4 ===
+i
+LH
+HL
+HH
+
+其中， 分别为 ,  , 和 ，三者均是可学
+习权重，由本文2.3节自适应融合权重模块生成，
+用于调节不同的频率分量的贡献。可学习权重 由
+自适应融合权重模块根据输入的不同频率特征图的
+特征分布获取，能够根据输入模型的不同图像的高
+低频信息实现针对性的特征融合。
+多频注意力编码器会将低频信息处理通道和高
+频信息处理通道的特征进行加权融合，然后再经过
+如图3所示的卷积和归一化等处理，让不同频率的
+信息进行充分融合；最后，通过跳跃连接将不同尺
+度的特征图进行融合，得到最终的特征。
+ 2.3  自适应融合权重
+现有的图像生成模型常采用固定权重的特征融
+合机制，此类方法难以充分体现不同频率域特征在
+生成图像过程中的重要性，尤其在医学图像合成任
+务中易导致细节信息的丢失或结构表达不连续。为
+此，本文提出了一种自适应特征融合权重机制，能
+够动态调整低频与高频信息在特征融合过程中的贡
+献比例，从而更有效地捕捉医学图像不同尺度下的
+结构特征。
+本模块如图4(a)所示，首先对输入的不同频率
+的特征图进行卷积操作，提取具判别性的空间特
+征，提升模型对局部结构(病灶边界、纹理特征)的
+敏感性。然后，对每个卷积后的特征图进行全局平
+均池化，压缩空间维度，保留每个通道的全局语义
+信息，并降低计算复杂度。获得的全局特征向量分
+别输入全连接层进行非线性映射，随后通过拼接操
+作加强不同尺度特征之间的关联与信息交互。最
+后，利用Softmax激活函数对各通道权重进行归一
+化，得到一组可学习的自适应融合权重。这些权重
+能够依据输入特征的具体内容和分布，实现对低频
+与高频信息在最终融合特征中的动态分配。上述过
+程可用式(6)表示
+Ffused =
+N∑
+i=1
+iFi
+=
+N∑
+i=1
+■
+|||||■ exp (FC (GAP (Conv (Fi))))N∑
+j=1
+exp (FC (GAP (Conv (Fj))))
+■
+|||||■ Fi
+(6)
+ 
+Fi
+i
+其中， 表示输入的不同频率的特征图， 为自
+ 
+ 
+ 
+图 3 多频注意力编码器
+ 
+ 
+ 
+图 4 自适应融合权重模块及其频域响应示意图
+第 3期 张泽华等：联合掩码引导与多频域双重注意力机制的急性缺血性脑卒中CT到DWI影像生成模型 997
+
+=== PDF_PAGE 5 ===
+Fi
+Conv ()
+GAP ()
+FC ()
+Ffused
+适应融合权重模块生成的不同频率特征图 的权重
+系数， 为卷积操作， 为全局平均池
+化， 为全连接层。Softmax归一化后的系数
+用于自适应分配各特征的权重，最终得到融合特征
+ 。
+传统静态加权方法难以充分表达医学影像病灶
+区域高低频细节变化。本文所提出的自适应权重学
+习机制，通过捕捉输入图像的高低频特征信息，能
+够有效提升模型对病灶高频特征的响应能力，实现
+关键区域的精准优化。
+i
+从频域分析的角度来看，CT与DWI在空间频
+谱分布上存在显著差异：CT图像以低频结构为主
+(如颅骨与脑区轮廓)，而DWI更依赖高频细节来刻
+画缺血灶边缘和纹理。传统固定加权方式无法动态
+适应这种跨模态频率差异，容易导致病灶模糊。本
+文提出的自适应权重模块可视为一种内容自适应滤
+波器，其通过Softmax归一化生成的权重系数 
+满足
+N∑
+i=1
+i = 1; 0 < i < 1 (7)
+ 
+使得网络能够在不同输入图像下自动调节高频
+与低频特征的贡献比例。
+如图4(b)所示，第1行第1列为原始DWI图像，
+第1行第2列和第2行第1列分别表示低频与高频分量
+的热力图，第2行第2列为融合后的加权结果。低频
+分量图在脑区整体轮廓及病灶主体区域呈现较强响
+应，说明低频特征对于保持全局结构连续性和还原
+大尺度强信号区域具有重要作用。但仅依赖低频，
+容易导致边界模糊与细节缺失。高频分量图虽然整
+体强度较弱，却在病灶边缘和纹理处表现出明显增
+强，有效补充了低频分量无法刻画的细节信息。这
+种“边界聚焦”特性正契合了本文模块设计的目
+标，即通过Softmax机制自适应提升高频权重以突
+出病灶细节。最终的融合结果表明，自适应权重模
+块能够在全局范围内保持低频主导以确保解剖一致
+性，同时在病灶区域动态增强高频贡献，从而强化
+细节边界。由此可见，本模块在频域层面实现了内
+容自适应滤波机制，有效平衡了全局结构保持与局
+部细节增强的需求。
+ 2.4  损失函数
+本研究提出的JMMDA-GAN模型采用pix2pix-
+HD[18]作为基线模型，本方法基于条件生成对抗网
+络框架，通过引入多尺度判别器结构和特征匹配损
+失，有效提升了高分辨率图像的生成质量。其损失
+函数由对抗损失与特征匹配损失组成，整体目标可
+表示为
+L =
+3∑
+k=1
+LGAN (G; Dk) + 
+3∑
+k=1
+LFM (G; Dk) (8)
+ 
+LGAN
+LFM
+ = 10
+其中 为最小二乘生成对抗网络(Least Squares
+Generative Adversarial Networks, LSGAN)损失，
+ 为基于判别器多层特征的特征匹配损失，
+ 为权重系数。本设计在稳定训练的同时显著
+提升了生成图像的细节与真实感。
+ 3    实验结果与分析
+ 3.1  数据集与实验设置
+本研究使用了两家医院的临床数据集来评估
+JMMDA-GAN模型的性能(表1)。临床数据集1
+采集时间为2 021.01～2 023.09，涵盖228位患者
+(19～98岁，男65.3%/女34.7%)。数据集包含成对的CT
+和DWI图像，CT影像采用SIEMENS SOMATOM
+Definition AS+128层CT扫描仪采集，球管电压为
+120 kVp，管电流为191 mA，扫描厚度为1.25 mm，
+像素间距为0.488 3 mm；DWI影像采用SIEMENS
+Aera 1.5T扫描仪采集，重复时间为5 000 ms，回
+波时间为116 ms，扫描层厚为5 mm。数据预处理
+后，共生成7 778张图像，包括6 222张训练图像和
+1 556张测试图像(比例为8:2)。
+临床数据集2采集时间为2 019.12~2 021.09，数
+据包含635位患者 (39~90岁，男57.6%/女42.4%)。
+数据集包含成对的CT图像和DWI图像，CT影像采
+用GE Optima CT660 128层CT扫描仪采集，球管
+电压为120 kVp，管电流为260 mA，扫描厚度为
+1.25 mm，像素间距为0.429 7 mm，DWI影像采用
+SIEMENS Skyra 3.0T扫描仪采集，重复时间为4
+300 ms，回波时间为64 ms，扫描层厚为5 mm。数
+据预处理后，共生成8 167张图像，包含6 533张训
+练图像和1 634张测试图像(比例为8:2)。
+本次实验环境为Ubuntu20.04.6 LTS, JMMDA-
+GAN模型使用PyTorch在具有12 GB内存的NVIDIA
+RTX2080Ti上实现，优化器选择了Adam。最大训
+练轮数为500，初始学习率设置为0.001，训练批次
+大小设置为2。本文使用了3个定量指标来评估生成
+图像的标准性：峰值信噪比(Peak Signal-to-Noise
+Ratio, PSNR)，均方误差(Mean Squared Error,
+MSE)，结构相似度指数(Structural SIMilarity in-
+dex, SSIM)。
+ 
+表 1  为评估JMMDA-GAN模型性能使用的
+两个临床数据集信息
+数据集 男性数量 女性数量 平均年龄 训练图像 测试图像
+临床数据集1 148 80 58 6 222 1 556
+临床数据集2 365 270 64 6 533 1 634
+998 电   子   与   信   息   学   报 第 48 卷
+
+=== PDF_PAGE 6 ===
+ 3.2  实验方案设置
+ 3.2.1  临床数据集1的对比实验
+本实验将本文方法与对比模型在同一数据集上
+进行实验，对比模型包括Pix2PixHD[18], Med-
+GAN[7], HisGAN[21], MultiCycleGAN[22], ResCycle-
+GAN[23]和ARGAN[24]。如表2所示，本文提出的
+JMMDA-GAN模型在各项全局尺度指标上均优于
+对比模型。
+图5展示了本文方法与对比方法在数据集1上生
+成的DWI图像的对比可视化结果。图中第7列和第
+8列分别展示了实际的DWI和CT图像，第1~6列则
+分别给出了不同模型合成的DWI图像和对应的误
+差映射图。虽然HisGAN, ARGAN, MedGAN与
+MultiCycleGAN能够在一定程度上恢复图像的整体
+软组织轮廓，但在精细解剖结构、组织内部纹理细
+节以及病灶区域的信号准确性方面表现欠佳。相比
+之下，本研究提出的JMMDA-GAN模型不仅有效
+保留了组织内部精细结构与边缘细节特征，还显著
+提升了病灶区域的信号特征准确性。
+ 3.2.2  临床数据集2的对比实验
+本实验在数据集2上与5个生成模型对比来验证
+本文模型的有效性。从表3来看，JMMDA-GAN模
+型取得了MSE为0.005 9、PSNR为28.12 dB，以及
+SSIM为0.844的性能表现。与现有先进模型的最
+佳结果实验结果表明，JMMDA-GAN模型的
+MSE降低了35.2%，PSNR提高了7.9%，SSIM提
+高了2.3%。
+图6进一步展示了JMMDA-GAN方法与其他方
+法的图像生成效果对比。从第1行的图像合成结果
+中可以观察到，MultiCycleGAN与ResCycleGAN
+在组织形态与纹理细节方面明显偏离真实图像，
+HisGAN, ARGAN和MedGAN则表现出一定的改
+善。HisGAN, ARGAN和MedGAN生成的图像在
+病灶方面与真实图像相差较大，本文所提出的JM-
+ 
+表 2  临床数据集1的对比实验指标
+方法 MSE↓ MSE p值 PSNR (dB)↑ PSNR p值 SSIM↑ SSIM p值
+HisGAN 0.018 6±0.012 4* 2×10–163 22.84±2.52* 7×10–205 0.540±0.112* 9×10–255
+ARGAN 0.015 1±0.011 3* 4×10–145 24.02±3.20* 6×10–179 0.752±0.074* 3×10–5
+MedGAN 0.018 7±0.013 3* 1×10–193 23.14±3.41* 1×10–228 0.713±0.081* 4×10–125
+MultiCycleGAN 0.024 0±0.016 5* 9×10–217 21.74±2.50* 9×10–240 0.636±0.098* 3×10–247
+ResCycleGAN 0.034 4±0.027 0* 5×10–232 20.44±2.88* 6×10–245 0.596±0.106* 4×10–254
+本文方法 0.009 7±0.011 4 - 26.75±4.32 - 0.753±0.101 -
+注：*表示本文方法与其他方法在Wilcoxon符号秩检验中取得显著差异
+ 
+ 
+ 
+图 5 临床数据集1的对比实验结果
+ 
+表 3  临床数据集2的对比实验指标
+方法 MSE↓ MSE p值 PSNR (dB)↑ PSNR p值 SSIM↑ SSIM p值
+HisGAN 0.011 9±0.007 6* 7×10–223 24.69±2.34* 6×10–246 0.642±0.116* 1×10–268
+ARGAN 0.009 1±0.006 5* 4×10–166 26.06±2.79* 2×10–190 0.825±0.063* 7×10–159
+MedGAN 0.011 2±0.007 5* 6×10–217 25.12±2.81* 2×10–240 0.796±0.065* 1×10–225
+MultiCycleGAN 0.013 1±0.007 2* 1×10–243 24.12±2.10* 6×10–260 0.744±0.077* 1×10–263
+ResCycleGAN 0.028 3±0.019 9* 1×10–260 21.09±2.60* 1×10–265 0.660±0.087* 1×10–268
+本文方法 0.005 9±0.005 3 - 28.12±2.85 - 0.844±0.072 -
+注：*表示本文方法与其他方法在Wilcoxon符号秩检验中取得显著差异
+第 3期 张泽华等：联合掩码引导与多频域双重注意力机制的急性缺血性脑卒中CT到DWI影像生成模型 999
+
+=== PDF_PAGE 7 ===
+MDA-GAN方法在组织内部纹理重建和细小病灶特
+征的呈现方面表现突出。
+ 3.2.3  多中心数据集的对比实验
+(1)跨中心泛化实验：为验证所提方法在跨中
+心场景下的泛化能力，本研究设计了两组实验：实
+验1在数据集1上训练，在数据集2上测试，结果如
+表4所示；实验2在数据集2上训练，在数据集1上测
+试，结果如表5所示。从表4和表5看出，本文提出
+的 JMMDA-GAN 在两组跨中心实验中均取得了
+最佳性能，进一步证明了其跨中心鲁棒性。
+(2)多中心混合实验：为验证所提方法在多中
+心环境下的鲁棒性，本研究将数据集1与数据集2两
+个中心的数据混在一起训练，然后分别从各个中心
+抽取样本用于测试。从表6可以看出，本文提出的
+ 
+ 
+ 
+图 6 临床数据集2的对比实验结果
+ 
+表 4  跨中心泛化实验指标(临床数据集1训练、临床数据集2测试)
+方法 MSE↓ MSE p值 PSNR (dB)↑ PSNR p值 SSIM↑ SSIM p值
+HisGAN 0.033 7±0.020 9* 3×10–137 20.24±2.57* 3×10–174 0.601±0.112* 3×10–106
+ARGAN 0.029 6±0.017 0* 1×10–181 20.66±2.25* 7×10–220 0.611±0.089* 2×10–218
+MedGAN 0.031 3±0.020 6* 4×10–146 20.54±2.45* 5×10–190 0.625±0.074* 4×10–158
+MultiCycleGAN 0.046 2±0.027 3* 7×10–256 18.82±2.44* 3×10–263 0.556±0.085* 9×10–263
+ResCycleGAN 0.034 5±0.024 0* 1×10–160 20.19±2.56* 1×10–193 0.618±0.079* 5×10–154
+本文方法 0.015 5±0.015 4 - 24.17±3.12 - 0.678±0.073 -
+注：*表示本文方法与其他方法在Wilcoxon符号秩检验中取得显著差异。
+ 
+表 5  跨中心泛化实验指标(临床数据集2训练、临床数据集1测试)
+方法 MSE↓ MSE p值 PSNR (dB)↑ PSNR p值 SSIM↑ SSIM p值
+HisGAN 0.031 3±0.021 1* 1×10–174 20.55±2.43* 1×10–205 0.480±0.115* 4×10–251
+ARGAN 0.031 3±0.022 4* 3×10–184 20.66±2.59* 1×10–215 0.615±0.090* 2×10–236
+MedGAN 0.029 4±0.021 1* 1×10–170 20.88±2.49* 2×10–205 0.620±0.084* 6×10–225
+MultiCycleGAN 0.035 6±0.024 2* 2×10–224 20.02±2.46* 7×10–240 0.578±0.092* 5×10–253
+ResCycleGAN 0.039 4±0.030 0* 7×10–210 19.82±2.88* 1×10–224 0.585±0.100* 1×10–238
+本文方法 0.016 1±0.015 3 - 23.96±3.10 - 0.681±0.084 -
+注：*表示本文方法与其他方法在Wilcoxon符号秩检验中取得显著差异。
+ 
+表 6  多中心混合数据集的对比实验指标
+方法 MSE↓ MSE p值 PSNR (dB)↑ PSNR p值 SSIM↑ SSIM p值
+HisGAN 0.015 6±0.011 6* < 0.001 23.68±2.59* < 0.001 0.592±0.125* < 0.001
+ARGAN 0.012 1±0.009 5* 1×10–302 24.95±2.97* < 0.001 0.786±0.075* 3×10–77
+MedGAN 0.015 3±0.011 1* < 0.001 23.91±3.09* < 0.001 0.748±0.079* < 0.001
+MultiCycleGAN 0.025 5±0.018 7* < 0.001 21.50±2.49* < 0.001 0.660±0.103* < 0.001
+ResCycleGAN 0.032 1±0.024 0* < 0.001 20.63±2.74* < 0.001 0.623±0.105* < 0.001
+本文方法 0.007 7±0.008 0 - 27.22±3.34 - 0.794±0.098 -
+注：*表示本文方法与其他方法在Wilcoxon符号秩检验中取得显著差异，p<0.001表示p值远小于统计软件或数值精度的下限(如<1×10–300)。
+1000 电   子   与   信   息   学   报 第 48 卷
+
+=== PDF_PAGE 8 ===
+JMMDA-GAN在混合数据集上的性能与在两个独
+立数据集上分别进行实验的结果基本一致(MSE=
+0.007 7，PSNR=27.22 dB，SSIM=0.794)，在3项
+指标上均优于所有对比方法。
+ 3.2.4  消融实验
+本研究在数据集2上进行了消融实验，设置如
+下：(1)基线模型Pix2PixHD；(2)Pix2PixHD+
+MGFF；(3)Pix2PixHD+MFAB；(4)提出的JMM-
+DA-GAN。因为2.2节的多频注意力编码器与2.3节
+的自适应融合权重是相互依赖的，所以本文将它们
+看作一个模块，即MFAB模块。实验结果表明
+(表7)，随着MGFF与MFAB模块的加入，生成图
+像的质量持续提升，验证了这两个创新模块均能显
+著提高医学图像合成的性能。
+ 3.2.5  关键参数敏感性分析实验
+为深入分析JMMDA-GAN模型中MFAB模块
+关键参数对性能的影响，本文在数据集2上测试了
+3种小波基(db2, sym4, haar)与3种多头注意力头数
+(2, 4, 8)的9种组合(db2-2, db2-4, db2-8, sym4-2,
+sym4-4, sym4-8, haar-2, haar-4, haar-8)，图7
+绘制了参数变化趋势。实验结果表明，haar-4(haar
+小波基、多头注意力头数4)在MSE误差控制、PSNR
+图像质量和SSIM结构相似度方面表现最优。因此，
+本文选定haar-4作为2.2节多频注意力编码器MFAB
+模块的默认配置。
+ 3.2.6  临床数据集的超像素分割灰度相关性实验
+本实验使用了超像素分割(Simple Linear Iter-
+ative Clustering, SLIC)算法，对数据集1和数据集
+2中真实DWI图像进行区域划分(图8)。本实验设置
+了300个超像素，将对比方法与本文方法生成的DWI
+图像，与真实DWI图像在相同超像素内进行灰度
+相关性分析。
+图9展示了各生成模型在数据集1与数据集2上
+的灰度相关性结果。从图中可以看出，本文方法在两
+个数据集上的灰度相关性分布均显著优于其他方法，
+不仅中位数最高，且整体分布较为集中，波动较小，
+体现出良好的结构一致性与生成稳定性。相较而
+言，HisGAN, ARGAN, MedGAN, MultiCycleGAN
+ 
+表 7  消融实验指标
+方法 MSE↓ MSE p值 PSNR (dB)↑ PSNR p值 SSIM↑ SSIM p值
+Pix2PixHD 0.009 69±0.006 6* 8×10–191 25.78±3.00* 1×10–206 0.813±0.084* 9×10–239
+Pix2PixHD+MGFF 0.006 81±0.006 0* 2×10–55 27.41±2.78* 6×10–69 0.830±0.069* 2×10–168
+Pix2PixHD+MFAB 0.008 09±0.005 8* 2×10–137 26.62±3.02* 1×10–153 0.831±0.077* 1×10–143
+本文方法 0.005 85±0.005 3 - 28.12±2.85 - 0.844±0.072 -
+注：*表示本文方法与其他方法在Wilcoxon符号秩检验中取得显著差异。
+ 
+ 
+ 
+图 7 关键参数敏感性分析结果
+ 
+ 
+ 
+图 8 临床数据集中DWI图像的超像素分割图
+第 3期 张泽华等：联合掩码引导与多频域双重注意力机制的急性缺血性脑卒中CT到DWI影像生成模型 1001
+
+=== PDF_PAGE 9 ===
+和ResCycleGAN在部分区域存在较大波动，说明
+其在复杂解剖结构的重建上仍存在不稳定性。
+ 4    结论
+本文充分考虑不同模态图像的特征差异，提出
+了联合掩码与多频双重注意力生成对抗网络。通过
+引入分割掩码作为辅助输入，确保生成图像与解剖
+结构精准对齐，且保持器官边界和组织纹理的细节
+一致性。结合离散小波变换进行多尺度特征提取，
+动态调整低频和高频信息的贡献比例，提升图像生
+成的细节表现和鲁棒性。通过在两家医院临床数据
+集上的对比试验证明本文方法的先进性与有效性；
+通过在临床数据集上的消融实验证明各个模块的合
+理性。结果表明，所提出的模型在CT到DWI图像
+生成任务中的MSE, PSNR和SSIM均表现优异，对
+于复杂的组织纹理和病灶，具有较高的精度和还原
+度；超像素分割灰度相关性实验在局部尺度上验证
+了生成的DWI图像和真实的DWI图像的结构一致
+性。本文的方法为临床医生在急性脑缺血性卒中疾
+病的诊断中提供了有力的指导和帮助。
+参 考 文 献 
+ ZHANG Xuting, ZHONG Wansi, XUE Rui, et al.
+Argatroban in patients with acute ischemic stroke with
+early neurological deterioration: A randomized clinical
+trial[J]. JAMA Neurology, 2024, 81(2): 118–125. doi: 10.
+1001/jamaneurol.2023.5093.
+[1]
+ VANDE VYVERE T, PISICĂ D, WILMS G, et al. Imaging
+findings in acute traumatic brain injury: A national
+institute of neurological disorders and stroke common data
+element-based pictorial review and analysis of over 4000
+admission brain computed tomography scans from the
+collaborative European NeuroTrauma effectiveness research
+in traumatic brain injury (CENTER-TBI) study[J]. Journal
+of Neurotrauma, 2024, 41(19/20): 2248–2297. doi: 10.1089/
+neu.2023.0553.
+[2]
+ ELSHERIF S, LEGERE B, MOHAMED A, et al. Beyond
+conventional imaging: A systematic review and meta-
+analysis assessing the impact of computed tomography
+perfusion on ischemic stroke outcomes in the late window[J].
+International Journal of Stroke, 2025, 20(3): 278–288. doi:
+10.1177/17474930241292915.
+[3]
+ RAPILLO C M, DUNET V, PISTOCCHI S, et al. Moving
+from CT to MRI paradigm in acute ischemic stroke:
+Feasibility, effects on stroke diagnosis and long-term
+outcomes[J]. Stroke, 2024, 55(5): 1329–1338. doi: 10.1161/
+strokeaha.123.045154.
+[4]
+ GHEBREHIWET I, ZAKI N, DAMSEH R, et al.
+Revolutionizing personalized medicine with generative AI: A
+systematic review[J]. Artificial Intelligence Review, 2024,
+57(5): 128. doi: 10.1007/s10462-024-10768-5.
+[5]
+ SHURRAB S, GUERRA-MANZANARES A, MAGID A,
+et al. Multimodal machine learning for stroke prognosis and
+diagnosis: A systematic review[J]. IEEE  Journal  of
+Biomedical  and  Health  Informatics, 2024, 28(11):
+6958–6973. doi: 10.1109/jbhi.2024.3448238.
+[6]
+ ARMANIOUS K, JIANG Chenming, FISCHER M, et al.
+MedGAN: Medical image translation using GANs[J].
+Computerized  Medical  Imaging  and  Graphics, 2020, 79:
+101684. doi: 10.1016/j.compmedimag.2019.101684.
+[7]
+ EKANAYAKE M, PAWAR K, HARANDI M, et al.
+McSTRA: A multi-branch cascaded swin transformer for
+point spread function-guided robust MRI reconstruction[J].
+Computers in Biology and Medicine, 2024, 168: 107775. doi:
+10.1016/j.compbiomed.2023.107775.
+[8]
+ DALMAZ O, YURT M, and ÇUKUR T. ResViT: Residual
+vision transformers for multimodal medical image
+synthesis[J]. IEEE Transactions on Medical Imaging, 2022,
+41(10): 2598–2614. doi: 10.1109/tmi.2022.3167808.
+[9]
+ ÖZBEY M, DALMAZ O, DAR S U H, et al. Unsupervised
+medical image translation with adversarial diffusion
+models[J]. IEEE Transactions on Medical Imaging, 2023,
+42(12): 3524–3539. doi: 10.1109/tmi.2023.3290149.
+[10]
+ LUO Yu, ZHANG Shaowei, LING Jie, et al. Mask-guided
+generative adversarial network for MRI-based CT
+synthesis[J]. Knowledge-Based Systems, 2024, 295: 111799.
+[11]
+ 
+ 
+ 
+图 9 各模型在临床数据集的区域灰度相关性结果
+1002 电   子   与   信   息   学   报 第 48 卷
+
+=== PDF_PAGE 10 ===
+doi: 10.1016/j.knosys.2024.111799.
+ YANG Linlin, SHANGGUAN Hong, ZHANG Xiong, et al.
+High-frequency sensitive generative adversarial network for
+low-dose CT image denoising[J]. IEEE Access, 2020, 8:
+930–943. doi: 10.1109/access.2019.2961983.
+[12]
+ HUTCHINSON E B, AVRAM A V, IRFANOGLU M O,
+et al. Analysis of the effects of noise, DWI sampling, and
+value of assumed parameters in diffusion MRI models[J].
+Magnetic Resonance in Medicine, 2017, 78(5): 1767–1780.
+doi: 10.1002/mrm.26575.
+[13]
+ DAS S and KUNDU M K. NSCT-based multimodal medical
+image fusion using pulse-coupled neural network and
+modified spatial frequency[J]. Medical  & Biological
+Engineering & Computing, 2012, 50(10): 1105–1114. doi: 10.
+1007/s11517-012-0943-3.
+[14]
+ 周涛, 刘赟璨, 陆惠玲, 等. ResNet及其在医学图像处理领域的
+应用: 研究进展与挑战[J]. 电子与信息学报, 2022, 44(1):
+149–167. doi: 10.11999/JEIT210914.
+ZHOU Tao, LIU Yuncan, LU Huiling, et al. ResNet and its
+application to medical image processing: Research progress
+and challenges[J]. Journal of Electronics & Information
+Technology, 2022, 44(1): 149–167. doi: 10.11999/
+JEIT210914.
+[15]
+ BARRON J T. A general and adaptive robust loss
+function[C]. 2019 IEEE/CVF Conference on Computer
+Vision and Pattern Recognition, Long Beach, USA, 2019:
+4326–4334. doi: 10.1109/CVPR.2019.00446.
+[16]
+ LUO Jialin, DAI Peishan, HE Zhuang, et al. Deep learning
+models for ischemic stroke lesion segmentation in medical
+images: A survey[J]. Computers in Biology and Medicine,
+2024, 175: 108509. doi: 10.1016/j.compbiomed.2024.108509.
+[17]
+ WANG Tingchun, LIU Mingyu, ZHU Junyan, et al. High-
+resolution image synthesis and semantic manipulation with
+conditional GANs[C]. 2018 IEEE/CVF Conference on
+Computer Vision and Pattern Recognition, Salt Lake City,
+USA, 2018: 8798–8807. doi: 10.1109/CVPR.2018.00917.
+[18]
+ LIU Rui, DING Xiaoxi, SHAO Yimin, et al. An[19]
+interpretable multiplication-convolution residual network for
+equipment fault diagnosis via time–frequency filtering[J].
+Advanced Engineering Informatics, 2024, 60: 102421. doi:
+10.1016/j.aei.2024.102421.
+ LI Yihao, EL HABIB DAHO M, CONZE P H, et al. A
+review of deep learning-based information fusion techniques
+for multimodal medical image classification[J]. Computers in
+Biology and Medicine, 2024, 177: 108635. doi: 10.1016/j.
+compbiomed.2024.108635.
+[20]
+ PENG Yanjun, SUN Jindong, REN Yande, et al. A
+histogram-driven generative adversarial network for brain
+MRI to CT synthesis[J]. Knowledge-Based Systems, 2023,
+277: 110802. doi: 10.1016/j.knosys.2023.110802.
+[21]
+ LIU Yanxia, CHEN Anni, SHI Hongyu, et al. CT synthesis
+from MRI using multi-cycle GAN for head-and-neck
+radiation therapy[J]. Computerized Medical Imaging and
+Graphics, 2021, 91: 101953. doi: 10.1016/j.compmedimag.
+2021.101953.
+[22]
+ DAI Xianjin, LEI Yang, LIU Yingzi, et al. Intensity non-
+uniformity correction in MR imaging using residual cycle
+generative adversarial network[J]. Physics in Medicine &
+Biology, 2020, 65(21): 215025. doi: 10.1088/1361-6560/
+abb31f.
+[23]
+ DING Bin, LONG Chengjiang, ZHANG Ling, et al.
+ARGAN: Attentive recurrent generative adversarial
+network for shadow detection and removal[C]. 2019
+IEEE/CVF International Conference on Computer Vision,
+Seoul, South Korea, 2019: 10212–10221. doi: 10.1109/
+ICCV.2019.01031.
+[24]
+ 
+张泽华：男，硕士生，研究方向为医学图像生成.
+赵　宁：男，硕士生，研究方向为医学图像生成.
+王　帅：男，讲师，研究方向为医学图像处理.
+王　璇：女，副教授，研究方向为医学图像处理.
+郑　强：男，教授，研究方向为医学图像处理.
+责任编辑： 廖海贝 
+Joint Mask and Multi-Frequency Dual Attention GAN Network for
+CT-to-DWI Image Synthesis in Acute Ischemic Stroke
+ZHANG Zehua①      ZHAO Ning①      WANG Shuai②     
+WANG Xuan①      ZHENG Qiang①
+①(School of Computer and Control Engineering, Yantai University, Yantai 264005, China)
+②(The Affiliated Hospital of Binzhou Medical University, Binzhou 256603, China)
+Abstract:
+Objective　In the clinical management of Acute Ischemic Stroke (AIS), Computed Tomography (CT) and
+Diffusion-Weighted Imaging (DWI) serve complementary roles at different stages. CT is widely applied for
+initial evaluation due to its rapid acquisition and accessibility, but it has limited sensitivity in detecting early
+ischemic changes, which can result in diagnostic uncertainty. In contrast, DWI demonstrates high sensitivity to
+early ischemic lesions, enabling visualization of diffusion-restricted regions soon after symptom onset. However,
+第 3期 张泽华等：联合掩码引导与多频域双重注意力机制的急性缺血性脑卒中CT到DWI影像生成模型 1003
+
+=== PDF_PAGE 11 ===
+DWI acquisition requires a longer time, is susceptible to motion artifacts, and depends on scanner availability
+and patient cooperation, thereby reducing its clinical accessibility. The limited availability of multimodal
+imaging data remains a major challenge for timely and accurate AIS diagnosis. Therefore, developing a method
+capable of rapidly and accurately generating DWI images from CT scans has important clinical significance for
+improving diagnostic precision and guiding treatment planning. Existing medical image translation approaches
+primarily rely on statistical image features and overlook anatomical structures, which leads to blurred lesion
+regions and reduced structural fidelity.
+Methods　This study proposes a Joint Mask and Multi-Frequency Dual Attention Generative Adversarial
+Network (JMMDA-GAN) for CT-to-DWI image synthesis to assist in the diagnosis and treatment of ischemic
+stroke. The approach incorporates anatomical priors from brain masks and adaptive multi-frequency feature
+fusion to improve image translation accuracy. JMMDA-GAN comprises three principal modules: a mask-guided
+feature fusion module, a multi-frequency attention encoder, and an adaptive fusion weighting module. The
+mask-guided feature fusion module integrates CT images with anatomical masks through convolution,
+embedding spatial priors to enhance feature representation and texture detail within brain regions and ischemic
+lesions. The multi-frequency attention encoder applies Discrete Wavelet Transform (DWT) to decompose
+images into low-frequency global components and high-frequency edge components. A dual-path attention
+mechanism facilitates cross-scale feature fusion, reducing high-frequency information loss and improving
+structural detail reconstruction. The adaptive fusion weighting module combines convolutional neural networks
+and attention mechanisms to dynamically learn the relative importance of input features. By assigning adaptive
+weights to multi-scale features, the module selectively enhances informative regions and suppresses redundant
+or noisy information. This process enables effective integration of low- and high-frequency features, thereby
+improving both global contextual consistency and local structural precision.
+Results and Discussions　Extensive experiments were performed on two independent clinical datasets collected
+from different hospitals to assess the effectiveness of the proposed method. JMMDA-GAN achieved Mean
+Squared Error (MSE) values of 0.0097 and 0.0059 on Clinical Dataset 1 and Clinical Dataset 2, respectively,
+exceeding state-of-the-art models by reducing MSE by 35.8% and 35.2% compared with ARGAN. The proposed
+network reached peak Signal-to-Noise Ratio (PSNR) values of 26.75 dB and 28.12 dB, showing improvements of
+30.7% and 7.9% over the best existing methods. For Structural Similarity Index (SSIM), JMMDA-GAN achieved
+0.753 and 0.844, indicating superior structural preservation and perceptual quality. Visual analysis further
+demonstrates that JMMDA-GAN restores lesion morphology and fine texture features with higher fidelity,
+producing sharper lesion boundaries and improved structural consistency compared with other methods. Cross-center
+generalization and multi-center mixed experiments confirm that the model maintains stable performance across
+institutions, highlighting its robustness and adaptability in clinical settings. Parameter sensitivity analysis
+shows that the combination of Haar wavelet and four attention heads achieves an optimal balance between
+global structural retention and local detail reconstruction. Moreover, superpixel-based gray-level correlation
+experiments demonstrate that JMMDA-GAN exceeds existing models in both local consistency and global
+image quality, confirming its capacity to generate realistic and diagnostically reliable DWI images from CT inputs.
+Conclusions　This study proposes a novel JMMDA-GAN designed to enhance lesion and texture detail
+generation by incorporating anatomical structural information. The method achieves this through three
+principal modules. (1) The mask-guided feature fusion module effectively integrates anatomical structure
+information, with particular optimization of the lesion region. The mask-guided network focuses on critical
+lesion features, ensuring accurate restoration of lesion morphology and boundaries. By combining mask and
+image data, the method preserves the overall anatomical structure while enhancing lesion areas, preventing
+boundary blurring and texture loss commonly observed in traditional approaches, thereby improving diagnostic
+reliability. (2) The multi-frequency feature fusion module jointly optimizes low- and high-frequency features to
+enhance image detail. This integration preserves global structural integrity while refining local features,
+producing visually realistic and high-fidelity images. (3) The adaptive fusion weighting module dynamically
+adjusts the learning strategy for frequency-domain features according to image content, enabling the network to
+manage texture variations and complex anatomical structures effectively, thereby improving overall image
+quality. Through the coordinated function of these modules, the proposed method enhances image realism and
+diagnostic precision. Experimental results demonstrate that JMMDA-GAN exceeds existing advanced models
+across multiple clinical datasets, highlighting its potential to support clinicians in the diagnosis and
+management of AIS.
+Key words: Generative adversarial network; Medical image generation; Discrete Wavelet Transform (DWT);
+Acute Ischemic Stroke (AIS)
+1004 电   子   与   信   息   学   报 第 48 卷

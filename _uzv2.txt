@@ -1,0 +1,27 @@
+﻿==== unzip
+images/11073
+images/10139
+images/10509
+images/11330
+images/10012
+images/10870
+images/10350
+images/11322
+images/10287
+images/11364
+== 璁℃暟 ==
+mha=7495
+nii.gz=0
+UNZIP_DONE
+
+==== img
+26G	/data/heluofan/picai/images
+7495
+
+==== proc
+0
+
+==== du
+26G	/data/heluofan/picai/downloads
+26G	/data/heluofan/picai/images
+/dev/nvme0n1    7.0T  1.7T  4.9T  26% /data

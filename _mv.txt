@@ -1,0 +1,46 @@
+﻿==== proc
+0
+---log tail---
+[ 9895s]  24.77/25.02 GB  99.0%  inst=2.46 avg=2.56 MB/s ETA=2 min
+[ 9910s]  24.80/25.02 GB  99.1%  inst=2.46 avg=2.56 MB/s ETA=1 min
+[ 9925s]  24.83/25.02 GB  99.2%  inst=1.60 avg=2.56 MB/s ETA=1 min
+[ 9941s]  24.85/25.02 GB  99.3%  inst=1.60 avg=2.56 MB/s ETA=1 min
+[ 9956s]  24.87/25.02 GB  99.4%  inst=1.53 avg=2.56 MB/s ETA=1 min
+[ 9971s]  24.91/25.02 GB  99.5%  inst=2.26 avg=2.56 MB/s ETA=1 min
+[ 9986s]  24.94/25.02 GB  99.7%  inst=2.13 avg=2.56 MB/s ETA=1 min
+[10001s]  24.97/25.02 GB  99.8%  inst=2.26 avg=2.56 MB/s ETA=0 min
+[10016s]  24.99/25.02 GB  99.9%  inst=1.14 avg=2.55 MB/s ETA=0 min
+[10031s]  25.00/25.02 GB  99.9%  inst=0.87 avg=2.55 MB/s ETA=0 min
+[10046s]  25.01/25.02 GB  99.9%  inst=0.73 avg=2.55 MB/s ETA=0 min
+[10061s]  25.02/25.02 GB 100.0%  inst=0.67 avg=2.55 MB/s ETA=0 min
+DOWNLOAD DONE ok=402/402 fails=0
+[10076s]  25.02/25.02 GB 100.0%  inst=0.27 avg=2.54 MB/s ETA=0 min
+ASSEMBLE picai_public_images_fold0.zip size=5368893021 md5=b0cdd8f5fb7733ca585dca3541586a34 expect=b0cdd8f5fb7733ca585dca3541586a34 OK
+ASSEMBLE picai_public_images_fold1.zip size=5164062415 md5=d7c8cd0efc0e7f264df8d5acf860662f expect=d7c8cd0efc0e7f264df8d5acf860662f OK
+ASSEMBLE picai_public_images_fold2.zip size=5270275720 md5=5ac0caf27cfe94dfc04bb408a971b351 expect=5ac0caf27cfe94dfc04bb408a971b351 OK
+ASSEMBLE picai_public_images_fold3.zip size=5502916242 md5=6602bce3d0882d7b9c2153d880c97e96 expect=6602bce3d0882d7b9c2153d880c97e96 OK
+ASSEMBLE picai_public_images_fold4.zip size=5562839222 md5=8941720d8a8ee66571691cfb10dbee66 expect=8941720d8a8ee66571691cfb10dbee66 OK
+ALLDONE
+
+==== files
+-rw-rw-r-- 1 heluofan heluofan 5368893021 Nov 24 01:59 /data/heluofan/picai/downloads/picai_public_images_fold0.zip
+-rw-rw-r-- 1 heluofan heluofan 5164062415 Nov 24 01:59 /data/heluofan/picai/downloads/picai_public_images_fold1.zip
+-rw-rw-r-- 1 heluofan heluofan 5270275720 Nov 24 02:00 /data/heluofan/picai/downloads/picai_public_images_fold2.zip
+-rw-rw-r-- 1 heluofan heluofan 5502916242 Nov 24 02:00 /data/heluofan/picai/downloads/picai_public_images_fold3.zip
+-rw-rw-r-- 1 heluofan heluofan 5562839222 Nov 24 02:00 /data/heluofan/picai/downloads/picai_public_images_fold4.zip
+---parts---
+0
+
+==== du
+51G	/data/heluofan/picai/downloads
+/dev/nvme0n1    7.0T  1.7T  4.9T  26% /data
+
+==== gpu
+0, 28893 MiB
+1, 0 MiB
+2, 0 MiB
+3, 0 MiB
+4, 14699 MiB
+5, 0 MiB
+6, 0 MiB
+7, 0 MiB

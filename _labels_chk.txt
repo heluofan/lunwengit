@@ -1,0 +1,25 @@
+$ tail -3 /data/heluofan/picai/dl_v2.log
+resume: 0 parts done, 402 to fetch, on-disk=0.59GB
+[   15s]   0.61/25.02 GB   2.4%  inst=41.69 avg=41.69 MB/s ETA=10 min
+[   30s]   0.63/25.02 GB   2.5%  inst=1.60 avg=21.64 MB/s ETA=19 min
+
+$ ls /data/heluofan/picai/repos/picai_labels
+picai_labels-main
+
+$ ls /data/heluofan/picai/repos/picai_labels/csPCa_lesion_delineations/human_expert
+
+
+$ for d in original resampled Pooch25; do echo -n "$d: "; ls /data/heluofan/picai/repos/picai_labels/csPCa_lesion_delineations/human_expert/$d/*.nii.gz 2>/dev/null | wc -l; done
+original: 0
+resampled: 0
+Pooch25: 0
+
+$ ls /data/heluofan/picai/repos/picai_labels/csPCa_lesion_delineations/ 
+
+
+$ du -sh /data/heluofan/picai/repos/picai_labels; du -sh /data/heluofan/picai/repos/picai_labels/*
+139M	/data/heluofan/picai/repos/picai_labels
+139M	/data/heluofan/picai/repos/picai_labels/picai_labels-main
+
+$ head -3 /data/heluofan/picai/repos/picai_labels/csPCa_lesion_delineations/human_expert/Pooch25/*.nii.gz 2>/dev/null | head -1
+

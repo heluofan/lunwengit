@@ -1,0 +1,480 @@
+=== PDF_PAGE 1 ===
+现代电子技术
+Modern Electronic Technique
+2026 年 5 月 1 日
+第 49 卷第 9 期
+May  2026
+Vol. 49  No. 9
+0  引  言
+在临床实践中 ，精确分割多模态脑肿瘤 MRI 图像对
+于脑肿瘤的诊断和治疗决策至关重要 。近年来 ，三维医
+学图像分割技术逐步从传统卷积神经网络 （CNN）向多
+模态融合架构演进 。3D U⁃Net [1]作为经典模型 ，通过将
+二维卷积扩展至三维空间 ，有效捕获了三维数据中的局
+部空间特征 ，显著提升了分割精度与鲁棒性 。然而 ，受
+限于卷积操作的局部感受野 ，其难以建模全局语义信息
+交互 ，比如跨切片长程依赖关系 ，这制约了复杂解剖结
+构的分割性能 。为突破这一瓶颈 ，研究者相继提出了一
+些多尺度注意力与混合架构优化方案 。Attention U⁃Net
+基于 Mamba 的轻量级多模态脑肿瘤 MRI 图像分割
+侯向宁 1，2， 黄孝斌 1，2， 徐草草 1，2， 姚  捃 1，2
+（1. 成都理工大学工程技术学院 ， 四川 乐山  614000 ；
+2. 核工业西南物理研究院 ， 四川 成都  610200）
+摘  要： 针对现有的 3D U⁃Net 模型在处理三维医学影像数据时存在计算复杂度较高 、精度低，难以满足临床实时诊断需求
+的问题，为解决传统深度学习模型在多模态脑肿瘤 MRI 图像分割中的计算复杂度与精度问题 ，文中提出一种基于 3D U⁃Net
+结合 Mamba 的轻量级技术架构 ，利用 Mamba 的线性复杂度自注意力机制优化 3D U⁃Net 模型 ，以降低计算复杂度并提升推理
+速度和分割精度 。具体方法是在 3D U⁃Net 模型的基础上引入 LWM 模块及注意力桥接模块 。LWM 模块采用并行 Mamba 架
+构，通过降低输入通道数量减少模型参数量 ，在进行全局信息提取的同时 ,极大地降低计算复杂度和内存消耗 ，实现了低参
+数量下的高效分割 。LWM 还通过引入 SE 模块 ，进一步提升了细粒度肿瘤核心的分割性能 。在 BraTS 2020 数据集上的实验
+结果表明 ，所提方法显著提升了肿瘤分割精度 ，大幅降低了训练与推理时间 ，展现出良好的实际应用潜力 。
+关键词 ： 多模态数据融合 ； 脑肿瘤 ； 轻量级架构 ； 3D U⁃Net ； Mamba ； SE 模块
+中图分类号 ： TN 911.73⁃34； TP 391.4                 文献标识码 ： A                  文章编号 ： 1004⁃373X（2026）09⁃0032⁃06
+Lightweight multi⁃modal brain tumor MRI image segmentation based on Mamba
+Hou Xiangning 1, 2, Huang Xiaobin 1, 2, Xu Caocao 1, 2, Yao Jun 1, 2
+(1. The Engineering and Technical College of Chengdu University of Technology , Leshan 614000 , China ;
+2. Southwestern Institute of Physics , Chengdu 610200 , China )
+Abstract ： The existing 3D U ⁃Net model has high computational complexity and poor accuracy when processing 3D medical 
+image data , so it is difficult to meet the needs of clinical real ⁃ time diagnosis . Therefore , a lightweight technology architecture 
+based on 3D U ⁃ Net combined with Mamba is proposed to reduce the computational complexity and improve the segmentation 
+accuracy of the traditional deep learning models in multi⁃modal brain tumor MRI image segmentation . Mamba ′s linear complexity 
+self ⁃ attention mechanism is used to optimize the 3D U ⁃ Net model to reduce the computational complexity and improve the 
+inference speed and segmentation accuracy . The specific method is to introduce LWM module and attention bridge module on the 
+basis of 3D U ⁃ Net model . Parallel Mamba architecture is adopted in the LWM module , which reduces the number of model 
+parameters by reducing the number of input channels , greatly reduces the computational complexity and memory consumption 
+while extracting global information , and realizes efficient segmentation in the case of fewer parameters . In addition , the LWM 
+further improves the segmentation performance of fine ⁃ grained tumor cores by introducing SE module . The experiments on the 
+dataset BraTS 2020 show that the proposed method significantly improves the accuracy of tumor segmentation , and greatly reduces 
+the training and inference duration , so it shows great practical application potential .
+Keywords ： multi⁃modal data⁃fusion ; brain tumor ; lightweight framework ; 3D U ⁃Net; Mamba ; SE module
+DOI：10.16652 /j.issn.1004⁃373x.2026.09.006
+引用格式 ：侯向宁 ，黄孝斌 ，徐草草 ，等 . 基于 Mamba 的轻量级多模态脑肿瘤 MRI 图像分割 [J]. 现代电子技术 ，2026，49（9） ：32⁃37.
+收稿日期 ：2025⁃05⁃05           修回日期 ：2025⁃07⁃09
+基金项目 ：乐山市科技局基金项目 （24YYJC 0004） ；成都理工大学工程技术学院基金项目 （C122024002）
+3232
+
+=== PDF_PAGE 2 ===
+第 9 期
+通过引入通道与空间的双注意力门控机制 （AGs）动态
+加权跳跃连接特征 ，抑制背景噪声并增强关键区域响
+应。该模型在肺部和食管癌分割任务中表现出色 ，但多
+尺度模块与注意力机制的叠加也显著增加了计算复杂
+度[2]。此后 ，Transformer 架构的引入为全局建模提供了
+新 路 径，TransUNet [3] 首 次 将 视 觉Transformer（ViT）作 为
+编码器提取全局上下文特征 ，并利用 CNN 解码器恢复
+空间细节 ，在多器官分割任务中达到先进水平 。但其核
+心瓶颈在于 Transformer 的平方复杂度难以适配大规模
+3D 数 据 的 高 分 辨 率 需 求。 针 对 计 算 效 率 问 题，Swin⁃
+Unet[4]基于 Swin Transformer 设计纯 Transformer 架构 ，通
+过窗口化自注意力与移动窗口策略降低计算开销 ，同时
+保留 U⁃Net 的多尺度特征融合能力 。实验表明 ，其在心
+脏 MRI 图像分割中取得 SOTA 性能 ，但仍需依赖轴向注
+意 力 约 束 以 缓 解3D 数 据 的 内 存 压 力。 类 似 地，
+TransBTS [5] 采用 Transformer⁃CNN 混合架构 ，在 BraTS 脑
+肿瘤数据集分割任务中验证了长程依赖建模的有效性 ，
+但未能彻底解决高计算成本问题 。在自动化分割领域 ，
+nnU⁃Net [6]通过动态调整预处理 、网络结构与超参数 ，无
+需人工干预即可适配多样化的医学图像分割任务 ，至今
+仍是 3D 医学分割的基准框架 。然而 ，其底层依赖的局
+部卷积操作限制了全局上下文建模能力 ，难以应对高度
+异质性病灶的精准分割 。近期 ，状态空间模型（SSM）为
+高效长程建模提供了新思路 。Mamba⁃UNet [7]创新性地
+将 3D Mamba 层引入分割架构 ，通过线性复杂度实现跨
+体素的全局交互 。相较于传统的 Transformer ，Mamba 基
+于选择性状态空间的序列建模机制 ，在保持长程依赖捕
+获能力的同时 ，能显著降低计算资源消耗 ，为高分辨率
+3D 医学影像的高效处理开辟了潜在路径 。
+上述工作表明 ，当前 3D 医学分割的核心挑战在于
+平衡全局语义建模能力与计算效率 。传统 CNN 受限于
+局部感受野 ，Transformer 类模型虽能捕获长程依赖却面
+临高计算复杂度的制约 ，而新型 SSM 架构尚未充分验证
+其在多模态医学数据中的普适性。因此，探索高效、轻量且
+适配复杂解剖特征的 3D 分割框架仍具重要研究价值 。为
+此，本文提出一种创新的轻量级网络架构 。该架构结合
+3D U⁃Net 的空间建模能力和 Mamba 的高效序列处理特
+性，在保持低计算复杂度和内存占用的前提下 ，以提高
+3D 医学图像分割的计算效率和分割精度 。该架构具有
+线性计算复杂度和较低的内存占用 ，特别是在处理不规
+则形状和异质性强 的脑肿瘤 MRI 图像时 ，表现出更强的
+鲁棒性和准确性 。此外，本文提出的网络架构具备良好
+的 扩 展 性，不 仅 限 于 脑 肿 瘤 分 割，还 能 够 推 广 至 其 他
+三维医学影像分析领域，如器官分割和病变检测等任务。
+1  基本方法
+1.1  3D U⁃Net
+文献[1]提出了 3D U⁃Net ，旨在处理稀疏注释的三维
+医学影像分割任务 ，并在多个医学影像数据集上展现了
+卓越的性能 。3D U⁃Net 基于 U⁃Net 架构，通过将所有 2D
+卷积操作扩展为 3D，以适应三维数据的处理 。该模型
+采用编码器 /解码器结构 ，其中编码器通过一系列 3D 卷
+积和最大池化层提取深层特征 ，而解码器通过转置卷积
+层恢复空间细节 。此外，该模型还利用跳跃连接将编码
+器中的高级语义特征与解码器中的细粒度特征相结合 ，
+以实现对复杂三维结构的精确分割 。
+1.2  注意力机制
+SE（Squeeze⁃and⁃Excitation ）[8]模块是一种轻量级通
+道注意力机制 ，通过动态调整特征通道的权重 ，增强模
+型对关键特征的敏感性 。首先 ，Sequeeze [9] 通过全局平
+均池化（GAP）对特征图进行处理 ，为每个通道提取一个
+全局的表征 。接着 ，Excitation [8]通过全连接（FC）层构建
+门控机制 ，学习通道间非线性依赖关系 ，生成归一化的
+权重向量 ，对原特征进行通道加权 ，突出重要特征并抑
+制冗余信息 。最后 ，Reweight [10]将权重通过逐通道乘法
+的方式重新加权到原始特征上 ，实现特征通道的动态重
+校准，从而在通道维度上完成了对原始特征的增强 。
+1.3  Mamba 模型
+文献 [11]提出的 Mamba 模型是一种创新的序列建
+模方法 ，旨在解决传统 Transformer 架构在处理长序列时
+的计算效率问题 。如图 1 所示 ，该模型的核心在于选择
+性的状态空间模型（S6） ，它通过引入一种选择机制处理
+序列建模任务 。
+图 1  Mamba 模型
+Mamba 模型通过让 SSM 参数成为输入的函数 ，从而
+在序列长度维度上根据当前标记选择性地传播或遗忘信
+侯向宁 ，等：基于 Mamba 的轻量级多模态脑肿瘤 MRI 图像分割 33
+
+=== PDF_PAGE 3 ===
+现代电子技术 2026 年第 49 卷
+息，这一改进解决了模型在处理离散模态时的弱点 。该方
+法在处理长序列时展现出高效的推理能力和序列长度的线
+性扩展，显著提高了计算效率 ，同时优化了模型的性能 。
+Mamba 模型通过这种结构 ，在保持线性时间复杂度
+的同时 ，实现了对长序列的高效处理 ，并在多种模态上
+取得了最先进的性能 。
+2  本文方法
+2.1  轻量级 Mamba 模块
+虽然 Mamba 模型在长序列建模任务中展现出优异
+的性能 ，但是输入通道的数量对 Mamba 的参数具有重
+要影响 [11]。轻量级 Mamba（Light Weight Mamba , LWM）
+模块采用并行架构以降低输入通道的数量 ，在极低参数
+量下仍实现了卓越的分割性能 。该模块同时引入了 SE
+模块，通过显式建模特征通道间的依赖关系来提升分割
+性能。LWM 模块如图 2 所示。
+图 2  LWM 模块
+首先 ，使用三维卷积层进行投影操作 ，变换特征图
+的维度 ；然后，将特征图沿通道维度划分为四部分 ，并通
+过 Mamba Block 获取全局和局部特征信息 ，同时 ，为了
+更有效地捕获上下文信息 ，应用残差连接操作 ，沿通道
+维度进行拼接操作以恢复特征图的大小 ；最后 ，使用层
+归一化模块使数据的分布更加稳定 ，从而加速训练过程
+并提高模型的性能 ，使用 SE 模块生成与输入特征形状相
+同的注意力图 ，以抑制无关区域特征信息 ，从而使模型更
+加关注关键信息 。整体流程如式（1）~式（5）所示：
+X C'in = Proj( X Cin ) （1）
+Y C' 4i = Ch[ ]LN( X C'in ) ,    i ∈ { 1,2,3,4 } （2）
+Z C' 4i = Mamba( )Y C' 4i +  Y C' 4i ,    i ∈ { 1,2,3,4 } （3）
+Z C'out = Cat ( Z C' 41 ,Z C' 42 ,Z C' 43 ,Z C' 44 ) （4）
+OUT = SE[ ]LN( Z C'out ) （5）
+2.2  基于轻量级 Mamba 的 3D U⁃Net 模型
+将 轻 量 级Mamba 模 块 和3D U ⁃ Net相 结 合 得 到
+LWM⁃UNet（Light Weight Mamba UNet ） ，应用于三维医
+学影像分割 ，在较低参数量下可实现卓越的分割性能 。
+如图 3 所示 ，LWM⁃UNet 采用 5 层 U 形架构 ，编码器和解
+码器通道维度均为 [16，32，64，128，256]。编码器前 2 层
+用 3D 卷积模块提取浅层特征 ，后 3 层用 LWM 模块并行
+进行长序列建模来提取深度特征 ，并通过最大池化层降
+低特征图分辨率 。解码器同样使用 LWM 模块和 3D 卷
+积模块提取特征 ，并通过 3D 反卷积模块恢复特征图分
+辨率 。此外 ，将简单跳跃连接改为空间注意桥接 （SAB）
+和通道注意桥（CAB）[12]。其中 ，SAB 模块主要关注图像
+的空间位置信息 ，通过学习图像中不同位置的重要性来
+优 化 特 征 提 取，从 而 提 高 模 型 对 目 标 区 域 的 识 别 能
+力[13]。CAB 模块则侧重于通道维度 ，通过分析不同通道
+特征的重要性 ，对通道进行加权 ，增强模型对关键特征
+的捕捉能力 。两个模块将全局多尺度特征与解码器连
+接，实现低级细节和高级语义信息融合 。此设计提高了
+分割性能 ，降低了计算复杂度和内存消耗 。
+图 3  LWM⁃UNet 模型
+3  实验结果与分析
+3.1  实验环境与数据集
+本文实验采用的操作系统为 Windows 10 专业版 。
+显卡为 NVIDIA GeForce RTX 3090，24 GB 内存 。采用
+PyTorch 2.1 深 度 学 习 框 架，编 程 环 境 为 Python 3.10，
+CUDA 11.8，开发工具为 PyCharm 。
+实验选用 MICCAI 提供的 Brats2020 多模态脑肿瘤
+数据集训练并验证分割模型 ，数据集包括 T1、T1CE、T2、
+34
+
+=== PDF_PAGE 4 ===
+第 9 期
+FLAIR 四种 MRI 图像。该数据集的分割标签包括背景 、
+非 增 强 肿 瘤（Non ⁃ Enhancing Tumor, NET ）区 域、浮 肿
+（Edema , ED）区域和增强肿瘤（Enhancing Tumor , ET）区
+域 。 实 验 目 标 是 对 脑 肿 瘤 图 像 中 的 肿 瘤 整 体（Whole 
+Tumor , WT）区域、肿瘤核心（Tumor Core , TC）区域和增强
+肿瘤（Enhancing Tumor , ET）区域进行精确分割。
+3.2  参数设置
+为了提高模型训练的效果 ，实验中对数据集进行了
+比例为 7∶2∶1 的随机分割 ，即 70% 用于训练 ，20% 用于
+验证 ，剩余的 10% 用于测试 。由于原始图像的周围存
+在大量黑边，因此对实验数据进行统一裁剪 ，裁剪后尺寸
+大小为 128 Pixel ×160 Pixel ×160 Pixel ，并对其进行中心
+裁剪、添加高斯噪声 、随机亮度调整等数据预处理 ，相关
+参数设置如 下。
+1） 模型参数设置
+模型基于 5 层 U 型结构构建 ，其编码器和解码器的
+通道维度均为 [16，32，64，128，256]。
+2） 训练参数设置
+使用 AdamW 优化器，初始学习率设置为 3×10-4，并采
+用 CosineAnnealingLR 进行学习率调度 ，最小学习率为
+1×10-5。批次大小设置为 8，训练的 epoch 为 300。损失函
+数 采 用 二 元 交 叉 熵 损 失（Binary Cross Entropy Loss ）函
+数和 Soft Dice 损失（Dice Loss）函数组成的联合损失函数。
+3.3  评价指标
+为了评估本文模型在轻量化以及分割效果方面的表
+现，选用 Params、GFLOPs 、Dice、HD95（95% Hausdorff 距
+离）等 4个指标。其中 Params 表示模型中可训练参数的总
+数，是衡量模型复杂度和存储需求的重要指标 。GFLOP s
+用于衡量模型的计算复杂度 ，决定模型的推理速度 。因
+此，选用 Params 和 GFLOPs 评估模型的轻量化程度 。
+Dice、HD95 两个指标分别用于评估模型对 WT、TC
+和 ET 的分割区域及分割边界的分割效果 。其中，Dice 系
+数（Dice Coefficient ）通 过 计 算 预 测 分 割 结 果 与 真 实 标
+注之间的重叠程度来衡量分割的准确性 ，其计算公式为 ：
+Dice = 2 × || A ∩ B|| A + || B （6）
+式 中：A 是 预 测 的 分 割 结 果；B 是 真 实 的 分 割 标 注；
+|| A ∩ B 表示 A 和 B 交集的大小 ； || A 和 || B 分别表示 A 和
+B 的大小 。
+HD95用于评估分割结果的边界精度 ，其计算公式为：
+HD95( )A,B =
+percentile( )95%,{ }d( )x,B | x ∈ A ∩ { }d( )y,A | y ∈ B （7）
+式中 ：d ( x,B ) 表示点 x 到集合 B 的距离 ；d ( y,A) 表示点 y
+到集合 A 的距离 ；percentile（95%）表示取集合中 95% 的
+点的最大距离 。
+3.4  损失函数
+为了提高分割的性能和精度，本文将二元交叉熵损失
+函数和 Soft Dice 损失函数结合起来，形成联合损失函数。
+二元交叉熵损失函数如式 （8）所示：
+BCE Loss = - 1N + ∑i = 1N [ ]yi· log pi + ( )1 - yi · log (1 - pi ) （8）
+式中 ：N 是样本数量 ；yi 是第 i 个样本的真实标签 ；pi 是模
+型预测的正类概率 。
+Soft Dice 损失函数如式（9）所示：
+Soft Dice Loss = 1 -
+2 × ∑
+i
+( )Truei·Predi + ε
+∑
+i
+Truei + ∑
+i
+Predi + ε
+（9）
+式中 ：Truei 是真实标签 ；Predi 是模型的预测结果 ；ε 是
+一个平滑因子 ，通常取 1×10−6，用于防止分母为 0。
+BCE_Dice_Loss 联合损失函数如式（10）所示：
+BCE_Dice_Loss = α·BCE Loss + β· Soft Dice Loss （10）
+式中 ：α 和 β 是权重系数 ，用于平衡二元交叉熵损失和
+Soft Dice 损失在总损失中的贡献 。本文将 α 和 β 均设置
+为 0.5。
+改进的联合损失函数显著提升了模型对复杂病变
+区域的识别和分割精度 ，改善了整体分割效果 。
+3.5  对比实验
+本文与其他经典模型在 Brats2020 数据集上的对比
+结果如表 1、表 2 所示。
+表 1  Params 及 GFLOPs 的对比
+Model
+3D U⁃Net
+Attention U⁃Net
+TransUNet
+SwimUnet
+TransBTS
+nnU⁃Net
+Mamba⁃UNet
+本文模型
+Params/（×106）↓
+10.73
+11.41
+20.76
+24.64
+21.77
+25.53
+23.67
+0.24
+GFLOPs ↓
+158.15
+217.09
+390.85
+347.67
+310.37
+331.19
+178.82
+47.86
+文献 [1]的 3D U⁃Net 设计为 4 层结构 ，通道数是 [64，
+128，256，256]，其 GFLOPs 高 达1 669.5。 因 此，本 文 将
+其优化为通道数为 [16，32，64，128，256]的 5 层结构 ，并
+以此作为 baseline 。本文仅使用了 3D U⁃Net 的 2.24% 的
+参数 ，而 WT、TC 和 ET 的 Dice 系数分别提高了 2.42%、
+5.35% 和 6.23%。与 Mamba⁃UNet 相比 ，本文的参数减少
+了 98.99%，WT、TC 和 ET 的 Dice 系 数 分 别 提 高 了
+1.77%、0.43% 和 0.13%，并 且 在TC 和 ET 两 个 指 标 上，
+侯向宁 ，等：基于 Mamba 的轻量级多模态脑肿瘤 MRI 图像分割 35
+
+=== PDF_PAGE 5 ===
+现代电子技术 2026 年第 49 卷
+HD95 距离分别缩短了 1.03 mm 和 0.74 mm 。综合各项
+指标，本文模型在模型复杂度和性能表现上展现出较大
+的优势 ，在脑肿瘤分割区域及分割边界方面比其他模型
+更为准确 。
+表 2  Dice 及 HD95 的对比
+Model
+3D U⁃Net
+Attention U⁃Net
+TransUNet
+SwimUnet
+TransBTS
+nnU⁃Net
+Mamba⁃UNet
+本文模型
+Dice/%↑
+WT
+88.71
+89.07
+87.41
+87.95
+85.73
+88.71
+89.36
+91.13
+TC
+81.02
+81.43
+82.75
+83.31
+81.26
+85.45
+85.94
+86.37
+ET
+75.93
+75.96
+79.83
+80.02
+77.81
+81.56
+82.03
+82.16
+HD95/mm↓
+WT
+6.15
+5.98
+5.87
+6.73
+7.03
+5.35
+4.64
+4.76
+TC
+9.33
+8.26
+6.82
+7.59
+8.52
+6.44
+6.76
+5.73
+ET
+20.76
+17.41
+7.59
+8.35
+9.37
+7.46
+7.32
+6.58
+3.6  消融实验
+将 Baseline 与添加改进模块后的方法在 Brats2020
+数据集上进行了对比实验 ，结果如图 4、图 5 所示。
+对 比 结 果 显 示，引 入 轻 量 级LWM 模 块 后，模 型
+Params 降 低97.95%，GFLOPs 降 低69.73%。 肿 瘤 核 心
+（TC）区 域Dice 系 数 提 升4.74%，增 强 肿 瘤（ET）区 域
+HD95 降低 13.59 mm 。表明 LWM 在提高特征表达能力
+的同时实现了高效参数压缩 ，显著提升了肿瘤核心区域
+以及增强肿瘤区域的分割性能 。
+图 4  Params 及 GFLOPs 对比
+图 5  Dice 及 HD95 对比
+添加注意力桥接 （Attention Bridge ）模块后 ，模型参
+数量仅增加了 0.02×106，GFLOPs 仅增加了 0.01，使平均
+Dice 系数提升了 0.47%，平均 HD95 降低 0.55 mm 。验证
+了跨尺度注意力机制能有效捕捉长程空间依赖 ，改善复
+杂解剖结构的边界分割精度 。
+对部分测试样本的推理结果进行可视化，如图6所示。
+图 6  可视化结果对比
+36
+
+=== PDF_PAGE 6 ===
+第 9 期
+图 6 中，弥漫性高信号区域对应水肿组织 ，局灶性
+显著高信号区域代表增强肿瘤区域 ，相对低信号的致密
+区域为肿瘤坏死核心 。可视化结果显示 ，引入 LWM 和
+注意力桥接模块之后 ，模型能够明显提升对增强肿瘤区
+域以及微小肿瘤核心区域的分割能力 。
+4  结  语
+本文通过在 3D U⁃Net 模型的基础上引入轻量级的
+LWM 以及注意力桥接模块 ，实现了低参数量下对多模
+态脑肿瘤 MRI 图像的高效分割 。LWM 模块采用并行架
+构，通过降低输入通道的数量 ，LWM 模块能够大幅度减
+少模型的参数量 ，从而降低计算复杂度和内存消耗 ，同
+时能够有效地进行全局信息提取 。除此之外 ，LWM 模
+块中还引入了 SE 模块 ，该模块能够显式地建模特征通
+道之间的依赖关系 ，进一步提升细粒度目标的分割性
+能。实验结果表明 ，LWM⁃UNet 在多模态脑肿瘤 MRI 图
+像分割任务中表现出色 ，能够显著提升增强肿瘤区域以
+及微小肿瘤核心区域的分割能力 ，并且有更低的参数量
+以及计算量 ，具有广泛的应用前景和实际价值 。
+注：本文通讯作者为侯向宁 。
+参 考 文 献
+[1] Çiçek Ö , Abdulkadir A , Lienkamp S S , et al . 3D U ⁃ Net: 
+Learning dense volumetric segmentation from sparse annotation 
+[C]// Proceedings of 19th International Conference on Medical 
+Image Computing and Computer ⁃ Assisted Intervention . Athens , 
+Greece : Springer , 2016: 424⁃432.
+[2] Oktay O , Schlemper J , Folgoc L L , et al . Attention U ⁃ Net: 
+Learning where to look for the pancreas [EB/OL ]. [2018 ⁃05⁃20]. 
+https://arxiv .org/abs/ 1804.03999 .
+[3] Chen Jieneng , Lu Yongyi , Yu Qihang , et al . TransUNet : 
+Transfor mers make strong encoders for medical image 
+segmentation [EB/OL ]. [2021 ⁃ 04 ⁃ 12]. https ://arxiv . org/abs/
+2102.04306 .
+[4] Cao Hu , Wang Yueyue , Chen J , et al . Swin ⁃ Unet: Unet ⁃ like 
+pure transformer for medical image segmentation [C]// 
+International Conference on Medical Image Computing and 
+Computer ⁃ Assisted Intervention (MICCAI ). Tel Aviv , Israel : 
+Springer , 2022: 205⁃218.
+[5] Wang Wenxuan , Chen Chen , Ding Meng , et al . TransBTS : 
+Multimodal brain tumor segmentation using transformer [C]// 
+Proceedings of 24th International Conference on Medical Image 
+Computing and Computer Assisted Intervention . Strasbourg , 
+France : Springer , 2021: 109⁃119.
+[6] Is ensee F, Jaeger P F, Kohl S A A, et al. nnU⁃Net : A self⁃configuring 
+method for deep learning⁃based biomedical image segmentation 
+[J]. Nature Methods , 2021, 18(2): 203⁃211.
+[7] Wang Ziyang , Zheng Jianqing , Zhang Yichi , et al . Mamba⁃UNe t: 
+UNet ⁃ like pure visual mamba for medical image segmentation 
+[EB/OL ]. [2025 ⁃ 05 ⁃ 31]. https ://doi. org/10.48550 /
+arXiv.2402.05079 .
+[8] R oy S K , Dubey S R , Chatterjee S , et al . FuSENet : Fuse d 
+squeeze ⁃ and ⁃ excitation network for spectral ⁃ spatial 
+hyperspectral image classification [J]. IET Image Processing , 
+2020, 14(8): 1653⁃1661.
+[9] Zhong Xian , Gong Oubo , Huang Wenxin , et al . Squeeze ⁃ and ⁃
+excitation wide residual networks in image classification [C]// 
+2019 IEEE International Conference on Image Processing 
+(ICIP). [S.l.]: IEEE , 2019: 395⁃399.
+[10] Deng Jian , Ma Yanyun , Li Deng ’ao, et al . Classification of 
+breast density categories based on SE ⁃ Attention neural 
+networks [J]. Computer Methods and Programs in Biomedicine , 
+2020, 193: 105489 .
+[11] Gu A , Dao T . Mamba : Linear ⁃ time sequence modeling with 
+selective state spaces [EB/OL ]. [2025 ⁃ 01 ⁃ 19]. https ://doi. org/
+10.48550 /arXiv .2312.00752 .
+[12] Ruan Jiacheng , Xiang Suncheng , Xie Mingye , et al . MALUN et: 
+A multi ⁃ attention and light ⁃ weight UNet for skin lesion 
+segmentation [C]// IEEE International Conference on 
+Bioinformatics and Biomedicine . Las Vegas , NV , USA : IEEE , 
+2022: 1150⁃1156.
+[13] Woo S , Park J , Lee J Y , et al . CBAM : Convolutional block 
+attention  module [C]// Proceedings of European Conference on 
+Computer  Vision . Munich , Germany : Springer , 2018: 3⁃19.
+作者简介 ：侯向宁（1972 —） ，男，陕西渭南人 ，硕士研究生 ，副教授 ，主要研究方向为图像处理 、深度学习等 。
+黄孝斌（1982 —） ，男，江西九江人 ，在读博士研究生 ，副教授 ，主要研究方向为数据挖掘 、生态遥感等 。
+徐草草（1981 —） ，女，四川泸州人 ，硕士研究生 ，副教授 ，主要研究方向为数字孪生 。
+姚  捃（1982 —） ，男，四川宜宾人 ，硕士研究生 ，副教授 ，主要研究方向为计算机视觉 。
+侯向宁 ，等：基于 Mamba 的轻量级多模态脑肿瘤 MRI 图像分割 37

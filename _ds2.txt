@@ -1,0 +1,84 @@
+﻿######## seg_work/datasets (deep)
+327G	/data/heluofan/seg_work/datasets/nifti_lite
+200G	/data/heluofan/seg_work/datasets/nifti_official
+183G	/data/heluofan/seg_work/datasets/nnUNet_raw
+164G	/data/heluofan/seg_work/datasets/nnUNet_preprocessed
+150G	/data/heluofan/seg_work/datasets/nnUNet_results
+137G	/data/heluofan/seg_work/datasets/lite_dl
+125G	/data/heluofan/seg_work/datasets/autopet3_lite
+66G	/data/heluofan/seg_work/datasets/fill_dl
+46G	/data/heluofan/seg_work/datasets/amos22
+17G	/data/heluofan/seg_work/datasets/nifti_fill
+2.4G	/data/heluofan/seg_work/datasets/nnUNet_results_corrected_20261119
+42M	/data/heluofan/seg_work/datasets/_seg_backup
+28M	/data/heluofan/seg_work/datasets/conv_test
+388K	/data/heluofan/seg_work/datasets/_tr_f2.log
+388K	/data/heluofan/seg_work/datasets/_tr_f1.log
+388K	/data/heluofan/seg_work/datasets/_tr_f0.log
+384K	/data/heluofan/seg_work/datasets/_tr_f4.log
+384K	/data/heluofan/seg_work/datasets/_tr_f3.log
+252K	/data/heluofan/seg_work/datasets/_prep.log
+240K	/data/heluofan/seg_work/datasets/cases_all.csv
+
+######## der_data 娣卞叆
+6.5G	/data/heluofan/der_data/tta_dataset/TTA-2Ddermoscopy
+5.9G	/data/heluofan/der_data/raw/ISIC-2017_Training_Data.zip
+879M	/data/heluofan/der_data/raw/ISIC-2017_Validation_Data.zip
+203M	/data/heluofan/der_data/raw/PH2_kaggle.zip
+8.9M	/data/heluofan/der_data/raw/ISIC-2017_Training_Part1_GroundTruth.zip
+560K	/data/heluofan/der_data/raw/ISIC-2017_Validation_Part1_GroundTruth.zip
+
+######## seg_work 鐩綍鍚嶄竴瑙?
+all_fdg.json
+all_psma.json
+amos22
+autopet3_lite
+_b1000_f0.log
+_b1000_f1.log
+_base1000.log
+base1000.sh
+_build_ds.log
+build_nnunet.py
+cases_all.csv
+_conv_fill.log
+_conv_lite_0.log
+_conv_lite_1.log
+_conv_lite_2.log
+_conv_lite_3.log
+_conv_lite_4.log
+_conv_lite_5.log
+_conv_official_0.log
+_conv_official_1.log
+_conv_official_2.log
+_conv_official_3.log
+_conv_official_4.log
+_conv_official_5.log
+conv_official.py
+conv_test
+eval_autopet.py
+_eval.log
+_ev.log
+fill_dl
+
+######## 鍚勬暟鎹泦閲岀殑鏍锋湰鏂囦欢鍚?
+--- /data/heluofan/seg_work/datasets
+/data/heluofan/seg_work/datasets/make_proof.py
+/data/heluofan/seg_work/datasets/reeval.sh
+/data/heluofan/seg_work/datasets/_pilot.log
+/data/heluofan/seg_work/datasets/_conv_official_5.log
+/data/heluofan/seg_work/datasets/_fixseg_3.log
+/data/heluofan/seg_work/datasets/_conv_official_1.log
+
+--- /data/heluofan/der_data/raw
+/data/heluofan/der_data/raw/ISIC-2017_Validation_Part1_GroundTruth.zip
+/data/heluofan/der_data/raw/PH2_kaggle.zip
+/data/heluofan/der_data/raw/ISIC-2017_Training_Part1_GroundTruth.zip
+/data/heluofan/der_data/raw/ISIC-2017_Validation_Data.zip
+/data/heluofan/der_data/raw/ISIC-2017_Training_Data.zip
+
+--- /data/heluofan/der_data/tta_dataset
+
+--- /data/heluofan/brats_work/data
+/data/heluofan/brats_work/data/meta/BraTS-Africa_datainfo_v2.xlsx
+
+__SCAN2_DONE__

@@ -1,0 +1,4 @@
+﻿$ echo IyEvYmluL2Jhc2gKY2QgL2RhdGEvaGVsdW9mYW4vcGljYWkgfHwgZXhpdCAxCm1rZGlyIC1wIHJ
+WROTE
+$ cd /data/heluofan/picai && (setsid bash repos_dl.sh >> repos_dl.log 2>&1 < /dev/
+LAUNCHED

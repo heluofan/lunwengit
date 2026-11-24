@@ -1,0 +1,184 @@
+Simultaneous Acquisition of EEG and NIRS during Cognitive Tasks for 
+an Open Access Dataset 
+We provide an open access multimodal brain-imaging dataset of simultaneous electroencephalography (EEG) 
+and near-infrared spectroscopy (NIRS) recordings. Twenty-six healthy participants performed three cognitive 
+tasks: 1) n-back (0-, 2- and 3-back), 2) discrimination/selection response task (DSR) and 3) word generation 
+(WG) tasks. The data provided includes: 1) measured data, 2) demographic data, and 3) basic analysis results. 
+For n-back (dataset A) and DSR tasks (dataset B), event-related potential (ERP) analysis was performed, and 
+spatiotemporal characteristics and classification results for “target” vs. “non-target” (dataset A) and symbol 
+“O” vs. symbol “X” (dataset B) are provided. Time -frequency analysis was performed to show the EEG 
+spectral power to differentiate the task -relevant activations. Spatiotemporal characteristics of 
+hemodynamic responses are also shown. For the WG task (dataset C), the EEG spectral power and 
+spatiotemporal characteristics of hemodynamic responses are analyzed, and the potential merit of hybrid 
+EEG-NIRS BCIs was validated with respect to classification accuracy. We expect that the dataset provided will 
+facilitate performance evaluation and comparison of many neuroimaging analysis techniques. 
+Data Acquisition 
+All EEG and NIRS signals were recorded simultaneously. For timing synchronization, triggers were sent to 
+both EEG and NIRS equipment simultaneously via a parallel port using MATLAB. 
+ 
+EEG data was recorded using a multichannel BrainAmp EEG amplifier (Brain Products GmbH, Gilching, 
+Germany) at a sampling rate of 1000 Hz. Thirty EEG active electrodes were placed on a stretchy fa bric cap 
+(EASYCAP GmbH, Herrsching am Ammersee, Germany) according to the international 10-5 system (Fp1, Fp2, 
+AFF5h, AFF6h, AFz, F1, F2, FC1, FC2, FC5, FC6, Cz, C3, C4, T7, T8, CP1, CP2, CP5, CP6, Pz, P3, P4, P7, P8, POz, 
+O1, O2, TP9 (reference) and TP1 0 (ground)). The EEG amplifier was also used to measure the 
+electrooculogram (EOG). EOG was recorded using two vertical (above and below the right eye) and two 
+horizontal (outer canthus of each eye) disposable electrodes at the same sampling rate as the EEG data. 
+ 
+NIRS data was acquired with a NIRScout (NIRx Medizintechnik GmbH, Berlin, Germany) at a sampling rate of 
+10.4 Hz. Sixteen sources and sixteen detectors were placed at frontal (sixteen channels around AFz, AF3, AF4, 
+AF7 and AF8), motor (four channels each around C3 and C4), parietal (four channels each around P3 and P4), 
+and occipital (four channels around POz) areas. An adjacent source-detector pair configures a NIRS channel; 
+36 channels were configured. The NIRS channels, each of which was composed  of a pair of a source and a 
+detector, were created around AFpz, AFp3, AFp4, AFp7, AFp8, AF1, AF2, AF5h, AF6h, AF7, AF8, AFFz, AFF3h, 
+AFF4h, AFF5h, AFF6, FCC3, FCC4, C3h, C4h, C5h, C6h, CCP3, CCP4, CPP3, CPP4, P3h, P4h, P5h, P6h, PPOz, 
+PPO3, PPO4, PO1, PO2, and POOz according to the international 10 -5 system. The source-detector distance 
+was set to 30 mm for all the channels. NIRS optodes were fixed on the same cap as the EEG electrodes. Figure 
+2 shows the locations of the EEG and NIRS channels. Yellow  and red circles denote the location of the EEG 
+and NIRS channels, respectively. EEG electrodes are relatively uniform in their distribution over the whole 
+head. Reference and ground electrodes are located at TP9 and TP10, respectively. NIRS channels are located 
+on (pre)frontal (sixteen channels), motor (four channels around C3 and C4 each), parietal (four channels 
+around P3 and P4 each), and occipital areas (four channels around POz). 
+  
+Structural information 
+- Locations of EEG channels in Cartesian coordinate system 
+clab X Y Z 
+Fp1 -0.3090 0.9511 0.0001 
+AFF5h -0.5417 0.7777 0.3163 
+AFz 0.0000 0.9230 0.3824 
+F1 -0.2888 0.6979 0.6542 
+FC5 -0.8709 0.3373 0.3549 
+FC1 -0.3581 0.3770 0.8532 
+T7 -1.0000 0.0000 0.0000 
+C3 -0.7066 0.0001 0.7066 
+Cz 0.0000 0.0002 1.0000 
+CP5 -0.8712 -0.3372 0.3552 
+CP1 -0.3580 -0.3767 0.8534 
+P7 -0.8090 -0.5878 -0.0001 
+P3 -0.5401 -0.6724 0.5045 
+Pz 0.0000 -0.7063 0.7065 
+POz 0.0000 -0.9230 0.3824 
+O1 -0.3090 -0.9511 0.0000 
+Fp2 0.3091 0.9511 0.0000 
+AFF6h 0.5417 0.7777 0.3163 
+F2 0.2888 0.6979 0.6542 
+FC2 0.3581 0.3770 0.8532 
+FC6 0.8709 0.3373 0.3549 
+C4 0.7066 0.0001 0.7066 
+T8 1.0000 0.0000 0.0000 
+CP2 0.3580 -0.3767 0.8534 
+CP6 0.8712 -0.3372 0.3552 
+P4 0.5401 -0.6724 0.5045 
+P8 0.8090 -0.5878 -0.0001 
+O2 0.3090 -0.9511 0.0000 
+TP9 -0.8777 -0.2852 -0.3826 
+TP10 0.8777 -0.2853 -0.3826 
+ 
+  
+- Locations of NIRS channels in Cartesian coordinate system  
+clab X Y Z 
+AF7 -0.5878 0.809 0 
+AFF5 -0.6149 0.7564 0.2206 
+AFp7 -0.454 0.891 0 
+AF5h -0.4284 0.875 0.2213 
+AFp3 -0.2508 0.9565 0.1438 
+AFF3h -0.352 0.8111 0.4658 
+AF1 -0.1857 0.915 0.3558 
+AFFz 0 0.8312 0.5554 
+AFpz 0 0.9799 0.1949 
+AF2 0.1857 0.915 0.3558 
+AFp4 0.2508 0.9565 0.1437 
+FCC3 -0.6957 0.1838 0.6933 
+C3h -0.555 0.0002 0.8306 
+C5h -0.8311 0.0001 0.5552 
+CCP3 -0.6959 -0.1836 0.6936 
+CPP3 -0.6109 -0.5259 0.5904 
+P3h -0.4217 -0.6869 0.5912 
+P5h -0.6411 -0.6546 0.3985 
+PPO3 -0.4537 -0.796 0.3995 
+AFF4h 0.352 0.8111 0.4658 
+AF6h 0.4284 0.875 0.2212 
+AFF6 0.6149 0.7564 0.2206 
+AFp8 0.454 0.891 0 
+AF8 0.5878 0.809 0 
+FCC4 0.6957 0.1838 0.6933 
+C6h 0.8311 0.0001 0.5552 
+C4h 0.555 0.0002 0.8306 
+CCP4 0.6959 -0.1836 0.6936 
+CPP4 0.6109 -0.5258 0.5904 
+P6h 0.6411 -0.6546 0.3985 
+P4h 0.4216 -0.687 0.5912 
+PPO4 0.4537 -0.796 0.3995 
+PPOz 0 -0.8306 0.5551 
+PO1 -0.1858 -0.9151 0.3559 
+PO2 0.1859 -0.9151 0.3559 
+POOz 0 -0.9797 0.1949 
+ 
+Data Organization 
+Data Structure 
+Please refer to basic data structures of the BBCI Toolbox. 
+EEG data 
+- cnt: continuous EEG data including EOG 
+cnt_nback: cnt for n-back task (3 sessions are concatenated)  
+cnt_dsr: cnt for Go/No-go task (3 sessions are concatenated) 
+cnt_wg: cnt for word generation task (3 sessions are concatenated) 
+- mrk: task onset markers 
+mrk_nback: mrk for n-back task. 
+Number Description Number Description 
+16 0-back target 96 3-back non-target 
+48 2-back target 112 0-back session 
+64 2-back non-target 128 2-back session 
+80 3-back target 144 3-back session 
+ 
+mrk_dsr: mrk for discrimination/selection response task. 
+Number Description 
+16 Go 
+32 No-go 
+48 session 
+ 
+mrk_wg: mrk for word generation task. 
+Number Description 
+16 verbal fluency 
+32 baseline 
+ 
+NIRS data 
+- cnt: continuous NIRS data 
+cnt_nback: cnt for n-back task (3 sessions are concatenated) 
+- .deoxy: deoxy hemoglobin data 
+- .oxy: oxy hemoglobin data 
+cnt_dsr: cnt for discrimination/selection response task (3 sessions are concatenated) 
+- .deoxy: deoxy hemoglobin data 
+- .oxy: oxy hemoglobin data 
+cnt_wg cnt for word generation task (3 sessions are concatenated) 
+- .deoxy: deoxy hemoglobin data 
+- .oxy: oxy hemoglobin data 
+  
+- mrk_nback: mrk for n-back task 
+Number Description 
+7 0-back session 
+8 2-back session 
+9 3-back session 
+ 
+- mrk_dsr: mrk for discrimination/selection response task 
+Number Description 
+3 DSR session 
+ 
+- mrk_wg: mrk for word generation task 
+Number Description 
+1 word generation 
+2 baseline 
+Preprocessing 
+Data was downsampled to 200 Hz (EEG) and 10 Hz (NIRS). Any signal processing method was not applied to 
+the raw data except the methods described below: 
+EEG: data conversion to MATLAB compatible format 
+NIRS: data conversion to MATLAB compatible format 
+Metadata 
+Demographic data is provided in the supplementary information2. Other related metadata could be provided 
+in the rawdata in vendor-specific format. 
+Citation 
+We would be grateful if you cite following articles: 
+1. Shin, Jaeyoung et al. "Simultaneous Acquisition of EEG and NIRS during Cognitive Tasks for an Open Access 
+Dataset." Scientific Data, submitted. 
+2. Shin, Jaeyoung, et al. "Open Access Dataset for EEG+ NIRS Single-Trial Classification." IEEE Transactions on 
+Neural Systems and Rehabilitation Engineering 25(10), (2017). 
+3. Blankertz, Benjamin, et al. "The Berlin brain –computer interface: non -medical uses of BCI technology." 
+Frontiers in neuroscience 4 (2010). 

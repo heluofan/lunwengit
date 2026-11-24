@@ -1,0 +1,19 @@
+﻿$ ps -ef | grep '[d]l_picai' | awk '{print $2, $8, $9, $10}'; echo PROCS=$(ps -ef | grep -c '[d]l_picai')
+4148965 python3 dl_picai_v2.py 
+PROCS=1
+
+$ tail -5 /data/heluofan/picai/dl_v2.log 2>/dev/null || echo NO_V2LOG
+[  105s]   0.70/25.02 GB   2.8%  inst=0.60 avg=6.77 MB/s ETA=61 min
+[  120s]   0.71/25.02 GB   2.9%  inst=1.31 avg=6.09 MB/s ETA=68 min
+[  135s]   0.74/25.02 GB   2.9%  inst=1.40 avg=5.57 MB/s ETA=74 min
+[  150s]   0.76/25.02 GB   3.0%  inst=1.68 avg=5.18 MB/s ETA=80 min
+[  165s]   0.77/25.02 GB   3.1%  inst=1.00 avg=4.80 MB/s ETA=86 min
+
+$ du -sh /data/heluofan/picai/downloads; ls /data/heluofan/picai/downloads | grep -c '.tmp$'
+795M	/data/heluofan/picai/downloads
+32
+
+$ df -h /data | tail -1
+/dev/nvme0n1    7.0T  1.7T  5.0T  25% /data
+WROTE
+LAUNCHED

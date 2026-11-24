@@ -1,0 +1,3 @@
+﻿RESULT: code=206 bytes=8388608 time=17.791575 speed=471493
+file_bytes=8388608
+head4=50 4B 03 04
