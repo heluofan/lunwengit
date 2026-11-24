@@ -1,0 +1,7718 @@
+[
+  {
+    "patient_id": "1",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P1_L_DM_MLO",
+      "P1_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "2",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P2_R_DM_CC",
+      "P2_R_DM_MLO",
+      "P2_R_CM_CC",
+      "P2_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "2",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P2_L_DM_CC",
+      "P2_L_DM_MLO",
+      "P2_L_CM_CC",
+      "P2_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "3",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P3_L_DM_CC",
+      "P3_L_DM_MLO",
+      "P3_L_CM_CC",
+      "P3_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "3",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P3_R_DM_CC",
+      "P3_R_DM_MLO",
+      "P3_R_CM_CC",
+      "P3_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "4",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P4_L_DM_MLO",
+      "P4_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "4",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P4_R_DM_CC",
+      "P4_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "5",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P5_R_DM_CC",
+      "P5_R_DM_MLO",
+      "P5_R_CM_CC",
+      "P5_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "5",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P5_L_DM_CC",
+      "P5_L_DM_MLO",
+      "P5_L_CM_CC",
+      "P5_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "6",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P6_R_DM_CC",
+      "P6_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "6",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P6_L_DM_MLO",
+      "P6_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "7",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P7_R_DM_CC",
+      "P7_R_DM_MLO",
+      "P7_R_CM_CC",
+      "P7_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "7",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P7_L_DM_MLO",
+      "P7_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "8",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P8_L_DM_MLO",
+      "P8_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "9",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P9_L_DM_MLO",
+      "P9_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "10",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P10_R_DM_CC",
+      "P10_R_DM_MLO",
+      "P10_R_CM_CC",
+      "P10_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "10",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P10_L_DM_CC",
+      "P10_L_DM_MLO",
+      "P10_L_CM_CC",
+      "P10_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "11",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P11_R_DM_CC",
+      "P11_R_DM_MLO",
+      "P11_R_CM_CC",
+      "P11_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "12",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P12_R_DM_CC",
+      "P12_R_DM_MLO",
+      "P12_R_CM_CC",
+      "P12_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "12",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P12_L_DM_CC",
+      "P12_L_DM_MLO",
+      "P12_L_CM_CC",
+      "P12_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "13",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P13_R_DM_CC",
+      "P13_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "14",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P14_L_DM_CC",
+      "P14_L_DM_MLO",
+      "P14_L_CM_CC",
+      "P14_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "14",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P14_R_DM_CC",
+      "P14_R_DM_MLO",
+      "P14_R_CM_CC",
+      "P14_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "15",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P15_L_DM_MLO",
+      "P15_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "15",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P15_R_DM_MLO",
+      "P15_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "16",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant",
+      "Normal"
+    ],
+    "image_names": [
+      "P16_R_DM_CC",
+      "P16_R_DM_MLO",
+      "P16_R_CM_CC",
+      "P16_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "16",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P16_L_DM_CC",
+      "P16_L_DM_MLO",
+      "P16_L_CM_CC",
+      "P16_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "17",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P17_R_DM_MLO",
+      "P17_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "18",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P18_R_DM_CC",
+      "P18_R_DM_MLO",
+      "P18_R_CM_CC",
+      "P18_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "18",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P18_L_DM_CC",
+      "P18_L_DM_MLO",
+      "P18_L_CM_CC",
+      "P18_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "19",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P19_R_DM_MLO",
+      "P19_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "19",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P19_L_DM_CC",
+      "P19_L_DM_MLO",
+      "P19_L_CM_CC",
+      "P19_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "20",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P20_R_DM_CC",
+      "P20_R_DM_MLO",
+      "P20_R_CM_CC",
+      "P20_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "21",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P21_R_DM_CC",
+      "P21_R_DM_MLO",
+      "P21_R_CM_CC",
+      "P21_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "21",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P21_L_DM_CC",
+      "P21_L_DM_MLO",
+      "P21_L_CM_CC",
+      "P21_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "22",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P22_L_DM_CC",
+      "P22_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "23",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P23_R_DM_CC",
+      "P23_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "24",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P24_R_DM_CC",
+      "P24_R_DM_MLO",
+      "P24_R_CM_CC",
+      "P24_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "24",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P24_L_DM_CC",
+      "P24_L_DM_MLO",
+      "P24_L_CM_CC",
+      "P24_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "25",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P25_R_DM_CC",
+      "P25_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "25",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P25_L_DM_MLO",
+      "P25_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "26",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P26_L_DM_CC",
+      "P26_L_DM_MLO",
+      "P26_L_CM_CC",
+      "P26_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "27",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P27_L_DM_CC",
+      "P27_L_DM_MLO",
+      "P27_L_CM_CC",
+      "P27_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "28",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P28_R_DM_CC",
+      "P28_R_DM_MLO",
+      "P28_R_CM_CC",
+      "P28_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "28",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P28_L_DM_MLO",
+      "P28_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "29",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P29_R_DM_CC",
+      "P29_R_DM_MLO",
+      "P29_R_CM_CC",
+      "P29_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "29",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P29_L_DM_CC",
+      "P29_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "30",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P30_R_DM_CC",
+      "P30_R_DM_MLO",
+      "P30_R_CM_CC",
+      "P30_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "30",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P30_L_DM_CC",
+      "P30_L_DM_MLO",
+      "P30_L_CM_CC",
+      "P30_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "31",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P31_R_DM_CC",
+      "P31_R_DM_MLO",
+      "P31_R_CM_CC",
+      "P31_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "31",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P31_L_DM_CC",
+      "P31_L_DM_MLO",
+      "P31_L_CM_CC",
+      "P31_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "32",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P32_R_DM_CC",
+      "P32_R_DM_MLO",
+      "P32_R_CM_CC",
+      "P32_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "32",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P32_L_DM_CC",
+      "P32_L_DM_MLO",
+      "P32_L_CM_CC",
+      "P32_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "33",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P33_L_DM_CC",
+      "P33_L_DM_MLO",
+      "P33_L_CM_CC",
+      "P33_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "34",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P34_R_DM_MLO",
+      "P34_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "34",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P34_L_DM_CC",
+      "P34_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "35",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P35_R_DM_MLO",
+      "P35_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "35",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P35_L_DM_CC",
+      "P35_L_DM_MLO",
+      "P35_L_CM_CC",
+      "P35_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "36",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P36_R_DM_MLO",
+      "P36_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "37",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P37_R_DM_CC",
+      "P37_R_DM_MLO",
+      "P37_R_CM_CC",
+      "P37_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "37",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P37_L_DM_CC",
+      "P37_L_DM_MLO",
+      "P37_L_CM_CC",
+      "P37_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "38",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P38_R_DM_CC",
+      "P38_R_DM_MLO",
+      "P38_R_CM_CC",
+      "P38_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "39",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P39_R_DM_CC",
+      "P39_R_DM_MLO",
+      "P39_R_CM_CC",
+      "P39_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "40",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P40_R_DM_CC",
+      "P40_R_DM_MLO",
+      "P40_R_CM_CC",
+      "P40_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "40",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P40_L_DM_CC",
+      "P40_L_DM_MLO",
+      "P40_L_CM_CC",
+      "P40_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "41",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P41_L_DM_CC",
+      "P41_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "42",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P42_R_DM_MLO",
+      "P42_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "43",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P43_R_DM_CC",
+      "P43_R_DM_MLO",
+      "P43_R_CM_CC",
+      "P43_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "44",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P44_R_DM_CC",
+      "P44_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "44",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P44_L_DM_CC",
+      "P44_L_DM_MLO",
+      "P44_L_CM_CC",
+      "P44_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "45",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P45_R_DM_CC",
+      "P45_R_DM_MLO",
+      "P45_R_CM_CC",
+      "P45_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "45",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P45_L_DM_CC",
+      "P45_L_DM_MLO",
+      "P45_L_CM_CC",
+      "P45_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "46",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P46_R_DM_CC",
+      "P46_R_DM_MLO",
+      "P46_R_CM_CC",
+      "P46_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "46",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P46_L_DM_CC",
+      "P46_L_DM_MLO",
+      "P46_L_CM_CC",
+      "P46_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "47",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P47_R_DM_CC",
+      "P47_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "48",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P48_L_DM_CC",
+      "P48_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "49",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P49_R_DM_CC",
+      "P49_R_DM_MLO",
+      "P49_R_CM_CC",
+      "P49_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "49",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P49_L_DM_CC",
+      "P49_L_DM_MLO",
+      "P49_L_CM_CC",
+      "P49_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "50",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P50_R_DM_MLO",
+      "P50_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "50",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P50_L_DM_CC",
+      "P50_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "51",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P51_R_DM_CC",
+      "P51_R_DM_MLO",
+      "P51_R_CM_CC",
+      "P51_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "51",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P51_L_DM_CC",
+      "P51_L_DM_MLO",
+      "P51_L_CM_CC",
+      "P51_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "52",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P52_R_DM_CC",
+      "P52_R_DM_MLO",
+      "P52_R_CM_CC",
+      "P52_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "52",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P52_L_DM_CC",
+      "P52_L_DM_MLO",
+      "P52_L_CM_CC",
+      "P52_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "53",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P53_R_DM_CC",
+      "P53_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "54",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P54_R_DM_CC",
+      "P54_R_DM_MLO",
+      "P54_R_CM_CC",
+      "P54_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "54",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P54_L_DM_CC",
+      "P54_L_DM_MLO",
+      "P54_L_CM_CC",
+      "P54_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "55",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P55_R_DM_CC",
+      "P55_R_DM_MLO",
+      "P55_R_CM_CC",
+      "P55_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "55",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P55_L_DM_CC",
+      "P55_L_DM_MLO",
+      "P55_L_CM_CC",
+      "P55_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "56",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P56_R_DM_CC",
+      "P56_R_DM_MLO",
+      "P56_R_CM_CC",
+      "P56_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "56",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P56_L_DM_MLO",
+      "P56_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "57",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P57_R_DM_CC",
+      "P57_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "58",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P58_L_DM_MLO",
+      "P58_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "59",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P59_R_DM_CC",
+      "P59_R_DM_MLO",
+      "P59_R_CM_CC",
+      "P59_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "59",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P59_L_DM_CC",
+      "P59_L_DM_MLO",
+      "P59_L_CM_CC",
+      "P59_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "60",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P60_L_DM_MLO",
+      "P60_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "61",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P61_R_DM_CC",
+      "P61_R_DM_MLO",
+      "P61_R_CM_CC",
+      "P61_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "61",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P61_L_DM_CC",
+      "P61_L_DM_MLO",
+      "P61_L_CM_CC",
+      "P61_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "62",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P62_R_DM_CC",
+      "P62_R_DM_MLO",
+      "P62_R_CM_CC",
+      "P62_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "62",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P62_L_DM_CC",
+      "P62_L_DM_MLO",
+      "P62_L_CM_CC",
+      "P62_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "63",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P63_R_DM_CC",
+      "P63_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "64",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P64_R_DM_CC",
+      "P64_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "64",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P64_L_DM_CC",
+      "P64_L_DM_MLO",
+      "P64_L_CM_CC",
+      "P64_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "65",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P65_R_DM_CC",
+      "P65_R_DM_MLO",
+      "P65_R_CM_CC",
+      "P65_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "65",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P65_L_DM_CC",
+      "P65_L_DM_MLO",
+      "P65_L_CM_CC",
+      "P65_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "66",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P66_R_DM_CC",
+      "P66_R_DM_MLO",
+      "P66_R_CM_CC",
+      "P66_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "66",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P66_L_DM_CC",
+      "P66_L_DM_MLO",
+      "P66_L_CM_CC",
+      "P66_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "67",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P67_R_DM_MLO",
+      "P67_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "67",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P67_L_DM_CC",
+      "P67_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "68",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P68_L_DM_CC",
+      "P68_L_DM_MLO",
+      "P68_L_CM_CC",
+      "P68_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "69",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P69_L_DM_CC",
+      "P69_L_DM_MLO",
+      "P69_L_CM_CC",
+      "P69_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "70",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P70_L_DM_CC",
+      "P70_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "71",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P71_L_DM_MLO",
+      "P71_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "72",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P72_R_DM_CC",
+      "P72_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "72",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P72_L_DM_CC",
+      "P72_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "73",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P73_R_DM_CC",
+      "P73_R_DM_MLO",
+      "P73_R_CM_CC",
+      "P73_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "73",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P73_L_DM_CC",
+      "P73_L_DM_MLO",
+      "P73_L_CM_CC",
+      "P73_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "74",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P74_R_DM_CC",
+      "P74_R_DM_MLO",
+      "P74_R_CM_CC",
+      "P74_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "74",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P74_L_DM_CC",
+      "P74_L_DM_MLO",
+      "P74_L_CM_CC",
+      "P74_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "75",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P75_R_DM_MLO",
+      "P75_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "76",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P76_R_DM_CC",
+      "P76_R_DM_MLO",
+      "P76_R_CM_CC",
+      "P76_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "76",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P76_L_DM_CC",
+      "P76_L_DM_MLO",
+      "P76_L_CM_CC",
+      "P76_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "77",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P77_R_DM_CC",
+      "P77_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "77",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P77_L_DM_MLO",
+      "P77_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "78",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P78_L_DM_CC",
+      "P78_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "79",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P79_L_DM_CC",
+      "P79_L_DM_MLO",
+      "P79_L_CM_CC",
+      "P79_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "80",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P80_R_DM_MLO",
+      "P80_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "80",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P80_L_DM_CC",
+      "P80_L_DM_MLO",
+      "P80_L_CM_CC",
+      "P80_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "81",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P81_R_DM_CC",
+      "P81_R_DM_MLO",
+      "P81_R_CM_CC",
+      "P81_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "81",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P81_L_DM_CC",
+      "P81_L_DM_MLO",
+      "P81_L_CM_CC",
+      "P81_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "82",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P82_R_DM_CC",
+      "P82_R_DM_MLO",
+      "P82_R_CM_CC",
+      "P82_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "82",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P82_L_DM_CC",
+      "P82_L_DM_MLO",
+      "P82_L_CM_CC",
+      "P82_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "83",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P83_R_DM_CC",
+      "P83_R_DM_MLO",
+      "P83_R_CM_CC",
+      "P83_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "83",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P83_L_DM_CC",
+      "P83_L_DM_MLO",
+      "P83_L_CM_CC",
+      "P83_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "84",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P84_R_DM_CC",
+      "P84_R_DM_MLO",
+      "P84_R_CM_CC",
+      "P84_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "84",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P84_L_DM_CC",
+      "P84_L_DM_MLO",
+      "P84_L_CM_CC",
+      "P84_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "85",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P85_R_DM_MLO",
+      "P85_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "86",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P86_R_DM_MLO",
+      "P86_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "86",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P86_L_DM_CC",
+      "P86_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "87",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P87_R_DM_CC",
+      "P87_R_DM_MLO",
+      "P87_R_CM_CC",
+      "P87_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "87",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P87_L_DM_CC",
+      "P87_L_DM_MLO",
+      "P87_L_CM_CC",
+      "P87_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "88",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P88_R_DM_CC",
+      "P88_R_DM_MLO",
+      "P88_R_CM_CC",
+      "P88_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "88",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P88_L_DM_CC",
+      "P88_L_DM_MLO",
+      "P88_L_CM_CC",
+      "P88_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "89",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P89_R_DM_CC",
+      "P89_R_DM_MLO",
+      "P89_R_CM_CC",
+      "P89_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "89",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P89_L_DM_CC",
+      "P89_L_DM_MLO",
+      "P89_L_CM_CC",
+      "P89_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "90",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P90_R_DM_CC",
+      "P90_R_DM_MLO",
+      "P90_R_CM_CC",
+      "P90_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "90",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P90_L_DM_CC",
+      "P90_L_DM_MLO",
+      "P90_L_CM_CC",
+      "P90_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "91",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P91_L_DM_MLO",
+      "P91_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "92",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P92_R_DM_CC",
+      "P92_R_DM_MLO",
+      "P92_R_CM_CC",
+      "P92_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "92",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P92_L_DM_CC",
+      "P92_L_DM_MLO",
+      "P92_L_CM_CC",
+      "P92_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "93",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P93_R_DM_CC",
+      "P93_R_DM_MLO",
+      "P93_R_CM_CC",
+      "P93_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "93",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P93_L_DM_CC",
+      "P93_L_DM_MLO",
+      "P93_L_CM_CC",
+      "P93_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "94",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P94_R_DM_CC",
+      "P94_R_DM_MLO",
+      "P94_R_CM_CC",
+      "P94_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "94",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P94_L_DM_CC",
+      "P94_L_DM_MLO",
+      "P94_L_CM_CC",
+      "P94_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "95",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P95_R_DM_MLO",
+      "P95_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "95",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P95_L_DM_CC",
+      "P95_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "96",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P96_R_DM_CC",
+      "P96_R_DM_MLO",
+      "P96_R_CM_CC",
+      "P96_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "96",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P96_L_DM_CC",
+      "P96_L_DM_MLO",
+      "P96_L_CM_CC",
+      "P96_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "97",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P97_R_DM_CC",
+      "P97_R_DM_MLO",
+      "P97_R_CM_CC",
+      "P97_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "97",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P97_L_DM_CC",
+      "P97_L_DM_MLO",
+      "P97_L_CM_CC",
+      "P97_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "98",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P98_R_DM_CC",
+      "P98_R_DM_MLO",
+      "P98_R_CM_CC",
+      "P98_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "98",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P98_L_DM_CC",
+      "P98_L_DM_MLO",
+      "P98_L_CM_CC",
+      "P98_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "99",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P99_R_DM_CC",
+      "P99_R_DM_MLO",
+      "P99_R_CM_CC",
+      "P99_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "99",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P99_L_DM_CC",
+      "P99_L_DM_MLO",
+      "P99_L_DM_MLO_2",
+      "P99_L_CM_CC",
+      "P99_L_CM_MLO",
+      "P99_L_CM_MLO_2"
+    ]
+  },
+  {
+    "patient_id": "100",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P100_R_DM_CC",
+      "P100_R_DM_MLO",
+      "P100_R_CM_CC",
+      "P100_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "100",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P100_L_DM_CC",
+      "P100_L_DM_MLO",
+      "P100_L_CM_CC",
+      "P100_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "101",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P101_R_DM_CC",
+      "P101_R_DM_MLO",
+      "P101_R_CM_CC",
+      "P101_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "101",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P101_L_DM_CC",
+      "P101_L_DM_MLO",
+      "P101_L_CM_CC",
+      "P101_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "102",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P102_R_DM_CC",
+      "P102_R_DM_MLO",
+      "P102_R_CM_CC",
+      "P102_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "102",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P102_L_DM_CC",
+      "P102_L_DM_MLO",
+      "P102_L_CM_CC",
+      "P102_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "103",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P103_R_DM_CC",
+      "P103_R_DM_MLO",
+      "P103_R_CM_CC",
+      "P103_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "103",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P103_L_DM_CC",
+      "P103_L_DM_MLO",
+      "P103_L_CM_CC",
+      "P103_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "104",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P104_R_DM_CC",
+      "P104_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "104",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P104_L_DM_MLO",
+      "P104_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "105",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P105_R_DM_CC",
+      "P105_R_DM_MLO",
+      "P105_R_CM_CC",
+      "P105_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "105",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P105_L_DM_CC",
+      "P105_L_DM_MLO",
+      "P105_L_CM_CC",
+      "P105_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "106",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P106_R_DM_CC",
+      "P106_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "106",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P106_L_DM_MLO",
+      "P106_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "107",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P107_R_DM_CC",
+      "P107_R_DM_MLO",
+      "P107_R_CM_CC",
+      "P107_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "107",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P107_L_DM_CC",
+      "P107_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "108",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P108_R_DM_CC",
+      "P108_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "108",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P108_L_DM_CC",
+      "P108_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "109",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P109_L_DM_CC",
+      "P109_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "110",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P110_R_DM_CC",
+      "P110_R_DM_MLO",
+      "P110_R_CM_CC",
+      "P110_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "110",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P110_L_DM_MLO",
+      "P110_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "111",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P111_R_DM_CC",
+      "P111_R_DM_MLO",
+      "P111_R_CM_CC",
+      "P111_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "111",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P111_L_DM_CC",
+      "P111_L_DM_MLO",
+      "P111_L_CM_CC",
+      "P111_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "112",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P112_L_DM_CC",
+      "P112_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "113",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P113_R_DM_MLO",
+      "P113_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "113",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P113_L_DM_CC",
+      "P113_L_DM_MLO",
+      "P113_L_CM_CC",
+      "P113_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "114",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P114_R_DM_CC",
+      "P114_R_DM_MLO",
+      "P114_R_CM_CC",
+      "P114_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "114",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P114_L_DM_CC",
+      "P114_L_DM_MLO",
+      "P114_L_CM_CC",
+      "P114_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "115",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P115_R_DM_CC",
+      "P115_R_DM_MLO",
+      "P115_R_CM_CC",
+      "P115_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "115",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P115_L_DM_CC",
+      "P115_L_DM_MLO",
+      "P115_L_CM_CC",
+      "P115_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "116",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P116_R_DM_CC",
+      "P116_R_DM_MLO",
+      "P116_R_CM_CC",
+      "P116_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "116",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P116_L_DM_MLO",
+      "P116_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "117",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P117_R_DM_CC",
+      "P117_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "118",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P118_R_DM_CC",
+      "P118_R_DM_MLO",
+      "P118_R_CM_CC",
+      "P118_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "118",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P118_L_DM_CC",
+      "P118_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "119",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P119_R_DM_CC",
+      "P119_R_DM_MLO",
+      "P119_R_CM_CC",
+      "P119_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "119",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P119_L_DM_CC",
+      "P119_L_DM_MLO",
+      "P119_L_CM_CC",
+      "P119_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "120",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P120_L_DM_MLO",
+      "P120_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "121",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P121_R_DM_MLO",
+      "P121_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "121",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P121_L_DM_CC",
+      "P121_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "122",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P122_R_DM_CC",
+      "P122_R_DM_MLO",
+      "P122_R_CM_CC",
+      "P122_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "122",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P122_L_DM_CC",
+      "P122_L_DM_MLO",
+      "P122_L_CM_CC",
+      "P122_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "123",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P123_R_DM_CC",
+      "P123_R_DM_MLO",
+      "P123_R_CM_CC",
+      "P123_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "123",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P123_L_DM_CC",
+      "P123_L_DM_MLO",
+      "P123_L_CM_CC",
+      "P123_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "124",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P124_R_DM_CC",
+      "P124_R_DM_MLO",
+      "P124_R_CM_CC",
+      "P124_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "124",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P124_L_DM_CC",
+      "P124_L_DM_MLO",
+      "P124_L_CM_CC",
+      "P124_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "125",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P125_R_DM_CC",
+      "P125_R_DM_MLO",
+      "P125_R_CM_CC",
+      "P125_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "125",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P125_L_DM_CC",
+      "P125_L_DM_MLO",
+      "P125_L_CM_CC",
+      "P125_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "126",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P126_R_DM_CC",
+      "P126_R_DM_MLO",
+      "P126_R_CM_CC",
+      "P126_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "126",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P126_L_DM_CC",
+      "P126_L_DM_MLO",
+      "P126_L_CM_CC",
+      "P126_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "127",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P127_L_DM_MLO",
+      "P127_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "128",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P128_R_DM_CC",
+      "P128_R_DM_MLO",
+      "P128_R_CM_CC",
+      "P128_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "128",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P128_L_DM_CC",
+      "P128_L_DM_MLO",
+      "P128_L_CM_CC",
+      "P128_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "129",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P129_R_DM_CC",
+      "P129_R_DM_MLO",
+      "P129_R_CM_CC",
+      "P129_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "129",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P129_L_DM_CC",
+      "P129_L_DM_MLO",
+      "P129_L_CM_CC",
+      "P129_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "130",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P130_L_DM_CC",
+      "P130_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "131",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P131_L_DM_MLO",
+      "P131_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "132",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P132_R_DM_CC",
+      "P132_R_DM_MLO",
+      "P132_R_CM_CC",
+      "P132_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "132",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P132_L_DM_CC",
+      "P132_L_DM_MLO",
+      "P132_L_CM_CC",
+      "P132_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "133",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P133_R_DM_CC",
+      "P133_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "134",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P134_R_DM_MLO",
+      "P134_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "135",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P135_L_DM_MLO",
+      "P135_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "136",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P136_R_DM_CC",
+      "P136_R_DM_MLO",
+      "P136_R_CM_CC",
+      "P136_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "136",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P136_L_DM_MLO",
+      "P136_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "137",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P137_L_DM_MLO",
+      "P137_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "138",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P138_R_DM_CC",
+      "P138_R_DM_MLO",
+      "P138_R_CM_CC",
+      "P138_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "138",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P138_L_DM_CC",
+      "P138_L_DM_MLO",
+      "P138_L_CM_CC",
+      "P138_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "139",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P139_R_DM_CC",
+      "P139_R_DM_MLO",
+      "P139_R_CM_CC",
+      "P139_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "140",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P140_R_DM_CC",
+      "P140_R_DM_MLO",
+      "P140_R_CM_CC",
+      "P140_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "140",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P140_L_DM_CC",
+      "P140_L_DM_MLO",
+      "P140_L_CM_CC",
+      "P140_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "141",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P141_R_DM_CC",
+      "P141_R_DM_MLO",
+      "P141_R_CM_CC",
+      "P141_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "141",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P141_L_DM_CC",
+      "P141_L_DM_MLO",
+      "P141_L_CM_CC",
+      "P141_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "142",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P142_R_DM_CC",
+      "P142_R_DM_MLO",
+      "P142_R_CM_CC",
+      "P142_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "143",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P143_R_DM_CC",
+      "P143_R_DM_MLO",
+      "P143_R_CM_CC",
+      "P143_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "143",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P143_L_DM_CC",
+      "P143_L_DM_MLO",
+      "P143_L_CM_CC",
+      "P143_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "144",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P144_R_DM_CC",
+      "P144_R_DM_MLO",
+      "P144_R_CM_CC",
+      "P144_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "144",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P144_L_DM_CC",
+      "P144_L_DM_MLO",
+      "P144_L_CM_CC",
+      "P144_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "145",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P145_R_DM_CC",
+      "P145_R_DM_MLO",
+      "P145_R_CM_CC",
+      "P145_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "145",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P145_L_DM_CC",
+      "P145_L_DM_MLO",
+      "P145_L_CM_CC",
+      "P145_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "146",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P146_R_DM_CC",
+      "P146_R_DM_MLO",
+      "P146_R_CM_CC",
+      "P146_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "146",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P146_L_DM_CC",
+      "P146_L_DM_MLO",
+      "P146_L_CM_CC",
+      "P146_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "147",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P147_R_DM_CC",
+      "P147_R_DM_MLO",
+      "P147_R_CM_CC",
+      "P147_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "148",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P148_R_DM_CC",
+      "P148_R_DM_MLO",
+      "P148_R_CM_CC",
+      "P148_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "148",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P148_L_DM_CC",
+      "P148_L_DM_MLO",
+      "P148_L_CM_CC",
+      "P148_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "149",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P149_R_DM_CC",
+      "P149_R_DM_MLO",
+      "P149_R_CM_CC",
+      "P149_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "149",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P149_L_DM_CC",
+      "P149_L_DM_MLO",
+      "P149_L_CM_CC",
+      "P149_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "150",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P150_R_DM_CC",
+      "P150_R_DM_MLO",
+      "P150_R_CM_CC",
+      "P150_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "150",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P150_L_DM_CC",
+      "P150_L_DM_MLO",
+      "P150_L_CM_CC",
+      "P150_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "151",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P151_L_DM_CC",
+      "P151_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "152",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P152_R_DM_CC",
+      "P152_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "152",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P152_L_DM_CC",
+      "P152_L_DM_MLO",
+      "P152_L_CM_CC",
+      "P152_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "153",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P153_R_DM_MLO",
+      "P153_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "153",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P153_L_DM_CC",
+      "P153_L_DM_MLO",
+      "P153_L_CM_CC",
+      "P153_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "154",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P154_R_DM_CC",
+      "P154_R_DM_MLO",
+      "P154_R_CM_CC",
+      "P154_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "154",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P154_L_DM_CC",
+      "P154_L_DM_MLO",
+      "P154_L_CM_CC",
+      "P154_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "155",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P155_R_DM_CC",
+      "P155_R_DM_MLO",
+      "P155_R_CM_CC",
+      "P155_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "155",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P155_L_DM_CC",
+      "P155_L_DM_MLO",
+      "P155_L_CM_CC",
+      "P155_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "156",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P156_R_DM_CC",
+      "P156_R_DM_MLO",
+      "P156_R_CM_CC",
+      "P156_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "156",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P156_L_DM_CC",
+      "P156_L_DM_MLO",
+      "P156_L_CM_CC",
+      "P156_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "157",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P157_R_DM_CC",
+      "P157_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "158",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P158_L_DM_MLO",
+      "P158_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "159",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P159_L_DM_CC",
+      "P159_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "160",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P160_R_DM_CC",
+      "P160_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "160",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P160_L_DM_CC",
+      "P160_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "161",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P161_R_DM_CC",
+      "P161_R_DM_MLO",
+      "P161_R_CM_CC",
+      "P161_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "161",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P161_L_DM_CC",
+      "P161_L_DM_MLO",
+      "P161_L_CM_CC",
+      "P161_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "162",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P162_R_DM_CC",
+      "P162_R_DM_MLO",
+      "P162_R_CM_CC",
+      "P162_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "162",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P162_L_DM_CC",
+      "P162_L_DM_MLO",
+      "P162_L_CM_CC",
+      "P162_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "163",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P163_R_DM_CC",
+      "P163_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "164",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P164_L_DM_CC",
+      "P164_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "165",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P165_R_DM_CC",
+      "P165_R_DM_MLO",
+      "P165_R_CM_CC",
+      "P165_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "165",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P165_L_DM_CC",
+      "P165_L_DM_MLO",
+      "P165_L_CM_CC",
+      "P165_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "166",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P166_L_DM_CC",
+      "P166_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "167",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P167_L_DM_MLO",
+      "P167_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "168",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P168_L_DM_MLO",
+      "P168_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "169",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P169_R_DM_CC",
+      "P169_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "169",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P169_L_DM_CC",
+      "P169_L_DM_MLO",
+      "P169_L_CM_CC",
+      "P169_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "170",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P170_R_DM_CC",
+      "P170_R_DM_MLO",
+      "P170_R_CM_CC",
+      "P170_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "170",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P170_L_DM_CC",
+      "P170_L_DM_MLO",
+      "P170_L_CM_CC",
+      "P170_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "171",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P171_L_DM_MLO",
+      "P171_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "172",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P172_R_DM_CC",
+      "P172_R_DM_MLO",
+      "P172_R_CM_CC",
+      "P172_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "172",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P172_L_DM_CC",
+      "P172_L_DM_MLO",
+      "P172_L_CM_CC",
+      "P172_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "173",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P173_R_DM_CC",
+      "P173_R_DM_MLO",
+      "P173_R_CM_CC",
+      "P173_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "173",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P173_L_DM_CC",
+      "P173_L_DM_MLO",
+      "P173_L_CM_CC",
+      "P173_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "174",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P174_R_DM_CC",
+      "P174_R_DM_MLO",
+      "P174_R_CM_CC",
+      "P174_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "174",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P174_L_DM_CC",
+      "P174_L_DM_MLO",
+      "P174_L_CM_CC",
+      "P174_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "175",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P175_R_DM_CC",
+      "P175_R_DM_MLO",
+      "P175_R_CM_CC",
+      "P175_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "176",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P176_R_DM_CC",
+      "P176_R_DM_MLO",
+      "P176_R_CM_CC",
+      "P176_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "176",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P176_L_DM_CC",
+      "P176_L_DM_MLO",
+      "P176_L_CM_CC",
+      "P176_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "177",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P177_R_DM_CC",
+      "P177_R_DM_MLO",
+      "P177_R_CM_CC",
+      "P177_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "177",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P177_L_DM_CC",
+      "P177_L_DM_MLO",
+      "P177_L_CM_CC",
+      "P177_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "178",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P178_R_DM_MLO",
+      "P178_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "179",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P179_L_DM_CC",
+      "P179_L_DM_MLO",
+      "P179_L_CM_CC",
+      "P179_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "180",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P180_R_DM_CC",
+      "P180_R_DM_MLO",
+      "P180_R_CM_CC",
+      "P180_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "180",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P180_L_DM_CC",
+      "P180_L_DM_MLO",
+      "P180_L_CM_CC",
+      "P180_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "181",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P181_R_DM_CC",
+      "P181_R_DM_MLO",
+      "P181_R_CM_CC",
+      "P181_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "181",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P181_L_DM_CC",
+      "P181_L_DM_MLO",
+      "P181_L_CM_CC",
+      "P181_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "182",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P182_R_DM_MLO",
+      "P182_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "183",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P183_R_DM_CC",
+      "P183_R_DM_MLO",
+      "P183_R_CM_CC",
+      "P183_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "183",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P183_L_DM_CC",
+      "P183_L_DM_MLO",
+      "P183_L_CM_CC",
+      "P183_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "184",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P184_R_DM_CC",
+      "P184_R_DM_MLO",
+      "P184_R_CM_CC",
+      "P184_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "184",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P184_L_DM_CC",
+      "P184_L_DM_MLO",
+      "P184_L_CM_CC",
+      "P184_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "185",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P185_R_DM_CC",
+      "P185_R_DM_MLO",
+      "P185_R_CM_CC",
+      "P185_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "185",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P185_L_DM_CC",
+      "P185_L_DM_MLO",
+      "P185_L_CM_CC",
+      "P185_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "186",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P186_R_DM_CC",
+      "P186_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "186",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P186_L_DM_CC",
+      "P186_L_DM_MLO",
+      "P186_L_CM_CC",
+      "P186_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "187",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P187_R_DM_CC",
+      "P187_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "187",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P187_L_DM_CC",
+      "P187_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "188",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P188_R_DM_CC",
+      "P188_R_DM_MLO",
+      "P188_R_CM_CC",
+      "P188_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "188",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P188_L_DM_CC",
+      "P188_L_DM_MLO",
+      "P188_L_CM_CC",
+      "P188_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "189",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P189_R_DM_MLO",
+      "P189_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "189",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P189_L_DM_CC",
+      "P189_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "190",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P190_R_DM_MLO",
+      "P190_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "190",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P190_L_DM_CC",
+      "P190_L_DM_MLO",
+      "P190_L_CM_CC",
+      "P190_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "191",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P191_R_DM_CC",
+      "P191_R_DM_MLO",
+      "P191_R_CM_CC",
+      "P191_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "191",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P191_L_DM_CC",
+      "P191_L_DM_MLO",
+      "P191_L_CM_CC",
+      "P191_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "192",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P192_R_DM_CC",
+      "P192_R_DM_MLO",
+      "P192_R_CM_CC",
+      "P192_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "192",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P192_L_DM_CC",
+      "P192_L_DM_MLO",
+      "P192_L_CM_CC",
+      "P192_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "193",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P193_L_DM_MLO",
+      "P193_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "194",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P194_R_DM_CC",
+      "P194_R_DM_MLO",
+      "P194_R_CM_CC",
+      "P194_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "194",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P194_L_DM_CC",
+      "P194_L_DM_MLO",
+      "P194_L_CM_CC",
+      "P194_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "195",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P195_R_DM_CC",
+      "P195_R_DM_MLO",
+      "P195_R_CM_CC",
+      "P195_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "195",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P195_L_DM_CC",
+      "P195_L_DM_MLO",
+      "P195_L_CM_CC",
+      "P195_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "196",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P196_R_DM_MLO",
+      "P196_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "196",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P196_L_DM_CC",
+      "P196_L_DM_MLO",
+      "P196_L_CM_CC",
+      "P196_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "197",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P197_R_DM_CC",
+      "P197_R_DM_MLO",
+      "P197_R_CM_CC",
+      "P197_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "197",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P197_L_DM_CC",
+      "P197_L_DM_MLO",
+      "P197_L_CM_CC",
+      "P197_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "198",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P198_L_DM_CC",
+      "P198_L_DM_MLO",
+      "P198_L_CM_CC",
+      "P198_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "199",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P199_R_DM_CC",
+      "P199_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "200",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P200_R_DM_CC",
+      "P200_R_DM_MLO",
+      "P200_R_CM_CC",
+      "P200_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "200",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P200_L_DM_CC",
+      "P200_L_DM_MLO",
+      "P200_L_CM_CC",
+      "P200_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "201",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P201_R_DM_MLO",
+      "P201_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "202",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P202_R_DM_CC",
+      "P202_R_DM_MLO",
+      "P202_R_CM_CC",
+      "P202_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "202",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P202_L_DM_CC",
+      "P202_L_DM_MLO",
+      "P202_L_CM_CC",
+      "P202_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "203",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P203_R_DM_CC",
+      "P203_R_DM_MLO",
+      "P203_R_CM_CC",
+      "P203_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "204",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P204_L_DM_CC",
+      "P204_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "205",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P205_L_DM_MLO",
+      "P205_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "206",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P206_R_DM_CC",
+      "P206_R_DM_MLO",
+      "P206_R_CM_CC",
+      "P206_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "206",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P206_L_DM_CC",
+      "P206_L_DM_MLO",
+      "P206_L_CM_CC",
+      "P206_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "207",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P207_R_DM_CC",
+      "P207_R_DM_MLO",
+      "P207_R_CM_CC",
+      "P207_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "207",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P207_L_DM_CC",
+      "P207_L_DM_MLO",
+      "P207_L_CM_CC",
+      "P207_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "208",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P208_R_DM_CC",
+      "P208_R_DM_MLO",
+      "P208_R_CM_CC",
+      "P208_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "209",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P209_R_DM_CC",
+      "P209_R_DM_MLO",
+      "P209_R_CM_CC",
+      "P209_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "209",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P209_L_DM_CC",
+      "P209_L_DM_MLO",
+      "P209_L_CM_CC",
+      "P209_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "210",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P210_L_DM_CC",
+      "P210_L_DM_MLO",
+      "P210_L_CM_CC",
+      "P210_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "211",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P211_R_DM_CC",
+      "P211_R_DM_MLO",
+      "P211_R_CM_CC",
+      "P211_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "211",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P211_L_DM_CC",
+      "P211_L_DM_MLO",
+      "P211_L_CM_CC",
+      "P211_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "212",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P212_R_DM_CC",
+      "P212_R_DM_MLO",
+      "P212_R_CM_CC",
+      "P212_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "212",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P212_L_DM_CC",
+      "P212_L_DM_MLO",
+      "P212_L_CM_CC",
+      "P212_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "213",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P213_R_DM_CC",
+      "P213_R_DM_MLO",
+      "P213_R_CM_CC",
+      "P213_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "213",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P213_L_DM_CC",
+      "P213_L_DM_MLO",
+      "P213_L_CM_CC",
+      "P213_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "214",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P214_R_DM_CC",
+      "P214_R_DM_MLO",
+      "P214_R_CM_CC",
+      "P214_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "214",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P214_L_DM_CC",
+      "P214_L_DM_MLO",
+      "P214_L_CM_CC",
+      "P214_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "215",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P215_R_DM_CC",
+      "P215_R_DM_MLO",
+      "P215_R_CM_CC",
+      "P215_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "215",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P215_L_DM_CC",
+      "P215_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "216",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P216_R_DM_CC",
+      "P216_R_DM_MLO",
+      "P216_R_CM_CC",
+      "P216_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "216",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P216_L_DM_CC",
+      "P216_L_DM_MLO",
+      "P216_L_CM_CC",
+      "P216_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "217",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P217_L_DM_CC",
+      "P217_L_DM_MLO",
+      "P217_L_CM_CC",
+      "P217_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "218",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P218_R_DM_CC",
+      "P218_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "218",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P218_L_DM_MLO",
+      "P218_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "219",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P219_L_DM_MLO",
+      "P219_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "220",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P220_R_DM_CC",
+      "P220_R_DM_MLO",
+      "P220_R_CM_CC",
+      "P220_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "220",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P220_L_DM_CC",
+      "P220_L_DM_MLO",
+      "P220_L_CM_CC",
+      "P220_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "221",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P221_L_DM_CC",
+      "P221_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "222",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P222_L_DM_CC",
+      "P222_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "223",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P223_R_DM_MLO",
+      "P223_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "223",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P223_L_DM_CC",
+      "P223_L_DM_MLO",
+      "P223_L_CM_CC",
+      "P223_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "224",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P224_L_DM_CC",
+      "P224_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "225",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P225_R_DM_CC",
+      "P225_R_DM_MLO",
+      "P225_R_CM_CC",
+      "P225_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "225",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P225_L_DM_CC",
+      "P225_L_DM_MLO",
+      "P225_L_CM_CC",
+      "P225_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "226",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P226_R_DM_CC",
+      "P226_R_DM_MLO",
+      "P226_R_CM_CC",
+      "P226_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "226",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P226_L_DM_CC",
+      "P226_L_DM_MLO",
+      "P226_L_CM_CC",
+      "P226_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "227",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P227_R_DM_CC",
+      "P227_R_DM_MLO",
+      "P227_R_CM_CC",
+      "P227_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "227",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P227_L_DM_CC",
+      "P227_L_DM_MLO",
+      "P227_L_CM_CC",
+      "P227_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "228",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P228_R_DM_CC",
+      "P228_R_DM_MLO",
+      "P228_R_CM_CC",
+      "P228_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "228",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P228_L_DM_CC",
+      "P228_L_DM_MLO",
+      "P228_L_CM_CC",
+      "P228_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "229",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P229_R_DM_MLO",
+      "P229_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "230",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P230_R_DM_CC",
+      "P230_R_DM_MLO",
+      "P230_R_CM_CC",
+      "P230_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "230",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P230_L_DM_CC",
+      "P230_L_DM_MLO",
+      "P230_L_CM_CC",
+      "P230_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "231",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P231_R_DM_MLO",
+      "P231_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "232",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P232_R_DM_CC",
+      "P232_R_DM_MLO",
+      "P232_R_CM_CC",
+      "P232_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "232",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P232_L_DM_CC",
+      "P232_L_DM_MLO",
+      "P232_L_CM_CC",
+      "P232_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "233",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P233_R_DM_CC",
+      "P233_R_DM_MLO",
+      "P233_R_CM_CC",
+      "P233_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "233",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P233_L_DM_CC",
+      "P233_L_DM_MLO",
+      "P233_L_CM_CC",
+      "P233_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "234",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P234_L_DM_CC",
+      "P234_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "235",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P235_R_DM_CC",
+      "P235_R_DM_MLO",
+      "P235_R_CM_CC",
+      "P235_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "235",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P235_L_DM_CC",
+      "P235_L_DM_MLO",
+      "P235_L_CM_CC",
+      "P235_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "236",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P236_R_DM_CC",
+      "P236_R_DM_MLO",
+      "P236_R_CM_CC",
+      "P236_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "236",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P236_L_DM_CC",
+      "P236_L_DM_MLO",
+      "P236_L_CM_CC",
+      "P236_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "237",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P237_R_DM_CC",
+      "P237_R_DM_MLO",
+      "P237_R_CM_CC",
+      "P237_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "237",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P237_L_DM_CC",
+      "P237_L_DM_MLO",
+      "P237_L_CM_CC",
+      "P237_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "238",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P238_R_DM_CC",
+      "P238_R_DM_MLO",
+      "P238_R_CM_CC",
+      "P238_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "238",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P238_L_DM_CC",
+      "P238_L_DM_MLO",
+      "P238_L_CM_CC",
+      "P238_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "239",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P239_R_DM_CC",
+      "P239_R_DM_MLO",
+      "P239_R_CM_CC",
+      "P239_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "239",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P239_L_DM_CC",
+      "P239_L_DM_MLO",
+      "P239_L_CM_CC",
+      "P239_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "240",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P240_R_DM_MLO",
+      "P240_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "241",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P241_R_DM_CC",
+      "P241_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "241",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P241_L_DM_CC",
+      "P241_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "242",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P242_R_DM_MLO",
+      "P242_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "242",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P242_L_DM_CC",
+      "P242_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "243",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P243_R_DM_CC",
+      "P243_R_DM_MLO",
+      "P243_R_CM_CC",
+      "P243_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "243",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P243_L_DM_CC",
+      "P243_L_DM_MLO",
+      "P243_L_CM_CC",
+      "P243_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "244",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P244_R_DM_CC",
+      "P244_R_DM_MLO",
+      "P244_R_CM_CC",
+      "P244_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "244",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P244_L_DM_CC",
+      "P244_L_DM_MLO",
+      "P244_L_CM_CC",
+      "P244_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "245",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P245_R_DM_CC",
+      "P245_R_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "245",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P245_L_DM_CC",
+      "P245_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "246",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P246_R_DM_MLO",
+      "P246_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "247",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P247_L_DM_MLO",
+      "P247_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "248",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P248_R_DM_MLO",
+      "P248_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "248",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P248_L_DM_CC",
+      "P248_L_DM_MLO",
+      "P248_L_CM_CC",
+      "P248_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "249",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P249_R_DM_CC",
+      "P249_R_DM_MLO",
+      "P249_R_CM_CC",
+      "P249_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "249",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P249_L_DM_CC",
+      "P249_L_DM_MLO",
+      "P249_L_CM_CC",
+      "P249_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "250",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P250_L_DM_CC",
+      "P250_L_CM_CC"
+    ]
+  },
+  {
+    "patient_id": "251",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P251_R_DM_CC",
+      "P251_R_DM_MLO",
+      "P251_R_CM_CC",
+      "P251_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "251",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P251_L_DM_CC",
+      "P251_L_DM_MLO",
+      "P251_L_CM_CC",
+      "P251_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "252",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P252_R_DM_CC",
+      "P252_R_DM_MLO",
+      "P252_R_CM_CC",
+      "P252_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "252",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P252_L_DM_CC",
+      "P252_L_DM_MLO",
+      "P252_L_CM_CC",
+      "P252_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "253",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P253_R_DM_CC",
+      "P253_R_DM_MLO",
+      "P253_R_CM_CC",
+      "P253_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "253",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P253_L_DM_CC",
+      "P253_L_DM_MLO",
+      "P253_L_CM_CC",
+      "P253_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "254",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P254_R_DM_CC",
+      "P254_R_DM_MLO",
+      "P254_R_CM_CC",
+      "P254_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "254",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P254_L_DM_CC",
+      "P254_L_DM_MLO",
+      "P254_L_CM_CC",
+      "P254_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "255",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P255_R_DM_CC",
+      "P255_R_DM_MLO",
+      "P255_R_CM_CC",
+      "P255_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "255",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P255_L_DM_CC",
+      "P255_L_DM_MLO",
+      "P255_L_CM_CC",
+      "P255_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "256",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P256_L_DM_CC",
+      "P256_L_DM_MLO",
+      "P256_L_CM_CC",
+      "P256_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "257",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P257_R_DM_CC",
+      "P257_R_DM_MLO",
+      "P257_R_CM_CC",
+      "P257_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "257",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P257_L_DM_CC",
+      "P257_L_DM_MLO",
+      "P257_L_CM_CC",
+      "P257_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "258",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P258_R_DM_CC",
+      "P258_R_DM_MLO",
+      "P258_R_CM_CC",
+      "P258_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "258",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P258_L_DM_CC",
+      "P258_L_DM_MLO",
+      "P258_L_CM_CC",
+      "P258_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "259",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P259_R_DM_CC",
+      "P259_R_DM_MLO",
+      "P259_R_CM_CC",
+      "P259_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "259",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P259_L_DM_CC",
+      "P259_L_DM_MLO",
+      "P259_L_CM_CC",
+      "P259_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "260",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P260_R_DM_CC",
+      "P260_R_DM_MLO",
+      "P260_R_CM_CC",
+      "P260_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "260",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P260_L_DM_CC",
+      "P260_L_DM_MLO",
+      "P260_L_CM_CC",
+      "P260_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "261",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P261_R_DM_CC",
+      "P261_R_DM_MLO",
+      "P261_R_CM_CC",
+      "P261_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "261",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P261_L_DM_CC",
+      "P261_L_DM_MLO",
+      "P261_L_CM_CC",
+      "P261_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "262",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P262_R_DM_CC",
+      "P262_R_DM_MLO",
+      "P262_R_CM_CC",
+      "P262_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "262",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P262_L_DM_CC",
+      "P262_L_DM_MLO",
+      "P262_L_CM_CC",
+      "P262_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "263",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P263_R_DM_CC",
+      "P263_R_DM_MLO",
+      "P263_R_CM_CC",
+      "P263_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "263",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P263_L_DM_CC",
+      "P263_L_DM_MLO",
+      "P263_L_CM_CC",
+      "P263_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "264",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P264_R_DM_CC",
+      "P264_R_DM_MLO",
+      "P264_R_CM_CC",
+      "P264_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "264",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P264_L_DM_CC",
+      "P264_L_DM_MLO",
+      "P264_L_CM_CC",
+      "P264_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "265",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P265_R_DM_CC",
+      "P265_R_DM_MLO",
+      "P265_R_CM_CC",
+      "P265_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "265",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P265_L_DM_CC",
+      "P265_L_DM_MLO",
+      "P265_L_CM_CC",
+      "P265_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "266",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P266_R_DM_CC",
+      "P266_R_DM_MLO",
+      "P266_R_CM_CC",
+      "P266_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "266",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P266_L_DM_CC",
+      "P266_L_DM_MLO",
+      "P266_L_CM_CC",
+      "P266_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "267",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P267_R_DM_CC",
+      "P267_R_DM_MLO",
+      "P267_R_CM_CC",
+      "P267_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "267",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P267_L_DM_CC",
+      "P267_L_DM_MLO",
+      "P267_L_CM_CC",
+      "P267_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "268",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P268_R_DM_CC",
+      "P268_R_DM_MLO",
+      "P268_R_CM_CC",
+      "P268_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "268",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P268_L_DM_CC",
+      "P268_L_DM_MLO",
+      "P268_L_CM_CC",
+      "P268_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "269",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P269_R_DM_CC",
+      "P269_R_DM_MLO",
+      "P269_R_CM_CC",
+      "P269_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "269",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P269_L_DM_CC",
+      "P269_L_DM_MLO",
+      "P269_L_CM_CC",
+      "P269_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "270",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P270_R_DM_CC",
+      "P270_R_DM_MLO",
+      "P270_R_CM_CC",
+      "P270_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "270",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P270_L_DM_CC",
+      "P270_L_DM_MLO",
+      "P270_L_CM_CC",
+      "P270_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "271",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P271_R_DM_CC",
+      "P271_R_DM_MLO",
+      "P271_R_CM_CC",
+      "P271_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "271",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P271_L_DM_CC",
+      "P271_L_DM_MLO",
+      "P271_L_CM_CC",
+      "P271_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "272",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P272_R_DM_CC",
+      "P272_R_DM_MLO",
+      "P272_R_CM_CC",
+      "P272_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "272",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P272_L_DM_CC",
+      "P272_L_DM_MLO",
+      "P272_L_CM_CC",
+      "P272_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "273",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P273_R_DM_CC",
+      "P273_R_DM_MLO",
+      "P273_R_CM_CC",
+      "P273_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "273",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P273_L_DM_CC",
+      "P273_L_DM_MLO",
+      "P273_L_CM_CC",
+      "P273_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "274",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P274_R_DM_CC",
+      "P274_R_DM_MLO",
+      "P274_R_CM_CC",
+      "P274_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "274",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P274_L_DM_CC",
+      "P274_L_DM_MLO",
+      "P274_L_CM_CC",
+      "P274_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "275",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P275_R_DM_CC",
+      "P275_R_DM_MLO",
+      "P275_R_CM_CC",
+      "P275_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "275",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P275_L_DM_CC",
+      "P275_L_DM_MLO",
+      "P275_L_CM_CC",
+      "P275_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "276",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P276_R_DM_CC",
+      "P276_R_DM_MLO",
+      "P276_R_CM_CC",
+      "P276_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "276",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P276_L_DM_CC",
+      "P276_L_DM_MLO",
+      "P276_L_CM_CC",
+      "P276_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "277",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P277_R_DM_CC",
+      "P277_R_DM_MLO",
+      "P277_R_CM_CC",
+      "P277_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "277",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P277_L_DM_CC",
+      "P277_L_DM_MLO",
+      "P277_L_CM_CC",
+      "P277_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "278",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P278_R_DM_CC",
+      "P278_R_DM_MLO",
+      "P278_R_CM_CC",
+      "P278_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "278",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P278_L_DM_CC",
+      "P278_L_DM_MLO",
+      "P278_L_CM_CC",
+      "P278_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "279",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P279_R_DM_CC",
+      "P279_R_DM_MLO",
+      "P279_R_CM_CC",
+      "P279_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "279",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P279_L_DM_CC",
+      "P279_L_DM_MLO",
+      "P279_L_CM_CC",
+      "P279_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "280",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P280_R_DM_CC",
+      "P280_R_DM_MLO",
+      "P280_R_CM_CC",
+      "P280_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "280",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P280_L_DM_CC",
+      "P280_L_DM_MLO",
+      "P280_L_CM_CC",
+      "P280_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "281",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P281_R_DM_CC",
+      "P281_R_DM_MLO",
+      "P281_R_CM_CC",
+      "P281_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "281",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P281_L_DM_CC",
+      "P281_L_DM_MLO",
+      "P281_L_DM_MLO2",
+      "P281_L_CM_CC",
+      "P281_L_CM_MLO",
+      "P281_L_CM_MLO2"
+    ]
+  },
+  {
+    "patient_id": "282",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P282_R_DM_CC",
+      "P282_R_DM_MLO",
+      "P282_R_CM_CC",
+      "P282_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "282",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P282_L_DM_CC",
+      "P282_L_DM_MLO",
+      "P282_L_CM_CC",
+      "P282_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "283",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P283_R_DM_CC",
+      "P283_R_DM_MLO",
+      "P283_R_CM_CC",
+      "P283_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "283",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P283_L_DM_CC",
+      "P283_L_DM_MLO",
+      "P283_L_CM_CC",
+      "P283_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "284",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P284_R_DM_CC",
+      "P284_R_DM_MLO",
+      "P284_R_CM_CC",
+      "P284_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "284",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P284_L_DM_CC",
+      "P284_L_DM_MLO",
+      "P284_L_CM_CC",
+      "P284_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "285",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P285_R_DM_CC",
+      "P285_R_DM_MLO",
+      "P285_R_CM_CC",
+      "P285_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "285",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P285_L_DM_CC",
+      "P285_L_DM_MLO",
+      "P285_L_CM_CC",
+      "P285_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "286",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P286_R_DM_CC",
+      "P286_R_DM_MLO",
+      "P286_R_CM_CC",
+      "P286_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "286",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P286_L_DM_CC",
+      "P286_L_DM_MLO",
+      "P286_L_CM_CC",
+      "P286_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "287",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P287_R_DM_CC",
+      "P287_R_DM_MLO",
+      "P287_R_CM_CC",
+      "P287_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "287",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P287_L_DM_CC",
+      "P287_L_DM_MLO",
+      "P287_L_CM_CC",
+      "P287_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "288",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P288_R_DM_CC",
+      "P288_R_DM_MLO",
+      "P288_R_CM_CC",
+      "P288_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "288",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P288_L_DM_CC",
+      "P288_L_DM_MLO",
+      "P288_L_CM_CC",
+      "P288_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "289",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P289_R_DM_CC",
+      "P289_R_DM_MLO",
+      "P289_R_CM_CC",
+      "P289_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "289",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P289_L_DM_CC",
+      "P289_L_DM_MLO",
+      "P289_L_CM_CC",
+      "P289_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "290",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P290_R_DM_CC",
+      "P290_R_DM_MLO",
+      "P290_R_CM_CC",
+      "P290_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "290",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P290_L_DM_CC",
+      "P290_L_DM_MLO",
+      "P290_L_CM_CC",
+      "P290_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "291",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P291_R_DM_CC",
+      "P291_R_DM_MLO",
+      "P291_R_CM_CC",
+      "P291_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "291",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P291_L_DM_CC",
+      "P291_L_DM_MLO",
+      "P291_L_CM_CC",
+      "P291_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "292",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P292_R_DM_CC",
+      "P292_R_DM_MLO",
+      "P292_R_CM_CC",
+      "P292_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "292",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P292_L_DM_CC",
+      "P292_L_DM_MLO",
+      "P292_L_CM_CC",
+      "P292_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "293",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P293_R_DM_CC",
+      "P293_R_DM_MLO",
+      "P293_R_CM_CC",
+      "P293_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "293",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P293_L_DM_CC",
+      "P293_L_DM_MLO",
+      "P293_L_CM_CC",
+      "P293_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "294",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P294_R_DM_CC",
+      "P294_R_DM_MLO",
+      "P294_R_CM_CC",
+      "P294_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "295",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P295_R_DM_CC",
+      "P295_R_DM_MLO",
+      "P295_R_CM_CC",
+      "P295_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "295",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P295_L_DM_CC",
+      "P295_L_DM_MLO",
+      "P295_L_CM_CC",
+      "P295_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "296",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P296_R_DM_CC",
+      "P296_R_DM_MLO",
+      "P296_R_CM_CC",
+      "P296_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "296",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P296_L_DM_CC",
+      "P296_L_DM_MLO",
+      "P296_L_CM_CC",
+      "P296_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "297",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P297_R_DM_CC",
+      "P297_R_DM_MLO",
+      "P297_R_CM_CC",
+      "P297_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "297",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P297_L_DM_CC",
+      "P297_L_DM_MLO",
+      "P297_L_CM_CC",
+      "P297_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "298",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P298_R_DM_CC",
+      "P298_R_DM_MLO",
+      "P298_R_CM_CC",
+      "P298_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "298",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P298_L_DM_CC",
+      "P298_L_DM_MLO",
+      "P298_L_CM_CC",
+      "P298_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "299",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P299_R_DM_CC",
+      "P299_R_DM_MLO",
+      "P299_R_CM_CC",
+      "P299_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "299",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P299_L_DM_CC",
+      "P299_L_DM_MLO",
+      "P299_L_CM_CC",
+      "P299_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "300",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P300_R_DM_CC",
+      "P300_R_DM_MLO",
+      "P300_R_CM_CC",
+      "P300_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "300",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P300_L_DM_CC",
+      "P300_L_DM_MLO",
+      "P300_L_CM_CC",
+      "P300_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "301",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P301_R_DM_CC",
+      "P301_R_DM_MLO",
+      "P301_R_CM_CC",
+      "P301_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "301",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P301_L_DM_CC",
+      "P301_L_DM_MLO",
+      "P301_L_CM_CC",
+      "P301_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "302",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P302_R_DM_CC",
+      "P302_R_DM_MLO",
+      "P302_R_CM_CC",
+      "P302_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "302",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P302_L_DM_CC",
+      "P302_L_DM_MLO",
+      "P302_L_CM_CC",
+      "P302_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "303",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P303_R_DM_CC",
+      "P303_R_DM_MLO",
+      "P303_R_CM_CC",
+      "P303_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "303",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P303_L_DM_CC",
+      "P303_L_DM_MLO",
+      "P303_L_CM_CC",
+      "P303_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "304",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P304_R_DM_CC",
+      "P304_R_DM_MLO",
+      "P304_R_CM_CC",
+      "P304_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "304",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P304_L_DM_CC",
+      "P304_L_DM_MLO",
+      "P304_L_CM_CC",
+      "P304_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "305",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P305_R_DM_CC",
+      "P305_R_DM_MLO",
+      "P305_R_CM_CC",
+      "P305_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "305",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P305_L_DM_CC",
+      "P305_L_DM_MLO",
+      "P305_L_CM_CC",
+      "P305_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "306",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P306_R_DM_CC",
+      "P306_R_DM_MLO",
+      "P306_R_CM_CC",
+      "P306_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "306",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P306_L_DM_CC",
+      "P306_L_DM_MLO",
+      "P306_L_CM_CC",
+      "P306_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "307",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P307_R_DM_CC",
+      "P307_R_DM_MLO",
+      "P307_R_CM_CC",
+      "P307_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "307",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P307_L_DM_CC",
+      "P307_L_DM_MLO",
+      "P307_L_CM_CC",
+      "P307_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "308",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P308_R_DM_CC",
+      "P308_R_DM_MLO",
+      "P308_R_CM_CC",
+      "P308_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "308",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P308_L_DM_CC",
+      "P308_L_DM_MLO",
+      "P308_L_CM_CC",
+      "P308_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "309",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P309_R_DM_CC",
+      "P309_R_DM_MLO",
+      "P309_R_CM_CC",
+      "P309_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "309",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P309_L_DM_CC",
+      "P309_L_DM_MLO",
+      "P309_L_CM_CC",
+      "P309_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "310",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P310_R_DM_CC",
+      "P310_R_DM_MLO",
+      "P310_R_CM_CC",
+      "P310_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "310",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P310_L_DM_CC",
+      "P310_L_DM_MLO",
+      "P310_L_CM_CC",
+      "P310_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "311",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P311_R_DM_CC",
+      "P311_R_DM_MLO",
+      "P311_R_CM_CC",
+      "P311_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "311",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P311_L_DM_CC",
+      "P311_L_DM_MLO",
+      "P311_L_CM_CC",
+      "P311_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "312",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P312_R_DM_CC",
+      "P312_R_DM_MLO",
+      "P312_R_CM_CC",
+      "P312_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "312",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P312_L_DM_CC",
+      "P312_L_DM_MLO",
+      "P312_L_CM_CC",
+      "P312_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "313",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P313_R_DM_CC",
+      "P313_R_DM_MLO",
+      "P313_R_CM_CC",
+      "P313_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "313",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P313_L_DM_CC",
+      "P313_L_DM_MLO",
+      "P313_L_CM_CC",
+      "P313_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "314",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P314_R_DM_CC",
+      "P314_R_DM_MLO",
+      "P314_R_CM_CC",
+      "P314_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "314",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P314_L_DM_CC",
+      "P314_L_DM_MLO",
+      "P314_L_CM_CC",
+      "P314_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "315",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P315_R_DM_CC",
+      "P315_R_DM_MLO",
+      "P315_R_CM_CC",
+      "P315_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "315",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P315_L_DM_CC",
+      "P315_L_DM_MLO",
+      "P315_L_CM_CC",
+      "P315_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "316",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P316_R_DM_CC",
+      "P316_R_DM_MLO",
+      "P316_R_CM_CC",
+      "P316_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "316",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P316_L_DM_CC",
+      "P316_L_DM_MLO",
+      "P316_L_CM_CC",
+      "P316_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "317",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P317_R_DM_CC",
+      "P317_R_DM_MLO",
+      "P317_R_CM_CC",
+      "P317_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "317",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P317_L_DM_CC",
+      "P317_L_DM_MLO",
+      "P317_L_CM_CC",
+      "P317_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "318",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P318_R_DM_CC",
+      "P318_R_DM_MLO",
+      "P318_R_CM_CC",
+      "P318_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "318",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P318_L_DM_CC",
+      "P318_L_DM_MLO",
+      "P318_L_CM_CC",
+      "P318_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "319",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P319_R_DM_CC",
+      "P319_R_DM_MLO",
+      "P319_R_CM_CC",
+      "P319_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "319",
+    "side": "L",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P319_L_DM_CC",
+      "P319_L_DM_MLO",
+      "P319_L_CM_CC",
+      "P319_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "320",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P320_R_DM_CC",
+      "P320_R_DM_MLO",
+      "P320_R_CM_CC",
+      "P320_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "320",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P320_L_DM_CC",
+      "P320_L_DM_MLO",
+      "P320_L_CM_CC",
+      "P320_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "321",
+    "side": "R",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P321_R_DM_CC",
+      "P321_R_DM_MLO",
+      "P321_R_CM_CC",
+      "P321_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "322",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P322_R_DM_CC",
+      "P322_R_DM_MLO",
+      "P322_R_CM_CC",
+      "P322_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "322",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P322_L_DM_CC",
+      "P322_L_DM_MLO",
+      "P322_L_CM_CC",
+      "P322_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "323",
+    "side": "R",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P323_R_DM_CC",
+      "P323_R_DM_MLO",
+      "P323_R_CM_CC",
+      "P323_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "323",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P323_L_DM_CC",
+      "P323_L_DM_MLO",
+      "P323_L_CM_CC",
+      "P323_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "324",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P324_R_DM_MLO",
+      "P324_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "324",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P324_L_DM_CC",
+      "P324_L_DM_MLO",
+      "P324_L_CM_CC",
+      "P324_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "325",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign"
+    ],
+    "image_names": [
+      "P325_R_DM_CC",
+      "P325_R_DM_MLO",
+      "P325_R_CM_CC",
+      "P325_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "325",
+    "side": "L",
+    "label_aggregate": "Normal",
+    "label_set": [
+      "Normal"
+    ],
+    "image_names": [
+      "P325_L_DM_CC",
+      "P325_L_DM_MLO",
+      "P325_L_CM_CC",
+      "P325_L_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "326",
+    "side": "R",
+    "label_aggregate": "Benign",
+    "label_set": [
+      "Benign",
+      "Normal"
+    ],
+    "image_names": [
+      "P326_R_DM_CC",
+      "P326_R_DM_MLO",
+      "P326_R_CM_CC",
+      "P326_R_CM_MLO"
+    ]
+  },
+  {
+    "patient_id": "326",
+    "side": "L",
+    "label_aggregate": "Malignant",
+    "label_set": [
+      "Malignant"
+    ],
+    "image_names": [
+      "P326_L_DM_CC",
+      "P326_L_DM_MLO",
+      "P326_L_CM_CC",
+      "P326_L_CM_MLO"
+    ]
+  }
+]
